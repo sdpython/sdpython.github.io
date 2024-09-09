@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_torch_linreg_101.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -90,8 +90,7 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [ 8.77645073e-01  7.23508174e+01 -5.21526059e-02  9.31183877e+01
-      5.58228290e-01], 0.26571651725229817
+    coefficients: [ 0.33906298 97.89234403 17.8311341  -0.34721801  0.36056516], -0.5007879043301242
 
 
 
@@ -119,7 +118,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=99.37158225696727, r2=0.9921955426688784
+    LinearRegression: l2=110.66303563037312, r2=0.989540153677128
 
 
 
@@ -150,23 +149,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 99.54, NNZs: 5, Bias: -1.083300, T: 750, Avg. loss: 1453.695892
+    Norm: 85.53, NNZs: 5, Bias: -0.392442, T: 750, Avg. loss: 1024.458582
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 112.76, NNZs: 5, Bias: -0.399563, T: 1500, Avg. loss: 105.002287
+    Norm: 95.80, NNZs: 5, Bias: -0.543954, T: 1500, Avg. loss: 86.367822
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 116.17, NNZs: 5, Bias: -0.083427, T: 2250, Avg. loss: 51.117831
+    Norm: 98.17, NNZs: 5, Bias: -0.456274, T: 2250, Avg. loss: 54.545249
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 117.33, NNZs: 5, Bias: 0.205811, T: 3000, Avg. loss: 46.281330
+    Norm: 98.91, NNZs: 5, Bias: -0.524968, T: 3000, Avg. loss: 52.008619
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 117.71, NNZs: 5, Bias: 0.129218, T: 3750, Avg. loss: 45.656226
+    Norm: 99.26, NNZs: 5, Bias: -0.409345, T: 3750, Avg. loss: 51.581319
     Total training time: 0.00 seconds.
-    /home/xadupre/install/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1575: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
+    /home/xadupre/github/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1603: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [ 0.8506411  72.25623951 -0.17585021 92.92246497  0.5644385 ], [0.12921801]
+    coefficients: [ 0.21731995 97.67841168 17.656468   -0.42841059  0.39770164], [-0.40934469]
 
 
 
@@ -194,7 +193,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=99.41981237130881, sr2=0.9921917547663321
+    SGDRegressor: sl2=111.00026634986922, sr2=0.9895082787020635
 
 
 
@@ -212,7 +211,7 @@ torch
 
     class TorchLinearRegression(torch.nn.Module):
         def __init__(self, n_dims: int, n_targets: int):
-            super(TorchLinearRegression, self).__init__()
+            super().__init__()
             self.linear = torch.nn.Linear(n_dims, n_targets)
 
         def forward(self, x):
@@ -225,7 +224,7 @@ torch
         # Set the model to training mode - important for batch normalization and dropout layers
         # Unnecessary in this situation but added for best practices
         model.train()
-        for batch, (X, y) in enumerate(dataloader):
+        for X, y in dataloader:
             # Compute prediction and loss
             pred = model(X)
             loss = loss_fn(pred.ravel(), y)
@@ -265,11 +264,11 @@ torch
 
  .. code-block:: none
 
-    iteration 0, loss=3388378.75
-    iteration 1, loss=246132.15625
-    iteration 2, loss=78806.203125
-    iteration 3, loss=69241.828125
-    iteration 4, loss=68663.84375
+    iteration 0, loss=2433057.75
+    iteration 1, loss=182829.53125
+    iteration 2, loss=82106.0390625
+    iteration 3, loss=77647.609375
+    iteration 4, loss=77520.375
 
 
 
@@ -296,7 +295,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=99.65278124005958, tr2=0.9921734578291762
+    TorchLinearRegression: tl2=111.54863064463804, tr2=0.9894564474268815
 
 
 
@@ -325,10 +324,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[ 1.0995e+00,  7.2252e+01, -8.1620e-02,  9.3018e+01,  5.0411e-01]],
-           requires_grad=True)
+    tensor([[ 0.5241, 98.1177, 17.7327, -0.3917,  0.5173]], requires_grad=True)
     Parameter containing:
-    tensor([0.2408], requires_grad=True)
+    tensor([-0.5377], requires_grad=True)
 
 
 
@@ -375,8 +373,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[-192.17436],
-           [ -48.7338 ]], dtype=float32)]
+    [array([[-39.49265 ],
+           [  8.211919]], dtype=float32)]
 
 
 
@@ -439,9 +437,10 @@ With dynamic shapes
 
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['batch', 5]
-    init: name='arg0_1' type=dtype('float32') shape=(1, 5)
-    init: name='arg1_1' type=dtype('float32') shape=(1,) -- array([0.24076203], dtype=float32)
-    Gemm(x, arg0_1, arg1_1, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
+    init: name='p_linear_weight' type=dtype('float32') shape=(1, 5)
+    init: name='p_linear_bias' type=dtype('float32') shape=(1,) -- array([-0.53770286], dtype=float32)
+    Gemm(x, p_linear_weight, transA=0, transB=1) -> _onx_matmul0
+      Add(_onx_matmul0, p_linear_bias) -> output_0
     output: name='output_0' type=dtype('float32') shape=['batch', 1]
 
 
@@ -450,7 +449,7 @@ With dynamic shapes
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.163 seconds)
+   **Total running time of the script:** (0 minutes 3.508 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg_101.py:
@@ -466,6 +465,10 @@ With dynamic shapes
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_torch_linreg_101.py <plot_torch_linreg_101.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_torch_linreg_101.zip <plot_torch_linreg_101.zip>`
 
 
 .. only:: html

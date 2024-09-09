@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_convolutation_matmul_102.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -919,7 +919,7 @@ Let's compare with the numpy function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-401
+.. GENERATED FROM PYTHON SOURCE LINES 367-403
 
 ..math::
 
@@ -946,7 +946,8 @@ Finally:
 
 .. math::
 
-  \frac{d(E)}{d(v)} = \frac{d(E)}{d(conv(v, k))}\frac{d(conv(v, k))}{d(v)} = \frac{d(E)}{d(conv(v, k))} \; k \; im2col(v \neq 0, shape(k))
+  \frac{d(E)}{d(v)} = \frac{d(E)}{d(conv(v, k))}\frac{d(conv(v, k))}{d(v)} =
+  \frac{d(E)}{d(conv(v, k))} \; k \; im2col(v \neq 0, shape(k))
 
 Now, :math:`im2col(v \neq 0, shape(k))` is a very simple matrix with only ones or zeros.
 Is there a way we can avoid doing the matrix multiplication but simply
@@ -954,12 +955,13 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
 
 .. math::
 
-  \frac{d(E)}{d(v)} = \frac{d(E)}{d(conv(v, k))} \; k \; im2col(v \neq 0, shape(k)) = col2im\left(\frac{d(E)}{d(conv(v, k))} \; k, shape(k) \right)
+  \frac{d(E)}{d(v)} = \frac{d(E)}{d(conv(v, k))} \; k \; i
+  m2col(v \neq 0, shape(k)) = col2im\left(\frac{d(E)}{d(conv(v, k))} \; k, shape(k) \right)
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.432 seconds)
+   **Total running time of the script:** (0 minutes 0.379 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_convolutation_matmul_102.py:
@@ -975,6 +977,10 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_convolutation_matmul_102.py <plot_convolutation_matmul_102.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_convolutation_matmul_102.zip <plot_convolutation_matmul_102.zip>`
 
 
 .. only:: html

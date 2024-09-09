@@ -14,7 +14,7 @@ pytorch nightly build should be installed, see
 
 ::
 
-    git clone https://github.com/xadupre/experimental-experiment.git
+    git clone https://github.com/sdpython/experimental-experiment.git
     pip install onnxruntime-gpu pynvml
     pip install -r requirements-dev.txt    
     export PYTHONPATH=$PYTHONPATH:<this folder>
@@ -41,7 +41,7 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained b...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained by running a dummy llama model. It is the backward graph.">
 
 .. only:: html
 
@@ -75,6 +75,23 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to rewrite a graph using a pattern.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_rewrite_101_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_rewrite_101.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">101: Onnx Model Rewriting</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="scikit-learn and torch to train a linear regression.">
 
 .. only:: html
@@ -92,7 +109,7 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the examples introduced on this page Custom Backends. It uses backend ex...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the examples introduced on this page Custom Backends. It uses backend experimental_experiment.torch_dynamo.onnx_custom_backend based on onnxruntime and running on CPU or CUDA. It could easily replaced by experimental_experiment.torch_dynamo.onnx_debug_backend. This one based on the reference implemented from onnx can show the intermediate results if needed. It is very slow.">
 
 .. only:: html
 
@@ -109,7 +126,7 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used to blur, to compute the gradient in one direction and it is widely used in deep neural networks. Having a fast implementation is important.">
 
 .. only:: html
 
@@ -126,7 +143,7 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The script compares the two exporters implemented in pytorch for a part of llama model. The mod...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The script compares the two exporters implemented in pytorch for a part of llama model. The model are compared after all optimizations were made with and onnxruntime.">
 
 .. only:: html
 
@@ -143,7 +160,7 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The script compares exported models in pytorch using onnxrt backend. It tries to do a side by s...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The script compares exported models in pytorch using onnxrt backend. It tries to do a side by side of the execution of both models.">
 
 .. only:: html
 
@@ -211,7 +228,7 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was conve...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was converted into ONNX through different processes:">
 
 .. only:: html
 
@@ -238,6 +255,7 @@ all the graphs, the data used to draw them, and the models.
 
    /auto_examples/plot_optimize_101
    /auto_examples/plot_profile_existing_onnx_101
+   /auto_examples/plot_rewrite_101
    /auto_examples/plot_torch_linreg_101
    /auto_examples/plot_torch_custom_backend_101
    /auto_examples/plot_convolutation_matmul_102

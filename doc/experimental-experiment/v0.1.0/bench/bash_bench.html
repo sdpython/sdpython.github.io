@@ -1,0 +1,590 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Interesting scripts or command lines" href="scripts.html" /><link rel="prev" title="experimental_experiment.torch_bench.dort_profile" href="dort_profile.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+        <title>Measuring the exporters on a short list of sets of models - experimental-experiment 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">experimental-experiment 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">experimental-experiment 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/pytorch.html">pytorch and onnx</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of pytorch and onnx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/onnx.html">onnx</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of onnx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/docker.html">Start from a docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design/exporter.html">Custom Exporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/backends.html">Dynamo Backends</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/gradient.html">gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/reference.html">reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder.html">graph_builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/torch_model_container.html">TorchModelContainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder_pattern.html">graph_builder_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/graph_builder_patterns.html">Optimization Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/order_optimization.html">order_optim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/interpreter.html">interpreter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/onnx_export.html">onnx_export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/aten_function.html">aten_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/aten_method.html">aten_methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/prims_function.html">aten_prims</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/convert.html">convert_tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/torch_dynamo.html">torch_dynamo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/torch_helper.html">torch_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/dimension.html">Dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/torch_test.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/misc.html">Others…</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">Supported Models</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Supported Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/torchtry.html">Tries with Undocumented</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/onnxrt.html">Use the custom exporter in torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/example_bug.html">A script to report a bug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/llama.html">LLaMa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/phi.html">Phi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/phi3.html">Phi3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/speech2text.html">Speech2Text2ForCausalLM</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Benchmarks from the command line</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Benchmarks from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Measuring the exporters on a short list of sets of models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html">Interesting scripts or command lines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../times.html">Times</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../long_outputs.html">Long Outputs uneasy to read</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/bench/bash_bench.rst" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="measuring-the-exporters-on-a-short-list-of-sets-of-models">
+<h1>Measuring the exporters on a short list of sets of models<a class="headerlink" href="#measuring-the-exporters-on-a-short-list-of-sets-of-models" title="Link to this heading">¶</a></h1>
+<p>This benchmark aims measures a couple of exporter or ways to run a pytorch model
+and various sets of models to check which one is running or better in some conditions.
+It can be triggered on sets or models through a different script for each of them:</p>
+<ul class="simple">
+<li><p><strong>huggingface</strong>: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">experimental_experiment.torch_bench.bash_bench_huggingface</span></code></p></li>
+<li><p><strong>timm</strong>: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">experimental_experiment.torch_bench.bash_bench_timm</span></code></p></li>
+<li><p><strong>torchbench</strong>: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">experimental_experiment.torch_bench.bash_bench_torchbench</span></code></p></li>
+<li><p><strong>torchbench_ado</strong>: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">experimental_experiment.torch_bench.bash_bench_torchbench_ado</span></code></p></li>
+<li><p><strong>explicit</strong>: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">experimental_experiment.torch_bench.bash_bench_explicit</span></code></p></li>
+</ul>
+<p><strong>huggingface</strong> is a set of models coming from <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a>,
+<strong>timm</strong> is a set of models coming from <a class="reference external" href="https://github.com/huggingface/pytorch-image-models">timm</a>,
+<strong>torchbench</strong> and <strong>torchbench_ado</strong> models come from <a class="reference external" href="https://github.com/pytorch/benchmark">torchbench</a>,
+<strong>explicit</strong> is a set of custom models.</p>
+<p>These scripts are usually uses in two ways:</p>
+<ul class="simple">
+<li><p>a single run: to investigate a failure or a slow model</p></li>
+<li><p>a batch run: to benchmark many models on many exporters</p></li>
+</ul>
+<p>Examples are using with <code class="docutils literal notranslate"><span class="pre">bash_bench_huggingface</span></code> but any of the other
+can be used.</p>
+<section id="list-of-models">
+<h2>List of models<a class="headerlink" href="#list-of-models" title="Link to this heading">¶</a></h2>
+<p>The list of supported models can be obtained by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">experimental_experiment</span><span class="o">.</span><span class="n">torch_bench</span><span class="o">.</span><span class="n">bash_bench_huggingface</span> <span class="o">--</span><span class="n">model</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="mi">0</span> <span class="o">-</span> <span class="mi">101</span><span class="n">Dummy</span>
+ <span class="mi">1</span> <span class="o">-</span> <span class="mi">101</span><span class="n">Dummy16</span>
+ <span class="mi">2</span> <span class="o">-</span> <span class="mi">101</span><span class="n">DummyTuple</span>
+ <span class="mi">3</span> <span class="o">-</span> <span class="n">AlbertForMaskedLM</span>
+ <span class="mi">4</span> <span class="o">-</span> <span class="n">AlbertForQuestionAnswering</span>
+ <span class="mi">5</span> <span class="o">-</span> <span class="n">AllenaiLongformerBase</span>
+ <span class="mi">6</span> <span class="o">-</span> <span class="n">BartForCausalLM</span>
+ <span class="mi">7</span> <span class="o">-</span> <span class="n">BartForConditionalGeneration</span>
+ <span class="mi">8</span> <span class="o">-</span> <span class="n">BertForMaskedLM</span>
+ <span class="mi">9</span> <span class="o">-</span> <span class="n">BertForQuestionAnswering</span>
+<span class="mi">10</span> <span class="o">-</span> <span class="n">BlenderbotForCausalLM</span>
+<span class="mi">11</span> <span class="o">-</span> <span class="n">BlenderbotForConditionalGeneration</span>
+<span class="mi">12</span> <span class="o">-</span> <span class="n">BlenderbotSmallForCausalLM</span>
+<span class="mi">13</span> <span class="o">-</span> <span class="n">BlenderbotSmallForConditionalGeneration</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="single-run">
+<h2>Single Run<a class="headerlink" href="#single-run" title="Link to this heading">¶</a></h2>
+<p>The script loads a model, <em>ElectraForQuestionAnswering</em> in this case,
+warms up 10 times, measure the time to run inference 30 times. Then it converts it
+into onnx, and do the same. This script is usually run with <code class="docutils literal notranslate"><span class="pre">--quiet=0</span></code>
+to ensure the script stops as soon as an exception is raised. One example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">experimental_experiment</span><span class="o">.</span><span class="n">torch_bench</span><span class="o">.</span><span class="n">bash_bench_huggingface</span> <span class="o">--</span><span class="n">model</span> <span class="n">ElectraForQuestionAnswering</span> <span class="o">--</span><span class="n">device</span> <span class="n">cpu</span> <span class="o">--</span><span class="n">exporter</span> <span class="n">script</span> <span class="o">--</span><span class="n">verbose</span> <span class="mi">3</span> <span class="o">--</span><span class="n">quiet</span> <span class="mi">0</span> <span class="o">-</span><span class="n">w</span> <span class="mi">1</span> <span class="o">-</span><span class="n">r</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[bash_bench_huggingface] start
+device=cpu
+dtype=
+dump_folder=dump_bash_bench
+dynamic=0
+exporter=script
+model=ElectraForQuestionAnswering
+opt_patterns=
+output_data=output_data_bash_bench_huggingface.py.csv
+process=0
+quiet=0
+repeat=3
+target_opset=18
+verbose=3
+warmup=1
+Running model &#39;ElectraForQuestionAnswering&#39;
+[BenchmarkRunner.benchmark] test model &#39;ElectraForQuestionAnswering&#39; with exporter=&#39;script&#39;
+[BenchmarkRunner.benchmark] load model &#39;ElectraForQuestionAnswering&#39;
+[benchmarkrunner.benchmark] model wrapped with class &lt;class &#39;experimental_experiment.torch_bench._bash_bench_model_runner.WrappedModelToTuple&#39;&gt;
+[BenchmarkRunner.benchmark] model size and dtype 13483522, float32
+[BenchmarkRunner.benchmark] warmup model &#39;ElectraForQuestionAnswering&#39; - 1 times
+[benchmarkrunner.benchmark] output_size=65537.0
+[BenchmarkRunner.benchmark] repeat model &#39;ElectraForQuestionAnswering&#39; - 3 times
+[BenchmarkRunner.benchmark] export model &#39;ElectraForQuestionAnswering&#39;
+[BenchmarkRunner.benchmark] inference model &#39;ElectraForQuestionAnswering&#39;
+[BenchmarkRunner.benchmark] warmup script - &#39;ElectraForQuestionAnswering&#39;
+[benchmarkrunner.benchmark] no_grad=True torch.is_grad_enabled()=False before warmup
+[benchmarkrunner.benchmark] torch.is_grad_enabled()=False after warmup
+[BenchmarkRunner.benchmark] repeat ort &#39;ElectraForQuestionAnswering&#39;
+[BenchmarkRunner.benchmark] done model with 46 metrics
+[BenchmarkRunner.benchmark] done model &#39;ElectraForQuestionAnswering&#39; with exporter=&#39;script&#39; in 116.15856191800003
+:_index,ElectraForQuestionAnswering-script;
+:capability,6.1;
+:cpu,8;
+:date_start,2024-07-09;
+:device,cpu;
+:device_name,NVIDIA GeForce GTX 1060;
+:discrepancies_abs,1.3709068298339844e-06;
+:discrepancies_rel,0.03255894407629967;
+:executable,/usr/bin/python;
+:exporter,script;
+:filename,dump_test_models/ElectraForQuestionAnswering-script-cpu-/model.onnx;
+:flag_fake_tensor,False;
+:flag_no_grad,True;
+:flag_training,False;
+:has_cuda,True;
+:input_size,32896;
+:machine,x86_64;
+:model_name,ElectraForQuestionAnswering;
+:onnx_filesize,55613972;
+:onnx_input_names,input.1|onnx::Clip_1|onnx::Clip_2;
+:onnx_model,1;
+:onnx_n_inputs,3;
+:onnx_n_outputs,3;
+:onnx_optimized,0;
+:onnx_output_names,1300|onnx::SoftmaxCrossEntropyLoss_1286|onnx::SoftmaxCrossEntropyLoss_1288;
+:opt_patterns,;
+:output_size,65537.0;
+:params_dtype,float32;
+:params_size,13483522;
+:processor,x86_64;
+:providers,CPUExecutionProvider;
+:repeat,3;
+:speedup,1.3189447836001065;
+:speedup_increase,0.3189447836001065;
+:time_export,19.68962045799981;
+:time_latency,10.412437652000031;
+:time_latency_eager,13.733430325666783;
+:time_load,0.3337397940003939;
+:time_session,0.22385592099999485;
+:time_total,116.15856191800003;
+:time_warmup,10.869273103000069;
+:time_warmup_eager,12.341592189000039;
+:version,3.10.12;
+:version_onnxruntime,1.18.0+cu118;
+:version_torch,2.5.0.dev20240705+cu118;
+:version_transformers,4.42.3;
+:warmup,1;
+</pre></div>
+</div>
+</section>
+<section id="multiple-runs">
+<h2>Multiple Runs<a class="headerlink" href="#multiple-runs" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">all</span></code> runs the same command as above a in new process each time,
+<code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">All</span></code> runs the same command as above a in new process each time,
+<code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">Head</span></code> runs the same command as above a in new process each time
+with the ten first model of the benchark,
+<code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">Tail</span></code> runs the same command as above a in new process each time
+with the ten first model of the benchark.
+Any value with <code class="docutils literal notranslate"><span class="pre">,</span></code> means the command line needs to be run multiple times
+with multiple values. For example, the following command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">experimental_experiment</span><span class="o">.</span><span class="n">torch_bench</span><span class="o">.</span><span class="n">bash_bench_huggingface</span> <span class="o">--</span><span class="n">model</span> <span class="n">ElectraForQuestionAnswering</span> <span class="o">--</span><span class="n">device</span> <span class="n">cpu</span> <span class="o">--</span><span class="n">exporter</span> <span class="n">script</span><span class="p">,</span><span class="n">dynamo_export</span> <span class="o">--</span><span class="n">verbose</span> <span class="mi">3</span> <span class="o">--</span><span class="n">quiet</span> <span class="mi">1</span> <span class="o">-</span><span class="n">w</span> <span class="mi">1</span> <span class="o">-</span><span class="n">r</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Will run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">experimental_experiment</span><span class="o">.</span><span class="n">torch_bench</span><span class="o">.</span><span class="n">bash_bench_huggingface</span> <span class="o">--</span><span class="n">model</span> <span class="n">ElectraForQuestionAnswering</span> <span class="o">--</span><span class="n">device</span> <span class="n">cpu</span> <span class="o">--</span><span class="n">exporter</span> <span class="n">script</span> <span class="o">--</span><span class="n">verbose</span> <span class="mi">3</span> <span class="o">--</span><span class="n">quiet</span> <span class="mi">1</span> <span class="o">-</span><span class="n">w</span> <span class="mi">1</span> <span class="o">-</span><span class="n">r</span> <span class="mi">3</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">experimental_experiment</span><span class="o">.</span><span class="n">torch_bench</span><span class="o">.</span><span class="n">bash_bench_huggingface</span> <span class="o">--</span><span class="n">model</span> <span class="n">ElectraForQuestionAnswering</span> <span class="o">--</span><span class="n">device</span> <span class="n">cpu</span> <span class="o">--</span><span class="n">exporter</span> <span class="n">dynamo_export</span> <span class="o">--</span><span class="n">verbose</span> <span class="mi">3</span> <span class="o">--</span><span class="n">quiet</span> <span class="mi">1</span> <span class="o">-</span><span class="n">w</span> <span class="mi">1</span> <span class="o">-</span><span class="n">r</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Multiple fields may have multiple values.
+Every run outputs some variable following the format
+<code class="docutils literal notranslate"><span class="pre">:&lt;name&gt;,&lt;value&gt;;</span></code>. All of these expressions are collected
+and aggregated in a csv file.</p>
+</section>
+<section id="aggregated-report">
+<h2>Aggregated Report<a class="headerlink" href="#aggregated-report" title="Link to this heading">¶</a></h2>
+<p>An aggregated report can be produced by command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">experimental_experiment</span><span class="o">.</span><span class="n">torch_bench</span><span class="o">.</span><span class="n">bash_bench_agg</span> <span class="n">summary</span><span class="o">.</span><span class="n">xlsx</span> <span class="n">bench1</span><span class="o">.</span><span class="n">csv</span> <span class="n">bench2</span><span class="o">.</span><span class="n">csv</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Other options of this command line allow the user to filter in ir out some data
+(see <code class="docutils literal notranslate"><span class="pre">--filter_in</span></code>, <code class="docutils literal notranslate"><span class="pre">--filter_out</span></code>). The aggregator assumes every differences
+in the version is a tested difference. If not, different versions can be ignored
+by using <code class="docutils literal notranslate"><span class="pre">--skip_keys=version,version_torch</span></code> or any other key column not meant
+to be used in the report.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="scripts.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Interesting scripts or command lines</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="dort_profile.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">experimental_experiment.torch_bench.dort_profile</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023-2024
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Measuring the exporters on a short list of sets of models</a><ul>
+<li><a class="reference internal" href="#list-of-models">List of models</a></li>
+<li><a class="reference internal" href="#single-run">Single Run</a></li>
+<li><a class="reference internal" href="#multiple-runs">Multiple Runs</a></li>
+<li><a class="reference internal" href="#aggregated-report">Aggregated Report</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

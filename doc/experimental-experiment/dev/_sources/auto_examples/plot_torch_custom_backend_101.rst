@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -28,7 +28,7 @@ This example leverages the examples introduced on this page
 `Custom Backends <https://pytorch.org/docs/stable/torch.compiler_custom_backends.html>`_.
 It uses backend :func:`experimental_experiment.torch_dynamo.onnx_custom_backend`
 based on :epkg:`onnxruntime` and running on CPU or CUDA.
-It could easily replaced by 
+It could easily replaced by
 :func:`experimental_experiment.torch_dynamo.onnx_debug_backend`.
 This one based on the reference implemented from onnx
 can show the intermediate results if needed. It is very slow.
@@ -80,9 +80,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[-0.1377],
-            [ 0.0022],
-            [ 0.1547]], grad_fn=<AddmmBackward0>)
+    tensor([[ 0.0212],
+            [ 0.2322],
+            [-0.3825]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -122,9 +122,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[-0.1377],
-            [ 0.0022],
-            [ 0.1547]])
+    tensor([[ 0.0212],
+            [ 0.2322],
+            [-0.3825]])
 
 
 
@@ -174,9 +174,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[-0.1377],
-            [ 0.0022],
-            [ 0.1547]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[ 0.0212],
+            [ 0.2322],
+            [-0.3825]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -233,7 +233,7 @@ Let's see an iteration loop.
         for epoch in range(0, max_iter):
             current_loss = 0.0
 
-            for i, data in enumerate(trainloader, 0):
+            for _, data in enumerate(trainloader, 0):
                 X, y = data
 
                 optimizer.zero_grad()
@@ -261,13 +261,13 @@ Let's see an iteration loop.
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7422.153186798096
-    Loss after epoch 2: 5531.330051422119
-    Loss after epoch 3: 5222.763031005859
+    Loss after epoch 1: 7187.013265609741
+    Loss after epoch 2: 5519.6964473724365
+    Loss after epoch 3: 5299.72568321228
     Training process has finished.
 
     OptimizedModule(
@@ -315,13 +315,13 @@ Let's see what it looks like.
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7220.020864486694
-    Loss after epoch 2: 5544.643701553345
-    Loss after epoch 3: 5222.171184539795
+    Loss after epoch 1: 7373.77018737793
+    Loss after epoch 2: 5514.027244567871
+    Loss after epoch 3: 5196.243404388428
     Training process has finished.
     4 were created.
 
@@ -329,14 +329,14 @@ Let's see what it looks like.
     opset: domain='' version=18
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
-    input: name='input2' type=dtype('float32') shape=[1, 32]
-    input: name='input3' type=dtype('float32') shape=[1]
-    input: name='input4' type=dtype('float32') shape=[5, 10]
-    Gemm(input4, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
+    input: name='input2' type=dtype('float32') shape=[5, 10]
+    input: name='input3' type=dtype('float32') shape=[1, 32]
+    input: name='input4' type=dtype('float32') shape=[1]
+    Gemm(input2, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-        Gemm(output_2, input2, input3, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
-    Transpose(input2, perm=[1,0]) -> output_3
-    Identity(input4) -> output_1
+        Gemm(output_2, input3, input4, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
+    Transpose(input3, perm=[1,0]) -> output_3
+    Identity(input2) -> output_1
     output: name='output_0' type=dtype('float32') shape=[5, 1]
     output: name='output_1' type=dtype('float32') shape=[5, 10]
     output: name='output_2' type=dtype('float32') shape=[5, 32]
@@ -350,20 +350,19 @@ Let's see what it looks like.
     input: name='input3' type=dtype('float32') shape=[5, 1]
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    init: name='init1_s1_2' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    Constant(value_float=0.0) -> output_NONE_4
+    Constant(value_float=0.0) -> output_NONE_2
+    Gemm(input3, input1, transA=1, transB=0) -> output_3
     Gemm(input3, input2, transA=0, transB=1) -> mm
-    Gemm(input3, input1, transA=1, transB=0) -> output_2
-    ReduceSum(input3, init7_s1_0, keepdims=0) -> output_3
+    ReduceSum(input3, init7_s1_0, keepdims=0) -> output_4
     LessOrEqual(input1, init1_s1_) -> _onx_lessorequal0
-      Where(_onx_lessorequal0, init1_s1_2, mm) -> threshold_backward
+      Where(_onx_lessorequal0, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input0, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -> output_1
     output: name='output_0' type=dtype('float32') shape=[32, 10]
     output: name='output_1' type=dtype('float32') shape=[32]
-    output: name='output_2' type=dtype('float32') shape=[1, 32]
-    output: name='output_3' type=dtype('float32') shape=[1]
-    output: name='output_NONE_4' type=dtype('float32') shape=None
+    output: name='output_NONE_2' type=dtype('float32') shape=None
+    output: name='output_3' type=dtype('float32') shape=[1, 32]
+    output: name='output_4' type=dtype('float32') shape=[1]
 
 
 
@@ -462,13 +461,13 @@ It is needed by pytorch.
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/.local/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:117: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7449.048362731934
-    Loss after epoch 2: 5446.76446723938
-    Loss after epoch 3: 5214.085321426392
+    Loss after epoch 1: 7480.0500202178955
+    Loss after epoch 2: 5619.218000411987
+    Loss after epoch 3: 5371.910390853882
     Training process has finished.
     4 were created.
 
@@ -477,19 +476,19 @@ It is needed by pytorch.
     opset: domain='' version=18
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
-    input: name='input2' type=dtype('float32') shape=[1, 32]
-    input: name='input3' type=dtype('float32') shape=[1]
-    input: name='input_dim_4' type=dtype('int64') shape=[1]
-    input: name='input5' type=dtype('float32') shape=['primals_5', 10]
-    Gemm(input5, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
+    input: name='input_dim_2' type=dtype('int64') shape=[1]
+    input: name='input3' type=dtype('float32') shape=['primals_3', 10]
+    input: name='input4' type=dtype('float32') shape=[1, 32]
+    input: name='input5' type=dtype('float32') shape=[1]
+    Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-        Gemm(output_2, input2, input3, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
-    Transpose(input2, perm=[1,0]) -> output_3
-    Identity(input5) -> output_1
-    Identity(input_dim_4) -> output_dim_4
-    output: name='output_0' type=dtype('float32') shape=[5, 1]
-    output: name='output_1' type=dtype('float32') shape=['primals_5', 10]
-    output: name='output_2' type=dtype('float32') shape=[5, 32]
+        Gemm(output_2, input4, input5, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
+    Transpose(input4, perm=[1,0]) -> output_3
+    Identity(input3) -> output_1
+    Identity(input_dim_2) -> output_dim_4
+    output: name='output_0' type=dtype('float32') shape=['primals_3', 1]
+    output: name='output_1' type=dtype('float32') shape=['primals_3', 10]
+    output: name='output_2' type=dtype('float32') shape=['primals_3', 32]
     output: name='output_3' type=dtype('float32') shape=[32, 1]
     output: name='output_dim_4' type=dtype('int64') shape=[1]
 
@@ -503,41 +502,40 @@ It is needed by pytorch.
     input: name='input4' type=dtype('float32') shape=[5, 1]
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    init: name='init1_s1_2' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    Constant(value_float=0.0) -> output_NONE_4
-      Identity(output_NONE_4) -> output_NONE_5
+    Constant(value_float=0.0) -> output_NONE_2
+      Identity(output_NONE_2) -> output_NONE_3
+    Gemm(input4, input2, transA=1, transB=0) -> output_4
     Gemm(input4, input3, transA=0, transB=1) -> mm
-    Gemm(input4, input2, transA=1, transB=0) -> output_2
-    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_3
+    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_5
     LessOrEqual(input2, init1_s1_) -> _onx_lessorequal0
-      Where(_onx_lessorequal0, init1_s1_2, mm) -> threshold_backward
+      Where(_onx_lessorequal0, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -> output_1
     output: name='output_0' type=dtype('float32') shape=[32, 10]
     output: name='output_1' type=dtype('float32') shape=[32]
-    output: name='output_2' type=dtype('float32') shape=[1, 32]
-    output: name='output_3' type=dtype('float32') shape=[1]
-    output: name='output_NONE_4' type=dtype('float32') shape=None
-    output: name='output_NONE_5' type=dtype('float32') shape=None
+    output: name='output_NONE_2' type=dtype('float32') shape=None
+    output: name='output_NONE_3' type=dtype('float32') shape=None
+    output: name='output_4' type=dtype('float32') shape=[1, 32]
+    output: name='output_5' type=dtype('float32') shape=[1]
 
     -- model 2 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
-    input: name='input2' type=dtype('float32') shape=[1, 32]
-    input: name='input3' type=dtype('float32') shape=[1]
-    input: name='input_dim_4' type=dtype('int64') shape=[1]
-    input: name='input5' type=dtype('float32') shape=['primals_5', 10]
-    Gemm(input5, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
+    input: name='input_dim_2' type=dtype('int64') shape=[1]
+    input: name='input3' type=dtype('float32') shape=['primals_3', 10]
+    input: name='input4' type=dtype('float32') shape=[1, 32]
+    input: name='input5' type=dtype('float32') shape=[1]
+    Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-        Gemm(output_2, input2, input3, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
-    Transpose(input2, perm=[1,0]) -> output_3
-    Identity(input5) -> output_1
-    Identity(input_dim_4) -> output_dim_4
-    output: name='output_0' type=dtype('float32') shape=[2, 1]
-    output: name='output_1' type=dtype('float32') shape=['primals_5', 10]
-    output: name='output_2' type=dtype('float32') shape=[2, 32]
+        Gemm(output_2, input4, input5, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
+    Transpose(input4, perm=[1,0]) -> output_3
+    Identity(input3) -> output_1
+    Identity(input_dim_2) -> output_dim_4
+    output: name='output_0' type=dtype('float32') shape=['primals_3', 1]
+    output: name='output_1' type=dtype('float32') shape=['primals_3', 10]
+    output: name='output_2' type=dtype('float32') shape=['primals_3', 32]
     output: name='output_3' type=dtype('float32') shape=[32, 1]
     output: name='output_dim_4' type=dtype('int64') shape=[1]
 
@@ -551,22 +549,21 @@ It is needed by pytorch.
     input: name='input4' type=dtype('float32') shape=[2, 1]
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    init: name='init1_s1_2' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    Constant(value_float=0.0) -> output_NONE_4
-      Identity(output_NONE_4) -> output_NONE_5
+    Constant(value_float=0.0) -> output_NONE_2
+      Identity(output_NONE_2) -> output_NONE_3
+    Gemm(input4, input2, transA=1, transB=0) -> output_4
     Gemm(input4, input3, transA=0, transB=1) -> mm
-    Gemm(input4, input2, transA=1, transB=0) -> output_2
-    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_3
+    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_5
     LessOrEqual(input2, init1_s1_) -> _onx_lessorequal0
-      Where(_onx_lessorequal0, init1_s1_2, mm) -> threshold_backward
+      Where(_onx_lessorequal0, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -> output_1
     output: name='output_0' type=dtype('float32') shape=[32, 10]
     output: name='output_1' type=dtype('float32') shape=[32]
-    output: name='output_2' type=dtype('float32') shape=[1, 32]
-    output: name='output_3' type=dtype('float32') shape=[1]
-    output: name='output_NONE_4' type=dtype('float32') shape=None
-    output: name='output_NONE_5' type=dtype('float32') shape=None
+    output: name='output_NONE_2' type=dtype('float32') shape=None
+    output: name='output_NONE_3' type=dtype('float32') shape=None
+    output: name='output_4' type=dtype('float32') shape=[1, 32]
+    output: name='output_5' type=dtype('float32') shape=[1]
 
 
 
@@ -645,7 +642,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.192 seconds)
+   **Total running time of the script:** (0 minutes 2.389 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:
@@ -661,6 +658,10 @@ nodes to optimize the computation
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_torch_custom_backend_101.py <plot_torch_custom_backend_101.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_torch_custom_backend_101.zip <plot_torch_custom_backend_101.zip>`
 
 
 .. only:: html
