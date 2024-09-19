@@ -126,23 +126,6 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the function torch.compile and the ability to use a custom backend to test the optimization of a model by fusing simple element-wise kernels.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_custom_backend_llama_102_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">102: Fuse kernels in a small Llama Model</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The convolution is a well known image transformation used to transform an image. It can be used to blur, to compute the gradient in one direction and it is widely used in deep neural networks. Having a fast implementation is important.">
 
 .. only:: html
@@ -155,6 +138,23 @@ all the graphs, the data used to draw them, and the models.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">102: Convolution and Matrix Multiplication</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the function torch.compile and the ability to use a custom backend (see Custom Backends) to test the optimization of a model by fusing simple element-wise kernels.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_custom_backend_llama_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Fuse kernels in a small Llama Model</div>
     </div>
 
 
@@ -275,8 +275,8 @@ all the graphs, the data used to draw them, and the models.
    /auto_examples/plot_rewrite_101
    /auto_examples/plot_torch_linreg_101
    /auto_examples/plot_torch_custom_backend_101
-   /auto_examples/plot_custom_backend_llama_102
    /auto_examples/plot_convolutation_matmul_102
+   /auto_examples/plot_custom_backend_llama_102
    /auto_examples/plot_llama_diff_export_301
    /auto_examples/plot_llama_diff_dort_301
    /auto_examples/plot_llama_bench_102

@@ -4,8 +4,8 @@
 ========================================
 
 This example leverages the function :epkg:`torch.compile` and the ability
-to use a custom backend to test the optimization of a model by fusing
-simple element-wise kernels.
+to use a custom backend (see :epkg:`Custom Backends`)
+to test the optimization of a model by fusing simple element-wise kernels.
 
 It takes a small Llama model and uses a backend based on :epkg:`onnxruntime`.
 The model is converted into ONNX and then optimized by fusing element-wise
@@ -14,6 +14,10 @@ kernels.
 ::
 
     python plot_custom_backend_llama --config large
+
+The script requires the following packages beside pytorch,
+:epkg:`onnxruntime-training` (for GPU), :epkg:`onnx-extended`
+(compiled for GPU) and :epkg:`transformers`.
 """
 
 from experimental_experiment.args import get_parsed_args
@@ -23,13 +27,15 @@ script_args = get_parsed_args(
     config=("medium", "large or medium depending, large means closer to the real model"),
     num_hidden_layers=(1, "number of hidden layers"),
     with_mask=(0, "tries with a mask as a secondary input"),
+    optim=("", "Optimization to apply, empty string for all"),
     description=__doc__,
-    expose="config,num_hidden_layers,with_mask",
+    expose="config,num_hidden_layers,with_mask,optim",
 )
 
 print(f"config={script_args.config!r}")
 print(f"num_hidden_layers={script_args.num_hidden_layers!r}")
 print(f"with_mask={script_args.with_mask!r}")
+print(f"optim={script_args.optim!r}")
 
 #################################
 # Imports.
@@ -43,12 +49,17 @@ from transformers import LlamaConfig
 from transformers.models.llama.modeling_llama import LlamaModel
 from experimental_experiment.xbuilder import OptimizationOptions
 from experimental_experiment.torch_dynamo import onnx_custom_backend
+from experimental_experiment.bench_run import get_machine
+
+has_cuda = torch.cuda.is_available()
+machine = get_machine()
+print(f"has_cuda={has_cuda}")
+print(f"processor: {machine['processor_name']}")
+print(f"device: {machine.get('device_name', '?')}")
 
 ########################################
 # The dummy model
 # ===============
-
-has_cuda = torch.cuda.is_available()
 
 
 def ids_tensor(shape, vocab_size):
@@ -88,11 +99,12 @@ config._attn_implementation = "eager"
 ######################################
 # The number of time we run the model to measure
 # the inference.
-warmup = 10 if config == "medium" else 5
-N = 50 if config == "medium" else 25
+warmup = 10 if script_args.config == "medium" else 5
+N = 50 if script_args.config == "medium" else 25
 
 ###########################################
 # Let's create the model with dummy inputs.
+print("creates the model")
 model = LlamaModel(config)
 
 inputs = (ids_tensor([batch, seq], vocab_size),)
@@ -119,17 +131,19 @@ with torch.no_grad():
     for _ in tqdm(range(warmup)):
         # model(input_ids, input_mask)
         model(*inputs)
-        torch.cuda.synchronize()
+        if has_cuda:
+            torch.cuda.synchronize()
 
     # repeat
     print("repeat eager")
     begin = time.perf_counter()
     for _ in tqdm(range(N)):
         model(*inputs)
-        torch.cuda.synchronize()
+        if has_cuda:
+            torch.cuda.synchronize()
     d = (time.perf_counter() - begin) / N
     baseline = d
-    times.append(dict(optium="eager", processor=processor, avg_time=d, warmup=warmup, N=N))
+    times.append(dict(optim="eager", processor=processor, avg_time=d, warmup=warmup, N=N))
     print("avg time eager", d)
 
 ############################################
@@ -155,10 +169,26 @@ with torch.no_grad():
 #   it converts the model into ONNX, optimizes and runs it,
 #   it does not support :epkg:`graph break`,
 #   it does not work well with dynamic shapes yet.
+# * The CUDA kernels are implemented at
+#   `onnx_extended/ortops/optim/cuda
+#   <https://github.com/sdpython/onnx-extended/tree/main/onnx_extended/ortops/optim/cuda>`_
+# * Section :ref:`l-custom-op-patterns` covers the implemented patterns fusing nodes
+#   in onnx models. See :ref:`l-design-pattern-optimizer` to understand how
+#   these are applied to modify an onnx model.
+#
+# The GPU memory is not fully freed before two iterations. Only one scenario
+# should be handled in the same process.
+# Results may be very different with a different chip.
+
+optimization = (
+    [script_args.optim]
+    if script_args.optim
+    else ["default", "default+onnxruntime", "default+onnxruntime+experimental"]
+)
 
 with torch.no_grad():
 
-    for optim in ["default", "default+onnxruntime", "default+onnxruntime+experimental"]:
+    for optim in optimization:
         print("----------------------")
         print(f"optim={optim}")
 
@@ -196,14 +226,16 @@ with torch.no_grad():
         print("warmup compiled model")
         for _ in tqdm(range(warmup)):
             compiled_model(*inputs)
-            torch.cuda.synchronize()
+            if has_cuda:
+                torch.cuda.synchronize()
 
         # repeat
         print("repeat compiled_model")
         begin = time.perf_counter()
         for _ in tqdm(range(N)):
             compiled_model(*inputs)
-            torch.cuda.synchronize()
+            if has_cuda:
+                torch.cuda.synchronize()
         d = (time.perf_counter() - begin) / N
 
         # let's measure the number of custom ops
@@ -214,7 +246,7 @@ with torch.no_grad():
 
         times.append(
             dict(
-                optium=optim,
+                optim=optim,
                 processor=processor,
                 avg_time=d,
                 warmup=warmup,
@@ -234,3 +266,10 @@ with torch.no_grad():
 
 df = pandas.DataFrame(times)
 print(df)
+
+######################################
+# Plot
+
+df.set_index("optim")[["speedup"]].plot.bar(
+    title="Speedup for different optimization scenario"
+)

@@ -8,7 +8,7 @@
         <title>experimental_experiment.xbuilder.optimization_options - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -264,8 +264,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
@@ -278,6 +278,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/onnxrt.html">Use the custom exporter in torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/example_bug.html">A script to report a bug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/plot_custom_backend_code_llama_102.html">CodeLlama</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../models/phi.html">Phi</a></li>
@@ -296,6 +297,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../long_outputs.html">Long Outputs uneasy to read</a></li>
 </ul>
@@ -352,7 +354,8 @@
 <span class="sd">    :param patterns: list of pattern optimization to apply to the graph,</span>
 <span class="sd">        it looks a a specific subsequence of nodes in a graph</span>
 <span class="sd">        and do some replacements,</span>
-<span class="sd">        `&#39;default&#39;` means a default list of optimization patterns are applied</span>
+<span class="sd">        `&#39;default&#39;` means a default list of optimization patterns are applied,</span>
+<span class="sd">        see below for the most common values</span>
 <span class="sd">    :param constant_fusing: similar node Constant and ConstantOfShape are used,</span>
 <span class="sd">        this options avoids creating new nodes when they are the same</span>
 <span class="sd">    :param max_iter: maximum number of iteration when doing pattern optimizations,</span>
@@ -369,6 +372,23 @@
 <span class="sd">    :param processor: optimization should be made for this processor</span>
 <span class="sd">        or this list of processors (comma separated value)</span>
 <span class="sd">    :param order: order algorithm to apply</span>
+
+<span class="sd">    It is possible to define a precise of the pattern to apply to a model.</span>
+<span class="sd">    The value is interpreter by :func:`experimental_experiment.xoptim.get_pattern_list`.</span>
+
+<span class="sd">    * ``patterns=None``: no pattern optimization</span>
+<span class="sd">    * ``patterns=&quot;TransposeTranspose,TransposeMatMul&quot;``: applies two patterns</span>
+<span class="sd">    * ``patterns=[&quot;FusedMatMul&quot;]``: applies one pattern</span>
+<span class="sd">    * ``patterns=[RotaryEmbeddingPattern(verbose=10)]``: applies one pattern</span>
+<span class="sd">      with a specific verbosity value</span>
+<span class="sd">    * ``patterns=&quot;default``: applies all patterns modifying standard onnx</span>
+<span class="sd">      operators into other standard onnx operators</span>
+<span class="sd">    * ``patterns=&quot;default+onnxruntime``: applies all patterns modifying standard onnx</span>
+<span class="sd">      operators into other standard onnx operators as well as patterns fusing nodes into</span>
+<span class="sd">      custom operators implemented by :epkg:`onnxruntime`</span>
+<span class="sd">    * ``patterns=&quot;default+onnxruntime+experimental``: applies all patterns</span>
+<span class="sd">      modifying standard onnx operators into other standard onnx operators,</span>
+<span class="sd">      patterns fusing nodes into custom operators implemented by :epkg:`onnxruntime`,</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
