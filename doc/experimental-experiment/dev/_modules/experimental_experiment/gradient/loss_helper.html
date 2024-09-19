@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -821,9 +823,7 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_index</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">output_index</span><span class="p">]]</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_index</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">output_index</span>
-        <span class="p">]</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">output_index</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
                 <span class="s2">&quot;Unable to find output </span><span class="si">%r</span><span class="s2"> in </span><span class="si">%r</span><span class="s2">.&quot;</span>
@@ -918,9 +918,7 @@
             <span class="n">pen_name</span> <span class="o">=</span> <span class="n">current</span>
 
         <span class="n">cst_shape</span> <span class="o">=</span> <span class="n">_unique_name</span><span class="p">(</span><span class="n">existing_names</span><span class="p">,</span> <span class="s2">&quot;shapevect&quot;</span><span class="p">)</span>
-        <span class="n">inits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">from_array</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">cst_shape</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">inits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">from_array</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">cst_shape</span><span class="p">))</span>
         <span class="n">loss_reshape</span> <span class="o">=</span> <span class="n">_unique_name</span><span class="p">(</span><span class="n">existing_names</span><span class="p">,</span> <span class="s2">&quot;loss_reshape&quot;</span><span class="p">)</span>
         <span class="n">pen_reshape</span> <span class="o">=</span> <span class="n">_unique_name</span><span class="p">(</span><span class="n">existing_names</span><span class="p">,</span> <span class="s2">&quot;penalty_reshape&quot;</span><span class="p">)</span>
         <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>

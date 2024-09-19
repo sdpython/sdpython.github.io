@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -355,7 +357,7 @@
 <div class="viewcode-block" id="is_azure">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.is_azure">[docs]</a>
 <span class="k">def</span> <span class="nf">is_azure</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="s2">&quot;Tells if the job is running on Azure DevOps.&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tells if the job is running on Azure DevOps.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_HTTP_USER_AGENT&quot;</span><span class="p">,</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;undefined&quot;</span></div>
 
 
@@ -371,9 +373,7 @@
 <div class="viewcode-block" id="skipif_transformers">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.skipif_transformers">[docs]</a>
 <span class="k">def</span> <span class="nf">skipif_transformers</span><span class="p">(</span><span class="n">version_to_skip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if transformers has a specific version.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if transformers has a specific version.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">version_to_skip</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">version_to_skip</span> <span class="o">=</span> <span class="p">{</span><span class="n">version_to_skip</span><span class="p">}</span>
     <span class="kn">import</span> <span class="nn">transformers</span>
@@ -388,9 +388,7 @@
 <div class="viewcode-block" id="skipif_not_onnxrt">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.skipif_not_onnxrt">[docs]</a>
 <span class="k">def</span> <span class="nf">skipif_not_onnxrt</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="n">UNITTEST_ONNXRT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;UNITTEST_ONNXRT&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
     <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">UNITTEST_ONNXRT</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
@@ -403,9 +401,7 @@
 <div class="viewcode-block" id="skipif_ci_windows">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.skipif_ci_windows">[docs]</a>
 <span class="k">def</span> <span class="nf">skipif_ci_windows</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_windows</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_azure</span><span class="p">():</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Test does not work on azure pipeline (Windows). </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -416,9 +412,7 @@
 <div class="viewcode-block" id="skipif_ci_apple">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.skipif_ci_apple">[docs]</a>
 <span class="k">def</span> <span class="nf">skipif_ci_apple</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_apple</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_azure</span><span class="p">():</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Test does not work on azure pipeline (Apple). </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -429,9 +423,7 @@
 <div class="viewcode-block" id="with_path_append">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.with_path_append">[docs]</a>
 <span class="k">def</span> <span class="nf">with_path_append</span><span class="p">(</span><span class="n">path_to_add</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds a path to sys.path to check.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds a path to sys.path to check.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">path_to_add</span><span class="o">=</span><span class="n">path_to_add</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_add</span><span class="o">=</span><span class="n">path_to_add</span><span class="p">):</span>
@@ -557,9 +549,7 @@
 <span class="sd">    *number* times the execution of the main statement.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;stmt is not callable or a string but is of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span><span class="si">!r}</span><span class="s2">.&quot;</span>
-        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stmt is not callable or a string but is of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">context</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -575,9 +565,7 @@
 
     <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">div_by_number</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;div_by_number must be set to True of max_time is defined.&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;div_by_number must be set to True of max_time is defined.&quot;</span><span class="p">)</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">total_time</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -667,9 +655,7 @@
 <div class="viewcode-block" id="ExtTestCase.get_dump_file">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.get_dump_file">[docs]</a>
     <span class="k">def</span> <span class="nf">get_dump_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a filename to dump a model.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a filename to dump a model.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;dump_test&quot;</span>
         <span class="k">if</span> <span class="n">folder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
@@ -685,7 +671,7 @@
         <span class="n">proto</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="s2">&quot;Dumps an onnx file.&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dumps an onnx file.&quot;&quot;&quot;</span>
         <span class="n">fullname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dump_file</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="n">folder</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
@@ -695,7 +681,7 @@
 <div class="viewcode-block" id="ExtTestCase.assertExists">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.assertExists">[docs]</a>
     <span class="k">def</span> <span class="nf">assertExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="s2">&quot;Checks the existing of a file.&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks the existing of a file.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File or folder </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not exists.&quot;</span><span class="p">)</span></div>
 
@@ -703,11 +689,9 @@
 <div class="viewcode-block" id="ExtTestCase.assertGreaterOrEqual">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.assertGreaterOrEqual">[docs]</a>
     <span class="k">def</span> <span class="nf">assertGreaterOrEqual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
-            <span class="k">return</span> <span class="ne">AssertionError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">, a not greater or equal than b</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span></div>
+            <span class="k">return</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">, a not greater or equal than b</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">assertInOr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tofind</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -723,9 +707,7 @@
     <span class="k">def</span> <span class="nf">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tofind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">tofind</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unable to find the list of strings </span><span class="si">{</span><span class="n">tofind</span><span class="si">}</span><span class="s2"> in</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find the list of strings </span><span class="si">{</span><span class="n">tofind</span><span class="si">}</span><span class="s2"> in</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ExtTestCase.assertEqualArrays">
@@ -738,7 +720,7 @@
         <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertEqualArray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span></div>
@@ -754,7 +736,7 @@
         <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="s2">&quot;detach&quot;</span><span class="p">):</span>
             <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;detach&quot;</span><span class="p">):</span>
@@ -789,7 +771,7 @@
         <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="n">expected</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -800,7 +782,7 @@
 <div class="viewcode-block" id="ExtTestCase.assertRaise">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.assertRaise">[docs]</a>
     <span class="k">def</span> <span class="nf">assertRaise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fct</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">exc_type</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -813,7 +795,7 @@
 <div class="viewcode-block" id="ExtTestCase.assertEmpty">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.assertEmpty">[docs]</a>
     <span class="k">def</span> <span class="nf">assertEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
@@ -824,7 +806,7 @@
 <div class="viewcode-block" id="ExtTestCase.assertNotEmpty">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.assertNotEmpty">[docs]</a>
     <span class="k">def</span> <span class="nf">assertNotEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;value is empty: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
@@ -835,7 +817,7 @@
 <div class="viewcode-block" id="ExtTestCase.assertStartsWith">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.ExtTestCase.assertStartsWith">[docs]</a>
     <span class="k">def</span> <span class="nf">assertStartsWith</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="s2">&quot;in the name&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">full</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prefix=</span><span class="si">{</span><span class="n">prefix</span><span class="si">!r}</span><span class="s2"> does not start string  </span><span class="si">{</span><span class="n">full</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
@@ -845,7 +827,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_warns</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="n">w</span><span class="si">!s}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ExtTestCase.capture">
@@ -889,7 +871,7 @@
             <span class="k">if</span> <span class="n">none_if</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">none_if</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">raise</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
 </div>
 
@@ -898,9 +880,7 @@
 <div class="viewcode-block" id="get_figure">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.get_figure">[docs]</a>
 <span class="k">def</span> <span class="nf">get_figure</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the figure of a matplotlib figure.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the figure of a matplotlib figure.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;get_figure&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -916,9 +896,7 @@
 <div class="viewcode-block" id="dump_dort_onnx">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.dump_dort_onnx">[docs]</a>
 <span class="k">def</span> <span class="nf">dump_dort_onnx</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Context manager to dump onnx model created by dort.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager to dump onnx model created by dort.&quot;&quot;&quot;</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;tests_dump&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
@@ -938,9 +916,7 @@
 <div class="viewcode-block" id="has_cuda">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.has_cuda">[docs]</a>
 <span class="k">def</span> <span class="nf">has_cuda</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns  ``torch.cuda.is_available()``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns ``torch.cuda.is_available()``.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">torch</span>
 
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span></div>
@@ -965,9 +941,7 @@
 <div class="viewcode-block" id="requires_zoo">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_zoo">[docs]</a>
 <span class="k">def</span> <span class="nf">requires_zoo</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if environment variable ZOO is not equal to 1.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if environment variable ZOO is not equal to 1.&quot;&quot;&quot;</span>
     <span class="n">var</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ZOO&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;TRUE&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">var</span><span class="p">:</span>
@@ -990,9 +964,7 @@
 <div class="viewcode-block" id="requires_torch">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_torch">[docs]</a>
 <span class="k">def</span> <span class="nf">requires_torch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`pytorch` is not recent enough.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`pytorch` is not recent enough.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="kn">import</span> <span class="nn">torch</span>
 
@@ -1006,9 +978,7 @@
 <div class="viewcode-block" id="requires_numpy">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_numpy">[docs]</a>
 <span class="k">def</span> <span class="nf">requires_numpy</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`numpy` is not recent enough.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`numpy` is not recent enough.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="kn">import</span> <span class="nn">numpy</span>
 
@@ -1024,9 +994,7 @@
 <span class="k">def</span> <span class="nf">requires_transformers</span><span class="p">(</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">or_older_than</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`transformers` is not recent enough.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`transformers` is not recent enough.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="kn">import</span> <span class="nn">transformers</span>
 
@@ -1047,9 +1015,7 @@
 <div class="viewcode-block" id="requires_onnxscript">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_onnxscript">[docs]</a>
 <span class="k">def</span> <span class="nf">requires_onnxscript</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`onnxscript` is not recent enough.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxscript` is not recent enough.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="kn">import</span> <span class="nn">onnxscript</span>
 
@@ -1057,9 +1023,7 @@
         <span class="c1"># development version</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
 
-    <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">onnxscript</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span>
-        <span class="n">version</span>
-    <span class="p">):</span>
+    <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">onnxscript</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;onnxscript version </span><span class="si">{</span><span class="n">onnxscript</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span></div>
@@ -1069,15 +1033,11 @@
 <div class="viewcode-block" id="requires_onnxruntime">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_onnxruntime">[docs]</a>
 <span class="k">def</span> <span class="nf">requires_onnxruntime</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`onnxruntime` is not recent enough.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxruntime` is not recent enough.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="kn">import</span> <span class="nn">onnxruntime</span>
 
-    <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span>
-        <span class="n">version</span>
-    <span class="p">):</span>
+    <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;onnxruntime version </span><span class="si">{</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span></div>
@@ -1087,9 +1047,7 @@
 <div class="viewcode-block" id="has_onnxruntime_training">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.has_onnxruntime_training">[docs]</a>
 <span class="k">def</span> <span class="nf">has_onnxruntime_training</span><span class="p">(</span><span class="n">push_back_batch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Tells if onnxruntime_training is installed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tells if onnxruntime_training is installed.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">training</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -1112,12 +1070,8 @@
 
 <div class="viewcode-block" id="requires_onnxruntime_training">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_onnxruntime_training">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnxruntime_training</span><span class="p">(</span>
-    <span class="n">push_back_batch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`onnxruntime` is not onnxruntime_training.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">requires_onnxruntime_training</span><span class="p">(</span><span class="n">push_back_batch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxruntime` is not onnxruntime_training.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">training</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -1144,9 +1098,7 @@
 <div class="viewcode-block" id="requires_onnx">
 <a class="viewcode-back" href="../../api/torch_test.html#experimental_experiment.ext_test_case.requires_onnx">[docs]</a>
 <span class="k">def</span> <span class="nf">requires_onnx</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Skips a unit test if :epkg:`onnx` is not recent enough.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnx` is not recent enough.&quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="kn">import</span> <span class="nn">onnx</span>
 

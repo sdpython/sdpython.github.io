@@ -248,7 +248,7 @@ def export_dynamo(filename, model, *args):
     with contextlib.redirect_stdout(io.StringIO()):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            export_output = torch.onnx.dynamo_export(model, *args)
+            export_output = torch.onnx.export(model, args, dynamo=True)
             export_output.save(filename)
 
 
@@ -256,7 +256,7 @@ def export_dynopt(filename, model, *args):
     with contextlib.redirect_stdout(io.StringIO()):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            export_output = torch.onnx.dynamo_export(model, *args)
+            export_output = torch.onnx.export(model, args, dynamo=True)
             model_onnx = export_output.model_proto
 
             from experimental_experiment.convert.convert_helper import (
@@ -735,8 +735,7 @@ for compute in ["CPU", "CUDA"]:
     ax = memory_peak_plot(
         dfmem[dfmem.compute == compute],
         ("export", "aot"),
-        suptitle=f"Memory Consumption of onnxruntime loading time"
-        f"\nrunning on {compute}",
+        suptitle=f"Memory Consumption of onnxruntime loading time\nrunning on {compute}",
         bars=[model_size * i / 2**20 for i in range(1, 3)],
         figsize=(18, 6),
     )
@@ -769,8 +768,7 @@ for compute in ["CPU", "CUDA"]:
     ax = memory_peak_plot(
         dfmemr[dfmemr.compute == compute],
         ("export", "aot"),
-        suptitle=f"Memory Consumption of onnxruntime running time"
-        f"\nrunning on {compute}",
+        suptitle=f"Memory Consumption of onnxruntime running time\nrunning on {compute}",
         bars=[model_size * i / 2**20 for i in range(1, 3)],
         figsize=(18, 6),
     )

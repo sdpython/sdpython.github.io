@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -435,9 +437,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
         <span class="n">next_nodes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">next_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="p">),</span> <span class="s2">&quot;The previous test should have cleared out this case.&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;The previous test should have cleared out this case.&quot;</span>
         <span class="n">next_node</span> <span class="o">=</span> <span class="n">next_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_types</span> <span class="ow">or</span> <span class="n">next_node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
@@ -525,9 +525,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
         <span class="n">next_nodes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">next_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="p">),</span> <span class="s2">&quot;The previous test should have cleared out this case.&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;The previous test should have cleared out this case.&quot;</span>
         <span class="n">next_node</span> <span class="o">=</span> <span class="n">next_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_other_types</span> <span class="ow">and</span> <span class="p">(</span>

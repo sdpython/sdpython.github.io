@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -490,9 +492,7 @@
     <span class="s2">&quot;identity&quot;</span>
     <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_clone</span>
 
-    <span class="k">return</span> <span class="n">aten_clone</span><span class="p">(</span>
-        <span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">memory_format</span><span class="o">=</span><span class="n">memory_format</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_clone&quot;</span>
-    <span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">aten_clone</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">memory_format</span><span class="o">=</span><span class="n">memory_format</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_clone&quot;</span><span class="p">)</span></div>
 
 
 
@@ -705,12 +705,8 @@
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
         <span class="n">length</span><span class="p">,</span> <span class="nb">int</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when length=</span><span class="si">{</span><span class="n">length</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">start</span><span class="p">,</span> <span class="nb">int</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when start=</span><span class="si">{</span><span class="n">start</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">step</span><span class="p">,</span> <span class="nb">int</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when step=</span><span class="si">{</span><span class="n">step</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when start=</span><span class="si">{</span><span class="n">start</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when step=</span><span class="si">{</span><span class="n">step</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">step</span>
     <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_arange</span>
 
@@ -841,9 +837,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_split_dim&quot;</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="s2">&quot;split&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expecting 1 outputs but got </span><span class="si">{</span><span class="n">outputs</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expecting 1 outputs but got </span><span class="si">{</span><span class="n">outputs</span><span class="si">}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span>
         <span class="n">x</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Not implemented when shape of </span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2"> is unknown</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>

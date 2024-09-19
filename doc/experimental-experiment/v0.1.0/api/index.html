@@ -9,7 +9,7 @@
         <title>API - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -215,6 +215,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -264,6 +265,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -384,7 +386,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">onnx</span><span class="p">:</span> <span class="mf">1.18.0</span>
     <span class="n">onnx_array_api</span><span class="p">:</span> <span class="mf">0.2.0</span>
     <span class="n">onnxruntime</span><span class="p">:</span> <span class="mf">1.20.0</span><span class="o">+</span><span class="n">cu121</span>
-    <span class="n">torch</span><span class="p">:</span> <span class="mf">2.5.0</span><span class="o">.</span><span class="n">dev20240908</span><span class="o">+</span><span class="n">cu121</span>
+    <span class="n">torch</span><span class="p">:</span> <span class="mf">2.6.0</span><span class="o">.</span><span class="n">dev20240917</span><span class="o">+</span><span class="n">cu121</span>
     <span class="n">transformers</span><span class="p">:</span> <span class="mf">4.44.2</span>
     <span class="n">onnxscript</span><span class="p">:</span> <span class="mf">0.1.0</span><span class="o">.</span><span class="n">dev20240905</span>
 </pre></div>
@@ -425,44 +427,45 @@
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">ext</span>                                        <span class="nb">dir</span>  <span class="n">lines</span>   <span class="n">chars</span>
-    <span class="mi">0</span>    <span class="o">.</span><span class="n">py</span>                                      <span class="n">_doc</span><span class="o">/</span>    <span class="mi">125</span>    <span class="mi">4926</span>
-    <span class="mi">2</span>    <span class="o">.</span><span class="n">py</span>                              <span class="n">_doc</span><span class="o">/</span><span class="n">examples</span>   <span class="mi">3201</span>  <span class="mi">100616</span>
-    <span class="mi">3</span>    <span class="o">.</span><span class="n">py</span>                <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_convert_tools</span>    <span class="mi">166</span>    <span class="mi">5982</span>
-    <span class="mi">4</span>    <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_gradient</span>    <span class="mi">342</span>   <span class="mi">10844</span>
-    <span class="mi">5</span>    <span class="o">.</span><span class="n">py</span>                       <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_issues</span>    <span class="mi">127</span>    <span class="mi">3700</span>
-    <span class="mi">6</span>    <span class="o">.</span><span class="n">py</span>                   <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_onnxscript</span>   <span class="mi">2711</span>   <span class="mi">75723</span>
-    <span class="mi">7</span>    <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_plotting</span>     <span class="mi">17</span>     <span class="mi">541</span>
-    <span class="mi">8</span>    <span class="o">.</span><span class="n">py</span>                    <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_reference</span>    <span class="mi">503</span>   <span class="mi">17013</span>
-    <span class="mi">9</span>    <span class="o">.</span><span class="n">py</span>                  <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_bench</span>    <span class="mi">633</span>   <span class="mi">20365</span>
-    <span class="mi">10</span>   <span class="o">.</span><span class="n">py</span>                 <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_dynamo</span>    <span class="mi">686</span>   <span class="mi">18059</span>
-    <span class="mi">11</span>   <span class="o">.</span><span class="n">py</span>            <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_interpreter</span>   <span class="mi">5902</span>  <span class="mi">173273</span>
-    <span class="mi">12</span>   <span class="o">.</span><span class="n">py</span>                 <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_models</span>    <span class="mi">430</span>   <span class="mi">14477</span>
-    <span class="mi">13</span>   <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xbuilder</span>    <span class="mi">203</span>    <span class="mi">7255</span>
-    <span class="mi">14</span>   <span class="o">.</span><span class="n">py</span>                       <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xoptim</span>   <span class="mi">7450</span>  <span class="mi">217355</span>
-    <span class="mi">15</span>   <span class="o">.</span><span class="n">py</span>              <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_custom_ops</span>    <span class="mi">460</span>   <span class="mi">12947</span>
-    <span class="mi">16</span>   <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_doc</span>    <span class="mi">519</span>   <span class="mi">15035</span>
-    <span class="mi">17</span>   <span class="o">.</span><span class="n">py</span>                  <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_models</span>   <span class="mi">1196</span>   <span class="mi">40876</span>
-    <span class="mi">18</span>   <span class="o">.</span><span class="n">py</span>                   <span class="n">experimental_experiment</span><span class="o">/</span>   <span class="mi">1672</span>   <span class="mi">45390</span>
-    <span class="mi">19</span>   <span class="o">.</span><span class="n">py</span>            <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">convert</span>    <span class="mi">172</span>    <span class="mi">5739</span>
-    <span class="mi">20</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">gradient</span>    <span class="mi">944</span>   <span class="mi">30065</span>
-    <span class="mi">21</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">plotting</span>    <span class="mi">433</span>    <span class="mi">8178</span>
-    <span class="mi">22</span>   <span class="o">.</span><span class="n">py</span>          <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">reference</span>   <span class="mi">1091</span>   <span class="mi">30498</span>
-    <span class="mi">23</span>   <span class="o">.</span><span class="n">py</span>        <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_bench</span>   <span class="mi">9552</span>  <span class="mi">256382</span>
-    <span class="mi">24</span>   <span class="o">.</span><span class="n">py</span>       <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_dynamo</span>   <span class="mi">1486</span>   <span class="mi">43965</span>
-    <span class="mi">25</span>   <span class="o">.</span><span class="n">py</span>  <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_interpreter</span>   <span class="mi">9167</span>  <span class="mi">235817</span>
-    <span class="mi">26</span>   <span class="o">.</span><span class="n">py</span>       <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_models</span>    <span class="mi">987</span>   <span class="mi">30622</span>
-    <span class="mi">27</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">xbuilder</span>   <span class="mi">6052</span>  <span class="mi">174322</span>
-    <span class="mi">28</span>   <span class="o">.</span><span class="n">py</span>             <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">xoptim</span>   <span class="mi">7629</span>  <span class="mi">226937</span>
-    <span class="mi">29</span>  <span class="o">.</span><span class="n">rst</span>                                      <span class="n">_doc</span><span class="o">/</span>    <span class="mi">393</span>   <span class="mi">17322</span>
-    <span class="mi">30</span>  <span class="o">.</span><span class="n">rst</span>                                   <span class="n">_doc</span><span class="o">/</span><span class="n">api</span>    <span class="mi">344</span>   <span class="mi">14422</span>
-    <span class="mi">32</span>  <span class="o">.</span><span class="n">rst</span>                                 <span class="n">_doc</span><span class="o">/</span><span class="n">bench</span>    <span class="mi">417</span>   <span class="mi">27064</span>
-    <span class="mi">33</span>  <span class="o">.</span><span class="n">rst</span>                                <span class="n">_doc</span><span class="o">/</span><span class="n">design</span>    <span class="mi">807</span>   <span class="mi">34011</span>
-    <span class="mi">34</span>  <span class="o">.</span><span class="n">rst</span>                                <span class="n">_doc</span><span class="o">/</span><span class="n">models</span>   <span class="mi">1089</span>   <span class="mi">27227</span>
-    <span class="mi">35</span>  <span class="o">.</span><span class="n">rst</span>                              <span class="n">_doc</span><span class="o">/</span><span class="n">tutorial</span>    <span class="mi">160</span>    <span class="mi">6933</span>
+    <span class="mi">0</span>    <span class="o">.</span><span class="n">py</span>                                      <span class="n">_doc</span><span class="o">/</span>    <span class="mi">126</span>    <span class="mi">5015</span>
+    <span class="mi">2</span>    <span class="o">.</span><span class="n">py</span>                              <span class="n">_doc</span><span class="o">/</span><span class="n">examples</span>   <span class="mi">3350</span>  <span class="mi">106049</span>
+    <span class="mi">3</span>    <span class="o">.</span><span class="n">py</span>                             <span class="n">_doc</span><span class="o">/</span><span class="n">notebooks</span>     <span class="mi">96</span>    <span class="mi">2768</span>
+    <span class="mi">4</span>    <span class="o">.</span><span class="n">py</span>                <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_convert_tools</span>    <span class="mi">163</span>    <span class="mi">5982</span>
+    <span class="mi">5</span>    <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_gradient</span>    <span class="mi">339</span>   <span class="mi">10844</span>
+    <span class="mi">6</span>    <span class="o">.</span><span class="n">py</span>                       <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_issues</span>    <span class="mi">126</span>    <span class="mi">3700</span>
+    <span class="mi">7</span>    <span class="o">.</span><span class="n">py</span>                   <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_onnxscript</span>   <span class="mi">2696</span>   <span class="mi">75991</span>
+    <span class="mi">8</span>    <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_plotting</span>     <span class="mi">17</span>     <span class="mi">541</span>
+    <span class="mi">9</span>    <span class="o">.</span><span class="n">py</span>                    <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_reference</span>    <span class="mi">498</span>   <span class="mi">17013</span>
+    <span class="mi">10</span>   <span class="o">.</span><span class="n">py</span>                  <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_bench</span>    <span class="mi">641</span>   <span class="mi">20542</span>
+    <span class="mi">11</span>   <span class="o">.</span><span class="n">py</span>                 <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_dynamo</span>    <span class="mi">686</span>   <span class="mi">18059</span>
+    <span class="mi">12</span>   <span class="o">.</span><span class="n">py</span>            <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_interpreter</span>   <span class="mi">5873</span>  <span class="mi">173940</span>
+    <span class="mi">13</span>   <span class="o">.</span><span class="n">py</span>                 <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_torch_models</span>    <span class="mi">401</span>   <span class="mi">14469</span>
+    <span class="mi">14</span>   <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xbuilder</span>    <span class="mi">201</span>    <span class="mi">7255</span>
+    <span class="mi">15</span>   <span class="o">.</span><span class="n">py</span>                       <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xoptim</span>   <span class="mi">7504</span>  <span class="mi">222673</span>
+    <span class="mi">16</span>   <span class="o">.</span><span class="n">py</span>              <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_custom_ops</span>    <span class="mi">459</span>   <span class="mi">12947</span>
+    <span class="mi">17</span>   <span class="o">.</span><span class="n">py</span>                     <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_doc</span>    <span class="mi">552</span>   <span class="mi">16455</span>
+    <span class="mi">18</span>   <span class="o">.</span><span class="n">py</span>                  <span class="n">_unittests</span><span class="o">/</span><span class="n">ut_xrun_models</span>   <span class="mi">1189</span>   <span class="mi">40876</span>
+    <span class="mi">19</span>   <span class="o">.</span><span class="n">py</span>                   <span class="n">experimental_experiment</span><span class="o">/</span>   <span class="mi">1670</span>   <span class="mi">46060</span>
+    <span class="mi">20</span>   <span class="o">.</span><span class="n">py</span>            <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">convert</span>    <span class="mi">172</span>    <span class="mi">5739</span>
+    <span class="mi">21</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">gradient</span>    <span class="mi">939</span>   <span class="mi">30065</span>
+    <span class="mi">22</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">plotting</span>    <span class="mi">432</span>    <span class="mi">8178</span>
+    <span class="mi">23</span>   <span class="o">.</span><span class="n">py</span>          <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">reference</span>   <span class="mi">1084</span>   <span class="mi">30492</span>
+    <span class="mi">24</span>   <span class="o">.</span><span class="n">py</span>        <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_bench</span>   <span class="mi">9895</span>  <span class="mi">270064</span>
+    <span class="mi">25</span>   <span class="o">.</span><span class="n">py</span>       <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_dynamo</span>   <span class="mi">1475</span>   <span class="mi">44048</span>
+    <span class="mi">26</span>   <span class="o">.</span><span class="n">py</span>  <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_interpreter</span>   <span class="mi">9088</span>  <span class="mi">237819</span>
+    <span class="mi">27</span>   <span class="o">.</span><span class="n">py</span>       <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">torch_models</span>    <span class="mi">979</span>   <span class="mi">30620</span>
+    <span class="mi">28</span>   <span class="o">.</span><span class="n">py</span>           <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">xbuilder</span>   <span class="mi">6092</span>  <span class="mi">178298</span>
+    <span class="mi">29</span>   <span class="o">.</span><span class="n">py</span>             <span class="n">experimental_experiment</span><span class="o">/</span><span class="n">xoptim</span>   <span class="mi">7665</span>  <span class="mi">232083</span>
+    <span class="mi">30</span>  <span class="o">.</span><span class="n">rst</span>                                      <span class="n">_doc</span><span class="o">/</span>    <span class="mi">396</span>   <span class="mi">17447</span>
+    <span class="mi">31</span>  <span class="o">.</span><span class="n">rst</span>                                   <span class="n">_doc</span><span class="o">/</span><span class="n">api</span>    <span class="mi">369</span>   <span class="mi">14830</span>
+    <span class="mi">33</span>  <span class="o">.</span><span class="n">rst</span>                                 <span class="n">_doc</span><span class="o">/</span><span class="n">bench</span>    <span class="mi">417</span>   <span class="mi">27064</span>
+    <span class="mi">34</span>  <span class="o">.</span><span class="n">rst</span>                                <span class="n">_doc</span><span class="o">/</span><span class="n">design</span>    <span class="mi">807</span>   <span class="mi">34011</span>
+    <span class="mi">35</span>  <span class="o">.</span><span class="n">rst</span>                                <span class="n">_doc</span><span class="o">/</span><span class="n">models</span>   <span class="mi">1089</span>   <span class="mi">27227</span>
+    <span class="mi">36</span>  <span class="o">.</span><span class="n">rst</span>                              <span class="n">_doc</span><span class="o">/</span><span class="n">tutorial</span>    <span class="mi">161</span>    <span class="mi">6979</span>
     <span class="o">--------------------</span>
     <span class="n">total</span> <span class="ow">in</span> <span class="n">experimental_experiment</span><span class="o">/...</span>
-    <span class="n">lines</span>      <span class="mi">39185</span>
-    <span class="n">chars</span>    <span class="mi">1087915</span>
+    <span class="n">lines</span>      <span class="mi">39491</span>
+    <span class="n">chars</span>    <span class="mi">1113466</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </pre></div>
 </div>

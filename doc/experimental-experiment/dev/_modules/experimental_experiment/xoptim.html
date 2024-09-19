@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -388,10 +390,7 @@
     <span class="p">}</span>
     <span class="k">for</span> <span class="n">fct</span> <span class="ow">in</span> <span class="n">_pattern</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">mapping</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-            <span class="p">{</span>
-                <span class="n">v</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Pattern&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span> <span class="n">v</span>
-                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fct</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-            <span class="p">}</span>
+            <span class="p">{</span><span class="n">v</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Pattern&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">fct</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)}</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">as_list</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;obj=</span><span class="si">{</span><span class="n">obj</span><span class="si">!r}</span><span class="s2"> is already a list&quot;</span>
@@ -404,6 +403,8 @@
         <span class="k">return</span> <span class="n">res</span>
     <span class="k">if</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">mapping</span><span class="p">[</span><span class="n">obj</span><span class="p">]]</span> <span class="k">if</span> <span class="n">as_list</span> <span class="k">else</span> <span class="n">mapping</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Unable to find pattern for </span><span class="si">{</span><span class="n">obj</span><span class="si">!r}</span><span class="s2"> among </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
         <span class="sa">f</span><span class="s2">&quot;pattenrs</span><span class="se">\n</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>

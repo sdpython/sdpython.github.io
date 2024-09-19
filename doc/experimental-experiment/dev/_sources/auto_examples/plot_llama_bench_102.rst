@@ -360,7 +360,7 @@ Running configuration.
 
  .. code-block:: none
 
-      0%|          | 0/15 [00:00<?, ?it/s]      7%|▋         | 1/15 [00:11<02:36, 11.20s/it]     13%|█▎        | 2/15 [00:25<02:51, 13.21s/it]     20%|██        | 3/15 [00:39<02:40, 13.41s/it]     27%|██▋       | 4/15 [01:09<03:41, 20.13s/it]     33%|███▎      | 5/15 [01:40<03:58, 23.89s/it]     40%|████      | 6/15 [02:10<03:53, 25.92s/it]     47%|████▋     | 7/15 [02:40<03:37, 27.21s/it]     53%|█████▎    | 8/15 [03:10<03:17, 28.19s/it]     60%|██████    | 9/15 [03:40<02:52, 28.67s/it]     67%|██████▋   | 10/15 [03:53<02:00, 24.07s/it]     73%|███████▎  | 11/15 [04:07<01:23, 20.95s/it]     80%|████████  | 12/15 [04:20<00:55, 18.52s/it]     87%|████████▋ | 13/15 [04:33<00:33, 16.90s/it]     93%|█████████▎| 14/15 [04:47<00:15, 15.85s/it]    100%|██████████| 15/15 [04:53<00:00, 12.85s/it]    100%|██████████| 15/15 [04:53<00:00, 19.55s/it]
+      0%|          | 0/15 [00:00<?, ?it/s]      7%|▋         | 1/15 [00:04<01:07,  4.79s/it]     13%|█▎        | 2/15 [00:11<01:20,  6.17s/it]     20%|██        | 3/15 [00:33<02:39, 13.31s/it]     27%|██▋       | 4/15 [00:46<02:24, 13.15s/it]     33%|███▎      | 5/15 [00:59<02:10, 13.03s/it]     40%|████      | 6/15 [01:13<02:01, 13.54s/it]     47%|████▋     | 7/15 [01:30<01:55, 14.38s/it]     53%|█████▎    | 8/15 [01:44<01:40, 14.34s/it]     60%|██████    | 9/15 [01:57<01:24, 14.02s/it]     67%|██████▋   | 10/15 [02:07<01:03, 12.67s/it]     73%|███████▎  | 11/15 [02:16<00:46, 11.66s/it]     80%|████████  | 12/15 [02:27<00:34, 11.45s/it]     87%|████████▋ | 13/15 [02:40<00:23, 11.83s/it]     93%|█████████▎| 14/15 [02:51<00:11, 11.50s/it]    100%|██████████| 15/15 [02:56<00:00,  9.72s/it]    100%|██████████| 15/15 [02:56<00:00, 11.78s/it]
 
 
 
@@ -447,39 +447,39 @@ Let's process the data.
 
  .. code-block:: none
 
-                                                  llama  config  ...                                             legend  increase
-    0   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                                cuda-h1-eager-eager  0.000000
-    1   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                               cuda-h1-eager-dynger  0.180009
-    2   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                             cuda-h1-eager-inductor -0.270978
-    3   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                                  cuda-h1-eager-ort  3.135997
-    4   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                           cuda-h1-eager-ort+-(+oo)  3.128721
-    5   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                  cuda-h1-eager-ort+-(+default-+oo)  2.897299
-    6   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  2.840315
-    7   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  2.811201
-    8   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  2.860252
-    9   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                         cuda-h1-eager-custom-(+oo) -0.027425
-    10  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                cuda-h1-eager-custom-(+default-+oo) -0.075679
-    11  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...    cuda-h1-eager-custom-(+default+onnxruntime-+oo) -0.166957
-    12  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.176536
-    13  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.179511
-    14                                              NaN  medium  ...                            cuda-h1-eager-ortmodule       NaN
+                                                  llama  config  mixed  dynamic optimize order ort_optimize  ...                    enable_pattern  disable_pattern  config_ort_optimize             config_enable_pattern config_disable_pattern                                             legend  increase
+    0   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                                cuda-h1-eager-eager  0.000000
+    1   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                               cuda-h1-eager-dynger  0.041737
+    2   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                             cuda-h1-eager-inductor -0.130315
+    3   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                                  cuda-h1-eager-ort  3.913179
+    4   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default          default                  1.0                           default                default                           cuda-h1-eager-ort+-(+oo)  3.926523
+    5   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default              NaN                  1.0                           default                    NaN                  cuda-h1-eager-ort+-(+default-+oo)  3.655036
+    6   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...               default+onnxruntime              NaN                  1.0               default+onnxruntime                    NaN      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  3.670845
+    7   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            0  ...  default+onnxruntime+experimental              NaN                  0.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  3.616985
+    8   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...  default+onnxruntime+experimental              NaN                  1.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  3.577889
+    9   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default          default                  1.0                           default                default                         cuda-h1-eager-custom-(+oo) -0.174893
+    10  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default              NaN                  1.0                           default                    NaN                cuda-h1-eager-custom-(+default-+oo) -0.268903
+    11  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...               default+onnxruntime              NaN                  1.0               default+onnxruntime                    NaN    cuda-h1-eager-custom-(+default+onnxruntime-+oo) -0.153166
+    12  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            0  ...  default+onnxruntime+experimental              NaN                  0.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.238258
+    13  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...  default+onnxruntime+experimental              NaN                  1.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.220128
+    14                                              NaN  medium      0        0      NaN  none          NaN  ...                               NaN              NaN                  NaN                               NaN                    NaN                            cuda-h1-eager-ortmodule       NaN
 
     [15 rows x 57 columns]
           backend                               patterns  warmup_time      time  increase
-    0       eager                                    NaN     1.847544  0.311653  0.000000
-    1      dynger                                    NaN     3.802774  0.367754  0.180009
-    2    inductor                                    NaN     4.009233  0.227202 -0.270978
-    3         ort                                    NaN     9.580300  1.288997  3.135997
-    4        ort+                    +default-default+oo     9.635009  1.286729  3.128721
-    5        ort+                           +default-+oo     9.336495  1.214606  2.897299
-    6        ort+               +default+onnxruntime-+oo     9.771592  1.196847  2.840315
-    7        ort+     +default+onnxruntime+experimental-     9.644690  1.187773  2.811201
-    8        ort+  +default+onnxruntime+experimental-+oo     9.774894  1.203060  2.860252
-    9      custom                    +default-default+oo     3.468762  0.303106 -0.027425
-    10     custom                           +default-+oo     3.543301  0.288068 -0.075679
-    11     custom               +default+onnxruntime-+oo     3.346422  0.259621 -0.166957
-    12     custom     +default+onnxruntime+experimental-     3.445648  0.256635 -0.176536
-    13     custom  +default+onnxruntime+experimental-+oo     3.481711  0.255708 -0.179511
+    0       eager                                    NaN     0.332813  0.024803  0.000000
+    1      dynger                                    NaN     1.978529  0.025839  0.041737
+    2    inductor                                    NaN    15.480827  0.021571 -0.130315
+    3         ort                                    NaN     4.104816  0.121864  3.913179
+    4        ort+                    +default-default+oo     4.136226  0.122195  3.926523
+    5        ort+                           +default-+oo     5.524198  0.115461  3.655036
+    6        ort+               +default+onnxruntime-+oo     5.654823  0.115853  3.670845
+    7        ort+     +default+onnxruntime+experimental-     4.882689  0.114517  3.616985
+    8        ort+  +default+onnxruntime+experimental-+oo     4.839235  0.113547  3.577889
+    9      custom                    +default-default+oo     2.411795  0.020465 -0.174893
+    10     custom                           +default-+oo     2.362172  0.018134 -0.268903
+    11     custom               +default+onnxruntime-+oo     3.254239  0.021004 -0.153166
+    12     custom     +default+onnxruntime+experimental-     3.778513  0.018894 -0.238258
+    13     custom  +default+onnxruntime+experimental-+oo     2.589173  0.019343 -0.220128
     14  ortmodule                                    NaN          NaN       NaN       NaN
 
 
@@ -517,28 +517,28 @@ First lines.
     warmup                                                                  5                                                  5
     with_mask                                                               1                                                  1
     implementation                                                      eager                                              eager
-    torch                                             2.5.0.dev20240908+cu121                            2.5.0.dev20240908+cu121
+    torch                                             2.6.0.dev20240917+cu121                            2.6.0.dev20240917+cu121
     transformers                                                       4.44.2                                             4.44.2
-    memory_peak                                                    961.648438                                        1114.753906
-    memory_mean                                                    951.954792                                        1003.850158
-    memory_n                                                            457.0                                              698.0
-    memory_begin                                                   655.535156                                         655.398438
-    memory_end                                                     961.648438                                        1114.753906
-    memory_gpu0_peak                                               654.617188                                         714.617188
-    memory_gpu0_mean                                               636.643446                                         621.496844
-    memory_gpu0_n                                                       457.0                                              698.0
-    memory_gpu0_begin                                              360.617188                                         360.617188
-    memory_gpu0_end                                                654.617188                                         714.617188
-    warmup_time                                                      1.847544                                           3.802774
-    time                                                             0.311653                                           0.367754
+    memory_peak                                                    965.460938                                         1121.84375
+    memory_mean                                                    914.176124                                          803.07895
+    memory_n                                                             57.0                                              213.0
+    memory_begin                                                   659.648438                                         660.171875
+    memory_end                                                     965.460938                                         1121.84375
+    memory_gpu0_peak                                              8161.234375                                        8177.234375
+    memory_gpu0_mean                                              8080.988761                                        7937.290713
+    memory_gpu0_n                                                        57.0                                              213.0
+    memory_gpu0_begin                                             7867.234375                                        7867.234375
+    memory_gpu0_end                                               8161.234375                                        8145.234375
+    warmup_time                                                      0.332813                                           1.978529
+    time                                                             0.024803                                           0.025839
     model                                                               llama                                              llama
     device                                                               cuda                                               cuda
     num_hidden_layers                                                       1                                                  1
     shape_scenario                                                        NaN                                                NaN
     verbose                                                                 1                                                  1
-    DATE                                                           2024-09-09                                         2024-09-09
+    DATE                                                           2024-09-19                                         2024-09-19
     ITER                                                                    0                                                  1
-    TIME_ITER                                                       11.196727                                          14.624131
+    TIME_ITER                                                        4.786199                                           7.139961
     config_model                                                        llama                                              llama
     config_backend                                                      eager                                             dynger
     config_device                                                        cuda                                               cuda
@@ -561,7 +561,7 @@ First lines.
     config_enable_pattern                                                 NaN                                                NaN
     config_disable_pattern                                                NaN                                                NaN
     legend                                                cuda-h1-eager-eager                               cuda-h1-eager-dynger
-    increase                                                              0.0                                           0.180009
+    increase                                                              0.0                                           0.041737
 
 
 
@@ -605,22 +605,22 @@ Simplified data
 
  .. code-block:: none
 
-                                                  llama  config  ...                                             legend  increase
-    12  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.176536
-    13  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.179511
-    11  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...    cuda-h1-eager-custom-(+default+onnxruntime-+oo) -0.166957
-    10  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                cuda-h1-eager-custom-(+default-+oo) -0.075679
-    9   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                         cuda-h1-eager-custom-(+oo) -0.027425
-    1   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                               cuda-h1-eager-dynger  0.180009
-    0   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                                cuda-h1-eager-eager  0.000000
-    2   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                             cuda-h1-eager-inductor -0.270978
-    3   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                                  cuda-h1-eager-ort  3.135997
-    7   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  2.811201
-    8   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  2.860252
-    6   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  2.840315
-    5   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                  cuda-h1-eager-ort+-(+default-+oo)  2.897299
-    4   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium  ...                           cuda-h1-eager-ort+-(+oo)  3.128721
-    14                                              NaN  medium  ...                            cuda-h1-eager-ortmodule       NaN
+                                                  llama  config  mixed  dynamic optimize order ort_optimize  ...                    enable_pattern  disable_pattern  config_ort_optimize             config_enable_pattern config_disable_pattern                                             legend  increase
+    12  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            0  ...  default+onnxruntime+experimental              NaN                  0.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.238258
+    13  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...  default+onnxruntime+experimental              NaN                  1.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-custom-(+default+onnxruntime+exp... -0.220128
+    11  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...               default+onnxruntime              NaN                  1.0               default+onnxruntime                    NaN    cuda-h1-eager-custom-(+default+onnxruntime-+oo) -0.153166
+    10  (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default              NaN                  1.0                           default                    NaN                cuda-h1-eager-custom-(+default-+oo) -0.268903
+    9   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default          default                  1.0                           default                default                         cuda-h1-eager-custom-(+oo) -0.174893
+    1   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                               cuda-h1-eager-dynger  0.041737
+    0   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                                cuda-h1-eager-eager  0.000000
+    2   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                             cuda-h1-eager-inductor -0.130315
+    3   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none         True  ...                               NaN              NaN                  NaN                               NaN                    NaN                                  cuda-h1-eager-ort  3.913179
+    7   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            0  ...  default+onnxruntime+experimental              NaN                  0.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  3.616985
+    8   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...  default+onnxruntime+experimental              NaN                  1.0  default+onnxruntime+experimental                    NaN  cuda-h1-eager-ort+-(+default+onnxruntime+exper...  3.577889
+    6   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...               default+onnxruntime              NaN                  1.0               default+onnxruntime                    NaN      cuda-h1-eager-ort+-(+default+onnxruntime-+oo)  3.670845
+    5   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default              NaN                  1.0                           default                    NaN                  cuda-h1-eager-ort+-(+default-+oo)  3.655036
+    4   (2, 1024)-1024-1-1024-1024-1024-2-eager-1-False  medium      0        0     True  none            1  ...                           default          default                  1.0                           default                default                           cuda-h1-eager-ort+-(+oo)  3.926523
+    14                                              NaN  medium      0        0      NaN  none          NaN  ...                               NaN              NaN                  NaN                               NaN                    NaN                            cuda-h1-eager-ortmodule       NaN
 
     [15 rows x 57 columns]
 
@@ -662,7 +662,7 @@ Plot warmup time.
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_llama_bench_102_001.png
-   :alt: warmup time lower better llama - 2.5.0.dev20240908+cu121 - 4.44.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
+   :alt: warmup time lower better llama - 2.6.0.dev20240917+cu121 - 4.44.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
    :srcset: /auto_examples/images/sphx_glr_plot_llama_bench_102_001.png
    :class: sphx-glr-single-img
 
@@ -695,7 +695,7 @@ Plot time.
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_llama_bench_102_002.png
-   :alt: computation time lower better llama - 2.5.0.dev20240908+cu121 - 4.44.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
+   :alt: computation time lower better llama - 2.6.0.dev20240917+cu121 - 4.44.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
    :srcset: /auto_examples/images/sphx_glr_plot_llama_bench_102_002.png
    :class: sphx-glr-single-img
 
@@ -724,7 +724,7 @@ Plot increase.
 
 
 .. image-sg:: /auto_examples/images/sphx_glr_plot_llama_bench_102_003.png
-   :alt: comparison to eager % lower better llama - 2.5.0.dev20240908+cu121 - 4.44.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
+   :alt: comparison to eager % lower better llama - 2.6.0.dev20240917+cu121 - 4.44.2 - mask1 <device>-h<hidden-layers>-<implementation>-<backend>-(optimization)
    :srcset: /auto_examples/images/sphx_glr_plot_llama_bench_102_003.png
    :class: sphx-glr-single-img
 
@@ -735,7 +735,7 @@ Plot increase.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (4 minutes 59.491 seconds)
+   **Total running time of the script:** (2 minutes 57.799 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_llama_bench_102.py:

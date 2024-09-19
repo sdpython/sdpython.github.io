@@ -213,6 +213,7 @@
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -262,6 +263,7 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -357,6 +359,8 @@
 </li>
         <li><a href="api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder.add_stat">add_stat() (experimental_experiment.xbuilder.GraphBuilder method)</a>
 </li>
+        <li><a href="api/graph_builder_pattern.html#experimental_experiment.xoptim.EasyPatternOptimization.add_validate_param">add_validate_param() (experimental_experiment.xoptim.EasyPatternOptimization method)</a>
+</li>
         <li><a href="api/reference.html#experimental_experiment.reference.evaluator.AddAdd">AddAdd (class in experimental_experiment.reference.evaluator)</a>
 </li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulBroadcastPattern">AddAddMulMulBroadcastPattern (class in experimental_experiment.xoptim.patterns_exp.binary_operators)</a>
@@ -430,6 +434,8 @@
 </li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern.apply">(experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern method)</a>
 </li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapePattern.apply">(experimental_experiment.xoptim.patterns.onnx_reshape.ReshapePattern method)</a>
+</li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern.apply">(experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern method)</a>
 </li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.apply">(experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern method)</a>
@@ -496,7 +502,11 @@
         <ul>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern.apply_pattern">(experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern method)</a>
 </li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern.apply_pattern">(experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern method)</a>
+</li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern.apply_pattern">(experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern class method)</a>
+</li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.apply_pattern">(experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern method)</a>
 </li>
         </ul></li>
         <li><a href="api/torch_helper.html#experimental_experiment.torch_models.dump_helper.assert_all_close">assert_all_close() (in module experimental_experiment.torch_models.dump_helper)</a>
@@ -689,12 +699,12 @@
 </li>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_empty_strided">aten_empty_strided() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_eq">aten_eq() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_eq_Scalar">aten_eq_Scalar() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_eq_Tensor">aten_eq_Tensor() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_exp">aten_exp() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
@@ -744,6 +754,8 @@
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_hardtanh_backward">aten_hardtanh_backward() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_im2col">aten_im2col() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
+</li>
+        <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_imul">aten_imul() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
         <li><a href="api/aten_function.html#experimental_experiment.torch_interpreter._aten_functions.aten_index_put">aten_index_put() (in module experimental_experiment.torch_interpreter._aten_functions)</a>
 </li>
@@ -1455,6 +1467,8 @@
 </li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.gather_grad.GatherGradPattern">GatherGradPattern (class in experimental_experiment.xoptim.patterns_ort.gather_grad)</a>
 </li>
+        <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern">GeluErfPattern (class in experimental_experiment.xoptim.patterns_ort.activation)</a>
+</li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluOrtPattern">GeluOrtPattern (class in experimental_experiment.xoptim.patterns_ort.activation)</a>
 </li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern">GeluPattern (class in experimental_experiment.xoptim.patterns.onnx_functions)</a>
@@ -1501,10 +1515,10 @@
 </li>
         <li><a href="api/torch_test.html#experimental_experiment.ext_test_case.get_figure">get_figure() (in module experimental_experiment.ext_test_case)</a>
 </li>
-        <li><a href="api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns_fix.get_fix_patterns">get_fix_patterns() (in module experimental_experiment.xoptim.patterns_fix)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/graph_builder_pattern.html#experimental_experiment.xoptim.patterns_fix.get_fix_patterns">get_fix_patterns() (in module experimental_experiment.xoptim.patterns_fix)</a>
+</li>
         <li><a href="api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder.get_is_dimension">get_is_dimension() (experimental_experiment.xbuilder.GraphBuilder method)</a>
 </li>
         <li><a href="api/torch_helper.html#experimental_experiment.torch_models.llama_helper.get_llama_attention">get_llama_attention() (in module experimental_experiment.torch_models.llama_helper)</a>
@@ -1667,6 +1681,8 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern">LayerNormalizationScalePattern (class in experimental_experiment.xoptim.patterns.onnx_layer_normalization)</a>
 </li>
+        <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern">LeakyReluPattern (class in experimental_experiment.xoptim.patterns.onnx_functions)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -1764,6 +1780,8 @@
 </li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern.match">(experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern method)</a>
 </li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapePattern.match">(experimental_experiment.xoptim.patterns.onnx_reshape.ReshapePattern method)</a>
+</li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern.match">(experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern method)</a>
 </li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.match">(experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern method)</a>
@@ -1832,7 +1850,11 @@
         <ul>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern.match_pattern">(experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern method)</a>
 </li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern.match_pattern">(experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern method)</a>
+</li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern.match_pattern">(experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern method)</a>
+</li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.match_pattern">(experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern method)</a>
 </li>
         </ul></li>
         <li><a href="api/graph_builder_pattern.html#experimental_experiment.xoptim.MatchResult">MatchResult (class in experimental_experiment.xoptim)</a>
@@ -2152,6 +2174,8 @@
 </li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_matmul.ReshapeMatMulReshapePattern">ReshapeMatMulReshapePattern (class in experimental_experiment.xoptim.patterns.onnx_matmul)</a>
 </li>
+        <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapePattern">ReshapePattern (class in experimental_experiment.xoptim.patterns.onnx_reshape)</a>
+</li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern">ReshapeReshapeBinaryPattern (class in experimental_experiment.xoptim.patterns.onnx_reshape)</a>
 </li>
         <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern">ReshapeReshapePattern (class in experimental_experiment.xoptim.patterns.onnx_reshape)</a>
@@ -2327,7 +2351,11 @@
         <ul>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern.validate_mapping">(experimental_experiment.xoptim.patterns.onnx_functions.GeluPattern method)</a>
 </li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern.validate_mapping">(experimental_experiment.xoptim.patterns.onnx_functions.LeakyReluPattern method)</a>
+</li>
           <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern.validate_mapping">(experimental_experiment.xoptim.patterns.onnx_functions.SoftmaxCrossEntropyLossCastPattern method)</a>
+</li>
+          <li><a href="api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.validate_mapping">(experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern method)</a>
 </li>
         </ul></li>
     </ul></td>

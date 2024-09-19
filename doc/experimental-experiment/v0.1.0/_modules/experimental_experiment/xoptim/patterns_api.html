@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -470,9 +472,7 @@
                 <span class="c1"># This expression seems awkard but it saves 10% just by looking into</span>
                 <span class="c1"># the first item of the list and then, if necessary, walking through the</span>
                 <span class="c1"># rest of the outputs.</span>
-                <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span>
-                    <span class="n">g</span><span class="o">.</span><span class="n">is_used</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-                <span class="p">):</span>
+                <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">is_used</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
                     <span class="c1"># We avoid processing a node which is not used.</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">matched</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
@@ -588,8 +588,7 @@
 <span class="sd">        :return: nodes to add to graph.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;This function must be overloaded in class &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;This function must be overloaded in class </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">.&quot;</span>
         <span class="p">)</span></div>
 </div>
 
@@ -607,6 +606,22 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_opset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="n">priority</span><span class="p">,</span> <span class="n">min_opset</span><span class="o">=</span><span class="n">min_opset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="EasyPatternOptimization.add_validate_param">
+<a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.EasyPatternOptimization.add_validate_param">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_validate_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stores a value to retrieve when apply_pattern is called.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+    <span class="k">def</span> <span class="nf">get_validate_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_parameters</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unable to find key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_validate_parameters</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 <div class="viewcode-block" id="EasyPatternOptimization.match_pattern">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.EasyPatternOptimization.match_pattern">[docs]</a>
@@ -755,7 +770,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">nr</span><span class="p">,</span> <span class="n">pnr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">nr</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pat</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">pnr</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">nr</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">nr</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pat</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">pnr</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span>
                     <span class="s2">&quot;BACKWARD: one input is used outside the pattern&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;-- pattern input and pattern node&quot;</span><span class="p">,</span>
@@ -767,9 +782,11 @@
                     <span class="s2">&quot;-- len(pat.next_nodes(pnr))&quot;</span><span class="p">,</span>
                     <span class="nb">len</span><span class="p">(</span><span class="n">pat</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">pnr</span><span class="p">)),</span>
                     <span class="o">*</span><span class="n">pat</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">pnr</span><span class="p">),</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">pn</span><span class="p">),</span>
                     <span class="s2">&quot;-- len(g.next_nodes(nr)))&quot;</span><span class="p">,</span>
                     <span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">nr</span><span class="p">)),</span>
                     <span class="o">*</span><span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">nr</span><span class="p">),</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
@@ -855,9 +872,7 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pn</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">matched_results</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">pn</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unexpected types for n: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2"> and pn: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected types for n: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2"> and pn: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">matched_results</span><span class="p">:</span>
             <span class="n">ns</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
@@ -888,9 +903,7 @@
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">pns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># Let&#39;s deal with the simple case</span>
-                <span class="k">if</span> <span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">pns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span>
-                    <span class="n">pns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span>
-                <span class="p">):</span>
+                <span class="k">if</span> <span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">pns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span>
                         <span class="s2">&quot;FORWARD: distinct types or distinct number of inputs&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;-- pred&quot;</span><span class="p">,</span>
@@ -938,9 +951,9 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p_marked</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">free</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># Only one option again.</span>
-                <span class="k">if</span> <span class="n">p_marked</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">free</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span>
-                    <span class="n">p_marked</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span>
-                <span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">free</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">p_marked</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">free</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">p_marked</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">free</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span>
+                <span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_hint</span><span class="p">(</span>
                         <span class="s2">&quot;FORWARD: distinct types or distinct number of inputs&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;-- pred&quot;</span><span class="p">,</span>
@@ -1201,9 +1214,7 @@
             <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[EasyPatternOptimization.match] match pattern&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_pattern</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_pattern</span><span class="p">),</span> <span class="s2">&quot;    &quot;</span><span class="p">)</span>
-                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_pattern</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_pattern</span><span class="p">),</span> <span class="s2">&quot;    &quot;</span><span class="p">))</span>
 
         <span class="n">pair_results_names</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_ambiguities</span><span class="p">(</span><span class="n">pair_results_names</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">p_node</span><span class="p">)</span>

@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -733,9 +735,7 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">torch</span>
 
-    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">forward</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="k">else</span> <span class="n">model</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="k">else</span> <span class="n">model</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="to_onnx">
@@ -835,19 +835,21 @@
         <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">add_stats</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;time_export_graph_module&quot;</span><span class="p">:</span> <span class="n">t</span> <span class="o">-</span> <span class="n">begin</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] graph module done in </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[to_onnx] start creating the onnx nodes&quot;</span><span class="p">)</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">t</span>
 
     <span class="n">builder</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">graph_module</span><span class="p">,</span> <span class="n">interpreter</span><span class="p">)</span>
 
+    <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">add_stats</span><span class="p">[</span><span class="s2">&quot;time_export_builder_process&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="n">begin</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span><span class="si">}</span><span class="s2"> onnx nodes done in </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[to_onnx] start conversion to onnx (before optimization)&quot;</span><span class="p">)</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">t</span>
 
     <span class="n">onx</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">to_onnx</span><span class="p">(</span>
         <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
@@ -858,8 +860,9 @@
     <span class="n">all_stats</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">builder</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">statistics_</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">stats</span><span class="p">:</span>
         <span class="n">all_stats</span><span class="p">[</span><span class="s2">&quot;optimization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">add_stats</span><span class="p">[</span><span class="s2">&quot;time_export_to_onnx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="n">begin</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="n">proto</span> <span class="o">=</span> <span class="n">onx</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">)</span> <span class="k">else</span> <span class="n">onx</span><span class="o">.</span><span class="n">model_proto</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;[to_onnx] to_onnx done in </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">s &quot;</span>
@@ -871,6 +874,7 @@
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">())</span>
 
+    <span class="n">all_stats</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">add_stats</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">return_builder</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">all_stats</span><span class="p">)</span> <span class="k">if</span> <span class="n">return_optimize_report</span> <span class="k">else</span> <span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">builder</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">all_stats</span><span class="p">)</span> <span class="k">if</span> <span class="n">return_optimize_report</span> <span class="k">else</span> <span class="n">onx</span></div>

@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -332,6 +334,7 @@
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xbuilder.model_container</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -395,8 +398,11 @@
             <span class="sa">f</span><span class="s2">&quot;Sparse tensor is not supported yet but initializer </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is.&quot;</span>
         <span class="p">)</span>
 
-    <span class="n">arr_cont</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">arr</span><span class="o">.</span><span class="n">is_contiguous</span><span class="p">()</span> <span class="k">else</span> <span class="n">arr</span>
-    <span class="n">arr_cpu</span> <span class="o">=</span> <span class="n">arr_cont</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="c1"># arr.contiguous() is slow after a transpose, maybe there is a way to optimize this.</span>
+    <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">is_contiguous</span><span class="p">():</span>
+        <span class="n">arr_cpu</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">arr_cpu</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">arr_cpu</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span> <span class="o">==</span> <span class="n">arr</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">():</span>
         <span class="n">copy</span> <span class="o">=</span> <span class="n">arr_cpu</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">arr_cpu</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span> <span class="o">!=</span> <span class="n">copy</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">()</span>
@@ -435,8 +441,20 @@
 <span class="sd">    to support torch tensors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;time_export_write_model&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;time_export_byteswap_tobytes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;time_export_tobytes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;time_export_proto_from_array&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;time_export_write_tensor_bytes&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">}</span>
+
     <span class="k">def</span> <span class="nf">_save_external</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">all_tensors_to_one_file</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">all_tensors_to_one_file</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelProto</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the large model into a main onnx file and one file</span>
 <span class="sd">        per tensor. Follows the same format as :func:`write_external_data_tensors</span>
@@ -447,6 +465,7 @@
 <span class="sd">        Arguments:</span>
 <span class="sd">            file_path: model file</span>
 <span class="sd">            all_tensors_to_one_file: all tensors in one file</span>
+<span class="sd">            stats: saves time if not Nones</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            modified main model proto</span>
@@ -489,9 +508,7 @@
                 <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;location&quot;</span><span class="p">:</span>  <span class="c1"># type: ignore[attr-defined]</span>
                     <span class="n">prop</span> <span class="o">=</span> <span class="n">ext</span>  <span class="c1"># type: ignore[assignment]</span>
             <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No location found for tensor name </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">.&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No location found for tensor name </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">large_initializers</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unable to find large tensor named </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
@@ -502,14 +519,16 @@
 
             <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">byteorder</span> <span class="o">==</span> <span class="s2">&quot;big&quot;</span><span class="p">:</span>
                 <span class="c1"># Convert endian from little to big</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
                 <span class="n">tensor_bytes</span> <span class="o">=</span> <span class="n">np_tensor</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;time_export_byteswap_tobytes&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">np_tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
                 <span class="n">tensor_bytes</span> <span class="o">=</span> <span class="n">np_tensor</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;time_export_tobytes&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">np_tensor</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
                 <span class="n">tensor_bytes</span> <span class="o">=</span> <span class="n">np_tensor</span><span class="o">.</span><span class="n">raw_data</span>
-                <span class="k">assert</span> <span class="p">(</span>
-                    <span class="nb">len</span><span class="p">(</span><span class="n">tensor_bytes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;One tensor is null, np_tensor=</span><span class="si">{</span><span class="n">np_tensor</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_bytes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;One tensor is null, np_tensor=</span><span class="si">{</span><span class="n">np_tensor</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="kn">import</span> <span class="nn">torch</span>
 
@@ -523,17 +542,19 @@
                         <span class="sa">f</span><span class="s2">&quot;is not implemented yet.&quot;</span>
                     <span class="p">)</span>
 
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
                 <span class="n">proto</span> <span class="o">=</span> <span class="n">proto_from_array</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;time_export_proto_from_array&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
                 <span class="n">tensor_bytes</span> <span class="o">=</span> <span class="n">proto</span><span class="o">.</span><span class="n">raw_data</span>
                 <span class="k">assert</span> <span class="p">(</span>
-                    <span class="n">pt</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
-                    <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_bytes</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+                    <span class="n">pt</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_bytes</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
                 <span class="p">),</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unexpected size mismatch, buffer size is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tensor_bytes</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;but tensor size=</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="si">}</span><span class="s2">, &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;shape=</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
+            <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">all_tensors_to_one_file</span><span class="p">:</span>
                 <span class="n">_set_external_data</span><span class="p">(</span>
                     <span class="n">tensor</span><span class="p">,</span>
@@ -551,9 +572,12 @@
                 <span class="n">prop</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">name</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tensor_bytes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;time_export_write_tensor_bytes&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
 
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;time_export_write_model&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
         <span class="k">return</span> <span class="n">copy</span></div>
 
 </pre></div>

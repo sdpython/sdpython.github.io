@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -526,9 +528,7 @@
                     <span class="n">ii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="k">assert</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span>
-                        <span class="n">new_shape</span>
-                    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unxpected index i=</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">new_shape</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">assert</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unxpected index i=</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">new_shape</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="n">s2</span> <span class="o">*=</span> <span class="n">new_shape</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                     <span class="n">jj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
 
@@ -608,9 +608,7 @@
         <span class="n">reshape_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
         <span class="n">t2_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
-        <span class="n">new_perm</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_shape_perm</span><span class="p">(</span>
-            <span class="n">g</span><span class="p">,</span> <span class="n">t1_node</span><span class="p">,</span> <span class="n">reshape_node</span><span class="p">,</span> <span class="n">t2_node</span>
-        <span class="p">)</span>
+        <span class="n">new_perm</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_shape_perm</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">t1_node</span><span class="p">,</span> <span class="n">reshape_node</span><span class="p">,</span> <span class="n">t2_node</span><span class="p">)</span>
         <span class="n">new_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">t1_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">new_shape_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">after</span><span class="p">:</span>

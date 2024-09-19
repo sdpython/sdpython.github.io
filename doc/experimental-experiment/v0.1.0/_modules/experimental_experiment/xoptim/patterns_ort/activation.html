@@ -8,7 +8,7 @@
         <title>experimental_experiment.xoptim.patterns_ort.activation - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -334,7 +336,7 @@
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">EasyPatternOptimization</span>
 <span class="kn">from</span> <span class="nn">..patterns.onnx_functions</span> <span class="kn">import</span> <span class="n">GeluPattern</span>
 
 
@@ -463,6 +465,60 @@
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">min_opset</span><span class="o">=</span><span class="n">min_opset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span></div>
+
+
+
+<div class="viewcode-block" id="GeluErfPattern">
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern">[docs]</a>
+<span class="k">class</span> <span class="nc">GeluErfPattern</span><span class="p">(</span><span class="n">EasyPatternOptimization</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Detects the decomposed version of Gelu with Erf.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_opset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">min_opset</span><span class="o">=</span><span class="n">min_opset</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GeluErfPattern.match_pattern">
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.match_pattern">[docs]</a>
+    <span class="k">def</span> <span class="nf">match_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="n">c05</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">xd</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">)</span>  <span class="c1"># 1.4140625</span>
+        <span class="n">exd</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Erf</span><span class="p">(</span><span class="n">xd</span><span class="p">)</span>
+        <span class="n">aexd</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">exd</span><span class="p">,</span> <span class="n">one</span><span class="p">)</span>  <span class="c1"># 1</span>
+        <span class="n">mul</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aexd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Mul</span><span class="p">(</span><span class="n">c05</span><span class="p">,</span> <span class="n">mul</span><span class="p">)</span>  <span class="c1"># 0.5</span></div>
+
+
+<div class="viewcode-block" id="GeluErfPattern.apply_pattern">
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.apply_pattern">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="n">c05</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">anyop</span><span class="o">.</span><span class="n">Gelu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GeluErfPattern.validate_mapping">
+<a class="viewcode-back" href="../../../../api/graph_builder_patterns.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.validate_mapping">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_mapping</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">deleted_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+        <span class="n">pattern_nodes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">deleted_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected pattern length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">deleted_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Div&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-- </span><span class="si">{</span><span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">cst2</span> <span class="o">=</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-- </span><span class="si">{</span><span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">one</span> <span class="o">=</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Mul&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;-- </span><span class="si">{</span><span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">c05</span> <span class="o">=</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="n">deleted_nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">cst2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">cst2</span><span class="p">)</span> <span class="o">!=</span> <span class="mf">1.4140625</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">one</span><span class="p">)</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">one</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">c05</span><span class="p">)</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_scalar</span><span class="p">(</span><span class="n">c05</span><span class="p">)</span> <span class="o">!=</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
 
 
 

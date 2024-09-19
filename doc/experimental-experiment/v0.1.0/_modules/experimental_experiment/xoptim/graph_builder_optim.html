@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -263,6 +264,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -581,18 +583,26 @@
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.is_constant_scalar">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_constant_scalar">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_constant_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">is_constant_scalar</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tells if a constant is a scalar</span>
 
 <span class="sd">        :param name: name</span>
+<span class="sd">        :param broadcast: if True, consider 1, [1], [[1]], [[[1]]], ... as scalar as well</span>
 <span class="sd">        :param value: value to compare to if specified</span>
 <span class="sd">        :return: boolean</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">cst_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_constant_shape</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cst_shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cst_shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
+        <span class="k">if</span> <span class="n">cst_shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">broadcast</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cst_shape</span> <span class="o">!=</span> <span class="nb">tuple</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">cst_shape</span><span class="p">)</span> <span class="o">!=</span> <span class="p">{</span><span class="mi">1</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">cst_shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cst</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">):</span>
@@ -602,20 +612,24 @@
             <span class="n">cst</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for constant </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!r, type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span>
-        <span class="k">if</span> <span class="n">shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
+        <span class="k">if</span> <span class="n">broadcast</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">shape</span> <span class="o">!=</span> <span class="nb">tuple</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="p">{</span><span class="mi">1</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,):</span>
+        <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,):</span>
             <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">cst</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cst</span> <span class="o">==</span> <span class="n">value</span></div>
+        <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">cst</span> <span class="o">==</span> <span class="n">value</span>
+        <span class="k">assert</span> <span class="n">broadcast</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Broadcast should be true at this stage, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, cst=</span><span class="si">{</span><span class="n">cst</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">cst</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.get_constant_shape">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_shape">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_constant_shape</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">get_constant_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the shape of a constant.</span>
 
@@ -689,11 +703,12 @@
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.get_constant_scalar">
 <a class="viewcode-back" href="../../../api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_scalar">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_constant_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_constant_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a scalar as a constant.</span>
 
 <span class="sd">        :param name: name</span>
+<span class="sd">        :param broadcast: consider [1], [[1]], [[[1]]] as constant as well</span>
 <span class="sd">        :return: int or float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -703,12 +718,14 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">cst</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for constant </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!r, type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">assert</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="nb">tuple</span><span class="p">(),</span>
-            <span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+        <span class="k">assert</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">broadcast</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">cst</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="mi">1</span><span class="p">})</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">broadcast</span> <span class="ow">and</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected shape </span><span class="si">{</span><span class="n">cst</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> for constant </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">cst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="k">else</span> <span class="n">cst</span>
+        <span class="k">if</span> <span class="n">broadcast</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">cst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="k">else</span> <span class="n">cst</span>
         <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span>
             <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
@@ -948,9 +965,7 @@
             <span class="sa">f</span><span class="s2">&quot;known_types=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_known_types</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">input_types</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span>
-        <span class="p">]</span>
+        <span class="n">input_types</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
         <span class="n">output_type</span> <span class="o">=</span> <span class="n">infer_types</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">input_types</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="n">exc</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">output_type</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">output_type</span>
@@ -998,9 +1013,7 @@
     <span class="k">def</span> <span class="nf">make_initializer</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">external</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">new_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-            <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">external</span><span class="o">=</span><span class="n">external</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span>
-        <span class="p">)</span>
+        <span class="n">new_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">external</span><span class="o">=</span><span class="n">external</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_name</span>
 
 <div class="viewcode-block" id="GraphBuilderPatternOptimization.unique_name">
@@ -1144,18 +1157,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">idn</span> <span class="o">=</span> <span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
 
-        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
-            <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idn</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;One node in </span><span class="si">{</span><span class="n">idn</span><span class="si">}</span><span class="s2"> is not referenced&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes_</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idn</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;One node in </span><span class="si">{</span><span class="n">idn</span><span class="si">}</span><span class="s2"> is not referenced&quot;</span>
 
         <span class="n">positions</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)}</span>
 
         <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="n">positions</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idn</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;One node in </span><span class="si">{</span><span class="n">idn</span><span class="si">}</span><span class="s2"> is not referenced&quot;</span>
 
         <span class="n">removed</span> <span class="o">=</span> <span class="p">[</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idn</span><span class="p">]</span>
-        <span class="n">position_insert</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="kc">None</span> <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">insert_at</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">positions</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">insert_at</span><span class="p">)]</span>
-        <span class="p">)</span>
+        <span class="n">position_insert</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">insert_at</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">positions</span><span class="p">[</span><span class="nb">id</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">insert_at</span><span class="p">)]</span>
         <span class="n">new_nodes</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
@@ -1248,12 +1257,8 @@
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
                     <span class="n">old_initializers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-        <span class="n">new_init_nodes</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_initializers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">]</span>
-        <span class="n">old_init_nodes</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">old_initializers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">]</span>
+        <span class="n">new_init_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_initializers</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">old_init_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_cstop</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">old_initializers</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
 
         <span class="n">fproto</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_function</span><span class="p">(</span>
             <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;pattern&quot;</span><span class="p">,</span>
@@ -1261,9 +1266,7 @@
             <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">input_names</span><span class="p">),</span>
             <span class="n">outputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">output_names</span><span class="p">),</span>
             <span class="n">nodes</span><span class="o">=</span><span class="n">old_init_nodes</span> <span class="o">+</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">],</span>
-            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span>
-                <span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">],</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
         <span class="p">)</span>
 
         <span class="n">fproto_apply</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_function</span><span class="p">(</span>
@@ -1272,9 +1275,7 @@
             <span class="nb">list</span><span class="p">(</span><span class="n">input_names</span><span class="p">),</span>
             <span class="nb">list</span><span class="p">(</span><span class="n">output_names</span><span class="p">),</span>
             <span class="n">new_init_nodes</span> <span class="o">+</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">new_nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">],</span>
-            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span>
-                <span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">],</span>
+            <span class="n">opset_imports</span><span class="o">=</span><span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
         <span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_sh</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -1387,9 +1388,7 @@
         <span class="n">verifies</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;The onnx model is empty (step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">, no node)&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;The onnx model is empty (step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">, no node)&quot;</span>
         <span class="n">known</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
         <span class="n">known</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">nodes</span><span class="p">):</span>
@@ -1563,10 +1562,7 @@
                         <span class="n">marked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
                     <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;match=</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&quot;</span>
-                        <span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization.optimize] match=</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pattern</span><span class="p">,</span> <span class="n">match</span><span class="p">))</span>
                     <span class="k">if</span> <span class="n">stop_after</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">+</span> <span class="n">n_applied</span> <span class="o">&gt;=</span> <span class="n">stop_after</span><span class="p">:</span>
                         <span class="n">continue_optimization</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1579,6 +1575,7 @@
                             <span class="p">)</span>
                         <span class="k">break</span>
 
+                <span class="c1"># matches contains all the matchs</span>
                 <span class="n">d</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
                 <span class="n">statistics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="nb">dict</span><span class="p">(</span>
@@ -1625,6 +1622,8 @@
             <span class="n">added_types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="n">n_added</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">n_removed</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># loop over patterns</span>
             <span class="k">for</span> <span class="n">im</span><span class="p">,</span> <span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matches</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
@@ -1728,6 +1727,7 @@
                 <span class="n">current_priority_index</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">current_priority_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">priorities</span><span class="p">):</span>
                     <span class="c1"># There is priority left to explore.</span>
+                    <span class="n">continue_optimization</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
                     <span class="k">break</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>

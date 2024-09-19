@@ -215,6 +215,7 @@
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -264,6 +265,7 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -382,7 +384,7 @@
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">creating</span> <span class="n">model</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">symbolic</span> <span class="o">---</span> <span class="mf">0.6871200230016257</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">symbolic</span> <span class="o">---</span> <span class="mf">1.2411914370004524</span>
 </pre></div>
 </div>
 </section>
@@ -427,7 +429,7 @@
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">creating</span> <span class="n">model</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">fake</span> <span class="o">---</span> <span class="mf">0.4327421879970643</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="n">fake</span> <span class="o">---</span> <span class="mf">0.30907832400043844</span>
 </pre></div>
 </div>
 </section>
@@ -467,20 +469,20 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.1142097219999414</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.0001680650020716712</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">1.3066702639989671</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.1242422080013057</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.00014706699948874302</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">1.2642213470007846</span>
     <span class="s1">&#39;torch.export&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">9.622999641578645e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.20968053599790437</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">1.1304000389973226</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">2.5849985831882805e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.14186577899999975</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">1.1156441710008949</span>
     <span class="s1">&#39;torch.onnx&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">1.6339981812052429e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.5742222689987102</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.01827809299720684</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.00630960900161881</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.5183167730028799</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.051794421997328755</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">2.468001184752211e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.6378967320015363</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.007775657999445684</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.002438722998704179</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.5334185470001103</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.03991023099843005</span>
 </pre></div>
 </div>
 <p>With a bigger model:</p>
@@ -531,13 +533,13 @@
     [runpythonerror]
     Traceback (most recent call last):
       File &quot;&lt;stdin&gt;&quot;, line 36, in &lt;module&gt;
-      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 506, in to_onnx
+      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 505, in to_onnx
         builder.process(graph_module, interpreter)
-      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;, line 3191, in process
+      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py&quot;, line 3002, in process
         interpreter.run_node(node)
       File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py&quot;, line 116, in run_node
         res = self.call_function(node)
-      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py&quot;, line 923, in call_function
+      File &quot;/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py&quot;, line 913, in call_function
         raise FunctionNotFoundError(
     experimental_experiment.torch_interpreter._exceptions.FunctionNotFoundError: Unable to interpret function &lt;class &#39;str&#39;&gt;: &#39;aten_wrap_with_set_grad_enabled&#39;, searched for [&#39;aten_wrap_with_set_grad_enabled&#39;] and attributes [], args=(False, submod_3, b_decoder_self_attn_rotary_emb_inv_freq, position_ids), kwargs={}
     --DEBUG--
@@ -645,18 +647,18 @@
      &#39;p_decoder_self_attn_v_proj_weight&#39;]
     _known_ranks={}
     --TORCH-USERS--
-    _to_copy -&gt; {pow_1, mul}
+    _to_copy -&gt; {mul, pow_1}
     _to_copy_1 -&gt; {mul_1}
     add -&gt; {rsqrt}
     attention_mask -&gt; {slice_8}
     b_decoder_self_attn_rotary_emb_inv_freq -&gt; {wrap_with_set_grad_enabled}
-    hidden_states -&gt; {_to_copy, add_4}
+    hidden_states -&gt; {add_4, _to_copy}
     linear -&gt; {view}
     linear_1 -&gt; {view_1}
     linear_2 -&gt; {view_2}
     mean -&gt; {add}
     mul -&gt; {_to_copy_1}
-    mul_1 -&gt; {linear_1, linear_2, linear}
+    mul_1 -&gt; {linear_2, linear, linear_1}
     p_decoder_input_layernorm_weight -&gt; {mul_1}
     p_decoder_mlp_down_proj_weight -&gt; {linear_6}
     p_decoder_mlp_gate_proj_weight -&gt; {linear_4}
@@ -670,13 +672,13 @@
     pow_1 -&gt; {mean}
     rsqrt -&gt; {mul}
     submod_3 -&gt; {wrap_with_set_grad_enabled}
-    transpose -&gt; {slice_5, mul_4, slice_4}
-    transpose_1 -&gt; {slice_7, mul_6, slice_6}
+    transpose -&gt; {mul_4, slice_5, slice_4}
+    transpose_1 -&gt; {slice_6, slice_7, mul_6}
     transpose_2 -&gt; {matmul_2}
     view -&gt; {transpose}
     view_1 -&gt; {transpose_1}
     view_2 -&gt; {transpose_2}
-    wrap_with_set_grad_enabled -&gt; {_to_copy_7, _to_copy_6}
+    wrap_with_set_grad_enabled -&gt; {_to_copy_6, _to_copy_7}
     --TORCH-SHAPES--
     p_decoder_input_layernorm_weight: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([4096])), (&#39;val&#39;, torch.float32, torch.Size([4096])))) --- 1:1:(4096,):
     p_decoder_post_attention_layernorm_weight: (&#39;run_node&#39;, ((&#39;example_value&#39;, torch.float32, torch.Size([4096])), (&#39;val&#39;, torch.float32, torch.Size([4096])))) --- 1:1:(4096,):
@@ -797,45 +799,45 @@
     -- process.progress --
     node 31/81 
     --
-    [GraphBuilder-WQA.make_tensor_input] hidden_states[1:2x1024x4096]
-    [GraphBuilder-WQA.make_tensor_input] attention_mask[1:2x1x1024x1024]
-    [GraphBuilder-WQA.make_tensor_input] position_ids[7:1x1024]
-    [GraphBuilder-WQA.make_initializer] p_decoder_input_layernorm_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_post_attention_layernorm_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_self_attn_q_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_self_attn_k_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_self_attn_v_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_self_attn_o_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_mlp_gate_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_mlp_up_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] p_decoder_mlp_down_proj_weight[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] b_decoder_self_attn_rotary_emb_inv_freq[torch.float32:torch.float32]
-    [GraphBuilder-WQA.make_initializer] init1_s1_[float32:float32:[2.0]]
-    [GraphBuilder-WQA.make_initializer] init7_s1_-1[int64:int64:[-1]]
-    [GraphBuilder-WQA.make_initializer] init1_s_[float32:float32:[9.999999974752427e-07]]
-    [GraphBuilder-WQA.make_initializer] init7_s4_2_1024_32_128[int64:int64:[2, 1024, 32, 128]]
-    [GraphBuilder-WQA.make_node] _to_copy        [#:#   ] Cast&gt;1:[&#39;hidden_states&#39;]-&gt;[&#39;_to_copy&#39;]
-    [GraphBuilder-WQA.make_node] pow_Tensor_Scalar [##:#  ] Pow:[&#39;_to_copy&#39;, &#39;init1_s1_&#39;]-&gt;[&#39;pow_1&#39;]
-    [GraphBuilder-WQA.make_node] mean_dim        [##:#  ] ReduceMean:[&#39;pow_1&#39;, &#39;init7_s1_-1&#39;]-&gt;[&#39;mean&#39;]
-    [GraphBuilder-WQA.make_node] add_Tensor      [##:#  ] Add:[&#39;mean&#39;, &#39;init1_s_&#39;]-&gt;[&#39;add&#39;]
-    [GraphBuilder-WQA.make_node] rsqrt           [#:#   ] Sqrt:[&#39;add&#39;]-&gt;[&#39;_onx_sqrt0&#39;]
-    [GraphBuilder-WQA.make_node] rsqrt2          [#:#   ] Reciprocal:[&#39;_onx_sqrt0&#39;]-&gt;[&#39;rsqrt&#39;]
-    [GraphBuilder-WQA.make_node] mul             [##:#  ] Mul:[&#39;_to_copy&#39;, &#39;rsqrt&#39;]-&gt;[&#39;mul&#39;]
-    [GraphBuilder-WQA.make_node] _to_copy2       [#:#   ] Cast&gt;1:[&#39;mul&#39;]-&gt;[&#39;_to_copy_1&#39;]
-    [GraphBuilder-WQA.make_node] mul2            [##:#  ] Mul:[&#39;p_decoder_input_layernorm_weight&#39;, &#39;_to_copy_1&#39;]-&gt;[&#39;mul_1&#39;]
-    [GraphBuilder-WQA.make_node] linear          [#:#   ] Transpose:[&#39;p_decoder_self_attn_q_proj_weight&#39;]-&gt;[&#39;_onx_transpose0&#39;]
-    [GraphBuilder-WQA.make_node] linear2         [##:#  ] MatMul:[&#39;mul_1&#39;, &#39;_onx_transpose0&#39;]-&gt;[&#39;linear&#39;]
-    [GraphBuilder-WQA.make_node] linear3         [#:#   ] Transpose:[&#39;p_decoder_self_attn_k_proj_weight&#39;]-&gt;[&#39;_onx_transpose02&#39;]
-    [GraphBuilder-WQA.make_node] linear4         [##:#  ] MatMul:[&#39;mul_1&#39;, &#39;_onx_transpose02&#39;]-&gt;[&#39;linear_1&#39;]
-    [GraphBuilder-WQA.make_node] linear5         [#:#   ] Transpose:[&#39;p_decoder_self_attn_v_proj_weight&#39;]-&gt;[&#39;_onx_transpose03&#39;]
-    [GraphBuilder-WQA.make_node] linear6         [##:#  ] MatMul:[&#39;mul_1&#39;, &#39;_onx_transpose03&#39;]-&gt;[&#39;linear_2&#39;]
-    [GraphBuilder-WQA.make_node] view            [##:#  ] Reshape:[&#39;linear&#39;, &#39;init7_s4_2_1024_32_128&#39;]-&gt;[&#39;view&#39;]
-    [GraphBuilder-WQA.make_node] transpose       [#:#   ] Transpose:[&#39;view&#39;]-&gt;[&#39;transpose&#39;]
-    [GraphBuilder-WQA.make_node] view2           [##:#  ] Reshape:[&#39;linear_1&#39;, &#39;init7_s4_2_1024_32_128&#39;]-&gt;[&#39;view_1&#39;]
-    [GraphBuilder-WQA.make_node] transpose2      [#:#   ] Transpose:[&#39;view_1&#39;]-&gt;[&#39;transpose_1&#39;]
-    [GraphBuilder-WQA.make_node] view3           [##:#  ] Reshape:[&#39;linear_2&#39;, &#39;init7_s4_2_1024_32_128&#39;]-&gt;[&#39;view_2&#39;]
-    [GraphBuilder-WQA.make_node] transpose3      [#:#   ] Transpose:[&#39;view_2&#39;]-&gt;[&#39;transpose_2&#39;]
-    [GraphBuilder-WQA] Message completed, there are 14 initializers, 21 nodes, 3 inputs, 3 outputs.
+    [GraphBuilder-AZG.make_tensor_input] hidden_states[1:2x1024x4096]
+    [GraphBuilder-AZG.make_tensor_input] attention_mask[1:2x1x1024x1024]
+    [GraphBuilder-AZG.make_tensor_input] position_ids[7:1x1024]
+    [GraphBuilder-AZG.make_initializer] p_decoder_input_layernorm_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_post_attention_layernorm_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_self_attn_q_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_self_attn_k_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_self_attn_v_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_self_attn_o_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_mlp_gate_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_mlp_up_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] p_decoder_mlp_down_proj_weight[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] b_decoder_self_attn_rotary_emb_inv_freq[torch.float32:torch.float32]
+    [GraphBuilder-AZG.make_initializer] init1_s1_[float32:float32:[2.0]]
+    [GraphBuilder-AZG.make_initializer] init7_s1_-1[int64:int64:[-1]]
+    [GraphBuilder-AZG.make_initializer] init1_s_[float32:float32:[9.999999974752427e-07]]
+    [GraphBuilder-AZG.make_initializer] init7_s4_2_1024_32_128[int64:int64:[2, 1024, 32, 128]]
+    [GraphBuilder-AZG.make_node] _to_copy        [#:#   ] Cast&gt;1:[&#39;hidden_states&#39;]-&gt;[&#39;_to_copy&#39;]
+    [GraphBuilder-AZG.make_node] pow_Tensor_Scalar [##:#  ] Pow:[&#39;_to_copy&#39;, &#39;init1_s1_&#39;]-&gt;[&#39;pow_1&#39;]
+    [GraphBuilder-AZG.make_node] mean_dim        [##:#  ] ReduceMean:[&#39;pow_1&#39;, &#39;init7_s1_-1&#39;]-&gt;[&#39;mean&#39;]
+    [GraphBuilder-AZG.make_node] add_Tensor      [##:#  ] Add:[&#39;mean&#39;, &#39;init1_s_&#39;]-&gt;[&#39;add&#39;]
+    [GraphBuilder-AZG.make_node] rsqrt           [#:#   ] Sqrt:[&#39;add&#39;]-&gt;[&#39;_onx_sqrt0&#39;]
+    [GraphBuilder-AZG.make_node] rsqrt2          [#:#   ] Reciprocal:[&#39;_onx_sqrt0&#39;]-&gt;[&#39;rsqrt&#39;]
+    [GraphBuilder-AZG.make_node] mul_Tensor      [##:#  ] Mul:[&#39;_to_copy&#39;, &#39;rsqrt&#39;]-&gt;[&#39;mul&#39;]
+    [GraphBuilder-AZG.make_node] _to_copy2       [#:#   ] Cast&gt;1:[&#39;mul&#39;]-&gt;[&#39;_to_copy_1&#39;]
+    [GraphBuilder-AZG.make_node] mul_Tensor2     [##:#  ] Mul:[&#39;p_decoder_input_layernorm_weight&#39;, &#39;_to_copy_1&#39;]-&gt;[&#39;mul_1&#39;]
+    [GraphBuilder-AZG.make_node] linear          [#:#   ] Transpose:[&#39;p_decoder_self_attn_q_proj_weight&#39;]-&gt;[&#39;_onx_transpose0&#39;]
+    [GraphBuilder-AZG.make_node] linear2         [##:#  ] MatMul:[&#39;mul_1&#39;, &#39;_onx_transpose0&#39;]-&gt;[&#39;linear&#39;]
+    [GraphBuilder-AZG.make_node] linear3         [#:#   ] Transpose:[&#39;p_decoder_self_attn_k_proj_weight&#39;]-&gt;[&#39;_onx_transpose02&#39;]
+    [GraphBuilder-AZG.make_node] linear4         [##:#  ] MatMul:[&#39;mul_1&#39;, &#39;_onx_transpose02&#39;]-&gt;[&#39;linear_1&#39;]
+    [GraphBuilder-AZG.make_node] linear5         [#:#   ] Transpose:[&#39;p_decoder_self_attn_v_proj_weight&#39;]-&gt;[&#39;_onx_transpose03&#39;]
+    [GraphBuilder-AZG.make_node] linear6         [##:#  ] MatMul:[&#39;mul_1&#39;, &#39;_onx_transpose03&#39;]-&gt;[&#39;linear_2&#39;]
+    [GraphBuilder-AZG.make_node] view            [##:#  ] Reshape:[&#39;linear&#39;, &#39;init7_s4_2_1024_32_128&#39;]-&gt;[&#39;view&#39;]
+    [GraphBuilder-AZG.make_node] transpose       [#:#   ] Transpose:[&#39;view&#39;]-&gt;[&#39;transpose&#39;]
+    [GraphBuilder-AZG.make_node] view2           [##:#  ] Reshape:[&#39;linear_1&#39;, &#39;init7_s4_2_1024_32_128&#39;]-&gt;[&#39;view_1&#39;]
+    [GraphBuilder-AZG.make_node] transpose2      [#:#   ] Transpose:[&#39;view_1&#39;]-&gt;[&#39;transpose_1&#39;]
+    [GraphBuilder-AZG.make_node] view3           [##:#  ] Reshape:[&#39;linear_2&#39;, &#39;init7_s4_2_1024_32_128&#39;]-&gt;[&#39;view_2&#39;]
+    [GraphBuilder-AZG.make_node] transpose3      [#:#   ] Transpose:[&#39;view_2&#39;]-&gt;[&#39;transpose_2&#39;]
+    [GraphBuilder-AZG] Message completed, there are 14 initializers, 21 nodes, 3 inputs, 3 outputs.
 </pre></div>
 </div>
 </section>
@@ -878,20 +880,20 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.09756247899713344</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.00020369400226627477</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">1.103518650001206</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx</span> <span class="o">---</span> <span class="mf">0.1301477460001479</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnx_array_api</span> <span class="o">---</span> <span class="mf">0.0001295710007980233</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch</span> <span class="o">---</span> <span class="mf">1.576918241000385</span>
     <span class="s1">&#39;torch.export&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">2.510998456273228e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.14986262499951408</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">0.893266830000357</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.export</span> <span class="o">---</span> <span class="mf">4.90400088892784e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxscript</span> <span class="o">---</span> <span class="mf">0.22179011200023524</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="o">---</span> <span class="mf">1.2700712730002124</span>
     <span class="s1">&#39;torch.onnx&#39;</span> <span class="n">already</span> <span class="n">imported</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">2.9180009732954204e-06</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.6210613069997635</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.012015779000648763</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.003352488001837628</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">1.0543565820007643</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.18992543300191755</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch.onnx</span> <span class="o">---</span> <span class="mf">1.8189984984928742e-06</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">torch._dynamo</span> <span class="o">---</span> <span class="mf">0.8199885659996653</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="o">---</span> <span class="mf">0.00864499099952809</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">experimental_experiment.torch_interpreter.aten_functions</span> <span class="o">---</span> <span class="mf">0.0026831280010810588</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">1.1764977960010583</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">0.24235464599951229</span>
 </pre></div>
 </div>
 <p>With a bigger model:</p>
@@ -938,9 +940,9 @@
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Applied</span> <span class="mi">11</span> <span class="n">of</span> <span class="n">general</span> <span class="n">pattern</span> <span class="n">rewrite</span> <span class="n">rules</span><span class="o">.</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">10.663650082002277</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">1</span><span class="n">x</span> <span class="o">---</span> <span class="mf">10.867951840000387</span>
     <span class="n">Applied</span> <span class="mi">11</span> <span class="n">of</span> <span class="n">general</span> <span class="n">pattern</span> <span class="n">rewrite</span> <span class="n">rules</span><span class="o">.</span>
-    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">9.184048887000245</span>
+    <span class="n">time</span> <span class="n">to</span> <span class="n">export</span> <span class="mi">2</span><span class="n">x</span> <span class="o">---</span> <span class="mf">10.053921991000607</span>
 </pre></div>
 </div>
 </section>

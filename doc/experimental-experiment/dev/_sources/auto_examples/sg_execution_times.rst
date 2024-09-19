@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**05:52.218** total execution time for 12 files **from auto_examples**:
+**00:16.896** total execution time for 13 files **from auto_examples**:
 
 .. container::
 
@@ -32,13 +32,13 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``plot_llama_bench_102.py``)
-     - 04:59.491
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
-     - 00:52.727
+   * - :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py` (``plot_custom_backend_llama_102.py``)
+     - 00:16.896
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``plot_convolutation_matmul_102.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``plot_llama_bench_102.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``plot_llama_diff_dort_301.py``)
@@ -63,6 +63,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py` (``plot_torch_dort_201.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)

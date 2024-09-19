@@ -215,6 +215,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
@@ -264,6 +265,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
@@ -367,9 +369,11 @@ It is equal to the following list.</p>
      <span class="n">IdentityPattern</span><span class="p">(),</span>
      <span class="n">LayerNormalizationPattern</span><span class="p">(),</span>
      <span class="n">LayerNormalizationScalePattern</span><span class="p">(),</span>
+     <span class="n">LeakyReluPattern</span><span class="p">(),</span>
      <span class="n">MulMulMulScalarPattern</span><span class="p">(),</span>
      <span class="n">ReduceReshapePattern</span><span class="p">(),</span>
      <span class="n">ReduceSumNormalizePattern</span><span class="p">(),</span>
+     <span class="n">ReshapePattern</span><span class="p">(),</span>
      <span class="n">ReshapeMatMulReshapePattern</span><span class="p">(),</span>
      <span class="n">Reshape2Of3Pattern</span><span class="p">(),</span>
      <span class="n">ReshapeReshapeBinaryPattern</span><span class="p">(),</span>
@@ -410,6 +414,7 @@ It is equal to the following list.</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="n">BiasGeluPattern</span><span class="p">(),</span>
      <span class="n">GeluOrtPattern</span><span class="p">(),</span>
+     <span class="n">GeluErfPattern</span><span class="p">(),</span>
      <span class="n">FastGeluPattern</span><span class="p">(),</span>
      <span class="n">FusedMatMulPattern</span><span class="p">(),</span>
      <span class="n">FusedMatMulx2Pattern</span><span class="p">(),</span>
@@ -478,9 +483,11 @@ It is equal to the following list.</p>
      <span class="n">IdentityPattern</span><span class="p">(),</span>
      <span class="n">LayerNormalizationPattern</span><span class="p">(),</span>
      <span class="n">LayerNormalizationScalePattern</span><span class="p">(),</span>
+     <span class="n">LeakyReluPattern</span><span class="p">(),</span>
      <span class="n">MulMulMulScalarPattern</span><span class="p">(),</span>
      <span class="n">ReduceReshapePattern</span><span class="p">(),</span>
      <span class="n">ReduceSumNormalizePattern</span><span class="p">(),</span>
+     <span class="n">ReshapePattern</span><span class="p">(),</span>
      <span class="n">ReshapeMatMulReshapePattern</span><span class="p">(),</span>
      <span class="n">Reshape2Of3Pattern</span><span class="p">(),</span>
      <span class="n">ReshapeReshapeBinaryPattern</span><span class="p">(),</span>
@@ -594,11 +601,14 @@ returning the result</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_scalar">
-<span class="sig-name descname"><span class="pre">get_constant_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/graph_builder_optim.html#GraphBuilderPatternOptimization.get_constant_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_scalar" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_constant_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">broadcast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/graph_builder_optim.html#GraphBuilderPatternOptimization.get_constant_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.GraphBuilderPatternOptimization.get_constant_scalar" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a scalar as a constant.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> – name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – name</p></li>
+<li><p><strong>broadcast</strong> – consider [1], [[1]], [[[1]]] as constant as well</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>int or float</p>
@@ -685,12 +695,13 @@ returning the result</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_constant_scalar">
-<span class="sig-name descname"><span class="pre">is_constant_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/graph_builder_optim.html#GraphBuilderPatternOptimization.is_constant_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_constant_scalar" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_constant_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">broadcast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/graph_builder_optim.html#GraphBuilderPatternOptimization.is_constant_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.GraphBuilderPatternOptimization.is_constant_scalar" title="Link to this definition">¶</a></dt>
 <dd><p>Tells if a constant is a scalar</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name</p></li>
+<li><p><strong>broadcast</strong> – if True, consider 1, [1], [[1]], [[[1]]], … as scalar as well</p></li>
 <li><p><strong>value</strong> – value to compare to if specified</p></li>
 </ul>
 </dd>
@@ -1053,6 +1064,12 @@ which lines in the code returned None and which condition failed.</p>
 The current implementation does not match on domain name.
 It does not compares attributes either.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.EasyPatternOptimization.add_validate_param">
+<span class="sig-name descname"><span class="pre">add_validate_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/patterns_api.html#EasyPatternOptimization.add_validate_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.EasyPatternOptimization.add_validate_param" title="Link to this definition">¶</a></dt>
+<dd><p>Stores a value to retrieve when apply_pattern is called.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.EasyPatternOptimization.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/patterns_api.html#EasyPatternOptimization.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.EasyPatternOptimization.apply" title="Link to this definition">¶</a></dt>
 <dd><p>The method does the rewriting. It assumes it can happen.
@@ -1308,6 +1325,7 @@ will automatically determine the position of the new nodes.</p></li>
 </li>
 <li><a class="reference internal" href="#easypatternoptimization">EasyPatternOptimization</a><ul>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.EasyPatternOptimization"><code class="docutils literal notranslate"><span class="pre">EasyPatternOptimization</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.EasyPatternOptimization.add_validate_param"><code class="docutils literal notranslate"><span class="pre">EasyPatternOptimization.add_validate_param()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.EasyPatternOptimization.apply"><code class="docutils literal notranslate"><span class="pre">EasyPatternOptimization.apply()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.EasyPatternOptimization.apply_pattern"><code class="docutils literal notranslate"><span class="pre">EasyPatternOptimization.apply_pattern()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.EasyPatternOptimization.display_pattern"><code class="docutils literal notranslate"><span class="pre">EasyPatternOptimization.display_pattern()</span></code></a></li>
