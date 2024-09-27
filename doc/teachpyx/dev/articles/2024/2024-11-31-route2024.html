@@ -594,45 +594,91 @@
 </section>
 <section id="seance-3">
 <h2>Séance 3<a class="headerlink" href="#seance-3" title="Link to this heading">¶</a></h2>
-<p>Héritage</p>
 <p><a class="reference internal" href="../../practice/py-base/classe_tree.html#nbl-practice-py-base-classe-tree"><span class="std std-ref">classes pour représenter un graphe</span></a></p>
 <p>Fin des classes puis <a class="reference internal" href="../../practice/py-base/classe_iterateur.html#nbl-practice-py-base-classe-iterateur"><span class="std std-ref">les itérateurs</span></a> et
 <a class="reference internal" href="../../c_data/numpy_broadcast.html#nbl-c-data-numpy-broadcast"><span class="std std-ref">numpy broadcast</span></a>.</p>
 </section>
 <section id="seance-4">
 <h2>Séance 4<a class="headerlink" href="#seance-4" title="Link to this heading">¶</a></h2>
-<p>Dame et minimax.</p>
-</section>
-<section id="seance-5">
-<h2>Séance 5<a class="headerlink" href="#seance-5" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="../../practice/years/2023/editdist.html#nbl-practice-years-2023-editdist"><span class="std std-ref">Distance d’édition</span></a></p></li>
-<li><p><a class="reference internal" href="../../practice/years/2023/pivot_gauss.html#nbl-practice-years-2023-pivot-gauss"><span class="std std-ref">Pivot de Gauss</span></a></p></li>
-</ul>
+<p>Nous garderons les dames et l’algortithme minimax pour une autre fois peut être.
+Cette séance à propos de la programmation dynamique.
+Le premier exercice consiste à déterminer le nombre minimal de pièces
+de monnaie pour écrire un montant et de retrouver la séquence minimale
+de pièces. On considère les pièces <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">4,</span> <span class="pre">5]</span></code>.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ecriture_minimale</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">pieces</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+    <span class="n">min_pieces</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">predecessor</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">min_pieces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pieces</span><span class="p">:</span>
+        <span class="n">min_pieces</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">predecessor</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">min_pieces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># écriture impossible</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pieces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">min_pieces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">min_pieces</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">p</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="n">min_pieces</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">p</span><span class="p">]:</span>
+                <span class="n">min_pieces</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
+                <span class="n">predecessor</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="n">composition</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">composition</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predecessor</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+        <span class="n">n</span> <span class="o">-=</span> <span class="n">predecessor</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">min_pieces</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">composition</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ecriture_minimale</span><span class="p">(</span><span class="mi">99</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>On bascule ensuite vers la
+<a class="reference internal" href="../../practice/years/2023/editdist.html#nbl-practice-years-2023-editdist"><span class="std std-ref">Distance d’édition</span></a>.</p>
 <p>A propos de la distance d’édition, voir aussi
 <a class="reference internal" href="../../practice/algo-base/exercice_edit_distance.html#nbl-practice-algo-base-exercice-edit-distance"><span class="std std-ref">Distance d’édition</span></a> ou encore
 <a class="reference internal" href="../../practice/algo-base/exercice_editdist.html#nbl-practice-algo-base-exercice-editdist"><span class="std std-ref">Distance entre deux mots de même longueur et tests unitaires</span></a>.</p>
 </section>
-<section id="seance-6">
-<h2>Séance 6<a class="headerlink" href="#seance-6" title="Link to this heading">¶</a></h2>
+<section id="seance-5">
+<h2>Séance 5<a class="headerlink" href="#seance-5" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="../../practice/algo-base/tsp_simplifie.html#nbl-practice-algo-base-tsp-simplifie"><span class="std std-ref">Le voyageur de commerce</span></a></p></li>
-<li><p><a class="reference internal" href="../../practice/years/2023/prefix_search.html#nbl-practice-years-2023-prefix-search"><span class="std std-ref">Recheche à base de préfixes</span></a></p></li>
+<li><p><a class="reference internal" href="../../practice/algo-base/tsp_simplifie.html#nbl-practice-algo-base-tsp-simplifie"><span class="std std-ref">Le voyageur de commerce</span></a> ou
+<a class="reference external" href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_sac_%C3%A0_dos">problème du sac à dos</a></p></li>
+<li><p><a class="reference internal" href="../../practice/years/2023/prefix_search.html#nbl-practice-years-2023-prefix-search"><span class="std std-ref">Recherche à base de préfixes</span></a></p></li>
 </ul>
 <p>Autres variations autour du problème du voyageur de commerce,
 ou TSP pour Travelling Salesman Problem
 ou encore circuit hamiltonien: <a class="reference internal" href="../../c_expose/tsp/tsp_kohonen.html#l-tsp-kohonen"><span class="std std-ref">Circuit hamiltonien et Kohonen</span></a>, <a class="reference internal" href="../../c_expose/tsp/tsp_kruskal.html#l-tsp-kruskal"><span class="std std-ref">Circuit hamiltonien et Kruskal</span></a>.</p>
+</section>
+<section id="seance-6">
+<h2>Séance 6<a class="headerlink" href="#seance-6" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../practice/tds-base/pyramide_bigarree.html#nbl-practice-tds-base-pyramide-bigarree"><span class="std std-ref">Tracer une pyramide bigarrée</span></a></p></li>
+<li><p><a class="reference internal" href="../../practice/py-base/exercice_regex.html#nbl-practice-py-base-exercice-regex"><span class="std std-ref">Expressions régulières</span></a>,
+<a class="reference internal" href="../../practice/tds-base/module_file_regex.html#nbl-practice-tds-base-module-file-regex"><span class="std std-ref">Modules, fichiers, expression régulières</span></a></p></li>
+</ul>
 </section>
 <section id="seance-7">
 <h2>Séance 7<a class="headerlink" href="#seance-7" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../practice/py-base/classe_user_p.html#nbl-practice-py-base-classe-user-p"><span class="std std-ref">Classe et héritage</span></a></p></li>
 </ul>
+<p>Convertir une expression mathématique comme <span class="math notranslate nohighlight">\(((34 + 6) - 2) / (7 - 4)\)</span>
+en <a class="reference external" href="https://fr.wikipedia.org/wiki/Notation_polonaise_inverse">notation polonaise inverse</a>.
+Voir aussi <a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_Shunting-yard">Algorithme Shunting-yard</a>.</p>
 </section>
 <section id="seance-8">
 <h2>Séance 8<a class="headerlink" href="#seance-8" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="../../practice/years/2023/bareme_note_optimisation.html#nbl-practice-years-2023-bareme-note-optimisation"><span class="std std-ref">Optimisation de la note moyenne</span></a></p></li>
+<li><p><a class="reference internal" href="../../practice/years/2023/pivot_gauss.html#nbl-practice-years-2023-pivot-gauss"><span class="std std-ref">Pivot de Gauss</span></a>,
+cet algorithme est la première étage pour inverser une matrice</p></li>
 </ul>
 <p>TD noté 1h30 en seconde partie.
 Classes et un algorithme.
@@ -722,5 +768,7 @@ Enoncés des années précédentes :
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/translations.js?v=d99ca74e"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>
