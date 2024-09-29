@@ -8,7 +8,7 @@
         <title>experimental_experiment.torch_dynamo - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -264,8 +264,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
@@ -278,6 +278,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../models/torchtry.html">Tries with Undocumented</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/onnxrt.html">Use the custom exporter in torch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/example_bug.html">A script to report a bug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../models/plot_custom_backend_code_llama_102.html">CodeLlama</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/llama.html">LLaMa</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/mistral.html">Mistral</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../models/phi.html">Phi</a></li>
@@ -296,6 +297,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../long_outputs.html">Long Outputs uneasy to read</a></li>
 </ul>
@@ -333,12 +335,45 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_dynamo</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
 <span class="kn">from</span> <span class="nn">.debug_backend</span> <span class="kn">import</span> <span class="n">onnx_debug_backend</span>
 <span class="kn">from</span> <span class="nn">.fast_backend</span> <span class="kn">import</span> <span class="n">onnx_custom_backend</span>
 <span class="kn">from</span> <span class="nn">.dynger_backend</span> <span class="kn">import</span> <span class="n">dynger_backend</span>
+
+
+<div class="viewcode-block" id="get_decomposition_table_by_name">
+<a class="viewcode-back" href="../../api/torch_dynamo.html#experimental_experiment.torch_dynamo.get_decomposition_table_by_name">[docs]</a>
+<span class="k">def</span> <span class="nf">get_decomposition_table_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a predefined decomposition table.</span>
+
+<span class="sd">    :param name: name see below</span>
+<span class="sd">    :return: decomposition table</span>
+
+<span class="sd">    * &#39;none&#39;: do not decompose</span>
+<span class="sd">    * &#39;default&#39;: :func:`get_decomposition_table`</span>
+<span class="sd">    * &#39;onnxscript&#39;: :func:`get_decomposition_table_onnxscript`</span>
+<span class="sd">    * &#39;dynamo&#39;: :func:`get_decomposition_table_dynamo`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_decomposition_table</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;onnxscript&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_decomposition_table_onnxscript</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;dynamo&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_decomposition_table_dynamo</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;onnxscript2&quot;</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">get_decomposition_table_onnxscript</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">filter_decomposition_table</span><span class="p">(</span>
+            <span class="n">table</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">op</span><span class="p">:</span> <span class="s2">&quot;view&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;copy&quot;</span> <span class="ow">in</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown decomposition table name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="get_decomposition_table">
@@ -390,6 +425,35 @@
 
 
 
+<div class="viewcode-block" id="get_decomposition_table_onnxscript">
+<a class="viewcode-back" href="../../api/torch_dynamo.html#experimental_experiment.torch_dynamo.get_decomposition_table_onnxscript">[docs]</a>
+<span class="k">def</span> <span class="nf">get_decomposition_table_onnxscript</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the decomposition table used by :func:`torch.onnx.export`.</span>
+
+<span class="sd">    The value is:</span>
+
+<span class="sd">    .. runpython::</span>
+<span class="sd">        :showcode:</span>
+
+<span class="sd">        import pprint</span>
+<span class="sd">        from experimental_experiment.torch_dynamo import get_decomposition_table_onnxscript</span>
+
+<span class="sd">        pprint.pprint(get_decomposition_table_onnxscript())</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">torch.onnx._internal.exporter._registration</span> <span class="kn">import</span> <span class="n">ONNXRegistry</span>
+    <span class="kn">from</span> <span class="nn">torch.onnx._internal.exporter._decomp</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="n">get_onnx_implemented_overloads</span><span class="p">,</span>
+        <span class="n">create_onnx_friendly_decomposition_table</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">registry</span> <span class="o">=</span> <span class="n">ONNXRegistry</span><span class="o">.</span><span class="n">from_torchlib</span><span class="p">()</span>
+    <span class="n">onnx_registered_ops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">get_onnx_implemented_overloads</span><span class="p">(</span><span class="n">registry</span><span class="p">))</span>
+    <span class="n">decomposition_table</span> <span class="o">=</span> <span class="n">create_onnx_friendly_decomposition_table</span><span class="p">(</span><span class="n">onnx_registered_ops</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decomposition_table</span></div>
+
+
+
 <div class="viewcode-block" id="get_decomposition_table_dynamo">
 <a class="viewcode-back" href="../../api/torch_dynamo.html#experimental_experiment.torch_dynamo.get_decomposition_table_dynamo">[docs]</a>
 <span class="k">def</span> <span class="nf">get_decomposition_table_dynamo</span><span class="p">(</span><span class="n">onnx_registry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -424,13 +488,17 @@
 
 <div class="viewcode-block" id="filter_decomposition_table">
 <a class="viewcode-back" href="../../api/torch_dynamo.html#experimental_experiment.torch_dynamo.filter_decomposition_table">[docs]</a>
-<span class="k">def</span> <span class="nf">filter_decomposition_table</span><span class="p">(</span><span class="n">existing_table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">filter_decomposition_table</span><span class="p">(</span>
+    <span class="n">existing_table</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_fct</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the decomposition table when some conversions because</span>
 <span class="sd">    their translation in ONNX is less efficient.</span>
 
 <span class="sd">    :param existing_table: dictionary of decompositions, by default,</span>
 <span class="sd">        it is ``torch._decomp.decomposition_table``.</span>
+<span class="sd">    :param filter_fct: if specified, a decomposition function is remove</span>
+<span class="sd">        if the function returns false</span>
 <span class="sd">    :return: new table</span>
 
 <span class="sd">    ::</span>
@@ -465,10 +533,15 @@
         <span class="kn">import</span> <span class="nn">torch</span>
 
         <span class="n">existing_table</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_decomp</span><span class="o">.</span><span class="n">decomposition_table</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">existing_table</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">existing_table</span> <span class="o">=</span> <span class="n">existing_table</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 
     <span class="n">new_table</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">existing_table</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">filter_fct</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_fct</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="k">continue</span>
+        <span class="k">elif</span> <span class="n">k</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span>
             <span class="s2">&quot;aten::slice_backward&quot;</span><span class="p">,</span>
             <span class="s2">&quot;aten::select_backward.out&quot;</span><span class="p">,</span>
             <span class="s2">&quot;aten::slice.Tensor&quot;</span><span class="p">,</span>
