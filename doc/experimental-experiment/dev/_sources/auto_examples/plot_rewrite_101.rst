@@ -177,24 +177,24 @@ Optimization
     [GraphBuilderPatternOptimization.optimize] start with 3 nodes and 1 patterns, priorities=[0]
     [GraphBuilderPatternOptimization.optimize] use pattern   1/1 - P0 - MulMulSigmoidPattern()
     [GraphBuilderPatternOptimization.optimize] iteration 0: 3 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.000 | max_time=MulMulSigmoidPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
     [GraphBuilderPatternOptimization.optimize] iteration 1: 1 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.001
     [GraphBuilder.optimize] done with 1 nodes in 0.002
-        STAT apply_MulMulSigmoidPattern +1 -3 #it=1 maxmatch=0 i=1 - time=0.0003170159998262534
-        STAT build_for_pattern +0 -0 #it=2 maxmatch=0 i=0 - time=1.8477999219612684e-05
-        STAT check_A +0 -0 #it=0 maxmatch=0 i=0 - time=1.5042000086396001e-05
-        STAT check_B +0 -0 #it=0 maxmatch=0 i=0 - time=6.488000508397818e-06
-        STAT check_C +0 -0 #it=0 maxmatch=0 i=0 - time=6.371999916154891e-06
-        STAT check_F +0 -0 #it=0 maxmatch=0 i=0 - time=7.153000296966638e-06
-        STAT check_G +0 -0 #it=0 maxmatch=0 i=0 - time=4.078000529261772e-06
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=9.987000339606311e-06
-        STAT check_pattern_A0 +0 -0 #it=1 maxmatch=0 i=0 - time=5.816999873786699e-06
-        STAT check_pattern_B0 +0 -0 #it=2 maxmatch=0 i=0 - time=1.0894999832089525e-05
-        STAT match_MulMulSigmoidPattern +0 -0 #it=2 maxmatch=1 i=1 - time=0.0008797199998298311
-        STAT pattern_optimization +0 -2 #it=0 maxmatch=0 i=0 - time=0.001547962000586267
-        STAT remove_identity_nodes +0 -0 #it=2 maxmatch=0 i=0 - time=4.476899903238518e-05
-        STAT remove_unused +0 -0 #it=0 maxmatch=0 i=0 - time=3.32710005750414e-05
+        STAT apply_MulMulSigmoidPattern +1 -3 #it=1 maxmatch=0 i=1 - time=0.0003088119992753491
+        STAT build_for_pattern +0 -0 #it=2 maxmatch=0 i=0 - time=1.562999932502862e-05
+        STAT check_A +0 -0 #it=0 maxmatch=0 i=0 - time=1.885599886009004e-05
+        STAT check_B +0 -0 #it=0 maxmatch=0 i=0 - time=9.018000127980486e-06
+        STAT check_C +0 -0 #it=0 maxmatch=0 i=0 - time=8.424998668488115e-06
+        STAT check_F +0 -0 #it=0 maxmatch=0 i=0 - time=5.678999514202587e-06
+        STAT check_G +0 -0 #it=0 maxmatch=0 i=0 - time=3.4559998312033713e-06
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=1.4908000594004989e-05
+        STAT check_pattern_A0 +0 -0 #it=1 maxmatch=0 i=0 - time=6.415000825654715e-06
+        STAT check_pattern_B0 +0 -0 #it=2 maxmatch=0 i=0 - time=9.16399949346669e-06
+        STAT match_MulMulSigmoidPattern +0 -0 #it=2 maxmatch=1 i=1 - time=0.0009488329978921684
+        STAT pattern_optimization +0 -2 #it=0 maxmatch=0 i=0 - time=0.0016338309997081524
+        STAT remove_identity_nodes +0 -0 #it=2 maxmatch=0 i=0 - time=4.811699909623712e-05
+        STAT remove_unused +0 -0 #it=0 maxmatch=0 i=0 - time=3.932700019504409e-05
     --MODEL: 1 nodes, 2 inputs, 1 outputs, 0 initializers--
          INPUT:   2 x 1t
         OUTPUT:   1 x 1t
@@ -323,7 +323,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.126 seconds)
+   **Total running time of the script:** (0 minutes 0.218 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

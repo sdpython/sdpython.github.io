@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Phi" href="phi.html" /><link rel="prev" title="LLaMa" href="llama.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Mistral - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -446,19 +446,15 @@
     Gather(p_embed_tokens_weight, input_ids) -&gt; embedding
       Pow(embedding, init1_s1_2) -&gt; pow_1
         ReduceMean(pow_1, init7_s1_-1, keepdims=1) -&gt; mean
-          Add(mean, init1_s_2) -&gt; add_1
-            Sqrt(add_1) -&gt; _onx_sqrt0
-              Reciprocal(_onx_sqrt0) -&gt; rsqrt
-      Mul(embedding, rsqrt) -&gt; mul_1
-        Mul(p_layers_0_input_layernorm_weight, mul_1) -&gt; mul_2
     Range(init7_s_0, init7_s_1024, init7_s_1) -&gt; arange
       Reshape(arange, init7_s2_-1_1) -&gt; view
-        Sub(view, init7_s_4096) -&gt; sub
-      Unsqueeze(arange, init7_s2_0_12) -&gt; unsqueeze_9
-        Cast(unsqueeze_9, to=1) -&gt; _to_copy_3
+    Unsqueeze(arange, init7_s2_0_12) -&gt; unsqueeze_9
+      Cast(unsqueeze_9, to=1) -&gt; _to_copy_3
     Range(init7_s_0, init7_s_1024, init7_s_1) -&gt; arange_1
       Greater(arange_1, view) -&gt; gt
     Range(init7_s_0, init7_s_1024, init7_s_1) -&gt; arange_2
+    Reshape(init7_s_4096, init7_s1_1) -&gt; _onx_reshape0
+      Sub(view, _onx_reshape0) -&gt; sub
       LessOrEqual(arange_2, sub) -&gt; le
         Or(gt, le) -&gt; bitwise_or
           Cast(bitwise_or, to=1) -&gt; _onx_cast0
@@ -467,8 +463,15 @@
           Expand(unsqueeze_4, init7_s4_2_1_1024_1024) -&gt; expand_1
     Unsqueeze(attention_mask, init7_s2_1_2) -&gt; unsqueeze_6
       Add(expand_1, unsqueeze_6) -&gt; add
-        Equal(add, init1_s_) -&gt; eq
-          Where(eq, init1_s1_, expand_1) -&gt; _onx_where0
+    Reshape(init1_s_, init7_s1_1) -&gt; _onx_reshape02
+      Equal(add, _onx_reshape02) -&gt; eq
+        Where(eq, init1_s1_, expand_1) -&gt; _onx_where0
+    Reshape(init1_s_2, init7_s1_1) -&gt; _onx_reshape03
+      Add(mean, _onx_reshape03) -&gt; add_1
+        Sqrt(add_1) -&gt; _onx_sqrt0
+          Reciprocal(_onx_sqrt0) -&gt; rsqrt
+      Mul(embedding, rsqrt) -&gt; mul_1
+        Mul(p_layers_0_input_layernorm_weight, mul_1) -&gt; mul_2
     Transpose(p_layers_0_self_attn_q_proj_weight, perm=[1,0]) -&gt; _onx_transpose0
       MatMul(mul_2, _onx_transpose0) -&gt; linear
         Reshape(linear, init7_s4_2_1024_2_16) -&gt; view_2
@@ -486,7 +489,7 @@
     Transpose(p_layers_0_self_attn_v_proj_weight, perm=[1,0]) -&gt; _onx_transpose03
       MatMul(mul_2, _onx_transpose03) -&gt; linear_2
         Reshape(linear_2, init7_s4_2_1024_2_16) -&gt; view_4
-          Transpose(view_4, perm=[0,2,1,3]) -&gt; transpose_2
+          Transpose(view_4, perm=[0,2,1,3]) -&gt; output_2
     Unsqueeze(b_layers_0_self_attn_rotary_emb_inv_freq, init7_s2_0_2) -&gt; unsqueeze_8
       submod_5[aten_local_function](unsqueeze_8, _to_copy_3) -&gt; wrap_with_autocast#0, wrap_with_autocast#1
         Unsqueeze(wrap_with_autocast#0, init7_s1_1) -&gt; unsqueeze_10
@@ -496,13 +499,14 @@
             Add(mul_3, mul_4) -&gt; add_2
           Mul(transpose_1, unsqueeze_10) -&gt; mul_5
     Mul(cat_2, unsqueeze_11) -&gt; mul_6
-      Add(mul_5, mul_6) -&gt; add_3
-        Transpose(add_3, perm=[0,1,3,2]) -&gt; transpose_4
+      Add(mul_5, mul_6) -&gt; output_1
+        Transpose(output_1, perm=[0,1,3,2]) -&gt; transpose_4
           MatMul(add_2, transpose_4) -&gt; matmul_1
-            Div(matmul_1, init1_s_3) -&gt; div
-            Add(div, _onx_where0) -&gt; add_4
-              Softmax(add_4, axis=-1) -&gt; softmax
-            MatMul(softmax, transpose_2) -&gt; matmul_2
+    Reshape(init1_s_3, init7_s1_1) -&gt; _onx_reshape04
+      Div(matmul_1, _onx_reshape04) -&gt; div
+        Add(div, _onx_where0) -&gt; add_4
+          Softmax(add_4, axis=-1) -&gt; softmax
+            MatMul(softmax, output_2) -&gt; matmul_2
               Transpose(matmul_2, perm=[0,2,1,3]) -&gt; transpose_5
                 Reshape(transpose_5, init7_s3_2_1024_-1) -&gt; view_5
     Transpose(p_layers_0_self_attn_o_proj_weight, perm=[1,0]) -&gt; _onx_transpose04
@@ -510,9 +514,10 @@
       Add(embedding, linear_3) -&gt; add_5
         Pow(add_5, init1_s1_2) -&gt; pow_2
           ReduceMean(pow_2, init7_s1_-1, keepdims=1) -&gt; mean_1
-            Add(mean_1, init1_s_2) -&gt; add_6
-              Sqrt(add_6) -&gt; _onx_sqrt02
-                Reciprocal(_onx_sqrt02) -&gt; rsqrt_1
+    Reshape(init1_s_2, init7_s1_1) -&gt; _onx_reshape05
+      Add(mean_1, _onx_reshape05) -&gt; add_6
+        Sqrt(add_6) -&gt; _onx_sqrt02
+          Reciprocal(_onx_sqrt02) -&gt; rsqrt_1
         Mul(add_5, rsqrt_1) -&gt; mul_7
           Mul(p_layers_0_post_attention_layernorm_weight, mul_7) -&gt; mul_8
     Transpose(p_layers_0_mlp_gate_proj_weight, perm=[1,0]) -&gt; _onx_transpose05
@@ -527,9 +532,10 @@
         Add(add_5, linear_6) -&gt; add_7
           Pow(add_7, init1_s1_2) -&gt; pow_3
             ReduceMean(pow_3, init7_s1_-1, keepdims=1) -&gt; mean_2
-              Add(mean_2, init1_s_2) -&gt; add_8
-                Sqrt(add_8) -&gt; _onx_sqrt03
-                  Reciprocal(_onx_sqrt03) -&gt; rsqrt_2
+    Reshape(init1_s_2, init7_s1_1) -&gt; _onx_reshape06
+      Add(mean_2, _onx_reshape06) -&gt; add_8
+        Sqrt(add_8) -&gt; _onx_sqrt03
+          Reciprocal(_onx_sqrt03) -&gt; rsqrt_2
           Mul(add_7, rsqrt_2) -&gt; mul_10
             Mul(p_layers_1_input_layernorm_weight, mul_10) -&gt; mul_11
     Transpose(p_layers_1_self_attn_q_proj_weight, perm=[1,0]) -&gt; _onx_transpose08
@@ -549,7 +555,7 @@
     Transpose(p_layers_1_self_attn_v_proj_weight, perm=[1,0]) -&gt; _onx_transpose010
       MatMul(mul_11, _onx_transpose010) -&gt; linear_9
         Reshape(linear_9, init7_s4_2_1024_2_16) -&gt; view_8
-          Transpose(view_8, perm=[0,2,1,3]) -&gt; transpose_8
+          Transpose(view_8, perm=[0,2,1,3]) -&gt; output_4
     Unsqueeze(b_layers_1_self_attn_rotary_emb_inv_freq, init7_s2_0_2) -&gt; unsqueeze_13
       submod_6[aten_local_function](unsqueeze_13, _to_copy_3) -&gt; wrap_with_autocast_1#0, wrap_with_autocast_1#1
         Unsqueeze(wrap_with_autocast_1#0, init7_s1_1) -&gt; unsqueeze_15
@@ -559,13 +565,14 @@
             Add(mul_12, mul_13) -&gt; add_9
           Mul(transpose_7, unsqueeze_15) -&gt; mul_14
     Mul(cat_5, unsqueeze_16) -&gt; mul_15
-      Add(mul_14, mul_15) -&gt; add_10
-        Transpose(add_10, perm=[0,1,3,2]) -&gt; transpose_10
+      Add(mul_14, mul_15) -&gt; output_3
+        Transpose(output_3, perm=[0,1,3,2]) -&gt; transpose_10
           MatMul(add_9, transpose_10) -&gt; matmul_4
-            Div(matmul_4, init1_s_3) -&gt; div_1
-            Add(div_1, _onx_where0) -&gt; add_11
-              Softmax(add_11, axis=-1) -&gt; softmax_1
-            MatMul(softmax_1, transpose_8) -&gt; matmul_5
+    Reshape(init1_s_3, init7_s1_1) -&gt; _onx_reshape07
+      Div(matmul_4, _onx_reshape07) -&gt; div_1
+        Add(div_1, _onx_where0) -&gt; add_11
+          Softmax(add_11, axis=-1) -&gt; softmax_1
+            MatMul(softmax_1, output_4) -&gt; matmul_5
               Transpose(matmul_5, perm=[0,2,1,3]) -&gt; transpose_11
                 Reshape(transpose_11, init7_s3_2_1024_-1) -&gt; view_9
     Transpose(p_layers_1_self_attn_o_proj_weight, perm=[1,0]) -&gt; _onx_transpose011
@@ -573,9 +580,10 @@
         Add(add_7, linear_10) -&gt; add_12
           Pow(add_12, init1_s1_2) -&gt; pow_4
             ReduceMean(pow_4, init7_s1_-1, keepdims=1) -&gt; mean_3
-              Add(mean_3, init1_s_2) -&gt; add_13
-                Sqrt(add_13) -&gt; _onx_sqrt04
-                  Reciprocal(_onx_sqrt04) -&gt; rsqrt_3
+    Reshape(init1_s_2, init7_s1_1) -&gt; _onx_reshape08
+      Add(mean_3, _onx_reshape08) -&gt; add_13
+        Sqrt(add_13) -&gt; _onx_sqrt04
+          Reciprocal(_onx_sqrt04) -&gt; rsqrt_3
           Mul(add_12, rsqrt_3) -&gt; mul_16
             Mul(p_layers_1_post_attention_layernorm_weight, mul_16) -&gt; mul_17
     Transpose(p_layers_1_mlp_gate_proj_weight, perm=[1,0]) -&gt; _onx_transpose012
@@ -590,32 +598,45 @@
         Add(add_12, linear_13) -&gt; add_14
           Pow(add_14, init1_s1_2) -&gt; pow_5
             ReduceMean(pow_5, init7_s1_-1, keepdims=1) -&gt; mean_4
-              Add(mean_4, init1_s_2) -&gt; add_15
-                Sqrt(add_15) -&gt; _onx_sqrt05
-                  Reciprocal(_onx_sqrt05) -&gt; rsqrt_4
+    Reshape(init1_s_2, init7_s1_1) -&gt; _onx_reshape09
+      Add(mean_4, _onx_reshape09) -&gt; add_15
+        Sqrt(add_15) -&gt; _onx_sqrt05
+          Reciprocal(_onx_sqrt05) -&gt; rsqrt_4
           Mul(add_14, rsqrt_4) -&gt; mul_19
             Mul(p_norm_weight, mul_19) -&gt; output_0
     output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[2, 1024, 32]
+    output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[2, 2, 1024, 16]
+    output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[2, 2, 1024, 16]
+    output: name=&#39;output_3&#39; type=dtype(&#39;float32&#39;) shape=[2, 2, 1024, 16]
+    output: name=&#39;output_4&#39; type=dtype(&#39;float32&#39;) shape=[2, 2, 1024, 16]
     ----- function name=submod_5 domain=aten_local_function
     opset: domain=&#39;&#39; version=18
     input: &#39;expand_2&#39;
     input: &#39;_to_copy_3&#39;
-    MatMul(expand_2, _to_copy_3) -&gt; matmul
-      Transpose(matmul, perm=[0,2,1]) -&gt; transpose_3
-        Concat(transpose_3, transpose_3, axis=-1) -&gt; cat
-          Cos(cat) -&gt; output_0
-          Sin(cat) -&gt; output_1
+    Cast(expand_2, to=1) -&gt; _to_copy_4
+    Cast(_to_copy_3, to=1) -&gt; _to_copy_5
+      MatMul(_to_copy_4, _to_copy_5) -&gt; matmul
+        Transpose(matmul, perm=[0,2,1]) -&gt; transpose_3
+          Concat(transpose_3, transpose_3, axis=-1) -&gt; cat
+            Cos(cat) -&gt; cos
+              Identity(cos) -&gt; output_0
+            Sin(cat) -&gt; sin
+              Identity(sin) -&gt; output_1
     output: name=&#39;output_0&#39; type=? shape=?
     output: name=&#39;output_1&#39; type=? shape=?
     ----- function name=submod_6 domain=aten_local_function
     opset: domain=&#39;&#39; version=18
     input: &#39;expand_3&#39;
     input: &#39;_to_copy_14&#39;
-    MatMul(expand_3, _to_copy_14) -&gt; matmul_3
-      Transpose(matmul_3, perm=[0,2,1]) -&gt; transpose_9
-        Concat(transpose_9, transpose_9, axis=-1) -&gt; cat_3
-          Cos(cat_3) -&gt; output_0
-          Sin(cat_3) -&gt; output_1
+    Cast(expand_3, to=1) -&gt; _to_copy_15
+    Cast(_to_copy_14, to=1) -&gt; _to_copy_16
+      MatMul(_to_copy_15, _to_copy_16) -&gt; matmul_3
+        Transpose(matmul_3, perm=[0,2,1]) -&gt; transpose_9
+          Concat(transpose_9, transpose_9, axis=-1) -&gt; cat_3
+            Cos(cat_3) -&gt; cos_1
+              Identity(cos_1) -&gt; output_0
+            Sin(cat_3) -&gt; sin_1
+              Identity(sin_1) -&gt; output_1
     output: name=&#39;output_0&#39; type=? shape=?
     output: name=&#39;output_1&#39; type=? shape=?
 </pre></div>
@@ -672,7 +693,7 @@
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=a1637f0b"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
     </body>

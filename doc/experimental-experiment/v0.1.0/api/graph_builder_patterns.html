@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="order_optim" href="order_optimization.html" /><link rel="prev" title="graph_builder_optim" href="graph_builder_pattern.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Optimization Patterns - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -2465,6 +2465,69 @@ will automatically determine the position of the new nodes.</p></li>
 </dd></dl>
 
 </section>
+<section id="module-experimental_experiment.xoptim.patterns_ml.tree_ensemble">
+<span id="ml-patterns"></span><h2>ML Patterns<a class="headerlink" href="#module-experimental_experiment.xoptim.patterns_ml.tree_ensemble" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ml.tree_ensemble.</span></span><span class="sig-name descname"><span class="pre">TreeEnsembleRegressorMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern" title="Link to this definition">¶</a></dt>
+<dd><p>Replaces TreeEnsembleRegressor + Mul(., scalar) with TreeEnsembleRegressor.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.apply" title="Link to this definition">¶</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="graph_builder_pattern.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="graph_builder_pattern.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/experimental_experiment/xoptim/patterns_ml/tree_ensemble.html#TreeEnsembleRegressorMulPattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.match" title="Link to this definition">¶</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optmizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="graph_builder_pattern.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-experimental_experiment.xoptim.patterns_exp.binary_operators">
 <span id="custom-op-patterns"></span><span id="l-custom-op-patterns"></span><h2>Custom Op Patterns<a class="headerlink" href="#module-experimental_experiment.xoptim.patterns_exp.binary_operators" title="Link to this heading">¶</a></h2>
 <dl class="py class">
@@ -4173,6 +4236,14 @@ will automatically determine the position of the new nodes.</p></li>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-experimental_experiment.xoptim.patterns_ml.tree_ensemble">ML Patterns</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern"><code class="docutils literal notranslate"><span class="pre">TreeEnsembleRegressorMulPattern</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.apply"><code class="docutils literal notranslate"><span class="pre">TreeEnsembleRegressorMulPattern.apply()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ml.tree_ensemble.TreeEnsembleRegressorMulPattern.match"><code class="docutils literal notranslate"><span class="pre">TreeEnsembleRegressorMulPattern.match()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-experimental_experiment.xoptim.patterns_exp.binary_operators">Custom Op Patterns</a><ul>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulBroadcastPattern"><code class="docutils literal notranslate"><span class="pre">AddAddMulMulBroadcastPattern</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern"><code class="docutils literal notranslate"><span class="pre">AddAddMulMulPattern</span></code></a><ul>
@@ -4313,7 +4384,7 @@ will automatically determine the position of the new nodes.</p></li>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=a1637f0b"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

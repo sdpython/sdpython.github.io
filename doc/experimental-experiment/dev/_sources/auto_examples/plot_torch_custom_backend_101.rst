@@ -80,9 +80,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[-0.2797],
-            [-0.4624],
-            [-0.3766]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.0461],
+            [ 0.0561],
+            [ 0.2555]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -120,9 +120,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[-0.2797],
-            [-0.4624],
-            [-0.3766]])
+    tensor([[-0.0461],
+            [ 0.0561],
+            [ 0.2555]])
 
 
 
@@ -172,9 +172,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[-0.2797],
-            [-0.4624],
-            [-0.3766]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.0461],
+            [ 0.0561],
+            [ 0.2555]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -263,9 +263,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7455.948221206665
-    Loss after epoch 2: 5587.087829589844
-    Loss after epoch 3: 5349.503881454468
+    Loss after epoch 1: 6960.489700317383
+    Loss after epoch 2: 5552.362981796265
+    Loss after epoch 3: 5261.959686279297
     Training process has finished.
 
     OptimizedModule(
@@ -317,9 +317,9 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7440.886709213257
-    Loss after epoch 2: 5549.576610565186
-    Loss after epoch 3: 5316.567289352417
+    Loss after epoch 1: 7438.013298034668
+    Loss after epoch 2: 5502.40389251709
+    Loss after epoch 3: 5221.771013259888
     Training process has finished.
     4 were created.
 
@@ -463,9 +463,9 @@ It is needed by pytorch.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7607.094430923462
-    Loss after epoch 2: 5560.169233322144
-    Loss after epoch 3: 5222.801633834839
+    Loss after epoch 1: 7414.292665481567
+    Loss after epoch 2: 5537.836078643799
+    Loss after epoch 3: 5290.5530643463135
     Training process has finished.
     4 were created.
 
@@ -475,7 +475,7 @@ It is needed by pytorch.
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input_dim_2' type=dtype('int64') shape=[1]
-    input: name='input3' type=dtype('float32') shape=['primals_3', 10]
+    input: name='input3' type=dtype('float32') shape=['s0', 10]
     input: name='input4' type=dtype('float32') shape=[1, 32]
     input: name='input5' type=dtype('float32') shape=[1]
     Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
@@ -484,9 +484,9 @@ It is needed by pytorch.
     Transpose(input4, perm=[1,0]) -> output_3
     Identity(input3) -> output_1
     Identity(input_dim_2) -> output_dim_4
-    output: name='output_0' type=dtype('float32') shape=['primals_3', 1]
-    output: name='output_1' type=dtype('float32') shape=['primals_3', 10]
-    output: name='output_2' type=dtype('float32') shape=['primals_3', 32]
+    output: name='output_0' type=dtype('float32') shape=['s0', 1]
+    output: name='output_1' type=dtype('float32') shape=['s0', 10]
+    output: name='output_2' type=dtype('float32') shape=['s0', 32]
     output: name='output_3' type=dtype('float32') shape=[32, 1]
     output: name='output_dim_4' type=dtype('int64') shape=[1]
 
@@ -494,10 +494,10 @@ It is needed by pytorch.
 
     opset: domain='' version=18
     input: name='input_dim_0' type=dtype('int64') shape=[1]
-    input: name='input1' type=dtype('float32') shape=[5, 10]
-    input: name='input2' type=dtype('float32') shape=[5, 32]
+    input: name='input1' type=dtype('float32') shape=['s0', 10]
+    input: name='input2' type=dtype('float32') shape=['s0', 32]
     input: name='input3' type=dtype('float32') shape=[32, 1]
-    input: name='input4' type=dtype('float32') shape=[5, 1]
+    input: name='input4' type=dtype('float32') shape=['s0', 1]
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
     Constant(value_float=0.0) -> output_NONE_2
@@ -522,7 +522,7 @@ It is needed by pytorch.
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input_dim_2' type=dtype('int64') shape=[1]
-    input: name='input3' type=dtype('float32') shape=['primals_3', 10]
+    input: name='input3' type=dtype('float32') shape=['s0', 10]
     input: name='input4' type=dtype('float32') shape=[1, 32]
     input: name='input5' type=dtype('float32') shape=[1]
     Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
@@ -531,9 +531,9 @@ It is needed by pytorch.
     Transpose(input4, perm=[1,0]) -> output_3
     Identity(input3) -> output_1
     Identity(input_dim_2) -> output_dim_4
-    output: name='output_0' type=dtype('float32') shape=['primals_3', 1]
-    output: name='output_1' type=dtype('float32') shape=['primals_3', 10]
-    output: name='output_2' type=dtype('float32') shape=['primals_3', 32]
+    output: name='output_0' type=dtype('float32') shape=['s0', 1]
+    output: name='output_1' type=dtype('float32') shape=['s0', 10]
+    output: name='output_2' type=dtype('float32') shape=['s0', 32]
     output: name='output_3' type=dtype('float32') shape=[32, 1]
     output: name='output_dim_4' type=dtype('int64') shape=[1]
 
@@ -541,10 +541,10 @@ It is needed by pytorch.
 
     opset: domain='' version=18
     input: name='input_dim_0' type=dtype('int64') shape=[1]
-    input: name='input1' type=dtype('float32') shape=[2, 10]
-    input: name='input2' type=dtype('float32') shape=[2, 32]
+    input: name='input1' type=dtype('float32') shape=['s0', 10]
+    input: name='input2' type=dtype('float32') shape=['s0', 32]
     input: name='input3' type=dtype('float32') shape=[32, 1]
-    input: name='input4' type=dtype('float32') shape=[2, 1]
+    input: name='input4' type=dtype('float32') shape=['s0', 1]
     init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
     init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
     Constant(value_float=0.0) -> output_NONE_2
@@ -640,7 +640,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.414 seconds)
+   **Total running time of the script:** (0 minutes 3.337 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:
