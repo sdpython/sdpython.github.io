@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Constructions classiques" href="constructions.html" /><link rel="prev" title="Types et variables du langage python" href="types.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Syntaxe du langage Python (boucles, tests, fonctions) - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -387,6 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -507,6 +508,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -539,6 +541,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -580,7 +583,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="syntaxe-du-langage-python-boucles-tests-fonctions">
-<span id="chap-boucle"></span><span id="chap-syntaxe"></span><h1>Syntaxe du langage Python (boucles, tests, fonctions)<a class="headerlink" href="#syntaxe-du-langage-python-boucles-tests-fonctions" title="Link to this heading">¶</a></h1>
+<span id="chap-boucle"></span><span id="chap-syntaxe"></span><h1>Syntaxe du langage Python (boucles, tests, fonctions)<a class="headerlink" href="#syntaxe-du-langage-python-boucles-tests-fonctions" title="Lien vers cette rubrique">¶</a></h1>
 <p>Avec les variables, les boucles et les fonctions, on connaît suffisamment d’éléments pour écrire
 des programmes. Le plus difficile n’est pas forcément de les comprendre mais plutôt d’arriver
 à découper un algorithme complexe en utilisant ces briques élémentaires. C’est l’objectif
@@ -590,7 +593,7 @@ composants élémentaires du langage, l’aisance qu’on peut acquérir en prog
 comme celui du tri ou d’une recherche dichotomique. C’est cette connaissance tout autant
 que la maîtrise d’un langage de programmation qui constitue l’expérience en programmation.</p>
 <section id="les-trois-concepts-des-algorithmes">
-<h2>Les trois concepts des algorithmes<a class="headerlink" href="#les-trois-concepts-des-algorithmes" title="Link to this heading">¶</a></h2>
+<h2>Les trois concepts des algorithmes<a class="headerlink" href="#les-trois-concepts-des-algorithmes" title="Lien vers cette rubrique">¶</a></h2>
 <p>Les algorithmes sont composés d’instructions, ce sont des opérations
 élémentaires que le processeur exécute selon trois schémas :</p>
 <div class="table-wrapper colwidths-given docutils container">
@@ -747,9 +750,9 @@ qui retourne la valeur absolue d’un nombre. C’est un choix d’implémentati
 du programme qui interprète le langage mais absent de la grammaire.</p>
 </section>
 <section id="tests">
-<h2>Tests<a class="headerlink" href="#tests" title="Link to this heading">¶</a></h2>
+<h2>Tests<a class="headerlink" href="#tests" title="Lien vers cette rubrique">¶</a></h2>
 <section id="definition-et-syntaxe">
-<span id="label-test"></span><h3>Définition et syntaxe<a class="headerlink" href="#definition-et-syntaxe" title="Link to this heading">¶</a></h3>
+<span id="label-test"></span><h3>Définition et syntaxe<a class="headerlink" href="#definition-et-syntaxe" title="Lien vers cette rubrique">¶</a></h3>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition0">
 <span id="index-0"></span><div class="docutils container">
 </div>
@@ -848,7 +851,7 @@ ce qui est différent de la ligne qui précède et de la ligne qui suit.</p>
 </div>
 </section>
 <section id="comparaisons-possibles">
-<span id="par-comparaison"></span><h3>Comparaisons possibles<a class="headerlink" href="#comparaisons-possibles" title="Link to this heading">¶</a></h3>
+<span id="par-comparaison"></span><h3>Comparaisons possibles<a class="headerlink" href="#comparaisons-possibles" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les comparaisons possibles entre deux entités sont avant tout numériques mais ces opérateurs
 peuvent être définis pour tout type (voir <a class="reference internal" href="../c_classes/classes.html#chap-classe"><span class="std std-ref">Classes</span></a>),
 notamment sur les chaînes de caractères pour lesquelles les opérateurs de comparaison
@@ -883,7 +886,7 @@ il est expliqué au paragraphe <a class="reference internal" href="types.html#pa
 </div>
 </section>
 <section id="operateurs-logiques">
-<span id="par-operateur-logique"></span><h3>Opérateurs logiques<a class="headerlink" href="#operateurs-logiques" title="Link to this heading">¶</a></h3>
+<span id="par-operateur-logique"></span><h3>Opérateurs logiques<a class="headerlink" href="#operateurs-logiques" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il existe trois opérateurs logiques qui combinent entre eux les conditions.</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
@@ -912,7 +915,7 @@ Il est tout de même conseillé d’ajouter des parenthèses en cas de doute.
 C’est ce qu décrit la page <a class="reference external" href="https://docs.python.org/3/reference/expressions.html#operator-precedence">Operator precedence</a>.</p>
 </section>
 <section id="ecriture-condensee-test">
-<h3>Ecriture condensée (test)<a class="headerlink" href="#ecriture-condensee-test" title="Link to this heading">¶</a></h3>
+<h3>Ecriture condensée (test)<a class="headerlink" href="#ecriture-condensee-test" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il existe deux écritures condensées de tests.
 La première consiste à écrire un test et l’unique instruction qui en dépend sur une seule ligne.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">condition</span> <span class="p">:</span>
@@ -936,7 +939,7 @@ peut être résumé simplement par <code class="docutils literal notranslate"><s
 pour les grandes listes.</p>
 </section>
 <section id="exemple-test">
-<h3>Exemple (test)<a class="headerlink" href="#exemple-test" title="Link to this heading">¶</a></h3>
+<h3>Exemple (test)<a class="headerlink" href="#exemple-test" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’exemple suivant associe à la variable <code class="docutils literal notranslate"><span class="pre">signe</span></code> le signe de la variable <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span>
@@ -1009,7 +1012,7 @@ Le programme affiche la fenêtre suivante :</p>
 <img alt="../../_images/rawinput.png" src="../../_images/rawinput.png" />
 </section>
 <section id="none-true-et-1">
-<h3>None, True et 1<a class="headerlink" href="#none-true-et-1" title="Link to this heading">¶</a></h3>
+<h3>None, True et 1<a class="headerlink" href="#none-true-et-1" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’écriture de certains tests peut encore être réduite lorsqu’on
 cherche à comparer une variable entière, booléenne ou <code class="docutils literal notranslate"><span class="pre">None</span></code> comme le précise
 la table suivant :</p>
@@ -1072,7 +1075,7 @@ la table suivant :</p>
 </div>
 </section>
 <section id="passer-instruction-pass">
-<h3>Passer, instruction <code class="docutils literal notranslate"><span class="pre">pass</span></code><a class="headerlink" href="#passer-instruction-pass" title="Link to this heading">¶</a></h3>
+<h3>Passer, instruction <code class="docutils literal notranslate"><span class="pre">pass</span></code><a class="headerlink" href="#passer-instruction-pass" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-2">Dans certains cas, aucune instruction ne doit être exécutée même si un
 test est validé. En <em>python</em>, le corps d’un test ne peut être vide,
 il faut utiliser l’instruction <code class="docutils literal notranslate"><span class="pre">pass</span></code>. Lorsque celle-ci est manquante,
@@ -1100,7 +1103,7 @@ l’interpréteur <em>python</em> génère l’erreur suivante :</p>
 </section>
 </section>
 <section id="boucles">
-<h2>Boucles<a class="headerlink" href="#boucles" title="Link to this heading">¶</a></h2>
+<h2>Boucles<a class="headerlink" href="#boucles" title="Lien vers cette rubrique">¶</a></h2>
 <div class="admonition-mathdef admonition" id="indexmathe-Boucle0">
 <span id="index-3"></span><div class="docutils container">
 </div>
@@ -1114,7 +1117,7 @@ La boucle <code class="docutils literal notranslate"><span class="pre">for</span
 elle propose une écriture simplifiée pour répéter la même séquence
 d’instructions pour tous les éléments d’un ensemble.</p>
 <section id="boucle-while">
-<h3>Boucle while<a class="headerlink" href="#boucle-while" title="Link to this heading">¶</a></h3>
+<h3>Boucle while<a class="headerlink" href="#boucle-while" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’implémentation d’une boucle de type <code class="docutils literal notranslate"><span class="pre">while</span></code> suit le schéma d’écriture suivant :</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Syntaxe2">
 <p class="admonition-title">Syntaxe S3 : Boucle while</p>
@@ -1164,7 +1167,7 @@ la condition <code class="docutils literal notranslate"><span class="pre">n&lt;3
 </div>
 </section>
 <section id="boucle-for">
-<span id="id1"></span><h3>Boucle for<a class="headerlink" href="#boucle-for" title="Link to this heading">¶</a></h3>
+<span id="id1"></span><h3>Boucle for<a class="headerlink" href="#boucle-for" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-5">L’implémentation d’une boucle de type <code class="docutils literal notranslate"><span class="pre">for</span></code> suit le schéma d’écriture suivant :</p>
 <div class="admonition-mathdef admonition" id="indexmathe-Syntaxe3">
 <p class="admonition-title">Syntaxe S4 : Boucle for</p>
@@ -1264,7 +1267,7 @@ compris entre <em>0</em> et <em>n-1</em>. On utilise pour cela la boucle <code c
 </div>
 </section>
 <section id="listes-boucle-for-liste-en-extension">
-<span id="liste-for-raccourci2"></span><h3>Listes, boucle for, liste en extension<a class="headerlink" href="#listes-boucle-for-liste-en-extension" title="Link to this heading">¶</a></h3>
+<span id="liste-for-raccourci2"></span><h3>Listes, boucle for, liste en extension<a class="headerlink" href="#listes-boucle-for-liste-en-extension" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le paragraphe <a class="reference internal" href="types.html#liste-for-raccourci"><span class="std std-ref">Boucles et listes</span></a> a montré comment le mot-clé <code class="docutils literal notranslate"><span class="pre">for</span></code>
 peut être utilisé pour simplifier la création d’une liste à partir d’une autre.
 La syntaxe d’une <a class="reference external" href="http://sametmax.com/python-love-les-listes-en-intention-partie/">liste en extension</a>
@@ -1309,7 +1312,7 @@ tout dépend des préférences de celui qui programme. Elle peut être étendue 
 </div>
 </section>
 <section id="iterateurs">
-<span id="paragraphe-tterafsd-syntaxe"></span><h3>Itérateurs<a class="headerlink" href="#iterateurs" title="Link to this heading">¶</a></h3>
+<span id="paragraphe-tterafsd-syntaxe"></span><h3>Itérateurs<a class="headerlink" href="#iterateurs" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-6">Toute boucle <code class="docutils literal notranslate"><span class="pre">for</span></code> peut s’appliquer sur un objet muni d’un itérateur
 tels que les chaînes de caractères, tuples, les listes, les dictionnaires, les ensembles.</p>
 <p>&lt;&lt;&lt;</p>
@@ -1357,7 +1360,7 @@ mettre fin au parcours.</p>
 </div>
 </section>
 <section id="plusieurs-variables-de-boucles">
-<h3>Plusieurs variables de boucles<a class="headerlink" href="#plusieurs-variables-de-boucles" title="Link to this heading">¶</a></h3>
+<h3>Plusieurs variables de boucles<a class="headerlink" href="#plusieurs-variables-de-boucles" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-7">Jusqu’à présent, la boucle <code class="docutils literal notranslate"><span class="pre">for</span></code> n’a été utilisée qu’avec une seule variable de boucle,
 comme dans l’exemple suivant où on parcourt une liste de tuple pour les afficher.</p>
 <p>&lt;&lt;&lt;</p>
@@ -1404,7 +1407,7 @@ différente à celle des autres, comme dans l’exemple suivant, une erreur surv
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">6</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020825089600</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726529782656</span>
     <span class="ne">ValueError</span><span class="p">:</span> <span class="n">too</span> <span class="n">many</span> <span class="n">values</span> <span class="n">to</span> <span class="n">unpack</span> <span class="p">(</span><span class="n">expected</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1429,7 +1432,7 @@ Il est alors possible de parcourir plusieurs séquences
 </div>
 </section>
 <section id="ecriture-condensee-for">
-<h3>Ecriture condensée (for)<a class="headerlink" href="#ecriture-condensee-for" title="Link to this heading">¶</a></h3>
+<h3>Ecriture condensée (for)<a class="headerlink" href="#ecriture-condensee-for" title="Lien vers cette rubrique">¶</a></h3>
 <p>Comme pour les tests, lorsque les boucles ne contiennent
 qu’une seule instruction, il est possible de l’écrire sur
 la même ligne que celle de la déclaration de la boucle
@@ -1463,7 +1466,7 @@ modifier la condition d’arrêt.</p>
 </div>
 </section>
 <section id="pilotage-d-une-boucle-continue">
-<h3>Pilotage d’une boucle : continue<a class="headerlink" href="#pilotage-d-une-boucle-continue" title="Link to this heading">¶</a></h3>
+<h3>Pilotage d’une boucle : continue<a class="headerlink" href="#pilotage-d-une-boucle-continue" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-8">Pour certains éléments d’une boucle, lorsqu’il n’est pas nécessaire
 d’exécuter toutes les instructions, il est possible de passer
 directement à l’élément suivant ou l’itération suivante.
@@ -1583,7 +1586,7 @@ On les raye de la liste. On continue avec <span class="math notranslate nohighli
 rend les programmes plus lisibles.</p>
 </section>
 <section id="pilotage-d-une-boucle-break">
-<span id="bbrak-instruction-par"></span><h3>Pilotage d’une boucle : break<a class="headerlink" href="#pilotage-d-une-boucle-break" title="Link to this heading">¶</a></h3>
+<span id="bbrak-instruction-par"></span><h3>Pilotage d’une boucle : break<a class="headerlink" href="#pilotage-d-une-boucle-break" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-9">Lors de l’écriture d’une boucle <code class="docutils literal notranslate"><span class="pre">while</span></code>, il n’est pas toujours
 adéquat de résumer en une seule condition toutes les raisons pour
 lesquelles il est nécessaire d’arrêter l’exécution de cette boucle.
@@ -1649,7 +1652,7 @@ compris entre 1 et 20.</p>
 </div>
 </section>
 <section id="fin-normale-d-une-boucle-else">
-<h3>Fin normale d’une boucle : else<a class="headerlink" href="#fin-normale-d-une-boucle-else" title="Link to this heading">¶</a></h3>
+<h3>Fin normale d’une boucle : else<a class="headerlink" href="#fin-normale-d-une-boucle-else" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le mot-clé <code class="docutils literal notranslate"><span class="pre">else</span></code> existe aussi pour les boucles et
 s’utilise en association avec le mot-clé <code class="docutils literal notranslate"><span class="pre">break</span></code>.
 L’instruction <code class="docutils literal notranslate"><span class="pre">else</span></code> est placée à la fin d’une boucle,
@@ -1682,7 +1685,7 @@ cas où l’exécution de la boucle n’est pas interrompue par une
 instruction <code class="docutils literal notranslate"><span class="pre">break</span></code> ou une instruction <code class="docutils literal notranslate"><span class="pre">return</span></code>.</p>
 </section>
 <section id="suppression-ou-ajout-d-elements-lors-d-une-boucle">
-<h3>Suppression ou ajout d’éléments lors d’une boucle<a class="headerlink" href="#suppression-ou-ajout-d-elements-lors-d-une-boucle" title="Link to this heading">¶</a></h3>
+<h3>Suppression ou ajout d’éléments lors d’une boucle<a class="headerlink" href="#suppression-ou-ajout-d-elements-lors-d-une-boucle" title="Lien vers cette rubrique">¶</a></h3>
 <p>En parcourant la liste en se servant des indices, il est possible de
 supprimer une partie de cette liste. Il faut néanmoins faire
 attention à ce que le code ne produise pas d’erreur comme
@@ -1715,7 +1718,7 @@ même temps que l’instruction <code class="docutils literal notranslate"><span
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">11</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020828525440</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726534079296</span>
     <span class="ne">IndexError</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
 </pre></div>
 </div>
@@ -1776,7 +1779,7 @@ dans ce genre de situations.</p>
 </section>
 </section>
 <section id="fonctions">
-<span id="chap-fonction"></span><span id="par-fonction"></span><h2>Fonctions<a class="headerlink" href="#fonctions" title="Link to this heading">¶</a></h2>
+<span id="chap-fonction"></span><span id="par-fonction"></span><h2>Fonctions<a class="headerlink" href="#fonctions" title="Lien vers cette rubrique">¶</a></h2>
 <p>Les fonctions sont des petits programmes qui effectuent des
 tâches plus précises que le programme entier. On peut effectivement
 écrire un programme sans fonction mais ils sont en général
@@ -1798,7 +1801,7 @@ chapitre <a class="reference internal" href="../c_gui/tkinter.html#chap-interfac
 ou celle introduite en fin de chapitre au
 paragraphe <a class="reference internal" href="../../api/classique.html#paragraphe-fonction-variable"><span class="std std-ref">fonction comme paramètre</span></a>.</p>
 <section id="definition-syntaxe">
-<span id="par-fonction-syntaxe"></span><h3>Définition, syntaxe<a class="headerlink" href="#definition-syntaxe" title="Link to this heading">¶</a></h3>
+<span id="par-fonction-syntaxe"></span><h3>Définition, syntaxe<a class="headerlink" href="#definition-syntaxe" title="Lien vers cette rubrique">¶</a></h3>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition1">
 <p class="admonition-title">Définition D2 : fonction</p>
 <p>Une fonction est une partie d’un programme - ou sous-programme -
@@ -1856,7 +1859,7 @@ du programme. Elle sert juste à visualiser le contenu d’une variable.
 Sans l’instruction <code class="docutils literal notranslate"><span class="pre">return</span></code>, toute fonction retourne <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </section>
 <section id="exemple-for">
-<span id="para-fonction-exemple"></span><h3>Exemple (for)<a class="headerlink" href="#exemple-for" title="Link to this heading">¶</a></h3>
+<span id="para-fonction-exemple"></span><h3>Exemple (for)<a class="headerlink" href="#exemple-for" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le programme suivant utilise deux fonctions.
 La première convertit des coordonnées cartésiennes en
 coordonnées polaires. Elle prend deux réels en paramètres
@@ -1896,7 +1899,7 @@ les résultats de la première pour tout couple de valeurs
 </div>
 </section>
 <section id="parametres-avec-des-valeurs-par-defaut">
-<h3>Paramètres avec des valeurs par défaut<a class="headerlink" href="#parametres-avec-des-valeurs-par-defaut" title="Link to this heading">¶</a></h3>
+<h3>Paramètres avec des valeurs par défaut<a class="headerlink" href="#parametres-avec-des-valeurs-par-defaut" title="Lien vers cette rubrique">¶</a></h3>
 <p>Lorsqu’une fonction est souvent appelée avec les mêmes
 valeurs pour ses paramètres, il est possible de spécifier
 pour ceux-ci une valeur par défaut.</p>
@@ -1993,7 +1996,7 @@ Pour remédier à cela, il faudrait écrire :</p>
 <p>L’exercice <a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html#hypercuberst"><span class="std std-ref">Hypercube et autres exercices</span></a> propose un exemple plus complet, voire retors.</p>
 </section>
 <section id="ordre-des-parametres">
-<h3>Ordre des paramètres<a class="headerlink" href="#ordre-des-parametres" title="Link to this heading">¶</a></h3>
+<h3>Ordre des paramètres<a class="headerlink" href="#ordre-des-parametres" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le paragraphe <a class="reference internal" href="#par-fonction-syntaxe"><span class="std std-ref">Définition, syntaxe</span></a> a présenté la syntaxe
 d’appel a une fonction. Lors de l’appel, le nom des paramètres
 n’intervient plus, supposant que chaque paramètre reçoit pour
@@ -2049,7 +2052,7 @@ d’un des derniers paramètres doit être changée.</p>
 </div>
 </section>
 <section id="surcharge-de-fonction">
-<h3>Surcharge de fonction<a class="headerlink" href="#surcharge-de-fonction" title="Link to this heading">¶</a></h3>
+<h3>Surcharge de fonction<a class="headerlink" href="#surcharge-de-fonction" title="Lien vers cette rubrique">¶</a></h3>
 <p>Contrairement à d’autres langages, <em>python</em> n’autorise pas
 la surcharge de fonction. Autrement dit, il n’est pas
 possible que plusieurs fonctions portent le même nom même
@@ -2074,8 +2077,8 @@ si chacune d’entre elles a un nombre différent de paramètres.</p>
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">11</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">9</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020857901888</span>
-    <span class="ne">TypeError</span><span class="p">:</span> <span class="n">run_python_script_140020857901888</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">fonction</span><span class="p">()</span> <span class="n">missing</span> <span class="mi">1</span> <span class="n">required</span> <span class="n">positional</span> <span class="n">argument</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">9</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726528300032</span>
+    <span class="ne">TypeError</span><span class="p">:</span> <span class="n">run_python_script_139726528300032</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">fonction</span><span class="p">()</span> <span class="n">missing</span> <span class="mi">1</span> <span class="n">required</span> <span class="n">positional</span> <span class="n">argument</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span>
 </pre></div>
 </div>
 <p>Le petit programme précédent est syntaxiquement correct mais
@@ -2083,7 +2086,7 @@ son exécution génère une erreur parce que la seconde définition
 de la fonction <code class="docutils literal notranslate"><span class="pre">fonction</span></code> efface la première.</p>
 </section>
 <section id="commentaires">
-<h3>Commentaires<a class="headerlink" href="#commentaires" title="Link to this heading">¶</a></h3>
+<h3>Commentaires<a class="headerlink" href="#commentaires" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-10">Le langage <em>python</em> propose une fonction <code class="docutils literal notranslate"><span class="pre">help</span></code> qui retourne
 pour chaque fonction un commentaire ou mode d’emploi qui indique
 comment se servir de cette fonction. L’exemple suivant affiche
@@ -2142,7 +2145,7 @@ avant même que son corps ne soit écrit. L’expérience montre qu’on oublie
 souvent de l’écrire après.</p>
 </section>
 <section id="parametres-modifiables">
-<h3>Paramètres modifiables<a class="headerlink" href="#parametres-modifiables" title="Link to this heading">¶</a></h3>
+<h3>Paramètres modifiables<a class="headerlink" href="#parametres-modifiables" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les paramètres de types immuables et modifiables se comportent de
 manières différentes à l’intérieur d’une fonction. Ces paramètres
 sont manipulés dans le corps de la fonction, voire modifiés parfois.
@@ -2269,7 +2272,7 @@ vérifie après l’exécution de cette fonction.</p>
 </div>
 </section>
 <section id="fonction-recursive">
-<h3>Fonction récursive<a class="headerlink" href="#fonction-recursive" title="Link to this heading">¶</a></h3>
+<h3>Fonction récursive<a class="headerlink" href="#fonction-recursive" title="Lien vers cette rubrique">¶</a></h3>
 <div class="admonition-mathdef admonition" id="indexmathe-Définition2">
 <span id="index-12"></span><p class="admonition-title">Définition D3 : fonction récursive</p>
 <p>Une fonction récursive est une fonction qui s’appelle elle-même.</p>
@@ -2314,7 +2317,7 @@ transformer cette fonction en une fonction non récursive
 </div>
 </section>
 <section id="portee-des-variables-des-parametres">
-<h3>Portée des variables, des paramètres<a class="headerlink" href="#portee-des-variables-des-parametres" title="Link to this heading">¶</a></h3>
+<h3>Portée des variables, des paramètres<a class="headerlink" href="#portee-des-variables-des-parametres" title="Lien vers cette rubrique">¶</a></h3>
 <p>Lorsqu’on définit une variable, elle n’est pas utilisable
 partout dans le programme. Par exemple, elle n’est pas utilisable
 avant d’avoir été déclarée au moyen d’une affectation.
@@ -2330,7 +2333,7 @@ Le court programme suivant déclenche une erreur.</p>
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">3</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020829286272</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">3</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726528297856</span>
     <span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;x&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
@@ -2358,7 +2361,7 @@ celle reproduite ci-dessus.</p>
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">10</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020823641984</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">8</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726540749504</span>
     <span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;var&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
@@ -2442,7 +2445,7 @@ plus indépendante des autres fonctions puisqu’elle modifie une
 des données du programme.</p>
 </section>
 <section id="portee-des-fonctions">
-<h3>Portée des fonctions<a class="headerlink" href="#portee-des-fonctions" title="Link to this heading">¶</a></h3>
+<h3>Portée des fonctions<a class="headerlink" href="#portee-des-fonctions" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le langage <em>python</em> considère les fonctions également comme des variables
 d’un type particulier. La portée des fonctions obéit aux mêmes
 règles que celles des variables. Une fonction ne peut être
@@ -2495,7 +2498,7 @@ fonction locale qui n’est appelable que par cette fonction <code class="docuti
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">14</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">12</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020861320512</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">12</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726568318336</span>
     <span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;fonction_locale&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
@@ -2504,7 +2507,7 @@ toujours les variables globales du programme et non les variables
 de la fonction dans laquelle cette sous-fonction est définie.</p>
 </section>
 <section id="nombre-de-parametres-variable">
-<span id="nombr-eparam-variable-ref"></span><h3>Nombre de paramètres variable<a class="headerlink" href="#nombre-de-parametres-variable" title="Link to this heading">¶</a></h3>
+<span id="nombr-eparam-variable-ref"></span><h3>Nombre de paramètres variable<a class="headerlink" href="#nombre-de-parametres-variable" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il est possible de définir des fonctions qui prennent un nombre
 indéterminé de paramètres, lorsque celui-ci n’est pas connu à l’avance.
 Hormis les paramètres transmis selon le mode présenté dans les
@@ -2591,7 +2594,7 @@ Il faut pour cela se servir du symbole <code class="docutils literal notranslate
 </div>
 </section>
 <section id="ecriture-simplifiee-pour-des-fonctions-simples-lambda">
-<h3>Ecriture simplifiée pour des fonctions simples : lambda<a class="headerlink" href="#ecriture-simplifiee-pour-des-fonctions-simples-lambda" title="Link to this heading">¶</a></h3>
+<h3>Ecriture simplifiée pour des fonctions simples : lambda<a class="headerlink" href="#ecriture-simplifiee-pour-des-fonctions-simples-lambda" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-13">Lorsque le code d’une fonction tient en une ligne et est le
 résultat d’une expression, il est possible de condenser son
 écriture à l’aide du mot-clé <code class="docutils literal notranslate"><span class="pre">lambda</span></code>.</p>
@@ -2687,7 +2690,7 @@ de la fonction <code class="docutils literal notranslate"><span class="pre">lamb
 </div>
 </section>
 <section id="fonctions-generateur">
-<span id="l-fonction-generateur"></span><h3>Fonctions générateur<a class="headerlink" href="#fonctions-generateur" title="Link to this heading">¶</a></h3>
+<span id="l-fonction-generateur"></span><h3>Fonctions générateur<a class="headerlink" href="#fonctions-generateur" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-14">Le mot-clé <code class="docutils literal notranslate"><span class="pre">yield</span></code> est un peu à part. Utilisé à l’intérieur d’une fonction,
 il permet d’interrompre le cours de son exécution à un endroit
 précis de sorte qu’au prochain appel de cette fonction,
@@ -2745,7 +2748,7 @@ son exécution, le prochain appel agit comme si c’était la première
 fois qu’on l’appelait.</p>
 </section>
 <section id="identificateur-appelable">
-<h3>Identificateur appelable<a class="headerlink" href="#identificateur-appelable" title="Link to this heading">¶</a></h3>
+<h3>Identificateur appelable<a class="headerlink" href="#identificateur-appelable" title="Lien vers cette rubrique">¶</a></h3>
 <p>La fonction <code class="docutils literal notranslate"><span class="pre">callable</span></code> retourne un booléen permettant de savoir si un
 identificateur est une fonction (voir <a class="reference internal" href="../c_classes/classes.html#chap-classe"><span class="std std-ref">Classes</span></a>),
 de savoir par conséquent si tel identificateur est appelable comme une fonction.</p>
@@ -2768,7 +2771,7 @@ de savoir par conséquent si tel identificateur est appelable comme une fonction
 </div>
 </section>
 <section id="compilation-dynamique-eval">
-<h3>Compilation dynamique (eval)<a class="headerlink" href="#compilation-dynamique-eval" title="Link to this heading">¶</a></h3>
+<h3>Compilation dynamique (eval)<a class="headerlink" href="#compilation-dynamique-eval" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-15">Cette fonction a déjà été abordée lors des paragraphes
 :<a class="reference internal" href="types.html#fonction-print-eval"><span class="std std-ref">Fonction print, repr et conversion en chaîne de caractères</span></a> ou <a class="reference internal" href="types.html#fonction-eval"><span class="std std-ref">Fonction eval</span></a>. Elle évalue toute
 chaîne de caractères contenant une expression écrite avec la syntaxe du
@@ -2802,7 +2805,7 @@ comme le montre l’exemple suivant.</p>
     <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
         <span class="n">exec</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">globs</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
       <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">6</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_140020836621632</span>
+      <span class="n">File</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="n">run_python_script_139726507371840</span>
       <span class="n">File</span> <span class="s2">&quot;&lt;string&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
     <span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;z&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
@@ -2814,7 +2817,7 @@ l’erreur dans un fichier. L’erreur ne se produit dans aucun fichier,
 cette chaîne de caractères pourrait être définie dans un autre.</p>
 </section>
 <section id="compilation-dynamique-compile-exec">
-<span id="par-compilation-fonction"></span><h3>Compilation dynamique (compile, exec)<a class="headerlink" href="#compilation-dynamique-compile-exec" title="Link to this heading">¶</a></h3>
+<span id="par-compilation-fonction"></span><h3>Compilation dynamique (compile, exec)<a class="headerlink" href="#compilation-dynamique-compile-exec" title="Lien vers cette rubrique">¶</a></h3>
 <p id="index-16">Plus complète que la fonction
 <a class="reference external" href="https://docs.python.org/3/library/functions.html?highlight=eval#eval">eval</a>,
 la fonction <a class="reference external" href="https://docs.python.org/3/library/functions.html?highlight=eval#compile">compile</a>
@@ -2866,7 +2869,7 @@ un exemple d’utilisation de la fonction <code class="docutils literal notransl
 </section>
 </section>
 <section id="indentation">
-<span id="fonction-sorted-enumerate"></span><span id="par-indentation"></span><h2>Indentation<a class="headerlink" href="#indentation" title="Link to this heading">¶</a></h2>
+<span id="fonction-sorted-enumerate"></span><span id="par-indentation"></span><h2>Indentation<a class="headerlink" href="#indentation" title="Lien vers cette rubrique">¶</a></h2>
 <p id="index-17">L’indentation est synonyme de décalage. Pour toute boucle,
 test, fonction, et plus tard, toute définition de classe,
 le fait d’indenter ou décaler les lignes permet de définir
@@ -2891,7 +2894,7 @@ placé à la fin d’une ligne permet de continuer l’écriture
 d’une instruction à la ligne suivante.</p>
 </section>
 <section id="fonctions-usuelles">
-<span id="paragraphe-fonction-usuelles"></span><h2>Fonctions usuelles<a class="headerlink" href="#fonctions-usuelles" title="Link to this heading">¶</a></h2>
+<span id="paragraphe-fonction-usuelles"></span><h2>Fonctions usuelles<a class="headerlink" href="#fonctions-usuelles" title="Lien vers cette rubrique">¶</a></h2>
 <p>Certaines fonctions sont communes aux dictionnaires et aux listes,
 elles sont également définis pour de nombreux objets présents
 dans les extensions du langages. Quelque soit le contexte, le
@@ -2914,7 +2917,7 @@ lignes du programme suivant sont équivalentes.</p>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
-    <span class="o">&lt;</span><span class="nb">map</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f592344d630</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">map</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7f149cd3df00</span><span class="o">&gt;</span>
     <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -3113,7 +3116,7 @@ Si <code class="docutils literal notranslate"><span class="pre">k</span></code> 
 </div>
 </section>
 <section id="constructions-classiques">
-<h2>Constructions classiques<a class="headerlink" href="#constructions-classiques" title="Link to this heading">¶</a></h2>
+<h2>Constructions classiques<a class="headerlink" href="#constructions-classiques" title="Lien vers cette rubrique">¶</a></h2>
 <p>Il fait aller à
 <a class="reference internal" href="constructions.html#l-constructions-classiques"><span class="std std-ref">Constructions classiques</span></a>.</p>
 <p>Ces paragraphes qui suivent décrivent des schémas qu’on retrouve dans les
@@ -3236,10 +3239,10 @@ d’une ou deux boucles, d’un test, d’une liste, d’un dictionnaire.</p>
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

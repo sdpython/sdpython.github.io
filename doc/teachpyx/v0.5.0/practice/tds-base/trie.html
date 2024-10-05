@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Premiers pas en Python (correction)" href="premiers_pas_correction.html" /><link rel="prev" title="Classes, héritage" href="classes_heritage.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Arbre et Trie - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Arbre-et-Trie">
-<h1>Arbre et Trie<a class="headerlink" href="#Arbre-et-Trie" title="Link to this heading">¶</a></h1>
+<h1>Arbre et Trie<a class="headerlink" href="#Arbre-et-Trie" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le mot <a class="reference external" href="https://fr.wikipedia.org/wiki/Trie_%28informatique%29">trie</a> est anglais et se prononce <em>traïlle</em>. Il sera défini plus bas. Cette structure de données est très adaptée à la recherche d’un mot dans une liste ordonnée. C’est aussi une histoire de dictionnaires imbriqués.</p>
 <p>Rechercher un mot dans une liste est un problème simple. Et pourtant, cette tâche peut être plus ou moins rapide selon la façon dont on représente cette liste, voire de la compresser. L’objectif est ici de découvrir trois façons de construire un ensemble de mots avec des dictionnaires et des listes. La recherche d’un mot dans cet ensemble sera différente à chaque fois. On veut mesurer le temps qu’il faut pour vérifier qu’un mot appartient à une liste de mots de trois façons différentes et à
 partir de trois représentations différentes :</p>
@@ -592,10 +595,10 @@ partir de trois représentations différentes :</p>
 </ul>
 <p>A quoi ça sert : voir <a class="reference external" href="https://sdpython.github.io/doc/mlstatpy/dev/c_nlp/completion.html">Complétion</a>.</p>
 <section id="Construction-d'une-liste-aléatoire">
-<h2>Construction d’une liste aléatoire<a class="headerlink" href="#Construction-d'une-liste-aléatoire" title="Link to this heading">¶</a></h2>
+<h2>Construction d’une liste aléatoire<a class="headerlink" href="#Construction-d'une-liste-aléatoire" title="Lien vers cette rubrique">¶</a></h2>
 <p>Plutôt que de charger un texte en mémoire, on construit des mots aléatoirement.</p>
 <section id="Exercice-1">
-<h3>Exercice 1<a class="headerlink" href="#Exercice-1" title="Link to this heading">¶</a></h3>
+<h3>Exercice 1<a class="headerlink" href="#Exercice-1" title="Lien vers cette rubrique">¶</a></h3>
 <p>A partir de la fonction suivante, construit une liste aléatoire de 10000 mots d’une longueur de 20 lettres.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -612,7 +615,7 @@ partir de trois représentations différentes :</p>
 </div>
 </section>
 <section id="Exercice-2">
-<h3>Exercice 2<a class="headerlink" href="#Exercice-2" title="Link to this heading">¶</a></h3>
+<h3>Exercice 2<a class="headerlink" href="#Exercice-2" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les listes ont une méthode <code class="docutils literal notranslate"><span class="pre">index</span></code> qui permet de retrouver la position d’un mot (elle effectue donc une recherche). Le module <a class="reference external" href="https://docs.python.org/3/library/time.html">time</a> possède une fonction <a class="reference external" href="https://docs.python.org/3/library/time.html#time.perf_counter">clock</a>. Utiliser cette fonction pour mesurer le temps du code suivant (qu’on prendra soin d’exécuter plusieurs fois en boucle afin d’avoir une mesure fiable) :</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -629,10 +632,10 @@ partir de trois représentations différentes :</p>
 </section>
 </section>
 <section id="Recherche-dichotomique">
-<h2>Recherche dichotomique<a class="headerlink" href="#Recherche-dichotomique" title="Link to this heading">¶</a></h2>
+<h2>Recherche dichotomique<a class="headerlink" href="#Recherche-dichotomique" title="Lien vers cette rubrique">¶</a></h2>
 <p>Lors des premières séances de TD, on a implémenté la recherche dichotomique. La liste de mots est triée. Vous pouvez soit retrouver le code cette fonction depuis ce TD soit implémenter de nouveau la fonction.</p>
 <section id="Exercice-3">
-<h3>Exercice 3<a class="headerlink" href="#Exercice-3" title="Link to this heading">¶</a></h3>
+<h3>Exercice 3<a class="headerlink" href="#Exercice-3" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’objectif est de mesurer le temps pris par la recherche dichotomique appliquée à la même liste que celle de l’exercice 1 (mais triée).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -644,7 +647,7 @@ partir de trois représentations différentes :</p>
 </div>
 </section>
 <section id="Exercice-4">
-<h3>Exercice 4<a class="headerlink" href="#Exercice-4" title="Link to this heading">¶</a></h3>
+<h3>Exercice 4<a class="headerlink" href="#Exercice-4" title="Lien vers cette rubrique">¶</a></h3>
 <p>Mesurer le temps de calcul lorsque la recherche d’un mot est effectuée 1000 fois pour des tailles de liste de 10, 100, 1000, 10000, 100000 mots. On fait ceci pour la recherche simple et la recherche dichotomique. Vérifier que cela correspond au coût des deux algorithmes (qu’on précisera).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -657,7 +660,7 @@ partir de trois représentations différentes :</p>
 </section>
 </section>
 <section id="Trie">
-<h2>Trie<a class="headerlink" href="#Trie" title="Link to this heading">¶</a></h2>
+<h2>Trie<a class="headerlink" href="#Trie" title="Lien vers cette rubrique">¶</a></h2>
 <p>Le coût des deux recherches dépendent du nombre de mots dans la liste. Il est possible de construire une structure de données qui fait dépendre le coût de cette recherche du nombre de lettres différentes (26) et de la longueur maximale des mots.</p>
 <p>Le trie suivant représente les mots <code class="docutils literal notranslate"><span class="pre">A,</span> <span class="pre">to,</span> <span class="pre">tea,</span> <span class="pre">ted,</span> <span class="pre">ten,</span> <span class="pre">inn</span></code>. Chaque noeud final est un mot.</p>
 <div class="nbinput docutils container">
@@ -696,7 +699,7 @@ partir de trois représentations différentes :</p>
 </div>
 </div>
 <section id="Exercice-5">
-<h3>Exercice 5<a class="headerlink" href="#Exercice-5" title="Link to this heading">¶</a></h3>
+<h3>Exercice 5<a class="headerlink" href="#Exercice-5" title="Lien vers cette rubrique">¶</a></h3>
 <p>Construire cette structure. Les classes sont une possibilité mais ne sont pas indispensables.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -709,9 +712,9 @@ partir de trois représentations différentes :</p>
 </section>
 </section>
 <section id="Recherche-dans-un-trie">
-<h2>Recherche dans un trie<a class="headerlink" href="#Recherche-dans-un-trie" title="Link to this heading">¶</a></h2>
+<h2>Recherche dans un trie<a class="headerlink" href="#Recherche-dans-un-trie" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Exercice-6">
-<h3>Exercice 6<a class="headerlink" href="#Exercice-6" title="Link to this heading">¶</a></h3>
+<h3>Exercice 6<a class="headerlink" href="#Exercice-6" title="Lien vers cette rubrique">¶</a></h3>
 <p>Une fois qu’on a la structure, il faut aussi écrire la fonction qui recherche un mot dans le trie.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -723,7 +726,7 @@ partir de trois représentations différentes :</p>
 </div>
 </section>
 <section id="Exercice-7">
-<h3>Exercice 7<a class="headerlink" href="#Exercice-7" title="Link to this heading">¶</a></h3>
+<h3>Exercice 7<a class="headerlink" href="#Exercice-7" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il ne reste plus qu’à mesurer le temps.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -826,10 +829,10 @@ partir de trois représentations différentes :</p>
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

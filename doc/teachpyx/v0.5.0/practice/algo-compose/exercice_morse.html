@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Cryptage homomorphic de Craig Gentry" href="../tds-algo/gentry_integer_encryption.html" /><link rel="prev" title="Casser le code de Vigenère" href="vigenere.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Décoder du Morse sans espaces - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Décoder-du-Morse-sans-espaces">
-<h1>Décoder du Morse sans espaces<a class="headerlink" href="#Décoder-du-Morse-sans-espaces" title="Link to this heading">¶</a></h1>
+<h1>Décoder du Morse sans espaces<a class="headerlink" href="#Décoder-du-Morse-sans-espaces" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le code <a class="reference external" href="http://fr.wikipedia.org/wiki/Morse_(alphabet)">Morse</a> était utilisé au siècle dernier pour les transmissions. Chaque lettre est représentée par une séquence de points et tirets. Comment décoder ce code ? Notion abordée : graphe, programmation dynamique, trie.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -612,23 +615,23 @@
 </li>
 </ul>
 <section id="Enoncés">
-<h2>Enoncés<a class="headerlink" href="#Enoncés" title="Link to this heading">¶</a></h2>
+<h2>Enoncés<a class="headerlink" href="#Enoncés" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Exercice-1-:-Traduire-un-texte-Morse-qui-ne-contient-pas-d'espace">
-<h3>Exercice 1 : Traduire un texte Morse qui ne contient pas d’espace<a class="headerlink" href="#Exercice-1-:-Traduire-un-texte-Morse-qui-ne-contient-pas-d'espace" title="Link to this heading">¶</a></h3>
+<h3>Exercice 1 : Traduire un texte Morse qui ne contient pas d’espace<a class="headerlink" href="#Exercice-1-:-Traduire-un-texte-Morse-qui-ne-contient-pas-d'espace" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce sujet est un exercice classique de programmation. On peut trouver des solution sur internet. On pourra par exemple commencer par utiliser une expression régulière. Une autre option consiste à utiliser un <em>trie</em>.</p>
 </section>
 <section id="Exercice-2-:-calculer-l'alphabet-qui-minimise-une-transcription">
-<h3>Exercice 2 : calculer l’alphabet qui minimise une transcription<a class="headerlink" href="#Exercice-2-:-calculer-l'alphabet-qui-minimise-une-transcription" title="Link to this heading">¶</a></h3>
+<h3>Exercice 2 : calculer l’alphabet qui minimise une transcription<a class="headerlink" href="#Exercice-2-:-calculer-l'alphabet-qui-minimise-une-transcription" title="Lien vers cette rubrique">¶</a></h3>
 <p>Cette optimisation est possible puisque l’alphabet Morse transcrit les lettres avec des codes de longueurs différentes. Il faudra aussi vérifier qu’une fois l’alphabet choisi, il n’autorise qu’un seul décodage de la transcription. On suppose qu’on conserve les contraintes du Morse : chaque lettre de l’alphabet est constituée de traits courts et long et qu’il n’y a pas de séparation entre lettres. Vous pouvez vous inspirez de cet article sur la <a class="reference external" href="http://fr.wikipedia.org/wiki/Compression_de_donn%C3%A9es">Compression de
 données</a> ou celui sur le <a class="reference external" href="http://fr.wikipedia.org/wiki/Codage_de_Huffman">code de Huffman</a>.</p>
 </section>
 </section>
 <section id="Solutions">
-<h2>Solutions<a class="headerlink" href="#Solutions" title="Link to this heading">¶</a></h2>
+<h2>Solutions<a class="headerlink" href="#Solutions" title="Lien vers cette rubrique">¶</a></h2>
 <p>On remarque que tous les chiffres sont codés sur cinq caractères alors que les lettres non. Cela vient du fait que toutes les combinaisons de lettres ne sont pas possible. En alphabet morse <code class="docutils literal notranslate"><span class="pre">H=EEE=ooo</span></code> mais aucun mot ne contient de séquence <code class="docutils literal notranslate"><span class="pre">EEE</span></code>. En pratique <em>26 + 10 + 1 = 37</em> et <span class="math notranslate nohighlight">\(2^5 &lt; 37 &lt; 2^6\)</span>. Cela explique le choix des 5 traits ou points pour les chiffres au maximum. Les tailles sont plus courtes pour les lettres car toutes les combinaisons ne sont pas possibles. On voit aussi
 que les lettres fréquentes sont des séquences courtes en morse. La séquence <code class="docutils literal notranslate"><span class="pre">ooo-ooo</span></code> peut dire <code class="docutils literal notranslate"><span class="pre">EELE</span></code> ou <code class="docutils literal notranslate"><span class="pre">STS</span></code>.</p>
 <section id="Solution-au-problème-1">
-<h3>Solution au problème 1<a class="headerlink" href="#Solution-au-problème-1" title="Link to this heading">¶</a></h3>
+<h3>Solution au problème 1<a class="headerlink" href="#Solution-au-problème-1" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -738,7 +741,7 @@ que les lettres fréquentes sont des séquences courtes en morse. La séquence <
 </div>
 </section>
 <section id="Solution-au-problème-2-avec-des-expressions-régulières">
-<h3>Solution au problème 2 avec des expressions régulières<a class="headerlink" href="#Solution-au-problème-2-avec-des-expressions-régulières" title="Link to this heading">¶</a></h3>
+<h3>Solution au problème 2 avec des expressions régulières<a class="headerlink" href="#Solution-au-problème-2-avec-des-expressions-régulières" title="Lien vers cette rubrique">¶</a></h3>
 <p>On utilise une expression régulière pour découper en mot tout en sachant qu’on ne sait pas ce que les ambiguïtés pourraient devenir.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -965,7 +968,7 @@ F oo-o   EEN
 <p>Ca ne marche pas mieux… J’ai la flemme de chercher pourquoi. La solution la plus simple me paraît de simplifier l’expression régulière pour éviter d’avoir des choses comme <code class="docutils literal notranslate"><span class="pre">(aaaa|a)+</span></code> mais pluôt <code class="docutils literal notranslate"><span class="pre">a{1,4}</span></code>. Ca me paraît plus drôle d’écrire un algorithme qui compresse une liste de patrons en une expression régulière ou de faire mon propre algorithme et de sortir toutes les interprétations possibles.</p>
 </section>
 <section id="Solution-au-problème-2-:-toutes-les-interprétations">
-<h3>Solution au problème 2 : toutes les interprétations<a class="headerlink" href="#Solution-au-problème-2-:-toutes-les-interprétations" title="Link to this heading">¶</a></h3>
+<h3>Solution au problème 2 : toutes les interprétations<a class="headerlink" href="#Solution-au-problème-2-:-toutes-les-interprétations" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’objectif est de sortir toutes les interprétations possibles. <code class="docutils literal notranslate"><span class="pre">oo</span></code> peut être <code class="docutils literal notranslate"><span class="pre">I</span></code> ou <code class="docutils literal notranslate"><span class="pre">EE</span></code>. La version qui suit est loin d’être la plus efficace… La version actuelle n’est pas la plus efficace. On cherche simple à trouver tous les chemins possibles reliant deux noeuds d’un graphe. On peut aussi utiliser des <a class="reference external" href="https://leon.bottou.org/publications/pdf/cvpr-1997.pdf">Graph Transformer Network</a>. On peut également voir cela comme un système de
 <a class="reference external" href="https://sdpython.github.io/doc/mlstatpy/dev/c_nlp/completion.html">complétion</a> (les listes déroulantes de préfix dans les barres de saisie sur Internet). Dans ce second cas, les suggestions serait les lettres morses.</p>
 <div class="nbinput docutils container">
@@ -1149,10 +1152,10 @@ F oo-o   EEN
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

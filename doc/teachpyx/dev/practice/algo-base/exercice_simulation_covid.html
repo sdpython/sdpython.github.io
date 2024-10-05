@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="L’énigme d’Einstein et sa résolution" href="../../auto_examples/prog/plot_einstein_riddle.html" /><link rel="prev" title="Modèle épidémiologique (SIRD)" href="exercice_simulation_covid_simple.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Simulation COVID - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Simulation-COVID">
-<h1>Simulation COVID<a class="headerlink" href="#Simulation-COVID" title="Link to this heading">¶</a></h1>
+<h1>Simulation COVID<a class="headerlink" href="#Simulation-COVID" title="Lien vers cette rubrique">¶</a></h1>
 <p>Ou comment utiliser les mathématiques pour comprendre la propagation de l’épidémie.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -592,9 +595,9 @@
 </div>
 </div>
 <section id="Enoncé">
-<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Link to this heading">¶</a></h2>
+<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Lien vers cette rubrique">¶</a></h2>
 <section id="On-récupère-les-données-du-COVID-par-région-et-par-âge-et-premier-graphe">
-<h3>On récupère les données du COVID par région et par âge et premier graphe<a class="headerlink" href="#On-récupère-les-données-du-COVID-par-région-et-par-âge-et-premier-graphe" title="Link to this heading">¶</a></h3>
+<h3>On récupère les données du COVID par région et par âge et premier graphe<a class="headerlink" href="#On-récupère-les-données-du-COVID-par-région-et-par-âge-et-premier-graphe" title="Lien vers cette rubrique">¶</a></h3>
 <p>A cette adresse : <a class="reference external" href="https://www.data.gouv.fr/en/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/">Données relatives à l’épidémie de COVID-19 en France : vue d’ensemble</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -1054,7 +1057,7 @@
 <p>La série des <em>recovered</em> ne compte vraisemblablement que ceux qui sont passés à l’hôpital. Il faudrait recouper avec d’autres données pour être sûr. Ce sera pour un autre jour.</p>
 </section>
 <section id="Modèle-SIRD">
-<h3>Modèle SIRD<a class="headerlink" href="#Modèle-SIRD" title="Link to this heading">¶</a></h3>
+<h3>Modèle SIRD<a class="headerlink" href="#Modèle-SIRD" title="Lien vers cette rubrique">¶</a></h3>
 <p>Pour en savoir plus <a class="reference external" href="https://fr.wikipedia.org/wiki/Mod%C3%A8les_compartimentaux_en_%C3%A9pid%C3%A9miologie">Modèles compartimentaux en épidémiologie</a>. On classe la population en quatre catégories :</p>
 <ul class="simple">
 <li><p>S : personnes non contaminées</p></li>
@@ -1072,7 +1075,7 @@
 <p><span class="math notranslate nohighlight">\(\beta\)</span> est lié au taux de transmission, <span class="math notranslate nohighlight">\(\frac{1}{\mu}\)</span> est la durée moyenne jusqu’à guérison, <span class="math notranslate nohighlight">\(\frac{1}{\nu}\)</span> est la durée moyenne jusqu’au décès.</p>
 </section>
 <section id="Q0-:-une-petite-fonction-pour-dessiner">
-<h3>Q0 : une petite fonction pour dessiner<a class="headerlink" href="#Q0-:-une-petite-fonction-pour-dessiner" title="Link to this heading">¶</a></h3>
+<h3>Q0 : une petite fonction pour dessiner<a class="headerlink" href="#Q0-:-une-petite-fonction-pour-dessiner" title="Lien vers cette rubrique">¶</a></h3>
 <p>Cette fonction servira à représenter graphiquement les résultats.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1155,7 +1158,7 @@
 </div>
 </section>
 <section id="Q1-:-écrire-une-fonction-qui-calcule-la-propagation">
-<h3>Q1 : écrire une fonction qui calcule la propagation<a class="headerlink" href="#Q1-:-écrire-une-fonction-qui-calcule-la-propagation" title="Link to this heading">¶</a></h3>
+<h3>Q1 : écrire une fonction qui calcule la propagation<a class="headerlink" href="#Q1-:-écrire-une-fonction-qui-calcule-la-propagation" title="Lien vers cette rubrique">¶</a></h3>
 <p>On suppose que <span class="math notranslate nohighlight">\(\beta, \mu, \nu, S_0, I_0, R_0, D_0\)</span> sont connus. On rappelle le modèle :</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(dS = - \beta \frac{S I}{N}\)</span></p></li>
@@ -1217,7 +1220,7 @@
 </div>
 </section>
 <section id="Q2-:-on-veut-estimer-les-paramètres-du-modèle,-une-fonction-d'erreur-?">
-<h3>Q2 : on veut estimer les paramètres du modèle, une fonction d’erreur ?<a class="headerlink" href="#Q2-:-on-veut-estimer-les-paramètres-du-modèle,-une-fonction-d'erreur-?" title="Link to this heading">¶</a></h3>
+<h3>Q2 : on veut estimer les paramètres du modèle, une fonction d’erreur ?<a class="headerlink" href="#Q2-:-on-veut-estimer-les-paramètres-du-modèle,-une-fonction-d'erreur-?" title="Lien vers cette rubrique">¶</a></h3>
 <p>C’est compliqué parce que… les paramètres évoluent au cours du temps, en fonction du comportement des gens, masque, pas masque, confinement, reconfinement, température, manque de tests également… Tout d’abord les vraies données.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1315,7 +1318,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 </div>
 </section>
 <section id="Q3-:-optimisation">
-<h3>Q3 : optimisation<a class="headerlink" href="#Q3-:-optimisation" title="Link to this heading">¶</a></h3>
+<h3>Q3 : optimisation<a class="headerlink" href="#Q3-:-optimisation" title="Lien vers cette rubrique">¶</a></h3>
 <p>Pour optimiser, on tire des paramètres de façon aléatoire dans un intervalle donné et on choisit ceux qui minimisent l’erreur.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1368,7 +1371,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 </div>
 </section>
 <section id="Q4-:-dessiner-les-résultats">
-<h3>Q4 : dessiner les résultats<a class="headerlink" href="#Q4-:-dessiner-les-résultats" title="Link to this heading">¶</a></h3>
+<h3>Q4 : dessiner les résultats<a class="headerlink" href="#Q4-:-dessiner-les-résultats" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1387,7 +1390,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 </div>
 </section>
 <section id="Q5-:-vérifier-que-cela-marche-sur-des-données-synthétiques">
-<h3>Q5 : vérifier que cela marche sur des données synthétiques<a class="headerlink" href="#Q5-:-vérifier-que-cela-marche-sur-des-données-synthétiques" title="Link to this heading">¶</a></h3>
+<h3>Q5 : vérifier que cela marche sur des données synthétiques<a class="headerlink" href="#Q5-:-vérifier-que-cela-marche-sur-des-données-synthétiques" title="Lien vers cette rubrique">¶</a></h3>
 <p>On simule, on vérifie que l’optimisation retrouve les paramètres de la simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1399,7 +1402,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 </div>
 </section>
 <section id="Q6-:-sur-des-données-réelles">
-<h3>Q6 : sur des données réelles<a class="headerlink" href="#Q6-:-sur-des-données-réelles" title="Link to this heading">¶</a></h3>
+<h3>Q6 : sur des données réelles<a class="headerlink" href="#Q6-:-sur-des-données-réelles" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1411,9 +1414,9 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 </section>
 </section>
 <section id="Réponses">
-<h2>Réponses<a class="headerlink" href="#Réponses" title="Link to this heading">¶</a></h2>
+<h2>Réponses<a class="headerlink" href="#Réponses" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Q1-:-propagation">
-<h3>Q1 : propagation<a class="headerlink" href="#Q1-:-propagation" title="Link to this heading">¶</a></h3>
+<h3>Q1 : propagation<a class="headerlink" href="#Q1-:-propagation" title="Lien vers cette rubrique">¶</a></h3>
 <p>On l’applique aux données réelles.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1460,7 +1463,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 </div>
 </section>
 <section id="Q2-:-série-cumulées-et-fonction-erreur">
-<h3>Q2 : série cumulées et fonction erreur<a class="headerlink" href="#Q2-:-série-cumulées-et-fonction-erreur" title="Link to this heading">¶</a></h3>
+<h3>Q2 : série cumulées et fonction erreur<a class="headerlink" href="#Q2-:-série-cumulées-et-fonction-erreur" title="Lien vers cette rubrique">¶</a></h3>
 <p>On doit d’abord calculer la simulation qui modifie <span class="math notranslate nohighlight">\(I_t\)</span> en <span class="math notranslate nohighlight">\(J_t\)</span> qui correspond à l’ensemble des personnes contaminées jusqu’à présent.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -1567,7 +1570,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 <p>On regarde si on arrive à retrouver les paramètres de la simulation.</p>
 </section>
 <section id="Q3,-Q4,-Q5-:-optimisation-sur-des-données-synthétiques">
-<h3>Q3, Q4, Q5 : optimisation sur des données synthétiques<a class="headerlink" href="#Q3,-Q4,-Q5-:-optimisation-sur-des-données-synthétiques" title="Link to this heading">¶</a></h3>
+<h3>Q3, Q4, Q5 : optimisation sur des données synthétiques<a class="headerlink" href="#Q3,-Q4,-Q5-:-optimisation-sur-des-données-synthétiques" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
@@ -1660,7 +1663,7 @@ array([[28305367.1697884, 1.1640875027069664, 3.626756310367156,
 <p>Ca ne marche pas trop mal.</p>
 </section>
 <section id="id1">
-<h3>Q6 : sur des données réelles<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Q6 : sur des données réelles<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -1866,10 +1869,10 @@ moins connu puisqu’il s’agit de l’inverse de la durée moyenne d’incubat
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="1A.e - TD noté, 21 février 2017" href="td_note_2017_2.html" /><link rel="prev" title="1A.e - TD noté, 11 décembre 2015" href="td_note_2016.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>1A.e - TD noté, 16 décembre 2016 - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,10 +584,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="1A.e---TD-noté,-16-décembre-2016">
-<h1>1A.e - TD noté, 16 décembre 2016<a class="headerlink" href="#1A.e---TD-noté,-16-décembre-2016" title="Link to this heading">¶</a></h1>
+<h1>1A.e - TD noté, 16 décembre 2016<a class="headerlink" href="#1A.e---TD-noté,-16-décembre-2016" title="Lien vers cette rubrique">¶</a></h1>
 <p>Régression linéaire avec des variables catégorielles.</p>
 <section id="Exercice-1">
-<h2>Exercice 1<a class="headerlink" href="#Exercice-1" title="Link to this heading">¶</a></h2>
+<h2>Exercice 1<a class="headerlink" href="#Exercice-1" title="Lien vers cette rubrique">¶</a></h2>
 <p>On suppose qu’on dispose d’un ensemble d’observations <span class="math notranslate nohighlight">\((X_i, Y_i)\)</span> avec <span class="math notranslate nohighlight">\(X_i, Y_i \in \mathbb{R}\)</span>. La régression linéaire consiste une relation linéaire <span class="math notranslate nohighlight">\(Y_i = a X_i + b + \epsilon_i\)</span> qui minimise la variance du bruit. On pose :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -611,7 +614,7 @@
 \[\begin{array}{l} a^* = \frac{ \mathbb{E}(XY) - \mathbb{E} X \mathbb{E} Y}{\mathbb{E}(X^2) - (\mathbb{E} X)^2} \text{ et } b^* = \mathbb{E} Y - a^* \mathbb{E} X \end{array}\]</div>
 </div>
 <section id="Q1">
-<h3>Q1<a class="headerlink" href="#Q1" title="Link to this heading">¶</a></h3>
+<h3>Q1<a class="headerlink" href="#Q1" title="Lien vers cette rubrique">¶</a></h3>
 <p>On génère un nuage de points avec le code suivant :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -652,7 +655,7 @@
 </div>
 </section>
 <section id="Q2">
-<h3>Q2<a class="headerlink" href="#Q2" title="Link to this heading">¶</a></h3>
+<h3>Q2<a class="headerlink" href="#Q2" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ecrire une fonction qui calcule <span class="math notranslate nohighlight">\(\mathbb{E} X, \mathbb{E} Y, \mathbb{E}(XY), \mathbb{E}(X^2)\)</span>. Plusieurs étudiants m’ont demandé ce qu’était <code class="docutils literal notranslate"><span class="pre">obs</span></code>. C’est simplement le résultat de la fonction précédente.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -688,7 +691,7 @@
 </div>
 </section>
 <section id="Q3">
-<h3>Q3<a class="headerlink" href="#Q3" title="Link to this heading">¶</a></h3>
+<h3>Q3<a class="headerlink" href="#Q3" title="Lien vers cette rubrique">¶</a></h3>
 <p>Calculer les grandeurs <span class="math notranslate nohighlight">\(a^*\)</span>, <span class="math notranslate nohighlight">\(b^*\)</span>. A priori, on doit retrouver quelque chose d’assez proche des valeurs choisies pour la première question : <span class="math notranslate nohighlight">\(a=0.5\)</span>, <span class="math notranslate nohighlight">\(b=1\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -716,7 +719,7 @@
 </div>
 </section>
 <section id="Q4">
-<h3>Q4<a class="headerlink" href="#Q4" title="Link to this heading">¶</a></h3>
+<h3>Q4<a class="headerlink" href="#Q4" title="Lien vers cette rubrique">¶</a></h3>
 <p>Compléter le programme.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -758,7 +761,7 @@
 </div>
 </section>
 <section id="Q5">
-<h3>Q5<a class="headerlink" href="#Q5" title="Link to this heading">¶</a></h3>
+<h3>Q5<a class="headerlink" href="#Q5" title="Lien vers cette rubrique">¶</a></h3>
 <p>On voudrait quand même faire une régression de la variable <span class="math notranslate nohighlight">\(Y\)</span> sur la variable catégorielle. On construit une fonction qui assigne un numéro quelconque mais distinct à chaque catégorie. La fonction retourne un dictionnaire avec les catégories comme clé et les numéros comme valeurs.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -788,7 +791,7 @@
 </div>
 </section>
 <section id="Q6">
-<h3>Q6<a class="headerlink" href="#Q6" title="Link to this heading">¶</a></h3>
+<h3>Q6<a class="headerlink" href="#Q6" title="Lien vers cette rubrique">¶</a></h3>
 <p>On construit la matrice <span class="math notranslate nohighlight">\(M_{ic}\)</span> tel que : <span class="math notranslate nohighlight">\(M_{ic}\)</span> vaut 1 si <span class="math notranslate nohighlight">\(c\)</span> est le numéro de la catégorie <span class="math notranslate nohighlight">\(X_i\)</span>, 0 sinon.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -826,7 +829,7 @@ array([[ 1.,  0.,  0.],
 </div>
 </section>
 <section id="Q7">
-<h3>Q7<a class="headerlink" href="#Q7" title="Link to this heading">¶</a></h3>
+<h3>Q7<a class="headerlink" href="#Q7" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il est conseillé de convertir la matrice <span class="math notranslate nohighlight">\(M\)</span> et les <span class="math notranslate nohighlight">\(Y\)</span> au format <em>numpy</em>. On ajoute un vecteur constant à la matrice <span class="math notranslate nohighlight">\(M\)</span>. La requête <em>numpy add column</em> sur un moteur de recherche vous directement à ce résultat : <a class="reference external" href="http://stackoverflow.com/questions/8486294/how-to-add-an-extra-column-to-an-numpy-array">How to add an extra column to an numpy array</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -863,7 +866,7 @@ array([[ 1.,  0.,  0.],
 </div>
 </section>
 <section id="Q8">
-<h3>Q8<a class="headerlink" href="#Q8" title="Link to this heading">¶</a></h3>
+<h3>Q8<a class="headerlink" href="#Q8" title="Lien vers cette rubrique">¶</a></h3>
 <p>On résoud la régression multidimensionnelle en appliquant la formule <span class="math notranslate nohighlight">\(C^* = (M'M)^{-1}M'Y\)</span>. La question 7 ne servait pas à grand chose excepté faire découvrir la fonction <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html">hstack</a> car le rang de la matrice <code class="docutils literal notranslate"><span class="pre">Mc</span></code> est 3 &lt; 4.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -887,7 +890,7 @@ array([[ 20.92499253],
 </div>
 </section>
 <section id="Q9">
-<h3>Q9<a class="headerlink" href="#Q9" title="Link to this heading">¶</a></h3>
+<h3>Q9<a class="headerlink" href="#Q9" title="Lien vers cette rubrique">¶</a></h3>
 <p>La régression détermine les coefficients <span class="math notranslate nohighlight">\(\alpha\)</span> dans la régression <span class="math notranslate nohighlight">\(Y_i = \alpha_{rouge} \mathbb{1}_{X_i = rouge} + \alpha_{vert}  \mathbb{1}_{X_i = vert} + \alpha_{bleu} \mathbb{1}_{X_i = bleu} + \epsilon_i\)</span>.</p>
 <p>Construire le vecteur <span class="math notranslate nohighlight">\(\hat{Y_i} = \alpha_{rouge} \mathbb{1}_{X_i = rouge} + \alpha_{vert} \mathbb{1}_{X_i = vert} + \alpha_{bleu} \mathbb{1}_{X_i = bleu}\)</span>.</p>
 <div class="nbinput docutils container">
@@ -916,7 +919,7 @@ array([[ 20.92499253],
 </div>
 </section>
 <section id="Q10">
-<h3>Q10<a class="headerlink" href="#Q10" title="Link to this heading">¶</a></h3>
+<h3>Q10<a class="headerlink" href="#Q10" title="Lien vers cette rubrique">¶</a></h3>
 <p>Utiliser le résultat de la question 3 pour calculer les coefficients de la régression <span class="math notranslate nohighlight">\(Y_i = a^* \hat{Y_i} + b^*\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -940,13 +943,13 @@ array([[ 20.92499253],
 </section>
 </section>
 <section id="Exercice-2">
-<h2>Exercice 2<a class="headerlink" href="#Exercice-2" title="Link to this heading">¶</a></h2>
+<h2>Exercice 2<a class="headerlink" href="#Exercice-2" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Q1---Q2---Q3">
-<h3>Q1 - Q2 - Q3<a class="headerlink" href="#Q1---Q2---Q3" title="Link to this heading">¶</a></h3>
+<h3>Q1 - Q2 - Q3<a class="headerlink" href="#Q1---Q2---Q3" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce sont les mêmes réponses.</p>
 </section>
 <section id="id1">
-<h3>Q4<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Q4<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un moyen très simple de simuler une <a class="reference external" href="https://fr.wikipedia.org/wiki/Loi_multinomiale">loi multinomiale</a> est de partir d’une loi uniforme et discrète à valeur dans entre 1 et 10. On tire un nombre, s’il est inférieur ou égal à 5, ce sera la catégorie 0, 1 si c’est inférieur à 8, 2 sinon.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -993,7 +996,7 @@ array([[ 20.92499253],
 </div>
 </section>
 <section id="id2">
-<h3>Q5<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h3>Q5<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
 <p>On voudrait quand même faire une régression de la variable <span class="math notranslate nohighlight">\(Y\)</span> sur la variable catégorielle. On commence par les compter. Construire une fonction qui compte le nombre de fois qu’une catégorie est présente dans les données (un histogramme).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -1021,7 +1024,7 @@ array([[ 20.92499253],
 </div>
 </section>
 <section id="id3">
-<h3>Q6<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<h3>Q6<a class="headerlink" href="#id3" title="Lien vers cette rubrique">¶</a></h3>
 <p>Construire une fonction qui calcule la moyenne des <span class="math notranslate nohighlight">\(Y_i\)</span> pour chaque catégorie : <span class="math notranslate nohighlight">\(\mathbb{E}(Y | rouge)\)</span>, <span class="math notranslate nohighlight">\(\mathbb{E}(Y | vert)\)</span>, <span class="math notranslate nohighlight">\(\mathbb{E}(Y | bleu)\)</span>. La fonction retourne un dictionnaire <code class="docutils literal notranslate"><span class="pre">{couleur:moyenne}</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1056,7 +1059,7 @@ array([[ 20.92499253],
 <p>L’énoncé induisait quelque peu en erreur car la fonction suggérée ne permet de calculer ces moyennes. Il suffit de changer.</p>
 </section>
 <section id="id4">
-<h3>Q7<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<h3>Q7<a class="headerlink" href="#id4" title="Lien vers cette rubrique">¶</a></h3>
 <p>Construire le vecteur <span class="math notranslate nohighlight">\(Z_i = \mathbb{E}(Y | rouge)\mathbb{1}_{X_i = rouge} + \mathbb{E}(Y | vert) \mathbb{1}_{X_i = vert} + \mathbb{E}(Y | bleu) \mathbb{1}_{X_i = bleu}\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1083,7 +1086,7 @@ array([[ 20.92499253],
 </div>
 </section>
 <section id="id5">
-<h3>Q8<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<h3>Q8<a class="headerlink" href="#id5" title="Lien vers cette rubrique">¶</a></h3>
 <p>Utiliser le résultat de la question 3 pour calculer les coefficients de la régression <span class="math notranslate nohighlight">\(Y_i = a^* Z_i + b^*\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1106,7 +1109,7 @@ array([[ 20.92499253],
 <p>On aboutit au résultat <span class="math notranslate nohighlight">\(Y = \hat{Y} + \epsilon\)</span>. On a associé une valeur à chaque catégorie de telle sorte que la régression de <span class="math notranslate nohighlight">\(Y\)</span> sur cette valeur soit cette valeur.</p>
 </section>
 <section id="id6">
-<h3>Q9<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<h3>Q9<a class="headerlink" href="#id6" title="Lien vers cette rubrique">¶</a></h3>
 <p>Calculer la matrice de variance / covariance pour les variables <span class="math notranslate nohighlight">\((Y_i)\)</span>, <span class="math notranslate nohighlight">\((Z_i)\)</span>, <span class="math notranslate nohighlight">\((Y_i - Z_i)\)</span>, <span class="math notranslate nohighlight">\(\mathbb{1}_{X_i = rouge}\)</span>, <span class="math notranslate nohighlight">\(\mathbb{1}_{X_i = vert}\)</span>, <span class="math notranslate nohighlight">\(\mathbb{1}_{X_i = bleu}\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -1274,7 +1277,7 @@ array([[  5.62221004e+01,   5.56972711e+01,   5.24829301e-01,
 </div>
 </section>
 <section id="id7">
-<h3>Q10<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<h3>Q10<a class="headerlink" href="#id7" title="Lien vers cette rubrique">¶</a></h3>
 <p>On permute rouge et vert. Construire le vecteur <span class="math notranslate nohighlight">\(W_i = \mathbb{E}(Y | rouge)\mathbb{1}_{X_i = vert} + \mathbb{E}(Y | vert)\mathbb{1}_{X_i = rouge} + \mathbb{E}(Y | bleu)\mathbb{1}_{X_i = bleu}\)</span>. Utiliser le résultat de la question 3 pour calculer les coefficients de la régression <span class="math notranslate nohighlight">\(Y_i = a^* W_i + b^*\)</span>. Vérifiez que l’erreur est supérieure.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1331,7 +1334,7 @@ array([[  5.62221004e+01,   5.56972711e+01,   5.24829301e-01,
 </section>
 </section>
 <section id="Conclusion">
-<h2>Conclusion<a class="headerlink" href="#Conclusion" title="Link to this heading">¶</a></h2>
+<h2>Conclusion<a class="headerlink" href="#Conclusion" title="Lien vers cette rubrique">¶</a></h2>
 <p>L”<a class="reference external" href="https://fr.wikipedia.org/wiki/Analyse_des_correspondances_multiples">analyse des correspondances multiples</a> est une façon d’étudier les modalités de variables catégorielles mais cela ne fait pas de la prédiction. Le modèle <a class="reference external" href="https://fr.wikipedia.org/wiki/Mod%C3%A8le_Probit">logit - probit</a> prédit une variable binaire à partir de variables continue mais dans notre cas, c’est la variable à prédire qui est continue. Pour effectuer une prédiction, il convertit les catégories en variables
 numériques (voir <a class="reference external" href="https://en.wikipedia.org/wiki/Categorical_variable">Categorical Variables</a>). Le langage R est plus outillé pour cela : <a class="reference external" href="https://www.r-bloggers.com/regression-on-categorical-variables/">Regression on categorical variables</a>. Le module <a class="reference external" href="https://github.com/scikit-learn-contrib/categorical-encoding">categorical-encoding</a> est disponible en python. Cet examen décrit une méthode parmi d’autres pour transformer les catégories en variables continues.</p>
 <div class="nbinput nblast docutils container">
@@ -1440,10 +1443,10 @@ numériques (voir <a class="reference external" href="https://en.wikipedia.org/w
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

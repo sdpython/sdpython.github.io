@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Jeux de dictionnaires, plus grand suffixe commun" href="exercice_suffix.html" /><link rel="prev" title="Calculer x**n le plus rapidement possible" href="exercice_xn.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Les k premiers éléments (top k) - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Les-k-premiers-éléments-(top-k)">
-<h1>Les k premiers éléments (top k)<a class="headerlink" href="#Les-k-premiers-éléments-(top-k)" title="Link to this heading">¶</a></h1>
+<h1>Les k premiers éléments (top k)<a class="headerlink" href="#Les-k-premiers-éléments-(top-k)" title="Lien vers cette rubrique">¶</a></h1>
 <p>Rechercher les k premiers éléments est un exercice classique d’algorithmie, souvent appelé <em>top-k</em>et qu’on peut résoudre à l’aide d’un <a class="reference external" href="https://fr.wikipedia.org/wiki/Algorithme_de_s%C3%A9lection">algorithme de sélection</a>. C’est très utile en machine learning pour retourner les 3, 4, ou 5 premiers résultats d’un modèle prédictif.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -592,7 +595,7 @@
 </div>
 </div>
 <section id="Enoncé">
-<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Link to this heading">¶</a></h2>
+<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Lien vers cette rubrique">¶</a></h2>
 <p>On part d’une liste toute simple, une permutation aléatoire des premiers entiers. On connaît donc les <em>k</em> plus petits éléments qu’il faut obtenir.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -616,7 +619,7 @@ array([10, 13, 17, 14,  7, 15,  0,  3,  9,  6,  8,  2, 19, 18,  4, 12, 11,
 </pre></div></div>
 </div>
 <section id="Exercice-1-:-on-trie-tout-et-on-prend-les-k-plus-petit">
-<h3>Exercice 1 : on trie tout et on prend les k plus petit<a class="headerlink" href="#Exercice-1-:-on-trie-tout-et-on-prend-les-k-plus-petit" title="Link to this heading">¶</a></h3>
+<h3>Exercice 1 : on trie tout et on prend les k plus petit<a class="headerlink" href="#Exercice-1-:-on-trie-tout-et-on-prend-les-k-plus-petit" title="Lien vers cette rubrique">¶</a></h3>
 <p>C’est la méthode la plus simple mais pas la plus efficace.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -634,7 +637,7 @@ array([10, 13, 17, 14,  7, 15,  0,  3,  9,  6,  8,  2, 19, 18,  4, 12, 11,
 </div>
 </section>
 <section id="Exercice-2-:-version-plus-rapide-au-choix">
-<h3>Exercice 2 : version plus rapide au choix<a class="headerlink" href="#Exercice-2-:-version-plus-rapide-au-choix" title="Link to this heading">¶</a></h3>
+<h3>Exercice 2 : version plus rapide au choix<a class="headerlink" href="#Exercice-2-:-version-plus-rapide-au-choix" title="Lien vers cette rubrique">¶</a></h3>
 <p>A vois de choisir entre l’une et l’autre voire les deux si vous allez vite.</p>
 <p><strong>Idée 1</strong></p>
 <p>On garde un tableau de <em>k</em> éléments triés <em>T</em>, on parcourt tous les éléments du tableau initial. Si l’élément est plus petit que le plus grand des éléments dans le tableau <em>T</em>, on l’ajoute à ce tableau de façon à le garder trier. On continue jusqu’à la fin et le tableau <em>T</em> est l’ensemble des <em>k</em> plus petits éléments.</p>
@@ -652,7 +655,7 @@ array([10, 13, 17, 14,  7, 15,  0,  3,  9,  6,  8,  2, 19, 18,  4, 12, 11,
 <p>Vous avez aussi le droit de tricher pour une troisième idée <a class="reference external" href="https://sdpython.github.io/doc/teachpyx/dev/practice/py-base/nbheap.html">Heap / Tas</a> mais il faudra vous débrouiller tout seul.</p>
 </section>
 <section id="Exercice-3-:-algorithme-de-sélection">
-<h3>Exercice 3 : algorithme de sélection<a class="headerlink" href="#Exercice-3-:-algorithme-de-sélection" title="Link to this heading">¶</a></h3>
+<h3>Exercice 3 : algorithme de sélection<a class="headerlink" href="#Exercice-3-:-algorithme-de-sélection" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’idée est assez simple : on prend un élément du tableau au hasard - le pivot - , on range à droite tous les éléments supérieurs, à gauche tous les éléments inférieurs. Si ce pivot se trouve à la position <em>k</em> alors on a trouvé les <em>k</em> plus petits éléments. Sinon, on sait où chercher.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -664,7 +667,7 @@ array([10, 13, 17, 14,  7, 15,  0,  3,  9,  6,  8,  2, 19, 18,  4, 12, 11,
 </div>
 </section>
 <section id="Exercice-4-:-utiliser-la-fonction-perf_counter-pour-comparer-les-vitessses-de-chaque-solution">
-<h3>Exercice 4 : utiliser la fonction perf_counter pour comparer les vitessses de chaque solution<a class="headerlink" href="#Exercice-4-:-utiliser-la-fonction-perf_counter-pour-comparer-les-vitessses-de-chaque-solution" title="Link to this heading">¶</a></h3>
+<h3>Exercice 4 : utiliser la fonction perf_counter pour comparer les vitessses de chaque solution<a class="headerlink" href="#Exercice-4-:-utiliser-la-fonction-perf_counter-pour-comparer-les-vitessses-de-chaque-solution" title="Lien vers cette rubrique">¶</a></h3>
 <p>Et bien sûr, il faudra expliquer pourquoi l’algorithme le plus rapide est bien le plus rapide. Faire varier la taille du tableau initial.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -685,9 +688,9 @@ array([10, 13, 17, 14,  7, 15,  0,  3,  9,  6,  8,  2, 19, 18,  4, 12, 11,
 </section>
 </section>
 <section id="Réponses">
-<h2>Réponses<a class="headerlink" href="#Réponses" title="Link to this heading">¶</a></h2>
+<h2>Réponses<a class="headerlink" href="#Réponses" title="Lien vers cette rubrique">¶</a></h2>
 <section id="id1">
-<h3>Exercice 1 : on trie tout et on prend les k plus petit<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Exercice 1 : on trie tout et on prend les k plus petit<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <p>Très simple mais le coût est en <span class="math notranslate nohighlight">\(O(n \ln n)\)</span> puisqu’il faut trier tous les éléments.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -715,7 +718,7 @@ array([0, 1, 2, 3])
 <p>Or trier tous les éléments n’est pas nécessaire. On n’a pas besoin de trier tous les éléments après la position <em>k</em>. Il est donc a priori envisageable de fairre mieux en ne faisant que les calculs nécessaires.</p>
 </section>
 <section id="id2">
-<h3>Exercice 2 : version plus rapide au choix<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h3>Exercice 2 : version plus rapide au choix<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
 <p>La première idée n’est pas une de celles proposées mais elle est très simple. Parmi les tris décrits sur cette <a class="reference external" href="https://interstices.info/les-algorithmes-de-tri/">interstices/tri</a>, le tri par sélection est intéressant car il suffit d’effectuer les <em>k</em> premières itérations pour retrouver les <em>k</em> plus petits éléments aux <em>k</em> premières positions.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -848,7 +851,7 @@ serait pour cette version-ci un tableau trié dans le sens décroissant. Dans ce
 </div>
 </section>
 <section id="id3">
-<h3>Exercice 3 : algorithme de sélection<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<h3>Exercice 3 : algorithme de sélection<a class="headerlink" href="#id3" title="Lien vers cette rubrique">¶</a></h3>
 <p>Première version par récurrence.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -950,7 +953,7 @@ array([0, 1, 2, 3])
 </div>
 </section>
 <section id="id4">
-<h3>Exercice 4 : utiliser la fonction perf_counter pour comparer les vitessses de chaque solution<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<h3>Exercice 4 : utiliser la fonction perf_counter pour comparer les vitessses de chaque solution<a class="headerlink" href="#id4" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -1567,10 +1570,10 @@ array([0, 1, 2, 3])
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Calculer un chi 2 sur un tableau de contingence" href="tableau_contingence.html" /><link rel="prev" title="Jeux de coloriage" href="coloriage_carre.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Simuler une loi multinomiale - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Simuler-une-loi-multinomiale">
-<h1>Simuler une loi multinomiale<a class="headerlink" href="#Simuler-une-loi-multinomiale" title="Link to this heading">¶</a></h1>
+<h1>Simuler une loi multinomiale<a class="headerlink" href="#Simuler-une-loi-multinomiale" title="Lien vers cette rubrique">¶</a></h1>
 <p>On part d’une loi uniforme et on simule une loi multinomiale.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -659,7 +662,7 @@ array([[0, 0, 0, 0, 1],
 </pre></div></div>
 </div>
 <section id="Algorithme-de-simulation">
-<h2>Algorithme de simulation<a class="headerlink" href="#Algorithme-de-simulation" title="Link to this heading">¶</a></h2>
+<h2>Algorithme de simulation<a class="headerlink" href="#Algorithme-de-simulation" title="Lien vers cette rubrique">¶</a></h2>
 <p>Tout d’abord, on calcule la distribution cumulée (ou <a class="reference external" href="http://fr.wikipedia.org/wiki/Fonction_de_r%C3%A9partition">fonction de répartition</a>). Le calcule proposé utilise la fonction <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.cumsum.html">numpy.cumsum</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -753,7 +756,7 @@ Counter({4: 430, 0: 177, 2: 156, 1: 139, 3: 98})
 </div>
 </section>
 <section id="Une-première-optimisation-:-tri-des-poids">
-<h2>Une première optimisation : tri des poids<a class="headerlink" href="#Une-première-optimisation-:-tri-des-poids" title="Link to this heading">¶</a></h2>
+<h2>Une première optimisation : tri des poids<a class="headerlink" href="#Une-première-optimisation-:-tri-des-poids" title="Lien vers cette rubrique">¶</a></h2>
 <p>L’algorithme fait intervenir le calcul de la distribution cumulée. Lorsqu’on tire un grand nombre de variable aléatoire, il est intéressant de ne faire ce calcul qu’une seule fois puisqu’il ne change jamais. De même, il est plus intéressant de mettre les valeurs de plus grand poids en premier. La boucle de la fonction <code class="docutils literal notranslate"><span class="pre">simulation_multinomiale</span></code> s’arrêtera plus tôt.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -854,7 +857,7 @@ passage 2
 <p>C’est plus rapide aussi. On voit aussi que cette façon de faire est beaucoup plus rapide que la version implémentée en Python pur. Cela vient du faire que le module <a class="reference external" href="http://www.numpy.org/">numpy</a> est optimisé pour le calcul numérique et surtout implémenté en langages <a class="reference external" href="http://fr.wikipedia.org/wiki/C%2B%2B">C++</a> et <a class="reference external" href="http://fr.wikipedia.org/wiki/Fortran">Fortran</a>.</p>
 </section>
 <section id="Optimisation-bootstrap">
-<h2>Optimisation bootstrap<a class="headerlink" href="#Optimisation-bootstrap" title="Link to this heading">¶</a></h2>
+<h2>Optimisation bootstrap<a class="headerlink" href="#Optimisation-bootstrap" title="Lien vers cette rubrique">¶</a></h2>
 <p>C’est une technique inspiré du <a class="reference external" href="http://fr.wikipedia.org/wiki/Bootstrap_%28statistiques%29">bootstrap</a> qui est un peu moins précise que la version précédente mais qui peut suffire dans bien des cas. Elle est intéressante si on tire un grand nomrbre d’observations aléatoire de la même loi et si <span class="math notranslate nohighlight">\(K\)</span> est grand (<span class="math notranslate nohighlight">\(K\)</span> = nombre de valeurs distinctes). L’idée consiste à générer un premier grand vecteur de nombres aléatoires puis à tirer des nombres aléatoire dans ce vecteur.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -980,10 +983,10 @@ passage 2
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

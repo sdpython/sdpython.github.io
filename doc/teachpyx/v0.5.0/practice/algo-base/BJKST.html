@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Distance entre deux mots de même longueur et tests unitaires" href="exercice_editdist.html" /><link rel="prev" title="Jeux de dictionnaires, plus grand suffixe commun" href="exercice_suffix.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Algorithmes de streaming, BJKST - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Algorithmes-de-streaming,-BJKST">
-<h1>Algorithmes de streaming, BJKST<a class="headerlink" href="#Algorithmes-de-streaming,-BJKST" title="Link to this heading">¶</a></h1>
+<h1>Algorithmes de streaming, BJKST<a class="headerlink" href="#Algorithmes-de-streaming,-BJKST" title="Lien vers cette rubrique">¶</a></h1>
 <p>Les streams (flux) de données sont aujourd’hui présents dans de nombreux domaines (réseaux sociaux, e-commerce, logs de connexion Internet, etc.). L’analyse rapide et pertinente de ces flux est motivée par l’immensité des données qui ne peuvent souvent pas être stockés (du moins facilement) et dont le traitement serait trop lourd (penser au calcul de l’âge moyen des 1,86 milliards utilisateurs de Facebook pour s’en convaincre). Ce notebook s’intéresse particulièrement à l’algorithme
 <a class="reference external" href="http://info.prelert.com/blog/hashing-and-approximate-distinct-value-counts">BJKST</a>.</p>
 <div class="nbinput nblast docutils container">
@@ -593,7 +596,7 @@
 </div>
 </div>
 <section id="Introduction">
-<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Lien vers cette rubrique">¶</a></h2>
 <p>Plus formellement considérons un univers <span class="math notranslate nohighlight">\(U\)</span> de taille <span class="math notranslate nohighlight">\(n\)</span> (un nombre très grand) qui ne peut être stocké en mémoire et une séquence <span class="math notranslate nohighlight">\(S = (s_1, s_2, \ldots, s_m, \ldots)\)</span> d’éléments de <span class="math notranslate nohighlight">\(U\)</span>. Un algorithme de streaming <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> prend le stream <span class="math notranslate nohighlight">\(S\)</span> en entrée et renvoie une fonction <span class="math notranslate nohighlight">\(f(S)\)</span> (souvent à valeurs réelles).</p>
 <p>Notons que l’algorithme <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> est souvent contraint d’accéder séquentiellement aux éléments de <span class="math notranslate nohighlight">\(S\)</span> et / ou ne peut les parcourir qu’un nombre fini de fois.</p>
 <p>Un bon algorithme de streaming doit satisfaire plusieurs contraintes:</p>
@@ -613,17 +616,17 @@
 </ul>
 </section>
 <section id="Estimer-le-nombre-d'éléments-distincts:-l'algorithme-BJKST">
-<h2>Estimer le nombre d’éléments distincts: l’algorithme BJKST<a class="headerlink" href="#Estimer-le-nombre-d'éléments-distincts:-l'algorithme-BJKST" title="Link to this heading">¶</a></h2>
+<h2>Estimer le nombre d’éléments distincts: l’algorithme BJKST<a class="headerlink" href="#Estimer-le-nombre-d'éléments-distincts:-l'algorithme-BJKST" title="Lien vers cette rubrique">¶</a></h2>
 <p>L’algorithme <a class="reference external" href="https://pdfs.semanticscholar.org/e349/7952347101a3535434bc35d378224cf87bcc.pdf">BJKST</a> permet d’estimer le nombre d’éléments distincts d’un stream <span class="math notranslate nohighlight">\(S\)</span>. Son fonctionnement est assez simple et repose sur la notion d’universal hashing que nous présentons ci-bas.</p>
 <section id="Universal-hashing">
-<h3>Universal hashing<a class="headerlink" href="#Universal-hashing" title="Link to this heading">¶</a></h3>
+<h3>Universal hashing<a class="headerlink" href="#Universal-hashing" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’idée derrière les fonctions de hachage est de faire correspondre des élements d’un ensemble dont la taille est variable (ou bien n’est pas connue) vers un ensemble de taille fixe. Le principe de l’universal hashing est de sélectionner aléatoirement une fonction <span class="math notranslate nohighlight">\(h\)</span> dans une famille de fonctions de hachage <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> et de garantir un faible probabilité du nombre de collisions de hachage.</p>
 <p>Formellement si l’on note <span class="math notranslate nohighlight">\([n]\)</span> l’ensemble <span class="math notranslate nohighlight">\(\{1, \ldots, n\}\)</span>, une famille de fonctions <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> est dite universelle si toute fonction <span class="math notranslate nohighlight">\(h: U \mapsto [n]\)</span> choisie uniformément dans la famille <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> vérifie <span class="math notranslate nohighlight">\(\mathbb{P}(h(x) = h(y)) \leq \frac{1}{n}\)</span> pour tout couple <span class="math notranslate nohighlight">\(x,y \in U\)</span> distincts.</p>
 <p>Nous considérons ici la famille <span class="math notranslate nohighlight">\(\mathcal{H} = \{h_{a,b}\}\)</span> où <span class="math notranslate nohighlight">\(h_{a,b}(x) = ((ax + b) \space{} \mathrm{mod} \space{} p) \space{} \mathrm{mod} \space{} n\)</span>, <span class="math notranslate nohighlight">\(x\)</span> est un entier, <span class="math notranslate nohighlight">\(a \in \{1, \ldots, p - 1\}\)</span>, <span class="math notranslate nohighlight">\(b \in \{0, \ldots, p - 1 \}\)</span> et <span class="math notranslate nohighlight">\(p\)</span> un nombre premier <span class="math notranslate nohighlight">\(\geq n\)</span>. On peut sans trop de difficulté se convaincre que <span class="math notranslate nohighlight">\(h_{a,b}(x)\)</span> est uniformément distribué sur <span class="math notranslate nohighlight">\([n]\)</span> et que cette famille est universelle (voir <a class="reference external" href="https://en.wikipedia.org/wiki/Universal_hashing">Universal
 hashing</a> pour plus de détails).</p>
 </section>
 <section id="Collisions">
-<h3>Collisions<a class="headerlink" href="#Collisions" title="Link to this heading">¶</a></h3>
+<h3>Collisions<a class="headerlink" href="#Collisions" title="Lien vers cette rubrique">¶</a></h3>
 <p>Vérifions numériquement le nombre de collisions. Considérons un univers <span class="math notranslate nohighlight">\(U\)</span> large prenons par exemple <span class="math notranslate nohighlight">\(U = [n]\)</span> avec <span class="math notranslate nohighlight">\(n\)</span> grand.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
@@ -815,7 +818,7 @@ Probabilité de collision moyenne = 9.97%
 <p>La probabilité de collision estimée est bien inversement proportionnelle à la valeur de hashage <span class="math notranslate nohighlight">\(m\)</span>.</p>
 </section>
 <section id="Algorithme-BJKST">
-<h3>Algorithme BJKST<a class="headerlink" href="#Algorithme-BJKST" title="Link to this heading">¶</a></h3>
+<h3>Algorithme BJKST<a class="headerlink" href="#Algorithme-BJKST" title="Lien vers cette rubrique">¶</a></h3>
 <p>Nous considérons un univers <span class="math notranslate nohighlight">\(U\)</span> de taille <span class="math notranslate nohighlight">\(N\)</span> et comportant <span class="math notranslate nohighlight">\(n\)</span> élements distincts. Pour un stream <span class="math notranslate nohighlight">\(S = (a_1, a_2, \ldots)\)</span> de taille <span class="math notranslate nohighlight">\(s\)</span> essayons d’estimer <span class="math notranslate nohighlight">\(n\)</span> à l’aide de l’algorithme <a class="reference external" href="http://info.prelert.com/blog/hashing-and-approximate-distinct-value-counts">BJKST</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
@@ -1097,7 +1100,7 @@ Estimation de la taille de U = 384
 </div>
 </section>
 <section id="Résultats-numériques">
-<h3>Résultats numériques<a class="headerlink" href="#Résultats-numériques" title="Link to this heading">¶</a></h3>
+<h3>Résultats numériques<a class="headerlink" href="#Résultats-numériques" title="Lien vers cette rubrique">¶</a></h3>
 <p>Regroupons le code dans une fonction</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
@@ -1209,7 +1212,7 @@ Erreur relative = 0.80%, s = 5000
 <p>La fiabilité de l’estimation est décroissante avec le niveau de précision exigé, l’algorithme donne une bonne estimation de la vraie valeur (ligne horizontale rouge) pour <span class="math notranslate nohighlight">\(\epsilon \approx 0.3\)</span>.</p>
 </section>
 <section id="Temps-de-calcul-en-fonction-de-la-taille-du-stream">
-<h3>Temps de calcul en fonction de la taille du stream<a class="headerlink" href="#Temps-de-calcul-en-fonction-de-la-taille-du-stream" title="Link to this heading">¶</a></h3>
+<h3>Temps de calcul en fonction de la taille du stream<a class="headerlink" href="#Temps-de-calcul-en-fonction-de-la-taille-du-stream" title="Lien vers cette rubrique">¶</a></h3>
 <p>Regardons à présent comment le temps de calcul évolue en fonction de la taille du stream. Rappelons qu’un bon algorithme de streaming doit évoluer de manière au pire linéaire en fonction de la taille d’espace <span class="math notranslate nohighlight">\(s\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
@@ -1262,7 +1265,7 @@ Text(0.5, 0, &#39;Taille du stream&#39;)
 </section>
 </section>
 <section id="Un-peu-plus-sur-la-précision-de-l'estimateur">
-<h2>Un peu plus sur la précision de l’estimateur<a class="headerlink" href="#Un-peu-plus-sur-la-précision-de-l'estimateur" title="Link to this heading">¶</a></h2>
+<h2>Un peu plus sur la précision de l’estimateur<a class="headerlink" href="#Un-peu-plus-sur-la-précision-de-l'estimateur" title="Lien vers cette rubrique">¶</a></h2>
 <p>Lorsque la précision <span class="math notranslate nohighlight">\(\epsilon\)</span> est proche de <span class="math notranslate nohighlight">\(0\)</span> l’estimation est moins bonne que pour une précision plus large. Pourquoi ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
@@ -1347,7 +1350,7 @@ Text(0.5, 0, &#39;Taille du stream&#39;)
 </div>
 </div>
 <section id="h_1-et-h_2-égales-à-l'identité">
-<h3><span class="math notranslate nohighlight">\(h_1\)</span> et <span class="math notranslate nohighlight">\(h_2\)</span> égales à l’identité<a class="headerlink" href="#h_1-et-h_2-égales-à-l'identité" title="Link to this heading">¶</a></h3>
+<h3><span class="math notranslate nohighlight">\(h_1\)</span> et <span class="math notranslate nohighlight">\(h_2\)</span> égales à l’identité<a class="headerlink" href="#h_1-et-h_2-égales-à-l'identité" title="Lien vers cette rubrique">¶</a></h3>
 <p>Si nous prenons <span class="math notranslate nohighlight">\(h_1\)</span> et <span class="math notranslate nohighlight">\(h_2\)</span> égales à l’identité l’ensemble <span class="math notranslate nohighlight">\(B\)</span> se remplit linéairement: pour <span class="math notranslate nohighlight">\(c=1\)</span> on enlève tous les nombres avec <span class="math notranslate nohighlight">\(k = 0\)</span> (tous les nombres impairs donc la moitié) puis pour <span class="math notranslate nohighlight">\(c=2\)</span> on enlève tous les nombres où <span class="math notranslate nohighlight">\(k = 0, 1\)</span> c’est à dire encore la moitié des nombres rajoutés et ainsi de suite..</p>
 <p>A la fin l’estimation est parfaite (cf graphe en fonction de l’avancement dans le stream)</p>
 <div class="nbinput docutils container">
@@ -1413,7 +1416,7 @@ Text(0, 0.5, &#39;size&#39;)
 </div>
 </section>
 <section id="cas-où-la-taille-du-hash-est-petite">
-<h3>cas où la taille du hash est petite<a class="headerlink" href="#cas-où-la-taille-du-hash-est-petite" title="Link to this heading">¶</a></h3>
+<h3>cas où la taille du hash est petite<a class="headerlink" href="#cas-où-la-taille-du-hash-est-petite" title="Lien vers cette rubrique">¶</a></h3>
 <p>Si on prend un hash petit il faut regarder plus de nombres pour remplir et l’incrément de <span class="math notranslate nohighlight">\(c\)</span> se fait « plus tard » dans le stream, d’où la mauvaise estimation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
@@ -1471,7 +1474,7 @@ Estimated = 616, true = 1000, c= 2
 </div>
 </section>
 <section id="cas-où-la-taille-de-hash-est-plus-grande">
-<h3>cas où la taille de hash est plus grande<a class="headerlink" href="#cas-où-la-taille-de-hash-est-plus-grande" title="Link to this heading">¶</a></h3>
+<h3>cas où la taille de hash est plus grande<a class="headerlink" href="#cas-où-la-taille-de-hash-est-plus-grande" title="Lien vers cette rubrique">¶</a></h3>
 <p>Si on prend un une valeur de hash plus grande on se rapproche du cas <span class="math notranslate nohighlight">\(h_1 = h_2 = id\)</span> et l’estimation est meilleure :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
@@ -1529,7 +1532,7 @@ Estimated = 984, true = 1000, c= 3
 </div>
 </section>
 <section id="la-taille-de-hash-dépend-de-la-précision-\epsilon">
-<h3>la taille de hash dépend de la précision <span class="math notranslate nohighlight">\(\epsilon\)</span><a class="headerlink" href="#la-taille-de-hash-dépend-de-la-précision-\epsilon" title="Link to this heading">¶</a></h3>
+<h3>la taille de hash dépend de la précision <span class="math notranslate nohighlight">\(\epsilon\)</span><a class="headerlink" href="#la-taille-de-hash-dépend-de-la-précision-\epsilon" title="Lien vers cette rubrique">¶</a></h3>
 <p>A mon avis, il faut donc que la taille du hash pour <span class="math notranslate nohighlight">\(h_2\)</span> dépende de la précision (dans <a class="reference external" href="https://www.cs.dartmouth.edu/~ac/Teach/CS85-Fall09/Notes/lecnotes.pdf">Data Stream Algorithms</a> ils préconisent une taille en <span class="math notranslate nohighlight">\(\mathrm{log}(n) / \epsilon^2\)</span>).</p>
 <p>Si on prend cette taille pour <span class="math notranslate nohighlight">\(h_2\)</span> on voit que l’estimation est meilleure pour une précision petite.</p>
 <div class="nbinput nblast docutils container">
@@ -1701,10 +1704,10 @@ Estimated = 984, true = 1000, c= 3
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="D’une structure de données à l’autre" href="structures_donnees_conversion.html" /><link rel="prev" title="Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations" href="code_liste_tuple.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Heap - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Heap">
-<h1>Heap<a class="headerlink" href="#Heap" title="Link to this heading">¶</a></h1>
+<h1>Heap<a class="headerlink" href="#Heap" title="Lien vers cette rubrique">¶</a></h1>
 <p>La structure <em>heap</em> ou <a class="reference external" href="https://fr.wikipedia.org/wiki/Tas_(informatique)">tas</a> en français est utilisée pour trier. Elle peut également servir à obtenir les <em>k</em> premiers éléments d’une liste.</p>
 <p>Un tas est peut être considéré comme un tableau <span class="math notranslate nohighlight">\(T\)</span> qui vérifie une condition assez simple, pour tout indice <span class="math notranslate nohighlight">\(i\)</span>, alors <span class="math notranslate nohighlight">\(T[i] \geqslant \max(T[2i+1], T[2i+2])\)</span>. On en déduit nécessairement que le premier élément du tableau est le plus grand. Maintenant comment transformer un tableau en un autre qui respecte cette contrainte ?</p>
 <div class="nbinput nblast docutils container">
@@ -593,7 +596,7 @@
 </div>
 </div>
 <section id="Transformer-en-tas">
-<h2>Transformer en tas<a class="headerlink" href="#Transformer-en-tas" title="Link to this heading">¶</a></h2>
+<h2>Transformer en tas<a class="headerlink" href="#Transformer-en-tas" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -635,7 +638,7 @@
 <p>Comme ce n’est pas facile de vérifer que c’est un tas, on le dessine.</p>
 </section>
 <section id="Dessiner-un-tas">
-<h2>Dessiner un tas<a class="headerlink" href="#Dessiner-un-tas" title="Link to this heading">¶</a></h2>
+<h2>Dessiner un tas<a class="headerlink" href="#Dessiner-un-tas" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -676,7 +679,7 @@
 <p>Le nombre entre crochets est la position, l’autre nombre est la valeur à cette position. Cette représentation fait apparaître une structure d’arbre binaire.</p>
 </section>
 <section id="Première-version">
-<h2>Première version<a class="headerlink" href="#Première-version" title="Link to this heading">¶</a></h2>
+<h2>Première version<a class="headerlink" href="#Première-version" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -759,7 +762,7 @@
 </div>
 </section>
 <section id="Même-chose-avec-les-indices-au-lieu-des-valeurs">
-<h2>Même chose avec les indices au lieu des valeurs<a class="headerlink" href="#Même-chose-avec-les-indices-au-lieu-des-valeurs" title="Link to this heading">¶</a></h2>
+<h2>Même chose avec les indices au lieu des valeurs<a class="headerlink" href="#Même-chose-avec-les-indices-au-lieu-des-valeurs" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -874,7 +877,7 @@
 </div>
 </section>
 <section id="Coût-de-l'algorithme">
-<h2>Coût de l’algorithme<a class="headerlink" href="#Coût-de-l'algorithme" title="Link to this heading">¶</a></h2>
+<h2>Coût de l’algorithme<a class="headerlink" href="#Coût-de-l'algorithme" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -1188,7 +1191,7 @@
 <p>Pas évident, au pire en <span class="math notranslate nohighlight">\(O(n\ln n)\)</span>, au mieux en <span class="math notranslate nohighlight">\(O(n)\)</span>.</p>
 </section>
 <section id="Version-simplifiée">
-<h2>Version simplifiée<a class="headerlink" href="#Version-simplifiée" title="Link to this heading">¶</a></h2>
+<h2>Version simplifiée<a class="headerlink" href="#Version-simplifiée" title="Lien vers cette rubrique">¶</a></h2>
 <p>A-t-on vraiment besoin de <code class="docutils literal notranslate"><span class="pre">_heapify_max_bottom_position</span></code> ?</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -1369,10 +1372,10 @@
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

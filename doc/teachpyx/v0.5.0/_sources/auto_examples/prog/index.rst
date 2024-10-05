@@ -84,6 +84,23 @@ Gallerie d'exemples sur la programmation
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="La transformée de Burrows-Wheeler transforme un mot en un autre mot composée des mêmes lettres mais aux propriétés statistiques différentes. Les deux fonctions qui suivent implémentent les algorithmes décrits sur la page Wikipedia.">
+
+.. only:: html
+
+  .. image:: /auto_examples/prog/images/thumb/sphx_glr_plot_burrows_wheeler_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_prog_plot_burrows_wheeler.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Transformée de Burrows Wheeler</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Un petit problème de chiffre, le mathador consiste à trouver un montant à partir de 5 nombres et 4 opérations.">
 
 .. only:: html
@@ -249,6 +266,7 @@ Gallerie d'exemples sur la programmation
    /auto_examples/prog/plot_numpy_tricks
    /auto_examples/prog/plot_lambda_function
    /auto_examples/prog/plot_gil_example
+   /auto_examples/prog/plot_burrows_wheeler
    /auto_examples/prog/plot_matador
    /auto_examples/prog/plot_float_and_double_rouding
    /auto_examples/prog/plot_partie_dame

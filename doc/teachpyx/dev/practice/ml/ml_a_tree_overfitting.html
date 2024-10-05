@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Gradient Boosting" href="gradient_boosting.html" /><link rel="prev" title="Sélection des hyper-paramètres" href="winesr_knn_hyper.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Tree, hyperparamètres, overfitting - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Tree,-hyperparamètres,-overfitting">
-<h1>Tree, hyperparamètres, overfitting<a class="headerlink" href="#Tree,-hyperparamètres,-overfitting" title="Link to this heading">¶</a></h1>
+<h1>Tree, hyperparamètres, overfitting<a class="headerlink" href="#Tree,-hyperparamètres,-overfitting" title="Lien vers cette rubrique">¶</a></h1>
 <p>L”<a class="reference external" href="https://en.wikipedia.org/wiki/Overfitting">overfitting</a> ou <a class="reference external" href="https://fr.wikipedia.org/wiki/Surapprentissage">surapprentissage</a> apparaît lorsque les prédictions sur de nouvelles données sont nettement moins bonnes que celles obtenus sur la base d’apprentissage. Les forêts aléatoires sont moins sujettes à l’overfitting que les arbres de décisions qui les composent. Quelques illustrations.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -592,7 +595,7 @@
 </div>
 </div>
 <section id="Données-générées">
-<h2>Données générées<a class="headerlink" href="#Données-générées" title="Link to this heading">¶</a></h2>
+<h2>Données générées<a class="headerlink" href="#Données-générées" title="Lien vers cette rubrique">¶</a></h2>
 <p>On génère un nuage de points <span class="math notranslate nohighlight">\(y_i = \sin(x_i) + \epsilon_i\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -631,10 +634,10 @@
 </div>
 </section>
 <section id="Différents-arbres-de-décision">
-<h2>Différents arbres de décision<a class="headerlink" href="#Différents-arbres-de-décision" title="Link to this heading">¶</a></h2>
+<h2>Différents arbres de décision<a class="headerlink" href="#Différents-arbres-de-décision" title="Lien vers cette rubrique">¶</a></h2>
 <p>On regarde l’influence de paramêtres sur la sortie du modèle résultant de son apprentissage.</p>
 <section id="max_depth">
-<h3>max_depth<a class="headerlink" href="#max_depth" title="Link to this heading">¶</a></h3>
+<h3>max_depth<a class="headerlink" href="#max_depth" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un arbre représente une fonction en escalier. La profondeur détermine le nombre de feuilles, c’est-à-dire le nombre de valeurs possibles : <span class="math notranslate nohighlight">\(2^{max\_depth}\)</span>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -667,7 +670,7 @@
 </div>
 </section>
 <section id="min_samples_split=10">
-<h3>min_samples_split=10<a class="headerlink" href="#min_samples_split=10" title="Link to this heading">¶</a></h3>
+<h3>min_samples_split=10<a class="headerlink" href="#min_samples_split=10" title="Lien vers cette rubrique">¶</a></h3>
 <p>Chaque feuille d’un arbre prédit une valeur calculée à partir d’un ensemble d’observations. Ce nombre ne peut pas être inférieur à la valeur de ce paramètre. Ce mécanisme limite la possibilité de faire du surapprentissage en augmentant la représentativité de chaque feuille.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -704,10 +707,10 @@
 </section>
 </section>
 <section id="Random-Forest">
-<h2>Random Forest<a class="headerlink" href="#Random-Forest" title="Link to this heading">¶</a></h2>
+<h2>Random Forest<a class="headerlink" href="#Random-Forest" title="Lien vers cette rubrique">¶</a></h2>
 <p>On étudie les deux mêmes paramètres pour une random forest à ceci près que ce modèle est une somme pondérée des résultats produits par un ensemble d’arbres de décision.</p>
 <section id="id1">
-<h3>max_depth<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>max_depth<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -739,7 +742,7 @@
 </div>
 </section>
 <section id="n_estimators">
-<h3>n_estimators<a class="headerlink" href="#n_estimators" title="Link to this heading">¶</a></h3>
+<h3>n_estimators<a class="headerlink" href="#n_estimators" title="Lien vers cette rubrique">¶</a></h3>
 <p><em>n_estimators</em> est le nombre d’itérations, c’est extactement le nombre d’arbres de décisions qui feront partie de la forêt dans le cas d’une régression ou d’une classification binaire.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -794,7 +797,7 @@
 </div>
 </section>
 <section id="id2">
-<h3>min_samples_split=10<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h3>min_samples_split=10<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -825,10 +828,10 @@
 </section>
 </section>
 <section id="Base-d'apprentissage-et-et-base-de-test">
-<h2>Base d’apprentissage et et base de test<a class="headerlink" href="#Base-d'apprentissage-et-et-base-de-test" title="Link to this heading">¶</a></h2>
+<h2>Base d’apprentissage et et base de test<a class="headerlink" href="#Base-d'apprentissage-et-et-base-de-test" title="Lien vers cette rubrique">¶</a></h2>
 <p>C’est un des principes de base en machine learning : ne jamais tester un modèle sur les données d’apprentissage. Avec suffisamment de feuilles, un arbre de décision apprendra la valeur à prédire pour chaque observation. Le modèle apprend le bruit. Où s’arrête l’information, où commence le bruit, il n’est pas toujours évident de fixer le curseur.</p>
 <section id="Decision-Tree">
-<h3>Decision Tree<a class="headerlink" href="#Decision-Tree" title="Link to this heading">¶</a></h3>
+<h3>Decision Tree<a class="headerlink" href="#Decision-Tree" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -885,7 +888,7 @@
 <p>Le pic sur la base de test montre que passé un certain point, la performance décroît. A ce moment précis, le modèle commence à apprendre le bruit de la base d’apprentissage. Il overfitte. On remarque aussi que le modele overfitte moins lorsque <em>min_samples_split=10</em>.</p>
 </section>
 <section id="id3">
-<h3>Random Forest<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<h3>Random Forest<a class="headerlink" href="#id3" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -1035,7 +1038,7 @@
 </div>
 </section>
 <section id="Réseaux-de-neurones">
-<h3>Réseaux de neurones<a class="headerlink" href="#Réseaux-de-neurones" title="Link to this heading">¶</a></h3>
+<h3>Réseaux de neurones<a class="headerlink" href="#Réseaux-de-neurones" title="Lien vers cette rubrique">¶</a></h3>
 <p>Sur ce problème précis, les méthodes à base de gradient sont moins performantes. Elles paraissent également moins stables : la fonction d’erreur est plus agitée que celle obtenue pour les random forest. Ce type d’optimisation est plus sensible aux <a class="reference external" href="https://fr.wikiversity.org/wiki/Fonction_d%C3%A9riv%C3%A9e/Extremum_local">extrema locaux</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1086,7 +1089,7 @@
 </div>
 </section>
 <section id="Réseaux-de-neurones,-alpha=0">
-<h3>Réseaux de neurones, alpha=0<a class="headerlink" href="#Réseaux-de-neurones,-alpha=0" title="Link to this heading">¶</a></h3>
+<h3>Réseaux de neurones, alpha=0<a class="headerlink" href="#Réseaux-de-neurones,-alpha=0" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -1142,7 +1145,7 @@
 </section>
 </section>
 <section id="Exercice-1-:-déterminer-les-paramètres-optimaux-pour-cet-exemple">
-<h2>Exercice 1 : déterminer les paramètres optimaux pour cet exemple<a class="headerlink" href="#Exercice-1-:-déterminer-les-paramètres-optimaux-pour-cet-exemple" title="Link to this heading">¶</a></h2>
+<h2>Exercice 1 : déterminer les paramètres optimaux pour cet exemple<a class="headerlink" href="#Exercice-1-:-déterminer-les-paramètres-optimaux-pour-cet-exemple" title="Lien vers cette rubrique">¶</a></h2>
 <p>A vérifier avec <a class="reference external" href="https://scikit-learn.org/stable/modules/grid_search.html">grid_search</a>, <a class="reference external" href="https://github.com/hyperopt/hyperopt-sklearn">hyperopt</a>, <a class="reference external" href="https://scikit-learn.org/stable/modules/model_selection.html">model_selection</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1154,7 +1157,7 @@
 </div>
 </section>
 <section id="Exercice-2-:-ajouter-quelques-points-aberrants">
-<h2>Exercice 2 : ajouter quelques points aberrants<a class="headerlink" href="#Exercice-2-:-ajouter-quelques-points-aberrants" title="Link to this heading">¶</a></h2>
+<h2>Exercice 2 : ajouter quelques points aberrants<a class="headerlink" href="#Exercice-2-:-ajouter-quelques-points-aberrants" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1165,12 +1168,12 @@
 </div>
 </section>
 <section id="Intervalles-de-confiance">
-<h2>Intervalles de confiance<a class="headerlink" href="#Intervalles-de-confiance" title="Link to this heading">¶</a></h2>
+<h2>Intervalles de confiance<a class="headerlink" href="#Intervalles-de-confiance" title="Lien vers cette rubrique">¶</a></h2>
 <p>On pourrait utiliser le module <a class="reference external" href="https://github.com/scikit-learn-contrib/forest-confidence-interval">forest-confidence-interval</a> mais il ne semble plus vraiment maintenu. Le module s’appuie sur le <a class="reference external" href="https://en.wikipedia.org/wiki/Jackknife_resampling">Jackknife</a> pour estimer des intervalles de confiance. Il calcule un estimateur qui calcule une sortie en supprimant plusieurs fois un arbre lors de l’évaluation de la sortie de la forêt aléatoire. La théorie s’appuie sur un <em>resampling</em> de la
 base d’apprentissage que l’article considère comme équivalent à ceux effectués par scikit-learn pour générer chaque arbre. L’idée s’appuie sur l’article <a class="reference external" href="http://jmlr.csail.mit.edu/papers/volume15/wager14a/wager14a.pdf">Confidence Intervals for Random Forests: The Jackknife and the Infinitesimal Jackknife</a>.</p>
 </section>
 <section id="XGBoost">
-<h2>XGBoost<a class="headerlink" href="#XGBoost" title="Link to this heading">¶</a></h2>
+<h2>XGBoost<a class="headerlink" href="#XGBoost" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -2061,7 +2064,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </div>
 </section>
 <section id="Exercice-3-:-optimiser-les-hyperparamètres-pour-XGBoost-et-scikit-learn-et-comparer">
-<h2>Exercice 3 : optimiser les hyperparamètres pour XGBoost et scikit-learn et comparer<a class="headerlink" href="#Exercice-3-:-optimiser-les-hyperparamètres-pour-XGBoost-et-scikit-learn-et-comparer" title="Link to this heading">¶</a></h2>
+<h2>Exercice 3 : optimiser les hyperparamètres pour XGBoost et scikit-learn et comparer<a class="headerlink" href="#Exercice-3-:-optimiser-les-hyperparamètres-pour-XGBoost-et-scikit-learn-et-comparer" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -2167,10 +2170,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

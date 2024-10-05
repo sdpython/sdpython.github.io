@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="1A.e - Enoncé 12 décembre 2017 (1)" href="td_note_2018_1.html" /><link rel="prev" title="1A.e - TD noté, 16 décembre 2016" href="td_note_2017.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>1A.e - TD noté, 21 février 2017 - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,13 +584,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="1A.e---TD-noté,-21-février-2017">
-<h1>1A.e - TD noté, 21 février 2017<a class="headerlink" href="#1A.e---TD-noté,-21-février-2017" title="Link to this heading">¶</a></h1>
+<h1>1A.e - TD noté, 21 février 2017<a class="headerlink" href="#1A.e---TD-noté,-21-février-2017" title="Lien vers cette rubrique">¶</a></h1>
 <p>Solution du TD noté, celui-ci présente un algorithme pour calculer les coefficients d’une régression quantile et par extension d’une médiane dans un espace à plusieurs dimensions.</p>
 <p>Précision : dans tout l’énoncé, la transposée d’une matrice est notée <span class="math notranslate nohighlight">\(X' = X^{T}\)</span>. La plupart du temps <span class="math notranslate nohighlight">\(X\)</span> et <span class="math notranslate nohighlight">\(Y\)</span> désignent des vecteurs colonnes. <span class="math notranslate nohighlight">\(\beta\)</span> désigne un vecteur ligne, <span class="math notranslate nohighlight">\(W\)</span> une matrice diagonale.</p>
 <section id="Exercice-1">
-<h2>Exercice 1<a class="headerlink" href="#Exercice-1" title="Link to this heading">¶</a></h2>
+<h2>Exercice 1<a class="headerlink" href="#Exercice-1" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Q1">
-<h3>Q1<a class="headerlink" href="#Q1" title="Link to this heading">¶</a></h3>
+<h3>Q1<a class="headerlink" href="#Q1" title="Lien vers cette rubrique">¶</a></h3>
 <p>A l’aide du module <a class="reference external" href="https://docs.python.org/3/library/random.html">random</a>, générer un ensemble de points aléatoires.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -618,7 +621,7 @@
 </div>
 </section>
 <section id="Q2">
-<h3>Q2<a class="headerlink" href="#Q2" title="Link to this heading">¶</a></h3>
+<h3>Q2<a class="headerlink" href="#Q2" title="Lien vers cette rubrique">¶</a></h3>
 <p>La médiane d’un ensemble de points <span class="math notranslate nohighlight">\(\left\{X_1, ..., X_n\right\}\)</span> est une valeur <span class="math notranslate nohighlight">\(X_M\)</span> telle que :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -649,7 +652,7 @@
 </div>
 </section>
 <section id="Q3">
-<h3>Q3<a class="headerlink" href="#Q3" title="Link to this heading">¶</a></h3>
+<h3>Q3<a class="headerlink" href="#Q3" title="Lien vers cette rubrique">¶</a></h3>
 <p>Lorsque le nombre de points est pair, la médiane peut être n’importe quelle valeur dans un intervalle. Modifier votre fonction de façon à ce que la fonction précédente retourne le milieu de la fonction.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -679,7 +682,7 @@
 </div>
 </section>
 <section id="Q4">
-<h3>Q4<a class="headerlink" href="#Q4" title="Link to this heading">¶</a></h3>
+<h3>Q4<a class="headerlink" href="#Q4" title="Lien vers cette rubrique">¶</a></h3>
 <p>Pour un ensemble de points <span class="math notranslate nohighlight">\(E=\left\{X_1, ..., X_n\right\}\)</span>, on considère la fonction suivante :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -693,7 +696,7 @@
 <p>Par définition de la médiane, <span class="math notranslate nohighlight">\(f'(X_M)=0\)</span>. En triant les éléments, on montre que la <span class="math notranslate nohighlight">\(f'(x) = 0 \Longleftrightarrow x=X_m\)</span>.</p>
 </section>
 <section id="Q5">
-<h3>Q5<a class="headerlink" href="#Q5" title="Link to this heading">¶</a></h3>
+<h3>Q5<a class="headerlink" href="#Q5" title="Lien vers cette rubrique">¶</a></h3>
 <p>On suppose qu’on dispose d’un ensemble d’observations <span class="math notranslate nohighlight">\(\left(X_i, Y_i\right)\)</span> avec <span class="math notranslate nohighlight">\(X_i, Y_i \in \mathbb{R}\)</span>. La régression linéaire consiste une relation linéaire <span class="math notranslate nohighlight">\(Y_i = a X_i + b + \epsilon_i\)</span> qui minimise la variance du bruit. On pose :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -758,7 +761,7 @@ array([[1.00144835]])
 </div>
 </section>
 <section id="Q6">
-<h3>Q6<a class="headerlink" href="#Q6" title="Link to this heading">¶</a></h3>
+<h3>Q6<a class="headerlink" href="#Q6" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ecrire une fonction qui transforme un vecteur en une matrice diagonale.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -785,7 +788,7 @@ array([[1, 0, 0],
 </div>
 </section>
 <section id="Q7">
-<h3>Q7<a class="headerlink" href="#Q7" title="Link to this heading">¶</a></h3>
+<h3>Q7<a class="headerlink" href="#Q7" title="Lien vers cette rubrique">¶</a></h3>
 <p>On considère maintenant que chaque observation est pondérée par un poids <span class="math notranslate nohighlight">\(w_i\)</span>. On veut maintenant trouver le vecteur <span class="math notranslate nohighlight">\(\beta\)</span> qui minimise :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -830,7 +833,7 @@ array([[1, 0, 0],
 </div>
 </section>
 <section id="Q8">
-<h3>Q8<a class="headerlink" href="#Q8" title="Link to this heading">¶</a></h3>
+<h3>Q8<a class="headerlink" href="#Q8" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ecrire une fonction qui calcule les quantités suivantes (fonctions <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.maximum.html">maximum</a>, <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.reciprocal.html#numpy.reciprocal">reciprocal</a>).</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -869,7 +872,7 @@ array([[1.01538305e-03],
 </div>
 </section>
 <section id="Q9">
-<h3>Q9<a class="headerlink" href="#Q9" title="Link to this heading">¶</a></h3>
+<h3>Q9<a class="headerlink" href="#Q9" title="Lien vers cette rubrique">¶</a></h3>
 <p>On souhaite coder l’algorithme suivant :</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(w_i^{(1)} = 1\)</span></p></li>
@@ -944,7 +947,7 @@ array([[24.09487215]])
 </div>
 </section>
 <section id="Q10">
-<h3>Q10<a class="headerlink" href="#Q10" title="Link to this heading">¶</a></h3>
+<h3>Q10<a class="headerlink" href="#Q10" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -1072,7 +1075,7 @@ array([[54.75688683]])
 </section>
 </section>
 <section id="Quelques-explications-et-démonstrations">
-<h2>Quelques explications et démonstrations<a class="headerlink" href="#Quelques-explications-et-démonstrations" title="Link to this heading">¶</a></h2>
+<h2>Quelques explications et démonstrations<a class="headerlink" href="#Quelques-explications-et-démonstrations" title="Lien vers cette rubrique">¶</a></h2>
 <p>Cet énoncé est inspiré de <a class="reference external" href="https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares">Iteratively reweighted least squares</a>. Cet algorithme permet notamment d’étendre la notion de médiane à des espaces vectoriels de plusieurs dimensions. On peut détermine un point <span class="math notranslate nohighlight">\(X_M\)</span> qui minimise la quantité :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -1104,7 +1107,7 @@ array([[54.75688683]])
 <p>La suite <span class="math notranslate nohighlight">\(t \rightarrow E_1(\beta^{(t)})\)</span> est suite décroissant est minorée par 0. Elle converge donc vers un minimum. Or la fonction <span class="math notranslate nohighlight">\(\beta \rightarrow E_1(\beta)\)</span> est une fonction convexe. Elle n’admet qu’un seul minimum (mais pas nécessaire un seul point atteignant ce minimum). L’algorithme converge donc vers la médiane. Le paramètre <span class="math notranslate nohighlight">\(\delta\)</span> est là pour éviter les erreurs de divisions par zéros et les approximations de calcul faites par l’ordinateur.</p>
 </section>
 <section id="Quelques-commentaires-sur-le-code">
-<h2>Quelques commentaires sur le code<a class="headerlink" href="#Quelques-commentaires-sur-le-code" title="Link to this heading">¶</a></h2>
+<h2>Quelques commentaires sur le code<a class="headerlink" href="#Quelques-commentaires-sur-le-code" title="Lien vers cette rubrique">¶</a></h2>
 <p>Le symbol <a class="reference external" href="https://www.python.org/dev/peps/pep-0465/">&#64;</a> a été introduit par Python 3.5 et est équivalent à la fonction <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html">numpy.dot</a>. Les dimensions des matrices posent souvent quelques problèmes.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1278,10 +1281,10 @@ array([24, 27])
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Prédiction de la note des vins" href="winesr_reg.html" /><link rel="prev" title="Gradient Boosting" href="gradient_boosting.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Régression Ridge, Lasso et nouvel estimateur - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Régression-Ridge,-Lasso-et-nouvel-estimateur">
-<h1>Régression Ridge, Lasso et nouvel estimateur<a class="headerlink" href="#Régression-Ridge,-Lasso-et-nouvel-estimateur" title="Link to this heading">¶</a></h1>
+<h1>Régression Ridge, Lasso et nouvel estimateur<a class="headerlink" href="#Régression-Ridge,-Lasso-et-nouvel-estimateur" title="Lien vers cette rubrique">¶</a></h1>
 <p>Ce notebook présente la régression Ridge, Lasso, et l’API de scikit-learn. Il explique plus en détail pourquoi la régression Lasso contraint les coefficients de la régression à s’annuler.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -592,7 +595,7 @@
 </div>
 </div>
 <section id="Un-jeu-de-données-pour-un-problème-de-régression">
-<h2>Un jeu de données pour un problème de régression<a class="headerlink" href="#Un-jeu-de-données-pour-un-problème-de-régression" title="Link to this heading">¶</a></h2>
+<h2>Un jeu de données pour un problème de régression<a class="headerlink" href="#Un-jeu-de-données-pour-un-problème-de-régression" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -660,7 +663,7 @@ r2_score(y_test, lin.predict(X_test))
 </div>
 </section>
 <section id="Régression-Ridge">
-<h2>Régression Ridge<a class="headerlink" href="#Régression-Ridge" title="Link to this heading">¶</a></h2>
+<h2>Régression Ridge<a class="headerlink" href="#Régression-Ridge" title="Lien vers cette rubrique">¶</a></h2>
 <p>La régression <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html">Ridge</a> optimise le problème qui suit :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -787,7 +790,7 @@ r2_score(y_test, rid.predict(X_test))
 </div>
 </section>
 <section id="Régression-Lasso">
-<h2>Régression Lasso<a class="headerlink" href="#Régression-Lasso" title="Link to this heading">¶</a></h2>
+<h2>Régression Lasso<a class="headerlink" href="#Régression-Lasso" title="Lien vers cette rubrique">¶</a></h2>
 <p>La régression <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html">Lasso</a> optimise le problème qui suit :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -1005,7 +1008,7 @@ ax[1].legend();
 <p>On voit que pour une grande valeur de <span class="math notranslate nohighlight">\(\alpha &gt; \sum_i x_i y_i\)</span>, le paramètre <span class="math notranslate nohighlight">\(\beta\)</span> n’a pas de solution. Dans le premier cas, la valeur est nécessairement négative alors que la solution ne fonctionne que si <span class="math notranslate nohighlight">\(\beta\)</span> est positive. C’est la même situation contradictoire dans l’autre cas. La seule option possible lorsque <span class="math notranslate nohighlight">\(\alpha\)</span> est très grand, c’est <span class="math notranslate nohighlight">\(\beta = 0\)</span>. On montre donc que ce qu’on a observé ci-dessus est vrai pour une régression à une dimension.</p>
 </section>
 <section id="Application-à-la-sélection-d'arbre-d'une-forêt-aléatoire">
-<h2>Application à la sélection d’arbre d’une forêt aléatoire<a class="headerlink" href="#Application-à-la-sélection-d'arbre-d'une-forêt-aléatoire" title="Link to this heading">¶</a></h2>
+<h2>Application à la sélection d’arbre d’une forêt aléatoire<a class="headerlink" href="#Application-à-la-sélection-d'arbre-d'une-forêt-aléatoire" title="Lien vers cette rubrique">¶</a></h2>
 <p>Une forêt aléatoire est simplement une moyenne des prédictions d’arbres de régression.</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -1215,7 +1218,7 @@ ax[1].legend();
 </div>
 </section>
 <section id="Explication-géométrique-de-la-nullité-des-coefficients-dans-une-régression-Lasso">
-<h2>Explication géométrique de la nullité des coefficients dans une régression Lasso<a class="headerlink" href="#Explication-géométrique-de-la-nullité-des-coefficients-dans-une-régression-Lasso" title="Link to this heading">¶</a></h2>
+<h2>Explication géométrique de la nullité des coefficients dans une régression Lasso<a class="headerlink" href="#Explication-géométrique-de-la-nullité-des-coefficients-dans-une-régression-Lasso" title="Lien vers cette rubrique">¶</a></h2>
 <p>On se place dans le cas d’un modèle très simple : <span class="math notranslate nohighlight">\(y = \alpha_1 x_1 + \alpha_2 x_2 + \epsilon\)</span>. Les coefficients optimaux sont obtenus en minimisant l’erreur <span class="math notranslate nohighlight">\(\sum (y - (a_1 x_1 + a_2 x_2))^2 + \lambda (|a_1| + |a_2|)\)</span>. On note <span class="math notranslate nohighlight">\(E(a_1, a_2) = E_r(a_1, a_2) + E_l(a_1, a_2)\)</span>. <span class="math notranslate nohighlight">\(E_r\)</span> est l’erreur de régression, <span class="math notranslate nohighlight">\(E_l\)</span> est l’erreur de Lasso. Les coefficients optimaux pour l’erreur <span class="math notranslate nohighlight">\(E_r\)</span> sont <span class="math notranslate nohighlight">\((a^*_1, a^*_2) = (\alpha_1 x_1 + \alpha_2)\)</span>. On représente
 maintenant sur un graphe les courbes de niveaux de ces deux erreurs.</p>
 <div class="nbinput docutils container">
@@ -1338,7 +1341,7 @@ ax[3].set_ylabel(&quot;Coefficients&quot;);
 <p>On retrouve numériquement le résultat énoncé ci-dessus.</p>
 </section>
 <section id="Validation-croisée-et-API-scikit-learn">
-<h2>Validation croisée et API scikit-learn<a class="headerlink" href="#Validation-croisée-et-API-scikit-learn" title="Link to this heading">¶</a></h2>
+<h2>Validation croisée et API scikit-learn<a class="headerlink" href="#Validation-croisée-et-API-scikit-learn" title="Lien vers cette rubrique">¶</a></h2>
 <p>La validation croisée est simple à faire dans <em>scikit-learn</em> est simple à faire si le modèle suit l’API de <em>scikit-learn</em> mais ce n’est pas le cas avec notre nouveau modèle. C’est pourtant essentiel pour s’assurer que le modèle est robuste. Toutefois <em>scikit-learn</em> permet de créer de nouveau modèle à la sauce <em>scikit-learn</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -2021,7 +2024,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 <p>On a réussi à supprimer 27 arbres.</p>
 </section>
 <section id="Optimisation-mémoire">
-<h2>Optimisation mémoire<a class="headerlink" href="#Optimisation-mémoire" title="Link to this heading">¶</a></h2>
+<h2>Optimisation mémoire<a class="headerlink" href="#Optimisation-mémoire" title="Lien vers cette rubrique">¶</a></h2>
 <p>Le modèle précédent n’est pas optimal dans le sens où il stocke en mémoire tous les arbres, mêmes ceux associés à un coefficient nuls après la régression Lasso alors que le calcul ne sert à rien puisque ignoré.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
@@ -2319,10 +2322,10 @@ os.stat(&quot;optimzed_rf.pickle&quot;).st_size, os.stat(&quot;lasso_rf.pickle&q
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

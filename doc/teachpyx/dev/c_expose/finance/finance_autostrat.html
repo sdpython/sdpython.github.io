@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Circuit hamiltonien et Kohonen" href="../tsp/tsp_kohonen.html" /><link rel="prev" title="Exposés" href="../index.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Stratégie automatique de trading en finance - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -387,6 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -507,6 +508,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -539,6 +541,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -580,7 +583,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="strategie-automatique-de-trading-en-finance">
-<span id="finance-strategie-automatique"></span><h1>Stratégie automatique de trading en finance<a class="headerlink" href="#strategie-automatique-de-trading-en-finance" title="Link to this heading">¶</a></h1>
+<span id="finance-strategie-automatique"></span><h1>Stratégie automatique de trading en finance<a class="headerlink" href="#strategie-automatique-de-trading-en-finance" title="Lien vers cette rubrique">¶</a></h1>
 <p id="index-0">Une <a class="reference external" href="https://en.wikipedia.org/wiki/Algorithmic_trading">stratégie automatique de trading</a>
 désigne un algorithme qui
 propose voire prend des décisions de trading. Le rôle du trader consiste
@@ -603,7 +606,7 @@ qui sont effectués manuellement par un trader ou servent d’outils
 d’aide à la décision. Plus la fréquence des opérations est élevée,
 plus l’investissement nécessaire à leur mise en place est important.</p>
 <section id="quelques-references">
-<h2>Quelques références<a class="headerlink" href="#quelques-references" title="Link to this heading">¶</a></h2>
+<h2>Quelques références<a class="headerlink" href="#quelques-references" title="Lien vers cette rubrique">¶</a></h2>
 <p>En pratique, l’efficacité d’une stratégie est souvent limitée dans
 le temps, il faut sans cesse améliorer les stratégies
 existantes et en imaginer d’autres. Les paragraphes qui suivent
@@ -654,9 +657,9 @@ d’autres publient sur leurs propres blog
 <a class="reference external" href="http://intelligenttradingtech.blogspot.fr/2016/01/kaggle-winton-stock-market-challenge.html">Kaggle Winton Stock Market Challenge - Post-Mortem</a>.</p>
 </section>
 <section id="vocabulaire-financier">
-<h2>Vocabulaire financier<a class="headerlink" href="#vocabulaire-financier" title="Link to this heading">¶</a></h2>
+<h2>Vocabulaire financier<a class="headerlink" href="#vocabulaire-financier" title="Lien vers cette rubrique">¶</a></h2>
 <section id="marches-liquides">
-<h3>Marchés liquides<a class="headerlink" href="#marches-liquides" title="Link to this heading">¶</a></h3>
+<h3>Marchés liquides<a class="headerlink" href="#marches-liquides" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les algorithmes de trading sont de préférence utilisés sur des
 marchers financiers liquides et sur des produits standards tels que les actions,
 les Futures, les devises ou encore les taux d’intéret.
@@ -688,7 +691,7 @@ il peut arriver qu’un marché soit liquide la plupart du temps
 et qu’il ne le soit plus en temps de crise.</p>
 </section>
 <section id="description-d-une-serie-financiere">
-<h3>Description d’une série financière<a class="headerlink" href="#description-d-une-serie-financiere" title="Link to this heading">¶</a></h3>
+<h3>Description d’une série financière<a class="headerlink" href="#description-d-une-serie-financiere" title="Lien vers cette rubrique">¶</a></h3>
 <p>Une série financière ne se résume pas à une série de prix.
 Pour une série quotidienne, on dispose d’autres informations
 comme le premier prix de la journée
@@ -766,7 +769,7 @@ il est possible de placer un ordre à un prix qui assure son exécution.</p>
 </div>
 </section>
 <section id="rendements-volatilite-correlation">
-<span id="finance-rendemnt-annee"></span><h3>Rendements, Volatilité, Corrélation<a class="headerlink" href="#rendements-volatilite-correlation" title="Link to this heading">¶</a></h3>
+<span id="finance-rendemnt-annee"></span><h3>Rendements, Volatilité, Corrélation<a class="headerlink" href="#rendements-volatilite-correlation" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le <a class="reference external" href="https://fr.wikipedia.org/wiki/CAC_40">CAC 40</a>
 a perdu 0,2% aujourd’hui, -0,2% est le rendement du CAC 40 sur
 cette journée. Si on définit une série ou quotidienne ou daily par <span class="math notranslate nohighlight">\((X_t)_t\)</span>,
@@ -833,7 +836,7 @@ glissantes mais de par leur nature, ils
 sont peu sensibles aux variations courtes.</p>
 </section>
 <section id="moyenne-mobile-bandes-de-bollinger">
-<h3>Moyenne mobile, bandes de Bollinger<a class="headerlink" href="#moyenne-mobile-bandes-de-bollinger" title="Link to this heading">¶</a></h3>
+<h3>Moyenne mobile, bandes de Bollinger<a class="headerlink" href="#moyenne-mobile-bandes-de-bollinger" title="Lien vers cette rubrique">¶</a></h3>
 <p>La moyenne mobile est un indicateur couramment utilisé
 car il permet de mieux visualiser la tendance d’une
 courbe financière en gommant les variations quotidiennes.
@@ -942,7 +945,7 @@ Enfin, l’indicateur <span class="math notranslate nohighlight">\(RSI_n(t) = 10
 </div>
 </section>
 <section id="achats-ventes-levier">
-<h3>Achats, ventes, levier<a class="headerlink" href="#achats-ventes-levier" title="Link to this heading">¶</a></h3>
+<h3>Achats, ventes, levier<a class="headerlink" href="#achats-ventes-levier" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il n’est pas nécessaire de posséder une action pour la vendre.
 Au sein d’une banque ou d’un Hedge Fund, il est possible de vendre
 une action puis la racheter (on peut emprunter l’action au
@@ -967,7 +970,7 @@ pertes possibles beaucoup plus grandes. Le livre <a class="reference internal" h
 quant à la responsabilité des Hedge Funds durant la crise des subprimes.</p>
 </section>
 <section id="hedge-funds">
-<h3>Hedge Funds<a class="headerlink" href="#hedge-funds" title="Link to this heading">¶</a></h3>
+<h3>Hedge Funds<a class="headerlink" href="#hedge-funds" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les Hedge Funds proposent ce qu’on appelle une gestion alternative de fonds.
 Ils proposent des rendements en moyenne de 10% par an avec une part de
 risque un peu plus importante. en 2007, ils étaient majoritairement basés aux Iles Cayman
@@ -1137,7 +1140,7 @@ avec le marché afin d’être moins sensible aux crises du marché.</p>
 </section>
 </section>
 <section id="familles-de-strategies">
-<span id="parar-strat-auto-famille"></span><h2>Familles de stratégies<a class="headerlink" href="#familles-de-strategies" title="Link to this heading">¶</a></h2>
+<span id="parar-strat-auto-famille"></span><h2>Familles de stratégies<a class="headerlink" href="#familles-de-strategies" title="Lien vers cette rubrique">¶</a></h2>
 <p>Les paragraphes qui suivent présentent différentes stratégies
 qui cherchent à capter chacune un aspect particulier d’une
 série financière. Ces stratégies s’appuient principalement sur
@@ -1172,7 +1175,7 @@ ne sont pas assez fréquents pour être étudiés, ils sont à chaque
 fois différents et leur compréhension dépasse
 le cadre de l’analyse technique.</p>
 <section id="trend-following">
-<span id="section-trend-following-s"></span><h3>Trend Following<a class="headerlink" href="#trend-following" title="Link to this heading">¶</a></h3>
+<span id="section-trend-following-s"></span><h3>Trend Following<a class="headerlink" href="#trend-following" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le <a class="reference external" href="https://en.wikipedia.org/wiki/Trend_following">Trend Following</a>
 consiste à suivre une tendance qu’elle soit haussière ou baissière.
 Une simple stratégie de Trend Following est illustrée par la figure qui suit.
@@ -1248,7 +1251,7 @@ s’éloigne beaucoup de sa moyenne mobile et que la position
 est gagnante : c’est prendre ses profits avant que ceux-ci ne diminuent.</p>
 </section>
 <section id="mean-reversing-ou-mean-reversion">
-<h3>Mean Reversing ou Mean Reversion<a class="headerlink" href="#mean-reversing-ou-mean-reversion" title="Link to this heading">¶</a></h3>
+<h3>Mean Reversing ou Mean Reversion<a class="headerlink" href="#mean-reversing-ou-mean-reversion" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_reversion_(finance)">mean reversing</a>
 stratégie s’intéresse aux périodes durant lesquelles
 la volatilité est élevée et où aucune tendance ne se dégage.
@@ -1282,7 +1285,7 @@ souvent munie d’un mécanisme limitant les pertes
 tel que celui décrit au paragraphe <a class="reference internal" href="#section-trend-following-s"><span class="std std-ref">Trend Following</span></a>.</p>
 </section>
 <section id="pair-trading">
-<span id="pair-trading-paragraph"></span><h3>Pair Trading<a class="headerlink" href="#pair-trading" title="Link to this heading">¶</a></h3>
+<span id="pair-trading-paragraph"></span><h3>Pair Trading<a class="headerlink" href="#pair-trading" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le <a class="reference external" href="https://en.wikipedia.org/wiki/Pairs_trade">pair trading</a> consiste à
 construire un portefeuille de deux actions. On étudie dans ce cas
 la série du rapport des prix des deux actions. On choisit le plus souvent
@@ -1314,7 +1317,7 @@ il semble plus judicieux de faire du mean reversing.</p>
 </div>
 </section>
 <section id="styles-value-growth">
-<h3>Styles, Value, Growth<a class="headerlink" href="#styles-value-growth" title="Link to this heading">¶</a></h3>
+<h3>Styles, Value, Growth<a class="headerlink" href="#styles-value-growth" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le pair trading permet de prendre des paris sur une paires d’actions,
 une stratégie construite à partir de style propose une façon de jouer simultanément
 avec beaucoup d’actions. Elle utilise des indicateurs qui décrivent la santé
@@ -1441,7 +1444,7 @@ les rangs obtenus sont additionnés et c’est le rang
 final qui servira à sélectionner les sociétés.</p>
 </section>
 <section id="gestion-de-portefeuille">
-<span id="finance-portefeuille-build"></span><h3>Gestion de portefeuille<a class="headerlink" href="#gestion-de-portefeuille" title="Link to this heading">¶</a></h3>
+<span id="finance-portefeuille-build"></span><h3>Gestion de portefeuille<a class="headerlink" href="#gestion-de-portefeuille" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un nom est incontestablement associé à ce thème qu’est la gestion de portefeuille,
 c’est l’économiste <a class="reference external" href="https://en.wikipedia.org/wiki/Harry_Markowitz">Harry Markowitz</a>
 qui reçut le prix Nobel d’économie pour ses travaux en 1990. L’idée repose sur
@@ -1535,7 +1538,7 @@ objets décrits par leur rendement et leur volatilité, la méthode s’applique
 intelligemment son argent entre les différentes stratégies de trading.</p>
 </section>
 <section id="horizon-de-trading-intraday-daily">
-<h3>Horizon de trading, intraday, daily<a class="headerlink" href="#horizon-de-trading-intraday-daily" title="Link to this heading">¶</a></h3>
+<h3>Horizon de trading, intraday, daily<a class="headerlink" href="#horizon-de-trading-intraday-daily" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il ne paraît pas plus compliqué d’appliquer ces stratégies au trading
 intraday qu’au trading daily. Dans le second cas, les positions
 sont tenues plusieurs jours, plusieurs mois et on s’intéresse peu aux variations
@@ -1656,7 +1659,7 @@ ou incohérentes.</p>
 </section>
 </section>
 <section id="analyse-d-une-strategie">
-<span id="analyse-finace-strategie"></span><h2>Analyse d’une stratégie<a class="headerlink" href="#analyse-d-une-strategie" title="Link to this heading">¶</a></h2>
+<span id="analyse-finace-strategie"></span><h2>Analyse d’une stratégie<a class="headerlink" href="#analyse-d-une-strategie" title="Lien vers cette rubrique">¶</a></h2>
 <p>Cette partie décrit les principales étapes de la mise au point
 d’une stratégie automatique. Elle sera illustrée avec une stratégie
 appliquée sur le cours de la <a class="reference internal" href="#finance-graph-ohlc-bnp"><span class="std std-ref">BNP</span></a> de début 2003 à mi-2008.
@@ -1702,7 +1705,7 @@ où la position est coupé par la seconde règle. Une stratégie
 réellement utilisée par un Hedge Funds s’appuie sur plus
 d’une dizaine de règles et autant de paramètres.</p>
 <section id="backtest">
-<h3>Backtest<a class="headerlink" href="#backtest" title="Link to this heading">¶</a></h3>
+<h3>Backtest<a class="headerlink" href="#backtest" title="Lien vers cette rubrique">¶</a></h3>
 <div class="admonition-mathdef admonition" id="indexmathe-Figure7">
 <div class="docutils container">
 </div>
@@ -1780,7 +1783,7 @@ trop fréquente, alors il serait sans doute avisé d’en tenir compte lors de
 l’attribution de valeurs aux coûts de transactions et au slippage définis ci-dessous.</p>
 </section>
 <section id="modelisation">
-<h3>Modélisation<a class="headerlink" href="#modelisation" title="Link to this heading">¶</a></h3>
+<h3>Modélisation<a class="headerlink" href="#modelisation" title="Lien vers cette rubrique">¶</a></h3>
 <p>Pour améliorer la validation des stratégies sur un backtest, on intègre dans le
 modèle deux défauts qui surviennent lors des passages d’ordres.
 Même utilisée sur des marchés liquides, si la stratégie impose un achat
@@ -1819,7 +1822,7 @@ au prix <span class="math notranslate nohighlight">\(p\)</span>, on considèrera
 entier du tick (donc différent pour chaque action).</p>
 </section>
 <section id="resultats-standards">
-<h3>Résultats standards<a class="headerlink" href="#resultats-standards" title="Link to this heading">¶</a></h3>
+<h3>Résultats standards<a class="headerlink" href="#resultats-standards" title="Lien vers cette rubrique">¶</a></h3>
 <p>Même si le rendement d’une stratégie est le résultat important,
 il faut aussi regarder comment il est obtenu. C’est pour cela qu’on
 regarde d’autres indicateurs comme
@@ -1921,7 +1924,7 @@ stratégie décrite au paragraphe <a class="reference internal" href="#analyse-f
 le drawdown maximal est très élevé.</p>
 </section>
 <section id="variation-de-parametres">
-<h3>Variation de paramètres<a class="headerlink" href="#variation-de-parametres" title="Link to this heading">¶</a></h3>
+<h3>Variation de paramètres<a class="headerlink" href="#variation-de-parametres" title="Lien vers cette rubrique">¶</a></h3>
 <p>Une stratégie dépend de paramètres. Un trend following simple
 dépend de la longueur de la moyenne mobile (20, 200 jours)
 et de l’écart entre les bandes de Bollinger. On peut se poser
@@ -1965,7 +1968,7 @@ ils pourraient aussi montrer l’évolution des drawdowns ou du ratio de Sharpe.
 </div>
 </section>
 <section id="autres-series-financieres-de-meme-nature">
-<h3>Autres séries financières de même nature<a class="headerlink" href="#autres-series-financieres-de-meme-nature" title="Link to this heading">¶</a></h3>
+<h3>Autres séries financières de même nature<a class="headerlink" href="#autres-series-financieres-de-meme-nature" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il existe nécessairement d’autres séries financières
 corrélées avec celles du backtest. Si le backtest est le
 cours de l’action d’une banque, il faut tester la stratégie
@@ -2103,7 +2106,7 @@ des séries corrélées et qu’elle limite les pertes sur
 les autres séries financières.</p>
 </section>
 <section id="decomposition-en-deals">
-<h3>Décomposition en deals<a class="headerlink" href="#decomposition-en-deals" title="Link to this heading">¶</a></h3>
+<h3>Décomposition en deals<a class="headerlink" href="#decomposition-en-deals" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce procédé permet parfois de découvrir le style d’une stratégie
 ou de mesurer la pertinence de l’algorithme lorsqu’il coupe sa pose.
 Un <a class="reference external" href="https://en.wikipedia.org/wiki/Financial_transaction">deal</a> est
@@ -2197,7 +2200,7 @@ tenir compte du signe de la position avant de couper même si cette conclusion e
 </div>
 </section>
 <section id="pour-aller-plus-loin">
-<h3>Pour aller plus loin<a class="headerlink" href="#pour-aller-plus-loin" title="Link to this heading">¶</a></h3>
+<h3>Pour aller plus loin<a class="headerlink" href="#pour-aller-plus-loin" title="Lien vers cette rubrique">¶</a></h3>
 <p>Sur des stratégies Trend Following, le passé d’une action ne suffit pas
 à tester une stratégie : moins d’une dizaine d’ordres vont être exécutés.
 La première solution est de tester cette stratégie sur plus de séries
@@ -2220,7 +2223,7 @@ Cette voie est plus proche de l’intelligence artificielle,
 des sytèmes multi-agents ou de la microéconomie que de la finance elle-même.</p>
 </section>
 <section id="diversification">
-<h3>Diversification<a class="headerlink" href="#diversification" title="Link to this heading">¶</a></h3>
+<h3>Diversification<a class="headerlink" href="#diversification" title="Lien vers cette rubrique">¶</a></h3>
 <p>Gagner de l’argent à partir d’une seule stratégie et
 d’une seule action est beaucoup trop risqué.
 Il faut constuire un portefeuille afin de réduire les risques.
@@ -2242,7 +2245,7 @@ mais aura tendance à faire diminuer la volatilité.</p>
 </section>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">¶</a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Lien vers cette rubrique">¶</a></h2>
 <p>Ce document présente quelques concepts qui permettent de mieux
 appréhender la conception d’un algorithme automatique de trading.
 Ils suppléent de plus en plus les traders et comme ils accélèrent
@@ -2403,10 +2406,10 @@ Paul Willmott, <em>Edition d’Organisation</em></p>
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

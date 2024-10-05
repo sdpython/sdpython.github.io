@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Sérialisation avec JSON, XML, pickle" href="exercice_serialisation_json.html" /><link rel="prev" title="Expressions régulières" href="exercice_regex.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>JSON - XML - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,10 +584,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="JSON---XML">
-<h1>JSON - XML<a class="headerlink" href="#JSON---XML" title="Link to this heading">¶</a></h1>
+<h1>JSON - XML<a class="headerlink" href="#JSON---XML" title="Lien vers cette rubrique">¶</a></h1>
 <p>Transmettre l’information d’une machine à une autre, d’un logiciel à un autre, d’une base de données à une autre est un problème récurrent. Le format le plus simple pour des données est le format <a class="reference external" href="https://fr.wikipedia.org/wiki/Comma-separated_values">csv</a>. Ca marche bien pour les tables mais cela ne permet de transmettre aisément des <a class="reference external" href="https://fr.wikipedia.org/wiki/Informations_non_structur%C3%A9es">données non structurées</a>.</p>
 <section id="Enoncé">
-<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Link to this heading">¶</a></h2>
+<h2>Enoncé<a class="headerlink" href="#Enoncé" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -675,7 +678,7 @@
 </div></div>
 </div>
 <section id="Q1-:-écriture-des-données-au-format-CSV">
-<h3>Q1 : écriture des données au format CSV<a class="headerlink" href="#Q1-:-écriture-des-données-au-format-CSV" title="Link to this heading">¶</a></h3>
+<h3>Q1 : écriture des données au format CSV<a class="headerlink" href="#Q1-:-écriture-des-données-au-format-CSV" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le plus simple…</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -709,7 +712,7 @@
 </div>
 </section>
 <section id="Q2-:-écriture-des-données-au-format-JSON">
-<h3>Q2 : écriture des données au format JSON<a class="headerlink" href="#Q2-:-écriture-des-données-au-format-JSON" title="Link to this heading">¶</a></h3>
+<h3>Q2 : écriture des données au format JSON<a class="headerlink" href="#Q2-:-écriture-des-données-au-format-JSON" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -738,7 +741,7 @@
 </div>
 </section>
 <section id="Q3-:-relire-les-données-avec-le-module-json">
-<h3>Q3 : relire les données avec le module <a class="reference external" href="https://docs.python.org/3/library/json.html">json</a><a class="headerlink" href="#Q3-:-relire-les-données-avec-le-module-json" title="Link to this heading">¶</a></h3>
+<h3>Q3 : relire les données avec le module <a class="reference external" href="https://docs.python.org/3/library/json.html">json</a><a class="headerlink" href="#Q3-:-relire-les-données-avec-le-module-json" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -757,7 +760,7 @@
 </div>
 </section>
 <section id="Q4-:-essayez-avec-les-format-XML-(ou-HTML),-SQL,-SAS,-Excel...">
-<h3>Q4 : essayez avec les format XML (ou HTML), SQL, SAS, Excel…<a class="headerlink" href="#Q4-:-essayez-avec-les-format-XML-(ou-HTML),-SQL,-SAS,-Excel..." title="Link to this heading">¶</a></h3>
+<h3>Q4 : essayez avec les format XML (ou HTML), SQL, SAS, Excel…<a class="headerlink" href="#Q4-:-essayez-avec-les-format-XML-(ou-HTML),-SQL,-SAS,-Excel..." title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -768,7 +771,7 @@
 </div>
 </section>
 <section id="Q5-:-données-non-structurées">
-<h3>Q5 : données non structurées<a class="headerlink" href="#Q5-:-données-non-structurées" title="Link to this heading">¶</a></h3>
+<h3>Q5 : données non structurées<a class="headerlink" href="#Q5-:-données-non-structurées" title="Lien vers cette rubrique">¶</a></h3>
 <p>On ajoute les endroits où ces fleurs sont présentes. On voudrait que toutes les informations soient présentes dans le même fichier. Comment fait-on ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -793,7 +796,7 @@
 </div>
 </section>
 <section id="Q6-:-le-texte,-ça-prend-trop-de-place,-zippons">
-<h3>Q6 : le texte, ça prend trop de place, zippons<a class="headerlink" href="#Q6-:-le-texte,-ça-prend-trop-de-place,-zippons" title="Link to this heading">¶</a></h3>
+<h3>Q6 : le texte, ça prend trop de place, zippons<a class="headerlink" href="#Q6-:-le-texte,-ça-prend-trop-de-place,-zippons" title="Lien vers cette rubrique">¶</a></h3>
 <p>Avec le module <a class="reference external" href="https://docs.python.org/3/library/zipfile.html">zipfile</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -805,7 +808,7 @@
 </div>
 </section>
 <section id="Q7-:-que-vous-inspire-protobuf-?">
-<h3>Q7 : que vous inspire <a class="reference external" href="https://developers.google.com/protocol-buffers">protobuf</a> ?<a class="headerlink" href="#Q7-:-que-vous-inspire-protobuf-?" title="Link to this heading">¶</a></h3>
+<h3>Q7 : que vous inspire <a class="reference external" href="https://developers.google.com/protocol-buffers">protobuf</a> ?<a class="headerlink" href="#Q7-:-que-vous-inspire-protobuf-?" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ou <a class="reference external" href="https://google.github.io/flatbuffers/">flatbuffers</a>, <a class="reference external" href="https://msgpack.org/">MessagePack</a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -818,9 +821,9 @@
 </section>
 </section>
 <section id="Réponses">
-<h2>Réponses<a class="headerlink" href="#Réponses" title="Link to this heading">¶</a></h2>
+<h2>Réponses<a class="headerlink" href="#Réponses" title="Lien vers cette rubrique">¶</a></h2>
 <section id="id1">
-<h3>Q1 : écriture des données au format CSV<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Q1 : écriture des données au format CSV<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -1070,7 +1073,7 @@
 </div>
 </section>
 <section id="id2">
-<h3>Q2 : écriture des données au format JSON<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h3>Q2 : écriture des données au format JSON<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -1091,7 +1094,7 @@
 </div>
 </section>
 <section id="id3">
-<h3>Q3 : relire les données avec le module <a class="reference external" href="https://docs.python.org/3/library/json.html">json</a><a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<h3>Q3 : relire les données avec le module <a class="reference external" href="https://docs.python.org/3/library/json.html">json</a><a class="headerlink" href="#id3" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -1184,7 +1187,7 @@
 </div>
 </section>
 <section id="id4">
-<h3>Q4 : essayez avec les format XML (ou HTML), SQL, SAS, Excel…<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<h3>Q4 : essayez avec les format XML (ou HTML), SQL, SAS, Excel…<a class="headerlink" href="#id4" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1338,7 +1341,7 @@
 </div>
 </section>
 <section id="id5">
-<h3>Q5 : données non structurées<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<h3>Q5 : données non structurées<a class="headerlink" href="#id5" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -2045,7 +2048,7 @@
 </div>
 </section>
 <section id="id6">
-<h3>Q6 : le texte, ça prend trop de place, zippons<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<h3>Q6 : le texte, ça prend trop de place, zippons<a class="headerlink" href="#id6" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -2078,7 +2081,7 @@
 </div>
 </section>
 <section id="id7">
-<h3>Q7 : que vous inspire <a class="reference external" href="https://developers.google.com/protocol-buffers">protobuf</a> ?<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<h3>Q7 : que vous inspire <a class="reference external" href="https://developers.google.com/protocol-buffers">protobuf</a> ?<a class="headerlink" href="#id7" title="Lien vers cette rubrique">¶</a></h3>
 <p>Protobuf est un format de sérialisation au même titre que <a class="reference external" href="https://docs.python.org/3/library/pickle.html">pickle</a>. La <a class="reference external" href="https://fr.wikipedia.org/wiki/S%C3%A9rialisation">sérialisation</a> désigne un procédé qui permet d’enregister tout un tas d’information sous la forme d’ensemble d’octets contigü. En gros, on enregistre un ensemble de variables en même quel qu’il soit, dans un unique fichier contigü. <a class="reference external" href="https://fr.wikipedia.org/wiki/JavaScript_Object_Notation">json</a> est un format utilisé par
 les outils de sérialisation. Tout est en texte et la plupart du temps, les nombres réelles prennent moins de place quand ils sont stockés comme ils sont sockés en mémoire sur 8 octets. C’est le premier problème résolu par protobuf. Ensuite, le format <em>json</em> est très générique mais il suggère de stocker le nom des colonnes à chaque ligne, c’est une information qui est dupliqué à chaque ligne… <em>protobuf</em> propose une façon de ne pas les sotcker du tout. Je passe les détails. Ils reviendront quand
 le problème de communiquer efficacement des données se posera.</p>
@@ -2184,10 +2187,10 @@ le problème de communiquer efficacement des données se posera.</p>
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

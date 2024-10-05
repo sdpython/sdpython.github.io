@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Manipulation de données avec pandas (exercices)" href="nb_pandas.html" /><link rel="prev" title="Dataframes" href="dataframes.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>DataFrame et Graphes - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="DataFrame-et-Graphes">
-<h1>DataFrame et Graphes<a class="headerlink" href="#DataFrame-et-Graphes" title="Link to this heading">¶</a></h1>
+<h1>DataFrame et Graphes<a class="headerlink" href="#DataFrame-et-Graphes" title="Lien vers cette rubrique">¶</a></h1>
 <p>Les <a class="reference external" href="https://fr.wikipedia.org/wiki/Pandas">Dataframe</a> se sont imposés pour manipuler les données. Avec cette façon de représenter les données, associée à des méthodes couramment utilisées, ce qu’on faisait en une ou deux boucles se fait maintenant en une seule fonction. Le module <a class="reference external" href="http://pandas.pydata.org/">pandas</a> est très utilisé, il existe de nombreux <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/tutorials.html">tutoriels</a>, ou page de recettes pour les usages les plus fréquents :
 <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/cookbook.html#cookbook">cookbook</a>.</p>
 <div class="nbinput nblast docutils container">
@@ -597,7 +600,7 @@ import matplotlib.pyplot as plt
 </div>
 <p>La première instruction <code class="docutils literal notranslate"><span class="pre">%matplotlib</span></code> est spécifique aux notebooks. Sans cela, les graphiques ne sont pas insérées dans la page elle-même mais cela ne s’applique qu’aux notebooks et provoquera une erreur sur <a class="reference external" href="https://github.com/spyder-ide/spyder">Spyder</a> par exemple.</p>
 <section id="DataFrame">
-<h2>DataFrame<a class="headerlink" href="#DataFrame" title="Link to this heading">¶</a></h2>
+<h2>DataFrame<a class="headerlink" href="#DataFrame" title="Lien vers cette rubrique">¶</a></h2>
 <p>Pour faire court, c’est l’équivalent d’une feuille Excel ou d’une table SQL.</p>
 <p><strong>Taille de DataFrame</strong></p>
 <p>Les DataFrame en Python sont assez rapides lorsqu’il y a moins de 10 millions d’observations et que le fichier texte qui décrit les données n’est pas plus gros que 10 Mo. Au delà, il faut soit être patient, soit être astucieux, utiliser sqllite et passer au SQL ou parcourir les données en streaming.</p>
@@ -623,7 +626,7 @@ Image(&quot;td2df.png&quot;)
 </div>
 <p>Pour manipuler les dataframe, on utilise le module <a class="reference external" href="http://pandas.pydata.org/">pandas</a>. Il est prévu pour manipuler les données d’une table par <strong>bloc</strong> (une sous-table). Tant qu’on manipule des blocs, le module est rapide.</p>
 <section id="Series">
-<h3>Series<a class="headerlink" href="#Series" title="Link to this heading">¶</a></h3>
+<h3>Series<a class="headerlink" href="#Series" title="Lien vers cette rubrique">¶</a></h3>
 <p>Une <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a> est un objet uni-dimensionnel similaire à un tableau, une liste ou une colonne d’une table. Chaque valeur est associée à un <strong>index</strong> qui est par défaut les entiers de 0 à <span class="math notranslate nohighlight">\(N-1\)</span> (avec <span class="math notranslate nohighlight">\(N\)</span> la longueur de la <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a>).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -821,7 +824,7 @@ dtype: object
 </section>
 </section>
 <section id="DataFrame-(pandas)">
-<h2>DataFrame (pandas)<a class="headerlink" href="#DataFrame-(pandas)" title="Link to this heading">¶</a></h2>
+<h2>DataFrame (pandas)<a class="headerlink" href="#DataFrame-(pandas)" title="Lien vers cette rubrique">¶</a></h2>
 <p><strong>Quelques liens :</strong> <a class="reference external" href="http://synesthesiam.com/posts/an-introduction-to-pandas.html">An Introduction to Pandas</a></p>
 <p>Un <a class="reference external" href="http://en.wikipedia.org/wiki/Data_frame">DataFrame</a> est un objet qui est présent dans la plupart des logiciels de traitements de données, c’est une <strong>matrice</strong>, chaque colonne est une <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html">Series</a> et est de même type (nombre, date, texte), elle peut contenir des valeurs manquantes (<a class="reference external" href="http://docs.scipy.org/doc/numpy/user/misc.html">nan</a>). On peut considérer chaque colonne comme les variables d’une table
 (<a class="reference external" href="http://pandas.pydata.org/pandas-docs/dev/generated/pandas.DataFrame.html">pandas.Dataframe</a> - cette page contient toutes les méthodes de la classe).</p>
@@ -1093,7 +1096,7 @@ Name: prix, dtype: float64
 </div></div>
 </div>
 <section id="Lecture-et-écriture-de-DataFrame">
-<h3>Lecture et écriture de DataFrame<a class="headerlink" href="#Lecture-et-écriture-de-DataFrame" title="Link to this heading">¶</a></h3>
+<h3>Lecture et écriture de DataFrame<a class="headerlink" href="#Lecture-et-écriture-de-DataFrame" title="Lien vers cette rubrique">¶</a></h3>
 <p>Aujourd’hui, on n’a plus besoin de réécrire soi-même une fonction de lecture ou d’écriture de données présentées sous forme de tables. Il existe des fonctions plus génériques qui gère un grand nombre de cas. Cette section présente brièvement les fonctions qui permettent de lire/écrire un <a class="reference external" href="http://en.wikipedia.org/wiki/Data_frame">DataFrame</a> aux formats <a class="reference external" href="http://fr.wikipedia.org/wiki/Fichier_texte">texte</a>/<a class="reference external" href="http://fr.wikipedia.org/wiki/Microsoft_Excel">Excel</a>. On reprend l’exemple de
 section précédente. L’instruction <code class="docutils literal notranslate"><span class="pre">encoding=utf-8</span></code> n’est pas obligatoire mais conseillée lorsque les données contiennent des accents (voir <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html">read_csv</a>).</p>
 <div class="nbinput docutils container">
@@ -1312,7 +1315,7 @@ df.head()
 </div>
 </section>
 <section id="DataFrame-et-Index">
-<h3>DataFrame et Index<a class="headerlink" href="#DataFrame-et-Index" title="Link to this heading">¶</a></h3>
+<h3>DataFrame et Index<a class="headerlink" href="#DataFrame-et-Index" title="Lien vers cette rubrique">¶</a></h3>
 <p>On désigne généralement une colonne ou <em>variable</em> par son nom. Les lignes peuvent être désignées par un entier.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1635,7 +1638,7 @@ dfi
 <p>Les index sont particulièrement utiles lorsqu’il s’agit de fusionner deux tables. Pour des petites tables, la plupart du temps, il est plus facile de s’en passer.</p>
 </section>
 <section id="Notation-avec-le-symbole-:">
-<h3>Notation avec le symbole <code class="docutils literal notranslate"><span class="pre">:</span></code><a class="headerlink" href="#Notation-avec-le-symbole-:" title="Link to this heading">¶</a></h3>
+<h3>Notation avec le symbole <code class="docutils literal notranslate"><span class="pre">:</span></code><a class="headerlink" href="#Notation-avec-le-symbole-:" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le symbole <code class="docutils literal notranslate"><span class="pre">:</span></code> désigne une plage de valeurs.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
@@ -1907,7 +1910,7 @@ sub
 </div>
 </section>
 <section id="Exercice-1-:-créer-un-fichier-Excel">
-<h3>Exercice 1 : créer un fichier Excel<a class="headerlink" href="#Exercice-1-:-créer-un-fichier-Excel" title="Link to this heading">¶</a></h3>
+<h3>Exercice 1 : créer un fichier Excel<a class="headerlink" href="#Exercice-1-:-créer-un-fichier-Excel" title="Lien vers cette rubrique">¶</a></h3>
 <p>On souhaite récupérer les données <a class="reference external" href="https://github.com/sdpython/teachpyx/raw/main/_data/donnees_enquete_2003_television.txt">donnees_enquete_2003_television.txt</a>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">POIDSLOG</span></code> : Pondération individuelle relative</p></li>
@@ -1949,7 +1952,7 @@ sub
 </section>
 </section>
 <section id="Manipuler-un-DataFrame">
-<h2>Manipuler un DataFrame<a class="headerlink" href="#Manipuler-un-DataFrame" title="Link to this heading">¶</a></h2>
+<h2>Manipuler un DataFrame<a class="headerlink" href="#Manipuler-un-DataFrame" title="Lien vers cette rubrique">¶</a></h2>
 <p>Si la structure <em>DataFrame</em> s’est imposée, c’est parce qu’on effectue toujours les mêmes opérations. Chaque fonction cache une boucle ou deux dont le coût est précisé en fin de ligne :</p>
 <ul class="simple">
 <li><p><strong>filter</strong> : on sélectionne un sous-ensemble de lignes qui vérifie une condition <span class="math notranslate nohighlight">\(\rightarrow O(n)\)</span></p></li>
@@ -1984,9 +1987,9 @@ annee [1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956] ...
 </pre></div></div>
 </div>
 <section id="6-opérations-:-filtrer,-union,-sort,-group-by,-join,-pivot">
-<h3>6 opérations : filtrer, union, sort, group by, join, pivot<a class="headerlink" href="#6-opérations-:-filtrer,-union,-sort,-group-by,-join,-pivot" title="Link to this heading">¶</a></h3>
+<h3>6 opérations : filtrer, union, sort, group by, join, pivot<a class="headerlink" href="#6-opérations-:-filtrer,-union,-sort,-group-by,-join,-pivot" title="Lien vers cette rubrique">¶</a></h3>
 <section id="filter">
-<h4>filter<a class="headerlink" href="#filter" title="Link to this heading">¶</a></h4>
+<h4>filter<a class="headerlink" href="#filter" title="Lien vers cette rubrique">¶</a></h4>
 <p>Filter consiste à sélectionner un sous-ensemble de lignes du dataframe. Pour filter sur plusieurs conditions, il faut utiliser les opérateurs logique &amp; (et), | (ou), ~ (non) (voir <a class="reference external" href="https://docs.python.org/3.4/library/operator.html#mapping-operators-to-functions">Mapping Operators to Functions</a>).</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.filter.html">filter</a>, <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.mask.html">mask</a>,<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.where.html">where</a></p></li>
@@ -2160,7 +2163,7 @@ subset.head()
 </div>
 </section>
 <section id="union">
-<h4>union<a class="headerlink" href="#union" title="Link to this heading">¶</a></h4>
+<h4>union<a class="headerlink" href="#union" title="Lien vers cette rubrique">¶</a></h4>
 <p>union = concaténation de deux <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html">DataFrame</a> (qui n’ont pas nécessairement les mêmes colonnes). On peut concaténer les lignes ou les colonnes.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.concat.html">concat</a></p></li>
@@ -2204,7 +2207,7 @@ df.shape, concat_col.shape
 </div>
 </section>
 <section id="sort">
-<h4>sort<a class="headerlink" href="#sort" title="Link to this heading">¶</a></h4>
+<h4>sort<a class="headerlink" href="#sort" title="Lien vers cette rubrique">¶</a></h4>
 <p>Sort = trier</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sort_values.html">sort</a></p></li>
@@ -2289,7 +2292,7 @@ tri.head()
 </div>
 </section>
 <section id="group-by">
-<h4>group by<a class="headerlink" href="#group-by" title="Link to this heading">¶</a></h4>
+<h4>group by<a class="headerlink" href="#group-by" title="Lien vers cette rubrique">¶</a></h4>
 <p>Cette opération consiste à grouper les lignes qui partagent une caractéristique commune (une valeur dans une colonne ou plusieurs valeurs dans plusieurs colonnes). On peut conserver chaque groupe, ou calculer une somme, une moyenne, prendre la ou meilleures valeurs (top <span class="math notranslate nohighlight">\(k\)</span> per group)…</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.groupby.html">groupby</a></p></li>
@@ -2844,7 +2847,7 @@ indices
 </div>
 </section>
 <section id="join-(merge-ou-fusion)">
-<h4>join (<em>merge</em> ou fusion)<a class="headerlink" href="#join-(merge-ou-fusion)" title="Link to this heading">¶</a></h4>
+<h4>join (<em>merge</em> ou fusion)<a class="headerlink" href="#join-(merge-ou-fusion)" title="Lien vers cette rubrique">¶</a></h4>
 <p>Fusionner deux tables consiste à apparier les lignes de la première table avec celle de la seconde si certaines colonnes de ces lignes partagent les mêmes valeurs. On distingue quatre cas :</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">INNER</span> <span class="pre">JOIN</span></code> - <strong>inner</strong> : on garde tous les appariements réussis</p></li>
@@ -3035,7 +3038,7 @@ pandas.concat([dfavecpays.head(n=2), dfavecpays.tail(n=2)])
 </ul>
 </section>
 <section id="pivot-(tableau-croisé-dynamique)">
-<h4>pivot (tableau croisé dynamique)<a class="headerlink" href="#pivot-(tableau-croisé-dynamique)" title="Link to this heading">¶</a></h4>
+<h4>pivot (tableau croisé dynamique)<a class="headerlink" href="#pivot-(tableau-croisé-dynamique)" title="Lien vers cette rubrique">¶</a></h4>
 <p>Cette opération consiste à créer une seconde table en utilisant utiliser les valeurs d’une colonne comme nom de colonnes.</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
@@ -3271,7 +3274,7 @@ pandas.concat([piv[20:23], piv[40:43], piv.tail(n=3)])
 </section>
 </section>
 <section id="Lambda-fonctions">
-<h3>Lambda fonctions<a class="headerlink" href="#Lambda-fonctions" title="Link to this heading">¶</a></h3>
+<h3>Lambda fonctions<a class="headerlink" href="#Lambda-fonctions" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les <a class="reference external" href="https://docs.python.org/3.4/tutorial/controlflow.html#lambda-expressions">lambda expressions</a> permettent une syntaxe plus légère (syntactic sugar) pour déclarer une fonction simple. Cela est très utile pour passer une fonction en argument notamment. Par exemple pour trier sur le 2ème element d’un tuple.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
@@ -3357,7 +3360,7 @@ nb.tail(n=3)
 </div>
 </section>
 <section id="Exercice-2-:-lambda-fonction">
-<h3>Exercice 2 : lambda fonction<a class="headerlink" href="#Exercice-2-:-lambda-fonction" title="Link to this heading">¶</a></h3>
+<h3>Exercice 2 : lambda fonction<a class="headerlink" href="#Exercice-2-:-lambda-fonction" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ecrire une lambda fonction qui prend deux paramètres et qui est équivalente à la fonction suivante :</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
@@ -3393,7 +3396,7 @@ riemann(0, 1, lambda x: x**2, 1000)
 <p>Ensuite, il faut utiliser une lambda fonction et la fonction <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.apply.html">apply</a> pour tirer un échantillon aléatoire</p>
 </section>
 <section id="Exercice-3-:-moyennes-par-groupes">
-<h3>Exercice 3 : moyennes par groupes<a class="headerlink" href="#Exercice-3-:-moyennes-par-groupes" title="Link to this heading">¶</a></h3>
+<h3>Exercice 3 : moyennes par groupes<a class="headerlink" href="#Exercice-3-:-moyennes-par-groupes" title="Lien vers cette rubrique">¶</a></h3>
 <p>Toujours avec le même jeu de données (<a class="reference external" href="https://github.com/sdpython/teachpyx/raw/main/_data/marathon.txt">marathon.txt</a>), on veut ajouter une ligne à la fin du tableau croisé dynamique contenant la moyenne en secondes des temps des marathons pour chaque ville.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -3405,7 +3408,7 @@ riemann(0, 1, lambda x: x**2, 1000)
 </div>
 </section>
 <section id="Avec-ou-sans-index">
-<h3>Avec ou sans index<a class="headerlink" href="#Avec-ou-sans-index" title="Link to this heading">¶</a></h3>
+<h3>Avec ou sans index<a class="headerlink" href="#Avec-ou-sans-index" title="Lien vers cette rubrique">¶</a></h3>
 <p>Une façon naïve de faire une jointure entre deux tables de taille <span class="math notranslate nohighlight">\(m\)</span> et <span class="math notranslate nohighlight">\(n\)</span> et de regarder toutes les <span class="math notranslate nohighlight">\(mn\)</span> combinaisons possibles. La taille de la table résultante dépend du type de jointure (<code class="docutils literal notranslate"><span class="pre">inner</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>) et de l’unicité des clés utilisées pour la jointure. Si les clés sont uniques, la table finale aura au plus <span class="math notranslate nohighlight">\(m+n\)</span> lignes (une par clé).</p>
 <p>Dans la plupart des cas, <span class="math notranslate nohighlight">\(O(mn)\)</span> opérations est beaucoup trop long. On peut faire plus rapide en triant chacune des tables d’abord et en les fusionnant : <span class="math notranslate nohighlight">\(O(n \ln n) + O(m \ln m) + O(n+m)\)</span>. Si <span class="math notranslate nohighlight">\(m=n\)</span>, il est évident que cette façon de faire est plus rapide. C’est une des choses que fait <a class="reference external" href="http://fr.slideshare.net/wesm/a-look-at-pandas-design-and-development">pandas (présentation)</a> (voir aussi <a class="reference external" href="https://github.com/attractivechaos/klib">klib</a>).</p>
 <p>On peut trier une table selon une clé ou encore utiliser une <a class="reference external" href="https://fr.wikipedia.org/wiki/Table_de_hachage">table de hachage</a>), il est alors très rapide de retrouver la ligne ou les lignes qui partagent cette clé. On dit que la table est <strong>indexée</strong> selon cette clé. Indexer selon une ou plusieurs colonnes une table accélère toute opération s’appuyant sur ces colonnes comme la recherche d’un élément.</p>
@@ -3542,7 +3545,7 @@ big_dfi = big_dfi.sort_index()  # Il ne faut oublier de trier.
 <p><strong>Plus la table est grande, plus le gain est important.</strong></p>
 </section>
 <section id="Dates">
-<h3>Dates<a class="headerlink" href="#Dates" title="Link to this heading">¶</a></h3>
+<h3>Dates<a class="headerlink" href="#Dates" title="Lien vers cette rubrique">¶</a></h3>
 <p>Les dates sont souvent compliquées à gérer car on n’utilise pas le mêmes format dans tous les pays. Pour faire simple, je recommande deux options :</p>
 <ul class="simple">
 <li><p>Soit convertir les dates/heures au format chaînes de caractères <code class="docutils literal notranslate"><span class="pre">AAAA-MM-JJ</span> <span class="pre">hh:mm:ss:ms</span></code> qui permet de trier les dates par ordre croissant.</p></li>
@@ -3639,9 +3642,9 @@ df.head()
 </section>
 </section>
 <section id="Plot(s)">
-<h2>Plot(s)<a class="headerlink" href="#Plot(s)" title="Link to this heading">¶</a></h2>
+<h2>Plot(s)<a class="headerlink" href="#Plot(s)" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Récupération-des-données">
-<h3>Récupération des données<a class="headerlink" href="#Récupération-des-données" title="Link to this heading">¶</a></h3>
+<h3>Récupération des données<a class="headerlink" href="#Récupération-des-données" title="Lien vers cette rubrique">¶</a></h3>
 <p>On récupère les données disponibles sur le site de l’INSEE : <a class="reference external" href="https://www.insee.fr/fr/statistiques/2407910?sommaire=2117120">Naissance, décès, mariages 2012</a>. Il s’agit de récupérer la liste des mariages de l’année 2012. On souhaite représenter le graphe du nombre de mariages en fonction de l’écart entre les mariés.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -3897,7 +3900,7 @@ vardf
 </div>
 </section>
 <section id="Exercice-4-:-nuage-de-points">
-<h3>Exercice 4 : nuage de points<a class="headerlink" href="#Exercice-4-:-nuage-de-points" title="Link to this heading">¶</a></h3>
+<h3>Exercice 4 : nuage de points<a class="headerlink" href="#Exercice-4-:-nuage-de-points" title="Lien vers cette rubrique">¶</a></h3>
 <p>On veut tracer un nuage de points avec en abscisse l’âge du mari, en ordonnée, l’âge de la femme. Il faudra peut-être jeter un coup d’oeil sur la documentation de la méthode <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.html">plot</a>. Etant donné le nombre d’observations, ce graphe risque d’être moins lisible qu’une <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/visualization.html#visualization-hexbin">heatmap</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -3909,7 +3912,7 @@ vardf
 </div>
 </section>
 <section id="Exercice-5-:-graphe-d'une-distribution-avec-pandas">
-<h3>Exercice 5 : graphe d’une distribution avec pandas<a class="headerlink" href="#Exercice-5-:-graphe-d'une-distribution-avec-pandas" title="Link to this heading">¶</a></h3>
+<h3>Exercice 5 : graphe d’une distribution avec pandas<a class="headerlink" href="#Exercice-5-:-graphe-d'une-distribution-avec-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <p>En ajoutant une colonne et en utilisant l’opération <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/groupby.html">group by</a>, on veut obtenir la distribution du nombre de mariages en fonction de l’écart entre les mariés. Au besoin, on changera le type d’une colone ou deux. Le module <code class="docutils literal notranslate"><span class="pre">pandas</span></code> propose un panel de graphiques standard faciles à obtenir. On souhaite représenter la distribution sous forme d’histogramme. A vous de choisir le meilleure graphique depuis la page
 <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/visualization.html">Visualization</a>.</p>
 <div class="nbinput nblast docutils container">
@@ -3923,7 +3926,7 @@ vardf
 </div>
 </section>
 <section id="matplotlib">
-<h3>matplotlib<a class="headerlink" href="#matplotlib" title="Link to this heading">¶</a></h3>
+<h3>matplotlib<a class="headerlink" href="#matplotlib" title="Lien vers cette rubrique">¶</a></h3>
 <p><a class="reference external" href="http://matplotlib.org/">matplotlib</a> est le module qu’utilise <a class="reference external" href="http://pandas.pydata.org/">pandas</a>. Ainsi, la méthode <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.html">plot</a> retourne un objet de type <a class="reference external" href="http://matplotlib.org/api/axes_api.html#module-matplotlib.axes">Axes</a> qu’on peut modifier par la suite via les <a class="reference external" href="http://matplotlib.org/api/pyplot_summary.html">méthodes suivantes</a>. On peut ajouter un titre avec
 <a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.set_title">set_title</a> ou ajouter une grille avec <a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.grid">grid</a>. On peut également superposer <a class="reference external" href="http://stackoverflow.com/questions/19941685/how-to-show-a-bar-and-line-graph-on-the-same-plot">deux courbes sur le même graphique</a>, ou <a class="reference external" href="http://stackoverflow.com/questions/12444716/how-do-i-set-figure-title-and-axes-labels-font-size-in-matplotlib">changer de taille de
 caractères</a>. Le code suivant trace le nombre de mariages par département.</p>
@@ -3955,7 +3958,7 @@ ax.legend().set_visible(False)  # on supprime la légende
 <p>Quand on ne sait pas, le plus simple est d’utiliser un moteur de recherche avec un requête du type : <code class="docutils literal notranslate"><span class="pre">matplotlib</span> <span class="pre">+</span> <span class="pre">requête</span></code>. Pour créer un graphique, le plus courant est de choisir le graphique le plus ressemblant d’une <a class="reference external" href="http://matplotlib.org/gallery.html">gallerie de graphes</a> puis de l’adapter à vos données.</p>
 </section>
 <section id="Exercice-6-:-distribution-des-mariages-par-jour">
-<h3>Exercice 6 : distribution des mariages par jour<a class="headerlink" href="#Exercice-6-:-distribution-des-mariages-par-jour" title="Link to this heading">¶</a></h3>
+<h3>Exercice 6 : distribution des mariages par jour<a class="headerlink" href="#Exercice-6-:-distribution-des-mariages-par-jour" title="Lien vers cette rubrique">¶</a></h3>
 <p>On veut obtenir un graphe qui contient l’histogramme de la distribution du nombre de mariages par jour de la semaine et d’ajouter une seconde courbe correspond avec un second axe à la répartition cumulée.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -3968,9 +3971,9 @@ ax.legend().set_visible(False)  # on supprime la légende
 </section>
 </section>
 <section id="Annexes">
-<h2>Annexes<a class="headerlink" href="#Annexes" title="Link to this heading">¶</a></h2>
+<h2>Annexes<a class="headerlink" href="#Annexes" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Créer-un-fichier-Excel-avec-plusieurs-feuilles">
-<h3>Créer un fichier Excel avec plusieurs feuilles<a class="headerlink" href="#Créer-un-fichier-Excel-avec-plusieurs-feuilles" title="Link to this heading">¶</a></h3>
+<h3>Créer un fichier Excel avec plusieurs feuilles<a class="headerlink" href="#Créer-un-fichier-Excel-avec-plusieurs-feuilles" title="Lien vers cette rubrique">¶</a></h3>
 <p>La page <a class="reference external" href="https://github.com/pydata/pandas/issues/3441">Allow ExcelWriter() to add sheets to existing workbook</a> donne plusieurs exemples d’écriture. On diminue la taille du document Excel à écrire.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -3996,9 +3999,9 @@ writer.close()
 </section>
 </section>
 <section id="Eléments-de-réponses-pour-les-exercices">
-<h2>Eléments de réponses pour les exercices<a class="headerlink" href="#Eléments-de-réponses-pour-les-exercices" title="Link to this heading">¶</a></h2>
+<h2>Eléments de réponses pour les exercices<a class="headerlink" href="#Eléments-de-réponses-pour-les-exercices" title="Lien vers cette rubrique">¶</a></h2>
 <section id="id1">
-<h3>Exercice 1 : créer un fichier Excel<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Exercice 1 : créer un fichier Excel<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <p>On souhaite récupérer les données <a class="reference external" href="https://github.com/sdpython/teachpyx/raw/main/_data/donnees_enquete_2003_television.txt">donnees_enquete_2003_television.txt</a>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">POIDSLOG</span></code> : Pondération individuelle relative</p></li>
@@ -4391,7 +4394,7 @@ notnull.tail()
 <p>Le nombre de lignes obtenus serait <span class="math notranslate nohighlight">\(\sum_{i=1}^{3} A_i B_i\)</span>. Il y a trois clés, chaque ligne de la table A doit être associée à toutes les lignes de la table B partageant la même clé.</p>
 </section>
 <section id="Exercice-2-:-lambda-function">
-<h3>Exercice 2 : lambda function<a class="headerlink" href="#Exercice-2-:-lambda-function" title="Link to this heading">¶</a></h3>
+<h3>Exercice 2 : lambda function<a class="headerlink" href="#Exercice-2-:-lambda-function" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ecrire une <em>lambda function</em> qui prend deux paramètres et qui est équivalente à la fonction suivante</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -4448,7 +4451,7 @@ echantillon.shape, df.shape
 </div>
 </section>
 <section id="id2">
-<h3>Exercice 3 : moyennes par groupes<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h3>Exercice 3 : moyennes par groupes<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
 <p>Toujours avec le même jeu de données, on veut ajouter une ligne à la fin du tableau croisé dynamique contenant la moyenne en secondes des temps des marathons pour chaque ville.</p>
 <p>La solution requiert trois étapes.</p>
 <ol class="arabic simple">
@@ -5114,7 +5117,7 @@ pandas.concat([piv, pivmean]).tail()
 </div>
 </section>
 <section id="Exercice-4-:-écart-entre-les-mariés">
-<h3>Exercice 4 : écart entre les mariés<a class="headerlink" href="#Exercice-4-:-écart-entre-les-mariés" title="Link to this heading">¶</a></h3>
+<h3>Exercice 4 : écart entre les mariés<a class="headerlink" href="#Exercice-4-:-écart-entre-les-mariés" title="Lien vers cette rubrique">¶</a></h3>
 <ol class="arabic simple">
 <li><p>En ajoutant une colonne et en utilisant l’opération <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.groupby.html">group by</a>, on veut obtenir la distribution du nombre de mariages en fonction de l’écart entre les mariés. Au besoin, on changera le type d’une colone ou deux.</p></li>
 <li><p>On veut tracer un nuage de points avec en abscisse l’âge du mari, en ordonnée, l’âge de la femme. Il faudra peut-être jeter un coup d’oeil sur la documentation de la méthode <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.plot.html#pandas.DataFrame.plot">plot</a>.</p></li>
@@ -5486,7 +5489,7 @@ df.head()
 </div>
 </section>
 <section id="Exercice-5-:-graphe-de-la-distribution-avec-pandas">
-<h3>Exercice 5 : graphe de la distribution avec pandas<a class="headerlink" href="#Exercice-5-:-graphe-de-la-distribution-avec-pandas" title="Link to this heading">¶</a></h3>
+<h3>Exercice 5 : graphe de la distribution avec pandas<a class="headerlink" href="#Exercice-5-:-graphe-de-la-distribution-avec-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le module <code class="docutils literal notranslate"><span class="pre">pandas</span></code> propose un panel de graphiques standard faciles à obtenir. On souhaite représenter la distribution sous forme d’histogramme. A vous de choisir le meilleure graphique depuis la page <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/visualization.html">Visualization</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -5510,7 +5513,7 @@ df[&quot;differenceHF&quot;].hist(figsize=(16, 6), bins=50);
 </div>
 </section>
 <section id="id3">
-<h3>Exercice 6 : distribution des mariages par jour<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<h3>Exercice 6 : distribution des mariages par jour<a class="headerlink" href="#id3" title="Lien vers cette rubrique">¶</a></h3>
 <p>On veut obtenir un graphe qui contient l’histogramme de la distribution du nombre de mariages par jour de la semaine et d’ajouter une seconde courbe correspond avec un second axe à la répartition cumulée.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -5666,10 +5669,10 @@ ax.set_title(&quot;distribution des mariages par jour de la semaine&quot;);
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script src="../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

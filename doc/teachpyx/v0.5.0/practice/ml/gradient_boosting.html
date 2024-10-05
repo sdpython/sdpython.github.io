@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Régression Ridge, Lasso et nouvel estimateur" href="ridge_lasso.html" /><link rel="prev" title="Tree, hyperparamètres, overfitting" href="ml_a_tree_overfitting.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Gradient Boosting - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Gradient-Boosting">
-<h1>Gradient Boosting<a class="headerlink" href="#Gradient-Boosting" title="Link to this heading">¶</a></h1>
+<h1>Gradient Boosting<a class="headerlink" href="#Gradient-Boosting" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le notebook explore l’algorithme du <a class="reference external" href="https://en.wikipedia.org/wiki/Gradient_boosting">Gradient Boosting</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -592,7 +595,7 @@
 </div>
 </div>
 <section id="Premier-exemple">
-<h2>Premier exemple<a class="headerlink" href="#Premier-exemple" title="Link to this heading">¶</a></h2>
+<h2>Premier exemple<a class="headerlink" href="#Premier-exemple" title="Lien vers cette rubrique">¶</a></h2>
 <p>On considère les paramètres par défaut de la classe <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor">GradientBoostingRegressor</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -1963,7 +1966,7 @@ ax.set_title(&quot;Prédictions&quot;);
 </div>
 </section>
 <section id="learning-rate-et-itérations">
-<h2>learning rate et itérations<a class="headerlink" href="#learning-rate-et-itérations" title="Link to this heading">¶</a></h2>
+<h2>learning rate et itérations<a class="headerlink" href="#learning-rate-et-itérations" title="Lien vers cette rubrique">¶</a></h2>
 <p>Et si on choisissait un <em>learning_rate</em>, plus petit ou plus grand…</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -2422,9 +2425,9 @@ for i, mod in enumerate([model01, modela, modelb]):
 <p>Une trop faible valeur de <em>learning_rate</em> semble retenir le modèle de converger, une grande valeur produit des effets imprévisibles. Pour comprendre pourquoi, il faut détailler l’algorithme…</p>
 </section>
 <section id="L'algorithme">
-<h2>L’algorithme<a class="headerlink" href="#L'algorithme" title="Link to this heading">¶</a></h2>
+<h2>L’algorithme<a class="headerlink" href="#L'algorithme" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Inspiration">
-<h3>Inspiration<a class="headerlink" href="#Inspiration" title="Link to this heading">¶</a></h3>
+<h3>Inspiration<a class="headerlink" href="#Inspiration" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’algorithme est inspiré de l’algorithme de la descente de gradient. On considère une fonction réelle <span class="math notranslate nohighlight">\(f(x)\)</span> et on calcule le gradient <span class="math notranslate nohighlight">\(\frac{\partial f}{\partial x}(x)\)</span> pour construire une suite :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -2458,7 +2461,7 @@ for i, mod in enumerate([model01, modela, modelb]):
 <p>Voilà l’idée.</p>
 </section>
 <section id="Algorithme">
-<h3>Algorithme<a class="headerlink" href="#Algorithme" title="Link to this heading">¶</a></h3>
+<h3>Algorithme<a class="headerlink" href="#Algorithme" title="Lien vers cette rubrique">¶</a></h3>
 <p>Je reprends ici la page wikipedia. On cherche à construire un modèle qui minimise l’erreur <span class="math notranslate nohighlight">\(L(y,F(x)) = \sum_{i=1}^n l(y_i, F(X_i))\)</span>. On note <span class="math notranslate nohighlight">\(r\)</span> le learning rate.</p>
 <p><strong>Etape 1 :</strong> on cale un premier modèle de régression, ici, simplement une constante, en optimisant <span class="math notranslate nohighlight">\(F_0(x) = \arg \min_\gamma \sum_{i=1}^n L(y_i, \gamma)\)</span>. <span class="math notranslate nohighlight">\(F_0(x)\)</span> est une constante.</p>
 <p>On note ensuite <span class="math notranslate nohighlight">\(F_m(x) = \gamma_0 \sum_{k=1}^m r \gamma_k h_k(x)\)</span> où <span class="math notranslate nohighlight">\(\gamma_0\)</span> est la fonction constante construire lors de la première étape.</p>
@@ -2471,7 +2474,7 @@ pas, une grande valeur accroît l’amplitude des oscillations au point d’emp�
 </section>
 </section>
 <section id="Régression-quantile">
-<h2>Régression quantile<a class="headerlink" href="#Régression-quantile" title="Link to this heading">¶</a></h2>
+<h2>Régression quantile<a class="headerlink" href="#Régression-quantile" title="Lien vers cette rubrique">¶</a></h2>
 <p>Dans ce cas, l’erreur quadratique est remplacée par une erreur en valeur absolue. Les résidus dans ce cas sont égaux à -1 ou 1.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -2945,7 +2948,7 @@ for i, mod in enumerate([model, model01, modela, modelb, modelc]):
 <p>Concrètement, le paramètre <em>max_depth=1</em> correspond à une simple fonction <span class="math notranslate nohighlight">\(f(x) = \mathbb{1}_{x &gt; s}\)</span> et le modèle final est une somme pondérée de fonctions indicatrices.</p>
 </section>
 <section id="learning_rate-et-sur-apprentissage">
-<h2>learning_rate et sur-apprentissage<a class="headerlink" href="#learning_rate-et-sur-apprentissage" title="Link to this heading">¶</a></h2>
+<h2>learning_rate et sur-apprentissage<a class="headerlink" href="#learning_rate-et-sur-apprentissage" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
@@ -3191,10 +3194,10 @@ ax.legend();
 <p>Plus le modèle sous-jacent est simple, plus le <em>learning_rate</em> peut être élevé car les modèles simples ne font pas de sur-apprentissage.</p>
 </section>
 <section id="Gradient-Boosting-avec-d'autres-librairies">
-<h2>Gradient Boosting avec d’autres librairies<a class="headerlink" href="#Gradient-Boosting-avec-d'autres-librairies" title="Link to this heading">¶</a></h2>
+<h2>Gradient Boosting avec d’autres librairies<a class="headerlink" href="#Gradient-Boosting-avec-d'autres-librairies" title="Lien vers cette rubrique">¶</a></h2>
 <p>Une somme pondérée de régression linéaire reste une regréssion linéaire. Il est impossible de tester ce scénario avec <em>scikit-learn</em> puisque seuls les arbres de décisions sont implémentés. Mais il existe d’autres librairies qui implémente le gradient boosting.</p>
 <section id="XGBoost">
-<h3>XGBoost<a class="headerlink" href="#XGBoost" title="Link to this heading">¶</a></h3>
+<h3>XGBoost<a class="headerlink" href="#XGBoost" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
@@ -3364,7 +3367,7 @@ ax.legend();
 </div>
 </section>
 <section id="LightGbm">
-<h3>LightGbm<a class="headerlink" href="#LightGbm" title="Link to this heading">¶</a></h3>
+<h3>LightGbm<a class="headerlink" href="#LightGbm" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
@@ -6302,7 +6305,7 @@ ax.legend();
 <p><a class="reference external" href="https://lightgbm.readthedocs.io/en/latest/">LightGBM</a> paraît moins sensible au <em>learning_rate</em> que <a class="reference external" href="https://xgboost.readthedocs.io/en/latest/index.html">XGBoost</a>.</p>
 </section>
 <section id="CatBoost">
-<h3>CatBoost<a class="headerlink" href="#CatBoost" title="Link to this heading">¶</a></h3>
+<h3>CatBoost<a class="headerlink" href="#CatBoost" title="Lien vers cette rubrique">¶</a></h3>
 <p><a class="reference external" href="https://catboost.ai/">CatBoost</a> est une des plus récentes. Elle est sensée être plus efficace pour les catégories ce qui n’est pas le cas ici.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
@@ -6541,10 +6544,10 @@ ax.legend();
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

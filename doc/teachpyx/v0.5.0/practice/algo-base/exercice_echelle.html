@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="La sous-séquence de plus grande somme" href="exercice_plus_grande_somme.html" /><link rel="prev" title="Produit matriciel avec une matrice creuse" href="matrix_dictionary.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Calculer le nombre de façons de monter une échelle. - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,27 +584,27 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Calculer-le-nombre-de-façons-de-monter-une-échelle.">
-<h1>Calculer le nombre de façons de monter une échelle.<a class="headerlink" href="#Calculer-le-nombre-de-façons-de-monter-une-échelle." title="Link to this heading">¶</a></h1>
+<h1>Calculer le nombre de façons de monter une échelle.<a class="headerlink" href="#Calculer-le-nombre-de-façons-de-monter-une-échelle." title="Lien vers cette rubrique">¶</a></h1>
 <p>Une grenouille monte une échelle. Elle peut faire des bonds de un ou deux barreaux. Combien a-t-elle de façons de monter une échelle de treize barreaux ? Notion abordée : fonction récursive.</p>
 <section id="Enoncés">
-<h2>Enoncés<a class="headerlink" href="#Enoncés" title="Link to this heading">¶</a></h2>
+<h2>Enoncés<a class="headerlink" href="#Enoncés" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Enoncé-1">
-<h3>Enoncé 1<a class="headerlink" href="#Enoncé-1" title="Link to this heading">¶</a></h3>
+<h3>Enoncé 1<a class="headerlink" href="#Enoncé-1" title="Lien vers cette rubrique">¶</a></h3>
 <p>On suppose qu’une grenouille peut montrer une échelle de 13 barreaux avec des sauts de 1 ou 2 barreaux. Combien a-t-elle de façons de monter les 13 premiers barreaux ?</p>
 </section>
 <section id="Enoncé-2">
-<h3>Enoncé 2<a class="headerlink" href="#Enoncé-2" title="Link to this heading">¶</a></h3>
+<h3>Enoncé 2<a class="headerlink" href="#Enoncé-2" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le problème est presque le même excepté que l’épaisseur des barreaux est plus ou moins grande. L’épaisseur du barreau <span class="math notranslate nohighlight">\(i\)</span> est un entier <span class="math notranslate nohighlight">\(e_i &gt; 0\)</span>. Arrivée au barreau <span class="math notranslate nohighlight">\(i\)</span>, la grenouille peut faire un bond de <span class="math notranslate nohighlight">\(k\)</span> barreaux avec <span class="math notranslate nohighlight">\(k \leqslant e_i\)</span>. La grenouille commence toujours au barreau.</p>
 </section>
 <section id="Enoncé-3">
-<h3>Enoncé 3<a class="headerlink" href="#Enoncé-3" title="Link to this heading">¶</a></h3>
+<h3>Enoncé 3<a class="headerlink" href="#Enoncé-3" title="Lien vers cette rubrique">¶</a></h3>
 <p>On considère la grenouille de l’énoncé 2 mais on souhaite connaître le chemin pour lequel la grenouille a fait le moins de bonds possible.</p>
 </section>
 </section>
 <section id="Solutions">
-<h2>Solutions<a class="headerlink" href="#Solutions" title="Link to this heading">¶</a></h2>
+<h2>Solutions<a class="headerlink" href="#Solutions" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Solution-au-problème-1">
-<h3>Solution au problème 1<a class="headerlink" href="#Solution-au-problème-1" title="Link to this heading">¶</a></h3>
+<h3>Solution au problème 1<a class="headerlink" href="#Solution-au-problème-1" title="Lien vers cette rubrique">¶</a></h3>
 <p>L’idée de départ consiste à considérer le problème par récurrence. D’où la grenouille peut-elle venir si elle est au barreau <span class="math notranslate nohighlight">\(n\)</span> ? La réponse est assez simple : - elle a pu venir du barreau <span class="math notranslate nohighlight">\(n-1\)</span> avec un saut de un barreau, - elle a pu venir du barreau <span class="math notranslate nohighlight">\(n-2\)</span> avec un saut de deux barreaux</p>
 <p>On obtient la formule de récurrence suivante : <span class="math notranslate nohighlight">\(f(n) = f(n-1) + f(n-2)\)</span>. C’est une <a class="reference external" href="http://fr.wikipedia.org/wiki/Suite_de_Fibonacci">suite de Fibonacci</a>.</p>
 <div class="nbinput docutils container">
@@ -646,7 +649,7 @@ barreau 13 : 377 façons de monter
 </div>
 </section>
 <section id="Solution-au-problème-2">
-<h3>Solution au problème 2<a class="headerlink" href="#Solution-au-problème-2" title="Link to this heading">¶</a></h3>
+<h3>Solution au problème 2<a class="headerlink" href="#Solution-au-problème-2" title="Lien vers cette rubrique">¶</a></h3>
 <p>La solution au second problème est presque la même. L’idée de départ consiste toujours à considérer le problème par récurrence. D’où la grenouille peut-elle venir si elle est au barreau <span class="math notranslate nohighlight">\(n\)</span> ? La réponse est assez simple : - elle a pu venir du barreau <span class="math notranslate nohighlight">\(n-1\)</span> avec un saut de un barreau si <span class="math notranslate nohighlight">\(e_{n-1} \geqslant 1\)</span> - elle a pu venir du barreau <span class="math notranslate nohighlight">\(n-2\)</span> avec un saut de deux barreaux si <span class="math notranslate nohighlight">\(e_{n-2} \geqslant 2\)</span> - elle a pu venir du barreau <span class="math notranslate nohighlight">\(n-k\)</span> avec un saut de deux barreaux
 si <span class="math notranslate nohighlight">\(e_{n-k} \geqslant k\)</span></p>
 <div class="nbinput docutils container">
@@ -733,7 +736,7 @@ barreau 13 : 3 façons de monter
 </div>
 </section>
 <section id="Solution-au-problème-3">
-<h3>Solution au problème 3<a class="headerlink" href="#Solution-au-problème-3" title="Link to this heading">¶</a></h3>
+<h3>Solution au problème 3<a class="headerlink" href="#Solution-au-problème-3" title="Lien vers cette rubrique">¶</a></h3>
 <p>Pour ce problème, la solution est quasi identique excepté qu’au lieu de sommer les nombres de chemins, on souhaite garder le nombre de bonds du chemin qui en contient le moins.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -879,10 +882,10 @@ barreau 13 : 7 bonds pour le chemin qui en contient le moins
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

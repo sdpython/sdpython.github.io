@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Arbre et Trie" href="trie.html" /><link rel="prev" title="Classes, méthodes, attributs, opérateurs et carré magique" href="classes_carre_magique.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Classes, héritage - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,10 +584,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Classes,-héritage">
-<h1>Classes, héritage<a class="headerlink" href="#Classes,-héritage" title="Link to this heading">¶</a></h1>
+<h1>Classes, héritage<a class="headerlink" href="#Classes,-héritage" title="Lien vers cette rubrique">¶</a></h1>
 <p>L’héritage permet de réécrire certaines parties du code sans pour autant enlever les anciennes versions toujours utilisées.</p>
 <section id="Qu'est-ce-que-l'héritage-?">
-<h2>Qu’est-ce que l’héritage ?<a class="headerlink" href="#Qu'est-ce-que-l'héritage-?" title="Link to this heading">¶</a></h2>
+<h2>Qu’est-ce que l’héritage ?<a class="headerlink" href="#Qu'est-ce-que-l'héritage-?" title="Lien vers cette rubrique">¶</a></h2>
 <p>La séance précédente a montré comment fonctionnait une classe, comment elle s’écrivait. Cette séance est à propos de l”<em>héritage</em> qui est une propriété des langages objets. Elle est utile par exemple lorsqu’on doit écrire plusieurs versions d’un même algorithme et qu’une petite partie seulement change d’une version à l’autre.</p>
 <p>Supposons que vous ayez un algorithme constitué de trois fonctions plus une dernière qui appelle les trois autres dans le bon ordre. On désire créer une version pour laquelle une des trois fonctions seulement est modifiée.</p>
 <div class="nbinput docutils container">
@@ -653,7 +656,7 @@ Version1.fonction3 0
 <p>Le langage a compris qu’on avait changé une fonction et il s’en sert dans la seconde classe. Pour que cela fonctionne, il faut néanmoins respecter une contrainte essentielle : la fonction remplacée (ou surchargée) doit accepter les mêmes paramètres et retourner le même type de résultat. Cette contrainte n’est pas obligatoire en Python mais elle l’est dans la plupart des langages. Il est conseillé de la respecter.</p>
 </section>
 <section id="Exercice-1-:-pièce-normale">
-<h2>Exercice 1 : pièce normale<a class="headerlink" href="#Exercice-1-:-pièce-normale" title="Link to this heading">¶</a></h2>
+<h2>Exercice 1 : pièce normale<a class="headerlink" href="#Exercice-1-:-pièce-normale" title="Lien vers cette rubrique">¶</a></h2>
 <p>On créer une classe <code class="docutils literal notranslate"><span class="pre">Piece</span></code> qui contient deux méthodes : une méthode <code class="docutils literal notranslate"><span class="pre">tirage_aleatoire</span></code> et une méthode qui appelle la précédente pour faire une moyenne sur <span class="math notranslate nohighlight">\(n\)</span> tirages.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -686,7 +689,7 @@ Version1.fonction3 0
 </div>
 </section>
 <section id="Exercice-2-:-pièce-truquée">
-<h2>Exercice 2 : pièce truquée<a class="headerlink" href="#Exercice-2-:-pièce-truquée" title="Link to this heading">¶</a></h2>
+<h2>Exercice 2 : pièce truquée<a class="headerlink" href="#Exercice-2-:-pièce-truquée" title="Lien vers cette rubrique">¶</a></h2>
 <p>Le paramètre <code class="docutils literal notranslate"><span class="pre">precedent</span></code> est inutile dans cette première version mais on suppose maintenant que le joueur qui joue est un tricheur. Lorsqu’il perd, il joue une pièce truquée le coup d’après pour laquelle la probabilité d’avoir 1 est de 0,7. On veut implémenter cela avec une classe <code class="docutils literal notranslate"><span class="pre">PieceTruquee</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -717,7 +720,7 @@ Version1.fonction3 0
 </div>
 </section>
 <section id="Utiliser-des-méthodes-de-la-classe-mère">
-<h2>Utiliser des méthodes de la classe mère<a class="headerlink" href="#Utiliser-des-méthodes-de-la-classe-mère" title="Link to this heading">¶</a></h2>
+<h2>Utiliser des méthodes de la classe mère<a class="headerlink" href="#Utiliser-des-méthodes-de-la-classe-mère" title="Lien vers cette rubrique">¶</a></h2>
 <p>Lorsqu’on change une fonction, on a parfois juste d’un petit changement par rapport à la méthode précédente qu’il faut pouvoir appeler. Si on reprend l’exemple précédent, on modifie la méthode <code class="docutils literal notranslate"><span class="pre">tirage_aleatoire</span></code> pour retourner l’autre valeur :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -768,7 +771,7 @@ Version1.fonction3 0
 </div>
 </section>
 <section id="Exercice-3-:-Pièce-mixte">
-<h2>Exercice 3 : Pièce mixte<a class="headerlink" href="#Exercice-3-:-Pièce-mixte" title="Link to this heading">¶</a></h2>
+<h2>Exercice 3 : Pièce mixte<a class="headerlink" href="#Exercice-3-:-Pièce-mixte" title="Lien vers cette rubrique">¶</a></h2>
 <p>Ecrire une classe <code class="docutils literal notranslate"><span class="pre">PieceTruqueeMix</span></code> qui appelle aléatoiremnt soit <code class="docutils literal notranslate"><span class="pre">Piece.tirage_aleatoire</span></code> soit <code class="docutils literal notranslate"><span class="pre">PieceTruquee.tirage_aleatoire</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -780,7 +783,7 @@ Version1.fonction3 0
 </div>
 </section>
 <section id="Autre-construction-avec-des-fonctions">
-<h2>Autre construction avec des fonctions<a class="headerlink" href="#Autre-construction-avec-des-fonctions" title="Link to this heading">¶</a></h2>
+<h2>Autre construction avec des fonctions<a class="headerlink" href="#Autre-construction-avec-des-fonctions" title="Lien vers cette rubrique">¶</a></h2>
 <p>La création de classe peut sembler fastidieuse. Une autre solution est l’utilisation de fonction comme paramètre d’une autre fonction :</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -836,7 +839,7 @@ Version1.fonction3 0
 </div>
 </section>
 <section id="Exercice-4-:-pièce-mixte-avec-des-fonctions">
-<h2>Exercice 4 : pièce mixte avec des fonctions<a class="headerlink" href="#Exercice-4-:-pièce-mixte-avec-des-fonctions" title="Link to this heading">¶</a></h2>
+<h2>Exercice 4 : pièce mixte avec des fonctions<a class="headerlink" href="#Exercice-4-:-pièce-mixte-avec-des-fonctions" title="Lien vers cette rubrique">¶</a></h2>
 <p>Comment utiliser les fonctions dans le cas de la pièce <code class="docutils literal notranslate"><span class="pre">PieceTruqueeMix</span></code> ?</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -926,10 +929,10 @@ Version1.fonction3 0
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Cryptage homomorphic de Craig Gentry - correction" href="gentry_integer_encryption_correction.html" /><link rel="prev" title="Décorrélation de variables aléatoires" href="decorrelation.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Spectral Clustering - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,10 +584,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Spectral-Clustering">
-<h1>Spectral Clustering<a class="headerlink" href="#Spectral-Clustering" title="Link to this heading">¶</a></h1>
+<h1>Spectral Clustering<a class="headerlink" href="#Spectral-Clustering" title="Lien vers cette rubrique">¶</a></h1>
 <p>On veut couper un graphe en deux en coupant le moindre d’arcs possible. C’est un algorithme de <a class="reference external" href="https://en.wikipedia.org/wiki/Cluster_analysis">clustering</a>.</p>
 <section id="Un-graphe">
-<h2>Un graphe<a class="headerlink" href="#Un-graphe" title="Link to this heading">¶</a></h2>
+<h2>Un graphe<a class="headerlink" href="#Un-graphe" title="Lien vers cette rubrique">¶</a></h2>
 <p>Les données contiennent deux dictionnaires :</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">noeuds[i]</span></code> : contient la valeur associée au noeud <code class="docutils literal notranslate"><span class="pre">i</span></code></p></li>
@@ -747,17 +750,17 @@
 </div>
 </section>
 <section id="Partie-1-:-clustering-en-pratique">
-<h2>Partie 1 : clustering en pratique<a class="headerlink" href="#Partie-1-:-clustering-en-pratique" title="Link to this heading">¶</a></h2>
+<h2>Partie 1 : clustering en pratique<a class="headerlink" href="#Partie-1-:-clustering-en-pratique" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Q1">
-<h3>Q1<a class="headerlink" href="#Q1" title="Link to this heading">¶</a></h3>
+<h3>Q1<a class="headerlink" href="#Q1" title="Lien vers cette rubrique">¶</a></h3>
 <p>On souhaite obtenir deux composantes connexes en enlevant le minimum d’arcs. Pour cela, on pense à un algorithme appelé <a class="reference external" href="https://fr.wikipedia.org/wiki/Arbre_couvrant_de_poids_minimal">Minimum Spanning Tree</a>. Est-ce que cet algorithme vous satisfait ?</p>
 </section>
 <section id="Q2">
-<h3>Q2<a class="headerlink" href="#Q2" title="Link to this heading">¶</a></h3>
+<h3>Q2<a class="headerlink" href="#Q2" title="Lien vers cette rubrique">¶</a></h3>
 <p>On définit le degré d’un noeud comme étant le nombre d’arcs reliés à ce noeud. Ecrire une fonction qui calcule le degré pour un noeud donné.</p>
 </section>
 <section id="Q3">
-<h3>Q3<a class="headerlink" href="#Q3" title="Link to this heading">¶</a></h3>
+<h3>Q3<a class="headerlink" href="#Q3" title="Lien vers cette rubrique">¶</a></h3>
 <p>On construit le Laplacien du graphe. C’est une matrice carrée <span class="math notranslate nohighlight">\(n\times n\)</span> où <span class="math notranslate nohighlight">\(n\)</span> est le nombre de noeuds du graphe. Soit <span class="math notranslate nohighlight">\(M=(m_{ij})\)</span> ce laplacien :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -766,25 +769,25 @@
 <p>Construisez cette matrice. On rappelle que le graphe est toujours non-directionnel. Montrez que la somme des valeurs de chaque colonne est 0.</p>
 </section>
 <section id="Q4">
-<h3>Q4<a class="headerlink" href="#Q4" title="Link to this heading">¶</a></h3>
+<h3>Q4<a class="headerlink" href="#Q4" title="Lien vers cette rubrique">¶</a></h3>
 <p>Montrez que l’une des valeurs propres de cette matrice est 0. Quel est le vecteur propre associé ?</p>
 <p><em>Rappel :</em> En anglais, valeurs propres et vecteurs propres se traduisent par <em>eigen values</em> et <em>eigen vectors</em>.</p>
 </section>
 <section id="Q5">
-<h3>Q5<a class="headerlink" href="#Q5" title="Link to this heading">¶</a></h3>
+<h3>Q5<a class="headerlink" href="#Q5" title="Lien vers cette rubrique">¶</a></h3>
 <p>Calculez les valeurs propres à l’aide du module <a class="reference external" href="http://www.numpy.org/">numpy</a>. Vous vous assurerez que le résultat théorique précédent est vérifié numériquement.</p>
 </section>
 <section id="Q6">
-<h3>Q6<a class="headerlink" href="#Q6" title="Link to this heading">¶</a></h3>
+<h3>Q6<a class="headerlink" href="#Q6" title="Lien vers cette rubrique">¶</a></h3>
 <p>Toutes les valeurs propres sont positives ou nulles, quel est le vecteur propre associé à la plus petite des valeurs propres non nulles ?</p>
 </section>
 <section id="Q7">
-<h3>Q7<a class="headerlink" href="#Q7" title="Link to this heading">¶</a></h3>
+<h3>Q7<a class="headerlink" href="#Q7" title="Lien vers cette rubrique">¶</a></h3>
 <p>On classe les noeuds en deux classes selon qu’ils sont associés à une valeur positive ou négative d’après ce vecteur propre. On peut maintenant déterminer quel noeud appartient à la première composante, quel noeud appartient à la seconde. Ecrire une fonction qui calcule le nombre d’arcs qui relient un noeud de la première composante à un noeud de la seconde. Quel est le résultat ?</p>
 </section>
 </section>
 <section id="Partie-2-:-intermède-théorique">
-<h2>Partie 2 : intermède théorique<a class="headerlink" href="#Partie-2-:-intermède-théorique" title="Link to this heading">¶</a></h2>
+<h2>Partie 2 : intermède théorique<a class="headerlink" href="#Partie-2-:-intermède-théorique" title="Lien vers cette rubrique">¶</a></h2>
 <p>Les résultats suivants sont extraits du livre <a class="reference external" href="http://www.springer.com/fr/book/9780387881454">Statistical Analysis of Network Data</a> de <em>Eric D. Kolaczyk</em>. <span class="math notranslate nohighlight">\(G\)</span> désigne un graphe connexe, avec une seule composante connexe. On définit <span class="math notranslate nohighlight">\(S\)</span> un ensemble de sommets du graphe, <span class="math notranslate nohighlight">\(\bar{S}\)</span> est son complémentaire. <span class="math notranslate nohighlight">\(E(S,\bar{S})\)</span> désigne l’ensemble des arcs qui relient un sommet de <span class="math notranslate nohighlight">\(S\)</span> à un sommet de son complémentaire. <span class="math notranslate nohighlight">\(|S|\)</span> désigne le nombre de sommets inclus dans
 <span class="math notranslate nohighlight">\(S\)</span>. Enfin :</p>
 <div class="math-wrapper docutils container">
@@ -810,7 +813,7 @@
 <p>Le vecteur <span class="math notranslate nohighlight">\(V\)</span> est donc une réponse approchée au problème de minimisation <span class="math notranslate nohighlight">\((1)\)</span>.</p>
 </section>
 <section id="Partie-3-:-un-peu-plus-loin">
-<h2>Partie 3 : un peu plus loin<a class="headerlink" href="#Partie-3-:-un-peu-plus-loin" title="Link to this heading">¶</a></h2>
+<h2>Partie 3 : un peu plus loin<a class="headerlink" href="#Partie-3-:-un-peu-plus-loin" title="Lien vers cette rubrique">¶</a></h2>
 <p>On applique cette méthode à un problème de clusterisation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1106,11 +1109,11 @@
 </div>
 </div>
 <section id="id1">
-<h3>Q1<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h3>Q1<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h3>
 <p>Créer une fonction qui génère un tel ensemble de points en deux dimensions de façon aléatoires ?</p>
 </section>
 <section id="id2">
-<h3>Q2<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h3>Q2<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
 <p>Implémentez la méthode suggérée et dessinez le résultat.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -1211,10 +1214,10 @@
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

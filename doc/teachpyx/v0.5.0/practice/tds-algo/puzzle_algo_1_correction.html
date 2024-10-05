@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Puzzles algorithmes (2) - correction" href="puzzle_algo_2_correction.html" /><link rel="prev" title="Plus proches voisins en grande dimension - correction" href="knn_high_dimension_correction.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Puzzles algorithmes (1) - correction - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,17 +584,17 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Puzzles-algorithmes-(1)---correction">
-<h1>Puzzles algorithmes (1) - correction<a class="headerlink" href="#Puzzles-algorithmes-(1)---correction" title="Link to this heading">¶</a></h1>
+<h1>Puzzles algorithmes (1) - correction<a class="headerlink" href="#Puzzles-algorithmes-(1)---correction" title="Lien vers cette rubrique">¶</a></h1>
 <p>Eléments de réponses pour des puzzles algorithmiques tirés de <a class="reference external" href="https://en.wikipedia.org/wiki/Google_Code_Jam">Google Code Jam</a> et autres sites équivalents, produits scalaires, problèmes de recouvrements, soudoyer les prisonniers, découpage stratifié.</p>
 <section id="Produits-scalaires">
-<h2>Produits scalaires<a class="headerlink" href="#Produits-scalaires" title="Link to this heading">¶</a></h2>
+<h2>Produits scalaires<a class="headerlink" href="#Produits-scalaires" title="Lien vers cette rubrique">¶</a></h2>
 <p><em>Google Jam 2008, round 1A</em></p>
 <p>On considère deux tableaux <span class="math notranslate nohighlight">\(v=(v_1,..., v_n)\)</span> et <span class="math notranslate nohighlight">\(w=(w_1,...,w_n)\)</span>. On souhaite le minimum : <span class="math notranslate nohighlight">\(\min_{\sigma,\sigma'} \sum_{i=1}^{n} v_{\sigma(i)} w_{\sigma'(i)}\)</span> où <span class="math notranslate nohighlight">\(\sigma,\sigma'\)</span> sont deux permutations de l’ensemble <span class="math notranslate nohighlight">\([[1,...,n]]\)</span>.</p>
 </section>
 <section id="Problème-de-recouvrement">
-<h2>Problème de recouvrement<a class="headerlink" href="#Problème-de-recouvrement" title="Link to this heading">¶</a></h2>
+<h2>Problème de recouvrement<a class="headerlink" href="#Problème-de-recouvrement" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Première-solution">
-<h3>Première solution<a class="headerlink" href="#Première-solution" title="Link to this heading">¶</a></h3>
+<h3>Première solution<a class="headerlink" href="#Première-solution" title="Lien vers cette rubrique">¶</a></h3>
 <p>Elle est inspiré de la <a class="reference external" href="http://fr.wikipedia.org/wiki/Distance_de_Levenshtein">distance d’édition</a>. Si on doit recouvrir l’ensemble des entiers <span class="math notranslate nohighlight">\([[0,n]]\)</span>, on passe en revue tous les intervalles qui inclut 0. On construit deux tableaux :</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(entier[i]\)</span> : conserve le nombre minimum d’intervalles pour couvrir tous les entiers de <span class="math notranslate nohighlight">\(0\)</span> à <span class="math notranslate nohighlight">\(i\)</span></p></li>
@@ -664,7 +667,7 @@ sol= [(0, 1)]
 </div>
 </section>
 <section id="Seconde-solution">
-<h3>Seconde solution<a class="headerlink" href="#Seconde-solution" title="Link to this heading">¶</a></h3>
+<h3>Seconde solution<a class="headerlink" href="#Seconde-solution" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce programme améliore la solution précédente.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -732,10 +735,10 @@ sol= [(0, 1)]
 </section>
 </section>
 <section id="Soudoyer-les-prisonniers">
-<h2>Soudoyer les prisonniers<a class="headerlink" href="#Soudoyer-les-prisonniers" title="Link to this heading">¶</a></h2>
+<h2>Soudoyer les prisonniers<a class="headerlink" href="#Soudoyer-les-prisonniers" title="Lien vers cette rubrique">¶</a></h2>
 <p><em>Problem C. Bribe the Prisoners</em></p>
 <section id="Approche-par-programmation-dynamique">
-<h3>Approche par programmation dynamique<a class="headerlink" href="#Approche-par-programmation-dynamique" title="Link to this heading">¶</a></h3>
+<h3>Approche par programmation dynamique<a class="headerlink" href="#Approche-par-programmation-dynamique" title="Lien vers cette rubrique">¶</a></h3>
 <p>Une observation fondamentale à faire pour ce problème est la suivante. Imaginons qu’un oracle nous donne le nombre de pièces d’or minimum à dépenser pour toutes les prisons contenant strictement moins de <span class="math notranslate nohighlight">\(P\)</span> cellules et strictement moins de <span class="math notranslate nohighlight">\(Q\)</span> prisonniers. On peut alors r´esoudre notre problème par :</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
@@ -763,7 +766,7 @@ sol= [(0, 1)]
 </section>
 </section>
 <section id="Découpage-intelligent-d'une-base-de-données">
-<h2>Découpage intelligent d’une base de données<a class="headerlink" href="#Découpage-intelligent-d'une-base-de-données" title="Link to this heading">¶</a></h2>
+<h2>Découpage intelligent d’une base de données<a class="headerlink" href="#Découpage-intelligent-d'une-base-de-données" title="Lien vers cette rubrique">¶</a></h2>
 <p>Voir <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupKFold.html">GroupKFold</a>, découpage stratifié d’une base de données ou <a class="reference external" href="https://en.wikipedia.org/wiki/Stratified_sampling">stratified sampling</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -857,10 +860,10 @@ sol= [(0, 1)]
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

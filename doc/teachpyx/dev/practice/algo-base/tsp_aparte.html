@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Graphe et Composantes connexes" href="exercice_compose_connexe.html" /><link rel="prev" title="Plus court chemin passant par tous les noeuds d’un graphe" href="tsp_simplifie.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Aparté sur le voyageur de commerce - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Aparté-sur-le-voyageur-de-commerce">
-<h1>Aparté sur le voyageur de commerce<a class="headerlink" href="#Aparté-sur-le-voyageur-de-commerce" title="Link to this heading">¶</a></h1>
+<h1>Aparté sur le voyageur de commerce<a class="headerlink" href="#Aparté-sur-le-voyageur-de-commerce" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le voyageur de commerce ou Travelling Salesman Problem en anglais est le problème NP-complet emblématique : il n’existe pas d’algorithme capable de trouver la solution optimale en temps polynômial. La seule option est de parcourir toutes les configurations pour trouver la meilleure. Ce notebook ne fait qu’aborder le problème.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -592,7 +595,7 @@
 </div>
 </div>
 <section id="Tirer-des-points-aléatoirement-et-les-afficher">
-<h2>Tirer des points aléatoirement et les afficher<a class="headerlink" href="#Tirer-des-points-aléatoirement-et-les-afficher" title="Link to this heading">¶</a></h2>
+<h2>Tirer des points aléatoirement et les afficher<a class="headerlink" href="#Tirer-des-points-aléatoirement-et-les-afficher" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -620,7 +623,7 @@ array([[0.20256988, 0.27603738],
 </div>
 </section>
 <section id="Distance-d'un-chemin">
-<h2>Distance d’un chemin<a class="headerlink" href="#Distance-d'un-chemin" title="Link to this heading">¶</a></h2>
+<h2>Distance d’un chemin<a class="headerlink" href="#Distance-d'un-chemin" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -650,7 +653,7 @@ array([[0.20256988, 0.27603738],
 </div>
 </section>
 <section id="Visualisation">
-<h2>Visualisation<a class="headerlink" href="#Visualisation" title="Link to this heading">¶</a></h2>
+<h2>Visualisation<a class="headerlink" href="#Visualisation" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -683,7 +686,7 @@ array([[0.20256988, 0.27603738],
 </div>
 </section>
 <section id="Parcourir-toutes-les-permutations">
-<h2>Parcourir toutes les permutations<a class="headerlink" href="#Parcourir-toutes-les-permutations" title="Link to this heading">¶</a></h2>
+<h2>Parcourir toutes les permutations<a class="headerlink" href="#Parcourir-toutes-les-permutations" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -716,7 +719,7 @@ array([[0.20256988, 0.27603738],
 </div>
 </section>
 <section id="Module-tqdm">
-<h2>Module tqdm<a class="headerlink" href="#Module-tqdm" title="Link to this heading">¶</a></h2>
+<h2>Module tqdm<a class="headerlink" href="#Module-tqdm" title="Lien vers cette rubrique">¶</a></h2>
 <p>Utile seulement dans un notebook, très utile pour les impatients.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -760,7 +763,7 @@ array([[0.20256988, 0.27603738],
 </div>
 </section>
 <section id="Retournement">
-<h2>Retournement<a class="headerlink" href="#Retournement" title="Link to this heading">¶</a></h2>
+<h2>Retournement<a class="headerlink" href="#Retournement" title="Lien vers cette rubrique">¶</a></h2>
 <p>Les permutations ça prend du temps même avec les machines d’aujourd’hui.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -872,10 +875,10 @@ array([[0.20256988, 0.27603738],
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

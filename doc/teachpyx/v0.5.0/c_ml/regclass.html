@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Précis" href="../c_resume/index.html" /><link rel="prev" title="Quelques rappels" href="rappel.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Classification et régression - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -387,6 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -507,6 +508,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -539,6 +541,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -580,7 +583,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="classification-et-regression">
-<span id="l-regclass"></span><h1>Classification et régression<a class="headerlink" href="#classification-et-regression" title="Link to this heading">¶</a></h1>
+<span id="l-regclass"></span><h1>Classification et régression<a class="headerlink" href="#classification-et-regression" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le site <a class="reference external" href="https://archive.ics.uci.edu/datasets">UCI</a> propose de nombreux jeux de
 de données utilisés dans un but pédagogique.
 Parmi ceux-ci, on y trouve un jeu de données
@@ -606,9 +609,9 @@ composants.</p>
 <p>Ce jeu de données peut également être téléchargé avec la fonction
 <a class="reference internal" href="../api/datasets.html#teachpyx.datasets.load_wines_dataset" title="teachpyx.datasets.load_wines_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_wines_dataset</span></code></a>.</p>
 <section id="decouverte-du-machine-learning">
-<h2>Découverte du machine learning<a class="headerlink" href="#decouverte-du-machine-learning" title="Link to this heading">¶</a></h2>
+<h2>Découverte du machine learning<a class="headerlink" href="#decouverte-du-machine-learning" title="Lien vers cette rubrique">¶</a></h2>
 <section id="finalite">
-<h3>Finalité<a class="headerlink" href="#finalite" title="Link to this heading">¶</a></h3>
+<h3>Finalité<a class="headerlink" href="#finalite" title="Lien vers cette rubrique">¶</a></h3>
 <p>On ne part pas de rien pour construire cette fonction, on dispose
 de plusieurs milliers de notes données par des experts à des milliers
 de vins dont on connaît les mêmes 12 informations sur leur composition,
@@ -649,7 +652,7 @@ On se doute que la qualité de ce nouveau vin sera dans le cercle bleu
 mais où ? C’est ce que nous allons voir.</p>
 </section>
 <section id="les-donnees">
-<h3>Les données<a class="headerlink" href="#les-donnees" title="Link to this heading">¶</a></h3>
+<h3>Les données<a class="headerlink" href="#les-donnees" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le jeu de données peut être téléchargé depuis le site
 <a class="reference external" href="https://archive.ics.uci.edu/dataset/186/wine+quality">Wine Quality Data Set</a>.
 Il peut être également obtenu avec le code suivant :</p>
@@ -688,7 +691,7 @@ le modèle de prédiction.</p>
 </ul>
 </section>
 <section id="les-plus-proches-voisins">
-<span id="index-0"></span><h3>Les plus proches voisins<a class="headerlink" href="#les-plus-proches-voisins" title="Link to this heading">¶</a></h3>
+<span id="index-0"></span><h3>Les plus proches voisins<a class="headerlink" href="#les-plus-proches-voisins" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le modèle de prédiction le plus intuitif consiste à chercher pour
 chaque nouveau vin le vin qui lui ressemble le plus parmi tous ceux connus.
 On appelle cette méthode la méthode des
@@ -742,9 +745,9 @@ des features augmente (voir <a class="reference internal" href="../practice/tds-
 </section>
 </section>
 <section id="trois-etapes-recurrentes">
-<h2>Trois étapes récurrentes<a class="headerlink" href="#trois-etapes-recurrentes" title="Link to this heading">¶</a></h2>
+<h2>Trois étapes récurrentes<a class="headerlink" href="#trois-etapes-recurrentes" title="Lien vers cette rubrique">¶</a></h2>
 <section id="train-test">
-<span id="index-2"></span><h3>Train / test<a class="headerlink" href="#train-test" title="Link to this heading">¶</a></h3>
+<span id="index-2"></span><h3>Train / test<a class="headerlink" href="#train-test" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il n’est pas facile d’avoir une idée la pertinence
 d’un modèle de prédiction. Le plus simple est de
 comparer les prédictions obtenus avec la valeur de l’expert.
@@ -765,7 +768,7 @@ de test.</p>
 </ul>
 </section>
 <section id="validation-croisee">
-<span id="index-3"></span><h3>Validation croisée<a class="headerlink" href="#validation-croisee" title="Link to this heading">¶</a></h3>
+<span id="index-3"></span><h3>Validation croisée<a class="headerlink" href="#validation-croisee" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il est acquis qu’un modèle doit être évalué sur une base de test différente
 de celle utilisée pour l’apprentissage. Il suffit de penser aux plus proches
 voisins dont le nombre d’erreurs sur la base d’apprentissage est toujours nul.
@@ -783,7 +786,7 @@ en anglais. La base de données en découpée en <span class="math notranslate n
 </ul>
 </section>
 <section id="hyper-parametres">
-<span id="index-4"></span><h3>Hyper-paramètres<a class="headerlink" href="#hyper-parametres" title="Link to this heading">¶</a></h3>
+<span id="index-4"></span><h3>Hyper-paramètres<a class="headerlink" href="#hyper-parametres" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un modèle de <a class="reference external" href="https://en.wikipedia.org/wiki/Machine_learning">machine learning</a> est appris avec un
 algorithme d’optimisation. Celui dépend de plusieurs paramètres,
 le nombre de voisins dans le cas des plus proches voisins,
@@ -800,9 +803,9 @@ choisir la meilleure.</p>
 </section>
 </section>
 <section id="deux-problemes-a-la-base-de-beaucoup-d-autres">
-<h2>Deux problèmes à la base de beaucoup d’autres<a class="headerlink" href="#deux-problemes-a-la-base-de-beaucoup-d-autres" title="Link to this heading">¶</a></h2>
+<h2>Deux problèmes à la base de beaucoup d’autres<a class="headerlink" href="#deux-problemes-a-la-base-de-beaucoup-d-autres" title="Lien vers cette rubrique">¶</a></h2>
 <section id="regression">
-<span id="l-regression-f"></span><h3>Régression<a class="headerlink" href="#regression" title="Link to this heading">¶</a></h3>
+<span id="l-regression-f"></span><h3>Régression<a class="headerlink" href="#regression" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le bruit blanc est une variable aléatoire couramment utilisé
 pour désigner le hasard ou la part qui ne peut être modélisée
 dans une régression ou tout autre problème d’apprentissage.
@@ -863,7 +866,7 @@ régression (voir <a class="reference external" href="https://scikit-learn.org/s
 </ul>
 </section>
 <section id="classification">
-<span id="l-classification-f"></span><h3>Classification<a class="headerlink" href="#classification" title="Link to this heading">¶</a></h3>
+<span id="l-classification-f"></span><h3>Classification<a class="headerlink" href="#classification" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le notebook sur l’ACP a mis en lumière que les vins blancs
 et rouges pourraient être différents chimiquement et il devrait
 être possible de prédire la couleur en fonction des données
@@ -980,7 +983,7 @@ ou moins automatique mais donne parfois de bons résultats :
 <a class="reference internal" href="../practice/ml/ml_features_model.html#nbl-practice-ml-ml-features-model"><span class="std std-ref">Features ou modèle</span></a>.</p>
 </section>
 <section id="classification-multi-classe">
-<span id="l-multiclass"></span><h3>Classification multi-classe<a class="headerlink" href="#classification-multi-classe" title="Link to this heading">¶</a></h3>
+<span id="l-multiclass"></span><h3>Classification multi-classe<a class="headerlink" href="#classification-multi-classe" title="Lien vers cette rubrique">¶</a></h3>
 <p>La régression nous a permis de prédire une note.
 La cible à prévoir est un peu particulière dans ce problème
 puisque la note est entière et prend peu de valeurs distinctes.
@@ -1033,7 +1036,7 @@ nativement la multi-classification.</p>
 </ul>
 </section>
 <section id="machine-learning-et-programmation">
-<span id="l-sklearn-programmation"></span><h3>Machine learning et programmation<a class="headerlink" href="#machine-learning-et-programmation" title="Link to this heading">¶</a></h3>
+<span id="l-sklearn-programmation"></span><h3>Machine learning et programmation<a class="headerlink" href="#machine-learning-et-programmation" title="Lien vers cette rubrique">¶</a></h3>
 <p>L”<strong>API de scikit-learn</strong>
 se résume à peu de choses et permet déjà de faire des choses assez
 puissantes. On peut par exemple faire de l’optimisation d’hyperparamètres
@@ -1061,7 +1064,7 @@ les mêmes fonctions.</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;anova&#39;</span><span class="p">,</span>
                      <span class="n">SelectKBest</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                                 <span class="n">score_func</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">f_regression</span> <span class="n">at</span> <span class="mh">0x7f5925b9fc70</span><span class="o">&gt;</span><span class="p">)),</span>
+                                 <span class="n">score_func</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">f_regression</span> <span class="n">at</span> <span class="mh">0x7f14a2c455a0</span><span class="o">&gt;</span><span class="p">)),</span>
                     <span class="p">(</span><span class="s1">&#39;svc&#39;</span><span class="p">,</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">))])</span>
 </pre></div>
 </div>
@@ -1082,14 +1085,14 @@ un modèle.</p>
 </ul>
 </section>
 <section id="exercices">
-<h3>Exercices<a class="headerlink" href="#exercices" title="Link to this heading">¶</a></h3>
+<h3>Exercices<a class="headerlink" href="#exercices" title="Lien vers cette rubrique">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="../practice/ml/ml_a_tree_overfitting.html#nbl-practice-ml-ml-a-tree-overfitting"><span class="std std-ref">Tree, overfitting</span></a></p></li>
 <li><p><a class="reference internal" href="../practice/exams/enonce_ml_2017.html#nbl-practice-exams-enonce-ml-2017"><span class="std std-ref">Comparaison de deux régressions</span></a></p></li>
 </ul>
 </section>
 <section id="bibliographie">
-<h3>Bibliographie<a class="headerlink" href="#bibliographie" title="Link to this heading">¶</a></h3>
+<h3>Bibliographie<a class="headerlink" href="#bibliographie" title="Lien vers cette rubrique">¶</a></h3>
 <div role="list" class="citation-list">
 <div class="citation" id="saporta2006" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Saporta2006</a><span class="fn-bracket">]</span></span>
@@ -1195,10 +1198,10 @@ Johannes Fürnkranz</p>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script src="../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

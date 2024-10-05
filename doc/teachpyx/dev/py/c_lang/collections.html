@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Dates" href="dates.html" /><link rel="prev" title="Constructions classiques" href="constructions.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Constructions classiques - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -387,6 +387,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -507,6 +508,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -539,6 +541,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -580,7 +583,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="constructions-classiques">
-<span id="l-collections"></span><h1>Constructions classiques<a class="headerlink" href="#constructions-classiques" title="Link to this heading">¶</a></h1>
+<span id="l-collections"></span><h1>Constructions classiques<a class="headerlink" href="#constructions-classiques" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le module <a class="reference external" href="https://docs.python.org/3/library/collections.html#module-collections" title="(disponible dans Python v3.12)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">collections</span></code></a> propose d’autres types d’objets
 qui en contiennent d’autres. Ils sont très proches des types
 standards liste ou dictionnaires mais sont optimisés pour un usage
@@ -588,7 +591,7 @@ en particulier. Cela les rend plus efficaces pour celui-ci et
 souvent plus lent pour les autres. Ce chapitre en recense les
 plus utilisés.</p>
 <section id="ordereddict">
-<h2>OrderedDict<a class="headerlink" href="#ordereddict" title="Link to this heading">¶</a></h2>
+<h2>OrderedDict<a class="headerlink" href="#ordereddict" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.OrderedDict" title="(disponible dans Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.OrderedDict</span></code></a> est un dictionnaire qui conservent
 l’ordre dans lequel les éléments y ont été insérés.
 Cette distinction était effective jusqu’à Python 3.7 mais
@@ -614,17 +617,17 @@ depuis cette version, le type standard <cite>dict</cite> conserve
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
-    <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)]</span>
+    <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">[(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)]</span>
 </pre></div>
 </div>
 <p>Néanmoins, cette distinctions est importante à connaître pour des
 langages plus bas niveau comme le C++.</p>
 </section>
 <section id="namedtuple">
-<h2>namedtuple<a class="headerlink" href="#namedtuple" title="Link to this heading">¶</a></h2>
+<h2>namedtuple<a class="headerlink" href="#namedtuple" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="(disponible dans Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">collections.namedtuple()</span></code></a> est un tuple, donc immuable,
 mais chaque élément est associé un nom.
 La fonction <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="(disponible dans Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">collections.namedtuple()</span></code></a> retourne une classe
@@ -669,7 +672,7 @@ Et on peut récupérer la liste des attributs de la classe.</p>
 le rend plus lisible.</p>
 </section>
 <section id="counter">
-<h2>Counter<a class="headerlink" href="#counter" title="Link to this heading">¶</a></h2>
+<h2>Counter<a class="headerlink" href="#counter" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.Counter" title="(disponible dans Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.Counter</span></code></a> est un dictionnaire spécifique dans les valeurs
 sont entières. Il est très pratique pour compter les éléments.
 L’exemple <a class="reference internal" href="../../api/classique.html#l-ex-comptage"><span class="std std-ref">comptage</span></a> s’écrit en une ligne.</p>
@@ -687,7 +690,7 @@ L’exemple <a class="reference internal" href="../../api/classique.html#l-ex-co
 </div>
 </section>
 <section id="deque">
-<h2>deque<a class="headerlink" href="#deque" title="Link to this heading">¶</a></h2>
+<h2>deque<a class="headerlink" href="#deque" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.deque" title="(disponible dans Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.deque</span></code></a> est une liste qui supporte l’insertion
 d’éléments en bout de liste et au début également
 (<a class="reference external" href="https://fr.wikipedia.org/wiki/Liste_cha%C3%AEn%C3%A9e">liste chaînée</a>).</p>
@@ -735,8 +738,8 @@ plus bas niveau.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="nb">list</span> <span class="mf">0.0948047800002314</span>
-    <span class="n">deque</span> <span class="mf">0.07056761799958622</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="nb">list</span> <span class="mf">0.04554754800005867</span>
+    <span class="n">deque</span> <span class="mf">0.06764157999987219</span>
 </pre></div>
 </div>
 </section>
@@ -814,10 +817,10 @@ plus bas niveau.</p>
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

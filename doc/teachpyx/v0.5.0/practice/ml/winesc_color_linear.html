@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Classifications et courbes ROC" href="winesc_color_roc.html" /><link rel="prev" title="Régression logistique en 2D" href="winesc_color_line.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
         <title>Plusieurs modèles, données disjointes - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -388,6 +388,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
@@ -508,6 +509,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
@@ -540,6 +542,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 </ul>
 
 </div>
@@ -581,7 +584,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Plusieurs-modèles,-données-disjointes">
-<h1>Plusieurs modèles, données disjointes<a class="headerlink" href="#Plusieurs-modèles,-données-disjointes" title="Link to this heading">¶</a></h1>
+<h1>Plusieurs modèles, données disjointes<a class="headerlink" href="#Plusieurs-modèles,-données-disjointes" title="Lien vers cette rubrique">¶</a></h1>
 <p>On cherche à prédire la note d’un vin mais on suppose que cette qualité est dépendante de la couleur et qu’il faudrait appliquer des modèles différents selon la couleur.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -592,7 +595,7 @@
 </div>
 </div>
 <section id="données">
-<h2>données<a class="headerlink" href="#données" title="Link to this heading">¶</a></h2>
+<h2>données<a class="headerlink" href="#données" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -627,7 +630,7 @@ X_train, X_test, y_train, y_test, color_train, color_test = train_test_split(
 </div>
 </section>
 <section id="version-manuelle">
-<h2>version manuelle<a class="headerlink" href="#version-manuelle" title="Link to this heading">¶</a></h2>
+<h2>version manuelle<a class="headerlink" href="#version-manuelle" title="Lien vers cette rubrique">¶</a></h2>
 <p>On cale d’abord un modèle linéaire sur toute la base.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -1594,7 +1597,7 @@ acc2
 <p>C’est un petit peu mieux mais l’ensemble est compliqué à mettre en place. Il serait plus simple d’automatiser pour pouvoir faire de la validation croisée.</p>
 </section>
 <section id="Automatisation">
-<h2>Automatisation<a class="headerlink" href="#Automatisation" title="Link to this heading">¶</a></h2>
+<h2>Automatisation<a class="headerlink" href="#Automatisation" title="Lien vers cette rubrique">¶</a></h2>
 <p>Au début, j’avais pensé écrire une classe inspirée de l’API de <a class="reference external" href="https://scipy-lectures.org/packages/scikit-learn/index.html#basic-principles-of-machine-learning-with-scikit-learn">scikit-learn</a> qui apprend plusieurs modèles selon une catégorie indiquée lors de l’apprentissage et de la prédiction.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -2271,7 +2274,7 @@ accuracy_score(y_test, model.predict(new_x_test))
 </div>
 </section>
 <section id="Exemple-sur-un-jeu-articificiel">
-<h2>Exemple sur un jeu articificiel<a class="headerlink" href="#Exemple-sur-un-jeu-articificiel" title="Link to this heading">¶</a></h2>
+<h2>Exemple sur un jeu articificiel<a class="headerlink" href="#Exemple-sur-un-jeu-articificiel" title="Lien vers cette rubrique">¶</a></h2>
 <p>Comme ce n’est pas très probant… Essayons de vérifier que l’implémentation est correcte en fabriquant un jeu de données où cela doit marcher.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -2955,10 +2958,10 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
