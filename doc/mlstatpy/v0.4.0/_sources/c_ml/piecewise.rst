@@ -44,7 +44,7 @@ Problème et regréssion linéaire dans un espace à une dimension
 
 Tout d'abord, une petite
 illustration du problème avec la classe `PiecewiseRegression
-<http://www.xavierdupre.fr/app/mlinsights/helpsphinx/notebooks/piecewise_linear_regression.html>`_
+<https://sdpython.github.io/doc/mlinsights/dev/auto_examples/plot_piecewise_linear_regression.html>`_
 implémentée selon l'API de :epkg:`scikit-learn`.
 
 .. toctree::
@@ -375,7 +375,7 @@ On en déduit que :
     :lid: algo_decision_tree_mselin
 
     On dipose qu'un nuage de points :math:`(X_i, y_i)` avec
-    :math:`X_i \in \R^d` et :math:`y_i \in \R`. Les points sont
+    :math:`X_i \in \mathbb{R}^d` et :math:`y_i \in \mathbb{R}`. Les points sont
     triés selon une dimension. On note *X* la matrice composée
     des lignes :math:`X_1, ..., X_n` et le vecteur colonne
     :math:`y=(y_1, ..., y_n)`.
@@ -520,7 +520,7 @@ Synthèse mathématique
     :lid: algo_gram_schmidt_reglin
 
     Soit une matrice :math:`X \in \mathcal{M}_{nd}` avec
-    :math:`n \supegal d`. Et un vecteur :math:`y \in \R^n`.
+    :math:`n \supegal d`. Et un vecteur :math:`y \in \mathbb{R}^n`.
     D'après l':ref:`algorithme de Gram-Schmidt <algo_gram_schmidt>`,
     il existe deux matrices telles que
     :math:`X P = T` ou :math:`P' X' = T'`.

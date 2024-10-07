@@ -29,8 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,9 +43,9 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -593,30 +593,22 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="NeuralTreeNet-et-ONNX">
-<h1>NeuralTreeNet et ONNX<a class="headerlink" href="#NeuralTreeNet-et-ONNX" title="Link to this heading">#</a></h1>
-<p>La conversion d’un arbre de décision au format ONNX peut créer des différences entre le modèle original et le modèle converti (voir <a class="reference external" href="http://www.xavierdupre.fr/app/onnxcustom/helpsphinx/gyexamples/plot_ebegin_float_double.html">Issues when switching to float</a>. Le problème vient d’un changement de type, les seuils de décisions sont arrondis au float32 le plus proche de leur valeur en float64 (double). Qu’advient-il si l’arbre de décision est converti en réseau de neurones d’abord.</p>
+<h1>NeuralTreeNet et ONNX<a class="headerlink" href="#NeuralTreeNet-et-ONNX" title="Lien vers cette rubrique">#</a></h1>
+<p>La conversion d’un arbre de décision au format ONNX peut créer des différences entre le modèle original et le modèle converti (voir <a class="reference external" href="https://onnx.ai/sklearn-onnx/auto_tutorial/plot_ebegin_float_double.html">Issues when switching to float</a>. Le problème vient d’un changement de type, les seuils de décisions sont arrondis au float32 le plus proche de leur valeur en float64 (double). Qu’advient-il si l’arbre de décision est converti en réseau de neurones d’abord.</p>
 <p>L’approximation des seuils de décision ne change pas grand chose dans la majorité des cas. Cependant, il est possible que la comparaison d’une variable à un seuil de décision arrondi soit l’opposé de celle avec le seuil non arrondi. Dans ce cas, la décision suit un chemin différent dans l’arbre.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> mlprodict
-</pre></div>
-</div>
-</div>
 <section id="Jeu-de-données">
-<h2>Jeu de données<a class="headerlink" href="#Jeu-de-données" title="Link to this heading">#</a></h2>
+<h2>Jeu de données<a class="headerlink" href="#Jeu-de-données" title="Lien vers cette rubrique">#</a></h2>
 <p>On construit un jeu de donnée aléatoire.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
@@ -629,7 +621,7 @@ document.write(`
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">middle</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
@@ -640,11 +632,11 @@ document.write(`
 </div>
 </section>
 <section id="Partie-scikit-learn">
-<h2>Partie scikit-learn<a class="headerlink" href="#Partie-scikit-learn" title="Link to this heading">#</a></h2>
+<h2>Partie scikit-learn<a class="headerlink" href="#Partie-scikit-learn" title="Lien vers cette rubrique">#</a></h2>
 <section id="Caler-un-arbre-de-décision">
-<h3>Caler un arbre de décision<a class="headerlink" href="#Caler-un-arbre-de-décision" title="Link to this heading">#</a></h3>
+<h3>Caler un arbre de décision<a class="headerlink" href="#Caler-un-arbre-de-décision" title="Lien vers cette rubrique">#</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
@@ -656,16 +648,16 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.6179766027481131, 0.33709933420465643)
+(0.618779473874829, 0.38661000086182784)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
@@ -675,20 +667,20 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.33709933420465643
+0.38661000086182784
 </pre></div></div>
 </div>
 <p>La profondeur de l’arbre est insuffisante mais ce n’est pas ce qui nous intéresse ici.</p>
 </section>
 <section id="Conversion-au-format-ONNX">
-<h3>Conversion au format ONNX<a class="headerlink" href="#Conversion-au-format-ONNX" title="Link to this heading">#</a></h3>
+<h3>Conversion au format ONNX<a class="headerlink" href="#Conversion-au-format-ONNX" title="Lien vers cette rubrique">#</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skl2onnx</span> <span class="kn">import</span> <span class="n">to_onnx</span>
@@ -698,7 +690,7 @@ document.write(`
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span>
@@ -708,22 +700,22 @@ document.write(`
 <span class="n">oinf</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
 <span class="n">expected</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_exp</span><span class="p">)</span>
 
-<span class="n">got</span> <span class="o">=</span> <span class="n">oinf</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x_exp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)})[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">got</span> <span class="o">=</span> <span class="n">oinf</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x_exp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)})[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">got</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.7421041873949668
+np.float64(1.4748302929273112)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
@@ -738,21 +730,21 @@ document.write(`
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 opset: domain=&#39;ai.onnx.ml&#39; version=1
-opset: domain=&#39;&#39; version=15
-input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[None, 10]
-TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=253:[128,65,34...252,0,0], nodes_featureids=253:[8,3,9...2,0,0], nodes_hitrates=253:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=253:[0,0,0...0,0,0], nodes_modes=253:[b&#39;BRANCH_LEQ&#39;,b&#39;BRANCH_LEQ&#39;...b&#39;LEAF&#39;,b&#39;LEAF&#39;], nodes_nodeids=253:[0,1,2...250,251,252], nodes_treeids=253:[0,0,0...0,0,0], nodes_truenodeids=253:[1,2,3...251,0,0], nodes_values=253:[0.00792999193072319,-0.12246682494878769...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=127:[0,0,0...0,0,0], target_nodeids=127:[7,8,10...249,251,252], target_treeids=127:[0,0,0...0,0,0], target_weights=127:[-0.9345570802688599,-0.6372960805892944...0.6169403195381165,1.0096807479858398]) -&gt; variable
-output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
+opset: domain=&#39;&#39; version=21
+input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
+TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=255:[128,65,34...254,0,0], nodes_featureids=255:[8,4,5...8,0,0], nodes_hitrates=255:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=255:[0,0,0...0,0,0], nodes_modes=255:[b&#39;BRANCH_LEQ&#39;,b&#39;BRANCH_LEQ&#39;...b&#39;LEAF&#39;,b&#39;LEAF&#39;], nodes_nodeids=255:[0,1,2...252,253,254], nodes_treeids=255:[0,0,0...0,0,0], nodes_truenodeids=255:[1,2,3...253,0,0], nodes_values=255:[-0.002677354495972395,-0.16326862573623657...0.0,0.0], post_transform=b&#39;NONE&#39;, target_ids=128:[0,0,0...0,0,0], target_nodeids=128:[7,8,10...251,253,254], target_treeids=128:[0,0,0...0,0,0], target_weights=128:[-0.7625784277915955,-0.5277675986289978...0.5070647597312927,0.7122518420219421]) -&gt; variable
+output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div></div>
 </div>
 </section>
 </section>
 <section id="Après-la-conversion-en-un-réseau-de-neurones">
-<h2>Après la conversion en un réseau de neurones<a class="headerlink" href="#Après-la-conversion-en-un-réseau-de-neurones" title="Link to this heading">#</a></h2>
+<h2>Après la conversion en un réseau de neurones<a class="headerlink" href="#Après-la-conversion-en-un-réseau-de-neurones" title="Lien vers cette rubrique">#</a></h2>
 <section id="Conversion-en-un-réseau-de-neurones">
-<h3>Conversion en un réseau de neurones<a class="headerlink" href="#Conversion-en-un-réseau-de-neurones" title="Link to this heading">#</a></h3>
+<h3>Conversion en un réseau de neurones<a class="headerlink" href="#Conversion-en-un-réseau-de-neurones" title="Lien vers cette rubrique">#</a></h3>
 <p>Un paramètre permet de faire varier la pente des fonctions sigmoïdes utilisées.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
@@ -780,11 +772,11 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 18/18 [00:01&lt;00:00, 12.49it/s]
+  0%|          | 0/18 [00:00&lt;?, ?it/s]100%|██████████| 18/18 [00:00&lt;00:00, 29.67it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -793,7 +785,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -824,117 +816,117 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
     <tr>
       <th>0</th>
       <td>0.3</td>
-      <td>0.568981</td>
-      <td>0.158758</td>
+      <td>0.608627</td>
+      <td>0.184665</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0.4</td>
-      <td>0.608304</td>
-      <td>0.132576</td>
+      <td>0.512055</td>
+      <td>0.134114</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0.5</td>
-      <td>0.692657</td>
-      <td>0.128525</td>
+      <td>0.589569</td>
+      <td>0.127825</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0.7</td>
-      <td>0.780543</td>
-      <td>0.131497</td>
+      <td>0.656907</td>
+      <td>0.129821</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0.9</td>
-      <td>0.809866</td>
-      <td>0.128368</td>
+      <td>0.678652</td>
+      <td>0.126351</td>
     </tr>
     <tr>
       <th>5</th>
       <td>1.0</td>
-      <td>0.813889</td>
-      <td>0.124802</td>
+      <td>0.682859</td>
+      <td>0.122856</td>
     </tr>
     <tr>
       <th>6</th>
       <td>5.0</td>
-      <td>0.392482</td>
-      <td>0.022466</td>
+      <td>0.642153</td>
+      <td>0.017346</td>
     </tr>
     <tr>
       <th>7</th>
       <td>10.0</td>
-      <td>0.341749</td>
-      <td>0.006350</td>
+      <td>0.285482</td>
+      <td>0.004404</td>
     </tr>
     <tr>
       <th>8</th>
       <td>15.0</td>
-      <td>0.270649</td>
-      <td>0.002939</td>
+      <td>0.228076</td>
+      <td>0.001954</td>
     </tr>
     <tr>
       <th>9</th>
       <td>20.0</td>
-      <td>0.299713</td>
-      <td>0.002110</td>
+      <td>0.193608</td>
+      <td>0.000996</td>
     </tr>
     <tr>
       <th>10</th>
       <td>25.0</td>
-      <td>0.305493</td>
-      <td>0.001842</td>
+      <td>0.113368</td>
+      <td>0.000424</td>
     </tr>
     <tr>
       <th>11</th>
       <td>30.0</td>
-      <td>0.306111</td>
-      <td>0.001767</td>
+      <td>0.113368</td>
+      <td>0.000324</td>
     </tr>
     <tr>
       <th>12</th>
       <td>35.0</td>
-      <td>0.299371</td>
-      <td>0.001665</td>
+      <td>0.113368</td>
+      <td>0.000278</td>
     </tr>
     <tr>
       <th>13</th>
       <td>40.0</td>
-      <td>0.233556</td>
-      <td>0.001011</td>
+      <td>0.113367</td>
+      <td>0.000252</td>
     </tr>
     <tr>
       <th>14</th>
       <td>45.0</td>
-      <td>0.233606</td>
-      <td>0.000801</td>
+      <td>0.113361</td>
+      <td>0.000238</td>
     </tr>
     <tr>
       <th>15</th>
       <td>50.0</td>
-      <td>0.233614</td>
-      <td>0.000547</td>
+      <td>0.113318</td>
+      <td>0.000231</td>
     </tr>
     <tr>
       <th>16</th>
       <td>55.0</td>
-      <td>0.233615</td>
-      <td>0.000499</td>
+      <td>0.113074</td>
+      <td>0.000228</td>
     </tr>
     <tr>
       <th>17</th>
       <td>60.0</td>
-      <td>0.233615</td>
-      <td>0.000484</td>
+      <td>0.111955</td>
+      <td>0.000224</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Précision de la conversion</span><span class="se">\n</span><span class="s2">en réseau de neurones&quot;</span><span class="p">);</span>
@@ -945,12 +937,12 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_ml_neural_tree_onnx_19_0.png" src="../../_images/notebooks_ml_neural_tree_onnx_19_0.png" />
+<img alt="../../_images/notebooks_ml_neural_tree_onnx_18_0.png" src="../../_images/notebooks_ml_neural_tree_onnx_18_0.png" />
 </div>
 </div>
 <p>L’erreur est meilleure mais il faudrait recommencer l’expérience plusieurs fois avant de pouvoir conclure afin d’obtenir un interval de confiance pour le même type de jeu de données. Ce sera pour une autre fois. Le résultat dépend du jeu de données et surtout de la proximité des seuils de décisions. Néanmoins, on calcule l’erreur sur l’ensemble de la base de test. Celle-ci a été tronquée pour aller plus vite.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">expected</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_exp</span><span class="p">)</span>
@@ -960,21 +952,21 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.2336143002078063, 0.0002511855017989173)
+(np.float64(0.19684418355179628), np.float64(0.0001876957464482374))
 </pre></div></div>
 </div>
 <p>On voit que l’erreur peut-être très grande. Elle reste néanmoins plus petite que l’erreur de conversion introduite par ONNX.</p>
 </section>
 <section id="id1">
-<h3>Conversion au format ONNX<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>Conversion au format ONNX<a class="headerlink" href="#id1" title="Lien vers cette rubrique">#</a></h3>
 <p>On crée tout d’abord une classe qui suit l’API de scikit-learn et qui englobe l’arbre qui vient d’être créé qui sera ensuite convertit en ONNX.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlstatpy.ml.neural_tree</span> <span class="kn">import</span> <span class="n">NeuralTreeNetRegressor</span>
@@ -985,7 +977,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx2</span><span class="p">))</span>
@@ -997,14 +989,14 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-opset: domain=&#39;&#39; version=15
-input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[None, 10]
-init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(1260,)
-init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(126,)
+opset: domain=&#39;&#39; version=21
+input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
+init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(10, 127)
+init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(127,)
 init: name=&#39;Mu_Mulcst&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([4.], dtype=float32)
-init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(16002,)
-init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(127,)
-init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(127,)
+init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(127, 128)
+init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(128,)
+init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
 init: name=&#39;Ad_Addcst2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
 MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
   Add(Ma_Y02, Ad_Addcst) -&gt; Ad_C02
@@ -1017,11 +1009,11 @@ MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
                 MatMul(Si_Y0, Ma_MatMulcst2) -&gt; Ma_Y0
                   Add(Ma_Y0, Ad_Addcst2) -&gt; Ad_C0
                     Identity(Ad_C0) -&gt; variable
-output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
+output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">oinf2</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span>
@@ -1035,21 +1027,21 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.7421041873949668
+np.float64(1.4748302929273112)
 </pre></div></div>
 </div>
 <p>L’erreur est la même.</p>
 </section>
 </section>
 <section id="Temps-de-calcul">
-<h2>Temps de calcul<a class="headerlink" href="#Temps-de-calcul" title="Link to this heading">#</a></h2>
+<h2>Temps de calcul<a class="headerlink" href="#Temps-de-calcul" title="Lien vers cette rubrique">#</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_exp32</span> <span class="o">=</span> <span class="n">x_exp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -1058,7 +1050,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <p>Tout d’abord le temps de calcul pour scikit-learn.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> tree.predict(x_exp32)
@@ -1070,15 +1062,15 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-513 µs ± 7.52 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+485 μs ± 15.9 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Le temps de calcul pour l’arbre de décision au format ONNX.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf.run({&#39;X&#39;: x_exp32})[&#39;variable&#39;]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf.run(None, {&#39;X&#39;: x_exp32})[0]
 </pre></div>
 </div>
 </div>
@@ -1087,15 +1079,15 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-186 µs ± 3.41 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+39.8 μs ± 4.37 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
 <p>Et le temps de calcul pour le réseau de neurones au format ONNX.m</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf2.run({&#39;X&#39;: x_exp32})[&#39;variable&#39;]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf2.run(None, {&#39;X&#39;: x_exp32})[0]
 </pre></div>
 </div>
 </div>
@@ -1104,13 +1096,13 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-3.75 ms ± 311 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+1.23 ms ± 57.6 μs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div></div>
 </div>
 <p>Ce temps de calcul très long est attendu car le modèle contient une multiplication de matrice très grande et surtout que tous les seuils de l’arbre sont calculés pour chaque observation. Là où l’implémentation de l’arbre de décision calcule <em>d</em> seuils, la profondeur de l’arbre, la nouvelle implémentation calcule tous les seuils soit <span class="math notranslate nohighlight">\(2^d\)</span> pour chaque feuille. Il y a <span class="math notranslate nohighlight">\(2^d\)</span> feuilles. Même en étant sparse, on peut réduire les calculs à <span class="math notranslate nohighlight">\(d * 2^d\)</span> ce qui fait encore beaucoup de
 calculs inutiles.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">trees</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -1123,14 +1115,14 @@ calculs inutiles.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(126, 11) (126,)
-(127, 127) (127,)
-(128,) ()
+(127, 11) (127,)
+(128, 128) (128,)
+(129,) ()
 </pre></div></div>
 </div>
 <p>Cela dit, la plus grande matrice est creuse, elle peut être réduite considérablement.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
@@ -1149,13 +1141,13 @@ calculs inutiles.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-coef.shape=(126, 11), size dense=1386, size sparse=252, ratio=0.18181818181818182
-coef.shape=(127, 127), size dense=16129, size sparse=1015, ratio=0.06293012586025172
-coef.shape=(128,), size dense=128, size sparse=127, ratio=0.9921875
+coef.shape=(127, 11), size dense=1397, size sparse=254, ratio=0.18181818181818182
+coef.shape=(128, 128), size dense=16384, size sparse=1024, ratio=0.0625
+coef.shape=(129,), size dense=129, size sparse=128, ratio=0.9922480620155039
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">trees</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coef</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -1169,11 +1161,11 @@ coef.shape=(128,), size dense=128, size sparse=127, ratio=0.9921875
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-49.8 µs ± 1.25 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+4.47 μs ± 236 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csr</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
@@ -1186,12 +1178,12 @@ coef.shape=(128,), size dense=128, size sparse=127, ratio=0.9921875
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-7.08 µs ± 173 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+6.33 μs ± 289 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <p>Ce serait beaucoup plus rapide avec une matrice sparse et d’autant plus rapide que l’arbre est profond. Le modèle ONNX se décompose comme suit.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx2</span><span class="p">))</span>
@@ -1203,14 +1195,14 @@ coef.shape=(128,), size dense=128, size sparse=127, ratio=0.9921875
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-opset: domain=&#39;&#39; version=15
-input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[None, 10]
-init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(1260,)
-init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(126,)
+opset: domain=&#39;&#39; version=21
+input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
+init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(10, 127)
+init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(127,)
 init: name=&#39;Mu_Mulcst&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([4.], dtype=float32)
-init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(16002,)
-init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(127,)
-init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(127,)
+init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(127, 128)
+init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(128,)
+init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
 init: name=&#39;Ad_Addcst2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
 MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
   Add(Ma_Y02, Ad_Addcst) -&gt; Ad_C02
@@ -1223,12 +1215,12 @@ MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
                 MatMul(Si_Y0, Ma_MatMulcst2) -&gt; Ma_Y0
                   Add(Ma_Y0, Ad_Addcst2) -&gt; Ad_C0
                     Identity(Ad_C0) -&gt; variable
-output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
+output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div></div>
 </div>
 <p>Voyons comment le temps de calcul se répartit.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">SessionOptions</span>
@@ -1241,14 +1233,14 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
     <span class="n">onx2</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">sess_options</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">43</span><span class="p">):</span>
-    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x_exp32</span><span class="p">})</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x_exp32</span><span class="p">})</span>
 
 <span class="n">prof</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">end_profiling</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">js_profile_to_dataframe</span><span class="p">(</span><span class="n">prof</span><span class="p">,</span> <span class="n">first_it_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1257,7 +1249,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1287,25 +1279,26 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <th>ph</th>
       <th>name</th>
       <th>args_op_name</th>
-      <th>args_parameter_size</th>
-      <th>args_graph_index</th>
-      <th>args_provider</th>
-      <th>args_exec_plan_index</th>
-      <th>args_activation_size</th>
-      <th>args_output_size</th>
-      <th>args_input_type_shape</th>
-      <th>args_output_type_shape</th>
+      <th>op_name</th>
       <th>args_thread_scheduling_stats</th>
+      <th>args_output_size</th>
+      <th>args_parameter_size</th>
+      <th>args_activation_size</th>
+      <th>args_node_index</th>
+      <th>args_provider</th>
+      <th>event_name</th>
+      <th>iteration</th>
+      <th>it==0</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>Session</td>
-      <td>78116</td>
-      <td>8820</td>
-      <td>387</td>
-      <td>4</td>
+      <td>32438</td>
+      <td>32438</td>
+      <td>511</td>
+      <td>9</td>
       <td>X</td>
       <td>model_loading_array</td>
       <td>NaN</td>
@@ -1316,16 +1309,17 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>model_loading_array</td>
+      <td>-1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
       <td>Session</td>
-      <td>78116</td>
-      <td>8820</td>
-      <td>2532</td>
-      <td>428</td>
+      <td>32438</td>
+      <td>32438</td>
+      <td>1851</td>
+      <td>2693</td>
       <td>X</td>
       <td>session_initialization</td>
       <td>NaN</td>
@@ -1336,71 +1330,76 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>session_initialization</td>
+      <td>-1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
       <td>Node</td>
-      <td>78116</td>
-      <td>8820</td>
+      <td>32438</td>
+      <td>32438</td>
       <td>0</td>
-      <td>3294</td>
+      <td>8036</td>
       <td>X</td>
-      <td>gemm_fence_before</td>
+      <td>Ma_MatMul/MatMulAddFusion/_fence_before</td>
       <td>Gemm</td>
+      <td>Ma_MatMul/MatMulAddFusion/</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>fence_before</td>
+      <td>-1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>3</th>
       <td>Node</td>
-      <td>78116</td>
-      <td>8820</td>
-      <td>1315</td>
-      <td>3300</td>
+      <td>32438</td>
+      <td>32438</td>
+      <td>632</td>
+      <td>8043</td>
       <td>X</td>
-      <td>gemm_kernel_time</td>
+      <td>Ma_MatMul/MatMulAddFusion/_kernel_time</td>
       <td>Gemm</td>
-      <td>5544</td>
+      <td>Ma_MatMul/MatMulAddFusion/</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>2540000</td>
+      <td>508</td>
+      <td>200000</td>
       <td>11</td>
       <td>CPUExecutionProvider</td>
-      <td>11</td>
-      <td>200000</td>
-      <td>2520000</td>
-      <td>[{'float': [5000, 10]}, {'float': [10, 126]}, ...</td>
-      <td>[{'float': [5000, 126]}]</td>
-      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>kernel_time</td>
+      <td>-1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>4</th>
       <td>Node</td>
-      <td>78116</td>
-      <td>8820</td>
+      <td>32438</td>
+      <td>32438</td>
       <td>0</td>
-      <td>4635</td>
+      <td>8687</td>
       <td>X</td>
-      <td>gemm_fence_after</td>
+      <td>Ma_MatMul/MatMulAddFusion/_fence_after</td>
       <td>Gemm</td>
+      <td>Ma_MatMul/MatMulAddFusion/</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>fence_after</td>
+      <td>-1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>...</th>
+      <td>...</td>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -1422,70 +1421,73 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
     <tr>
       <th>986</th>
       <td>Node</td>
-      <td>78116</td>
-      <td>8820</td>
+      <td>32438</td>
+      <td>32438</td>
       <td>0</td>
-      <td>210170</td>
+      <td>175317</td>
       <td>X</td>
       <td>Ma_MatMul2_fence_before</td>
       <td>MatMul</td>
+      <td>Ma_MatMul2</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>fence_before</td>
+      <td>41</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>987</th>
       <td>Node</td>
-      <td>78116</td>
-      <td>8820</td>
-      <td>124</td>
-      <td>210172</td>
+      <td>32438</td>
+      <td>32438</td>
+      <td>77</td>
+      <td>175318</td>
       <td>X</td>
       <td>Ma_MatMul2_kernel_time</td>
       <td>MatMul</td>
-      <td>508</td>
+      <td>Ma_MatMul2</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>20000</td>
+      <td>0</td>
+      <td>2560000</td>
       <td>8</td>
       <td>CPUExecutionProvider</td>
-      <td>8</td>
-      <td>2540000</td>
-      <td>20000</td>
-      <td>[{'float': [5000, 127]}, {'float': [127, 1]}]</td>
-      <td>[{'float': [5000, 1]}]</td>
-      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>kernel_time</td>
+      <td>41</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>988</th>
       <td>Node</td>
-      <td>78116</td>
-      <td>8820</td>
+      <td>32438</td>
+      <td>32438</td>
       <td>0</td>
-      <td>210305</td>
+      <td>175401</td>
       <td>X</td>
       <td>Ma_MatMul2_fence_after</td>
       <td>MatMul</td>
+      <td>Ma_MatMul2</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>fence_after</td>
+      <td>41</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>989</th>
       <td>Session</td>
-      <td>78116</td>
-      <td>8820</td>
-      <td>4378</td>
-      <td>205930</td>
+      <td>32438</td>
+      <td>32438</td>
+      <td>1448</td>
+      <td>173955</td>
       <td>X</td>
       <td>SequentialExecutor::Execute</td>
       <td>NaN</td>
@@ -1496,16 +1498,17 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>SequentialExecutor::Execute</td>
+      <td>42</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>990</th>
       <td>Session</td>
-      <td>78116</td>
-      <td>8820</td>
-      <td>4388</td>
-      <td>205925</td>
+      <td>32438</td>
+      <td>32438</td>
+      <td>1458</td>
+      <td>173948</td>
       <td>X</td>
       <td>model_run</td>
       <td>NaN</td>
@@ -1516,16 +1519,17 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>model_run</td>
+      <td>42</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>991 rows × 17 columns</p>
+<p>991 rows × 18 columns</p>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;args_provider&quot;</span><span class="p">])</span>
@@ -1533,7 +1537,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1542,7 +1546,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">args_provider</span> <span class="o">==</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1558,7 +1562,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1591,45 +1595,43 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
   </thead>
   <tbody>
     <tr>
+      <th rowspan="2" valign="top">Sigmoid</th>
+      <th>Si_Sigmoid1</th>
+      <td>5304</td>
+    </tr>
+    <tr>
+      <th>Si_Sigmoid</th>
+      <td>5461</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Mul</th>
+      <th>Mu_Mul</th>
+      <td>8087</td>
+    </tr>
+    <tr>
+      <th>Mu_Mul1</th>
+      <td>9945</td>
+    </tr>
+    <tr>
       <th>MatMul</th>
       <th>Ma_MatMul2</th>
-      <td>6778</td>
-    </tr>
-    <tr>
-      <th>Mul</th>
-      <th>Mu_Mul</th>
-      <td>12923</td>
-    </tr>
-    <tr>
-      <th>Sigmoid</th>
-      <th>Si_Sigmoid</th>
-      <td>14849</td>
-    </tr>
-    <tr>
-      <th>Mul</th>
-      <th>Mu_Mul1</th>
-      <td>15151</td>
-    </tr>
-    <tr>
-      <th>Sigmoid</th>
-      <th>Si_Sigmoid1</th>
-      <td>15608</td>
+      <td>9952</td>
     </tr>
     <tr>
       <th rowspan="2" valign="top">Gemm</th>
-      <th>gemm</th>
-      <td>31763</td>
+      <th>Ma_MatMul/MatMulAddFusion/</th>
+      <td>16856</td>
     </tr>
     <tr>
-      <th>gemm_token_0</th>
-      <td>99047</td>
+      <th>Ma_MatMul1/MatMulAddFusion/</th>
+      <td>103444</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gr_n</span> <span class="o">=</span> <span class="p">(</span>
@@ -1644,7 +1646,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1677,37 +1679,35 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
   </thead>
   <tbody>
     <tr>
+      <th rowspan="2" valign="top">Sigmoid</th>
+      <th>Si_Sigmoid1</th>
+      <td>43</td>
+    </tr>
+    <tr>
+      <th>Si_Sigmoid</th>
+      <td>43</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Mul</th>
+      <th>Mu_Mul</th>
+      <td>43</td>
+    </tr>
+    <tr>
+      <th>Mu_Mul1</th>
+      <td>43</td>
+    </tr>
+    <tr>
       <th>MatMul</th>
       <th>Ma_MatMul2</th>
       <td>43</td>
     </tr>
     <tr>
-      <th>Mul</th>
-      <th>Mu_Mul</th>
-      <td>43</td>
-    </tr>
-    <tr>
-      <th>Sigmoid</th>
-      <th>Si_Sigmoid</th>
-      <td>43</td>
-    </tr>
-    <tr>
-      <th>Mul</th>
-      <th>Mu_Mul1</th>
-      <td>43</td>
-    </tr>
-    <tr>
-      <th>Sigmoid</th>
-      <th>Si_Sigmoid1</th>
-      <td>43</td>
-    </tr>
-    <tr>
       <th rowspan="2" valign="top">Gemm</th>
-      <th>gemm</th>
+      <th>Ma_MatMul/MatMulAddFusion/</th>
       <td>43</td>
     </tr>
     <tr>
-      <th>gemm_token_0</th>
+      <th>Ma_MatMul1/MatMulAddFusion/</th>
       <td>43</td>
     </tr>
   </tbody>
@@ -1715,7 +1715,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1732,12 +1732,12 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_ml_neural_tree_onnx_50_0.png" src="../../_images/notebooks_ml_neural_tree_onnx_50_0.png" />
+<img alt="../../_images/notebooks_ml_neural_tree_onnx_49_0.png" src="../../_images/notebooks_ml_neural_tree_onnx_49_0.png" />
 </div>
 </div>
 <p>onnxruntime passe principalement son temps dans un produit matriciel. On vérifie plus précisément.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">args_op_name</span> <span class="o">==</span> <span class="s2">&quot;Gemm&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dur</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;dur&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span>
@@ -1747,7 +1747,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1769,8 +1769,8 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>127</th>
-      <th>12</th>
+      <th>541</th>
+      <th>564</th>
     </tr>
   </thead>
   <tbody>
@@ -1781,23 +1781,23 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
     </tr>
     <tr>
       <th>pid</th>
-      <td>78116</td>
-      <td>78116</td>
+      <td>32438</td>
+      <td>32438</td>
     </tr>
     <tr>
       <th>tid</th>
-      <td>8820</td>
-      <td>8820</td>
+      <td>32438</td>
+      <td>32438</td>
     </tr>
     <tr>
       <th>dur</th>
-      <td>4603</td>
-      <td>4083</td>
+      <td>27614</td>
+      <td>10836</td>
     </tr>
     <tr>
       <th>ts</th>
-      <td>37173</td>
-      <td>5949</td>
+      <td>85208</td>
+      <td>116118</td>
     </tr>
     <tr>
       <th>ph</th>
@@ -1806,8 +1806,8 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
     </tr>
     <tr>
       <th>name</th>
-      <td>gemm_token_0_kernel_time</td>
-      <td>gemm_token_0_kernel_time</td>
+      <td>Ma_MatMul1/MatMulAddFusion/_kernel_time</td>
+      <td>Ma_MatMul1/MatMulAddFusion/_kernel_time</td>
     </tr>
     <tr>
       <th>args_op_name</th>
@@ -1815,12 +1815,32 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <td>Gemm</td>
     </tr>
     <tr>
-      <th>args_parameter_size</th>
-      <td>64516</td>
-      <td>64516</td>
+      <th>op_name</th>
+      <td>Ma_MatMul1/MatMulAddFusion/</td>
+      <td>Ma_MatMul1/MatMulAddFusion/</td>
     </tr>
     <tr>
-      <th>args_graph_index</th>
+      <th>args_thread_scheduling_stats</th>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+    </tr>
+    <tr>
+      <th>args_output_size</th>
+      <td>2560000</td>
+      <td>2560000</td>
+    </tr>
+    <tr>
+      <th>args_parameter_size</th>
+      <td>512</td>
+      <td>512</td>
+    </tr>
+    <tr>
+      <th>args_activation_size</th>
+      <td>2540000</td>
+      <td>2540000</td>
+    </tr>
+    <tr>
+      <th>args_node_index</th>
       <td>12</td>
       <td>12</td>
     </tr>
@@ -1830,34 +1850,19 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
       <td>CPUExecutionProvider</td>
     </tr>
     <tr>
-      <th>args_exec_plan_index</th>
-      <td>12</td>
-      <td>12</td>
+      <th>event_name</th>
+      <td>kernel_time</td>
+      <td>kernel_time</td>
     </tr>
     <tr>
-      <th>args_activation_size</th>
-      <td>2520000</td>
-      <td>2520000</td>
+      <th>iteration</th>
+      <td>22</td>
+      <td>23</td>
     </tr>
     <tr>
-      <th>args_output_size</th>
-      <td>2540000</td>
-      <td>2540000</td>
-    </tr>
-    <tr>
-      <th>args_input_type_shape</th>
-      <td>[{'float': [5000, 126]}, {'float': [126, 127]}...</td>
-      <td>[{'float': [5000, 126]}, {'float': [126, 127]}...</td>
-    </tr>
-    <tr>
-      <th>args_output_type_shape</th>
-      <td>[{'float': [5000, 127]}]</td>
-      <td>[{'float': [5000, 127]}]</td>
-    </tr>
-    <tr>
-      <th>args_thread_scheduling_stats</th>
-      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
-      <td>{'main_thread': {'thread_pool_name': 'session-...</td>
+      <th>it==0</th>
+      <td>0</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
@@ -1865,7 +1870,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <p>C’est un produit matriciel d’environ <em>5000x800</em> par <em>800x800</em>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gr_dur</span> <span class="o">/</span> <span class="n">gr_dur</span><span class="o">.</span><span class="n">dur</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1873,7 +1878,7 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1906,45 +1911,43 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
   </thead>
   <tbody>
     <tr>
+      <th rowspan="2" valign="top">Sigmoid</th>
+      <th>Si_Sigmoid1</th>
+      <td>0.033348</td>
+    </tr>
+    <tr>
+      <th>Si_Sigmoid</th>
+      <td>0.034335</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Mul</th>
+      <th>Mu_Mul</th>
+      <td>0.050846</td>
+    </tr>
+    <tr>
+      <th>Mu_Mul1</th>
+      <td>0.062528</td>
+    </tr>
+    <tr>
       <th>MatMul</th>
       <th>Ma_MatMul2</th>
-      <td>0.034561</td>
-    </tr>
-    <tr>
-      <th>Mul</th>
-      <th>Mu_Mul</th>
-      <td>0.065894</td>
-    </tr>
-    <tr>
-      <th>Sigmoid</th>
-      <th>Si_Sigmoid</th>
-      <td>0.075714</td>
-    </tr>
-    <tr>
-      <th>Mul</th>
-      <th>Mu_Mul1</th>
-      <td>0.077254</td>
-    </tr>
-    <tr>
-      <th>Sigmoid</th>
-      <th>Si_Sigmoid1</th>
-      <td>0.079584</td>
+      <td>0.062572</td>
     </tr>
     <tr>
       <th rowspan="2" valign="top">Gemm</th>
-      <th>gemm</th>
-      <td>0.161958</td>
+      <th>Ma_MatMul/MatMulAddFusion/</th>
+      <td>0.105980</td>
     </tr>
     <tr>
-      <th>gemm_token_0</th>
-      <td>0.505035</td>
+      <th>Ma_MatMul1/MatMulAddFusion/</th>
+      <td>0.650391</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">gr_dur</span> <span class="o">/</span> <span class="n">gr_dur</span><span class="o">.</span><span class="n">dur</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">.</span><span class="n">dur</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -1953,17 +1956,17 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.5050352082154203
+np.float64(0.6503907600802269)
 </pre></div></div>
 </div>
 <p>Il occupe 82% du temps. et d’après l’expérience précédente, son temps d’éxecution peut-être réduit par 10 en le remplaçant par une matrice sparse. Cela ne suffira pas pour accélerer le temps de calcul de ce réseau de neurones. Il est 84 ms comparé à 247 µs pour l’arbre de décision. Avec cette optimisation, il pourrait passer de :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="mf">3.75</span>  <span class="c1"># ms</span>
@@ -1972,21 +1975,21 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2.013941471759493
+np.float64(1.5142817622242202)
 </pre></div></div>
 </div>
 <p>Soit une réduction du temps de calcul. Ce n’est pas mal mais pas assez.</p>
 </section>
 <section id="Hummingbird">
-<h2>Hummingbird<a class="headerlink" href="#Hummingbird" title="Link to this heading">#</a></h2>
+<h2>Hummingbird<a class="headerlink" href="#Hummingbird" title="Lien vers cette rubrique">#</a></h2>
 <p><a class="reference external" href="https://github.com/microsoft/hummingbird">hummingbird</a> est une librairie qui convertit un arbre de décision en réseau de neurones. Voyons ses performances.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hummingbird.ml</span> <span class="kn">import</span> <span class="n">convert</span>
@@ -1999,27 +2002,18 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-C:\xavierdupre\__home_\github_fork\scikit-learn\sklearn\utils\deprecation.py:103: FutureWarning: The attribute `n_features_` is deprecated in 1.0 and will be removed in 1.2. Use `n_features_in_` instead.
-  warnings.warn(msg, category=FutureWarning)
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(4.3419181139370266e-08, 4.430287026515114e-09)
+(np.float64(2.817548150346738e-08), np.float64(4.224119546935093e-09))
 </pre></div></div>
 </div>
 <p>Le résultat est beaucoup plus fidèle au modèle.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> model.predict(x_exp)
@@ -2031,12 +2025,12 @@ C:\xavierdupre\__home_\github_fork\scikit-learn\sklearn\utils\deprecation.py:103
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.17 ms ± 34.8 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+872 μs ± 66.6 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Il reste plus lent mais beaucoup plus rapide que la solution manuelle proposée dans les précédents paragraphes. Il contient un attribut <code class="docutils literal notranslate"><span class="pre">model</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Module</span>
@@ -2046,7 +2040,7 @@ C:\xavierdupre\__home_\github_fork\scikit-learn\sklearn\utils\deprecation.py:103
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -2056,7 +2050,7 @@ True
 </div>
 <p>On convertit ce modèle au format ONNX.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.onnx</span>
@@ -2075,7 +2069,7 @@ True
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
@@ -2085,7 +2079,7 @@ True
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onxh</span><span class="p">,</span> <span class="n">raise_exc</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
@@ -2099,208 +2093,136 @@ True
 <div class="highlight"><pre>
 opset: domain=&#39;&#39; version=15
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_size&#39;, 10]
-init: name=&#39;_operators.0.root_nodes&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([8], dtype=int64)
-init: name=&#39;_operators.0.root_biases&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([0.00792999], dtype=float32)
-init: name=&#39;_operators.0.tree_indices&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([0], dtype=int64)
-init: name=&#39;_operators.0.leaf_nodes&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([ 1.0096807 ,  0.6169403 ,  0.61055773,  0.37810475,  0.31796893,
-        0.13317925,  0.0193846 , -0.2317742 ,  0.39089343,  0.23506087,
-        0.3711936 ,  0.10317916,  0.14956598, -0.14193445, -0.05965868,
-       -0.27377078,  0.4128183 ,  0.19658326,  0.25545415,  0.08118545,
-        0.08400188, -0.1502193 , -0.36846825, -0.79687625,  0.35822242,
-        0.49021915,  0.30870998,  0.01033915,  0.6740977 ,  0.6740977 ,
-       -0.15315758, -0.41128033,  0.42920846,  0.13145493,  0.21853392,
-       -0.10986731,  0.4493652 ,  0.11318789,  0.12666471, -0.0623082 ,
-        0.2872893 ,  0.09948976,  0.11439473, -0.08801427,  0.16091613,
-       -0.02319027, -0.10097775, -0.37583745,  0.18612385, -0.00453244,
-        0.3287116 , -0.1499349 ,  0.7919218 ,  0.04704398, -0.15423109,
-       -0.43160027,  0.10802375, -0.1073833 , -0.07759219, -0.29175794,
-       -0.1528881 , -0.4909434 , -0.23361537, -0.43578717,  0.7831867 ,
-        0.45349318,  0.34956965, -0.3199535 ,  0.3061573 , -0.34267113,
-        0.34963542,  0.04491445,  0.35399815,  0.14815213,  0.06678926,
-       -0.16095412,  0.3214274 ,  0.01484008, -0.1012276 , -0.3257699 ,
-        0.26727676,  0.01970094,  0.10760042, -0.09169976,  0.20044112,
-       -0.0324069 , -0.11015374, -0.28358367,  0.8083656 ,  0.13358633,
-       -0.07912118, -0.27182895, -0.07054728, -0.24895027, -0.20600456,
-       -0.42033467,  0.34701794, -0.0638995 ,  0.14252576, -0.06025055,
-        0.4228329 ,  0.06789401,  0.03919645, -0.17267554,  0.07274943,
-       -0.487512  ,  0.04517636, -0.18857062, -0.03975222, -0.2652712 ,
-       -0.30853328, -0.50844556,  0.03321444, -0.15481217, -0.20701212,
-       -0.40578464, -0.25884995, -0.46550158, -0.4797585 , -0.7324234 ,
-        0.43939307, -0.06170902, -0.51546025, -0.19215119, -0.3705445 ,
-       -0.57504356, -0.6372961 , -0.9345571 ], dtype=float32)
-init: name=&#39;_operators.0.nodes.0&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([0, 3], dtype=int64)
-init: name=&#39;_operators.0.nodes.1&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([1, 2, 5, 9], dtype=int64)
-init: name=&#39;_operators.0.nodes.2&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([5, 6, 3, 7, 2, 0, 7, 1], dtype=int64)
-init: name=&#39;_operators.0.nodes.3&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([3, 9, 5, 3, 6, 4, 1, 3, 6, 6, 1, 6, 5, 4, 6, 2], dtype=int64)
-init: name=&#39;_operators.0.nodes.4&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([3, 2, 7, 6, 2, 4, 7, 8, 9, 5, 7, 8, 9, 4, 6, 9, 7, 9, 0, 7, 7, 9,
-       2, 7, 6, 4, 6, 5, 4, 0, 6, 0], dtype=int64)
-init: name=&#39;_operators.0.nodes.5&#39; type=dtype(&#39;int64&#39;) shape=(0,) -- array([2, 8, 7, 6, 6, 3, 4, 9, 7, 3, 2, 6, 3, 3, 0, 1, 1, 0, 4, 7, 9, 5,
-       7, 9, 5, 3, 5, 9, 0, 5, 1, 4, 9, 4, 7, 7, 1, 9, 1, 1, 6, 2, 7, 7,
-       6, 1, 4, 4, 0, 0, 9, 8, 8, 2, 6, 2, 0, 3, 4, 2, 5, 6, 7, 3],
-      dtype=int64)
-init: name=&#39;_operators.0.biases.0&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([ 0.19169255, -0.12246682], dtype=float32)
-init: name=&#39;_operators.0.biases.1&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([-0.40610337, -0.1467492 , -0.01880287,  0.15879431], dtype=float32)
-init: name=&#39;_operators.0.biases.2&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([ 0.736786  , -0.32427853,  0.30860555,  0.17994082,  0.6917758 ,
-       -0.00594712,  0.35950053, -0.9819274 ], dtype=float32)
-init: name=&#39;_operators.0.biases.3&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([-1.3495584 , -1.082793  , -0.6906011 , -0.08978076, -0.4007622 ,
-        0.10756078, -0.68507075,  0.15814054,  0.5132364 , -0.18426335,
-        0.13685235,  0.10721841,  0.01814443, -0.41644228, -0.59770894,
-        0.607365  ], dtype=float32)
-init: name=&#39;_operators.0.biases.4&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([ 1.4203796 , -0.49269757, -0.12210988, -0.09692484,  0.5076643 ,
-       -1.3609421 ,  1.154743  ,  2.8748922 , -0.08181615,  0.7741028 ,
-        0.20604724,  0.666296  , -0.6474025 ,  0.6459148 ,  0.02262808,
-       -0.42282397,  0.46360654, -0.10058792,  0.25486696,  0.60041225,
-       -0.06933744,  0.21294908,  0.96443814,  0.07923891,  0.4797698 ,
-        1.2852331 ,  0.24348404, -0.3404966 , -0.07175394, -0.8248828 ,
-       -0.74071133, -1.2140133 ], dtype=float32)
-init: name=&#39;_operators.0.biases.5&#39; type=dtype(&#39;float32&#39;) shape=(0,) -- array([ 1.0626682 ,  1.4745288 ,  0.01898679,  0.5451088 ,  0.15444604,
-        1.0631477 , -0.7555804 , -1.7192128 , -0.20905146,  0.19752283,
-       -0.40471953,  0.13069782,  0.60331047,  1.5060809 ,  0.        ,
-       -1.8283446 , -0.8124372 , -1.381897  ,  0.59209645,  0.3239226 ,
-       -0.42840806, -0.43624896,  0.58229303, -1.0196047 , -0.5632828 ,
-        0.91483426,  1.8038778 , -0.5665638 , -1.2530733 , -0.6500004 ,
-       -1.3069727 ,  0.48267984,  0.73503745, -1.871724  , -1.4965518 ,
-        1.3147466 ,  0.03919952, -0.885836  ,  0.5479692 , -0.8086383 ,
-       -0.74240863,  0.14582941,  0.6496967 , -0.00911551,  2.4541488 ,
-       -0.90482277,  0.26108736,  0.7569448 , -1.0786855 , -0.45229852,
-        1.2146595 , -0.6756766 , -2.3066258 ,  0.7911504 ,  0.57490873,
-       -0.40741247,  0.24633038, -1.2022957 , -0.65162694, -0.04244827,
-        1.558136  , -1.6220782 ,  0.1574643 , -1.4209061 ], dtype=float32)
-Constant(value=[-1]) -&gt; onnx::Reshape_27
-Gather(X, _operators.0.root_nodes, axis=1) -&gt; onnx::LessOrEqual_17
-  LessOrEqual(onnx::LessOrEqual_17, _operators.0.root_biases) -&gt; onnx::Cast_18
-    Cast(onnx::Cast_18, to=7) -&gt; onnx::Add_19
-      Add(onnx::Add_19, _operators.0.tree_indices) -&gt; onnx::Reshape_20
-Constant(value=[-1]) -&gt; onnx::Reshape_21
-  Reshape(onnx::Reshape_20, onnx::Reshape_21, allowzero=0) -&gt; onnx::Gather_22
-    Gather(_operators.0.nodes.0, onnx::Gather_22, axis=0) -&gt; onnx::Reshape_23
-Constant(value=[-1, 1]) -&gt; onnx::Reshape_24
-  Reshape(onnx::Reshape_23, onnx::Reshape_24, allowzero=0) -&gt; onnx::GatherElements_25
-    GatherElements(X, onnx::GatherElements_25, axis=1) -&gt; onnx::Reshape_26
-  Reshape(onnx::Reshape_26, onnx::Reshape_27, allowzero=0) -&gt; onnx::LessOrEqual_28
-Constant(value=2) -&gt; onnx::Mul_29
-  Mul(onnx::Gather_22, onnx::Mul_29) -&gt; onnx::Add_30
-Gather(_operators.0.biases.0, onnx::Gather_22, axis=0) -&gt; onnx::LessOrEqual_31
-  LessOrEqual(onnx::LessOrEqual_28, onnx::LessOrEqual_31) -&gt; onnx::Cast_32
-    Cast(onnx::Cast_32, to=7) -&gt; onnx::Add_33
-    Add(onnx::Add_30, onnx::Add_33) -&gt; onnx::Gather_34
-      Gather(_operators.0.nodes.1, onnx::Gather_34, axis=0) -&gt; onnx::Reshape_35
-Constant(value=[-1, 1]) -&gt; onnx::Reshape_36
-  Reshape(onnx::Reshape_35, onnx::Reshape_36, allowzero=0) -&gt; onnx::GatherElements_37
-    GatherElements(X, onnx::GatherElements_37, axis=1) -&gt; onnx::Reshape_38
-Constant(value=[-1]) -&gt; onnx::Reshape_39
-  Reshape(onnx::Reshape_38, onnx::Reshape_39, allowzero=0) -&gt; onnx::LessOrEqual_40
-Constant(value=2) -&gt; onnx::Mul_41
-  Mul(onnx::Gather_34, onnx::Mul_41) -&gt; onnx::Add_42
-Gather(_operators.0.biases.1, onnx::Gather_34, axis=0) -&gt; onnx::LessOrEqual_43
-  LessOrEqual(onnx::LessOrEqual_40, onnx::LessOrEqual_43) -&gt; onnx::Cast_44
-    Cast(onnx::Cast_44, to=7) -&gt; onnx::Add_45
-    Add(onnx::Add_42, onnx::Add_45) -&gt; onnx::Gather_46
-      Gather(_operators.0.nodes.2, onnx::Gather_46, axis=0) -&gt; onnx::Reshape_47
-Constant(value=[-1, 1]) -&gt; onnx::Reshape_48
-  Reshape(onnx::Reshape_47, onnx::Reshape_48, allowzero=0) -&gt; onnx::GatherElements_49
-    GatherElements(X, onnx::GatherElements_49, axis=1) -&gt; onnx::Reshape_50
-Constant(value=[-1]) -&gt; onnx::Reshape_51
-  Reshape(onnx::Reshape_50, onnx::Reshape_51, allowzero=0) -&gt; onnx::LessOrEqual_52
-Constant(value=2) -&gt; onnx::Mul_53
-  Mul(onnx::Gather_46, onnx::Mul_53) -&gt; onnx::Add_54
-Gather(_operators.0.biases.2, onnx::Gather_46, axis=0) -&gt; onnx::LessOrEqual_55
-  LessOrEqual(onnx::LessOrEqual_52, onnx::LessOrEqual_55) -&gt; onnx::Cast_56
-    Cast(onnx::Cast_56, to=7) -&gt; onnx::Add_57
-    Add(onnx::Add_54, onnx::Add_57) -&gt; onnx::Gather_58
-      Gather(_operators.0.nodes.3, onnx::Gather_58, axis=0) -&gt; onnx::Reshape_59
-Constant(value=[-1, 1]) -&gt; onnx::Reshape_60
-  Reshape(onnx::Reshape_59, onnx::Reshape_60, allowzero=0) -&gt; onnx::GatherElements_61
-    GatherElements(X, onnx::GatherElements_61, axis=1) -&gt; onnx::Reshape_62
-Constant(value=[-1]) -&gt; onnx::Reshape_63
-  Reshape(onnx::Reshape_62, onnx::Reshape_63, allowzero=0) -&gt; onnx::LessOrEqual_64
-Constant(value=2) -&gt; onnx::Mul_65
-  Mul(onnx::Gather_58, onnx::Mul_65) -&gt; onnx::Add_66
-Gather(_operators.0.biases.3, onnx::Gather_58, axis=0) -&gt; onnx::LessOrEqual_67
-  LessOrEqual(onnx::LessOrEqual_64, onnx::LessOrEqual_67) -&gt; onnx::Cast_68
-    Cast(onnx::Cast_68, to=7) -&gt; onnx::Add_69
-    Add(onnx::Add_66, onnx::Add_69) -&gt; onnx::Gather_70
-      Gather(_operators.0.nodes.4, onnx::Gather_70, axis=0) -&gt; onnx::Reshape_71
-Constant(value=[-1, 1]) -&gt; onnx::Reshape_72
-  Reshape(onnx::Reshape_71, onnx::Reshape_72, allowzero=0) -&gt; onnx::GatherElements_73
-    GatherElements(X, onnx::GatherElements_73, axis=1) -&gt; onnx::Reshape_74
-Constant(value=[-1]) -&gt; onnx::Reshape_75
-  Reshape(onnx::Reshape_74, onnx::Reshape_75, allowzero=0) -&gt; onnx::LessOrEqual_76
-Constant(value=2) -&gt; onnx::Mul_77
-  Mul(onnx::Gather_70, onnx::Mul_77) -&gt; onnx::Add_78
-Gather(_operators.0.biases.4, onnx::Gather_70, axis=0) -&gt; onnx::LessOrEqual_79
-  LessOrEqual(onnx::LessOrEqual_76, onnx::LessOrEqual_79) -&gt; onnx::Cast_80
-    Cast(onnx::Cast_80, to=7) -&gt; onnx::Add_81
-    Add(onnx::Add_78, onnx::Add_81) -&gt; onnx::Gather_82
-      Gather(_operators.0.nodes.5, onnx::Gather_82, axis=0) -&gt; onnx::Reshape_83
-Constant(value=[-1, 1]) -&gt; onnx::Reshape_84
-  Reshape(onnx::Reshape_83, onnx::Reshape_84, allowzero=0) -&gt; onnx::GatherElements_85
-    GatherElements(X, onnx::GatherElements_85, axis=1) -&gt; onnx::Reshape_86
-Constant(value=[-1]) -&gt; onnx::Reshape_87
-  Reshape(onnx::Reshape_86, onnx::Reshape_87, allowzero=0) -&gt; onnx::LessOrEqual_88
-Constant(value=2) -&gt; onnx::Mul_89
-  Mul(onnx::Gather_82, onnx::Mul_89) -&gt; onnx::Add_90
-Gather(_operators.0.biases.5, onnx::Gather_82, axis=0) -&gt; onnx::LessOrEqual_91
-  LessOrEqual(onnx::LessOrEqual_88, onnx::LessOrEqual_91) -&gt; onnx::Cast_92
-    Cast(onnx::Cast_92, to=7) -&gt; onnx::Add_93
-    Add(onnx::Add_90, onnx::Add_93) -&gt; onnx::Gather_94
-      Gather(_operators.0.leaf_nodes, onnx::Gather_94, axis=0) -&gt; onnx::Reshape_95
-Constant(value=[-1, 1, 1]) -&gt; onnx::Reshape_96
-  Reshape(onnx::Reshape_95, onnx::Reshape_96, allowzero=0) -&gt; output
+init: name=&#39;_operators.0.root_nodes&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([8])
+init: name=&#39;_operators.0.root_biases&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([-0.00267735], dtype=float32)
+init: name=&#39;_operators.0.tree_indices&#39; type=dtype(&#39;int64&#39;) shape=(1,) -- array([0])
+init: name=&#39;_operators.0.leaf_nodes&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
+init: name=&#39;_operators.0.nodes.0&#39; type=dtype(&#39;int64&#39;) shape=(2,) -- array([3, 4])
+init: name=&#39;_operators.0.nodes.1&#39; type=dtype(&#39;int64&#39;) shape=(4,) -- array([4, 9, 0, 5])
+init: name=&#39;_operators.0.nodes.2&#39; type=dtype(&#39;int64&#39;) shape=(8,)
+init: name=&#39;_operators.0.nodes.3&#39; type=dtype(&#39;int64&#39;) shape=(16,)
+init: name=&#39;_operators.0.nodes.4&#39; type=dtype(&#39;int64&#39;) shape=(32,)
+init: name=&#39;_operators.0.nodes.5&#39; type=dtype(&#39;int64&#39;) shape=(64,)
+init: name=&#39;_operators.0.biases.0&#39; type=dtype(&#39;float32&#39;) shape=(2,) -- array([-0.09563538, -0.16326863], dtype=float32)
+init: name=&#39;_operators.0.biases.1&#39; type=dtype(&#39;float32&#39;) shape=(4,) -- array([-0.25053233,  0.6288608 , -0.48234493, -0.3351562 ], dtype=float32)
+init: name=&#39;_operators.0.biases.2&#39; type=dtype(&#39;float32&#39;) shape=(8,)
+init: name=&#39;_operators.0.biases.3&#39; type=dtype(&#39;float32&#39;) shape=(16,)
+init: name=&#39;_operators.0.biases.4&#39; type=dtype(&#39;float32&#39;) shape=(32,)
+init: name=&#39;_operators.0.biases.5&#39; type=dtype(&#39;float32&#39;) shape=(64,)
+Constant(value=[-1]) -&gt; /_operators.0/Constant_output_0
+Gather(X, _operators.0.root_nodes, axis=1) -&gt; /_operators.0/Gather_output_0
+  LessOrEqual(/_operators.0/Gather_output_0, _operators.0.root_biases) -&gt; /_operators.0/LessOrEqual_output_0
+    Cast(/_operators.0/LessOrEqual_output_0, to=7) -&gt; /_operators.0/Cast_output_0
+      Add(/_operators.0/Cast_output_0, _operators.0.tree_indices) -&gt; /_operators.0/Add_output_0
+  Reshape(/_operators.0/Add_output_0, /_operators.0/Constant_output_0, allowzero=0) -&gt; /_operators.0/Reshape_output_0
+    Gather(_operators.0.nodes.0, /_operators.0/Reshape_output_0, axis=0) -&gt; /_operators.0/Gather_1_output_0
+Constant(value=[-1, 1]) -&gt; /_operators.0/Constant_1_output_0
+  Reshape(/_operators.0/Gather_1_output_0, /_operators.0/Constant_1_output_0, allowzero=0) -&gt; /_operators.0/Reshape_1_output_0
+    GatherElements(X, /_operators.0/Reshape_1_output_0, axis=1) -&gt; /_operators.0/GatherElements_output_0
+Constant(value=[-1]) -&gt; /_operators.0/Constant_2_output_0
+  Reshape(/_operators.0/GatherElements_output_0, /_operators.0/Constant_2_output_0, allowzero=0) -&gt; /_operators.0/Reshape_2_output_0
+Constant(value=2) -&gt; /_operators.0/Constant_3_output_0
+  Mul(/_operators.0/Reshape_output_0, /_operators.0/Constant_3_output_0) -&gt; /_operators.0/Mul_output_0
+Gather(_operators.0.biases.0, /_operators.0/Reshape_output_0, axis=0) -&gt; /_operators.0/Gather_2_output_0
+  LessOrEqual(/_operators.0/Reshape_2_output_0, /_operators.0/Gather_2_output_0) -&gt; /_operators.0/LessOrEqual_1_output_0
+    Cast(/_operators.0/LessOrEqual_1_output_0, to=7) -&gt; /_operators.0/Cast_1_output_0
+    Add(/_operators.0/Mul_output_0, /_operators.0/Cast_1_output_0) -&gt; /_operators.0/Add_1_output_0
+      Gather(_operators.0.nodes.1, /_operators.0/Add_1_output_0, axis=0) -&gt; /_operators.0/Gather_3_output_0
+Constant(value=[-1, 1]) -&gt; /_operators.0/Constant_4_output_0
+  Reshape(/_operators.0/Gather_3_output_0, /_operators.0/Constant_4_output_0, allowzero=0) -&gt; /_operators.0/Reshape_3_output_0
+    GatherElements(X, /_operators.0/Reshape_3_output_0, axis=1) -&gt; /_operators.0/GatherElements_1_output_0
+Constant(value=[-1]) -&gt; /_operators.0/Constant_5_output_0
+  Reshape(/_operators.0/GatherElements_1_output_0, /_operators.0/Constant_5_output_0, allowzero=0) -&gt; /_operators.0/Reshape_4_output_0
+Constant(value=2) -&gt; /_operators.0/Constant_6_output_0
+  Mul(/_operators.0/Add_1_output_0, /_operators.0/Constant_6_output_0) -&gt; /_operators.0/Mul_1_output_0
+Gather(_operators.0.biases.1, /_operators.0/Add_1_output_0, axis=0) -&gt; /_operators.0/Gather_4_output_0
+  LessOrEqual(/_operators.0/Reshape_4_output_0, /_operators.0/Gather_4_output_0) -&gt; /_operators.0/LessOrEqual_2_output_0
+    Cast(/_operators.0/LessOrEqual_2_output_0, to=7) -&gt; /_operators.0/Cast_2_output_0
+    Add(/_operators.0/Mul_1_output_0, /_operators.0/Cast_2_output_0) -&gt; /_operators.0/Add_2_output_0
+      Gather(_operators.0.nodes.2, /_operators.0/Add_2_output_0, axis=0) -&gt; /_operators.0/Gather_5_output_0
+Constant(value=[-1, 1]) -&gt; /_operators.0/Constant_7_output_0
+  Reshape(/_operators.0/Gather_5_output_0, /_operators.0/Constant_7_output_0, allowzero=0) -&gt; /_operators.0/Reshape_5_output_0
+    GatherElements(X, /_operators.0/Reshape_5_output_0, axis=1) -&gt; /_operators.0/GatherElements_2_output_0
+Constant(value=[-1]) -&gt; /_operators.0/Constant_8_output_0
+  Reshape(/_operators.0/GatherElements_2_output_0, /_operators.0/Constant_8_output_0, allowzero=0) -&gt; /_operators.0/Reshape_6_output_0
+Constant(value=2) -&gt; /_operators.0/Constant_9_output_0
+  Mul(/_operators.0/Add_2_output_0, /_operators.0/Constant_9_output_0) -&gt; /_operators.0/Mul_2_output_0
+Gather(_operators.0.biases.2, /_operators.0/Add_2_output_0, axis=0) -&gt; /_operators.0/Gather_6_output_0
+  LessOrEqual(/_operators.0/Reshape_6_output_0, /_operators.0/Gather_6_output_0) -&gt; /_operators.0/LessOrEqual_3_output_0
+    Cast(/_operators.0/LessOrEqual_3_output_0, to=7) -&gt; /_operators.0/Cast_3_output_0
+    Add(/_operators.0/Mul_2_output_0, /_operators.0/Cast_3_output_0) -&gt; /_operators.0/Add_3_output_0
+      Gather(_operators.0.nodes.3, /_operators.0/Add_3_output_0, axis=0) -&gt; /_operators.0/Gather_7_output_0
+Constant(value=[-1, 1]) -&gt; /_operators.0/Constant_10_output_0
+  Reshape(/_operators.0/Gather_7_output_0, /_operators.0/Constant_10_output_0, allowzero=0) -&gt; /_operators.0/Reshape_7_output_0
+    GatherElements(X, /_operators.0/Reshape_7_output_0, axis=1) -&gt; /_operators.0/GatherElements_3_output_0
+Constant(value=[-1]) -&gt; /_operators.0/Constant_11_output_0
+  Reshape(/_operators.0/GatherElements_3_output_0, /_operators.0/Constant_11_output_0, allowzero=0) -&gt; /_operators.0/Reshape_8_output_0
+Constant(value=2) -&gt; /_operators.0/Constant_12_output_0
+  Mul(/_operators.0/Add_3_output_0, /_operators.0/Constant_12_output_0) -&gt; /_operators.0/Mul_3_output_0
+Gather(_operators.0.biases.3, /_operators.0/Add_3_output_0, axis=0) -&gt; /_operators.0/Gather_8_output_0
+  LessOrEqual(/_operators.0/Reshape_8_output_0, /_operators.0/Gather_8_output_0) -&gt; /_operators.0/LessOrEqual_4_output_0
+    Cast(/_operators.0/LessOrEqual_4_output_0, to=7) -&gt; /_operators.0/Cast_4_output_0
+    Add(/_operators.0/Mul_3_output_0, /_operators.0/Cast_4_output_0) -&gt; /_operators.0/Add_4_output_0
+      Gather(_operators.0.nodes.4, /_operators.0/Add_4_output_0, axis=0) -&gt; /_operators.0/Gather_9_output_0
+Constant(value=[-1, 1]) -&gt; /_operators.0/Constant_13_output_0
+  Reshape(/_operators.0/Gather_9_output_0, /_operators.0/Constant_13_output_0, allowzero=0) -&gt; /_operators.0/Reshape_9_output_0
+    GatherElements(X, /_operators.0/Reshape_9_output_0, axis=1) -&gt; /_operators.0/GatherElements_4_output_0
+Constant(value=[-1]) -&gt; /_operators.0/Constant_14_output_0
+  Reshape(/_operators.0/GatherElements_4_output_0, /_operators.0/Constant_14_output_0, allowzero=0) -&gt; /_operators.0/Reshape_10_output_0
+Constant(value=2) -&gt; /_operators.0/Constant_15_output_0
+  Mul(/_operators.0/Add_4_output_0, /_operators.0/Constant_15_output_0) -&gt; /_operators.0/Mul_4_output_0
+Gather(_operators.0.biases.4, /_operators.0/Add_4_output_0, axis=0) -&gt; /_operators.0/Gather_10_output_0
+  LessOrEqual(/_operators.0/Reshape_10_output_0, /_operators.0/Gather_10_output_0) -&gt; /_operators.0/LessOrEqual_5_output_0
+    Cast(/_operators.0/LessOrEqual_5_output_0, to=7) -&gt; /_operators.0/Cast_5_output_0
+    Add(/_operators.0/Mul_4_output_0, /_operators.0/Cast_5_output_0) -&gt; /_operators.0/Add_5_output_0
+      Gather(_operators.0.nodes.5, /_operators.0/Add_5_output_0, axis=0) -&gt; /_operators.0/Gather_11_output_0
+Constant(value=[-1, 1]) -&gt; /_operators.0/Constant_16_output_0
+  Reshape(/_operators.0/Gather_11_output_0, /_operators.0/Constant_16_output_0, allowzero=0) -&gt; /_operators.0/Reshape_11_output_0
+    GatherElements(X, /_operators.0/Reshape_11_output_0, axis=1) -&gt; /_operators.0/GatherElements_5_output_0
+Constant(value=[-1]) -&gt; /_operators.0/Constant_17_output_0
+  Reshape(/_operators.0/GatherElements_5_output_0, /_operators.0/Constant_17_output_0, allowzero=0) -&gt; /_operators.0/Reshape_12_output_0
+Constant(value=2) -&gt; /_operators.0/Constant_18_output_0
+  Mul(/_operators.0/Add_5_output_0, /_operators.0/Constant_18_output_0) -&gt; /_operators.0/Mul_5_output_0
+Gather(_operators.0.biases.5, /_operators.0/Add_5_output_0, axis=0) -&gt; /_operators.0/Gather_12_output_0
+  LessOrEqual(/_operators.0/Reshape_12_output_0, /_operators.0/Gather_12_output_0) -&gt; /_operators.0/LessOrEqual_6_output_0
+    Cast(/_operators.0/LessOrEqual_6_output_0, to=7) -&gt; /_operators.0/Cast_6_output_0
+    Add(/_operators.0/Mul_5_output_0, /_operators.0/Cast_6_output_0) -&gt; /_operators.0/Add_6_output_0
+      Gather(_operators.0.leaf_nodes, /_operators.0/Add_6_output_0, axis=0) -&gt; /_operators.0/Gather_13_output_0
+Constant(value=[-1, 1, 1]) -&gt; /_operators.0/Constant_19_output_0
+  Reshape(/_operators.0/Gather_13_output_0, /_operators.0/Constant_19_output_0, allowzero=0) -&gt; /_operators.0/Reshape_13_output_0
 Constant(value=[1]) -&gt; onnx::ReduceSum_98
-  ReduceSum(output, onnx::ReduceSum_98, keepdims=0) -&gt; variable
+  ReduceSum(/_operators.0/Reshape_13_output_0, onnx::ReduceSum_98, keepdims=0) -&gt; variable
 output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch_size&#39;, &#39;ReduceSumvariable_dim_1&#39;]
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">onnxview</span> onxh
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div id="M383513f79aa048579be42d593ab48485-cont"><div id="M383513f79aa048579be42d593ab48485" style="width:;height:;"></div></div>
-<script>
-
-require(['http://www.xavierdupre.fr/js/vizjs/viz.js'], function() { var svgGraph = Viz("digraph{\n  nodesep=0.05;\n  orientation=portrait;\n  size=7;\n  ranksep=0.25;\n\n  X [shape=box color=red label=\"X\nfloat((0, 10))\" fontsize=10];\n\n  variable [shape=box color=green label=\"variable\nfloat((0, 0))\" fontsize=10];\n\n  _operators_0_root_nodes [shape=box label=\"_operators_0_root_nodes\nint64((1,))\n[8]\" fontsize=10];\n  _operators_0_root_biases [shape=box label=\"_operators_0_root_biases\nfloat32((1,))\n[0.00792999]\" fontsize=10];\n  _operators_0_tree_indices [shape=box label=\"_operators_0_tree_indices\nint64((1,))\n[0]\" fontsize=10];\n  _operators_0_leaf_nodes [shape=box label=\"_operators_0_leaf_nodes\nfloat32((128, 1))\n[[ 1.0096807 ]\n [ 0.6169403 ]\n [ 0.61055773]\n [ 0....\" fontsize=10];\n  _operators_0_nodes_0 [shape=box label=\"_operators_0_nodes_0\nint64((2,))\n[0 3]\" fontsize=10];\n  _operators_0_nodes_1 [shape=box label=\"_operators_0_nodes_1\nint64((4,))\n[1 2 5 9]\" fontsize=10];\n  _operators_0_nodes_2 [shape=box label=\"_operators_0_nodes_2\nint64((8,))\n[5 6 3 7 2 0 7 1]\" fontsize=10];\n  _operators_0_nodes_3 [shape=box label=\"_operators_0_nodes_3\nint64((16,))\n[3 9 5 3 6 4 1 3 6 6 1 6 5 4 6 2]\" fontsize=10];\n  _operators_0_nodes_4 [shape=box label=\"_operators_0_nodes_4\nint64((32,))\n[3 2 7 6 2 4 7 8 9 5 7 8 9 4 6 9 7 9 0 7 7 9 2 7 6...\" fontsize=10];\n  _operators_0_nodes_5 [shape=box label=\"_operators_0_nodes_5\nint64((64,))\n[2 8 7 6 6 3 4 9 7 3 2 6 3 3 0 1 1 0 4 7 9 5 7 9 5...\" fontsize=10];\n  _operators_0_biases_0 [shape=box label=\"_operators_0_biases_0\nfloat32((2,))\n[ 0.19169255 -0.12246682]\" fontsize=10];\n  _operators_0_biases_1 [shape=box label=\"_operators_0_biases_1\nfloat32((4,))\n[-0.40610337 -0.1467492  -0.01880287  0.15879431]\" fontsize=10];\n  _operators_0_biases_2 [shape=box label=\"_operators_0_biases_2\nfloat32((8,))\n[ 0.736786   -0.32427853  0.30860555  0.17994082  0.6917758  -0.00594712\n  0.35950053 -0.9819274 ]\" fontsize=10];\n  _operators_0_biases_3 [shape=box label=\"_operators_0_biases_3\nfloat32((16,))\n[-1.3495584  -1.082793   -0.6906011  -0.08978076 -...\" fontsize=10];\n  _operators_0_biases_4 [shape=box label=\"_operators_0_biases_4\nfloat32((32,))\n[ 1.4203796  -0.49269757 -0.12210988 -0.09692484  ...\" fontsize=10];\n  _operators_0_biases_5 [shape=box label=\"_operators_0_biases_5\nfloat32((64,))\n[ 1.0626682   1.4745288   0.01898679  0.5451088   ...\" fontsize=10];\n\n  onnx____LessOrEqual_17 [shape=box label=\"onnx____LessOrEqual_17\" fontsize=10];\n  Gather_0 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_0)\naxis=1\" fontsize=10];\n  X -> Gather_0;\n  _operators_0_root_nodes -> Gather_0;\n  Gather_0 -> onnx____LessOrEqual_17;\n\n  onnx____Cast_18 [shape=box label=\"onnx____Cast_18\" fontsize=10];\n  LessOrEqual_1 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_1)\" fontsize=10];\n  onnx____LessOrEqual_17 -> LessOrEqual_1;\n  _operators_0_root_biases -> LessOrEqual_1;\n  LessOrEqual_1 -> onnx____Cast_18;\n\n  onnx____Add_19 [shape=box label=\"onnx____Add_19\" fontsize=10];\n  Cast_2 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_2)\nto=7\" fontsize=10];\n  onnx____Cast_18 -> Cast_2;\n  Cast_2 -> onnx____Add_19;\n\n  onnx____Reshape_20 [shape=box label=\"onnx____Reshape_20\" fontsize=10];\n  Add_3 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_3)\" fontsize=10];\n  onnx____Add_19 -> Add_3;\n  _operators_0_tree_indices -> Add_3;\n  Add_3 -> onnx____Reshape_20;\n\n  onnx____Reshape_21 [shape=box label=\"onnx____Reshape_21\" fontsize=10];\n  Constant_4 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_4)\nvalue=[-1]\" fontsize=10];\n  Constant_4 -> onnx____Reshape_21;\n\n  onnx____Gather_22 [shape=box label=\"onnx____Gather_22\" fontsize=10];\n  Reshape_5 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_5)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_20 -> Reshape_5;\n  onnx____Reshape_21 -> Reshape_5;\n  Reshape_5 -> onnx____Gather_22;\n\n  onnx____Reshape_23 [shape=box label=\"onnx____Reshape_23\" fontsize=10];\n  Gather_6 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_6)\naxis=0\" fontsize=10];\n  _operators_0_nodes_0 -> Gather_6;\n  onnx____Gather_22 -> Gather_6;\n  Gather_6 -> onnx____Reshape_23;\n\n  onnx____Reshape_24 [shape=box label=\"onnx____Reshape_24\" fontsize=10];\n  Constant_7 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_7)\nvalue=[-1  1]\" fontsize=10];\n  Constant_7 -> onnx____Reshape_24;\n\n  onnx____GatherElements_25 [shape=box label=\"onnx____GatherElements_25\" fontsize=10];\n  Reshape_8 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_8)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_23 -> Reshape_8;\n  onnx____Reshape_24 -> Reshape_8;\n  Reshape_8 -> onnx____GatherElements_25;\n\n  onnx____Reshape_26 [shape=box label=\"onnx____Reshape_26\" fontsize=10];\n  GatherElements_9 [shape=box style=\"filled,rounded\" color=orange label=\"GatherElements\n(GatherElements_9)\naxis=1\" fontsize=10];\n  X -> GatherElements_9;\n  onnx____GatherElements_25 -> GatherElements_9;\n  GatherElements_9 -> onnx____Reshape_26;\n\n  onnx____Reshape_27 [shape=box label=\"onnx____Reshape_27\" fontsize=10];\n  Constant_10 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_10)\nvalue=[-1]\" fontsize=10];\n  Constant_10 -> onnx____Reshape_27;\n\n  onnx____LessOrEqual_28 [shape=box label=\"onnx____LessOrEqual_28\" fontsize=10];\n  Reshape_11 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_11)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_26 -> Reshape_11;\n  onnx____Reshape_27 -> Reshape_11;\n  Reshape_11 -> onnx____LessOrEqual_28;\n\n  onnx____Mul_29 [shape=box label=\"onnx____Mul_29\" fontsize=10];\n  Constant_12 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_12)\nvalue=2\" fontsize=10];\n  Constant_12 -> onnx____Mul_29;\n\n  onnx____Add_30 [shape=box label=\"onnx____Add_30\" fontsize=10];\n  Mul_13 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mul_13)\" fontsize=10];\n  onnx____Gather_22 -> Mul_13;\n  onnx____Mul_29 -> Mul_13;\n  Mul_13 -> onnx____Add_30;\n\n  onnx____LessOrEqual_31 [shape=box label=\"onnx____LessOrEqual_31\" fontsize=10];\n  Gather_14 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_14)\naxis=0\" fontsize=10];\n  _operators_0_biases_0 -> Gather_14;\n  onnx____Gather_22 -> Gather_14;\n  Gather_14 -> onnx____LessOrEqual_31;\n\n  onnx____Cast_32 [shape=box label=\"onnx____Cast_32\" fontsize=10];\n  LessOrEqual_15 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_15)\" fontsize=10];\n  onnx____LessOrEqual_28 -> LessOrEqual_15;\n  onnx____LessOrEqual_31 -> LessOrEqual_15;\n  LessOrEqual_15 -> onnx____Cast_32;\n\n  onnx____Add_33 [shape=box label=\"onnx____Add_33\" fontsize=10];\n  Cast_16 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_16)\nto=7\" fontsize=10];\n  onnx____Cast_32 -> Cast_16;\n  Cast_16 -> onnx____Add_33;\n\n  onnx____Gather_34 [shape=box label=\"onnx____Gather_34\" fontsize=10];\n  Add_17 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_17)\" fontsize=10];\n  onnx____Add_30 -> Add_17;\n  onnx____Add_33 -> Add_17;\n  Add_17 -> onnx____Gather_34;\n\n  onnx____Reshape_35 [shape=box label=\"onnx____Reshape_35\" fontsize=10];\n  Gather_18 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_18)\naxis=0\" fontsize=10];\n  _operators_0_nodes_1 -> Gather_18;\n  onnx____Gather_34 -> Gather_18;\n  Gather_18 -> onnx____Reshape_35;\n\n  onnx____Reshape_36 [shape=box label=\"onnx____Reshape_36\" fontsize=10];\n  Constant_19 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_19)\nvalue=[-1  1]\" fontsize=10];\n  Constant_19 -> onnx____Reshape_36;\n\n  onnx____GatherElements_37 [shape=box label=\"onnx____GatherElements_37\" fontsize=10];\n  Reshape_20 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_20)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_35 -> Reshape_20;\n  onnx____Reshape_36 -> Reshape_20;\n  Reshape_20 -> onnx____GatherElements_37;\n\n  onnx____Reshape_38 [shape=box label=\"onnx____Reshape_38\" fontsize=10];\n  GatherElements_21 [shape=box style=\"filled,rounded\" color=orange label=\"GatherElements\n(GatherElements_21)\naxis=1\" fontsize=10];\n  X -> GatherElements_21;\n  onnx____GatherElements_37 -> GatherElements_21;\n  GatherElements_21 -> onnx____Reshape_38;\n\n  onnx____Reshape_39 [shape=box label=\"onnx____Reshape_39\" fontsize=10];\n  Constant_22 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_22)\nvalue=[-1]\" fontsize=10];\n  Constant_22 -> onnx____Reshape_39;\n\n  onnx____LessOrEqual_40 [shape=box label=\"onnx____LessOrEqual_40\" fontsize=10];\n  Reshape_23 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_23)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_38 -> Reshape_23;\n  onnx____Reshape_39 -> Reshape_23;\n  Reshape_23 -> onnx____LessOrEqual_40;\n\n  onnx____Mul_41 [shape=box label=\"onnx____Mul_41\" fontsize=10];\n  Constant_24 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_24)\nvalue=2\" fontsize=10];\n  Constant_24 -> onnx____Mul_41;\n\n  onnx____Add_42 [shape=box label=\"onnx____Add_42\" fontsize=10];\n  Mul_25 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mul_25)\" fontsize=10];\n  onnx____Gather_34 -> Mul_25;\n  onnx____Mul_41 -> Mul_25;\n  Mul_25 -> onnx____Add_42;\n\n  onnx____LessOrEqual_43 [shape=box label=\"onnx____LessOrEqual_43\" fontsize=10];\n  Gather_26 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_26)\naxis=0\" fontsize=10];\n  _operators_0_biases_1 -> Gather_26;\n  onnx____Gather_34 -> Gather_26;\n  Gather_26 -> onnx____LessOrEqual_43;\n\n  onnx____Cast_44 [shape=box label=\"onnx____Cast_44\" fontsize=10];\n  LessOrEqual_27 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_27)\" fontsize=10];\n  onnx____LessOrEqual_40 -> LessOrEqual_27;\n  onnx____LessOrEqual_43 -> LessOrEqual_27;\n  LessOrEqual_27 -> onnx____Cast_44;\n\n  onnx____Add_45 [shape=box label=\"onnx____Add_45\" fontsize=10];\n  Cast_28 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_28)\nto=7\" fontsize=10];\n  onnx____Cast_44 -> Cast_28;\n  Cast_28 -> onnx____Add_45;\n\n  onnx____Gather_46 [shape=box label=\"onnx____Gather_46\" fontsize=10];\n  Add_29 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_29)\" fontsize=10];\n  onnx____Add_42 -> Add_29;\n  onnx____Add_45 -> Add_29;\n  Add_29 -> onnx____Gather_46;\n\n  onnx____Reshape_47 [shape=box label=\"onnx____Reshape_47\" fontsize=10];\n  Gather_30 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_30)\naxis=0\" fontsize=10];\n  _operators_0_nodes_2 -> Gather_30;\n  onnx____Gather_46 -> Gather_30;\n  Gather_30 -> onnx____Reshape_47;\n\n  onnx____Reshape_48 [shape=box label=\"onnx____Reshape_48\" fontsize=10];\n  Constant_31 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_31)\nvalue=[-1  1]\" fontsize=10];\n  Constant_31 -> onnx____Reshape_48;\n\n  onnx____GatherElements_49 [shape=box label=\"onnx____GatherElements_49\" fontsize=10];\n  Reshape_32 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_32)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_47 -> Reshape_32;\n  onnx____Reshape_48 -> Reshape_32;\n  Reshape_32 -> onnx____GatherElements_49;\n\n  onnx____Reshape_50 [shape=box label=\"onnx____Reshape_50\" fontsize=10];\n  GatherElements_33 [shape=box style=\"filled,rounded\" color=orange label=\"GatherElements\n(GatherElements_33)\naxis=1\" fontsize=10];\n  X -> GatherElements_33;\n  onnx____GatherElements_49 -> GatherElements_33;\n  GatherElements_33 -> onnx____Reshape_50;\n\n  onnx____Reshape_51 [shape=box label=\"onnx____Reshape_51\" fontsize=10];\n  Constant_34 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_34)\nvalue=[-1]\" fontsize=10];\n  Constant_34 -> onnx____Reshape_51;\n\n  onnx____LessOrEqual_52 [shape=box label=\"onnx____LessOrEqual_52\" fontsize=10];\n  Reshape_35 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_35)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_50 -> Reshape_35;\n  onnx____Reshape_51 -> Reshape_35;\n  Reshape_35 -> onnx____LessOrEqual_52;\n\n  onnx____Mul_53 [shape=box label=\"onnx____Mul_53\" fontsize=10];\n  Constant_36 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_36)\nvalue=2\" fontsize=10];\n  Constant_36 -> onnx____Mul_53;\n\n  onnx____Add_54 [shape=box label=\"onnx____Add_54\" fontsize=10];\n  Mul_37 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mul_37)\" fontsize=10];\n  onnx____Gather_46 -> Mul_37;\n  onnx____Mul_53 -> Mul_37;\n  Mul_37 -> onnx____Add_54;\n\n  onnx____LessOrEqual_55 [shape=box label=\"onnx____LessOrEqual_55\" fontsize=10];\n  Gather_38 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_38)\naxis=0\" fontsize=10];\n  _operators_0_biases_2 -> Gather_38;\n  onnx____Gather_46 -> Gather_38;\n  Gather_38 -> onnx____LessOrEqual_55;\n\n  onnx____Cast_56 [shape=box label=\"onnx____Cast_56\" fontsize=10];\n  LessOrEqual_39 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_39)\" fontsize=10];\n  onnx____LessOrEqual_52 -> LessOrEqual_39;\n  onnx____LessOrEqual_55 -> LessOrEqual_39;\n  LessOrEqual_39 -> onnx____Cast_56;\n\n  onnx____Add_57 [shape=box label=\"onnx____Add_57\" fontsize=10];\n  Cast_40 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_40)\nto=7\" fontsize=10];\n  onnx____Cast_56 -> Cast_40;\n  Cast_40 -> onnx____Add_57;\n\n  onnx____Gather_58 [shape=box label=\"onnx____Gather_58\" fontsize=10];\n  Add_41 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_41)\" fontsize=10];\n  onnx____Add_54 -> Add_41;\n  onnx____Add_57 -> Add_41;\n  Add_41 -> onnx____Gather_58;\n\n  onnx____Reshape_59 [shape=box label=\"onnx____Reshape_59\" fontsize=10];\n  Gather_42 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_42)\naxis=0\" fontsize=10];\n  _operators_0_nodes_3 -> Gather_42;\n  onnx____Gather_58 -> Gather_42;\n  Gather_42 -> onnx____Reshape_59;\n\n  onnx____Reshape_60 [shape=box label=\"onnx____Reshape_60\" fontsize=10];\n  Constant_43 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_43)\nvalue=[-1  1]\" fontsize=10];\n  Constant_43 -> onnx____Reshape_60;\n\n  onnx____GatherElements_61 [shape=box label=\"onnx____GatherElements_61\" fontsize=10];\n  Reshape_44 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_44)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_59 -> Reshape_44;\n  onnx____Reshape_60 -> Reshape_44;\n  Reshape_44 -> onnx____GatherElements_61;\n\n  onnx____Reshape_62 [shape=box label=\"onnx____Reshape_62\" fontsize=10];\n  GatherElements_45 [shape=box style=\"filled,rounded\" color=orange label=\"GatherElements\n(GatherElements_45)\naxis=1\" fontsize=10];\n  X -> GatherElements_45;\n  onnx____GatherElements_61 -> GatherElements_45;\n  GatherElements_45 -> onnx____Reshape_62;\n\n  onnx____Reshape_63 [shape=box label=\"onnx____Reshape_63\" fontsize=10];\n  Constant_46 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_46)\nvalue=[-1]\" fontsize=10];\n  Constant_46 -> onnx____Reshape_63;\n\n  onnx____LessOrEqual_64 [shape=box label=\"onnx____LessOrEqual_64\" fontsize=10];\n  Reshape_47 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_47)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_62 -> Reshape_47;\n  onnx____Reshape_63 -> Reshape_47;\n  Reshape_47 -> onnx____LessOrEqual_64;\n\n  onnx____Mul_65 [shape=box label=\"onnx____Mul_65\" fontsize=10];\n  Constant_48 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_48)\nvalue=2\" fontsize=10];\n  Constant_48 -> onnx____Mul_65;\n\n  onnx____Add_66 [shape=box label=\"onnx____Add_66\" fontsize=10];\n  Mul_49 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mul_49)\" fontsize=10];\n  onnx____Gather_58 -> Mul_49;\n  onnx____Mul_65 -> Mul_49;\n  Mul_49 -> onnx____Add_66;\n\n  onnx____LessOrEqual_67 [shape=box label=\"onnx____LessOrEqual_67\" fontsize=10];\n  Gather_50 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_50)\naxis=0\" fontsize=10];\n  _operators_0_biases_3 -> Gather_50;\n  onnx____Gather_58 -> Gather_50;\n  Gather_50 -> onnx____LessOrEqual_67;\n\n  onnx____Cast_68 [shape=box label=\"onnx____Cast_68\" fontsize=10];\n  LessOrEqual_51 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_51)\" fontsize=10];\n  onnx____LessOrEqual_64 -> LessOrEqual_51;\n  onnx____LessOrEqual_67 -> LessOrEqual_51;\n  LessOrEqual_51 -> onnx____Cast_68;\n\n  onnx____Add_69 [shape=box label=\"onnx____Add_69\" fontsize=10];\n  Cast_52 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_52)\nto=7\" fontsize=10];\n  onnx____Cast_68 -> Cast_52;\n  Cast_52 -> onnx____Add_69;\n\n  onnx____Gather_70 [shape=box label=\"onnx____Gather_70\" fontsize=10];\n  Add_53 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_53)\" fontsize=10];\n  onnx____Add_66 -> Add_53;\n  onnx____Add_69 -> Add_53;\n  Add_53 -> onnx____Gather_70;\n\n  onnx____Reshape_71 [shape=box label=\"onnx____Reshape_71\" fontsize=10];\n  Gather_54 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_54)\naxis=0\" fontsize=10];\n  _operators_0_nodes_4 -> Gather_54;\n  onnx____Gather_70 -> Gather_54;\n  Gather_54 -> onnx____Reshape_71;\n\n  onnx____Reshape_72 [shape=box label=\"onnx____Reshape_72\" fontsize=10];\n  Constant_55 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_55)\nvalue=[-1  1]\" fontsize=10];\n  Constant_55 -> onnx____Reshape_72;\n\n  onnx____GatherElements_73 [shape=box label=\"onnx____GatherElements_73\" fontsize=10];\n  Reshape_56 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_56)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_71 -> Reshape_56;\n  onnx____Reshape_72 -> Reshape_56;\n  Reshape_56 -> onnx____GatherElements_73;\n\n  onnx____Reshape_74 [shape=box label=\"onnx____Reshape_74\" fontsize=10];\n  GatherElements_57 [shape=box style=\"filled,rounded\" color=orange label=\"GatherElements\n(GatherElements_57)\naxis=1\" fontsize=10];\n  X -> GatherElements_57;\n  onnx____GatherElements_73 -> GatherElements_57;\n  GatherElements_57 -> onnx____Reshape_74;\n\n  onnx____Reshape_75 [shape=box label=\"onnx____Reshape_75\" fontsize=10];\n  Constant_58 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_58)\nvalue=[-1]\" fontsize=10];\n  Constant_58 -> onnx____Reshape_75;\n\n  onnx____LessOrEqual_76 [shape=box label=\"onnx____LessOrEqual_76\" fontsize=10];\n  Reshape_59 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_59)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_74 -> Reshape_59;\n  onnx____Reshape_75 -> Reshape_59;\n  Reshape_59 -> onnx____LessOrEqual_76;\n\n  onnx____Mul_77 [shape=box label=\"onnx____Mul_77\" fontsize=10];\n  Constant_60 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_60)\nvalue=2\" fontsize=10];\n  Constant_60 -> onnx____Mul_77;\n\n  onnx____Add_78 [shape=box label=\"onnx____Add_78\" fontsize=10];\n  Mul_61 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mul_61)\" fontsize=10];\n  onnx____Gather_70 -> Mul_61;\n  onnx____Mul_77 -> Mul_61;\n  Mul_61 -> onnx____Add_78;\n\n  onnx____LessOrEqual_79 [shape=box label=\"onnx____LessOrEqual_79\" fontsize=10];\n  Gather_62 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_62)\naxis=0\" fontsize=10];\n  _operators_0_biases_4 -> Gather_62;\n  onnx____Gather_70 -> Gather_62;\n  Gather_62 -> onnx____LessOrEqual_79;\n\n  onnx____Cast_80 [shape=box label=\"onnx____Cast_80\" fontsize=10];\n  LessOrEqual_63 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_63)\" fontsize=10];\n  onnx____LessOrEqual_76 -> LessOrEqual_63;\n  onnx____LessOrEqual_79 -> LessOrEqual_63;\n  LessOrEqual_63 -> onnx____Cast_80;\n\n  onnx____Add_81 [shape=box label=\"onnx____Add_81\" fontsize=10];\n  Cast_64 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_64)\nto=7\" fontsize=10];\n  onnx____Cast_80 -> Cast_64;\n  Cast_64 -> onnx____Add_81;\n\n  onnx____Gather_82 [shape=box label=\"onnx____Gather_82\" fontsize=10];\n  Add_65 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_65)\" fontsize=10];\n  onnx____Add_78 -> Add_65;\n  onnx____Add_81 -> Add_65;\n  Add_65 -> onnx____Gather_82;\n\n  onnx____Reshape_83 [shape=box label=\"onnx____Reshape_83\" fontsize=10];\n  Gather_66 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_66)\naxis=0\" fontsize=10];\n  _operators_0_nodes_5 -> Gather_66;\n  onnx____Gather_82 -> Gather_66;\n  Gather_66 -> onnx____Reshape_83;\n\n  onnx____Reshape_84 [shape=box label=\"onnx____Reshape_84\" fontsize=10];\n  Constant_67 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_67)\nvalue=[-1  1]\" fontsize=10];\n  Constant_67 -> onnx____Reshape_84;\n\n  onnx____GatherElements_85 [shape=box label=\"onnx____GatherElements_85\" fontsize=10];\n  Reshape_68 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_68)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_83 -> Reshape_68;\n  onnx____Reshape_84 -> Reshape_68;\n  Reshape_68 -> onnx____GatherElements_85;\n\n  onnx____Reshape_86 [shape=box label=\"onnx____Reshape_86\" fontsize=10];\n  GatherElements_69 [shape=box style=\"filled,rounded\" color=orange label=\"GatherElements\n(GatherElements_69)\naxis=1\" fontsize=10];\n  X -> GatherElements_69;\n  onnx____GatherElements_85 -> GatherElements_69;\n  GatherElements_69 -> onnx____Reshape_86;\n\n  onnx____Reshape_87 [shape=box label=\"onnx____Reshape_87\" fontsize=10];\n  Constant_70 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_70)\nvalue=[-1]\" fontsize=10];\n  Constant_70 -> onnx____Reshape_87;\n\n  onnx____LessOrEqual_88 [shape=box label=\"onnx____LessOrEqual_88\" fontsize=10];\n  Reshape_71 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_71)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_86 -> Reshape_71;\n  onnx____Reshape_87 -> Reshape_71;\n  Reshape_71 -> onnx____LessOrEqual_88;\n\n  onnx____Mul_89 [shape=box label=\"onnx____Mul_89\" fontsize=10];\n  Constant_72 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_72)\nvalue=2\" fontsize=10];\n  Constant_72 -> onnx____Mul_89;\n\n  onnx____Add_90 [shape=box label=\"onnx____Add_90\" fontsize=10];\n  Mul_73 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mul_73)\" fontsize=10];\n  onnx____Gather_82 -> Mul_73;\n  onnx____Mul_89 -> Mul_73;\n  Mul_73 -> onnx____Add_90;\n\n  onnx____LessOrEqual_91 [shape=box label=\"onnx____LessOrEqual_91\" fontsize=10];\n  Gather_74 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_74)\naxis=0\" fontsize=10];\n  _operators_0_biases_5 -> Gather_74;\n  onnx____Gather_82 -> Gather_74;\n  Gather_74 -> onnx____LessOrEqual_91;\n\n  onnx____Cast_92 [shape=box label=\"onnx____Cast_92\" fontsize=10];\n  LessOrEqual_75 [shape=box style=\"filled,rounded\" color=orange label=\"LessOrEqual\n(LessOrEqual_75)\" fontsize=10];\n  onnx____LessOrEqual_88 -> LessOrEqual_75;\n  onnx____LessOrEqual_91 -> LessOrEqual_75;\n  LessOrEqual_75 -> onnx____Cast_92;\n\n  onnx____Add_93 [shape=box label=\"onnx____Add_93\" fontsize=10];\n  Cast_76 [shape=box style=\"filled,rounded\" color=orange label=\"Cast\n(Cast_76)\nto=7\" fontsize=10];\n  onnx____Cast_92 -> Cast_76;\n  Cast_76 -> onnx____Add_93;\n\n  onnx____Gather_94 [shape=box label=\"onnx____Gather_94\" fontsize=10];\n  Add_77 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Add_77)\" fontsize=10];\n  onnx____Add_90 -> Add_77;\n  onnx____Add_93 -> Add_77;\n  Add_77 -> onnx____Gather_94;\n\n  onnx____Reshape_95 [shape=box label=\"onnx____Reshape_95\" fontsize=10];\n  Gather_78 [shape=box style=\"filled,rounded\" color=orange label=\"Gather\n(Gather_78)\naxis=0\" fontsize=10];\n  _operators_0_leaf_nodes -> Gather_78;\n  onnx____Gather_94 -> Gather_78;\n  Gather_78 -> onnx____Reshape_95;\n\n  onnx____Reshape_96 [shape=box label=\"onnx____Reshape_96\" fontsize=10];\n  Constant_79 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_79)\nvalue=[-1  1  1]\" fontsize=10];\n  Constant_79 -> onnx____Reshape_96;\n\n  output [shape=box label=\"output\" fontsize=10];\n  Reshape_80 [shape=box style=\"filled,rounded\" color=orange label=\"Reshape\n(Reshape_80)\nallowzero=0\" fontsize=10];\n  onnx____Reshape_95 -> Reshape_80;\n  onnx____Reshape_96 -> Reshape_80;\n  Reshape_80 -> output;\n\n  onnx____ReduceSum_98 [shape=box label=\"onnx____ReduceSum_98\" fontsize=10];\n  Constant_81 [shape=box style=\"filled,rounded\" color=orange label=\"Constant\n(Constant_81)\nvalue=[1]\" fontsize=10];\n  Constant_81 -> onnx____ReduceSum_98;\n\n  ReduceSum_82 [shape=box style=\"filled,rounded\" color=orange label=\"ReduceSum\n(ReduceSum_82)\nkeepdims=0\" fontsize=10];\n  output -> ReduceSum_82;\n  onnx____ReduceSum_98 -> ReduceSum_82;\n  ReduceSum_82 -> variable;\n}");
-document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGraph; });
-
-</script></div>
-</div>
 <p>La librairie réimplémente la décision d’un arbre décision à partir d’un produit matriciel pour chaque niveau de l’arbre. Tous les seuils sont évalués. Les matrices n’ont pas besoin d’être sparses car les features nécessaires sont récupérées. Le seuil de décision est implémenté avec un test et non une sigmoïde. Ce modèle est donc identique en terme de prédiction au modèle initial.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">oinfh</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onxh</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">oinfh</span> <span class="o">=</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onxh</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
 <span class="n">expected</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_exp</span><span class="p">)</span>
 
-<span class="n">got</span> <span class="o">=</span> <span class="n">oinfh</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x_exp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)})[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
+<span class="n">got</span> <span class="o">=</span> <span class="n">oinfh</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">x_exp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)})[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">got</span> <span class="o">-</span> <span class="n">expected</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.7421041873949668
+np.float64(1.4748302929273112)
 </pre></div></div>
 </div>
 <p>La conversion reste imparfaite également.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinfh.run({&#39;X&#39;: x_exp32})[&#39;variable&#39;]
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinfh.run(None, {&#39;X&#39;: x_exp32})[0]
 </pre></div>
 </div>
 </div>
@@ -2309,16 +2231,16 @@ document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGrap
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-3.13 ms ± 445 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+1.67 ms ± 17.8 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Et le temps de calcul est aussi plus long.</p>
 </section>
 <section id="Apprentissage">
-<h2>Apprentissage<a class="headerlink" href="#Apprentissage" title="Link to this heading">#</a></h2>
+<h2>Apprentissage<a class="headerlink" href="#Apprentissage" title="Lien vers cette rubrique">#</a></h2>
 <p>L’idée derrière tout cela est aussi de pouvoir réestimer les coefficients du réseau de neurones une fois converti.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
@@ -2328,7 +2250,7 @@ document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGrap
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">got</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
@@ -2337,17 +2259,17 @@ document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGrap
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(1.0246115055833722, 0.24094382754240642)
+(np.float64(1.3105977468247925), np.float64(0.21366120021158772))
 </pre></div></div>
 </div>
 <p>La différence est grande.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
@@ -2359,28 +2281,432 @@ document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGrap
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0/10: loss: 3.201 lr=0.0001 max(coef): 6.5 l1=0/1.5e+03 l2=0/2.5e+03
-1/10: loss: 2.593 lr=9.95e-06 max(coef): 6.5 l1=2e+03/1.5e+03 l2=1.3e+03/2.5e+03
-2/10: loss: 2.506 lr=7.05e-06 max(coef): 6.5 l1=1.4e+02/1.5e+03 l2=6.2/2.5e+03
-3/10: loss: 2.461 lr=5.76e-06 max(coef): 6.5 l1=1.2e+03/1.5e+03 l2=6.8e+02/2.5e+03
-4/10: loss: 2.429 lr=4.99e-06 max(coef): 6.5 l1=6.5e+02/1.5e+03 l2=2.1e+02/2.5e+03
-5/10: loss: 2.405 lr=4.47e-06 max(coef): 6.5 l1=1.9e+02/1.5e+03 l2=13/2.5e+03
-6/10: loss: 2.392 lr=4.08e-06 max(coef): 6.5 l1=1.6e+02/1.5e+03 l2=6.8/2.5e+03
-7/10: loss: 2.375 lr=3.78e-06 max(coef): 6.5 l1=1.8e+02/1.5e+03 l2=9.5/2.5e+03
-8/10: loss: 2.358 lr=3.53e-06 max(coef): 6.5 l1=1.1e+02/1.5e+03 l2=7/2.5e+03
-9/10: loss: 2.345 lr=3.33e-06 max(coef): 6.5 l1=3.7e+02/1.5e+03 l2=56/2.5e+03
-10/10: loss: 2.333 lr=3.16e-06 max(coef): 6.5 l1=6.1e+02/1.5e+03 l2=1.3e+02/2.5e+03
+0/10: loss: 2.76 lr=0.0001 max(coef): 6.5 l1=0/1.5e+03 l2=0/2.5e+03
+1/10: loss: 2.242 lr=9.95e-06 max(coef): 6.5 l1=8.4e+02/1.5e+03 l2=3.3e+02/2.5e+03
+2/10: loss: 2.165 lr=7.05e-06 max(coef): 6.5 l1=1.7e+03/1.5e+03 l2=2e+03/2.5e+03
+3/10: loss: 2.135 lr=5.76e-06 max(coef): 6.5 l1=2.6e+02/1.5e+03 l2=88/2.5e+03
+4/10: loss: 2.119 lr=4.99e-06 max(coef): 6.5 l1=4.7e+02/1.5e+03 l2=2.9e+02/2.5e+03
+5/10: loss: 2.106 lr=4.47e-06 max(coef): 6.5 l1=1.6e+02/1.5e+03 l2=23/2.5e+03
+6/10: loss: 2.098 lr=4.08e-06 max(coef): 6.5 l1=1.9e+03/1.5e+03 l2=3.5e+03/2.5e+03
+7/10: loss: 2.086 lr=3.78e-06 max(coef): 6.5 l1=9.9e+02/1.5e+03 l2=9.4e+02/2.5e+03
+8/10: loss: 2.072 lr=3.53e-06 max(coef): 6.5 l1=54/1.5e+03 l2=1.9/2.5e+03
+9/10: loss: 2.063 lr=3.33e-06 max(coef): 6.5 l1=6.4e+02/1.5e+03 l2=1.9e+02/2.5e+03
+10/10: loss: 2.054 lr=3.16e-06 max(coef): 6.5 l1=1.2e+03/1.5e+03 l2=6.4e+02/2.5e+03
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<style>#sk-container-id-2 {color: black;background-color: white;}#sk-container-id-2 pre{padding: 0;}#sk-container-id-2 div.sk-toggleable {background-color: white;}#sk-container-id-2 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-2 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-2 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-2 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-2 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-2 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-2 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-2 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-2 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-2 div.sk-item {position: relative;z-index: 1;}#sk-container-id-2 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-2 div.sk-item::before, #sk-container-id-2 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-2 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-2 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-2 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-2 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-2 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-2 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-2 div.sk-label-container {text-align: center;}#sk-container-id-2 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-2 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label sk-toggleable__label-arrow">NeuralTreeNetRegressor</label><div class="sk-toggleable__content"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre></div></div></div></div></div></div>
+<style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;NeuralTreeNetRegressor<span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>NeuralTreeNetRegressor(estimator=None, lr=0.0001, max_iter=10, verbose=1)</pre></div> </div></div></div></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">got</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
@@ -2389,12 +2715,12 @@ document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGrap
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(1.256860512819292, 0.25663312220721907)
+(np.float64(1.324478311165207), np.float64(0.22581473935951998))
 </pre></div></div>
 </div>
 <p>Ca ne marche pas aussi bien que prévu. Il faudrait sans doute plusieurs itérations et jouer avec les paramètres d’apprentissage.</p>
@@ -2515,7 +2841,7 @@ document.getElementById('M383513f79aa048579be42d593ab48485').innerHTML = svgGrap
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

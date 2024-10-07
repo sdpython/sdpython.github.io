@@ -29,8 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,9 +43,9 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -593,13 +593,13 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="Le-gradient-et-le-discret">
-<h1>Le gradient et le discret<a class="headerlink" href="#Le-gradient-et-le-discret" title="Link to this heading">#</a></h1>
+<h1>Le gradient et le discret<a class="headerlink" href="#Le-gradient-et-le-discret" title="Lien vers cette rubrique">#</a></h1>
 <p>Les méthodes d’optimisation à base de gradient s’appuie sur une fonction d’erreur dérivable qu’on devrait appliquer de préférence sur des variables aléatoires réelles. Ce notebook explore quelques idées.</p>
 <section id="Un-petit-problème-simple">
-<h2>Un petit problème simple<a class="headerlink" href="#Un-petit-problème-simple" title="Link to this heading">#</a></h2>
+<h2>Un petit problème simple<a class="headerlink" href="#Un-petit-problème-simple" title="Lien vers cette rubrique">#</a></h2>
 <p>On utilise le jeu de données <em>iris</em> disponible dans <a class="reference external" href="http://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html">scikit-learn</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
@@ -612,7 +612,7 @@ document.write(`
 </div>
 <p>On cale une régression logistique. On ne distingue pas apprentissage et test car ce n’est pas le propos de ce notebook.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
@@ -622,21 +622,429 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/xadupre/vv/this/lib/python3.10/site-packages/sklearn/linear_model/_logistic.py:1256: FutureWarning: &#39;multi_class&#39; was deprecated in version 1.5 and will be removed in 1.7. Use OneVsRestClassifier(LogisticRegression(..)) instead. Leave it to its default value to avoid this warning.
+  warnings.warn(
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
-          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;,
-          n_jobs=None, penalty=&#39;l2&#39;, random_state=None, solver=&#39;liblinear&#39;,
-          tol=0.0001, verbose=0, warm_start=False)
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(multi_class=&#x27;ovr&#x27;, solver=&#x27;liblinear&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;LogisticRegression<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.5/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>LogisticRegression(multi_class=&#x27;ovr&#x27;, solver=&#x27;liblinear&#x27;)</pre></div> </div></div></div></div></div>
 </div>
 <p>Puis on calcule la matrice de confusion.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
@@ -647,25 +1055,25 @@ LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 array([[49,  1,  0],
        [ 2, 21, 27],
-       [ 1,  4, 45]], dtype=int64)
+       [ 1,  4, 45]])
 </pre></div></div>
 </div>
 </section>
 <section id="Multiplication-des-observations">
-<h2>Multiplication des observations<a class="headerlink" href="#Multiplication-des-observations" title="Link to this heading">#</a></h2>
+<h2>Multiplication des observations<a class="headerlink" href="#Multiplication-des-observations" title="Lien vers cette rubrique">#</a></h2>
 <p>Le paramètre <code class="docutils literal notranslate"><span class="pre">multi_class='ovr'</span></code> stipule que le modèle cache en fait l’estimation de 3 régressions logistiques binaire. Essayons de n’en faire qu’une seule en ajouter le label <code class="docutils literal notranslate"><span class="pre">Y</span></code> aux variables. Soit un couple <span class="math notranslate nohighlight">\((X_i \in \mathbb{R^d}, Y_i \in \mathbb{N})\)</span> qui correspond à une observation pour un problème multi-classe. Comme il y a <span class="math notranslate nohighlight">\(C\)</span> classes, on multiplie cette ligne par le nombre de classes <span class="math notranslate nohighlight">\(C\)</span> pour obtenir :</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\forall c \in \mathbb{[}1, ..., C\mathbb{]}, \; \left\{ \begin{array}{ll} X_i' = (X_{i,1}, ..., X_{i,d}, Y_{i,1}, ..., Y_{i,C}) \\ Y_i' = \mathbb{1}_{Y_i = c} \\ Y_{i,k} = \mathbb{1}_{c = k}\end{array} \right.\end{split}\]</div>
 <p>Voyons ce que cela donne sur un exemple :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
@@ -698,7 +1106,7 @@ array([[49,  1,  0],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -762,7 +1170,7 @@ array([[49,  1,  0],
 </div>
 <p>Trois colonnes ont été ajoutées côté <span class="math notranslate nohighlight">\(X\)</span>, la ligne a été multipliée 3 fois, la dernière colonne est <span class="math notranslate nohighlight">\(Y\)</span> qui ne vaut 1 que lorsque le 1 est au bon endroit dans une des colonnes ajoutées. Le problème de classification qui été de prédire la bonne classe devient : est-ce la classe à prédire est <span class="math notranslate nohighlight">\(k\)</span> ? On applique cela sur toutes les lignes de la base et cela donne :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xext</span><span class="p">,</span> <span class="n">Yext</span> <span class="o">=</span> <span class="n">multiplie</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
@@ -774,7 +1182,7 @@ array([[49,  1,  0],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -806,17 +1214,71 @@ array([[49,  1,  0],
   </thead>
   <tbody>
     <tr>
-      <th>414</th>
-      <td>6.7</td>
-      <td>3.3</td>
+      <th>381</th>
+      <td>5.5</td>
+      <td>2.4</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>6.9</td>
+      <td>3.1</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>189</th>
+      <td>5.1</td>
+      <td>3.4</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>397</th>
+      <td>6.2</td>
+      <td>2.9</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>239</th>
+      <td>5.5</td>
+      <td>2.5</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
       <td>1.0</td>
     </tr>
     <tr>
-      <th>125</th>
-      <td>5.5</td>
+      <th>108</th>
+      <td>6.7</td>
+      <td>2.5</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>398</th>
+      <td>5.1</td>
       <td>2.5</td>
       <td>0.0</td>
       <td>0.0</td>
@@ -824,83 +1286,29 @@ array([[49,  1,  0],
       <td>0.0</td>
     </tr>
     <tr>
-      <th>394</th>
-      <td>6.7</td>
-      <td>3.1</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>411</th>
-      <td>6.0</td>
-      <td>2.2</td>
+      <th>22</th>
+      <td>4.6</td>
+      <td>3.6</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
+      <td>1.0</td>
     </tr>
     <tr>
-      <th>95</th>
-      <td>7.6</td>
+      <th>13</th>
+      <td>4.3</td>
       <td>3.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>64</th>
-      <td>5.8</td>
-      <td>2.6</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>309</th>
-      <td>5.0</td>
-      <td>3.4</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>6.7</td>
-      <td>3.0</td>
-      <td>0.0</td>
       <td>1.0</td>
       <td>0.0</td>
       <td>0.0</td>
-    </tr>
-    <tr>
-      <th>182</th>
-      <td>6.1</td>
-      <td>2.8</td>
       <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>4.7</td>
-      <td>3.2</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
@@ -911,24 +1319,418 @@ array([[49,  1,  0],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-GradientBoostingClassifier(criterion=&#39;friedman_mse&#39;, init=None,
-              learning_rate=0.1, loss=&#39;deviance&#39;, max_depth=3,
-              max_features=None, max_leaf_nodes=None,
-              min_impurity_decrease=0.0, min_impurity_split=None,
-              min_samples_leaf=1, min_samples_split=2,
-              min_weight_fraction_leaf=0.0, n_estimators=100,
-              n_iter_no_change=None, presort=&#39;auto&#39;, random_state=None,
-              subsample=1.0, tol=0.0001, validation_fraction=0.1,
-              verbose=0, warm_start=False)
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<style>#sk-container-id-2 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-2 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-2 pre {
+  padding: 0;
+}
+
+#sk-container-id-2 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-2 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-2 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-2 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-2 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-2 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-2 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-2 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-2 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-2 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-2 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-2 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-2 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-2 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-2 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-2 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-2 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-2 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-2 div.sk-label label.sk-toggleable__label,
+#sk-container-id-2 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-2 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-2 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-2 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-2 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-2 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-2 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-2 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-2 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-2 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-2 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GradientBoostingClassifier()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;GradientBoostingClassifier<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html">?<span>Documentation for GradientBoostingClassifier</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>GradientBoostingClassifier()</pre></div> </div></div></div></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xext</span><span class="p">)</span>
@@ -937,21 +1739,21 @@ GradientBoostingClassifier(criterion=&#39;friedman_mse&#39;, init=None,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 array([[278,  22],
-       [ 25, 125]], dtype=int64)
+       [ 25, 125]])
 </pre></div></div>
 </div>
 </section>
 <section id="Introduire-du-bruit">
-<h2>Introduire du bruit<a class="headerlink" href="#Introduire-du-bruit" title="Link to this heading">#</a></h2>
+<h2>Introduire du bruit<a class="headerlink" href="#Introduire-du-bruit" title="Lien vers cette rubrique">#</a></h2>
 <p>Un des problèmes de cette méthode est qu’on ajoute une variable binaire pour un problème résolu à l’aide d’une optimisation à base de gradient. C’est moyen. Pas de problème, changeons un peu la donne.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -981,7 +1783,7 @@ array([[278,  22],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1016,27 +1818,27 @@ array([[278,  22],
       <th>0</th>
       <td>5.1</td>
       <td>3.5</td>
-      <td>1.107461</td>
-      <td>0.166893</td>
-      <td>0.018765</td>
+      <td>1.004920</td>
+      <td>0.004532</td>
+      <td>0.039157</td>
       <td>1.0</td>
     </tr>
     <tr>
       <th>1</th>
       <td>5.1</td>
       <td>3.5</td>
-      <td>0.162464</td>
-      <td>1.187359</td>
-      <td>0.187721</td>
+      <td>0.085563</td>
+      <td>1.129575</td>
+      <td>0.121337</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>2</th>
       <td>5.1</td>
       <td>3.5</td>
-      <td>0.086876</td>
-      <td>0.178472</td>
-      <td>1.179201</td>
+      <td>0.130275</td>
+      <td>0.174763</td>
+      <td>1.074460</td>
       <td>0.0</td>
     </tr>
   </tbody>
@@ -1045,7 +1847,7 @@ array([[278,  22],
 </div>
 <p>Le problème est le même qu’avant excepté les variables <span class="math notranslate nohighlight">\(Y_i\)</span> qui sont maintenant réel. Au lieu d’être nul, on prend une valeur <span class="math notranslate nohighlight">\(Y_i &lt; 0.4\)</span>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xextb</span><span class="p">,</span> <span class="n">Yextb</span> <span class="o">=</span> <span class="n">multiplie_bruit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
@@ -1056,7 +1858,7 @@ array([[278,  22],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1088,101 +1890,101 @@ array([[278,  22],
   </thead>
   <tbody>
     <tr>
-      <th>295</th>
-      <td>5.5</td>
+      <th>212</th>
+      <td>6.0</td>
+      <td>2.2</td>
+      <td>0.149054</td>
+      <td>1.155596</td>
+      <td>0.109413</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>116</th>
+      <td>6.5</td>
+      <td>3.0</td>
+      <td>1.071760</td>
+      <td>0.092802</td>
+      <td>0.013911</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>391</th>
+      <td>6.1</td>
+      <td>3.0</td>
+      <td>0.084143</td>
+      <td>0.137336</td>
+      <td>1.063657</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>5.4</td>
+      <td>3.9</td>
+      <td>1.098201</td>
+      <td>0.064308</td>
+      <td>0.032878</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>229</th>
+      <td>5.7</td>
       <td>2.6</td>
-      <td>0.197643</td>
-      <td>1.199976</td>
-      <td>0.180766</td>
+      <td>0.126999</td>
+      <td>1.065582</td>
+      <td>0.127480</td>
       <td>1.0</td>
     </tr>
     <tr>
-      <th>46</th>
-      <td>5.2</td>
-      <td>3.4</td>
-      <td>0.178395</td>
-      <td>0.190600</td>
-      <td>1.159765</td>
+      <th>38</th>
+      <td>4.4</td>
+      <td>3.0</td>
+      <td>1.164621</td>
+      <td>0.050779</td>
+      <td>0.009277</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>213</th>
+      <td>6.1</td>
+      <td>2.9</td>
+      <td>0.061990</td>
+      <td>1.034818</td>
+      <td>0.047033</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>334</th>
+      <td>4.9</td>
+      <td>3.1</td>
+      <td>0.031713</td>
+      <td>0.141205</td>
+      <td>1.043195</td>
       <td>0.0</td>
     </tr>
     <tr>
-      <th>187</th>
-      <td>6.7</td>
-      <td>3.1</td>
-      <td>0.188947</td>
-      <td>1.093288</td>
-      <td>0.139723</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>210</th>
-      <td>6.9</td>
-      <td>3.1</td>
-      <td>0.095428</td>
-      <td>0.182643</td>
-      <td>1.037533</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>5.5</td>
-      <td>3.5</td>
-      <td>1.131419</td>
-      <td>0.077241</td>
-      <td>0.177483</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>315</th>
-      <td>6.4</td>
-      <td>3.2</td>
-      <td>0.099738</td>
-      <td>0.197291</td>
-      <td>1.035431</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>152</th>
-      <td>5.8</td>
-      <td>2.7</td>
-      <td>0.069061</td>
-      <td>0.045325</td>
-      <td>1.061221</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>168</th>
+      <th>54</th>
       <td>6.5</td>
       <td>2.8</td>
-      <td>0.093164</td>
-      <td>1.177413</td>
-      <td>0.095890</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>348</th>
-      <td>6.9</td>
-      <td>3.1</td>
-      <td>1.094184</td>
-      <td>0.196944</td>
-      <td>0.083975</td>
+      <td>1.066118</td>
+      <td>0.158271</td>
+      <td>0.187764</td>
       <td>0.0</td>
     </tr>
     <tr>
-      <th>261</th>
-      <td>6.3</td>
-      <td>2.8</td>
-      <td>0.197558</td>
-      <td>0.080273</td>
-      <td>1.009379</td>
-      <td>1.0</td>
+      <th>379</th>
+      <td>5.7</td>
+      <td>2.6</td>
+      <td>0.033443</td>
+      <td>0.055818</td>
+      <td>1.008779</td>
+      <td>0.0</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
@@ -1193,24 +1995,418 @@ array([[278,  22],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-GradientBoostingClassifier(criterion=&#39;friedman_mse&#39;, init=None,
-              learning_rate=0.1, loss=&#39;deviance&#39;, max_depth=3,
-              max_features=None, max_leaf_nodes=None,
-              min_impurity_decrease=0.0, min_impurity_split=None,
-              min_samples_leaf=1, min_samples_split=2,
-              min_weight_fraction_leaf=0.0, n_estimators=100,
-              n_iter_no_change=None, presort=&#39;auto&#39;, random_state=None,
-              subsample=1.0, tol=0.0001, validation_fraction=0.1,
-              verbose=0, warm_start=False)
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<style>#sk-container-id-3 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-3 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-3 pre {
+  padding: 0;
+}
+
+#sk-container-id-3 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-3 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-3 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-3 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-3 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-3 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-3 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-3 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-3 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-3 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-3 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-3 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-3 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-3 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-3 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-3 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-3 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-3 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-3 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-3 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-3 div.sk-label label.sk-toggleable__label,
+#sk-container-id-3 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-3 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-3 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-3 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-3 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-3 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-3 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-3 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-3 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-3 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-3 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-3 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GradientBoostingClassifier()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;GradientBoostingClassifier<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html">?<span>Documentation for GradientBoostingClassifier</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>GradientBoostingClassifier()</pre></div> </div></div></div></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predb</span> <span class="o">=</span> <span class="n">clfb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xextb</span><span class="p">)</span>
@@ -1219,22 +2415,22 @@ GradientBoostingClassifier(criterion=&#39;friedman_mse&#39;, init=None,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([[299,   1],
-       [ 10, 140]], dtype=int64)
+array([[295,   5],
+       [  9, 141]])
 </pre></div></div>
 </div>
 <p>C’est un petit peu mieux.</p>
 </section>
 <section id="Comparaisons-de-plusieurs-modèles">
-<h2>Comparaisons de plusieurs modèles<a class="headerlink" href="#Comparaisons-de-plusieurs-modèles" title="Link to this heading">#</a></h2>
+<h2>Comparaisons de plusieurs modèles<a class="headerlink" href="#Comparaisons-de-plusieurs-modèles" title="Lien vers cette rubrique">#</a></h2>
 <p>On cherche maintenant à comparer le gain en introduisant du bruit pour différents modèles.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -1272,10 +2468,12 @@ array([[299,   1],
 <span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OneVsRestClassifier</span>
 <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="n">LogisticRegression</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="n">OneVsRestClassifier</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">))),</span>
     <span class="n">GradientBoostingClassifier</span><span class="p">,</span>
     <span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span>
     <span class="n">DecisionTreeClassifier</span><span class="p">,</span>
@@ -1288,20 +2486,30 @@ array([[299,   1],
     <span class="p">(</span>
         <span class="n">AdaBoostClassifier</span><span class="p">,</span>
         <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">base_estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">),</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">),</span>
             <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;SAMME&quot;</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">]</span>
 
-<span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparaison</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comparaison</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 11/11 [00:01&lt;00:00,  6.17it/s]
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1323,77 +2531,77 @@ array([[299,   1],
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>model</th>
       <th>err1</th>
       <th>err2</th>
-      <th>model</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>10</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
       <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
     </tr>
     <tr>
       <th>3</th>
+      <td>DecisionTreeClassifier</td>
       <td>0.048889</td>
       <td>0.000000</td>
-      <td>DecisionTreeClassifier</td>
     </tr>
     <tr>
       <th>4</th>
+      <td>ExtraTreeClassifier</td>
       <td>0.048889</td>
       <td>0.000000</td>
-      <td>ExtraTreeClassifier</td>
     </tr>
     <tr>
       <th>6</th>
+      <td>ExtraTreesClassifier</td>
       <td>0.048889</td>
       <td>0.000000</td>
-      <td>ExtraTreesClassifier</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
       <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.104444</td>
-      <td>0.044444</td>
       <td>GradientBoostingClassifier</td>
+      <td>0.104444</td>
+      <td>0.022222</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>0.104444</td>
-      <td>0.091111</td>
       <td>KNeighborsClassifier</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>LogisticRegression</td>
+      <td>0.108889</td>
+      <td>0.097778</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
       <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>RandomForestClassifier</td>
       <td>0.053333</td>
       <td>0.002222</td>
-      <td>RandomForestClassifier</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>0.333333</td>
-      <td>0.053333</td>
       <td>XGBClassifier</td>
+      <td>0.333333</td>
+      <td>0.000000</td>
     </tr>
   </tbody>
 </table>
@@ -1402,10 +2610,10 @@ array([[299,   1],
 <p><em>err1</em> correspond à <span class="math notranslate nohighlight">\(Y_0, Y_1, Y_2\)</span> binaire, <em>err2</em> aux mêmes variables mais avec un peu de bruit. L’ajout ne semble pas faire décroître la performance et l’améliore dans certains cas. C’est une piste à suivre. Reste à savoir si les modèles n’apprennent pas le bruit.</p>
 </section>
 <section id="Avec-une-ACP">
-<h2>Avec une ACP<a class="headerlink" href="#Avec-une-ACP" title="Link to this heading">#</a></h2>
+<h2>Avec une ACP<a class="headerlink" href="#Avec-une-ACP" title="Lien vers cette rubrique">#</a></h2>
 <p>On peut faire varier le nombre de composantes, j’en ai gardé qu’une. L’ACP est appliquée après avoir ajouté les variables binaires ou binaires bruitées. Le résultat est sans équivoque. Aucun modèle ne parvient à apprendre sans l’ajout de bruit.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
@@ -1434,14 +2642,24 @@ array([[299,   1],
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">modelACP</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">errACP1</span><span class="o">=</span><span class="n">err</span><span class="p">,</span> <span class="n">errACP2</span><span class="o">=</span><span class="n">errb</span><span class="p">)</span>
 
 
-<span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">comparaison_ACP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comparaison_ACP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
 <span class="n">dfb</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">),</span> <span class="n">dfb</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;modelACP&quot;</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 11/11 [00:01&lt;00:00,  5.83it/s]
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1463,113 +2681,113 @@ array([[299,   1],
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>model</th>
       <th>err1</th>
       <th>err2</th>
-      <th>model</th>
+      <th>modelACP</th>
       <th>errACP1</th>
       <th>errACP2</th>
-      <th>modelACP</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>10</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
       <td>AdaBoostClassifier</td>
       <td>0.333333</td>
       <td>0.333333</td>
       <td>AdaBoostClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
     </tr>
     <tr>
       <th>3</th>
+      <td>DecisionTreeClassifier</td>
       <td>0.048889</td>
       <td>0.000000</td>
       <td>DecisionTreeClassifier</td>
       <td>0.333333</td>
       <td>0.000000</td>
-      <td>DecisionTreeClassifier</td>
     </tr>
     <tr>
       <th>4</th>
+      <td>ExtraTreeClassifier</td>
       <td>0.048889</td>
       <td>0.000000</td>
       <td>ExtraTreeClassifier</td>
       <td>0.333333</td>
       <td>0.000000</td>
-      <td>ExtraTreeClassifier</td>
     </tr>
     <tr>
       <th>6</th>
+      <td>ExtraTreesClassifier</td>
       <td>0.048889</td>
       <td>0.000000</td>
       <td>ExtraTreesClassifier</td>
       <td>0.333333</td>
       <td>0.000000</td>
-      <td>ExtraTreesClassifier</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
       <td>GaussianNB</td>
       <td>0.333333</td>
       <td>0.333333</td>
       <td>GaussianNB</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
     </tr>
     <tr>
       <th>1</th>
+      <td>GradientBoostingClassifier</td>
       <td>0.104444</td>
-      <td>0.044444</td>
+      <td>0.022222</td>
       <td>GradientBoostingClassifier</td>
       <td>0.333333</td>
-      <td>0.224444</td>
-      <td>GradientBoostingClassifier</td>
+      <td>0.231111</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>0.104444</td>
-      <td>0.091111</td>
+      <td>KNeighborsClassifier</td>
+      <td>0.108889</td>
+      <td>0.097778</td>
       <td>KNeighborsClassifier</td>
       <td>0.335556</td>
-      <td>0.340000</td>
-      <td>KNeighborsClassifier</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>LogisticRegression</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>LogisticRegression</td>
+      <td>0.302222</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>0.333333</td>
-      <td>0.333333</td>
       <td>MLPClassifier</td>
       <td>0.333333</td>
       <td>0.333333</td>
       <td>MLPClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>RandomForestClassifier</td>
       <td>0.053333</td>
       <td>0.002222</td>
       <td>RandomForestClassifier</td>
-      <td>0.333333</td>
-      <td>0.024444</td>
-      <td>RandomForestClassifier</td>
+      <td>0.335556</td>
+      <td>0.020000</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>0.333333</td>
-      <td>0.053333</td>
       <td>XGBClassifier</td>
       <td>0.333333</td>
-      <td>0.315556</td>
+      <td>0.000000</td>
       <td>XGBClassifier</td>
+      <td>0.333333</td>
+      <td>0.262222</td>
     </tr>
   </tbody>
 </table>
@@ -1577,10 +2795,10 @@ array([[299,   1],
 </div>
 </section>
 <section id="Base-d'apprentissage-et-de-test">
-<h2>Base d’apprentissage et de test<a class="headerlink" href="#Base-d'apprentissage-et-de-test" title="Link to this heading">#</a></h2>
+<h2>Base d’apprentissage et de test<a class="headerlink" href="#Base-d'apprentissage-et-de-test" title="Lien vers cette rubrique">#</a></h2>
 <p>Cette fois-ci, on s’intéresse à la qualité des frontières que les modèles trouvent en vérifiant sur une base de test que l’apprentissage s’est bien passé.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -1596,7 +2814,7 @@ array([[299,   1],
     <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">clf</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">clfb</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">**</span><span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -1666,8 +2884,16 @@ array([[299,   1],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 11/11 [00:02&lt;00:00,  5.40it/s]
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1712,32 +2938,32 @@ array([[299,   1],
     <tr>
       <th>3</th>
       <td>DecisionTreeClassifier</td>
-      <td>0.026667</td>
+      <td>0.046667</td>
       <td>0.000000</td>
-      <td>0.226667</td>
-      <td>0.206667</td>
-      <td>0.273333</td>
-      <td>0.313333</td>
+      <td>0.566667</td>
+      <td>0.220000</td>
+      <td>0.300000</td>
+      <td>0.553333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>ExtraTreeClassifier</td>
-      <td>0.026667</td>
+      <td>0.046667</td>
       <td>0.000000</td>
-      <td>0.253333</td>
-      <td>0.213333</td>
-      <td>0.253333</td>
-      <td>0.273333</td>
+      <td>0.263333</td>
+      <td>0.186667</td>
+      <td>0.173333</td>
+      <td>0.266667</td>
     </tr>
     <tr>
       <th>6</th>
       <td>ExtraTreesClassifier</td>
-      <td>0.026667</td>
+      <td>0.046667</td>
       <td>0.000000</td>
-      <td>0.140000</td>
-      <td>0.200000</td>
       <td>0.213333</td>
-      <td>0.220000</td>
+      <td>0.166667</td>
+      <td>0.186667</td>
+      <td>0.193333</td>
     </tr>
     <tr>
       <th>8</th>
@@ -1752,32 +2978,22 @@ array([[299,   1],
     <tr>
       <th>1</th>
       <td>GradientBoostingClassifier</td>
-      <td>0.080000</td>
-      <td>0.013333</td>
-      <td>0.176667</td>
+      <td>0.093333</td>
+      <td>0.023333</td>
+      <td>0.306667</td>
+      <td>0.173333</td>
       <td>0.186667</td>
       <td>0.246667</td>
-      <td>0.240000</td>
     </tr>
     <tr>
       <th>9</th>
       <td>KNeighborsClassifier</td>
-      <td>0.070000</td>
-      <td>0.076667</td>
-      <td>0.073333</td>
-      <td>0.160000</td>
-      <td>0.160000</td>
-      <td>0.166667</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>LogisticRegression</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
+      <td>0.103333</td>
+      <td>0.106667</td>
+      <td>0.123333</td>
+      <td>0.133333</td>
+      <td>0.146667</td>
+      <td>0.146667</td>
     </tr>
     <tr>
       <th>7</th>
@@ -1790,24 +3006,34 @@ array([[299,   1],
       <td>0.333333</td>
     </tr>
     <tr>
+      <th>0</th>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
       <th>2</th>
       <td>RandomForestClassifier</td>
-      <td>0.026667</td>
-      <td>0.000000</td>
-      <td>0.156667</td>
-      <td>0.206667</td>
-      <td>0.266667</td>
-      <td>0.213333</td>
+      <td>0.053333</td>
+      <td>0.006667</td>
+      <td>0.183333</td>
+      <td>0.173333</td>
+      <td>0.193333</td>
+      <td>0.153333</td>
     </tr>
     <tr>
       <th>5</th>
       <td>XGBClassifier</td>
-      <td>0.106667</td>
-      <td>0.036667</td>
-      <td>0.333333</td>
-      <td>0.193333</td>
-      <td>0.280000</td>
-      <td>0.346667</td>
+      <td>0.053333</td>
+      <td>0.000000</td>
+      <td>0.210000</td>
+      <td>0.206667</td>
+      <td>0.206667</td>
+      <td>0.233333</td>
     </tr>
   </tbody>
 </table>
@@ -1815,7 +3041,7 @@ array([[299,   1],
 </div>
 <p>Les colonnes <em>err2b_train_clean</em> et <em>err2b_test_clean</em> sont les erreurs obtenues par des modèles appris sur des colonnes bruitées et testées sur des colonnes non bruitées ce qui est le véritable test. On s’aperçoit que les performances sont très dégradées sur la base d’test. Une raison est que le bruit choisi ajouté n’est pas centré. Corrigeons cela.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit_centree</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1842,8 +3068,16 @@ array([[299,   1],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 11/11 [00:02&lt;00:00,  4.58it/s]
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1890,19 +3124,19 @@ array([[299,   1],
       <td>DecisionTreeClassifier</td>
       <td>0.033333</td>
       <td>0.000000</td>
-      <td>0.143333</td>
-      <td>0.193333</td>
-      <td>0.273333</td>
-      <td>0.206667</td>
+      <td>0.256667</td>
+      <td>0.200000</td>
+      <td>0.293333</td>
+      <td>0.260000</td>
     </tr>
     <tr>
       <th>4</th>
       <td>ExtraTreeClassifier</td>
       <td>0.033333</td>
       <td>0.000000</td>
-      <td>0.143333</td>
-      <td>0.226667</td>
-      <td>0.233333</td>
+      <td>0.186667</td>
+      <td>0.186667</td>
+      <td>0.200000</td>
       <td>0.180000</td>
     </tr>
     <tr>
@@ -1910,10 +3144,10 @@ array([[299,   1],
       <td>ExtraTreesClassifier</td>
       <td>0.033333</td>
       <td>0.000000</td>
-      <td>0.123333</td>
-      <td>0.200000</td>
-      <td>0.213333</td>
-      <td>0.193333</td>
+      <td>0.143333</td>
+      <td>0.146667</td>
+      <td>0.153333</td>
+      <td>0.106667</td>
     </tr>
     <tr>
       <th>8</th>
@@ -1928,32 +3162,22 @@ array([[299,   1],
     <tr>
       <th>1</th>
       <td>GradientBoostingClassifier</td>
-      <td>0.083333</td>
-      <td>0.013333</td>
-      <td>0.203333</td>
-      <td>0.193333</td>
-      <td>0.226667</td>
-      <td>0.280000</td>
+      <td>0.096667</td>
+      <td>0.016667</td>
+      <td>0.153333</td>
+      <td>0.140000</td>
+      <td>0.166667</td>
+      <td>0.146667</td>
     </tr>
     <tr>
       <th>9</th>
       <td>KNeighborsClassifier</td>
-      <td>0.106667</td>
-      <td>0.106667</td>
+      <td>0.113333</td>
+      <td>0.110000</td>
       <td>0.100000</td>
-      <td>0.180000</td>
-      <td>0.180000</td>
-      <td>0.193333</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>LogisticRegression</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
+      <td>0.173333</td>
+      <td>0.140000</td>
+      <td>0.146667</td>
     </tr>
     <tr>
       <th>7</th>
@@ -1966,24 +3190,34 @@ array([[299,   1],
       <td>0.333333</td>
     </tr>
     <tr>
+      <th>0</th>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
       <th>2</th>
       <td>RandomForestClassifier</td>
-      <td>0.040000</td>
-      <td>0.000000</td>
-      <td>0.176667</td>
-      <td>0.206667</td>
-      <td>0.240000</td>
-      <td>0.253333</td>
+      <td>0.043333</td>
+      <td>0.006667</td>
+      <td>0.183333</td>
+      <td>0.153333</td>
+      <td>0.193333</td>
+      <td>0.153333</td>
     </tr>
     <tr>
       <th>5</th>
       <td>XGBClassifier</td>
-      <td>0.080000</td>
-      <td>0.063333</td>
-      <td>0.170000</td>
+      <td>0.043333</td>
+      <td>0.000000</td>
+      <td>0.193333</td>
+      <td>0.206667</td>
+      <td>0.200000</td>
       <td>0.186667</td>
-      <td>0.220000</td>
-      <td>0.240000</td>
     </tr>
   </tbody>
 </table>
@@ -1991,7 +3225,7 @@ array([[299,   1],
 </div>
 <p>C’est mieux mais on en conclut que dans la plupart des cas, la meilleure performance sur la base d’apprentissage avec le bruit ajouté est due au fait que les modèles apprennent par coeur. Sur la base de test, les performances ne sont pas meilleures. Une erreur de 33% signifie que la réponse du classifieur est constante. On multiplie les exemples.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit_centree_duplique</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2021,8 +3255,16 @@ array([[299,   1],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 11/11 [00:02&lt;00:00,  3.96it/s]
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -2067,32 +3309,32 @@ array([[299,   1],
     <tr>
       <th>3</th>
       <td>DecisionTreeClassifier</td>
-      <td>0.040000</td>
+      <td>0.020000</td>
       <td>0.000000</td>
-      <td>0.120000</td>
-      <td>0.180000</td>
-      <td>0.209333</td>
-      <td>0.240000</td>
+      <td>0.090000</td>
+      <td>0.326667</td>
+      <td>0.280000</td>
+      <td>0.253333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>ExtraTreeClassifier</td>
-      <td>0.040000</td>
+      <td>0.020000</td>
       <td>0.000000</td>
-      <td>0.073333</td>
-      <td>0.213333</td>
-      <td>0.232000</td>
-      <td>0.220000</td>
+      <td>0.183333</td>
+      <td>0.226667</td>
+      <td>0.204000</td>
+      <td>0.293333</td>
     </tr>
     <tr>
       <th>6</th>
       <td>ExtraTreesClassifier</td>
-      <td>0.040000</td>
+      <td>0.020000</td>
       <td>0.000000</td>
-      <td>0.066667</td>
+      <td>0.050000</td>
       <td>0.213333</td>
-      <td>0.168000</td>
-      <td>0.160000</td>
+      <td>0.194667</td>
+      <td>0.180000</td>
     </tr>
     <tr>
       <th>8</th>
@@ -2107,32 +3349,22 @@ array([[299,   1],
     <tr>
       <th>1</th>
       <td>GradientBoostingClassifier</td>
-      <td>0.086667</td>
-      <td>0.087333</td>
-      <td>0.166667</td>
-      <td>0.173333</td>
-      <td>0.192000</td>
+      <td>0.080000</td>
+      <td>0.089333</td>
+      <td>0.120000</td>
       <td>0.186667</td>
+      <td>0.169333</td>
+      <td>0.160000</td>
     </tr>
     <tr>
       <th>9</th>
       <td>KNeighborsClassifier</td>
-      <td>0.110000</td>
-      <td>0.094667</td>
-      <td>0.106667</td>
-      <td>0.113333</td>
-      <td>0.158667</td>
-      <td>0.153333</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>LogisticRegression</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
+      <td>0.096667</td>
+      <td>0.088000</td>
+      <td>0.130000</td>
+      <td>0.173333</td>
+      <td>0.150667</td>
+      <td>0.146667</td>
     </tr>
     <tr>
       <th>7</th>
@@ -2145,24 +3377,34 @@ array([[299,   1],
       <td>0.333333</td>
     </tr>
     <tr>
+      <th>0</th>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
       <th>2</th>
       <td>RandomForestClassifier</td>
-      <td>0.046667</td>
+      <td>0.023333</td>
       <td>0.000667</td>
-      <td>0.090000</td>
-      <td>0.160000</td>
-      <td>0.188000</td>
-      <td>0.226667</td>
+      <td>0.080000</td>
+      <td>0.206667</td>
+      <td>0.161333</td>
+      <td>0.186667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>XGBClassifier</td>
-      <td>0.123333</td>
-      <td>0.108667</td>
-      <td>0.173333</td>
-      <td>0.153333</td>
-      <td>0.204000</td>
-      <td>0.193333</td>
+      <td>0.033333</td>
+      <td>0.000000</td>
+      <td>0.076667</td>
+      <td>0.226667</td>
+      <td>0.188000</td>
+      <td>0.200000</td>
     </tr>
   </tbody>
 </table>
@@ -2170,7 +3412,7 @@ array([[299,   1],
 </div>
 <p>Cela fonctionne un peu mieux le fait d’ajouter du hasard ne permet pas d’obtenir des gains significatifs à part pour le modèle <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">SVC</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiplie_bruit_centree_duplique_rebalance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -2198,8 +3440,16 @@ array([[299,   1],
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 11/11 [00:02&lt;00:00,  4.74it/s]
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -2244,32 +3494,32 @@ array([[299,   1],
     <tr>
       <th>3</th>
       <td>DecisionTreeClassifier</td>
-      <td>0.033333</td>
+      <td>0.026667</td>
       <td>0.000000</td>
-      <td>0.143333</td>
-      <td>0.200000</td>
-      <td>0.233333</td>
-      <td>0.193333</td>
+      <td>0.180000</td>
+      <td>0.220000</td>
+      <td>0.353333</td>
+      <td>0.173333</td>
     </tr>
     <tr>
       <th>4</th>
       <td>ExtraTreeClassifier</td>
-      <td>0.033333</td>
+      <td>0.026667</td>
       <td>0.000000</td>
-      <td>0.246667</td>
-      <td>0.233333</td>
-      <td>0.320000</td>
-      <td>0.300000</td>
+      <td>0.163333</td>
+      <td>0.206667</td>
+      <td>0.313333</td>
+      <td>0.220000</td>
     </tr>
     <tr>
       <th>6</th>
       <td>ExtraTreesClassifier</td>
-      <td>0.033333</td>
+      <td>0.026667</td>
       <td>0.000000</td>
-      <td>0.143333</td>
+      <td>0.120000</td>
+      <td>0.226667</td>
       <td>0.206667</td>
-      <td>0.220000</td>
-      <td>0.180000</td>
+      <td>0.206667</td>
     </tr>
     <tr>
       <th>8</th>
@@ -2284,32 +3534,22 @@ array([[299,   1],
     <tr>
       <th>1</th>
       <td>GradientBoostingClassifier</td>
-      <td>0.090000</td>
-      <td>0.013333</td>
-      <td>0.133333</td>
-      <td>0.220000</td>
-      <td>0.206667</td>
-      <td>0.186667</td>
+      <td>0.063333</td>
+      <td>0.026667</td>
+      <td>0.163333</td>
+      <td>0.213333</td>
+      <td>0.246667</td>
+      <td>0.200000</td>
     </tr>
     <tr>
       <th>9</th>
       <td>KNeighborsClassifier</td>
+      <td>0.093333</td>
       <td>0.103333</td>
-      <td>0.110000</td>
-      <td>0.123333</td>
-      <td>0.206667</td>
-      <td>0.180000</td>
-      <td>0.186667</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>LogisticRegression</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
-      <td>0.333333</td>
+      <td>0.103333</td>
+      <td>0.173333</td>
+      <td>0.193333</td>
+      <td>0.160000</td>
     </tr>
     <tr>
       <th>7</th>
@@ -2322,24 +3562,34 @@ array([[299,   1],
       <td>0.333333</td>
     </tr>
     <tr>
+      <th>0</th>
+      <td>OneVsRestClassifier</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
       <th>2</th>
       <td>RandomForestClassifier</td>
-      <td>0.040000</td>
-      <td>0.000000</td>
-      <td>0.146667</td>
-      <td>0.180000</td>
-      <td>0.266667</td>
-      <td>0.173333</td>
+      <td>0.033333</td>
+      <td>0.003333</td>
+      <td>0.143333</td>
+      <td>0.200000</td>
+      <td>0.233333</td>
+      <td>0.246667</td>
     </tr>
     <tr>
       <th>5</th>
       <td>XGBClassifier</td>
-      <td>0.100000</td>
-      <td>0.033333</td>
-      <td>0.210000</td>
-      <td>0.206667</td>
-      <td>0.240000</td>
+      <td>0.053333</td>
+      <td>0.000000</td>
+      <td>0.160000</td>
+      <td>0.200000</td>
       <td>0.246667</td>
+      <td>0.193333</td>
     </tr>
   </tbody>
 </table>
@@ -2347,10 +3597,10 @@ array([[299,   1],
 </div>
 </section>
 <section id="Petite-explication">
-<h2>Petite explication<a class="headerlink" href="#Petite-explication" title="Link to this heading">#</a></h2>
+<h2>Petite explication<a class="headerlink" href="#Petite-explication" title="Lien vers cette rubrique">#</a></h2>
 <p>Dans tout le notebook, le score de la régression logistique est nul. Elle ne parvient pas à apprendre tout simplement parce que le problème choisi n’est pas linéaire séparable. S’il l’était, cela voudrait dire que le problème suivant l’est aussi.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -2364,7 +3614,7 @@ array([[299,   1],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -2377,7 +3627,8 @@ array([[299,   1],
         [0., 1., 0., 0., 0., 1.],
         [0., 0., 1., 1., 0., 0.],
         [0., 0., 1., 0., 1., 0.],
-        [0., 0., 1., 0., 0., 1.]]), array([[1.],
+        [0., 0., 1., 0., 0., 1.]]),
+ array([[1.],
         [0.],
         [0.],
         [0.],
@@ -2389,7 +3640,7 @@ array([[299,   1],
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span>
@@ -2397,20 +3648,428 @@ array([[299,   1],
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
-          intercept_scaling=1, max_iter=100, multi_class=&#39;ovr&#39;,
-          n_jobs=None, penalty=&#39;l2&#39;, random_state=None, solver=&#39;liblinear&#39;,
-          tol=0.0001, verbose=0, warm_start=False)
+/home/xadupre/vv/this/lib/python3.10/site-packages/sklearn/linear_model/_logistic.py:1256: FutureWarning: &#39;multi_class&#39; was deprecated in version 1.5 and will be removed in 1.7. Use OneVsRestClassifier(LogisticRegression(..)) instead. Leave it to its default value to avoid this warning.
+  warnings.warn(
 </pre></div></div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<style>#sk-container-id-4 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: black;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-4 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-4 pre {
+  padding: 0;
+}
+
+#sk-container-id-4 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-4 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-4 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-4 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-4 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-4 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-4 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-4 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-4 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-4 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-4 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-4 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-4 label.sk-toggleable__label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#sk-container-id-4 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-4 div.sk-toggleable__content {
+  max-height: 0;
+  max-width: 0;
+  overflow: hidden;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-4 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-4 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-4 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  max-height: 200px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-4 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-4 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-4 div.sk-label label.sk-toggleable__label,
+#sk-container-id-4 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-4 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-4 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-4 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-4 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-4 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-4 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-4 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 1ex;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-4 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-4 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-4 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-4 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>LogisticRegression(multi_class=&#x27;ovr&#x27;, solver=&#x27;liblinear&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;&nbsp;LogisticRegression<a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.5/modules/generated/sklearn.linear_model.LogisticRegression.html">?<span>Documentation for LogisticRegression</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>LogisticRegression(multi_class=&#x27;ovr&#x27;, solver=&#x27;liblinear&#x27;)</pre></div> </div></div></div></div></div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
@@ -2418,7 +4077,7 @@ LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -2537,7 +4196,7 @@ array([0., 0., 0., 0., 0., 0., 0., 0., 0.])
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

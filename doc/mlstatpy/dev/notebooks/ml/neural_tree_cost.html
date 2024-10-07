@@ -29,8 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,9 +43,9 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -593,29 +593,21 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="NeuralTreeNet-et-coût">
-<h1>NeuralTreeNet et coût<a class="headerlink" href="#NeuralTreeNet-et-coût" title="Link to this heading">#</a></h1>
+<h1>NeuralTreeNet et coût<a class="headerlink" href="#NeuralTreeNet-et-coût" title="Lien vers cette rubrique">#</a></h1>
 <p>La classe <em>NeuralTreeNet</em> convertit un arbre de décision en réseau de neurones. Si la conversion n’est pas exacte mais elle permet d’obtenir un modèle différentiable et apprenable avec un algorithme d’optimisation à base de gradient. Ce notebook compare le temps d’éxécution entre un arbre et le réseau de neurones.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> mlprodict
-</pre></div>
-</div>
-</div>
 <section id="Jeux-de-données">
-<h2>Jeux de données<a class="headerlink" href="#Jeux-de-données" title="Link to this heading">#</a></h2>
+<h2>Jeux de données<a class="headerlink" href="#Jeux-de-données" title="Lien vers cette rubrique">#</a></h2>
 <p>On construit un jeu de données aléatoire.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
@@ -628,7 +620,7 @@ document.write(`
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">middle</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
@@ -639,9 +631,9 @@ document.write(`
 </div>
 </section>
 <section id="Caler-un-arbre-de-décision">
-<h2>Caler un arbre de décision<a class="headerlink" href="#Caler-un-arbre-de-décision" title="Link to this heading">#</a></h2>
+<h2>Caler un arbre de décision<a class="headerlink" href="#Caler-un-arbre-de-décision" title="Lien vers cette rubrique">#</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
@@ -653,16 +645,16 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.6091161526814477, 0.3884519134946681)
+(0.6225001966466359, 0.37938295559354807)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
@@ -672,17 +664,17 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.3884519134946681
+0.37938295559354807
 </pre></div></div>
 </div>
 <p>Covnersion de l’arbre en réseau de neurones</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
@@ -700,7 +692,7 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -728,11 +720,11 @@ document.write(`
   <tbody>
     <tr>
       <th>average absolute error</th>
-      <td>0.210314</td>
+      <td>0.208776</td>
     </tr>
     <tr>
       <th>max absolute error</th>
-      <td>1.679553</td>
+      <td>1.427806</td>
     </tr>
   </tbody>
 </table>
@@ -741,9 +733,9 @@ document.write(`
 <p>La conversion est loin d’être parfaite. La raison vient du fait que les fonctions de seuil sont approchées par des fonctions sigmoïdes. Il suffit d’une erreur minime pour que la décision prenne un chemin différent dans l’arbre et soit complètement différente.</p>
 </section>
 <section id="Conversion-au-format-ONNX">
-<h2>Conversion au format ONNX<a class="headerlink" href="#Conversion-au-format-ONNX" title="Link to this heading">#</a></h2>
+<h2>Conversion au format ONNX<a class="headerlink" href="#Conversion-au-format-ONNX" title="Lien vers cette rubrique">#</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skl2onnx</span> <span class="kn">import</span> <span class="n">to_onnx</span>
@@ -755,28 +747,7 @@ document.write(`
 </div>
 <p>Le réseau de neurones peut être représenté comme suit.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">onnxview</span> onx_nn
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div id="M1f0c5529ea564ba2bdf10042b00fd6b1-cont"><div id="M1f0c5529ea564ba2bdf10042b00fd6b1" style="width:;height:;"></div></div>
-<script>
-
-require(['http://www.xavierdupre.fr/js/vizjs/viz.js'], function() { var svgGraph = Viz("digraph{\n  nodesep=0.05;\n  ranksep=0.25;\n  size=7;\n  orientation=portrait;\n\n  X [shape=box color=red label=\"X\nfloat((0, 10))\" fontsize=10];\n\n  variable [shape=box color=green label=\"variable\nfloat((0, 1))\" fontsize=10];\n\n  Ma_MatMulcst [shape=box label=\"Ma_MatMulcst\nfloat32((10, 127))\n[[ 0.  0.  0. ...  0.  0.  0.]\n [ 0.  0.  0. ...  ...\" fontsize=10];\n  Ad_Addcst [shape=box label=\"Ad_Addcst\nfloat32((127,))\n[-0.28751326 -0.3320096   0.24225289 -1.2377734   ...\" fontsize=10];\n  Mu_Mulcst [shape=box label=\"Mu_Mulcst\nfloat32((1,))\n[4.]\" fontsize=10];\n  Ma_MatMulcst1 [shape=box label=\"Ma_MatMulcst1\nfloat32((127, 128))\n[[ 1.  1.  1. ... -1. -1. -1.]\n [ 1.  1.  1. ...  ...\" fontsize=10];\n  Ad_Addcst1 [shape=box label=\"Ad_Addcst1\nfloat32((128,))\n[-6.5 -5.5 -5.5 -4.5 -5.5 -4.5 -4.5 -3.5 -5.5 -4.5...\" fontsize=10];\n  Ma_MatMulcst2 [shape=box label=\"Ma_MatMulcst2\nfloat32((128, 1))\n[[-1.0975432 ]\n [-0.9416567 ]\n [-0.69355935]\n [-0....\" fontsize=10];\n  Ad_Addcst2 [shape=box label=\"Ad_Addcst2\nfloat32((1,))\n[0.]\" fontsize=10];\n\n  Ma_Y02 [shape=box label=\"Ma_Y02\" fontsize=10];\n  Ma_MatMul [shape=box style=\"filled,rounded\" color=orange label=\"MatMul\n(Ma_MatMul)\" fontsize=10];\n  X -> Ma_MatMul;\n  Ma_MatMulcst -> Ma_MatMul;\n  Ma_MatMul -> Ma_Y02;\n\n  Ad_C02 [shape=box label=\"Ad_C02\" fontsize=10];\n  Ad_Add [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Ad_Add)\" fontsize=10];\n  Ma_Y02 -> Ad_Add;\n  Ad_Addcst -> Ad_Add;\n  Ad_Add -> Ad_C02;\n\n  Mu_C01 [shape=box label=\"Mu_C01\" fontsize=10];\n  Mu_Mul [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mu_Mul)\" fontsize=10];\n  Ad_C02 -> Mu_Mul;\n  Mu_Mulcst -> Mu_Mul;\n  Mu_Mul -> Mu_C01;\n\n  Si_Y01 [shape=box label=\"Si_Y01\" fontsize=10];\n  Si_Sigmoid [shape=box style=\"filled,rounded\" color=orange label=\"Sigmoid\n(Si_Sigmoid)\" fontsize=10];\n  Mu_C01 -> Si_Sigmoid;\n  Si_Sigmoid -> Si_Y01;\n\n  Ma_Y01 [shape=box label=\"Ma_Y01\" fontsize=10];\n  Ma_MatMul1 [shape=box style=\"filled,rounded\" color=orange label=\"MatMul\n(Ma_MatMul1)\" fontsize=10];\n  Si_Y01 -> Ma_MatMul1;\n  Ma_MatMulcst1 -> Ma_MatMul1;\n  Ma_MatMul1 -> Ma_Y01;\n\n  Ad_C01 [shape=box label=\"Ad_C01\" fontsize=10];\n  Ad_Add1 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Ad_Add1)\" fontsize=10];\n  Ma_Y01 -> Ad_Add1;\n  Ad_Addcst1 -> Ad_Add1;\n  Ad_Add1 -> Ad_C01;\n\n  Mu_C0 [shape=box label=\"Mu_C0\" fontsize=10];\n  Mu_Mul1 [shape=box style=\"filled,rounded\" color=orange label=\"Mul\n(Mu_Mul1)\" fontsize=10];\n  Ad_C01 -> Mu_Mul1;\n  Mu_Mulcst -> Mu_Mul1;\n  Mu_Mul1 -> Mu_C0;\n\n  Si_Y0 [shape=box label=\"Si_Y0\" fontsize=10];\n  Si_Sigmoid1 [shape=box style=\"filled,rounded\" color=orange label=\"Sigmoid\n(Si_Sigmoid1)\" fontsize=10];\n  Mu_C0 -> Si_Sigmoid1;\n  Si_Sigmoid1 -> Si_Y0;\n\n  Ma_Y0 [shape=box label=\"Ma_Y0\" fontsize=10];\n  Ma_MatMul2 [shape=box style=\"filled,rounded\" color=orange label=\"MatMul\n(Ma_MatMul2)\" fontsize=10];\n  Si_Y0 -> Ma_MatMul2;\n  Ma_MatMulcst2 -> Ma_MatMul2;\n  Ma_MatMul2 -> Ma_Y0;\n\n  Ad_C0 [shape=box label=\"Ad_C0\" fontsize=10];\n  Ad_Add2 [shape=box style=\"filled,rounded\" color=orange label=\"Add\n(Ad_Add2)\" fontsize=10];\n  Ma_Y0 -> Ad_Add2;\n  Ad_Addcst2 -> Ad_Add2;\n  Ad_Add2 -> Ad_C0;\n\n  Id_Identity1 [shape=box style=\"filled,rounded\" color=orange label=\"Identity\n(Id_Identity1)\" fontsize=10];\n  Ad_C0 -> Id_Identity1;\n  Id_Identity1 -> variable;\n}");
-document.getElementById('M1f0c5529ea564ba2bdf10042b00fd6b1').innerHTML = svgGraph; });
-
-</script></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
@@ -790,14 +761,14 @@ document.getElementById('M1f0c5529ea564ba2bdf10042b00fd6b1').innerHTML = svgGrap
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-opset: domain=&#39;&#39; version=15
-input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[None, 10]
-init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(1270,)
+opset: domain=&#39;&#39; version=21
+input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 10]
+init: name=&#39;Ma_MatMulcst&#39; type=dtype(&#39;float32&#39;) shape=(10, 127)
 init: name=&#39;Ad_Addcst&#39; type=dtype(&#39;float32&#39;) shape=(127,)
 init: name=&#39;Mu_Mulcst&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([4.], dtype=float32)
-init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(16256,)
+init: name=&#39;Ma_MatMulcst1&#39; type=dtype(&#39;float32&#39;) shape=(127, 128)
 init: name=&#39;Ad_Addcst1&#39; type=dtype(&#39;float32&#39;) shape=(128,)
-init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128,)
+init: name=&#39;Ma_MatMulcst2&#39; type=dtype(&#39;float32&#39;) shape=(128, 1)
 init: name=&#39;Ad_Addcst2&#39; type=dtype(&#39;float32&#39;) shape=(1,) -- array([0.], dtype=float32)
 MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
   Add(Ma_Y02, Ad_Addcst) -&gt; Ad_C02
@@ -810,14 +781,14 @@ MatMul(X, Ma_MatMulcst) -&gt; Ma_Y02
                 MatMul(Si_Y0, Ma_MatMulcst2) -&gt; Ma_Y0
                   Add(Ma_Y0, Ad_Addcst2) -&gt; Ad_C0
                     Identity(Ad_C0) -&gt; variable
-output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
+output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, 1]
 </pre></div></div>
 </div>
 </section>
 <section id="Temps-de-calcul-des-prédictions">
-<h2>Temps de calcul des prédictions<a class="headerlink" href="#Temps-de-calcul-des-prédictions" title="Link to this heading">#</a></h2>
+<h2>Temps de calcul des prédictions<a class="headerlink" href="#Temps-de-calcul-des-prédictions" title="Lien vers cette rubrique">#</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span>
@@ -834,12 +805,11 @@ output: name=&#39;variable&#39; type=dtype(&#39;float32&#39;) shape=[None, 1]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.5&#39;
-518 µs ± 41.4 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+584 μs ± 16.3 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf_tree.run(None, {&#39;X&#39;: xe})
@@ -851,11 +821,11 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-124 µs ± 5.21 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+48.4 μs ± 1.16 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> oinf_nn.run(None, {&#39;X&#39;: xe})
@@ -867,15 +837,15 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-3.18 ms ± 569 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+1.28 ms ± 97.7 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Le temps de calcul est nettement plus long pour le réseau de neurones. Si l’arbre de décision a une profondeur de <em>d</em>, l’arbre de décision va faire exactement <em>d</em> comparaisons. Le réseau de neurones quant à lui évalue tous les seuils pour chaque prédiction, soit <span class="math notranslate nohighlight">\(2^d\)</span>. Vérifions cela en faisant variable la profondeur.</p>
 </section>
 <section id="Temps-de-calcul-en-fonction-de-la-profondeur">
-<h2>Temps de calcul en fonction de la profondeur<a class="headerlink" href="#Temps-de-calcul-en-fonction-de-la-profondeur" title="Link to this heading">#</a></h2>
+<h2>Temps de calcul en fonction de la profondeur<a class="headerlink" href="#Temps-de-calcul-en-fonction-de-la-profondeur" title="Lien vers cette rubrique">#</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
@@ -922,11 +892,11 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 8/8 [00:07&lt;00:00,  1.04it/s]
+100%|██████████| 8/8 [00:04&lt;00:00,  1.63it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -963,312 +933,312 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.005656</td>
-      <td>0.001292</td>
-      <td>0.004990</td>
-      <td>0.009533</td>
+      <td>0.000207</td>
+      <td>0.000045</td>
+      <td>0.000153</td>
+      <td>0.000317</td>
       <td>20</td>
       <td>20</td>
-      <td>0.113116</td>
+      <td>0.004147</td>
       <td>64</td>
       <td>2</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.000609</td>
-      <td>0.000084</td>
-      <td>0.000538</td>
-      <td>0.000830</td>
+      <td>0.000151</td>
+      <td>0.000246</td>
+      <td>0.000031</td>
+      <td>0.000825</td>
       <td>10</td>
       <td>10</td>
-      <td>0.006088</td>
+      <td>0.001515</td>
       <td>64</td>
       <td>2</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.002337</td>
-      <td>0.000563</td>
-      <td>0.001737</td>
-      <td>0.003299</td>
+      <td>0.000178</td>
+      <td>0.000093</td>
+      <td>0.000119</td>
+      <td>0.000371</td>
       <td>10</td>
       <td>10</td>
-      <td>0.023374</td>
+      <td>0.001781</td>
       <td>64</td>
       <td>2</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.005607</td>
-      <td>0.000962</td>
-      <td>0.004669</td>
-      <td>0.007374</td>
+      <td>0.000249</td>
+      <td>0.000036</td>
+      <td>0.000220</td>
+      <td>0.000360</td>
       <td>20</td>
       <td>20</td>
-      <td>0.112131</td>
+      <td>0.004980</td>
       <td>64</td>
       <td>3</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.000709</td>
-      <td>0.000240</td>
-      <td>0.000534</td>
-      <td>0.001363</td>
+      <td>0.000312</td>
+      <td>0.000156</td>
+      <td>0.000113</td>
+      <td>0.000661</td>
       <td>10</td>
       <td>10</td>
-      <td>0.007087</td>
+      <td>0.003117</td>
       <td>64</td>
       <td>3</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>0.002506</td>
-      <td>0.000448</td>
-      <td>0.002073</td>
-      <td>0.003736</td>
+      <td>0.000352</td>
+      <td>0.000204</td>
+      <td>0.000182</td>
+      <td>0.000831</td>
       <td>10</td>
       <td>10</td>
-      <td>0.025064</td>
+      <td>0.003523</td>
       <td>64</td>
       <td>3</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>0.006398</td>
-      <td>0.000942</td>
-      <td>0.005576</td>
-      <td>0.009556</td>
+      <td>0.000339</td>
+      <td>0.000073</td>
+      <td>0.000257</td>
+      <td>0.000487</td>
       <td>20</td>
       <td>20</td>
-      <td>0.127961</td>
+      <td>0.006775</td>
       <td>64</td>
       <td>4</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>0.000852</td>
-      <td>0.000335</td>
-      <td>0.000633</td>
-      <td>0.001715</td>
+      <td>0.000337</td>
+      <td>0.000423</td>
+      <td>0.000059</td>
+      <td>0.001537</td>
       <td>10</td>
       <td>10</td>
-      <td>0.008519</td>
+      <td>0.003368</td>
       <td>64</td>
       <td>4</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>0.004151</td>
-      <td>0.000763</td>
-      <td>0.003408</td>
-      <td>0.005826</td>
+      <td>0.000619</td>
+      <td>0.000354</td>
+      <td>0.000221</td>
+      <td>0.001320</td>
       <td>10</td>
       <td>10</td>
-      <td>0.041507</td>
+      <td>0.006194</td>
       <td>64</td>
       <td>4</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>0.007266</td>
-      <td>0.000731</td>
-      <td>0.006400</td>
-      <td>0.009247</td>
+      <td>0.000359</td>
+      <td>0.000038</td>
+      <td>0.000309</td>
+      <td>0.000453</td>
       <td>20</td>
       <td>20</td>
-      <td>0.145314</td>
+      <td>0.007171</td>
       <td>64</td>
       <td>5</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>0.000963</td>
-      <td>0.000169</td>
-      <td>0.000826</td>
-      <td>0.001327</td>
+      <td>0.000473</td>
+      <td>0.000565</td>
+      <td>0.000064</td>
+      <td>0.001923</td>
       <td>10</td>
       <td>10</td>
-      <td>0.009634</td>
+      <td>0.004729</td>
       <td>64</td>
       <td>5</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>0.006113</td>
-      <td>0.000560</td>
-      <td>0.005360</td>
-      <td>0.007255</td>
+      <td>0.001197</td>
+      <td>0.000944</td>
+      <td>0.000309</td>
+      <td>0.003529</td>
       <td>10</td>
       <td>10</td>
-      <td>0.061134</td>
+      <td>0.011973</td>
       <td>64</td>
       <td>5</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>0.008881</td>
-      <td>0.001234</td>
-      <td>0.007601</td>
-      <td>0.012340</td>
+      <td>0.000386</td>
+      <td>0.000022</td>
+      <td>0.000359</td>
+      <td>0.000439</td>
       <td>20</td>
       <td>20</td>
-      <td>0.177622</td>
+      <td>0.007715</td>
       <td>64</td>
       <td>6</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>0.001175</td>
-      <td>0.000613</td>
-      <td>0.000815</td>
-      <td>0.002984</td>
+      <td>0.000793</td>
+      <td>0.000770</td>
+      <td>0.000097</td>
+      <td>0.002445</td>
       <td>10</td>
       <td>10</td>
-      <td>0.011754</td>
+      <td>0.007926</td>
       <td>64</td>
       <td>6</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>0.011537</td>
-      <td>0.001079</td>
-      <td>0.010146</td>
-      <td>0.013582</td>
+      <td>0.001521</td>
+      <td>0.000919</td>
+      <td>0.000652</td>
+      <td>0.003820</td>
       <td>10</td>
       <td>10</td>
-      <td>0.115367</td>
+      <td>0.015207</td>
       <td>64</td>
       <td>6</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>0.011134</td>
-      <td>0.000887</td>
-      <td>0.009569</td>
-      <td>0.013273</td>
+      <td>0.000429</td>
+      <td>0.000024</td>
+      <td>0.000404</td>
+      <td>0.000494</td>
       <td>20</td>
       <td>20</td>
-      <td>0.222676</td>
+      <td>0.008579</td>
       <td>64</td>
       <td>7</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>16</th>
-      <td>0.001399</td>
-      <td>0.000131</td>
-      <td>0.001301</td>
-      <td>0.001742</td>
+      <td>0.000658</td>
+      <td>0.000662</td>
+      <td>0.000207</td>
+      <td>0.002484</td>
       <td>10</td>
       <td>10</td>
-      <td>0.013988</td>
+      <td>0.006575</td>
       <td>64</td>
       <td>7</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>17</th>
-      <td>0.034831</td>
-      <td>0.004986</td>
-      <td>0.027853</td>
-      <td>0.046760</td>
+      <td>0.002925</td>
+      <td>0.002770</td>
+      <td>0.001489</td>
+      <td>0.011048</td>
       <td>10</td>
       <td>10</td>
-      <td>0.348306</td>
+      <td>0.029251</td>
       <td>64</td>
       <td>7</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>18</th>
-      <td>0.011263</td>
-      <td>0.001060</td>
-      <td>0.009911</td>
-      <td>0.013893</td>
+      <td>0.000508</td>
+      <td>0.000059</td>
+      <td>0.000452</td>
+      <td>0.000733</td>
       <td>20</td>
       <td>20</td>
-      <td>0.225251</td>
+      <td>0.010157</td>
       <td>64</td>
       <td>8</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>0.001226</td>
-      <td>0.000148</td>
-      <td>0.001033</td>
-      <td>0.001609</td>
+      <td>0.001235</td>
+      <td>0.001208</td>
+      <td>0.000121</td>
+      <td>0.003842</td>
       <td>10</td>
       <td>10</td>
-      <td>0.012259</td>
+      <td>0.012347</td>
       <td>64</td>
       <td>8</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>0.141722</td>
-      <td>0.051041</td>
-      <td>0.089979</td>
-      <td>0.270129</td>
+      <td>0.004627</td>
+      <td>0.004239</td>
+      <td>0.002962</td>
+      <td>0.017300</td>
       <td>10</td>
       <td>10</td>
-      <td>1.417218</td>
+      <td>0.046271</td>
       <td>64</td>
       <td>8</td>
       <td>onx_nn</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>0.016436</td>
-      <td>0.004827</td>
-      <td>0.011379</td>
-      <td>0.028261</td>
+      <td>0.000558</td>
+      <td>0.000045</td>
+      <td>0.000498</td>
+      <td>0.000700</td>
       <td>20</td>
       <td>20</td>
-      <td>0.328716</td>
+      <td>0.011152</td>
       <td>64</td>
       <td>9</td>
       <td>skl</td>
     </tr>
     <tr>
       <th>22</th>
-      <td>0.003879</td>
-      <td>0.001963</td>
-      <td>0.002402</td>
-      <td>0.008579</td>
+      <td>0.000745</td>
+      <td>0.000540</td>
+      <td>0.000138</td>
+      <td>0.002166</td>
       <td>10</td>
       <td>10</td>
-      <td>0.038786</td>
+      <td>0.007449</td>
       <td>64</td>
       <td>9</td>
       <td>onx_tree</td>
     </tr>
     <tr>
       <th>23</th>
-      <td>0.323764</td>
-      <td>0.063045</td>
-      <td>0.261038</td>
-      <td>0.456420</td>
+      <td>0.011127</td>
+      <td>0.004856</td>
+      <td>0.009014</td>
+      <td>0.025667</td>
       <td>10</td>
       <td>10</td>
-      <td>3.237635</td>
+      <td>0.111265</td>
       <td>64</td>
       <td>9</td>
       <td>onx_nn</td>
@@ -1278,10 +1248,10 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;exp&quot;</span><span class="p">,</span> <span class="s2">&quot;average&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;exp&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span>
 <span class="n">piv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Temps de calcul en fonction de la profondeur&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -1290,7 +1260,7 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_ml_neural_tree_cost_24_0.png" src="../../_images/notebooks_ml_neural_tree_cost_24_0.png" />
+<img alt="../../_images/notebooks_ml_neural_tree_cost_22_0.png" src="../../_images/notebooks_ml_neural_tree_cost_22_0.png" />
 </div>
 </div>
 <p>L’hypothèse est vérifiée.</p>
@@ -1402,7 +1372,7 @@ No CUDA runtime is found, using CUDA_HOME=&#39;C:\Program Files\NVIDIA GPU Compu
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

@@ -29,8 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,9 +43,9 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -593,10 +593,10 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="Régression-linéaire">
-<h1>Régression linéaire<a class="headerlink" href="#Régression-linéaire" title="Link to this heading">#</a></h1>
+<h1>Régression linéaire<a class="headerlink" href="#Régression-linéaire" title="Lien vers cette rubrique">#</a></h1>
 <p>Ce notebook s’intéresse à la façon d’interpréter les résultats d’une régression linéaire lorsque les variables sont corrélées puis il explore une façon d’associer arbre de décision et régression linéaire pour construire une régression linéaire par morceaux.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -604,10 +604,10 @@ document.write(`
 </div>
 </div>
 <section id="Un-cas-simple">
-<h2>Un cas simple<a class="headerlink" href="#Un-cas-simple" title="Link to this heading">#</a></h2>
+<h2>Un cas simple<a class="headerlink" href="#Un-cas-simple" title="Lien vers cette rubrique">#</a></h2>
 <p>Une façon d’interpréter des résultats statistiques est de les calculer dans un cas où la réponse cherchée est connue. On simule un modèle simple <span class="math notranslate nohighlight">\(Y=\alpha X_1 + 0.X_2 + \epsilon\)</span> et on cale une régression linéaire. On suppose que <span class="math notranslate nohighlight">\(X_1, X_2, \epsilon\)</span> sont des variables aléatoires gaussiennes de même variance et moyenne.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">npr</span>
@@ -621,7 +621,7 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -630,7 +630,7 @@ document.write(`
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">corrcoef</span>
@@ -640,18 +640,18 @@ document.write(`
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([[ 1.        , -0.0312982 ,  0.05188551],
-       [-0.0312982 ,  1.        , -0.00356494],
-       [ 0.05188551, -0.00356494,  1.        ]])
+array([[ 1.        ,  0.02585011, -0.00808406],
+       [ 0.02585011,  1.        ,  0.00338766],
+       [-0.00808406,  0.00338766,  1.        ]])
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsmodels.regression.linear_model</span> <span class="kn">import</span> <span class="n">OLS</span>
@@ -659,7 +659,7 @@ array([[ 1.        , -0.0312982 ,  0.05188551],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
@@ -670,38 +670,38 @@ array([[ 1.        , -0.0312982 ,  0.05188551],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.815</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>      <td>   0.803</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.815</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th> <td>   0.802</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   2204.</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>          <td>   2029.</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 15 Oct 2018</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>           <td>  0.00</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>10:34:12</td>     <th>  Log-Likelihood:    </th> <td> -1385.2</td>
+  <th>Time:</th>                 <td>11:29:03</td>     <th>  Log-Likelihood:    </th>          <td> -1417.8</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>   2774.</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>   2840.</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   998</td>      <th>  BIC:               </th> <td>   2784.</td>
+  <th>Df Residuals:</th>          <td>   998</td>      <th>  BIC:               </th>          <td>   2849.</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>     2</td>      <th>                     </th>     <td> </td>
+  <th>Df Model:</th>              <td>     2</td>      <th>                     </th>              <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>              <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -709,29 +709,29 @@ array([[ 1.        , -0.0312982 ,  0.05188551],
    <td></td>     <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th> <td>    2.0519</td> <td>    0.031</td> <td>   66.347</td> <td> 0.000</td> <td>    1.991</td> <td>    2.113</td>
+  <th>x1</th> <td>    1.9922</td> <td>    0.031</td> <td>   63.680</td> <td> 0.000</td> <td>    1.931</td> <td>    2.054</td>
 </tr>
 <tr>
-  <th>x2</th> <td>   -0.0032</td> <td>    0.033</td> <td>   -0.097</td> <td> 0.922</td> <td>   -0.067</td> <td>    0.061</td>
+  <th>x2</th> <td>    0.0041</td> <td>    0.032</td> <td>    0.130</td> <td> 0.896</td> <td>   -0.058</td> <td>    0.067</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td> 0.709</td> <th>  Durbin-Watson:     </th> <td>   1.990</td>
+  <th>Omnibus:</th>       <td> 4.685</td> <th>  Durbin-Watson:     </th> <td>   2.126</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.701</td> <th>  Jarque-Bera (JB):  </th> <td>   0.674</td>
+  <th>Prob(Omnibus):</th> <td> 0.096</td> <th>  Jarque-Bera (JB):  </th> <td>   4.706</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td> 0.063</td> <th>  Prob(JB):          </th> <td>   0.714</td>
+  <th>Skew:</th>          <td>-0.167</td> <th>  Prob(JB):          </th> <td>  0.0951</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 3.010</td> <th>  Cond. No.          </th> <td>    1.07</td>
+  <th>Kurtosis:</th>      <td> 2.972</td> <th>  Cond. No.          </th> <td>    1.03</td>
 </tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">rsquared</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">rsquared_adj</span>
@@ -739,17 +739,17 @@ array([[ 1.        , -0.0312982 ,  0.05188551],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(0.8153831029946165, 0.8150131292531227)
+(np.float64(0.8026213180783517), np.float64(0.8022257696175868))
 </pre></div></div>
 </div>
 <p>On vérifie que le coefficient devant <span class="math notranslate nohighlight">\(X_1\)</span> est non nul (P-value nulle, 0 n’est pas l’intervalle de confiance). Le coefficient devant <span class="math notranslate nohighlight">\(X_2\)</span> n’est pas nul mais presque, la P-value est élevée, le coefficient <span class="math notranslate nohighlight">\(R^2\)</span> est élevé. Dessinons.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -757,7 +757,7 @@ array([[ 1.        , -0.0312982 ,  0.05188551],
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
-<span class="n">seaborn</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Reds&quot;</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shade_lowest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">seaborn</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Reds&quot;</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shade_lowest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;nuage de points&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;estimation de la densité&quot;</span><span class="p">);</span>
 </pre></div>
@@ -768,8 +768,18 @@ array([[ 1.        , -0.0312982 ,  0.05188551],
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
-  return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+/tmp/ipykernel_21413/1827909711.py:6: UserWarning:
+
+`shade_lowest` has been replaced by `thresh`; setting `thresh=0.05.
+This will become an error in seaborn v0.14.0; please update your code.
+
+  seaborn.kdeplot(x=X[:, 0], y=Y, cmap=&#34;Reds&#34;, shade=True, shade_lowest=False, ax=ax[1])
+/tmp/ipykernel_21413/1827909711.py:6: FutureWarning:
+
+`shade` is now deprecated in favor of `fill`; setting `fill=True`.
+This will become an error in seaborn v0.14.0; please update your code.
+
+  seaborn.kdeplot(x=X[:, 0], y=Y, cmap=&#34;Reds&#34;, shade=True, shade_lowest=False, ax=ax[1])
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -781,10 +791,10 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 </div>
 </section>
 <section id="Evolution-de-R2">
-<h2>Evolution de R2<a class="headerlink" href="#Evolution-de-R2" title="Link to this heading">#</a></h2>
+<h2>Evolution de R2<a class="headerlink" href="#Evolution-de-R2" title="Lien vers cette rubrique">#</a></h2>
 <p>Dans la régression précédente, le coefficient <span class="math notranslate nohighlight">\(R^2\)</span> transcrit en quelque sorte la part du bruit <span class="math notranslate nohighlight">\(\epsilon\)</span> par rapport au terme <span class="math notranslate nohighlight">\(\alpha X_1\)</span>. Faisons varier <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphas</span> <span class="o">=</span> <span class="p">[]</span>
@@ -799,7 +809,7 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -823,10 +833,10 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 \[R^2 = 1 - \frac{\sum_{i=1}^n (\hat{y_i}-\bar{y})^2}{\sum_{i=1}^n (y_i - \bar{y})^2}=1-\frac{\mathbb{V}\epsilon}{\alpha^2\mathbb{V}X_1+\mathbb{V}\epsilon} = 1 - \frac{1}{1+\alpha^2}=\frac{\alpha^2}{1+\alpha^2}\]</div>
 </section>
 <section id="Deux-variables-corrélées">
-<h2>Deux variables corrélées<a class="headerlink" href="#Deux-variables-corrélées" title="Link to this heading">#</a></h2>
+<h2>Deux variables corrélées<a class="headerlink" href="#Deux-variables-corrélées" title="Lien vers cette rubrique">#</a></h2>
 <p>On ne change pas le modèle mais on fait en sorte que <span class="math notranslate nohighlight">\(X_2=X_1\)</span>. Les deux variables sont corrélées.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
@@ -838,38 +848,38 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.810</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>      <td>   0.803</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.810</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th> <td>   0.802</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   4271.</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>          <td>   4062.</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 27 Nov 2017</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>           <td>  0.00</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>12:06:03</td>     <th>  Log-Likelihood:    </th> <td> -1411.2</td>
+  <th>Time:</th>                 <td>11:29:04</td>     <th>  Log-Likelihood:    </th>          <td> -1417.8</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>   2824.</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>   2838.</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   999</td>      <th>  BIC:               </th> <td>   2829.</td>
+  <th>Df Residuals:</th>          <td>   999</td>      <th>  BIC:               </th>          <td>   2843.</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>     <td> </td>
+  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>              <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>              <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -877,29 +887,29 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
    <td></td>     <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th> <td>    1.0288</td> <td>    0.016</td> <td>   65.349</td> <td> 0.000</td> <td>    0.998</td> <td>    1.060</td>
+  <th>x1</th> <td>    0.9961</td> <td>    0.016</td> <td>   63.736</td> <td> 0.000</td> <td>    0.965</td> <td>    1.027</td>
 </tr>
 <tr>
-  <th>x2</th> <td>    1.0288</td> <td>    0.016</td> <td>   65.349</td> <td> 0.000</td> <td>    0.998</td> <td>    1.060</td>
+  <th>x2</th> <td>    0.9961</td> <td>    0.016</td> <td>   63.736</td> <td> 0.000</td> <td>    0.965</td> <td>    1.027</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td> 8.165</td> <th>  Durbin-Watson:     </th> <td>   1.944</td>
+  <th>Omnibus:</th>       <td> 4.681</td> <th>  Durbin-Watson:     </th> <td>   2.126</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.017</td> <th>  Jarque-Bera (JB):  </th> <td>   6.024</td>
+  <th>Prob(Omnibus):</th> <td> 0.096</td> <th>  Jarque-Bera (JB):  </th> <td>   4.705</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td>-0.064</td> <th>  Prob(JB):          </th> <td>  0.0492</td>
+  <th>Skew:</th>          <td>-0.167</td> <th>  Prob(JB):          </th> <td>  0.0951</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 2.642</td> <th>  Cond. No.          </th> <td>1.61e+16</td>
+  <th>Kurtosis:</th>      <td> 2.971</td> <th>  Cond. No.          </th> <td>3.15e+16</td>
 </tr>
-</table></div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.<br/>[3] The smallest eigenvalue is 2.06e-30. This might indicate that there are<br/>strong multicollinearity problems or that the design matrix is singular.</div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">rank</span>
@@ -907,17 +917,17 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1
+np.int64(1)
 </pre></div></div>
 </div>
 <p>Les variables corrélées n’ont pas l’air de déranger l’algorithme de résolution car il utilise la méthode <a class="reference external" href="https://en.wikipedia.org/wiki/Singular-value_decomposition">SVD</a> pour résoudre le même problème dans un espace de moindre dimension. Le problème survient que les deux variables ne sont pas complétement corrélées. On étudie le modèle <span class="math notranslate nohighlight">\(Y \sim X_1 + X'_2\)</span> avec <span class="math notranslate nohighlight">\(X'_2 = \alpha X_1 + (1-\alpha) X_2\)</span> et on réduit la variance du bruit pour en diminuer les effets.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_</span> <span class="o">=</span> <span class="n">npr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -925,7 +935,7 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">0.01</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>
@@ -955,7 +965,7 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -977,10 +987,10 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>c1</th>
-      <th>c2</th>
       <th>r2</th>
       <th>rank</th>
+      <th>c1</th>
+      <th>c2</th>
     </tr>
     <tr>
       <th>alpha</th>
@@ -993,87 +1003,87 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
   <tbody>
     <tr>
       <th>0.90</th>
-      <td>0.976370</td>
-      <td>1.028982</td>
-      <td>0.997391</td>
+      <td>0.997328</td>
       <td>2</td>
+      <td>1.013974</td>
+      <td>0.986445</td>
     </tr>
     <tr>
       <th>0.91</th>
-      <td>0.973150</td>
-      <td>1.032202</td>
-      <td>0.997416</td>
+      <td>0.997353</td>
       <td>2</td>
+      <td>1.015480</td>
+      <td>0.984939</td>
     </tr>
     <tr>
       <th>0.92</th>
-      <td>0.969125</td>
-      <td>1.036227</td>
-      <td>0.997440</td>
+      <td>0.997379</td>
       <td>2</td>
+      <td>1.017363</td>
+      <td>0.983056</td>
     </tr>
     <tr>
       <th>0.93</th>
-      <td>0.963950</td>
-      <td>1.041402</td>
-      <td>0.997464</td>
+      <td>0.997403</td>
       <td>2</td>
+      <td>1.019783</td>
+      <td>0.980636</td>
     </tr>
     <tr>
       <th>0.94</th>
-      <td>0.957049</td>
-      <td>1.048303</td>
-      <td>0.997489</td>
+      <td>0.997428</td>
       <td>2</td>
+      <td>1.023011</td>
+      <td>0.977409</td>
     </tr>
     <tr>
       <th>0.95</th>
-      <td>0.947389</td>
-      <td>1.057963</td>
-      <td>0.997513</td>
+      <td>0.997453</td>
       <td>2</td>
+      <td>1.027529</td>
+      <td>0.972890</td>
     </tr>
     <tr>
       <th>0.96</th>
-      <td>0.932898</td>
-      <td>1.072454</td>
-      <td>0.997536</td>
+      <td>0.997477</td>
       <td>2</td>
+      <td>1.034306</td>
+      <td>0.966113</td>
     </tr>
     <tr>
       <th>0.97</th>
-      <td>0.908747</td>
-      <td>1.096605</td>
-      <td>0.997560</td>
+      <td>0.997501</td>
       <td>2</td>
+      <td>1.045602</td>
+      <td>0.954817</td>
     </tr>
     <tr>
       <th>0.98</th>
-      <td>0.860444</td>
-      <td>1.144908</td>
-      <td>0.997583</td>
+      <td>0.997525</td>
       <td>2</td>
+      <td>1.068193</td>
+      <td>0.932226</td>
     </tr>
     <tr>
       <th>0.99</th>
-      <td>0.715536</td>
-      <td>1.289816</td>
-      <td>0.997606</td>
+      <td>0.997548</td>
       <td>2</td>
+      <td>1.135968</td>
+      <td>0.864452</td>
     </tr>
     <tr>
       <th>1.00</th>
-      <td>1.001279</td>
-      <td>1.001279</td>
-      <td>0.997627</td>
+      <td>0.997571</td>
       <td>1</td>
+      <td>1.000861</td>
+      <td>1.000861</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -1091,10 +1101,10 @@ c:\python370_x64\lib\site-packages\scipy\stats\stats.py:1713: FutureWarning: Usi
 <img alt="../../_images/notebooks_dsgarden_regression_lineaire_20_0.png" src="../../_images/notebooks_dsgarden_regression_lineaire_20_0.png" />
 </div>
 </div>
-<p>Le <span class="math notranslate nohighlight">\(r^2\)</span> augmente quand la corrélation augmente mais les coefficients sont moins fiables. Les résultats devraient être sensiblement identiques en théorie mais en pratique, plus le déterminant devient proche de zéro, plus l’ordinateur est limité par sa précision numérique. Pour en savoir plus, vous pouvez lire un examen écrit que j’ai rédigé, en python bien sûr : <a class="reference external" href="http://www.xavierdupre.fr/site2013/enseignements/tdnote/ecrit_2006.pdf">Examen Programmation ENSAE première année 2006</a>.
-Cette précision est aux alentours de <span class="math notranslate nohighlight">\(10^{-15}\)</span> ce qui correspond à la précision numérique des <a class="reference external" href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">double</a>.</p>
+<p>Le <span class="math notranslate nohighlight">\(r^2\)</span> augmente quand la corrélation augmente mais les coefficients sont moins fiables. Les résultats devraient être sensiblement identiques en théorie mais en pratique, plus le déterminant devient proche de zéro, plus l’ordinateur est limité par sa précision numérique. Pour en savoir plus, vous pouvez lire un examen écrit que j’ai rédigé, en python bien sûr : <a class="reference external" href="https://sdpython.github.io/doc/teachpyx/dev/_downloads/f9f86ad8c2bcfcba777d6ed8caafb5f6/td_note_2006.pdf">Examen Programmation ENSAE première année
+2006</a>. Cette précision est aux alentours de <span class="math notranslate nohighlight">\(10^{-15}\)</span> ce qui correspond à la précision numérique des <a class="reference external" href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">double</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">)]</span>
@@ -1124,7 +1134,7 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1146,10 +1156,10 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>c1</th>
-      <th>c2</th>
       <th>r2</th>
       <th>rank</th>
+      <th>c1</th>
+      <th>c2</th>
     </tr>
     <tr>
       <th>alpha_1</th>
@@ -1162,59 +1172,59 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
   <tbody>
     <tr>
       <th>-1.000000e-10</th>
-      <td>-2.898180e+08</td>
-      <td>2.898180e+08</td>
-      <td>0.811519</td>
+      <td>0.806651</td>
       <td>2</td>
+      <td>1.355493e+08</td>
+      <td>-1.355493e+08</td>
     </tr>
     <tr>
       <th>-1.000000e-11</th>
-      <td>-2.898201e+09</td>
-      <td>2.898201e+09</td>
-      <td>0.811519</td>
+      <td>0.806651</td>
       <td>2</td>
+      <td>1.355632e+09</td>
+      <td>-1.355632e+09</td>
     </tr>
     <tr>
       <th>-9.999779e-13</th>
-      <td>-2.898941e+10</td>
-      <td>2.898941e+10</td>
-      <td>0.811519</td>
+      <td>0.806651</td>
       <td>2</td>
+      <td>1.355997e+10</td>
+      <td>-1.355997e+10</td>
     </tr>
     <tr>
       <th>-1.000311e-13</th>
-      <td>-2.891422e+11</td>
-      <td>2.891422e+11</td>
-      <td>0.811518</td>
+      <td>0.806651</td>
       <td>2</td>
+      <td>1.357117e+11</td>
+      <td>-1.357117e+11</td>
     </tr>
     <tr>
       <th>-9.992007e-15</th>
-      <td>-2.915101e+12</td>
-      <td>2.915101e+12</td>
-      <td>0.811508</td>
+      <td>0.806648</td>
       <td>2</td>
+      <td>1.410632e+12</td>
+      <td>-1.410632e+12</td>
     </tr>
     <tr>
       <th>-9.992007e-16</th>
-      <td>1.012789e+00</td>
-      <td>1.012789e+00</td>
-      <td>0.811359</td>
+      <td>0.806616</td>
       <td>2</td>
+      <td>1.008605e+00</td>
+      <td>1.008605e+00</td>
     </tr>
     <tr>
       <th>-1.110223e-16</th>
-      <td>1.012789e+00</td>
-      <td>1.012789e+00</td>
-      <td>0.811359</td>
+      <td>0.806616</td>
       <td>1</td>
+      <td>1.008605e+00</td>
+      <td>1.008605e+00</td>
     </tr>
     <tr>
       <th>0.000000e+00</th>
-      <td>1.012789e+00</td>
-      <td>1.012789e+00</td>
-      <td>0.811359</td>
+      <td>0.806616</td>
       <td>1</td>
+      <td>1.008605e+00</td>
+      <td>1.008605e+00</td>
     </tr>
   </tbody>
 </table>
@@ -1222,7 +1232,7 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
 </div>
 <p>On fait un dernier test avec <a class="reference external" href="http://scikit-learn.org/stable/">scikit-learn</a> pour vérifier que l’algorithme de résolution donne des résultats similaires pour un cas où le déterminant est quasi-nul.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
@@ -1248,7 +1258,7 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1284,76 +1294,76 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
   <tbody>
     <tr>
       <th>0.90</th>
-      <td>7.601931e-01</td>
-      <td>1.293903e+00</td>
-      <td>0.796916</td>
+      <td>1.140599</td>
+      <td>0.863675</td>
+      <td>0.791250</td>
     </tr>
     <tr>
       <th>0.91</th>
-      <td>7.275372e-01</td>
-      <td>1.326559e+00</td>
-      <td>0.798417</td>
+      <td>1.155746</td>
+      <td>0.848528</td>
+      <td>0.792821</td>
     </tr>
     <tr>
       <th>0.92</th>
-      <td>6.867173e-01</td>
-      <td>1.367379e+00</td>
-      <td>0.799911</td>
+      <td>1.174680</td>
+      <td>0.829593</td>
+      <td>0.794384</td>
     </tr>
     <tr>
       <th>0.93</th>
-      <td>6.342346e-01</td>
-      <td>1.419862e+00</td>
-      <td>0.801399</td>
+      <td>1.199024</td>
+      <td>0.805250</td>
+      <td>0.795940</td>
     </tr>
     <tr>
       <th>0.94</th>
-      <td>5.642576e-01</td>
-      <td>1.489839e+00</td>
-      <td>0.802880</td>
+      <td>1.231482</td>
+      <td>0.772791</td>
+      <td>0.797489</td>
     </tr>
     <tr>
       <th>0.95</th>
-      <td>4.662898e-01</td>
-      <td>1.587807e+00</td>
-      <td>0.804355</td>
+      <td>1.276924</td>
+      <td>0.727350</td>
+      <td>0.799029</td>
     </tr>
     <tr>
       <th>0.96</th>
-      <td>3.193382e-01</td>
-      <td>1.734758e+00</td>
-      <td>0.805823</td>
+      <td>1.345087</td>
+      <td>0.659187</td>
+      <td>0.800562</td>
     </tr>
     <tr>
       <th>0.97</th>
-      <td>7.441878e-02</td>
-      <td>1.979678e+00</td>
-      <td>0.807283</td>
+      <td>1.458691</td>
+      <td>0.545583</td>
+      <td>0.802087</td>
     </tr>
     <tr>
       <th>0.98</th>
-      <td>-4.154200e-01</td>
-      <td>2.469516e+00</td>
-      <td>0.808736</td>
+      <td>1.685900</td>
+      <td>0.318374</td>
+      <td>0.803603</td>
     </tr>
     <tr>
       <th>0.99</th>
-      <td>-1.884936e+00</td>
-      <td>3.939033e+00</td>
-      <td>0.810182</td>
+      <td>2.367526</td>
+      <td>-0.363252</td>
+      <td>0.805111</td>
     </tr>
     <tr>
       <th>1.00</th>
-      <td>8.512221e+13</td>
-      <td>-8.512221e+13</td>
-      <td>0.811404</td>
+      <td>1.008682</td>
+      <td>1.008682</td>
+      <td>0.806575</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -1377,10 +1387,10 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
 <p>Le second graphe est trompeur mais il ne faut pas oublier de regarder l’échelle de l’axe des ordonnées.</p>
 </section>
 <section id="Indicatrices">
-<h2>Indicatrices<a class="headerlink" href="#Indicatrices" title="Link to this heading">#</a></h2>
+<h2>Indicatrices<a class="headerlink" href="#Indicatrices" title="Lien vers cette rubrique">#</a></h2>
 <p><span class="math notranslate nohighlight">\(X_1\)</span> est une variable aléatoire gaussienne. On teste maintenant un modèle <span class="math notranslate nohighlight">\(Y = X'_1 + X'_2 + \epsilon\)</span> avec <span class="math notranslate nohighlight">\(X'_1 = X_1 \mathbb{1}_{X_1 &lt; 0}\)</span> et <span class="math notranslate nohighlight">\(X'_2 = X_1 \mathbb{1}_{X_1 \geqslant 0}\)</span>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">npr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -1393,18 +1403,18 @@ Cette précision est aux alentours de <span class="math notranslate nohighlight"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([[ 1.        ,  0.47358312, -0.03083914],
-       [ 0.47358312,  1.        , -0.01293737],
-       [-0.03083914, -0.01293737,  1.        ]])
+array([[ 1.        ,  0.48561838,  0.0042644 ],
+       [ 0.48561838,  1.        , -0.01058737],
+       [ 0.0042644 , -0.01058737,  1.        ]])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
@@ -1428,7 +1438,7 @@ array([[ 1.        ,  0.47358312, -0.03083914],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">])</span>
@@ -1438,38 +1448,38 @@ array([[ 1.        ,  0.47358312, -0.03083914],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th>  <td>   1.000</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>       <td>   1.000</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th>  <td>   1.000</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th>  <td>   1.000</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>  <td>2.212e+33</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>           <td>1.581e+33</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 15 Oct 2018</td> <th>  Prob (F-statistic):</th>   <td>  0.00</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>            <td>  0.00</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>10:56:29</td>     <th>  Log-Likelihood:    </th>  <td>  33713.</td>
+  <th>Time:</th>                 <td>11:29:06</td>     <th>  Log-Likelihood:    </th>           <td>  33532.</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>-6.742e+04</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>-6.706e+04</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   997</td>      <th>  BIC:               </th> <td>-6.740e+04</td>
+  <th>Df Residuals:</th>          <td>   997</td>      <th>  BIC:               </th>          <td>-6.704e+04</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>     3</td>      <th>                     </th>      <td> </td>
+  <th>Df Model:</th>              <td>     3</td>      <th>                     </th>               <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>      <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>               <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -1477,33 +1487,33 @@ array([[ 1.        ,  0.47358312, -0.03083914],
    <td></td>     <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th> <td>    1.0000</td> <td> 2.42e-17</td> <td> 4.14e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x1</th> <td>    1.0000</td> <td> 2.98e-17</td> <td> 3.35e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 <tr>
-  <th>x2</th> <td>    1.0000</td> <td> 2.39e-17</td> <td> 4.18e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x2</th> <td>    1.0000</td> <td> 2.73e-17</td> <td> 3.66e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 <tr>
-  <th>x3</th> <td>    1.0000</td> <td> 1.73e-17</td> <td> 5.78e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x3</th> <td>    1.0000</td> <td> 2.09e-17</td> <td> 4.79e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td> 4.249</td> <th>  Durbin-Watson:     </th> <td>   2.031</td>
+  <th>Omnibus:</th>       <td>20.214</td> <th>  Durbin-Watson:     </th> <td>   1.267</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.119</td> <th>  Jarque-Bera (JB):  </th> <td>   4.338</td>
+  <th>Prob(Omnibus):</th> <td> 0.000</td> <th>  Jarque-Bera (JB):  </th> <td>  30.796</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td>-0.107</td> <th>  Prob(JB):          </th> <td>   0.114</td>
+  <th>Skew:</th>          <td> 0.179</td> <th>  Prob(JB):          </th> <td>2.05e-07</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 3.242</td> <th>  Cond. No.          </th> <td>    1.40</td>
+  <th>Kurtosis:</th>      <td> 3.781</td> <th>  Cond. No.          </th> <td>    1.43</td>
 </tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
 </div>
 <p>On découpe en trois.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
@@ -1521,19 +1531,19 @@ array([[ 1.        ,  0.47358312, -0.03083914],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
-       [-0.00347584,  1.        ,  0.00326437, -0.04707208],
-       [ 0.16846101,  0.00326437,  1.        ,  0.08754832],
-       [ 0.06722762, -0.04707208,  0.08754832,  1.        ]])
+array([[ 1.        , -0.0221138 ,  0.15312241, -0.01158589],
+       [-0.0221138 ,  1.        ,  0.02182757,  0.03734989],
+       [ 0.15312241,  0.02182757,  1.        ,  0.01263351],
+       [-0.01158589,  0.03734989,  0.01263351,  1.        ]])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
@@ -1557,7 +1567,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">])</span>
@@ -1567,38 +1577,38 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th>  <td>   1.000</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>       <td>   1.000</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th>  <td>   1.000</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th>  <td>   1.000</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>  <td>1.910e+32</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>           <td>3.030e+31</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 15 Oct 2018</td> <th>  Prob (F-statistic):</th>   <td>  0.00</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>            <td>  0.00</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>10:57:27</td>     <th>  Log-Likelihood:    </th>  <td>  32608.</td>
+  <th>Time:</th>                 <td>11:29:06</td>     <th>  Log-Likelihood:    </th>           <td>  31722.</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>-6.521e+04</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>-6.344e+04</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   996</td>      <th>  BIC:               </th> <td>-6.519e+04</td>
+  <th>Df Residuals:</th>          <td>   996</td>      <th>  BIC:               </th>          <td>-6.342e+04</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>     4</td>      <th>                     </th>      <td> </td>
+  <th>Df Model:</th>              <td>     4</td>      <th>                     </th>               <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>      <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>               <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -1606,42 +1616,42 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
    <td></td>     <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th> <td>    1.0000</td> <td> 8.75e-17</td> <td> 1.14e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x1</th> <td>    1.0000</td> <td> 2.07e-16</td> <td> 4.84e+15</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 <tr>
-  <th>x2</th> <td>    1.0000</td> <td> 1.22e-16</td> <td> 8.23e+15</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x2</th> <td>    1.0000</td> <td> 2.87e-16</td> <td> 3.49e+15</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 <tr>
-  <th>x3</th> <td>    1.0000</td> <td> 8.33e-17</td> <td>  1.2e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x3</th> <td>    1.0000</td> <td> 2.01e-16</td> <td> 4.97e+15</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 <tr>
-  <th>x4</th> <td>    1.0000</td> <td> 5.23e-17</td> <td> 1.91e+16</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
+  <th>x4</th> <td>    1.0000</td> <td>  1.3e-16</td> <td> 7.66e+15</td> <td> 0.000</td> <td>    1.000</td> <td>    1.000</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td>457.967</td> <th>  Durbin-Watson:     </th> <td>   1.816</td>
+  <th>Omnibus:</th>       <td>457.510</td> <th>  Durbin-Watson:     </th> <td>   1.879</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td>1967.636</td>
+  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td>1715.476</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td>-2.198</td>  <th>  Prob(JB):          </th> <td>    0.00</td>
+  <th>Skew:</th>          <td> 2.280</td>  <th>  Prob(JB):          </th> <td>    0.00</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 8.282</td>  <th>  Cond. No.          </th> <td>    2.35</td>
+  <th>Kurtosis:</th>      <td> 7.514</td>  <th>  Cond. No.          </th> <td>    2.20</td>
 </tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
 </div>
 </section>
 <section id="Régression-linéaire-par-morceaux">
-<h2>Régression linéaire par morceaux<a class="headerlink" href="#Régression-linéaire-par-morceaux" title="Link to this heading">#</a></h2>
+<h2>Régression linéaire par morceaux<a class="headerlink" href="#Régression-linéaire-par-morceaux" title="Lien vers cette rubrique">#</a></h2>
 <p>On se place dans un cas particulier où le problème est linéaire par morceaux :</p>
 <div class="math notranslate nohighlight">
 \[Y = -2 X_1 \mathbb{1}_{X_1 + \epsilon_1 &lt;0} + 4 X_1 \mathbb{1}_{X + \epsilon_1 &gt; 0} + \epsilon_2\]</div>
 <p>La régression donne de très mauvais résultat sur ce type de problèmes mais on cherche une façon systématique de découper le problème en segments linéaires.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">npr</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -1654,7 +1664,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1671,7 +1681,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">])</span>
@@ -1681,38 +1691,38 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.094</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>      <td>   0.107</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.093</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th> <td>   0.106</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   104.0</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>          <td>   119.3</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 15 Oct 2018</td> <th>  Prob (F-statistic):</th> <td>2.69e-23</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>          <td>2.56e-26</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>10:59:28</td>     <th>  Log-Likelihood:    </th> <td> -2594.9</td>
+  <th>Time:</th>                 <td>11:29:06</td>     <th>  Log-Likelihood:    </th>          <td> -2555.7</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>   5192.</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>   5113.</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   999</td>      <th>  BIC:               </th> <td>   5197.</td>
+  <th>Df Residuals:</th>          <td>   999</td>      <th>  BIC:               </th>          <td>   5118.</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>     <td> </td>
+  <th>Df Model:</th>              <td>     1</td>      <th>                     </th>              <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>              <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -1720,26 +1730,26 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
    <td></td>     <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th> <td>    1.0252</td> <td>    0.101</td> <td>   10.197</td> <td> 0.000</td> <td>    0.828</td> <td>    1.222</td>
+  <th>x1</th> <td>    1.0940</td> <td>    0.100</td> <td>   10.924</td> <td> 0.000</td> <td>    0.897</td> <td>    1.290</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td> 3.882</td> <th>  Durbin-Watson:     </th> <td>   1.092</td>
+  <th>Omnibus:</th>       <td> 3.084</td> <th>  Durbin-Watson:     </th> <td>   1.111</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.144</td> <th>  Jarque-Bera (JB):  </th> <td>   3.834</td>
+  <th>Prob(Omnibus):</th> <td> 0.214</td> <th>  Jarque-Bera (JB):  </th> <td>   2.960</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td> 0.151</td> <th>  Prob(JB):          </th> <td>   0.147</td>
+  <th>Skew:</th>          <td> 0.088</td> <th>  Prob(JB):          </th> <td>   0.228</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 3.015</td> <th>  Cond. No.          </th> <td>    1.00</td>
+  <th>Kurtosis:</th>      <td> 2.801</td> <th>  Cond. No.          </th> <td>    1.00</td>
 </tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yp</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">])</span>
@@ -1747,7 +1757,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1767,7 +1777,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 <p>Passons à un arbre de décision qui n’est pas le meilleur modèle mais on va détourner ses résultats pour revenir à un problème de régression par morceaux.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
@@ -1779,7 +1789,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1799,7 +1809,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphviz</span>
@@ -1813,16 +1823,17 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/notebooks_dsgarden_regression_lineaire_44_0.png" src="../../_images/notebooks_dsgarden_regression_lineaire_44_0.png" />
-</div>
+<div class="highlight"><pre>
+&#39;tree_dot.gv.pdf&#39;
+</pre></div></div>
 </div>
 <p>On extrait tous les seuils de l’arbre et on ajoute les milieux de segments.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">th</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">threshold</span><span class="p">)))</span>
@@ -1833,31 +1844,31 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[-2.0,
- -1.8018612563610077,
- -1.6037225127220154,
- -1.323736995458603,
- -1.0437514781951904,
- -0.3109976723790169,
- 0.4217561334371567,
- 0.678125374019146,
- 0.9344946146011353,
- 1.0011553764343262,
- 1.067816138267517,
- 1.2776717841625214,
- 1.4875274300575256,
- 1.7147845923900604,
- 1.9420417547225952]
+[np.float64(-2.0),
+ np.float64(-1.85539710521698),
+ np.float64(-1.71079421043396),
+ np.float64(-1.3022041469812393),
+ np.float64(-0.8936140835285187),
+ np.float64(-0.2086283266544342),
+ np.float64(0.47635743021965027),
+ np.float64(0.6395495533943176),
+ np.float64(0.802741676568985),
+ np.float64(0.942541167140007),
+ np.float64(1.082340657711029),
+ np.float64(1.310522198677063),
+ np.float64(1.538703739643097),
+ np.float64(1.6980005204677582),
+ np.float64(1.8572973012924194)]
 </pre></div></div>
 </div>
 <p>On fait une régression sur les variables <span class="math notranslate nohighlight">\(W_{i&gt;0} = X_1 \mathbb{1}_{X_1 &gt; t_i}\)</span>, <span class="math notranslate nohighlight">\(W_0 = X_1\)</span> où les <span class="math notranslate nohighlight">\((t_i)\)</span> sont les seuils.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">th</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
@@ -1869,7 +1880,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
@@ -1879,38 +1890,38 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.849</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>      <td>   0.858</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.847</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th> <td>   0.855</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   346.9</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>          <td>   370.4</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 15 Oct 2018</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>           <td>  0.00</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>11:07:03</td>     <th>  Log-Likelihood:    </th> <td> -1697.7</td>
+  <th>Time:</th>                 <td>11:29:07</td>     <th>  Log-Likelihood:    </th>          <td> -1637.5</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>   3427.</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>   3307.</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   984</td>      <th>  BIC:               </th> <td>   3506.</td>
+  <th>Df Residuals:</th>          <td>   984</td>      <th>  BIC:               </th>          <td>   3385.</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>    16</td>      <th>                     </th>     <td> </td>
+  <th>Df Model:</th>              <td>    16</td>      <th>                     </th>              <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>              <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -1918,72 +1929,72 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
    <td></td>      <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th>  <td>   -1.8316</td> <td>    0.124</td> <td>  -14.806</td> <td> 0.000</td> <td>   -2.074</td> <td>   -1.589</td>
+  <th>x1</th>  <td>   -1.8183</td> <td>    0.119</td> <td>  -15.303</td> <td> 0.000</td> <td>   -2.051</td> <td>   -1.585</td>
 </tr>
 <tr>
-  <th>x2</th>  <td>   -0.0573</td> <td>    0.210</td> <td>   -0.273</td> <td> 0.785</td> <td>   -0.469</td> <td>    0.354</td>
+  <th>x2</th>  <td>   -0.4155</td> <td>    0.260</td> <td>   -1.600</td> <td> 0.110</td> <td>   -0.925</td> <td>    0.094</td>
 </tr>
 <tr>
-  <th>x3</th>  <td>   -0.2440</td> <td>    0.235</td> <td>   -1.038</td> <td> 0.300</td> <td>   -0.705</td> <td>    0.217</td>
+  <th>x3</th>  <td>    0.2157</td> <td>    0.320</td> <td>    0.673</td> <td> 0.501</td> <td>   -0.413</td> <td>    0.845</td>
 </tr>
 <tr>
-  <th>x4</th>  <td>    0.3291</td> <td>    0.218</td> <td>    1.508</td> <td> 0.132</td> <td>   -0.099</td> <td>    0.757</td>
+  <th>x4</th>  <td>    0.1368</td> <td>    0.247</td> <td>    0.553</td> <td> 0.581</td> <td>   -0.349</td> <td>    0.622</td>
 </tr>
 <tr>
-  <th>x5</th>  <td>   -0.3610</td> <td>    0.206</td> <td>   -1.756</td> <td> 0.079</td> <td>   -0.764</td> <td>    0.042</td>
+  <th>x5</th>  <td>   -0.2634</td> <td>    0.166</td> <td>   -1.589</td> <td> 0.112</td> <td>   -0.589</td> <td>    0.062</td>
 </tr>
 <tr>
-  <th>x6</th>  <td>    0.5528</td> <td>    0.197</td> <td>    2.811</td> <td> 0.005</td> <td>    0.167</td> <td>    0.939</td>
+  <th>x6</th>  <td>    1.0105</td> <td>    0.196</td> <td>    5.164</td> <td> 0.000</td> <td>    0.627</td> <td>    1.395</td>
 </tr>
 <tr>
-  <th>x7</th>  <td>    3.2628</td> <td>    0.395</td> <td>    8.253</td> <td> 0.000</td> <td>    2.487</td> <td>    4.039</td>
+  <th>x7</th>  <td>    3.3282</td> <td>    0.356</td> <td>    9.357</td> <td> 0.000</td> <td>    2.630</td> <td>    4.026</td>
 </tr>
 <tr>
-  <th>x8</th>  <td>    1.4566</td> <td>    0.449</td> <td>    3.244</td> <td> 0.001</td> <td>    0.576</td> <td>    2.338</td>
+  <th>x8</th>  <td>    1.3866</td> <td>    0.454</td> <td>    3.051</td> <td> 0.002</td> <td>    0.495</td> <td>    2.278</td>
 </tr>
 <tr>
-  <th>x9</th>  <td>    0.2701</td> <td>    0.311</td> <td>    0.869</td> <td> 0.385</td> <td>   -0.340</td> <td>    0.880</td>
+  <th>x9</th>  <td>    0.3655</td> <td>    0.403</td> <td>    0.907</td> <td> 0.365</td> <td>   -0.425</td> <td>    1.156</td>
 </tr>
 <tr>
-  <th>x10</th> <td>    0.7213</td> <td>    0.374</td> <td>    1.928</td> <td> 0.054</td> <td>   -0.013</td> <td>    1.456</td>
+  <th>x10</th> <td>    0.1177</td> <td>    0.334</td> <td>    0.353</td> <td> 0.724</td> <td>   -0.537</td> <td>    0.773</td>
 </tr>
 <tr>
-  <th>x11</th> <td>   -0.4599</td> <td>    0.457</td> <td>   -1.006</td> <td> 0.315</td> <td>   -1.357</td> <td>    0.437</td>
+  <th>x11</th> <td>   -0.3147</td> <td>    0.307</td> <td>   -1.023</td> <td> 0.306</td> <td>   -0.918</td> <td>    0.289</td>
 </tr>
 <tr>
-  <th>x12</th> <td>    0.4177</td> <td>    0.378</td> <td>    1.105</td> <td> 0.269</td> <td>   -0.324</td> <td>    1.159</td>
+  <th>x12</th> <td>    0.2972</td> <td>    0.255</td> <td>    1.166</td> <td> 0.244</td> <td>   -0.203</td> <td>    0.797</td>
 </tr>
 <tr>
-  <th>x13</th> <td>   -0.2703</td> <td>    0.253</td> <td>   -1.069</td> <td> 0.285</td> <td>   -0.766</td> <td>    0.226</td>
+  <th>x13</th> <td>   -0.0456</td> <td>    0.197</td> <td>   -0.231</td> <td> 0.817</td> <td>   -0.433</td> <td>    0.342</td>
 </tr>
 <tr>
-  <th>x14</th> <td>    0.5325</td> <td>    0.226</td> <td>    2.360</td> <td> 0.018</td> <td>    0.090</td> <td>    0.975</td>
+  <th>x14</th> <td>    0.2807</td> <td>    0.252</td> <td>    1.112</td> <td> 0.266</td> <td>   -0.215</td> <td>    0.776</td>
 </tr>
 <tr>
-  <th>x15</th> <td>   -0.3703</td> <td>    0.229</td> <td>   -1.618</td> <td> 0.106</td> <td>   -0.819</td> <td>    0.079</td>
+  <th>x15</th> <td>   -0.3102</td> <td>    0.303</td> <td>   -1.024</td> <td> 0.306</td> <td>   -0.904</td> <td>    0.284</td>
 </tr>
 <tr>
-  <th>x16</th> <td>    0.1996</td> <td>    0.194</td> <td>    1.026</td> <td> 0.305</td> <td>   -0.182</td> <td>    0.581</td>
+  <th>x16</th> <td>   -0.0231</td> <td>    0.237</td> <td>   -0.097</td> <td> 0.923</td> <td>   -0.489</td> <td>    0.443</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td>228.022</td> <th>  Durbin-Watson:     </th> <td>   1.978</td>
+  <th>Omnibus:</th>       <td>207.506</td> <th>  Durbin-Watson:     </th> <td>   1.993</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td> 716.200</td>
+  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td> 673.510</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td>-1.110</td>  <th>  Prob(JB):          </th> <td>3.01e-156</td>
+  <th>Skew:</th>          <td>-0.999</td>  <th>  Prob(JB):          </th> <td>5.61e-147</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 6.502</td>  <th>  Cond. No.          </th> <td>    36.3</td>
+  <th>Kurtosis:</th>      <td> 6.489</td>  <th>  Cond. No.          </th> <td>    37.1</td>
 </tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
 </div>
 <p>Dessinons les résultats de la prédictions.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yp</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
@@ -2007,7 +2018,7 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 <p>Le modèle nous suggère de ne garder que quelques seuils. En s’appuyant sur les p-values :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keep</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">))[</span><span class="n">results</span><span class="o">.</span><span class="n">pvalues</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">]</span>
@@ -2016,16 +2027,16 @@ array([[ 1.        , -0.00347584,  0.16846101,  0.06722762],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([ 0,  5,  6,  7, 13])
+array([0, 5, 6, 7])
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W2</span> <span class="o">=</span> <span class="n">W</span><span class="p">[:,</span> <span class="n">keep</span><span class="p">]</span>
@@ -2033,7 +2044,7 @@ array([ 0,  5,  6,  7, 13])
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">OLS</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">W2</span><span class="p">)</span>
@@ -2043,38 +2054,38 @@ array([ 0,  5,  6,  7, 13])
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 <table class="simpletable">
 <caption>OLS Regression Results</caption>
 <tr>
-  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared:         </th> <td>   0.846</td>
+  <th>Dep. Variable:</th>            <td>y</td>        <th>  R-squared (uncentered):</th>      <td>   0.856</td>
 </tr>
 <tr>
-  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared:    </th> <td>   0.845</td>
+  <th>Model:</th>                   <td>OLS</td>       <th>  Adj. R-squared (uncentered):</th> <td>   0.855</td>
 </tr>
 <tr>
-  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th> <td>   1094.</td>
+  <th>Method:</th>             <td>Least Squares</td>  <th>  F-statistic:       </th>          <td>   1481.</td>
 </tr>
 <tr>
-  <th>Date:</th>             <td>Mon, 15 Oct 2018</td> <th>  Prob (F-statistic):</th>  <td>  0.00</td>
+  <th>Date:</th>             <td>Mon, 07 Oct 2024</td> <th>  Prob (F-statistic):</th>           <td>  0.00</td>
 </tr>
 <tr>
-  <th>Time:</th>                 <td>11:07:38</td>     <th>  Log-Likelihood:    </th> <td> -1708.6</td>
+  <th>Time:</th>                 <td>11:29:08</td>     <th>  Log-Likelihood:    </th>          <td> -1642.9</td>
 </tr>
 <tr>
-  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th> <td>   3427.</td>
+  <th>No. Observations:</th>      <td>  1000</td>      <th>  AIC:               </th>          <td>   3294.</td>
 </tr>
 <tr>
-  <th>Df Residuals:</th>          <td>   995</td>      <th>  BIC:               </th> <td>   3452.</td>
+  <th>Df Residuals:</th>          <td>   996</td>      <th>  BIC:               </th>          <td>   3314.</td>
 </tr>
 <tr>
-  <th>Df Model:</th>              <td>     5</td>      <th>                     </th>     <td> </td>
+  <th>Df Model:</th>              <td>     4</td>      <th>                     </th>              <td> </td>
 </tr>
 <tr>
-  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>     <td> </td>
+  <th>Covariance Type:</th>      <td>nonrobust</td>    <th>                     </th>              <td> </td>
 </tr>
 </table>
 <table class="simpletable">
@@ -2082,38 +2093,35 @@ array([ 0,  5,  6,  7, 13])
    <td></td>     <th>coef</th>     <th>std err</th>      <th>t</th>      <th>P>|t|</th>  <th>[0.025</th>    <th>0.975]</th>
 </tr>
 <tr>
-  <th>x1</th> <td>   -1.9504</td> <td>    0.066</td> <td>  -29.574</td> <td> 0.000</td> <td>   -2.080</td> <td>   -1.821</td>
+  <th>x1</th> <td>   -1.9657</td> <td>    0.062</td> <td>  -31.604</td> <td> 0.000</td> <td>   -2.088</td> <td>   -1.844</td>
 </tr>
 <tr>
-  <th>x2</th> <td>    0.3384</td> <td>    0.148</td> <td>    2.287</td> <td> 0.022</td> <td>    0.048</td> <td>    0.629</td>
+  <th>x2</th> <td>    0.8316</td> <td>    0.163</td> <td>    5.106</td> <td> 0.000</td> <td>    0.512</td> <td>    1.151</td>
 </tr>
 <tr>
-  <th>x3</th> <td>    3.2628</td> <td>    0.397</td> <td>    8.209</td> <td> 0.000</td> <td>    2.483</td> <td>    4.043</td>
+  <th>x3</th> <td>    3.3282</td> <td>    0.355</td> <td>    9.363</td> <td> 0.000</td> <td>    2.631</td> <td>    4.026</td>
 </tr>
 <tr>
-  <th>x4</th> <td>    2.0247</td> <td>    0.385</td> <td>    5.260</td> <td> 0.000</td> <td>    1.269</td> <td>    2.780</td>
-</tr>
-<tr>
-  <th>x5</th> <td>    0.4635</td> <td>    0.119</td> <td>    3.901</td> <td> 0.000</td> <td>    0.230</td> <td>    0.697</td>
+  <th>x4</th> <td>    1.7842</td> <td>    0.327</td> <td>    5.455</td> <td> 0.000</td> <td>    1.142</td> <td>    2.426</td>
 </tr>
 </table>
 <table class="simpletable">
 <tr>
-  <th>Omnibus:</th>       <td>248.807</td> <th>  Durbin-Watson:     </th> <td>   1.984</td>
+  <th>Omnibus:</th>       <td>225.520</td> <th>  Durbin-Watson:     </th> <td>   2.011</td>
 </tr>
 <tr>
-  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td> 829.417</td>
+  <th>Prob(Omnibus):</th> <td> 0.000</td>  <th>  Jarque-Bera (JB):  </th> <td> 775.424</td>
 </tr>
 <tr>
-  <th>Skew:</th>          <td>-1.190</td>  <th>  Prob(JB):          </th> <td>7.84e-181</td>
+  <th>Skew:</th>          <td>-1.066</td>  <th>  Prob(JB):          </th> <td>4.16e-169</td>
 </tr>
 <tr>
-  <th>Kurtosis:</th>      <td> 6.774</td>  <th>  Cond. No.          </th> <td>    20.1</td>
+  <th>Kurtosis:</th>      <td> 6.750</td>  <th>  Cond. No.          </th> <td>    17.4</td>
 </tr>
-</table><br/><br/>Warnings:<br/>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
+</table><br/><br/>Notes:<br/>[1] R² is computed without centering (uncentered) since the model does not contain a constant.<br/>[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.</div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yp</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">W2</span><span class="p">)</span>
@@ -2135,8 +2143,8 @@ array([ 0,  5,  6,  7, 13])
 <img alt="../../_images/notebooks_dsgarden_regression_lineaire_56_0.png" src="../../_images/notebooks_dsgarden_regression_lineaire_56_0.png" />
 </div>
 </div>
-<p>Le coefficient <span class="math notranslate nohighlight">\(R^2\)</span> est quasiment identique pour un nombre de segments moindre. Je me suis amusé à rendre ce code plus générique pour comparer la première étape, le découpage en morceaux, via deux modèles, un arbre de décision et le nouvel objet <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.KBinsDiscretizer.html">KBinsDiscretizer</a> qui segmente une variable sans tenir compte de la cible. La régression n’est plus nécessaire linéaire : <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/notebooks/piecewise_linear_regression.html">Piecewise linear
-regression</a>. Je me suis également amusé à faire de même pour une classification par morceaux <a class="reference external" href="http://www.xavierdupre.fr/app/mlinsights/helpsphinx/mlinsights/mlmodel/piecewise_estimator.html?mlinsights.mlmodel.piecewise_estimator.PiecewiseClassifier">PiecewiseClassifier</a>. Celle-ci pose quelques soucis pratiques car toutes les classes ne sont pas forcément représentées dans chaque compartiment…</p>
+<p>Le coefficient <span class="math notranslate nohighlight">\(R^2\)</span> est quasiment identique pour un nombre de segments moindre. Je me suis amusé à rendre ce code plus générique pour comparer la première étape, le découpage en morceaux, via deux modèles, un arbre de décision et le nouvel objet <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.KBinsDiscretizer.html">KBinsDiscretizer</a> qui segmente une variable sans tenir compte de la cible. La régression n’est plus nécessaire linéaire : <a class="reference external" href="https://sdpython.github.io/doc/mlinsights/dev/auto_examples/plot_piecewise_linear_regression.html">Piecewise linear
+regression</a>. Je me suis également amusé à faire de même pour une classification par morceaux <a class="reference external" href="https://sdpython.github.io/doc/mlinsights/dev/api/mlmodel.html#piecewiseclassifier">PiecewiseClassifier</a>. Celle-ci pose quelques soucis pratiques car toutes les classes ne sont pas forcément représentées dans chaque compartiment…</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
@@ -2245,7 +2253,7 @@ regression</a>. Je me suis également amusé à faire de même pour une classifi
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

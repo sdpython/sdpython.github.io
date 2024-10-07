@@ -29,8 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -43,9 +43,9 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=f45c5ce7"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/translations.js?v=041d0952"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -596,10 +596,10 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="Completion-profiling">
-<h1>Completion profiling<a class="headerlink" href="#Completion-profiling" title="Link to this heading">#</a></h1>
+<h1>Completion profiling<a class="headerlink" href="#Completion-profiling" title="Lien vers cette rubrique">#</a></h1>
 <p>Profiling avec <a class="reference external" href="https://docs.python.org/3.7/library/profile.html">cProfile</a>, <a class="reference external" href="https://pypi.org/project/memory-profiler/">memory_profiler</a>, <a class="reference external" href="https://github.com/joerick/pyinstrument">pyinstrument</a>, <a class="reference external" href="https://jiffyclub.github.io/snakeviz/">snakeviz</a>.</p>
 <p><a class="reference external" href="https://github.com/rkern/line_profiler">line_profiler</a> ne semble pas plus être maintenu.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -607,136 +607,10 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div id="my_id_menu_nb">run previous cell, wait for 2 seconds</div>
-<script>
-function repeat_indent_string(n){
-    var a = "" ;
-    for ( ; n > 0 ; --n)
-        a += "    ";
-    return a;
-}
-// look up into all sections and builds an automated menu //
-var update_menu_string = function(begin, lfirst, llast, sformat, send, keep_item, begin_format, end_format) {
-    var anchors = document.getElementsByClassName("section");
-    if (anchors.length == 0) {
-        anchors = document.getElementsByClassName("text_cell_render rendered_html");
-    }
-    var i,t;
-    var text_menu = begin;
-    var text_memo = "<pre>\nlength:" + anchors.length + "\n";
-    var ind = "";
-    var memo_level = 1;
-    var href;
-    var tags = [];
-    var main_item = 0;
-    var format_open = 0;
-    for (i = 0; i <= llast; i++)
-        tags.push("h" + i);
-
-    for (i = 0; i < anchors.length; i++) {
-        text_memo += "**" + anchors[i].id + "--\n";
-
-        var child = null;
-        for(t = 0; t < tags.length; t++) {
-            var r = anchors[i].getElementsByTagName(tags[t]);
-            if (r.length > 0) {
-child = r[0];
-break;
-            }
-        }
-        if (child == null) {
-            text_memo += "null\n";
-            continue;
-        }
-        if (anchors[i].hasAttribute("id")) {
-            // when converted in RST
-            href = anchors[i].id;
-            text_memo += "#1-" + href;
-            // passer à child suivant (le chercher)
-        }
-        else if (child.hasAttribute("id")) {
-            // in a notebook
-            href = child.id;
-            text_memo += "#2-" + href;
-        }
-        else {
-            text_memo += "#3-" + "*" + "\n";
-            continue;
-        }
-        var title = child.textContent;
-        var level = parseInt(child.tagName.substring(1,2));
-
-        text_memo += "--" + level + "?" + lfirst + "--" + title + "\n";
-
-        if ((level < lfirst) || (level > llast)) {
-            continue ;
-        }
-        if (title.endsWith('¶')) {
-            title = title.substring(0,title.length-1).replace("<", "&lt;")
-         .replace(">", "&gt;").replace("&", "&amp;");
-        }
-        if (title.length == 0) {
-            continue;
-        }
-
-        while (level < memo_level) {
-            text_menu += end_format + "</ul>\n";
-            format_open -= 1;
-            memo_level -= 1;
-        }
-        if (level == lfirst) {
-            main_item += 1;
-        }
-        if (keep_item != -1 && main_item != keep_item + 1) {
-            // alert(main_item + " - " + level + " - " + keep_item);
-            continue;
-        }
-        while (level > memo_level) {
-            text_menu += "<ul>\n";
-            memo_level += 1;
-        }
-        text_menu += repeat_indent_string(level-2);
-        text_menu += begin_format + sformat.replace("__HREF__", href).replace("__TITLE__", title);
-        format_open += 1;
-    }
-    while (1 < memo_level) {
-        text_menu += end_format + "</ul>\n";
-        memo_level -= 1;
-        format_open -= 1;
-    }
-    text_menu += send;
-    //text_menu += "\n" + text_memo;
-
-    while (format_open > 0) {
-        text_menu += end_format;
-        format_open -= 1;
-    }
-    return text_menu;
-};
-var update_menu = function() {
-    var sbegin = "";
-    var sformat = '<a href="#__HREF__">__TITLE__</a>';
-    var send = "";
-    var begin_format = '<li>';
-    var end_format = '</li>';
-    var keep_item = -1;
-    var text_menu = update_menu_string(sbegin, 2, 4, sformat, send, keep_item,
-       begin_format, end_format);
-    var menu = document.getElementById("my_id_menu_nb");
-    menu.innerHTML=text_menu;
-};
-window.setTimeout(update_menu,2000);
-            </script></div>
-</div>
 <section id="Setup">
-<h2>Setup<a class="headerlink" href="#Setup" title="Link to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#Setup" title="Lien vers cette rubrique">#</a></h2>
 <section id="Function-to-profile">
-<h3>Function to profile<a class="headerlink" href="#Function-to-profile" title="Link to this heading">#</a></h3>
+<h3>Function to profile<a class="headerlink" href="#Function-to-profile" title="Lien vers cette rubrique">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -763,7 +637,7 @@ window.setTimeout(update_menu,2000);
 </div>
 </section>
 <section id="Data">
-<h3>Data<a class="headerlink" href="#Data" title="Link to this heading">#</a></h3>
+<h3>Data<a class="headerlink" href="#Data" title="Lien vers cette rubrique">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -818,9 +692,9 @@ window.setTimeout(update_menu,2000);
 </section>
 </section>
 <section id="Standard-modules">
-<h2>Standard modules<a class="headerlink" href="#Standard-modules" title="Link to this heading">#</a></h2>
+<h2>Standard modules<a class="headerlink" href="#Standard-modules" title="Lien vers cette rubrique">#</a></h2>
 <section id="cProfile">
-<h3>cProfile<a class="headerlink" href="#cProfile" title="Link to this heading">#</a></h3>
+<h3>cProfile<a class="headerlink" href="#cProfile" title="Lien vers cette rubrique">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -861,59 +735,65 @@ window.setTimeout(update_menu,2000);
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-         1311797 function calls in 1.865 seconds
+         1289418 function calls in 1.487 seconds
 
    Ordered by: cumulative time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    1.865    1.865 &lt;ipython-input-7-d2b6d910fdd7&gt;:3(toprofile0)
-        1    0.000    0.000    1.865    1.865 &lt;ipython-input-2-684f3e860cf5&gt;:3(gain_dynamique_moyen_par_mot)
-        1    0.241    0.241    1.232    1.232 \src\mlstatpy\nlp\completion.py:415(precompute_stat)
-    15982    0.244    0.000    0.770    0.000 \src\mlstatpy\nlp\completion.py:503(merge_completions)
-        1    0.088    0.088    0.366    0.366 \src\mlstatpy\nlp\completion.py:450(update_stat_dynamic)
-    15982    0.307    0.000    0.314    0.000 {built-in method builtins.__build_class__}
-        1    0.194    0.194    0.220    0.220 \src\mlstatpy\nlp\completion.py:203(build)
-    16982    0.094    0.000    0.165    0.000 \src\mlstatpy\nlp\completion.py:555(update_dynamic_minimum_keystroke)
-    36051    0.114    0.000    0.130    0.000 \src\mlstatpy\nlp\completion.py:523(&lt;listcomp&gt;)
-    37609    0.035    0.000    0.071    0.000 {built-in method builtins.all}
-    16982    0.051    0.000    0.058    0.000 \src\mlstatpy\nlp\completion.py:588(second_step)
-   314299    0.053    0.000    0.053    0.000 {built-in method builtins.len}
-    15983    0.006    0.000    0.049    0.000 {method &#39;extend&#39; of &#39;collections.deque&#39; objects}
-    16983    0.031    0.000    0.047    0.000 \src\mlstatpy\nlp\completion.py:97(unsorted_iter)
-    15982    0.039    0.000    0.046    0.000 \src\mlstatpy\nlp\completion.py:542(update_minimum_keystroke)
-    16982    0.041    0.000    0.044    0.000 \src\mlstatpy\nlp\completion.py:624(init_dynamic_minimum_keystroke)
-     1001    0.028    0.000    0.043    0.000 \src\mlstatpy\nlp\completion.py:132(leaves)
-   115015    0.041    0.000    0.041    0.000 \src\mlstatpy\nlp\completion.py:435(&lt;genexpr&gt;)
-    15982    0.024    0.000    0.032    0.000 {built-in method builtins.sorted}
-     3000    0.031    0.000    0.031    0.000 \src\mlstatpy\nlp\completion.py:257(find)
-   110110    0.027    0.000    0.027    0.000 {built-in method builtins.hasattr}
-   117519    0.023    0.000    0.023    0.000 {method &#39;values&#39; of &#39;dict&#39; objects}
-        1    0.001    0.001    0.017    0.017 &lt;ipython-input-2-684f3e860cf5&gt;:10(&lt;listcomp&gt;)
-    16982    0.015    0.000    0.017    0.000 \src\mlstatpy\nlp\completion.py:20(__init__)
-    47946    0.016    0.000    0.016    0.000 {method &#39;extend&#39; of &#39;list&#39; objects}
-    23287    0.015    0.000    0.015    0.000 {built-in method builtins.min}
-     1000    0.002    0.000    0.015    0.000 \src\mlstatpy\nlp\completion.py:321(min_keystroke0)
-        1    0.001    0.001    0.013    0.013 &lt;ipython-input-2-684f3e860cf5&gt;:13(&lt;listcomp&gt;)
-    50946    0.013    0.000    0.013    0.000 {method &#39;pop&#39; of &#39;list&#39; objects}
-        1    0.001    0.001    0.013    0.013 &lt;ipython-input-2-684f3e860cf5&gt;:11(&lt;listcomp&gt;)
-    20069    0.012    0.000    0.012    0.000 {built-in method builtins.max}
-     1000    0.002    0.000    0.012    0.000 \src\mlstatpy\nlp\completion.py:382(min_dynamic_keystroke2)
-     1000    0.002    0.000    0.012    0.000 \src\mlstatpy\nlp\completion.py:352(min_dynamic_keystroke)
-    56589    0.011    0.000    0.011    0.000 {method &#39;popleft&#39; of &#39;collections.deque&#39; objects}
-    52034    0.011    0.000    0.011    0.000 {method &#39;append&#39; of &#39;list&#39; objects}
-    38608    0.009    0.000    0.009    0.000 {method &#39;append&#39; of &#39;collections.deque&#39; objects}
-    16982    0.008    0.000    0.008    0.000 \src\mlstatpy\nlp\completion.py:517(&lt;genexpr&gt;)
-    16981    0.007    0.000    0.007    0.000 \src\mlstatpy\nlp\completion.py:54(_add)
-    15982    0.007    0.000    0.007    0.000 \src\mlstatpy\nlp\completion.py:511(&lt;listcomp&gt;)
-    15982    0.007    0.000    0.007    0.000 \src\mlstatpy\nlp\completion.py:508(Fake)
-    31964    0.006    0.000    0.006    0.000 {method &#39;items&#39; of &#39;dict&#39; objects}
-        5    0.001    0.000    0.002    0.000 {built-in method builtins.sum}
-    17982    0.002    0.000    0.002    0.000 {built-in method builtins.isinstance}
-     1001    0.000    0.000    0.001    0.000 &lt;ipython-input-2-684f3e860cf5&gt;:18(&lt;genexpr&gt;)
-     1001    0.001    0.000    0.001    0.000 &lt;ipython-input-2-684f3e860cf5&gt;:15(&lt;genexpr&gt;)
-        1    0.000    0.000    0.000    0.000 &lt;ipython-input-2-684f3e860cf5&gt;:7(&lt;listcomp&gt;)
-     1001    0.000    0.000    0.000    0.000 &lt;ipython-input-2-684f3e860cf5&gt;:16(&lt;genexpr&gt;)
-     1001    0.000    0.000    0.000    0.000 &lt;ipython-input-2-684f3e860cf5&gt;:17(&lt;genexpr&gt;)
+        1    0.000    0.000    1.487    1.487 /tmp/ipykernel_54937/4045418276.py:4(toprofile0)
+        1    0.075    0.075    1.487    1.487 /tmp/ipykernel_54937/1707536480.py:4(gain_dynamique_moyen_par_mot)
+        1    0.314    0.314    1.107    1.107 /mlstatpy/nlp/completion.py:442(precompute_stat)
+    16034    0.167    0.000    0.652    0.000 /mlstatpy/nlp/completion.py:531(merge_completions)
+    16034    0.308    0.000    0.319    0.000 {built-in method builtins.__build_class__}
+        1    0.055    0.055    0.204    0.204 /mlstatpy/nlp/completion.py:477(update_stat_dynamic)
+    36051    0.081    0.000    0.094    0.000 /mlstatpy/nlp/completion.py:554(&lt;listcomp&gt;)
+    17034    0.046    0.000    0.088    0.000 /mlstatpy/nlp/completion.py:594(update_dynamic_minimum_keystroke)
+        1    0.045    0.045    0.075    0.075 /mlstatpy/nlp/completion.py:205(build)
+    35841    0.021    0.000    0.044    0.000 {built-in method builtins.all}
+   309964    0.041    0.000    0.041    0.000 {built-in method builtins.len}
+    17034    0.030    0.000    0.034    0.000 /mlstatpy/nlp/completion.py:627(second_step)
+    16034    0.023    0.000    0.029    0.000 /mlstatpy/nlp/completion.py:581(update_minimum_keystroke)
+    16035    0.006    0.000    0.028    0.000 {method &#39;extend&#39; of &#39;collections.deque&#39; objects}
+    17035    0.018    0.000    0.028    0.000 /mlstatpy/nlp/completion.py:90(unsorted_iter)
+    97520    0.027    0.000    0.027    0.000 /mlstatpy/nlp/completion.py:462(&lt;genexpr&gt;)
+    16034    0.017    0.000    0.023    0.000 {built-in method builtins.sorted}
+     1001    0.014    0.000    0.021    0.000 /mlstatpy/nlp/completion.py:126(leaves)
+   110289    0.019    0.000    0.019    0.000 {built-in method builtins.hasattr}
+    17034    0.017    0.000    0.019    0.000 /mlstatpy/nlp/completion.py:664(init_dynamic_minimum_keystroke)
+    17034    0.015    0.000    0.018    0.000 /mlstatpy/nlp/completion.py:15(__init__)
+   116511    0.016    0.000    0.016    0.000 {method &#39;values&#39; of &#39;dict&#39; objects}
+    52086    0.015    0.000    0.015    0.000 {method &#39;append&#39; of &#39;list&#39; objects}
+      500    0.005    0.000    0.014    0.000 /home/xadupre/vv/this/lib/python3.10/site-packages/ipykernel/ipkernel.py:775(_clean_thread_parent_frames)
+     3000    0.013    0.000    0.013    0.000 /mlstatpy/nlp/completion.py:263(find)
+    23123    0.010    0.000    0.010    0.000 {built-in method builtins.min}
+    48102    0.009    0.000    0.009    0.000 {method &#39;extend&#39; of &#39;list&#39; objects}
+    54873    0.008    0.000    0.008    0.000 {method &#39;popleft&#39; of &#39;collections.deque&#39; objects}
+        1    0.001    0.001    0.008    0.008 /tmp/ipykernel_54937/1707536480.py:10(&lt;listcomp&gt;)
+        1    0.001    0.001    0.008    0.008 /tmp/ipykernel_54937/1707536480.py:11(&lt;listcomp&gt;)
+    20017    0.008    0.000    0.008    0.000 {built-in method builtins.max}
+    17033    0.007    0.000    0.007    0.000 /mlstatpy/nlp/completion.py:48(_add)
+        1    0.001    0.001    0.007    0.007 /tmp/ipykernel_54937/1707536480.py:12(&lt;listcomp&gt;)
+     1000    0.001    0.000    0.007    0.000 /mlstatpy/nlp/completion.py:328(min_keystroke0)
+     1000    0.002    0.000    0.007    0.000 /mlstatpy/nlp/completion.py:364(min_dynamic_keystroke)
+      250    0.002    0.000    0.007    0.000 /home/xadupre/vv/this/lib/python3.10/site-packages/ipykernel/ipkernel.py:790(&lt;setcomp&gt;)
+    16034    0.007    0.000    0.007    0.000 /mlstatpy/nlp/completion.py:541(&lt;listcomp&gt;)
+    36840    0.007    0.000    0.007    0.000 {method &#39;append&#39; of &#39;collections.deque&#39; objects}
+     1000    0.001    0.000    0.006    0.000 /mlstatpy/nlp/completion.py:400(min_dynamic_keystroke2)
+    16034    0.006    0.000    0.006    0.000 /mlstatpy/nlp/completion.py:537(Fake)
+    51102    0.006    0.000    0.006    0.000 {method &#39;pop&#39; of &#39;list&#39; objects}
+    17034    0.006    0.000    0.006    0.000 /mlstatpy/nlp/completion.py:547(&lt;genexpr&gt;)
+     1750    0.004    0.000    0.004    0.000 /usr/lib/python3.10/threading.py:1145(ident)
+    32068    0.003    0.000    0.003    0.000 {method &#39;items&#39; of &#39;dict&#39; objects}
+    18534    0.003    0.000    0.003    0.000 {built-in method builtins.isinstance}
+      250    0.002    0.000    0.003    0.000 /usr/lib/python3.10/threading.py:1478(enumerate)
+        5    0.000    0.000    0.002    0.000 {built-in method builtins.sum}
+        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_54937/1707536480.py:7(&lt;listcomp&gt;)
+     1001    0.000    0.000    0.000    0.000 /tmp/ipykernel_54937/1707536480.py:16(&lt;genexpr&gt;)
+     1001    0.000    0.000    0.000    0.000 /tmp/ipykernel_54937/1707536480.py:13(&lt;genexpr&gt;)
+      250    0.000    0.000    0.000    0.000 {method &#39;__exit__&#39; of &#39;_thread.RLock&#39; objects}
+     1000    0.000    0.000    0.000    0.000 {method &#39;keys&#39; of &#39;dict&#39; objects}
+     1001    0.000    0.000    0.000    0.000 /tmp/ipykernel_54937/1707536480.py:14(&lt;genexpr&gt;)
+     1001    0.000    0.000    0.000    0.000 /tmp/ipykernel_54937/1707536480.py:15(&lt;genexpr&gt;)
         1    0.000    0.000    0.000    0.000 {method &#39;disable&#39; of &#39;_lsprof.Profiler&#39; objects}
 
 
@@ -923,12 +803,12 @@ window.setTimeout(update_menu,2000);
 </section>
 </section>
 <section id="Others-informations-when-profiling">
-<h2>Others informations when profiling<a class="headerlink" href="#Others-informations-when-profiling" title="Link to this heading">#</a></h2>
+<h2>Others informations when profiling<a class="headerlink" href="#Others-informations-when-profiling" title="Lien vers cette rubrique">#</a></h2>
 <section id="memory_profiler">
-<h3>memory_profiler<a class="headerlink" href="#memory_profiler" title="Link to this heading">#</a></h3>
+<h3>memory_profiler<a class="headerlink" href="#memory_profiler" title="Lien vers cette rubrique">#</a></h3>
 <p>See <a class="reference external" href="https://pypi.python.org/pypi/memory_profiler/0.41">memory_profiler</a>. Version 0.56 is bugged (see <a class="reference external" href="https://github.com/pythonprofilers/memory_profiler/issues/258">#258</a>).</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">memory_profiler</span> <span class="kn">import</span> <span class="n">profile</span>
@@ -938,7 +818,7 @@ window.setTimeout(update_menu,2000);
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">memit</span> toprofile0(sample1000)
@@ -950,11 +830,11 @@ window.setTimeout(update_menu,2000);
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-peak memory: 411.20 MiB, increment: 18.40 MiB
+peak memory: 547.55 MiB, increment: 0.00 MiB
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
@@ -976,12 +856,11 @@ peak memory: 411.20 MiB, increment: 18.40 MiB
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-ERROR: Could not find file &lt;ipython-input-11-7512ff5cdee3&gt;
-NOTE: %mprun can only be used on functions defined in physical files, and not in the IPython environment.
+ERROR: Could not find file /tmp/ipykernel_54937/1913397401.py
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%file</span> temp_mem_profile.py
@@ -1024,11 +903,11 @@ NOTE: %mprun can only be used on functions defined in physical files, and not in
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Overwriting temp_mem_profile.py
+Writing temp_mem_profile.py
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -1049,37 +928,35 @@ Overwriting temp_mem_profile.py
 <div class="highlight"><pre>
 Filename: temp_mem_profile.py
 
-Line #    Mem usage    Increment   Line Contents
-================================================
-     5  56.7930 MiB  56.7930 MiB   @profile(precision=4)
-     6                             def gain_dynamique_moyen_par_mot(queries, weights):
-     7  56.7930 MiB   0.0000 MiB       per = list(zip(weights, queries))
-     8  56.7930 MiB   0.0000 MiB       total = sum(weights) * 1.0
-     9  56.7930 MiB   0.0000 MiB       res = []
-    10  63.3047 MiB   6.4492 MiB       trie = CompletionTrieNode.build([(None, q) for _, q in per])
-    11  71.0742 MiB   7.7695 MiB       trie.precompute_stat()
-    12  80.6211 MiB   9.5469 MiB       trie.update_stat_dynamic()
-    13  80.7305 MiB   0.1094 MiB       wks = [(w, p, len(w) - trie.min_keystroke0(w)[0]) for p, w in per]
-    14  80.7930 MiB   0.0469 MiB       wks_dyn = [(w, p, len(w) - trie.min_dynamic_keystroke(w)[0])
-    15  80.7930 MiB   0.0000 MiB                  for p, w in per]
-    16  80.8398 MiB   0.0430 MiB       wks_dyn2 = [(w, p, len(w) - trie.min_dynamic_keystroke2(w)[0])
-    17  80.8398 MiB   0.0000 MiB                   for p, w in per]
-    18  80.8398 MiB   0.0000 MiB       gain = sum(g * p / total for w, p, g in wks)
-    19  80.8398 MiB   0.0000 MiB       gain_dyn = sum(g * p / total for w, p, g in wks_dyn)
-    20  80.8398 MiB   0.0000 MiB       gain_dyn2 = sum(g * p / total for w, p, g in wks_dyn2)
-    21  80.8398 MiB   0.0000 MiB       ave_length = sum(len(w) * p / total for p, w in per)
-    22  80.8398 MiB   0.0000 MiB       return gain, gain_dyn, gain_dyn2, ave_length
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     6  45.8438 MiB  45.8438 MiB           1   @profile(precision=4)
+     7                                         def gain_dynamique_moyen_par_mot(queries, weights):
+     8  45.8438 MiB   0.0000 MiB           1       per = list(zip(weights, queries))
+     9  45.8438 MiB   0.0000 MiB           1       total = sum(weights) * 1.0
+    10  45.8438 MiB   0.0000 MiB           1       res = []
+    11  52.5469 MiB   6.7031 MiB        1003       trie = CompletionTrieNode.build([(None, q) for _, q in per])
+    12  60.0234 MiB   7.4766 MiB           1       trie.precompute_stat()
+    13  69.5625 MiB   9.5391 MiB           1       trie.update_stat_dynamic()
+    14  69.5625 MiB   0.0000 MiB        1003       wks = [(w, p, len(w) - trie.min_keystroke0(w)[0]) for p, w in per]
+    15  69.5625 MiB   0.0000 MiB        1003       wks_dyn = [(w, p, len(w) - trie.min_dynamic_keystroke(w)[0]) for p, w in per]
+    16  69.5625 MiB   0.0000 MiB        1003       wks_dyn2 = [(w, p, len(w) - trie.min_dynamic_keystroke2(w)[0]) for p, w in per]
+    17  69.5625 MiB   0.0000 MiB        2003       gain = sum(g * p / total for w, p, g in wks)
+    18  69.5625 MiB   0.0000 MiB        2003       gain_dyn = sum(g * p / total for w, p, g in wks_dyn)
+    19  69.5625 MiB   0.0000 MiB        2003       gain_dyn2 = sum(g * p / total for w, p, g in wks_dyn2)
+    20  69.5625 MiB   0.0000 MiB        2003       ave_length = sum(len(w) * p / total for p, w in per)
+    21  69.5625 MiB   0.0000 MiB           1       return gain, gain_dyn, gain_dyn2, ave_length
 
 
 Filename: temp_mem_profile.py
 
-Line #    Mem usage    Increment   Line Contents
-================================================
-    24  56.5820 MiB  56.5820 MiB   @profile(precision=4)
-    25                             def toprofile():
-    26  56.5820 MiB   0.0000 MiB       with open(&#34;sample1000.txt&#34;, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
-    27  56.7930 MiB   0.0742 MiB           lines = [_.strip(&#34;\n\r &#34;) for _ in f.readlines()]
-    28  80.8398 MiB  24.0469 MiB       gain_dynamique_moyen_par_mot(lines, [1.0] * len(lines))
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    24  45.5859 MiB  45.5859 MiB           1   @profile(precision=4)
+    25                                         def toprofile():
+    26  45.8438 MiB   0.0000 MiB           2       with open(&#34;sample1000.txt&#34;, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
+    27  45.8438 MiB   0.2578 MiB        1003           lines = [_.strip(&#34;\n\r &#34;) for _ in f.readlines()]
+    28  69.5625 MiB  23.7188 MiB           1       gain_dynamique_moyen_par_mot(lines, [1.0] * len(lines))
 
 
 
@@ -1088,17 +965,17 @@ Line #    Mem usage    Increment   Line Contents
 </section>
 </section>
 <section id="Static-Visualization">
-<h2>Static Visualization<a class="headerlink" href="#Static-Visualization" title="Link to this heading">#</a></h2>
+<h2>Static Visualization<a class="headerlink" href="#Static-Visualization" title="Lien vers cette rubrique">#</a></h2>
 <section id="pyinstrument">
-<h3>pyinstrument<a class="headerlink" href="#pyinstrument" title="Link to this heading">#</a></h3>
+<h3>pyinstrument<a class="headerlink" href="#pyinstrument" title="Lien vers cette rubrique">#</a></h3>
 <p>See <a class="reference external" href="https://github.com/joerick/pyinstrument">pyinstrument</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyinstrument</span> <span class="kn">import</span> <span class="n">Profiler</span>
 
-<span class="n">profiler</span> <span class="o">=</span> <span class="n">Profiler</span><span class="p">(</span><span class="n">use_signal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">profiler</span> <span class="o">=</span> <span class="n">Profiler</span><span class="p">()</span>
 <span class="n">profiler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 <span class="n">toprofile0</span><span class="p">(</span><span class="n">sample1000</span><span class="p">)</span>
@@ -1115,36 +992,40 @@ Line #    Mem usage    Increment   Line Contents
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 
-  _     ._   __/__   _ _  _  _ _/_   Recorded: 18:17:34  Samples:  1048
- /_//_/// /_/ / //_// / //_&#39;/ //     Duration: 1.802     CPU time: 1.703
-/   _/                      v3.0.1
+  _     ._   __/__   _ _  _  _ _/_   Recorded: 12:44:24  Samples:  862
+ /_//_/// /_/ / //_// / //_&#39;/ //     Duration: 1.340     CPU time: 1.345
+/   _/                      v4.7.3
 
-Program:  -f pstats completion.prof -o completion.dot
+Profile at /tmp/ipykernel_54937/259320473.py:4
 
-1.799 run_code  IPython/core/interactiveshell.py:3288
-`- 1.799 &lt;module&gt;  &lt;ipython-input-18-f16978ea99ef&gt;:6
-   `- 1.799 toprofile0  &lt;ipython-input-7-d2b6d910fdd7&gt;:3
-      `- 1.799 gain_dynamique_moyen_par_mot  &lt;ipython-input-2-684f3e860cf5&gt;:3
-         |- 1.251 precompute_stat  mlstatpy/nlp/completion.py:415
-         |  |- 0.917 merge_completions  mlstatpy/nlp/completion.py:503
-         |  |  |- 0.771 [self]
-         |  |  `- 0.136 &lt;listcomp&gt;  mlstatpy/nlp/completion.py:523
-         |  |- 0.224 [self]
-         |  |- 0.051 update_minimum_keystroke  mlstatpy/nlp/completion.py:542
-         |  |- 0.037 &lt;genexpr&gt;  mlstatpy/nlp/completion.py:435
-         |  `- 0.021 leaves  mlstatpy/nlp/completion.py:132
-         |- 0.289 update_stat_dynamic  mlstatpy/nlp/completion.py:450
-         |  |- 0.147 update_dynamic_minimum_keystroke  mlstatpy/nlp/completion.py:555
-         |  |  |- 0.100 [self]
-         |  |  `- 0.046 second_step  mlstatpy/nlp/completion.py:588
-         |  |- 0.084 [self]
-         |  |- 0.040 init_dynamic_minimum_keystroke  mlstatpy/nlp/completion.py:624
-         |  `- 0.018 unsorted_iter  mlstatpy/nlp/completion.py:97
-         |- 0.204 build  mlstatpy/nlp/completion.py:203
-         |  `- 0.190 [self]
-         |- 0.020 &lt;listcomp&gt;  &lt;ipython-input-2-684f3e860cf5&gt;:10
-         |  `- 0.019 min_keystroke0  mlstatpy/nlp/completion.py:321
-         `- 0.018 &lt;listcomp&gt;  &lt;ipython-input-2-684f3e860cf5&gt;:13
+1.338 ZMQInteractiveShell.run_ast_nodes  IPython/core/interactiveshell.py:3418
+`- 1.337 &lt;module&gt;  ../../../tmp/ipykernel_54937/259320473.py:1
+   `- 1.337 toprofile0  ../../../tmp/ipykernel_54937/4045418276.py:4
+      `- 1.337 gain_dynamique_moyen_par_mot  ../../../tmp/ipykernel_54937/1707536480.py:4
+         |- 0.683 CompletionTrieNode.precompute_stat  mlstatpy/nlp/completion.py:442
+         |  |- 0.467 _Stat.merge_completions  mlstatpy/nlp/completion.py:531
+         |  |  |- 0.236 [self]  mlstatpy/nlp/completion.py
+         |  |  |- 0.110 __build_class__  &lt;built-in&gt;
+         |  |  `- 0.076 &lt;listcomp&gt;  mlstatpy/nlp/completion.py:554
+         |  |     `- 0.068 [self]  mlstatpy/nlp/completion.py
+         |  |- 0.126 [self]  mlstatpy/nlp/completion.py
+         |  |- 0.025 _Stat.update_minimum_keystroke  mlstatpy/nlp/completion.py:581
+         |  |  `- 0.020 [self]  mlstatpy/nlp/completion.py
+         |  |- 0.022 &lt;genexpr&gt;  mlstatpy/nlp/completion.py:462
+         |  `- 0.016 CompletionTrieNode.leaves  mlstatpy/nlp/completion.py:126
+         |- 0.408 build  mlstatpy/nlp/completion.py:205
+         |  |- 0.382 [self]  mlstatpy/nlp/completion.py
+         |  `- 0.014 CompletionTrieNode.__init__  mlstatpy/nlp/completion.py:15
+         `- 0.220 CompletionTrieNode.update_stat_dynamic  mlstatpy/nlp/completion.py:477
+            |- 0.104 int.update_dynamic_minimum_keystroke  mlstatpy/nlp/completion.py:594
+            |  |- 0.057 [self]  mlstatpy/nlp/completion.py
+            |  `- 0.041 second_step  mlstatpy/nlp/completion.py:627
+            |     `- 0.037 [self]  mlstatpy/nlp/completion.py
+            |- 0.055 [self]  mlstatpy/nlp/completion.py
+            |- 0.024 CompletionTrieNode.unsorted_iter  mlstatpy/nlp/completion.py:90
+            |  `- 0.017 [self]  mlstatpy/nlp/completion.py
+            `- 0.023 _Stat.init_dynamic_minimum_keystroke  mlstatpy/nlp/completion.py:664
+               `- 0.022 [self]  mlstatpy/nlp/completion.py
 
 
 </pre></div></div>
@@ -1152,11 +1033,11 @@ Program:  -f pstats completion.prof -o completion.dot
 </section>
 </section>
 <section id="Javascript-Visualization">
-<h2>Javascript Visualization<a class="headerlink" href="#Javascript-Visualization" title="Link to this heading">#</a></h2>
+<h2>Javascript Visualization<a class="headerlink" href="#Javascript-Visualization" title="Lien vers cette rubrique">#</a></h2>
 <section id="SnakeViz">
-<h3>SnakeViz<a class="headerlink" href="#SnakeViz" title="Link to this heading">#</a></h3>
+<h3>SnakeViz<a class="headerlink" href="#SnakeViz" title="Lien vers cette rubrique">#</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> snakeviz
@@ -1173,17 +1054,17 @@ Program:  -f pstats completion.prof -o completion.dot
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="n">Image</span><span class="p">(</span><span class="s2">&quot;images/func_info.jpg&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1192,7 +1073,7 @@ Program:  -f pstats completion.prof -o completion.dot
 </div>
 </section>
 <section id="vprof,-py-spy">
-<h3>vprof, py-spy<a class="headerlink" href="#vprof,-py-spy" title="Link to this heading">#</a></h3>
+<h3>vprof, py-spy<a class="headerlink" href="#vprof,-py-spy" title="Lien vers cette rubrique">#</a></h3>
 <p>See <a class="reference external" href="https://github.com/nvdv/vprof">vprof</a> or <a class="reference external" href="https://github.com/benfred/py-spy">py-spy</a>. The second one outputs a SVG file easy to handle.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1206,17 +1087,17 @@ Program:  -f pstats completion.prof -o completion.dot
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="n">Image</span><span class="p">(</span><span class="s2">&quot;images/vprof.jpg&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1349,7 +1230,7 @@ Program:  -f pstats completion.prof -o completion.dot
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Créé en utilisant <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>
