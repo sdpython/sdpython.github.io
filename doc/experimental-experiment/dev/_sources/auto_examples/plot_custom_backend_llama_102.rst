@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_plot_custom_backend_llama_102.py:
 
 
+.. _l-plot-custom-backend-llama-102:
+
 ========================================
 102: Fuse kernels in a small Llama Model
 ========================================
@@ -38,7 +40,7 @@ The script requires the following packages beside pytorch,
 :epkg:`onnxruntime-training` (for GPU), :epkg:`onnx-extended`
 (compiled for GPU) and :epkg:`transformers`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-40
+.. GENERATED FROM PYTHON SOURCE LINES 24-42
 
 .. code-block:: Python
 
@@ -76,11 +78,11 @@ The script requires the following packages beside pytorch,
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
+.. GENERATED FROM PYTHON SOURCE LINES 43-44
 
 Imports.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-61
+.. GENERATED FROM PYTHON SOURCE LINES 44-63
 
 .. code-block:: Python
 
@@ -118,12 +120,12 @@ Imports.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-64
+.. GENERATED FROM PYTHON SOURCE LINES 64-66
 
 The dummy model
 ===============
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-78
+.. GENERATED FROM PYTHON SOURCE LINES 66-80
 
 .. code-block:: Python
 
@@ -148,11 +150,11 @@ The dummy model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-80
+.. GENERATED FROM PYTHON SOURCE LINES 81-82
 
 The size of the input.
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-91
+.. GENERATED FROM PYTHON SOURCE LINES 82-93
 
 .. code-block:: Python
 
@@ -174,11 +176,11 @@ The size of the input.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-93
+.. GENERATED FROM PYTHON SOURCE LINES 94-95
 
 The configuration of the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-104
+.. GENERATED FROM PYTHON SOURCE LINES 95-106
 
 .. code-block:: Python
 
@@ -200,12 +202,12 @@ The configuration of the model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-107
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
 
 The number of time we run the model to measure
 the inference.
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-110
+.. GENERATED FROM PYTHON SOURCE LINES 109-112
 
 .. code-block:: Python
 
@@ -219,11 +221,11 @@ the inference.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-112
+.. GENERATED FROM PYTHON SOURCE LINES 113-114
 
 Let's create the model with dummy inputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-126
+.. GENERATED FROM PYTHON SOURCE LINES 114-128
 
 .. code-block:: Python
 
@@ -255,12 +257,12 @@ Let's create the model with dummy inputs.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-129
+.. GENERATED FROM PYTHON SOURCE LINES 129-131
 
 Measure of eager mode
 =====================
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-154
+.. GENERATED FROM PYTHON SOURCE LINES 131-156
 
 .. code-block:: Python
 
@@ -298,15 +300,15 @@ Measure of eager mode
  .. code-block:: none
 
     warmup eager
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:06,  1.39it/s]    100%|██████████| 10/10 [00:00<00:00, 12.89it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:06,  1.50it/s]     30%|███       | 3/10 [00:00<00:01,  4.08it/s]     50%|█████     | 5/10 [00:01<00:00,  5.91it/s]     70%|███████   | 7/10 [00:01<00:00,  7.20it/s]     90%|█████████ | 9/10 [00:01<00:00,  8.10it/s]    100%|██████████| 10/10 [00:01<00:00,  6.47it/s]
     repeat eager
-      0%|          | 0/50 [00:00<?, ?it/s]     26%|██▌       | 13/50 [00:00<00:00, 126.30it/s]     52%|█████▏    | 26/50 [00:00<00:00, 124.02it/s]     78%|███████▊  | 39/50 [00:00<00:00, 124.67it/s]    100%|██████████| 50/50 [00:00<00:00, 121.93it/s]
-    avg time eager 0.008217822820006404
+      0%|          | 0/50 [00:00<?, ?it/s]      4%|▍         | 2/50 [00:00<00:04, 10.26it/s]      8%|▊         | 4/50 [00:00<00:04, 10.22it/s]     12%|█▏        | 6/50 [00:00<00:04, 10.23it/s]     16%|█▌        | 8/50 [00:00<00:04, 10.24it/s]     20%|██        | 10/50 [00:00<00:03, 10.26it/s]     24%|██▍       | 12/50 [00:01<00:03, 10.27it/s]     28%|██▊       | 14/50 [00:01<00:03, 10.28it/s]     32%|███▏      | 16/50 [00:01<00:03, 10.14it/s]     36%|███▌      | 18/50 [00:01<00:03, 10.16it/s]     40%|████      | 20/50 [00:01<00:02, 10.22it/s]     44%|████▍     | 22/50 [00:02<00:02, 10.14it/s]     48%|████▊     | 24/50 [00:02<00:02,  9.99it/s]     52%|█████▏    | 26/50 [00:02<00:02, 10.05it/s]     56%|█████▌    | 28/50 [00:02<00:02, 10.11it/s]     60%|██████    | 30/50 [00:02<00:01, 10.17it/s]     64%|██████▍   | 32/50 [00:03<00:01, 10.24it/s]     68%|██████▊   | 34/50 [00:03<00:01, 10.29it/s]     72%|███████▏  | 36/50 [00:03<00:01, 10.19it/s]     76%|███████▌  | 38/50 [00:03<00:01, 10.12it/s]     80%|████████  | 40/50 [00:03<00:00, 10.18it/s]     84%|████████▍ | 42/50 [00:04<00:00, 10.11it/s]     88%|████████▊ | 44/50 [00:04<00:00, 10.19it/s]     92%|█████████▏| 46/50 [00:04<00:00, 10.23it/s]     96%|█████████▌| 48/50 [00:04<00:00, 10.17it/s]    100%|██████████| 50/50 [00:04<00:00, 10.19it/s]    100%|██████████| 50/50 [00:04<00:00, 10.18it/s]
+    avg time eager 0.0982411525399948
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-187
+.. GENERATED FROM PYTHON SOURCE LINES 157-189
 
 Measure with the custom backend
 ===============================
@@ -341,7 +343,7 @@ The GPU memory is not fully freed before two iterations. Only one scenario
 should be handled in the same process.
 Results may be very different with a different chip.
 
-.. GENERATED FROM PYTHON SOURCE LINES 187-271
+.. GENERATED FROM PYTHON SOURCE LINES 189-273
 
 .. code-block:: Python
 
@@ -440,29 +442,29 @@ Results may be very different with a different chip.
     ----------------------
     optim=default
     warmup compiled model
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:08,  1.07it/s]    100%|██████████| 10/10 [00:00<00:00, 10.19it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:07,  1.28it/s]     30%|███       | 3/10 [00:00<00:01,  3.94it/s]     50%|█████     | 5/10 [00:01<00:00,  6.32it/s]     70%|███████   | 7/10 [00:01<00:00,  8.30it/s]     90%|█████████ | 9/10 [00:01<00:00,  9.87it/s]    100%|██████████| 10/10 [00:01<00:00,  7.12it/s]
     repeat compiled_model
-      0%|          | 0/50 [00:00<?, ?it/s]     54%|█████▍    | 27/50 [00:00<00:00, 261.83it/s]    100%|██████████| 50/50 [00:00<00:00, 251.62it/s]
-    avg time custom backend with optimization='default' 0.003990648100007092
+      0%|          | 0/50 [00:00<?, ?it/s]      4%|▍         | 2/50 [00:00<00:03, 14.46it/s]      8%|▊         | 4/50 [00:00<00:03, 14.43it/s]     12%|█▏        | 6/50 [00:00<00:03, 14.56it/s]     16%|█▌        | 8/50 [00:00<00:02, 14.55it/s]     20%|██        | 10/50 [00:00<00:02, 14.40it/s]     24%|██▍       | 12/50 [00:00<00:02, 14.48it/s]     28%|██▊       | 14/50 [00:00<00:02, 14.52it/s]     32%|███▏      | 16/50 [00:01<00:02, 14.57it/s]     36%|███▌      | 18/50 [00:01<00:02, 14.58it/s]     40%|████      | 20/50 [00:01<00:02, 14.58it/s]     44%|████▍     | 22/50 [00:01<00:01, 14.56it/s]     48%|████▊     | 24/50 [00:01<00:01, 14.56it/s]     52%|█████▏    | 26/50 [00:01<00:01, 14.57it/s]     56%|█████▌    | 28/50 [00:01<00:01, 14.59it/s]     60%|██████    | 30/50 [00:02<00:01, 14.61it/s]     64%|██████▍   | 32/50 [00:02<00:01, 14.62it/s]     68%|██████▊   | 34/50 [00:02<00:01, 14.65it/s]     72%|███████▏  | 36/50 [00:02<00:00, 14.65it/s]     76%|███████▌  | 38/50 [00:02<00:00, 14.67it/s]     80%|████████  | 40/50 [00:02<00:00, 14.56it/s]     84%|████████▍ | 42/50 [00:02<00:00, 14.47it/s]     88%|████████▊ | 44/50 [00:03<00:00, 14.49it/s]     92%|█████████▏| 46/50 [00:03<00:00, 14.56it/s]     96%|█████████▌| 48/50 [00:03<00:00, 14.55it/s]    100%|██████████| 50/50 [00:03<00:00, 14.61it/s]    100%|██████████| 50/50 [00:03<00:00, 14.56it/s]
+    avg time custom backend with optimization='default' 0.06868742245998874
     ----------------------
     optim=default+onnxruntime
     warmup compiled model
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:04,  2.05it/s]    100%|██████████| 10/10 [00:00<00:00, 19.09it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:07,  1.15it/s]     30%|███       | 3/10 [00:01<00:01,  3.60it/s]     50%|█████     | 5/10 [00:01<00:00,  5.86it/s]     70%|███████   | 7/10 [00:01<00:00,  7.82it/s]     90%|█████████ | 9/10 [00:01<00:00,  9.45it/s]    100%|██████████| 10/10 [00:01<00:00,  6.67it/s]
     repeat compiled_model
-      0%|          | 0/50 [00:00<?, ?it/s]     54%|█████▍    | 27/50 [00:00<00:00, 269.32it/s]    100%|██████████| 50/50 [00:00<00:00, 268.29it/s]
-    avg time custom backend with optimization='default+onnxruntime' 0.003739156420015206
+      0%|          | 0/50 [00:00<?, ?it/s]      4%|▍         | 2/50 [00:00<00:03, 14.73it/s]      8%|▊         | 4/50 [00:00<00:03, 14.65it/s]     12%|█▏        | 6/50 [00:00<00:03, 14.46it/s]     16%|█▌        | 8/50 [00:00<00:02, 14.52it/s]     20%|██        | 10/50 [00:00<00:02, 14.55it/s]     24%|██▍       | 12/50 [00:00<00:02, 14.60it/s]     28%|██▊       | 14/50 [00:00<00:02, 14.63it/s]     32%|███▏      | 16/50 [00:01<00:02, 14.63it/s]     36%|███▌      | 18/50 [00:01<00:02, 14.65it/s]     40%|████      | 20/50 [00:01<00:02, 14.64it/s]     44%|████▍     | 22/50 [00:01<00:01, 14.62it/s]     48%|████▊     | 24/50 [00:01<00:01, 14.62it/s]     52%|█████▏    | 26/50 [00:01<00:01, 14.62it/s]     56%|█████▌    | 28/50 [00:01<00:01, 14.51it/s]     60%|██████    | 30/50 [00:02<00:01, 14.56it/s]     64%|██████▍   | 32/50 [00:02<00:01, 14.55it/s]     68%|██████▊   | 34/50 [00:02<00:01, 14.55it/s]     72%|███████▏  | 36/50 [00:02<00:00, 14.54it/s]     76%|███████▌  | 38/50 [00:02<00:00, 14.54it/s]     80%|████████  | 40/50 [00:02<00:00, 14.56it/s]     84%|████████▍ | 42/50 [00:02<00:00, 14.56it/s]     88%|████████▊ | 44/50 [00:03<00:00, 14.60it/s]     92%|█████████▏| 46/50 [00:03<00:00, 14.51it/s]     96%|█████████▌| 48/50 [00:03<00:00, 14.44it/s]    100%|██████████| 50/50 [00:03<00:00, 14.50it/s]    100%|██████████| 50/50 [00:03<00:00, 14.56it/s]
+    avg time custom backend with optimization='default+onnxruntime' 0.06869216245999268
     ----------------------
     optim=default+onnxruntime+experimental
     warmup compiled model
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:04,  2.21it/s]    100%|██████████| 10/10 [00:00<00:00, 20.34it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:07,  1.23it/s]     30%|███       | 3/10 [00:00<00:01,  3.82it/s]     50%|█████     | 5/10 [00:01<00:00,  6.12it/s]     70%|███████   | 7/10 [00:01<00:00,  8.09it/s]     90%|█████████ | 9/10 [00:01<00:00,  9.75it/s]    100%|██████████| 10/10 [00:01<00:00,  6.97it/s]
     repeat compiled_model
-      0%|          | 0/50 [00:00<?, ?it/s]     50%|█████     | 25/50 [00:00<00:00, 245.68it/s]    100%|██████████| 50/50 [00:00<00:00, 258.30it/s]
-    avg time custom backend with optimization='default+onnxruntime+experimental' 0.003892686399995
+      0%|          | 0/50 [00:00<?, ?it/s]      4%|▍         | 2/50 [00:00<00:03, 14.84it/s]      8%|▊         | 4/50 [00:00<00:03, 14.72it/s]     12%|█▏        | 6/50 [00:00<00:02, 14.69it/s]     16%|█▌        | 8/50 [00:00<00:02, 14.70it/s]     20%|██        | 10/50 [00:00<00:02, 14.70it/s]     24%|██▍       | 12/50 [00:00<00:02, 14.69it/s]     28%|██▊       | 14/50 [00:00<00:02, 14.73it/s]     32%|███▏      | 16/50 [00:01<00:02, 14.75it/s]     36%|███▌      | 18/50 [00:01<00:02, 14.75it/s]     40%|████      | 20/50 [00:01<00:02, 14.73it/s]     44%|████▍     | 22/50 [00:01<00:01, 14.70it/s]     48%|████▊     | 24/50 [00:01<00:01, 14.73it/s]     52%|█████▏    | 26/50 [00:01<00:01, 14.74it/s]     56%|█████▌    | 28/50 [00:01<00:01, 14.71it/s]     60%|██████    | 30/50 [00:02<00:01, 14.66it/s]     64%|██████▍   | 32/50 [00:02<00:01, 14.63it/s]     68%|██████▊   | 34/50 [00:02<00:01, 14.68it/s]     72%|███████▏  | 36/50 [00:02<00:00, 14.64it/s]     76%|███████▌  | 38/50 [00:02<00:00, 14.65it/s]     80%|████████  | 40/50 [00:02<00:00, 14.64it/s]     84%|████████▍ | 42/50 [00:02<00:00, 14.68it/s]     88%|████████▊ | 44/50 [00:02<00:00, 14.67it/s]     92%|█████████▏| 46/50 [00:03<00:00, 14.57it/s]     96%|█████████▌| 48/50 [00:03<00:00, 14.56it/s]    100%|██████████| 50/50 [00:03<00:00, 14.61it/s]    100%|██████████| 50/50 [00:03<00:00, 14.67it/s]
+    avg time custom backend with optimization='default+onnxruntime+experimental' 0.06817568546000985
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 272-277
+.. GENERATED FROM PYTHON SOURCE LINES 274-279
 
 Final results
 =============
@@ -470,7 +472,7 @@ Final results
 avg_time, lower is better,
 speedup compare to eager mode, higher is better.
 
-.. GENERATED FROM PYTHON SOURCE LINES 277-282
+.. GENERATED FROM PYTHON SOURCE LINES 279-284
 
 .. code-block:: Python
 
@@ -488,19 +490,19 @@ speedup compare to eager mode, higher is better.
  .. code-block:: none
 
                                   optim processor  avg_time  warmup   N  n_custom_ops   speedup
-    0                             eager      cuda  0.008218      10  50           NaN       NaN
-    1                           default      cuda  0.003991      10  50           NaN  2.059270
-    2               default+onnxruntime      cuda  0.003739      10  50           NaN  2.197775
-    3  default+onnxruntime+experimental      cuda  0.003893      10  50           NaN  2.111093
+    0                             eager      cuda  0.098241      10  50           NaN       NaN
+    1                           default      cuda  0.068687      10  50           NaN  1.430264
+    2               default+onnxruntime      cuda  0.068692      10  50           NaN  1.430165
+    3  default+onnxruntime+experimental      cuda  0.068176      10  50           NaN  1.441000
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 283-284
+.. GENERATED FROM PYTHON SOURCE LINES 285-286
 
 Plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 284-289
+.. GENERATED FROM PYTHON SOURCE LINES 286-291
 
 .. code-block:: Python
 
@@ -524,7 +526,7 @@ Plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.251 seconds)
+   **Total running time of the script:** (0 minutes 22.763 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_custom_backend_llama_102.py:

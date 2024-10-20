@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="2024-09-04 : ENSAE" href="2024-09-04-ensae.html" /><link rel="prev" title="Collections d’articles périssables" href="../index.html" />
 
-    <!-- Generated with Sphinx 8.0.2 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>2024-11-31 : rappel feuille de route 2024 - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -667,7 +667,132 @@ de pièces. On considère les pièces <code class="docutils literal notranslate"
 en terme algorithmique.</p>
 <p>Autres variations autour du problème du voyageur de commerce,
 ou TSP pour Travelling Salesman Problem
-ou encore circuit hamiltonien: <a class="reference internal" href="../../c_expose/tsp/tsp_kohonen.html#l-tsp-kohonen"><span class="std std-ref">Circuit hamiltonien et Kohonen</span></a>, <a class="reference internal" href="../../c_expose/tsp/tsp_kruskal.html#l-tsp-kruskal"><span class="std std-ref">Circuit hamiltonien et Kruskal</span></a>.</p>
+ou encore circuit hamiltonien: <a class="reference internal" href="../../c_expose/tsp/tsp_kohonen.html#l-tsp-kohonen"><span class="std std-ref">Circuit hamiltonien et Kohonen</span></a>, <a class="reference internal" href="../../c_expose/tsp/tsp_kruskal.html#l-tsp-kruskal"><span class="std std-ref">Circuit hamiltonien et Kruskal</span></a>.
+Quelques bouts de code écrit durant la séance.
+Tout d’abord les expressions régulières.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(-?[1-9][ 0-9]{0,16}([.,][0-9]{0,4})? *(€|(euros))?)&quot;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Le montant de 3000 euros auquel on a ôté 5,4 euros.&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reg</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+
+<span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;([0-9]{1,2}[-/][0-9]{1,2}[-/][0-9]{2,4})&quot;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;9/10/2024 09-10-24&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reg</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[(</span><span class="s1">&#39;3000 euros&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;euros&#39;</span><span class="p">,</span> <span class="s1">&#39;euros&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;5,4 euros&#39;</span><span class="p">,</span> <span class="s1">&#39;,4&#39;</span><span class="p">,</span> <span class="s1">&#39;euros&#39;</span><span class="p">,</span> <span class="s1">&#39;euros&#39;</span><span class="p">)]</span>
+    <span class="p">[</span><span class="s1">&#39;9/10/2024&#39;</span><span class="p">,</span> <span class="s1">&#39;09-10-24&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Ensuite la pyramide.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cs</span><span class="p">[(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2000</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__WD__</span><span class="p">,</span> <span class="s2">&quot;pyramide.png&quot;</span><span class="p">))</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;.. image:: pyramide.png&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<img alt="../../_images/pyramide.png" src="../../_images/pyramide.png" />
+<p>Ensuite le voyageur de commerce.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">villes</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">villes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">villes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">villes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">villes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;o-&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;longueur </span><span class="si">{</span><span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+
+<span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">):</span>
+    <span class="c1"># distance sans boucle</span>
+    <span class="n">dall</span> <span class="o">=</span> <span class="n">villes</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">villes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">dall</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dall</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="n">dlast</span> <span class="o">=</span> <span class="n">villes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">villes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="p">(</span><span class="n">dlast</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dlast</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">d1</span>
+
+
+<span class="k">def</span> <span class="nf">solution_permutations</span><span class="p">(</span><span class="n">villes</span><span class="p">):</span>
+    <span class="n">bestp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">bestd</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))):</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">villes</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="p">:]</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d2</span> <span class="o">&lt;</span> <span class="n">bestd</span><span class="p">:</span>
+            <span class="n">bestd</span> <span class="o">=</span> <span class="n">d2</span>
+            <span class="n">bestp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">villes</span><span class="p">[</span><span class="n">bestp</span><span class="p">,</span> <span class="p">:]</span>
+
+
+<span class="k">def</span> <span class="nf">solution_croisement</span><span class="p">(</span><span class="n">villes</span><span class="p">):</span>
+    <span class="n">bestd</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+    <span class="n">bestv</span> <span class="o">=</span> <span class="n">villes</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">::</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">bestv</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">d2</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">d2</span> <span class="o">&lt;</span> <span class="n">bestd</span><span class="p">:</span>
+                <span class="n">bestd</span> <span class="o">=</span> <span class="n">d2</span>
+                <span class="n">bestv</span> <span class="o">=</span> <span class="n">v2</span>
+    <span class="k">return</span> <span class="n">bestv</span>
+
+
+<span class="n">villes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;distance initiale&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">))</span>
+
+<span class="c1"># solution naive</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- optimisation gourmande...&quot;</span><span class="p">)</span>
+<span class="n">optim</span> <span class="o">=</span> <span class="n">solution_permutations</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- optimisation gourmande:&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="p">(</span><span class="n">optim</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- optimisation plus rapide mais approchée...&quot;</span><span class="p">)</span>
+<span class="n">optim</span> <span class="o">=</span> <span class="n">solution_croisement</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- optimisation plus rapide mais approchée&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="p">(</span><span class="n">optim</span><span class="p">))</span>
+
+<span class="c1"># graph</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">show</span><span class="p">(</span><span class="n">optim</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__WD__</span><span class="p">,</span> <span class="s2">&quot;tsp_simple.png&quot;</span><span class="p">))</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;.. image:: tsp_simple.png&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<p>distance initiale 4.175166692958972
+– optimisation gourmande…
+– optimisation gourmande: 2.759344894819763
+– optimisation plus rapide mais approchée…
+– optimisation plus rapide mais approchée 2.9132512639981325
+.. image:: tsp_simple.png</p>
 </section>
 <section id="seance-7">
 <h2>Séance 7<a class="headerlink" href="#seance-7" title="Lien vers cette rubrique">¶</a></h2>
@@ -768,10 +893,10 @@ Enoncés des années précédentes :
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=0886690b"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
-    <script src="../../_static/translations.js?v=041d0952"></script>
+    <script src="../../_static/translations.js?v=e6b791cb"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"chtml": {"displayAlign": "left"}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

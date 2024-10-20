@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_plot_torch_linreg_101.py:
 
 
+.. _l-plot-torch-linreg-101:
+
 =========================================
 101: Linear Regression and export to ONNX
 =========================================
@@ -27,7 +29,7 @@
 data
 ====
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-29
+.. GENERATED FROM PYTHON SOURCE LINES 13-31
 
 .. code-block:: Python
 
@@ -62,7 +64,7 @@ data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-36
+.. GENERATED FROM PYTHON SOURCE LINES 32-38
 
 scikit-learn: the simple regression
 ===================================
@@ -71,7 +73,7 @@ scikit-learn: the simple regression
 
       A^* = (X'X)^{-1}X'Y
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-43
+.. GENERATED FROM PYTHON SOURCE LINES 38-45
 
 .. code-block:: Python
 
@@ -90,17 +92,17 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [-0.18118302 32.72180648 -0.11376891 50.78844523  0.40974391], 0.17234146442792952
+    coefficients: [-0.46903985  0.43370433 36.53810606 86.88415488 -0.09425349], 0.08911005755703982
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-46
+.. GENERATED FROM PYTHON SOURCE LINES 46-48
 
 Evaluation
 ==========
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-52
+.. GENERATED FROM PYTHON SOURCE LINES 48-54
 
 .. code-block:: Python
 
@@ -118,19 +120,19 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=109.12762056578067, r2=0.9692958638425926
+    LinearRegression: l2=84.98402336930275, r2=0.990208973178953
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-57
+.. GENERATED FROM PYTHON SOURCE LINES 55-59
 
 scikit-learn: SGD algorithm
 ===================================
 
 SGD = Stochastic Gradient Descent
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-63
+.. GENERATED FROM PYTHON SOURCE LINES 59-65
 
 .. code-block:: Python
 
@@ -149,32 +151,33 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 52.73, NNZs: 5, Bias: 0.694771, T: 750, Avg. loss: 410.046064
+    Norm: 81.16, NNZs: 5, Bias: 0.924531, T: 750, Avg. loss: 845.547591
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 58.49, NNZs: 5, Bias: 0.431033, T: 1500, Avg. loss: 63.705590
+    Norm: 90.69, NNZs: 5, Bias: 0.433608, T: 1500, Avg. loss: 78.270371
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 59.87, NNZs: 5, Bias: 0.233971, T: 2250, Avg. loss: 53.653970
+    Norm: 93.24, NNZs: 5, Bias: 0.337666, T: 2250, Avg. loss: 50.281512
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 60.03, NNZs: 5, Bias: 0.310327, T: 3000, Avg. loss: 52.822267
+    Norm: 93.73, NNZs: 5, Bias: 0.249901, T: 3000, Avg. loss: 48.109814
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 60.27, NNZs: 5, Bias: 0.252973, T: 3750, Avg. loss: 52.812479
+    Norm: 94.04, NNZs: 5, Bias: 0.186362, T: 3750, Avg. loss: 47.865479
     Total training time: 0.00 seconds.
-    /home/xadupre/github/scikit-learn/sklearn/linear_model/_stochastic_gradient.py:1603: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/sklearn/linear_model/_stochastic_gradient.py:1616: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [-0.23150438 32.63458405 -0.19240027 50.67261786  0.29394995], [0.25297298]
+    coefficients: [-5.16225728e-01  4.95095249e-01  3.64468980e+01  8.66872211e+01
+      7.23503123e-03], [0.18636182]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
+.. GENERATED FROM PYTHON SOURCE LINES 66-67
 
 Evaluation
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-72
+.. GENERATED FROM PYTHON SOURCE LINES 67-74
 
 .. code-block:: Python
 
@@ -193,17 +196,17 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=109.06098968314014, sr2=0.9693146111009153
+    SGDRegressor: sl2=85.01941911869892, sr2=0.9902048952273811
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-75
+.. GENERATED FROM PYTHON SOURCE LINES 75-77
 
 torch
 =====
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-124
+.. GENERATED FROM PYTHON SOURCE LINES 77-126
 
 .. code-block:: Python
 
@@ -264,20 +267,20 @@ torch
 
  .. code-block:: none
 
-    iteration 0, loss=952936.125
-    iteration 1, loss=114067.09375
-    iteration 2, loss=80849.0390625
-    iteration 3, loss=79519.03125
-    iteration 4, loss=79477.4296875
+    iteration 0, loss=2222602.5
+    iteration 1, loss=183287.171875
+    iteration 2, loss=78648.2109375
+    iteration 3, loss=72525.7578125
+    iteration 4, loss=72038.3671875
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-126
+.. GENERATED FROM PYTHON SOURCE LINES 127-128
 
 Let's check the error
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-132
+.. GENERATED FROM PYTHON SOURCE LINES 128-134
 
 .. code-block:: Python
 
@@ -295,16 +298,16 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=109.7429201218633, tr2=0.9691227432224453
+    TorchLinearRegression: tl2=84.74376056483874, tr2=0.9902366539060984
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-134
+.. GENERATED FROM PYTHON SOURCE LINES 135-136
 
 And the coefficients.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-140
+.. GENERATED FROM PYTHON SOURCE LINES 136-142
 
 .. code-block:: Python
 
@@ -324,21 +327,22 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[-0.1464, 32.8493, -0.2057, 50.6634,  0.5692]], requires_grad=True)
+    tensor([[-4.1980e-01,  2.7617e-01,  3.6428e+01,  8.6536e+01, -3.9314e-02]],
+           requires_grad=True)
     Parameter containing:
-    tensor([0.1506], requires_grad=True)
+    tensor([0.0409], requires_grad=True)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-145
+.. GENERATED FROM PYTHON SOURCE LINES 143-147
 
 Conversion to ONNX
 ==================
 
 Let's convert it to ONNX.
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-148
+.. GENERATED FROM PYTHON SOURCE LINES 147-150
 
 .. code-block:: Python
 
@@ -352,11 +356,11 @@ Let's convert it to ONNX.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-150
+.. GENERATED FROM PYTHON SOURCE LINES 151-152
 
 Let's check it is work.
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-155
+.. GENERATED FROM PYTHON SOURCE LINES 152-157
 
 .. code-block:: Python
 
@@ -373,17 +377,17 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[ 34.500618],
-           [-64.8694  ]], dtype=float32)]
+    [array([[-37.653324],
+           [-57.09796 ]], dtype=float32)]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-157
+.. GENERATED FROM PYTHON SOURCE LINES 158-159
 
 And the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-161
+.. GENERATED FROM PYTHON SOURCE LINES 159-163
 
 .. code-block:: Python
 
@@ -409,12 +413,12 @@ And the model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-164
+.. GENERATED FROM PYTHON SOURCE LINES 164-166
 
 With dynamic shapes
 ===================
 
-.. GENERATED FROM PYTHON SOURCE LINES 164-173
+.. GENERATED FROM PYTHON SOURCE LINES 166-175
 
 .. code-block:: Python
 
@@ -438,7 +442,7 @@ With dynamic shapes
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['batch', 5]
     init: name='p_linear_weight' type=dtype('float32') shape=(1, 5)
-    init: name='p_linear_bias' type=dtype('float32') shape=(1,) -- array([0.15061477], dtype=float32)
+    init: name='p_linear_bias' type=dtype('float32') shape=(1,) -- array([0.0409294], dtype=float32)
     Gemm(x, p_linear_weight, transA=0, transB=1) -> _onx_matmul0
       Add(_onx_matmul0, p_linear_bias) -> output_0
     output: name='output_0' type=dtype('float32') shape=['batch', 1]
@@ -449,7 +453,7 @@ With dynamic shapes
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.107 seconds)
+   **Total running time of the script:** (0 minutes 4.865 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg_101.py:

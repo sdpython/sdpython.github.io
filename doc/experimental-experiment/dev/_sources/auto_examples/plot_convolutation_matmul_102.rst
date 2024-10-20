@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_plot_convolutation_matmul_102.py:
 
 
+.. _l-plot-convolution-matmul-102:
+
 ==========================================
 102: Convolution and Matrix Multiplication
 ==========================================
@@ -34,7 +36,7 @@ numpy
 Image have often 4 dimensions (N, C, H, W) = (batch, channels, height, width).
 Let's first start with a 2D image.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-42
+.. GENERATED FROM PYTHON SOURCE LINES 20-44
 
 .. code-block:: Python
 
@@ -75,11 +77,11 @@ Let's first start with a 2D image.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-44
+.. GENERATED FROM PYTHON SOURCE LINES 45-46
 
 Let's a 2D kernel, the same one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-49
+.. GENERATED FROM PYTHON SOURCE LINES 46-51
 
 .. code-block:: Python
 
@@ -103,14 +105,14 @@ Let's a 2D kernel, the same one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
 
 raw convolution
 +++++++++++++++
 
 A raw version of a 2D convolution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-75
+.. GENERATED FROM PYTHON SOURCE LINES 56-77
 
 .. code-block:: Python
 
@@ -148,11 +150,11 @@ A raw version of a 2D convolution.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-77
+.. GENERATED FROM PYTHON SOURCE LINES 78-79
 
 Full result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-81
+.. GENERATED FROM PYTHON SOURCE LINES 79-83
 
 .. code-block:: Python
 
@@ -177,7 +179,7 @@ Full result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-88
+.. GENERATED FROM PYTHON SOURCE LINES 84-90
 
 With pytorch
 ++++++++++++
@@ -186,7 +188,7 @@ With pytorch
 to represent multiple images. We add two empty dimension
 to the previous example.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-97
+.. GENERATED FROM PYTHON SOURCE LINES 90-99
 
 .. code-block:: Python
 
@@ -212,11 +214,11 @@ to the previous example.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-99
+.. GENERATED FROM PYTHON SOURCE LINES 100-101
 
 Full result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-102
+.. GENERATED FROM PYTHON SOURCE LINES 101-104
 
 .. code-block:: Python
 
@@ -240,11 +242,11 @@ Full result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-104
+.. GENERATED FROM PYTHON SOURCE LINES 105-106
 
 Everything works.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-108
+.. GENERATED FROM PYTHON SOURCE LINES 106-110
 
 .. code-block:: Python
 
@@ -259,7 +261,7 @@ Everything works.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-119
+.. GENERATED FROM PYTHON SOURCE LINES 111-121
 
 using Gemm?
 +++++++++++
@@ -272,7 +274,7 @@ reshaped into the expected result. pytorch calls this function
 This function is also called
 `im2col <https://caffe.berkeleyvision.org/tutorial/layers/im2col.html>`_.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-126
+.. GENERATED FROM PYTHON SOURCE LINES 121-128
 
 .. code-block:: Python
 
@@ -296,11 +298,11 @@ This function is also called
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-128
+.. GENERATED FROM PYTHON SOURCE LINES 129-130
 
 We then multiply this matrix with the flattened kernel and reshape it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-134
+.. GENERATED FROM PYTHON SOURCE LINES 130-136
 
 .. code-block:: Python
 
@@ -323,11 +325,11 @@ We then multiply this matrix with the flattened kernel and reshape it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-136
+.. GENERATED FROM PYTHON SOURCE LINES 137-138
 
 Full result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-139
+.. GENERATED FROM PYTHON SOURCE LINES 138-141
 
 .. code-block:: Python
 
@@ -351,11 +353,11 @@ Full result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-141
+.. GENERATED FROM PYTHON SOURCE LINES 142-143
 
 Everything works as expected.
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-146
+.. GENERATED FROM PYTHON SOURCE LINES 143-148
 
 .. code-block:: Python
 
@@ -371,7 +373,7 @@ Everything works as expected.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-158
+.. GENERATED FROM PYTHON SOURCE LINES 149-160
 
 What is ConvTranspose?
 ++++++++++++++++++++++
@@ -385,7 +387,7 @@ copied in 9=3x3 locations. The gradient against an input value `data[i,j]`
 is the sum of 9=3x3 values from the output gradient. If `im2col` plays
 with indices, the gradient requires to do the same thing in the other way.
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-164
+.. GENERATED FROM PYTHON SOURCE LINES 160-166
 
 .. code-block:: Python
 
@@ -412,11 +414,11 @@ with indices, the gradient requires to do the same thing in the other way.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-166
+.. GENERATED FROM PYTHON SOURCE LINES 167-168
 
 ConvTranspose...
 
-.. GENERATED FROM PYTHON SOURCE LINES 166-175
+.. GENERATED FROM PYTHON SOURCE LINES 168-177
 
 .. code-block:: Python
 
@@ -447,7 +449,7 @@ ConvTranspose...
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-182
+.. GENERATED FROM PYTHON SOURCE LINES 178-184
 
 And now the version with `col2im` or
 `Fold <https://pytorch.org/docs/stable/generated/torch.nn.Fold.html#torch.nn.Fold>`_
@@ -456,7 +458,7 @@ the output of `Conv` is multiplied by every coefficient of the kernel.
 Then all these matrices are concatenated to build a matrix of the same
 shape of `unfold`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 182-187
+.. GENERATED FROM PYTHON SOURCE LINES 184-189
 
 .. code-block:: Python
 
@@ -478,11 +480,11 @@ shape of `unfold`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 188-189
+.. GENERATED FROM PYTHON SOURCE LINES 190-191
 
 Fold...
 
-.. GENERATED FROM PYTHON SOURCE LINES 189-196
+.. GENERATED FROM PYTHON SOURCE LINES 191-198
 
 .. code-block:: Python
 
@@ -506,11 +508,11 @@ Fold...
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 197-198
+.. GENERATED FROM PYTHON SOURCE LINES 199-200
 
 Full result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-201
+.. GENERATED FROM PYTHON SOURCE LINES 200-203
 
 .. code-block:: Python
 
@@ -534,7 +536,7 @@ Full result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 202-210
+.. GENERATED FROM PYTHON SOURCE LINES 204-212
 
 onnxruntime-training
 ====================
@@ -545,7 +547,7 @@ gradient computation. This section still needs work.
 Conv
 ++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 210-226
+.. GENERATED FROM PYTHON SOURCE LINES 212-228
 
 .. code-block:: Python
 
@@ -583,11 +585,11 @@ Conv
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-228
+.. GENERATED FROM PYTHON SOURCE LINES 229-230
 
 Execution
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-234
+.. GENERATED FROM PYTHON SOURCE LINES 230-236
 
 .. code-block:: Python
 
@@ -615,11 +617,11 @@ Execution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 235-236
+.. GENERATED FROM PYTHON SOURCE LINES 237-238
 
 Gradient
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-244
+.. GENERATED FROM PYTHON SOURCE LINES 238-246
 
 .. code-block:: Python
 
@@ -658,11 +660,11 @@ Gradient
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 245-246
+.. GENERATED FROM PYTHON SOURCE LINES 247-248
 
 Execution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 246-258
+.. GENERATED FROM PYTHON SOURCE LINES 248-260
 
 .. code-block:: Python
 
@@ -702,12 +704,12 @@ Execution.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 259-261
+.. GENERATED FROM PYTHON SOURCE LINES 261-263
 
 ConvTranspose
 +++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 261-276
+.. GENERATED FROM PYTHON SOURCE LINES 263-278
 
 .. code-block:: Python
 
@@ -744,11 +746,11 @@ ConvTranspose
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 277-278
+.. GENERATED FROM PYTHON SOURCE LINES 279-280
 
 Execution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 278-284
+.. GENERATED FROM PYTHON SOURCE LINES 280-286
 
 .. code-block:: Python
 
@@ -776,7 +778,7 @@ Execution.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 285-290
+.. GENERATED FROM PYTHON SOURCE LINES 287-292
 
 im2col and col2im
 =================
@@ -784,7 +786,7 @@ im2col and col2im
 Function `im2col` transforms an image so that the convolution of this image
 can be expressed as a matrix multiplication. It takes the image and the kernel shape.
 
-.. GENERATED FROM PYTHON SOURCE LINES 290-351
+.. GENERATED FROM PYTHON SOURCE LINES 292-353
 
 .. code-block:: Python
 
@@ -866,11 +868,11 @@ can be expressed as a matrix multiplication. It takes the image and the kernel s
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 352-353
+.. GENERATED FROM PYTHON SOURCE LINES 354-355
 
 All is left is the matrix multiplication.
 
-.. GENERATED FROM PYTHON SOURCE LINES 353-359
+.. GENERATED FROM PYTHON SOURCE LINES 355-361
 
 .. code-block:: Python
 
@@ -893,11 +895,11 @@ All is left is the matrix multiplication.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 360-361
+.. GENERATED FROM PYTHON SOURCE LINES 362-363
 
 Let's compare with the numpy function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 361-366
+.. GENERATED FROM PYTHON SOURCE LINES 363-368
 
 .. code-block:: Python
 
@@ -919,7 +921,7 @@ Let's compare with the numpy function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-403
+.. GENERATED FROM PYTHON SOURCE LINES 369-405
 
 ..math::
 
@@ -961,7 +963,7 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.480 seconds)
+   **Total running time of the script:** (0 minutes 0.599 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_convolutation_matmul_102.py:

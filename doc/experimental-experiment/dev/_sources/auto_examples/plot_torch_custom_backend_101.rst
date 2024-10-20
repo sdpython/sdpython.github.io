@@ -36,7 +36,7 @@ can show the intermediate results if needed. It is very slow.
 A model
 =======
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-52
+.. GENERATED FROM PYTHON SOURCE LINES 20-53
 
 .. code-block:: Python
 
@@ -52,6 +52,7 @@ A model
         onnx_custom_backend,
         get_decomposition_table,
     )
+    from experimental_experiment.torch_interpreter import ExportOptions
 
 
     class MLP(torch.nn.Module):
@@ -80,14 +81,14 @@ A model
 
  .. code-block:: none
 
-    tensor([[-0.0461],
-            [ 0.0561],
-            [ 0.2555]], grad_fn=<AddmmBackward0>)
+    tensor([[ 0.0489],
+            [-0.2970],
+            [-0.3490]], grad_fn=<AddmmBackward0>)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-61
+.. GENERATED FROM PYTHON SOURCE LINES 54-62
 
 A custom backend
 ================
@@ -98,7 +99,7 @@ It is available through function
 and implemented by class :class:`OrtBackend
 <experimental_experiment.torch_dynamo.fast_backend.OrtBackend>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-71
+.. GENERATED FROM PYTHON SOURCE LINES 62-72
 
 .. code-block:: Python
 
@@ -120,14 +121,14 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[-0.0461],
-            [ 0.0561],
-            [ 0.2555]])
+    tensor([[ 0.0489],
+            [-0.2970],
+            [-0.3490]])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-84
+.. GENERATED FROM PYTHON SOURCE LINES 73-85
 
 Training
 ========
@@ -142,7 +143,7 @@ An existing list can be filtered out from some inefficient decompositions
 with function :func:`filter_decomposition_table
 <experimental_experiment.torch_dynamo.filter_decomposition_table>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-102
+.. GENERATED FROM PYTHON SOURCE LINES 85-105
 
 .. code-block:: Python
 
@@ -150,9 +151,11 @@ with function :func:`filter_decomposition_table
 
     aot_compiler = aot_autograd(
         fw_compiler=lambda *args, **kwargs: onnx_custom_backend(
-            *args, target_opset=18, **kwargs
+            *args,
+            target_opset=18,
+            export_options=ExportOptions(decomposition_table=get_decomposition_table()),
+            **kwargs,
         ),
-        decompositions=get_decomposition_table(),
     )
 
     compiled_model = torch.compile(
@@ -172,18 +175,18 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[-0.0461],
-            [ 0.0561],
-            [ 0.2555]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[ 0.0489],
+            [-0.2970],
+            [-0.3490]], grad_fn=<CompiledFunctionBackward>)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-104
+.. GENERATED FROM PYTHON SOURCE LINES 106-107
 
 Let's see an iteration loop.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-168
+.. GENERATED FROM PYTHON SOURCE LINES 107-171
 
 .. code-block:: Python
 
@@ -259,13 +262,13 @@ Let's see an iteration loop.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 6960.489700317383
-    Loss after epoch 2: 5552.362981796265
-    Loss after epoch 3: 5261.959686279297
+    Loss after epoch 1: 6924.205541610718
+    Loss after epoch 2: 5474.687635421753
+    Loss after epoch 3: 5182.409942626953
     Training process has finished.
 
     OptimizedModule(
@@ -280,7 +283,7 @@ Let's see an iteration loop.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-174
+.. GENERATED FROM PYTHON SOURCE LINES 172-177
 
 What about the ONNX model?
 ==========================
@@ -288,7 +291,7 @@ What about the ONNX model?
 The backend converts the model into ONNX then runs it with :epkg:`onnxruntime`.
 Let's see what it looks like.
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-187
+.. GENERATED FROM PYTHON SOURCE LINES 177-190
 
 .. code-block:: Python
 
@@ -313,13 +316,13 @@ Let's see what it looks like.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7438.013298034668
-    Loss after epoch 2: 5502.40389251709
-    Loss after epoch 3: 5221.771013259888
+    Loss after epoch 1: 7154.442905426025
+    Loss after epoch 2: 5492.310060501099
+    Loss after epoch 3: 5023.83907699585
     Training process has finished.
     4 were created.
 
@@ -365,11 +368,11 @@ Let's see what it looks like.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 188-189
+.. GENERATED FROM PYTHON SOURCE LINES 191-192
 
 The forward graph.
 
-.. GENERATED FROM PYTHON SOURCE LINES 189-193
+.. GENERATED FROM PYTHON SOURCE LINES 192-196
 
 .. code-block:: Python
 
@@ -395,11 +398,11 @@ The forward graph.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 194-195
+.. GENERATED FROM PYTHON SOURCE LINES 197-198
 
 The backward graph.
 
-.. GENERATED FROM PYTHON SOURCE LINES 195-199
+.. GENERATED FROM PYTHON SOURCE LINES 198-202
 
 .. code-block:: Python
 
@@ -425,7 +428,7 @@ The backward graph.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-206
+.. GENERATED FROM PYTHON SOURCE LINES 203-209
 
 What about dynamic shapes?
 ==========================
@@ -434,7 +437,7 @@ Any input or output having `_dim_` in its name is a dynamic dimension.
 Any output having `_NONE_` in its name is replace by None.
 It is needed by pytorch.
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-219
+.. GENERATED FROM PYTHON SOURCE LINES 209-222
 
 .. code-block:: Python
 
@@ -459,13 +462,13 @@ It is needed by pytorch.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:128: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7414.292665481567
-    Loss after epoch 2: 5537.836078643799
-    Loss after epoch 3: 5290.5530643463135
+    Loss after epoch 1: 7104.942192077637
+    Loss after epoch 2: 5610.901880264282
+    Loss after epoch 3: 5194.0320110321045
     Training process has finished.
     4 were created.
 
@@ -566,11 +569,11 @@ It is needed by pytorch.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 220-221
+.. GENERATED FROM PYTHON SOURCE LINES 223-224
 
 The forward graph.
 
-.. GENERATED FROM PYTHON SOURCE LINES 221-225
+.. GENERATED FROM PYTHON SOURCE LINES 224-228
 
 .. code-block:: Python
 
@@ -596,11 +599,11 @@ The forward graph.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-227
+.. GENERATED FROM PYTHON SOURCE LINES 229-230
 
 The backward graph.
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-231
+.. GENERATED FROM PYTHON SOURCE LINES 230-234
 
 .. code-block:: Python
 
@@ -626,7 +629,7 @@ The backward graph.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 232-240
+.. GENERATED FROM PYTHON SOURCE LINES 235-243
 
 Pattern Optimizations
 =====================
@@ -640,7 +643,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.337 seconds)
+   **Total running time of the script:** (0 minutes 15.155 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

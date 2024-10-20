@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_plot_rewrite_101.py:
 
 
+.. _l-plot-rewrite-101:
+
 =========================
 101: Onnx Model Rewriting
 =========================
@@ -27,7 +29,7 @@ This example shows how to rewrite a graph using a pattern.
 A model
 =======
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-45
+.. GENERATED FROM PYTHON SOURCE LINES 13-47
 
 .. code-block:: Python
 
@@ -84,11 +86,11 @@ A model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-47
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 And visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-50
+.. GENERATED FROM PYTHON SOURCE LINES 49-52
 
 .. code-block:: Python
 
@@ -113,12 +115,12 @@ And visually.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-53
+.. GENERATED FROM PYTHON SOURCE LINES 53-55
 
 The pattern
 ===========
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-63
+.. GENERATED FROM PYTHON SOURCE LINES 55-65
 
 .. code-block:: Python
 
@@ -139,12 +141,12 @@ The pattern
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-66
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 Optimization
 ============
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-79
+.. GENERATED FROM PYTHON SOURCE LINES 68-81
 
 .. code-block:: Python
 
@@ -181,20 +183,20 @@ Optimization
     [GraphBuilderPatternOptimization.optimize] iteration 1: 1 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.001
     [GraphBuilder.optimize] done with 1 nodes in 0.002
-        STAT apply_MulMulSigmoidPattern +1 -3 #it=1 maxmatch=0 i=1 - time=0.0003088119992753491
-        STAT build_for_pattern +0 -0 #it=2 maxmatch=0 i=0 - time=1.562999932502862e-05
-        STAT check_A +0 -0 #it=0 maxmatch=0 i=0 - time=1.885599886009004e-05
-        STAT check_B +0 -0 #it=0 maxmatch=0 i=0 - time=9.018000127980486e-06
-        STAT check_C +0 -0 #it=0 maxmatch=0 i=0 - time=8.424998668488115e-06
-        STAT check_F +0 -0 #it=0 maxmatch=0 i=0 - time=5.678999514202587e-06
-        STAT check_G +0 -0 #it=0 maxmatch=0 i=0 - time=3.4559998312033713e-06
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=1.4908000594004989e-05
-        STAT check_pattern_A0 +0 -0 #it=1 maxmatch=0 i=0 - time=6.415000825654715e-06
-        STAT check_pattern_B0 +0 -0 #it=2 maxmatch=0 i=0 - time=9.16399949346669e-06
-        STAT match_MulMulSigmoidPattern +0 -0 #it=2 maxmatch=1 i=1 - time=0.0009488329978921684
-        STAT pattern_optimization +0 -2 #it=0 maxmatch=0 i=0 - time=0.0016338309997081524
-        STAT remove_identity_nodes +0 -0 #it=2 maxmatch=0 i=0 - time=4.811699909623712e-05
-        STAT remove_unused +0 -0 #it=0 maxmatch=0 i=0 - time=3.932700019504409e-05
+        STAT apply_MulMulSigmoidPattern +1 -3 #it=1 maxmatch=0 i=1 - time=0.0002957240012619877
+        STAT build_for_pattern +0 -0 #it=2 maxmatch=0 i=0 - time=1.550699926156085e-05
+        STAT check_A +0 -0 #it=0 maxmatch=0 i=0 - time=1.4833000022917986e-05
+        STAT check_B +0 -0 #it=0 maxmatch=0 i=0 - time=6.274000043049455e-06
+        STAT check_C +0 -0 #it=0 maxmatch=0 i=0 - time=5.985999450786039e-06
+        STAT check_F +0 -0 #it=0 maxmatch=0 i=0 - time=5.2460000006249174e-06
+        STAT check_G +0 -0 #it=0 maxmatch=0 i=0 - time=3.155000740662217e-06
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=1.003099896479398e-05
+        STAT check_pattern_A0 +0 -0 #it=1 maxmatch=0 i=0 - time=5.948000762145966e-06
+        STAT check_pattern_B0 +0 -0 #it=2 maxmatch=0 i=0 - time=9.273002433474176e-06
+        STAT match_MulMulSigmoidPattern +0 -0 #it=2 maxmatch=1 i=1 - time=0.0007686720000492642
+        STAT pattern_optimization +0 -2 #it=0 maxmatch=0 i=0 - time=0.0013848950002284255
+        STAT remove_identity_nodes +0 -0 #it=2 maxmatch=0 i=0 - time=4.020000051241368e-05
+        STAT remove_unused +0 -0 #it=0 maxmatch=0 i=0 - time=2.9815999369020574e-05
     --MODEL: 1 nodes, 2 inputs, 1 outputs, 0 initializers--
          INPUT:   2 x 1t
         OUTPUT:   1 x 1t
@@ -214,11 +216,11 @@ Optimization
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-81
+.. GENERATED FROM PYTHON SOURCE LINES 82-83
 
 And visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-84
+.. GENERATED FROM PYTHON SOURCE LINES 83-86
 
 .. code-block:: Python
 
@@ -243,7 +245,7 @@ And visually.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-90
+.. GENERATED FROM PYTHON SOURCE LINES 87-92
 
 Filtering
 =========
@@ -251,7 +253,7 @@ Filtering
 Let's assume now we want to apply the pattern only when the
 shapes are identical.
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-135
+.. GENERATED FROM PYTHON SOURCE LINES 92-137
 
 .. code-block:: Python
 
@@ -323,7 +325,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.218 seconds)
+   **Total running time of the script:** (0 minutes 0.201 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

@@ -75,6 +75,23 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Easy Case +++++++++">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_101_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_export_101.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">101: Some dummy examples with torch.export.export</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to rewrite a graph using a pattern.">
 
 .. only:: html
@@ -272,6 +289,7 @@ all the graphs, the data used to draw them, and the models.
 
    /auto_examples/plot_optimize_101
    /auto_examples/plot_profile_existing_onnx_101
+   /auto_examples/plot_torch_export_101
    /auto_examples/plot_rewrite_101
    /auto_examples/plot_torch_linreg_101
    /auto_examples/plot_torch_custom_backend_101
