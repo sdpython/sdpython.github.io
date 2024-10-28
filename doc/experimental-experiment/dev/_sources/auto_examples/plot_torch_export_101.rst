@@ -20,13 +20,18 @@
 
 .. _l-plot-torch-export-101:
 
+=================================================
 101: Some dummy examples with torch.export.export
 =================================================
 
-Easy Case
-+++++++++
+:func:`torch.export.export` behaviour in various situations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-27
+Easy Case
+=========
+
+A simple model.
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-32
 
 .. code-block:: Python
 
@@ -66,7 +71,7 @@ Easy Case
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-35
+.. GENERATED FROM PYTHON SOURCE LINES 33-40
 
 With an integer as input
 ++++++++++++++++++++++++
@@ -76,7 +81,7 @@ documentation, integer do not show up on the graph.
 An exporter based on :func:`torch.export.export` cannot consider
 the integer as an input.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-50
+.. GENERATED FROM PYTHON SOURCE LINES 40-55
 
 .. code-block:: Python
 
@@ -117,14 +122,14 @@ the integer as an input.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-55
+.. GENERATED FROM PYTHON SOURCE LINES 56-60
 
 With an integer as input
 ++++++++++++++++++++++++
 
 But if the integer is wrapped into a Tensor, it works.
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-73
+.. GENERATED FROM PYTHON SOURCE LINES 60-78
 
 .. code-block:: Python
 
@@ -168,14 +173,14 @@ But if the integer is wrapped into a Tensor, it works.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-78
+.. GENERATED FROM PYTHON SOURCE LINES 79-83
 
 Wrapped
 +++++++
 
 Wrapped, it continues to work.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-95
+.. GENERATED FROM PYTHON SOURCE LINES 83-100
 
 .. code-block:: Python
 
@@ -218,7 +223,7 @@ Wrapped, it continues to work.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-101
+.. GENERATED FROM PYTHON SOURCE LINES 101-106
 
 List
 ++++
@@ -226,7 +231,7 @@ List
 The last one does not export. An exporter based on
 :func:`torch.export.export` cannot work.
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-128
+.. GENERATED FROM PYTHON SOURCE LINES 106-133
 
 .. code-block:: Python
 
@@ -269,7 +274,7 @@ The last one does not export. An exporter based on
     Dynamic slicing on data-dependent value is not supported
 
     from user code:
-       File "/home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py", line 110, in forward
+       File "/home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py", line 115, in forward
         return torch.sigmoid(z)[:i_input]
 
     Set TORCH_LOGS="+dynamo" and TORCHDYNAMO_VERBOSE=1 for more information
@@ -278,14 +283,14 @@ The last one does not export. An exporter based on
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-133
+.. GENERATED FROM PYTHON SOURCE LINES 134-138
 
 Loops
 +++++
 
 Loops are not captured.
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-155
+.. GENERATED FROM PYTHON SOURCE LINES 138-161
 
 .. code-block:: Python
 
@@ -315,6 +320,7 @@ Loops are not captured.
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -335,10 +341,223 @@ Loops are not captured.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 162-166
+
+Export for training
++++++++++++++++++++
+
+In that case, the weights are exported as inputs.
+
+.. GENERATED FROM PYTHON SOURCE LINES 166-185
+
+.. code-block:: Python
+
+
+
+    class Neuron(torch.nn.Module):
+        def __init__(self, n_dims: int = 5, n_targets: int = 3):
+            super().__init__()
+            self.linear = torch.nn.Linear(n_dims, n_targets)
+
+        def forward(self, x):
+            z = self.linear(x)
+            return torch.sigmoid(z)
+
+
+    print("-- training")
+    mod = Neuron()
+    mod.train()
+    exported_program = torch.export.export_for_training(mod, (torch.randn(1, 5),))
+    print(exported_program.graph)
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    -- training
+    graph():
+        %p_linear_weight : [num_users=1] = placeholder[target=p_linear_weight]
+        %p_linear_bias : [num_users=1] = placeholder[target=p_linear_bias]
+        %x : [num_users=1] = placeholder[target=x]
+        %linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%x, %p_linear_weight, %p_linear_bias), kwargs = {})
+        %sigmoid : [num_users=1] = call_function[target=torch.ops.aten.sigmoid.default](args = (%linear,), kwargs = {})
+        return (sigmoid,)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 186-189
+
+Preserve Modules
+++++++++++++++++
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 189-211
+
+.. code-block:: Python
+
+
+
+    class Neuron(torch.nn.Module):
+        def __init__(self, n_dims: int = 5, n_targets: int = 3):
+            super().__init__()
+            self.linear = torch.nn.Linear(n_dims, n_targets)
+
+        def forward(self, x):
+            z = self.linear(x)
+            return torch.sigmoid(z)
+
+
+    class NeuronNeuron(torch.nn.Module):
+        def __init__(self, n_dims: int = 5, n_targets: int = 3):
+            super().__init__()
+            self.my_neuron = Neuron(n_dims, n_targets)
+
+        def forward(self, x):
+            z = self.my_neuron(x)
+            return -z
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 212-213
+
+The list of the modules.
+
+.. GENERATED FROM PYTHON SOURCE LINES 213-218
+
+.. code-block:: Python
+
+
+    mod = NeuronNeuron()
+    for item in mod.named_modules():
+        print(item)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    ('', NeuronNeuron(
+      (my_neuron): Neuron(
+        (linear): Linear(in_features=5, out_features=3, bias=True)
+      )
+    ))
+    ('my_neuron', Neuron(
+      (linear): Linear(in_features=5, out_features=3, bias=True)
+    ))
+    ('my_neuron.linear', Linear(in_features=5, out_features=3, bias=True))
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 219-220
+
+The exported module did not change.
+
+.. GENERATED FROM PYTHON SOURCE LINES 220-227
+
+.. code-block:: Python
+
+
+    print("-- preserved?")
+    exported_program = torch.export.export(
+        mod, (torch.randn(1, 5),), preserve_module_call_signature=("my_neuron",)
+    )
+    print(exported_program.graph)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    -- preserved?
+    graph():
+        %p_my_neuron_linear_weight : [num_users=1] = placeholder[target=p_my_neuron_linear_weight]
+        %p_my_neuron_linear_bias : [num_users=1] = placeholder[target=p_my_neuron_linear_bias]
+        %x : [num_users=1] = placeholder[target=x]
+        %linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%x, %p_my_neuron_linear_weight, %p_my_neuron_linear_bias), kwargs = {})
+        %sigmoid : [num_users=1] = call_function[target=torch.ops.aten.sigmoid.default](args = (%linear,), kwargs = {})
+        %neg : [num_users=1] = call_function[target=torch.ops.aten.neg.default](args = (%sigmoid,), kwargs = {})
+        return (neg,)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 228-229
+
+And now?
+
+.. GENERATED FROM PYTHON SOURCE LINES 229-237
+
+.. code-block:: Python
+
+
+    import torch.export._swap
+
+    swapped_gm = torch.export._swap._swap_modules(exported_program, {"my_neuron": Neuron()})
+
+    print("-- preserved?")
+    print(swapped_gm.graph)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/unflatten.py:706: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      spec_node = gm.graph.get_attr(name)
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/unflatten.py:700: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      spec_node = gm.graph.get_attr(name)
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1794: UserWarning: Node _spec_0 target _spec_0 _spec_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1794: UserWarning: Node _spec_1 target _spec_1 _spec_1 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+    -- preserved?
+    graph():
+        %x : [num_users=1] = placeholder[target=x]
+        %_spec_0 : [num_users=1] = get_attr[target=_spec_0]
+        %_spec_1 : [num_users=1] = get_attr[target=_spec_1]
+        %tree_unflatten : [num_users=1] = call_function[target=torch.utils._pytree.tree_unflatten](args = ([%x], %_spec_0), kwargs = {})
+        %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%tree_unflatten, 0), kwargs = {})
+        %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%getitem, 0), kwargs = {})
+        %my_neuron : [num_users=1] = call_module[target=my_neuron](args = (%getitem_1,), kwargs = {})
+        %tree_flatten_spec : [num_users=1] = call_function[target=torch.fx._pytree.tree_flatten_spec](args = (%my_neuron, %_spec_1), kwargs = {})
+        %getitem_3 : [num_users=1] = call_function[target=operator.getitem](args = (%tree_flatten_spec, 0), kwargs = {})
+        %neg : [num_users=1] = call_function[target=torch.ops.aten.neg.default](args = (%getitem_3,), kwargs = {})
+        return (neg,)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 238-240
+
+Unfortunately this approach does not work well on big models
+and it is a provite API.
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.917 seconds)
+   **Total running time of the script:** (0 minutes 0.523 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:

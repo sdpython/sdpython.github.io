@@ -139,9 +139,9 @@ The following methods are used to add onnx elements to the graph.
 Some needs are very common and deserve a dedicated method.
 
 * :meth:`make_nodes <experimental_experiment.xbuilder.GraphBuilder.make_nodes>`:
-  adds many nodes in one row, it renames the intermediate result if needed.
+  adds many nodes in one row, it renames the intermediate results if needed.
 * :meth:`get_attribute <experimental_experiment.xbuilder.GraphBuilder.get_attribute>`:
-  retrieve an attribute from a NodeProto
+  retrieves an attribute from a NodeProto
 * :meth:`make_shape_from_results <experimental_experiment.xbuilder.GraphBuilder.make_shape_from_results>`:
   makes a shape from a tuple having integer, string, or `torch.SymInt`
 
@@ -179,8 +179,8 @@ A function used to provide information to the user and calls in most of the erro
 ::
 
     assert name in self._known_ranks, (
-      f"Rank is unknown for result {name!r}, "
-      f"known_shapes={self._known_ranks}{self.get_debug_msg()}"
+        f"Rank is unknown for result {name!r}, "
+        f"known_shapes={self._known_ranks}{self.get_debug_msg()}"
     )
 
 Example
@@ -335,7 +335,7 @@ Except constant folding, they are called by default.
 * :meth:`remove_identity_nodes <experimental_experiment.xbuilder.GraphBuilder.remove_identity_nodes>`:
   removes identity nodes
 * :meth:`constant_folding <experimental_experiment.xbuilder.GraphBuilder.constant_folding>`:
-  replaces constant whenever it is possible and it makes sense
+  replaces constants whenever it is possible and it makes sense
 
 DynamoInterpreter
 =================
@@ -701,3 +701,83 @@ Fake Tensors
 ++++++++++++
 
 See example in function :func:`experimental_experiment.torch_interpreter.match_input_parameters`.
+
+Export Options
+++++++++++++++
+
+Parameter *export_options* of function
+:func:`to_onnx <experimental_experiment.torch_interpreter.to_onnx>` can take
+an instance of class
+:class:`ExportOptions <experimental_experiment.torch_interpreter.ExportOptions>`
+to change the way the model is exported into a graph (strict=True or False)
+for example.
+
+bypass_export_some_errors
++++++++++++++++++++++++++
+
+If the converter to onnx fails, function :func:`bypass_export_some_errors
+<experimental_experiment.torch_interpreter.onnx_export_errors.bypass_export_some_errors>`
+may help solving some of them.
+
+::
+
+    from experimental_experiment.torch_interpreter.onnx_export_errors import bypass_export_some_errors
+    
+    with bypass_export_some_errors():
+        onx = to_onnx(...)
+
+Use of local function
++++++++++++++++++++++
+
+Local functions amy appear when a model is converted with
+:class:`torch.autocast` enabled. They can be removed by setting
+*inline=True* :func:`to_onnx <experimental_experiment.torch_interpreter.to_onnx>`.
+
+Export module as local functions
+++++++++++++++++++++++++++++++++
+
+:func:`to_onnx <experimental_experiment.torch_interpreter.to_onnx>`
+supports parameter *export_modules_as_functions*. By setting to True,
+all submodules will be exported as local functions in the onnx graph.
+
+.. runpython::
+    :showcode:
+
+    import torch
+    from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+    from experimental_experiment.torch_interpreter import to_onnx
+
+
+    class SubNeuron2(torch.nn.Module):
+        def __init__(self, n_dims: int = 5, n_targets: int = 3):
+            super().__init__()
+            self.linear1 = torch.nn.Linear(n_dims, n_targets)
+            self.linear2 = torch.nn.Linear(n_dims, n_targets)
+
+        def forward(self, x):
+            z1 = self.linear1(x)
+            z2 = self.linear2(x)
+            return torch.sigmoid(z1) + torch.sigmoid(z2)
+
+    class Neuron2(torch.nn.Module):
+        def __init__(self, n_dims: int = 5, n_targets: int = 3):
+            super().__init__()
+            self.neuron = SubNeuron2(n_dims, n_targets)
+
+        def forward(self, x):
+            z = self.neuron(x)
+            return torch.relu(z)
+
+    model = Neuron2()
+    inputs = (torch.randn(1, 5),)
+    expected = model(*inputs)
+    feeds = {"x": inputs[0].numpy()}
+
+    onx = to_onnx(
+        model,
+        inputs,
+        export_modules_as_functions=True,
+        optimize=False,
+        verbose=0,
+    )
+    print(onnx_simple_text_plot(onx))

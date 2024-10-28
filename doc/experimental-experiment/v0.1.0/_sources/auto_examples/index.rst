@@ -41,6 +41,40 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This script gathers a couple of examples based on onnxscript.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_onnxscript_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Examples with onnxscript</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script demonstrates ExecuTorch on a very simple example, see also ExecuTorch Tutorial, ExecuTorch Runtime Python API Reference.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_executorch_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_executorch_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: First test with ExecuTorch</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained by running a dummy llama model. It is the backward graph.">
 
 .. only:: html
@@ -58,6 +92,23 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="export, unflatten and compile =============================">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_compile_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Tweak onnx export</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Profiles any onnx model on CPU.">
 
 .. only:: html
@@ -70,23 +121,6 @@ all the graphs, the data used to draw them, and the models.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">101: Profile an existing model with onnxruntime</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Easy Case +++++++++">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_101_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_torch_export_101.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">101: Some dummy examples with torch.export.export</div>
     </div>
 
 
@@ -138,6 +172,23 @@ all the graphs, the data used to draw them, and the models.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">101: A custom backend for torch</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="torch.export.export behaviour in various situations.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_101_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_export_101.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">101: Some dummy examples with torch.export.export</div>
     </div>
 
 
@@ -287,12 +338,15 @@ all the graphs, the data used to draw them, and the models.
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_onnxscript_102
+   /auto_examples/plot_executorch_102
    /auto_examples/plot_optimize_101
+   /auto_examples/plot_torch_export_compile_102
    /auto_examples/plot_profile_existing_onnx_101
-   /auto_examples/plot_torch_export_101
    /auto_examples/plot_rewrite_101
    /auto_examples/plot_torch_linreg_101
    /auto_examples/plot_torch_custom_backend_101
+   /auto_examples/plot_torch_export_101
    /auto_examples/plot_convolutation_matmul_102
    /auto_examples/plot_custom_backend_llama_102
    /auto_examples/plot_llama_diff_export_301
