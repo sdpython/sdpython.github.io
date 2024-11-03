@@ -97,26 +97,33 @@ Convert a Model
 
 Conversion to an `EdgeProgramManager`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-60
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
 
 .. code-block:: Python
 
 
     if executorch:
         edge_program: EdgeProgramManager = to_edge(exported_program)
+        print(f"edge_program {edge_program!r}")
 
 
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    edge_program <executorch.exir.program._program.EdgeProgramManager object at 0x7f3019179f30>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-62
+
+.. GENERATED FROM PYTHON SOURCE LINES 62-63
 
 Serializes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-75
+.. GENERATED FROM PYTHON SOURCE LINES 63-77
 
 .. code-block:: Python
 
@@ -131,16 +138,23 @@ Serializes.
 
         with open(save_path, "wb") as file:
             file.write(executorch_program.buffer)
+        print(f"model saved into {save_path!r}")
 
 
 
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    model saved into 'plot_executorch_101.pte'
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-89
+
+.. GENERATED FROM PYTHON SOURCE LINES 78-91
 
 It can be specialized for a specific backend.
 
@@ -156,12 +170,12 @@ It can be specialized for a specific backend.
       with open(save_path, "wb") as f:
           f.write(lowered_module.buffer())
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-93
+.. GENERATED FROM PYTHON SOURCE LINES 93-95
 
 Execution
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-111
+.. GENERATED FROM PYTHON SOURCE LINES 95-114
 
 .. code-block:: Python
 
@@ -176,6 +190,7 @@ Execution
         forward: Method = program.load_method("forward")
 
         outputs = forward.execute(inputs)
+        print("forward:", forward)
 
     ###################
     # Let's compare.
@@ -192,7 +207,8 @@ Execution
  .. code-block:: none
 
     Program methods: {'forward'}
-    max discrepancies: tensor(0., grad_fn=<MaxBackward1>)
+    forward: <executorch.runtime.Method object at 0x7f301192d5a0>
+    max discrepancies: tensor(1.4901e-08, grad_fn=<MaxBackward1>)
 
 
 
@@ -200,7 +216,7 @@ Execution
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.761 seconds)
+   **Total running time of the script:** (0 minutes 7.322 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_executorch_102.py:

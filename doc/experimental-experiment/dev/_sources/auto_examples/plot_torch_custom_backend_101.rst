@@ -42,7 +42,7 @@ A model
 
 
     import copy
-    from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+    from experimental_experiment.helpers import pretty_onnx
     from onnx_array_api.plotting.graphviz_helper import plot_dot
     import torch
     from torch._dynamo.backends.common import aot_autograd
@@ -81,9 +81,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[ 0.0489],
-            [-0.2970],
-            [-0.3490]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.6685],
+            [-0.4806],
+            [-0.3276]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -121,9 +121,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[ 0.0489],
-            [-0.2970],
-            [-0.3490]])
+    tensor([[-0.6685],
+            [-0.4806],
+            [-0.3276]])
 
 
 
@@ -175,9 +175,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[ 0.0489],
-            [-0.2970],
-            [-0.3490]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.6685],
+            [-0.4806],
+            [-0.3276]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -266,9 +266,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 6924.205541610718
-    Loss after epoch 2: 5474.687635421753
-    Loss after epoch 3: 5182.409942626953
+    Loss after epoch 1: 7217.695171356201
+    Loss after epoch 2: 5521.53674697876
+    Loss after epoch 3: 5128.17218208313
     Training process has finished.
 
     OptimizedModule(
@@ -305,7 +305,7 @@ Let's see what it looks like.
     for i, inst in enumerate(storage["instance"][:2]):
         print()
         print(f"-- model {i} running on {inst['providers']}")
-        print(onnx_simple_text_plot(inst["onnx"]))
+        print(pretty_onnx(inst["onnx"]))
 
 
 
@@ -320,14 +320,36 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7154.442905426025
-    Loss after epoch 2: 5492.310060501099
-    Loss after epoch 3: 5023.83907699585
+    Loss after epoch 1: 7196.034105300903
+    Loss after epoch 2: 5514.851593017578
+    Loss after epoch 3: 5272.892562866211
     Training process has finished.
     4 were created.
 
     -- model 0 running on ['CPUExecutionProvider']
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input2' type=dtype('float32') shape=[5, 10]
@@ -345,6 +367,28 @@ Let's see what it looks like.
 
     -- model 1 running on ['CPUExecutionProvider']
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='input0' type=dtype('float32') shape=[5, 10]
     input: name='input1' type=dtype('float32') shape=[5, 32]
     input: name='input2' type=dtype('float32') shape=[32, 1]
@@ -452,7 +496,7 @@ It is needed by pytorch.
         print()
         print(f"-- model {i} running on {inst['providers']}")
         print()
-        print(onnx_simple_text_plot(inst["onnx"]))
+        print(pretty_onnx(inst["onnx"]))
 
 
 
@@ -466,15 +510,37 @@ It is needed by pytorch.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7104.942192077637
-    Loss after epoch 2: 5610.901880264282
-    Loss after epoch 3: 5194.0320110321045
+    Loss after epoch 1: 7222.388540267944
+    Loss after epoch 2: 5536.2624168396
+    Loss after epoch 3: 5216.315956115723
     Training process has finished.
     4 were created.
 
     -- model 0 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input_dim_2' type=dtype('int64') shape=[1]
@@ -496,6 +562,28 @@ It is needed by pytorch.
     -- model 1 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='input_dim_0' type=dtype('int64') shape=[1]
     input: name='input1' type=dtype('float32') shape=['s0', 10]
     input: name='input2' type=dtype('float32') shape=['s0', 32]
@@ -522,6 +610,28 @@ It is needed by pytorch.
     -- model 2 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input_dim_2' type=dtype('int64') shape=[1]
@@ -543,6 +653,28 @@ It is needed by pytorch.
     -- model 3 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='input_dim_0' type=dtype('int64') shape=[1]
     input: name='input1' type=dtype('float32') shape=['s0', 10]
     input: name='input2' type=dtype('float32') shape=['s0', 32]
@@ -643,7 +775,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 15.155 seconds)
+   **Total running time of the script:** (0 minutes 2.363 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

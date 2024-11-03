@@ -37,7 +37,7 @@ A model
     from typing import List, Optional
     import onnx.helper as oh
     from onnx import NodeProto, TensorProto
-    from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+    from experimental_experiment.helpers import pretty_onnx
     from onnx_array_api.plotting.graphviz_helper import plot_dot
     from experimental_experiment.xbuilder.graph_builder import (
         GraphBuilder,
@@ -65,7 +65,7 @@ A model
     )
 
 
-    print(onnx_simple_text_plot(proto))
+    print(pretty_onnx(proto))
 
 
 
@@ -161,7 +161,7 @@ Optimization
     )
 
     new_proto = gr.to_onnx()
-    print(onnx_simple_text_plot(new_proto))
+    print(pretty_onnx(new_proto))
 
 
 
@@ -172,42 +172,21 @@ Optimization
  .. code-block:: none
 
     [GraphBuilder.optimize] start with 3 nodes
-    [GraphBuilder.optimize] options=OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=1,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['MulMulSigmoidPattern'])
-    [GraphBuilderPatternOptimization.optimize] start with 3 nodes and 1 patterns, priorities=[0]
-    [GraphBuilderPatternOptimization.optimize] use pattern   1/1 - P0 - MulMulSigmoidPattern()
+    [GraphBuilder.optimize] #patterns=1
+    [GraphBuilderPatternOptimization.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0]
     [GraphBuilderPatternOptimization.optimize] iteration 0: 3 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
     [GraphBuilderPatternOptimization.optimize] iteration 1: 1 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.001
-    [GraphBuilder.optimize] done with 1 nodes in 0.002
-        STAT apply_MulMulSigmoidPattern +1 -3 #it=1 maxmatch=0 i=1 - time=0.0002957240012619877
-        STAT build_for_pattern +0 -0 #it=2 maxmatch=0 i=0 - time=1.550699926156085e-05
-        STAT check_A +0 -0 #it=0 maxmatch=0 i=0 - time=1.4833000022917986e-05
-        STAT check_B +0 -0 #it=0 maxmatch=0 i=0 - time=6.274000043049455e-06
-        STAT check_C +0 -0 #it=0 maxmatch=0 i=0 - time=5.985999450786039e-06
-        STAT check_F +0 -0 #it=0 maxmatch=0 i=0 - time=5.2460000006249174e-06
-        STAT check_G +0 -0 #it=0 maxmatch=0 i=0 - time=3.155000740662217e-06
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=1.003099896479398e-05
-        STAT check_pattern_A0 +0 -0 #it=1 maxmatch=0 i=0 - time=5.948000762145966e-06
-        STAT check_pattern_B0 +0 -0 #it=2 maxmatch=0 i=0 - time=9.273002433474176e-06
-        STAT match_MulMulSigmoidPattern +0 -0 #it=2 maxmatch=1 i=1 - time=0.0007686720000492642
-        STAT pattern_optimization +0 -2 #it=0 maxmatch=0 i=0 - time=0.0013848950002284255
-        STAT remove_identity_nodes +0 -0 #it=2 maxmatch=0 i=0 - time=4.020000051241368e-05
-        STAT remove_unused +0 -0 #it=0 maxmatch=0 i=0 - time=2.9815999369020574e-05
-    --MODEL: 1 nodes, 2 inputs, 1 outputs, 0 initializers--
-         INPUT:   2 x 1t
-        OUTPUT:   1 x 1t
-          NODE:   1 x onnx_extended.ortops.optim.cuda.MulMulSigmoid
-    --MODEL: 1 nodes, 2 inputs, 1 outputs, 0 initializers--DETAILED--
-         INPUT:   1 x 1t[1xbxc]
-         INPUT:   1 x 1t[axbxc]
-        OUTPUT:   1 x 1t[axbxc]
-          NODE:   1 x onnx_extended.ortops.optim.cuda.MulMulSigmoid -SIG- 1t[1xbxc], 1t[axbxc]
+    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.002
+    [GraphBuilder.optimize] done with 1 nodes in 0.003
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cuda' version=1
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=1,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['MulMulSigmoidPattern'])
     input: name='X' type=dtype('float32') shape=[1, 'b', 'c']
     input: name='Y' type=dtype('float32') shape=['a', 'b', 'c']
     MulMulSigmoid[onnx_extended.ortops.optim.cuda](X, Y) -> final
@@ -301,7 +280,7 @@ shapes are identical.
     )
 
     new_proto = gr.to_onnx()
-    print(onnx_simple_text_plot(new_proto))
+    print(pretty_onnx(new_proto))
 
 
 
@@ -312,6 +291,12 @@ shapes are identical.
 
     [MulMulSigmoidPattern2.validate_mapping] match not valid because shapes are differentX:(1, 'b', 'c') != ysy:('a', 'b', 'c')
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['MulMulSigmoidPattern2'])
     input: name='X' type=dtype('float32') shape=[1, 'b', 'c']
     input: name='Y' type=dtype('float32') shape=['a', 'b', 'c']
     Sigmoid(Y) -> sy
@@ -325,7 +310,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.201 seconds)
+   **Total running time of the script:** (0 minutes 0.187 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

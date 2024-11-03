@@ -1,0 +1,624 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="experimental_experiment.reference.evaluator" href="../evaluator.html" /><link rel="prev" title="experimental_experiment.reference.ops.op_transpose_cast" href="op_transpose_cast.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>experimental_experiment.reference.ops.op_tri_matrix - experimental-experiment 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">experimental-experiment 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">experimental-experiment 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../design/index.html">Design</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Design</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/exporter.html">Custom Exporter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/optimizer.html">Pattern Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design/backends.html">Dynamo Backends</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/pytorch.html">pytorch and onnx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/onnx.html">onnx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/docker.html">Start from a docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">experimental_experiment</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of experimental_experiment</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../gradient/index.html">experimental_experiment.gradient</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of experimental_experiment.gradient</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../gradient/ops/index.html">experimental_experiment.gradient.ops</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of experimental_experiment.gradient.ops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../gradient/ops/op_broadcast_gradient_args.html">experimental_experiment.gradient.ops.op_broadcast_gradient_args</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../gradient/grad_helper.html">experimental_experiment.gradient.grad_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../gradient/loss_helper.html">experimental_experiment.gradient.loss_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">experimental_experiment.reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of experimental_experiment.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="index.html">experimental_experiment.reference.ops</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of experimental_experiment.reference.ops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="op_add_add_mul_mul.html">experimental_experiment.reference.ops.op_add_add_mul_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_average_pool_grad.html">experimental_experiment.reference.ops.op_average_pool_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_cast_like.html">experimental_experiment.reference.ops.op_cast_like</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_concat.html">experimental_experiment.reference.ops.op_concat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_constant_of_shape.html">experimental_experiment.reference.ops.op_constant_of_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_fused_matmul.html">experimental_experiment.reference.ops.op_fused_matmul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_gather_grad.html">experimental_experiment.reference.ops.op_gather_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_memcpy_host.html">experimental_experiment.reference.ops.op_memcpy_host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_mul_sigmoid.html">experimental_experiment.reference.ops.op_mul_sigmoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_negxplus1.html">experimental_experiment.reference.ops.op_negxplus1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_quick_gelu.html">experimental_experiment.reference.ops.op_quick_gelu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_replace_zero.html">experimental_experiment.reference.ops.op_replace_zero</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_rotary.html">experimental_experiment.reference.ops.op_rotary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_scatter_elements.html">experimental_experiment.reference.ops.op_scatter_elements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_scatternd_of_shape.html">experimental_experiment.reference.ops.op_scatternd_of_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_simplified_layer_normalization.html">experimental_experiment.reference.ops.op_simplified_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_slice.html">experimental_experiment.reference.ops.op_slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="op_transpose_cast.html">experimental_experiment.reference.ops.op_transpose_cast</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">experimental_experiment.reference.ops.op_tri_matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../evaluator.html">experimental_experiment.reference.evaluator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ort_evaluator.html">experimental_experiment.reference.ort_evaluator</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../convert/index.html">experimental_experiment.convert</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of experimental_experiment.convert</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../convert/convert_helper.html">experimental_experiment.convert.convert_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../convert/ort_helper.html">experimental_experiment.convert.ort_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../plotting/index.html">experimental_experiment.plotting</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of experimental_experiment.plotting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../plotting/data.html">experimental_experiment.plotting.data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../plotting/memory.html">experimental_experiment.plotting.memory</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../torch_interpreter/index.html">experimental_experiment.torch_interpreter</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_functions.html">experimental_experiment.torch_interpreter._aten_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_functions_attention.html">experimental_experiment.torch_interpreter._aten_functions_attention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_aten_methods.html">experimental_experiment.torch_interpreter._aten_methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_doc_.html">experimental_experiment.torch_interpreter._doc_</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_exceptions.html">experimental_experiment.torch_interpreter._exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_prims_functions.html">experimental_experiment.torch_interpreter._prims_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/_torch_helper.html">experimental_experiment.torch_interpreter._torch_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/aten_functions.html">experimental_experiment.torch_interpreter.aten_functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/aten_methods.html">experimental_experiment.torch_interpreter.aten_methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/dispatcher.html">experimental_experiment.torch_interpreter.dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/export_options.html">experimental_experiment.torch_interpreter.export_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/interpreter.html">experimental_experiment.torch_interpreter.interpreter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/onnx_export.html">experimental_experiment.torch_interpreter.onnx_export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/onnx_export_errors.html">experimental_experiment.torch_interpreter.onnx_export_errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/oxs_dispatcher.html">experimental_experiment.torch_interpreter.oxs_dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_interpreter/oxs_opset.html">experimental_experiment.torch_interpreter.oxs_opset</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../torch_models/index.html">experimental_experiment.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/diffusion_model_helper.html">experimental_experiment.torch_models.diffusion_model_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/dump_helper.html">experimental_experiment.torch_models.dump_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/llama_helper.html">experimental_experiment.torch_models.llama_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/llm_model_helper.html">experimental_experiment.torch_models.llm_model_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/mistral_helper.html">experimental_experiment.torch_models.mistral_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/phi3_helper.html">experimental_experiment.torch_models.phi3_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/phi_helper.html">experimental_experiment.torch_models.phi_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_models/training_helper.html">experimental_experiment.torch_models.training_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xbuilder/index.html">experimental_experiment.xbuilder</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.xbuilder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/_dtype_helper.html">experimental_experiment.xbuilder._dtype_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/_graph_builder_runtime.html">experimental_experiment.xbuilder._graph_builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/_onnx_helper.html">experimental_experiment.xbuilder._onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/_shape_helper.html">experimental_experiment.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/expression_dimension.html">experimental_experiment.xbuilder.expression_dimension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/graph_builder.html">experimental_experiment.xbuilder.graph_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/graph_builder_opset.html">experimental_experiment.xbuilder.graph_builder_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/model_container.html">experimental_experiment.xbuilder.model_container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/optimization_options.html">experimental_experiment.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/shape_type_compute.html">experimental_experiment.xbuilder.shape_type_compute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/type_inference.html">experimental_experiment.xbuilder.type_inference</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../xoptim/index.html">experimental_experiment.xoptim</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../xoptim/patterns_investigation/index.html">experimental_experiment.xoptim.patterns_investigation</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim.patterns_investigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_investigation/element_wise.html">experimental_experiment.xoptim.patterns_investigation.element_wise</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../xoptim/patterns_ml/index.html">experimental_experiment.xoptim.patterns_ml</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim.patterns_ml</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_ml/tree_ensemble.html">experimental_experiment.xoptim.patterns_ml.tree_ensemble</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../xoptim/patterns_exp/index.html">experimental_experiment.xoptim.patterns_exp</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim.patterns_exp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_exp/binary_operators.html">experimental_experiment.xoptim.patterns_exp.binary_operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_exp/constant_of_shape_scatter_nd.html">experimental_experiment.xoptim.patterns_exp.constant_of_shape_scatter_nd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_exp/constants.html">experimental_experiment.xoptim.patterns_exp.constants</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_exp/simple_rotary.html">experimental_experiment.xoptim.patterns_exp.simple_rotary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_exp/unary_operators.html">experimental_experiment.xoptim.patterns_exp.unary_operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_exp/where_replace.html">experimental_experiment.xoptim.patterns_exp.where_replace</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../xoptim/patterns/index.html">experimental_experiment.xoptim.patterns</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim.patterns</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_any.html">experimental_experiment.xoptim.patterns.onnx_any</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_cast.html">experimental_experiment.xoptim.patterns.onnx_cast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_conv.html">experimental_experiment.xoptim.patterns.onnx_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_dropout.html">experimental_experiment.xoptim.patterns.onnx_dropout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_equal.html">experimental_experiment.xoptim.patterns.onnx_equal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_expand.html">experimental_experiment.xoptim.patterns.onnx_expand</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_functions.html">experimental_experiment.xoptim.patterns.onnx_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_layer_normalization.html">experimental_experiment.xoptim.patterns.onnx_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_matmul.html">experimental_experiment.xoptim.patterns.onnx_matmul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_mul.html">experimental_experiment.xoptim.patterns.onnx_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_reduce.html">experimental_experiment.xoptim.patterns.onnx_reduce</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_reshape.html">experimental_experiment.xoptim.patterns.onnx_reshape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_rotary.html">experimental_experiment.xoptim.patterns.onnx_rotary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_split.html">experimental_experiment.xoptim.patterns.onnx_split</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_sub.html">experimental_experiment.xoptim.patterns.onnx_sub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_transpose.html">experimental_experiment.xoptim.patterns.onnx_transpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns/onnx_unsqueeze.html">experimental_experiment.xoptim.patterns.onnx_unsqueeze</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../xoptim/patterns_ort/index.html">experimental_experiment.xoptim.patterns_ort</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim.patterns_ort</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_ort/activation.html">experimental_experiment.xoptim.patterns_ort.activation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_ort/activation_grad.html">experimental_experiment.xoptim.patterns_ort.activation_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_ort/fused_matmul.html">experimental_experiment.xoptim.patterns_ort.fused_matmul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_ort/gather_grad.html">experimental_experiment.xoptim.patterns_ort.gather_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_ort/simplified_layer_normalization.html">experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../xoptim/patterns_fix/index.html">experimental_experiment.xoptim.patterns_fix</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of experimental_experiment.xoptim.patterns_fix</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../xoptim/patterns_fix/add_reduction_scatter_nd.html">experimental_experiment.xoptim.patterns_fix.add_reduction_scatter_nd</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/graph_builder_optim.html">experimental_experiment.xoptim.graph_builder_optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/order_optim.html">experimental_experiment.xoptim.order_optim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xoptim/patterns_api.html">experimental_experiment.xoptim.patterns_api</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../torch_dynamo/index.html">experimental_experiment.torch_dynamo</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_dynamo</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_dynamo/_dynamo_exporter.html">experimental_experiment.torch_dynamo._dynamo_exporter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_dynamo/backend_helper.html">experimental_experiment.torch_dynamo.backend_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_dynamo/debug_backend.html">experimental_experiment.torch_dynamo.debug_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_dynamo/dynger_backend.html">experimental_experiment.torch_dynamo.dynger_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_dynamo/fast_backend.html">experimental_experiment.torch_dynamo.fast_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_dynamo/partition.html">experimental_experiment.torch_dynamo.partition</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../torch_bench/index.html">experimental_experiment.torch_bench</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_bench</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../torch_bench/big_models/index.html">experimental_experiment.torch_bench.big_models</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_bench.big_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_codellama.html">experimental_experiment.torch_bench.big_models.try_codellama</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_codellama_test.html">experimental_experiment.torch_bench.big_models.try_codellama_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_falcon_mamba.html">experimental_experiment.torch_bench.big_models.try_falcon_mamba</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_falcon_mamba_test.html">experimental_experiment.torch_bench.big_models.try_falcon_mamba_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_flux_t5.html">experimental_experiment.torch_bench.big_models.try_flux_t5</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_flux_t5_test.html">experimental_experiment.torch_bench.big_models.try_flux_t5_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_flux_transformer.html">experimental_experiment.torch_bench.big_models.try_flux_transformer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_flux_transformer_test.html">experimental_experiment.torch_bench.big_models.try_flux_transformer_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_minilm.html">experimental_experiment.torch_bench.big_models.try_minilm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_minilm_test.html">experimental_experiment.torch_bench.big_models.try_minilm_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_phi_35_mini_instruct.html">experimental_experiment.torch_bench.big_models.try_phi_35_mini_instruct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_phi_35_mini_instruct_test.html">experimental_experiment.torch_bench.big_models.try_phi_35_mini_instruct_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_smollm.html">experimental_experiment.torch_bench.big_models.try_smollm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_smollm_test.html">experimental_experiment.torch_bench.big_models.try_smollm_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_stable_diffusion_3.html">experimental_experiment.torch_bench.big_models.try_stable_diffusion_3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../torch_bench/big_models/try_stable_diffusion_3_test.html">experimental_experiment.torch_bench.big_models.try_stable_diffusion_3_test</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_benchmark_runner.html">experimental_experiment.torch_bench._bash_bench_benchmark_runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_benchmark_runner_agg.html">experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_benchmark_runner_agg_helper.html">experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_cmd.html">experimental_experiment.torch_bench._bash_bench_cmd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_model_runner.html">experimental_experiment.torch_bench._bash_bench_model_runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_models_helper.html">experimental_experiment.torch_bench._bash_bench_models_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_dummies.html">experimental_experiment.torch_bench._bash_bench_set_dummies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_explicit.html">experimental_experiment.torch_bench._bash_bench_set_explicit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_huggingface.html">experimental_experiment.torch_bench._bash_bench_set_huggingface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_huggingface_big.html">experimental_experiment.torch_bench._bash_bench_set_huggingface_big</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_issues.html">experimental_experiment.torch_bench._bash_bench_set_issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_timm.html">experimental_experiment.torch_bench._bash_bench_set_timm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_torchbench.html">experimental_experiment.torch_bench._bash_bench_set_torchbench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_set_torchbench_ado.html">experimental_experiment.torch_bench._bash_bench_set_torchbench_ado</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_bash_bench_suites.html">experimental_experiment.torch_bench._bash_bench_suites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_dort_cmd_common.html">experimental_experiment.torch_bench._dort_cmd_common</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/_dort_cmd_common_models.html">experimental_experiment.torch_bench._dort_cmd_common_models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_agg.html">experimental_experiment.torch_bench.bash_bench_agg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_explicit.html">experimental_experiment.torch_bench.bash_bench_explicit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_huggingface.html">experimental_experiment.torch_bench.bash_bench_huggingface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_huggingface_big.html">experimental_experiment.torch_bench.bash_bench_huggingface_big</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_issues.html">experimental_experiment.torch_bench.bash_bench_issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_timm.html">experimental_experiment.torch_bench.bash_bench_timm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_torchbench.html">experimental_experiment.torch_bench.bash_bench_torchbench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_torchbench_ado.html">experimental_experiment.torch_bench.bash_bench_torchbench_ado</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/bash_bench_untrained.html">experimental_experiment.torch_bench.bash_bench_untrained</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/check_model.html">experimental_experiment.torch_bench.check_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/dort_bench_profile.html">experimental_experiment.torch_bench.dort_bench_profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/export_model.html">experimental_experiment.torch_bench.export_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torch_bench/export_model_helper.html">experimental_experiment.torch_bench.export_model_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_bench_test.html">experimental_experiment._bench_test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_command_lines_parser.html">experimental_experiment._command_lines_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../args.html">experimental_experiment.args</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../bench_run.html">experimental_experiment.bench_run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../checks.html">experimental_experiment.checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ext_test_case.html">experimental_experiment.ext_test_case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../helpers.html">experimental_experiment.helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../memory_peak.html">experimental_experiment.memory_peak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../model_run.html">experimental_experiment.model_run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../onnx_tools.html">experimental_experiment.onnx_tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../torch_test_helper.html">experimental_experiment.torch_test_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Example gallery</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Example gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_onnxscript_102.html">102: Examples with onnxscript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_optimize_101.html">101: Graph Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_executorch_102.html">102: First test with ExecuTorch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_compile_102.html">102: Tweak onnx export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_profile_existing_onnx_101.html">101: Profile an existing model with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_rewrite_101.html">101: Onnx Model Rewriting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_linreg_101.html">101: Linear Regression and export to ONNX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_custom_backend_101.html">101: A custom backend for torch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_101.html">101: Some dummy examples with torch.export.export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_convolutation_matmul_102.html">102: Convolution and Matrix Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_custom_backend_llama_102.html">102: Fuse kernels in a small Llama Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_export_301.html">301: Compares LLAMA exporters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_diff_dort_301.html">301: Compares LLAMA exporters for onnxrt backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_llama_bench_102.html">102: Measure LLAMA speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_aot_201.html">201: Evaluate DORT Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_dort_201.html">201: Evaluate DORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_torch_export_201.html">201: Evaluate different ways to export a torch model to ONNX</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../models/index.html">Supported Models By the Custom Backend</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of Supported Models By the Custom Backend</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/llama.html">LLaMa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/mistral.html">Mistral</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/phi.html">Phi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/phi3.html">Phi3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/diffusion_helper.html">experimental_experiment.torch_models.llm_model_helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../models/llm_helper.html">experimental_experiment.torch_models.diffusion_model_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../command_lines.html">Command Lines</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Command Lines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../bench/index.html">Benchmarks from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Benchmarks from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../bench/dort_bench.html">experimental_experiment.torch_bench.dort_bench</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../bench/dort_profile.html">experimental_experiment.torch_bench.dort_profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../bench/scripts.html">Interesting scripts or command lines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../bench/bash_bench.html">Measuring the exporters on a short list of sets of models</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../tools/index.html">Tools from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Tools from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools/lighten.html">python -m experimental_experiment lighten and unlighten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools/optimize.html">python -m experimental_experiment optimize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools/run.html">python -m experimental_experiment run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../miscellaneous/index.html">Miscellaneous</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Miscellaneous</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous/export_times.html">Export Times</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous/long_outputs.html">Long Outputs uneasy to read</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/api/reference/ops/op_tri_matrix.rst" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-experimental_experiment.reference.ops.op_tri_matrix">
+<span id="experimental-experiment-reference-ops-op-tri-matrix"></span><h1>experimental_experiment.reference.ops.op_tri_matrix<a class="headerlink" href="#module-experimental_experiment.reference.ops.op_tri_matrix" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.reference.ops.op_tri_matrix.TriMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.reference.ops.op_tri_matrix.</span></span><span class="sig-name descname"><span class="pre">TriMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onnx_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/reference/ops/op_tri_matrix.html#TriMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.reference.ops.op_tri_matrix.TriMatrix" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../evaluator.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">experimental_experiment.reference.evaluator</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="op_transpose_cast.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">experimental_experiment.reference.ops.op_transpose_cast</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023-2024
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">experimental_experiment.reference.ops.op_tri_matrix</a><ul>
+<li><a class="reference internal" href="#experimental_experiment.reference.ops.op_tri_matrix.TriMatrix"><code class="docutils literal notranslate"><span class="pre">TriMatrix</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=a1637f0b"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

@@ -41,7 +41,7 @@ data
     from sklearn.model_selection import train_test_split
     import torch
     from onnxruntime import InferenceSession
-    from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+    from experimental_experiment.helpers import pretty_onnx
     from onnx_array_api.plotting.graphviz_helper import plot_dot
     from experimental_experiment.torch_interpreter import to_onnx
 
@@ -92,7 +92,7 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [-0.46903985  0.43370433 36.53810606 86.88415488 -0.09425349], 0.08911005755703982
+    coefficients: [ 0.25568852 50.73490557 -0.10004704 20.15625117 -0.29502398], -0.11343410350248861
 
 
 
@@ -120,7 +120,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=84.98402336930275, r2=0.990208973178953
+    LinearRegression: l2=95.37990131827623, r2=0.9684781106469805
 
 
 
@@ -151,24 +151,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 81.16, NNZs: 5, Bias: 0.924531, T: 750, Avg. loss: 845.547591
+    Norm: 45.88, NNZs: 5, Bias: -0.724294, T: 750, Avg. loss: 350.873631
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 90.69, NNZs: 5, Bias: 0.433608, T: 1500, Avg. loss: 78.270371
+    Norm: 52.30, NNZs: 5, Bias: -0.433483, T: 1500, Avg. loss: 61.934459
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 93.24, NNZs: 5, Bias: 0.337666, T: 2250, Avg. loss: 50.281512
+    Norm: 53.82, NNZs: 5, Bias: -0.459643, T: 2250, Avg. loss: 49.829481
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 93.73, NNZs: 5, Bias: 0.249901, T: 3000, Avg. loss: 48.109814
+    Norm: 54.35, NNZs: 5, Bias: -0.452309, T: 3000, Avg. loss: 48.897180
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 94.04, NNZs: 5, Bias: 0.186362, T: 3750, Avg. loss: 47.865479
+    Norm: 54.55, NNZs: 5, Bias: -0.311528, T: 3750, Avg. loss: 48.766186
     Total training time: 0.00 seconds.
     /home/xadupre/vv/this/lib/python3.10/site-packages/sklearn/linear_model/_stochastic_gradient.py:1616: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [-5.16225728e-01  4.95095249e-01  3.64468980e+01  8.66872211e+01
-      7.23503123e-03], [0.18636182]
+    coefficients: [ 0.23142638 50.72150015 -0.16023538 20.06583581 -0.18043176], [-0.31152813]
 
 
 
@@ -196,7 +195,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=85.01941911869892, sr2=0.9902048952273811
+    SGDRegressor: sl2=96.14988344829608, sr2=0.9682236409822941
 
 
 
@@ -267,11 +266,11 @@ torch
 
  .. code-block:: none
 
-    iteration 0, loss=2222602.5
-    iteration 1, loss=183287.171875
-    iteration 2, loss=78648.2109375
-    iteration 3, loss=72525.7578125
-    iteration 4, loss=72038.3671875
+    iteration 0, loss=777174.8125
+    iteration 1, loss=111117.1953125
+    iteration 2, loss=75595.0390625
+    iteration 3, loss=73556.3046875
+    iteration 4, loss=73427.328125
 
 
 
@@ -298,7 +297,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=84.74376056483874, tr2=0.9902366539060984
+    TorchLinearRegression: tl2=95.12680583561773, tr2=0.9685617556045643
 
 
 
@@ -327,10 +326,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[-4.1980e-01,  2.7617e-01,  3.6428e+01,  8.6536e+01, -3.9314e-02]],
-           requires_grad=True)
+    tensor([[ 0.1938, 50.6865, -0.0816, 20.1749, -0.3115]], requires_grad=True)
     Parameter containing:
-    tensor([0.0409], requires_grad=True)
+    tensor([-0.0207], requires_grad=True)
 
 
 
@@ -377,8 +375,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[-37.653324],
-           [-57.09796 ]], dtype=float32)]
+    [array([[-13.667697],
+           [ -6.557118]], dtype=float32)]
 
 
 
@@ -430,7 +428,7 @@ With dynamic shapes
         dynamic_shapes={"x": {0: torch.export.Dim("batch")}},
     )
 
-    print(onnx_simple_text_plot(onx))
+    print(pretty_onnx(onx))
 
 
 
@@ -440,9 +438,31 @@ With dynamic shapes
  .. code-block:: none
 
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='x' type=dtype('float32') shape=['batch', 5]
     init: name='p_linear_weight' type=dtype('float32') shape=(1, 5)
-    init: name='p_linear_bias' type=dtype('float32') shape=(1,) -- array([0.0409294], dtype=float32)
+    init: name='p_linear_bias' type=dtype('float32') shape=(1,) -- array([-0.02071281], dtype=float32)
     Gemm(x, p_linear_weight, transA=0, transB=1) -> _onx_matmul0
       Add(_onx_matmul0, p_linear_bias) -> output_0
     output: name='output_0' type=dtype('float32') shape=['batch', 1]
@@ -453,7 +473,7 @@ With dynamic shapes
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.865 seconds)
+   **Total running time of the script:** (0 minutes 2.576 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg_101.py:

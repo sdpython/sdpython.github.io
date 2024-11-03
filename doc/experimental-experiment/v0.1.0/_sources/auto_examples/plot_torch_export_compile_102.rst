@@ -33,7 +33,7 @@ export, unflatten and compile
 
 
     import torch
-    from onnx_array_api.plotting.text_plot import onnx_simple_text_plot
+    from experimental_experiment.helpers import pretty_onnx
     from experimental_experiment.torch_interpreter import to_onnx
 
 
@@ -181,7 +181,7 @@ Another graph obtained with torch.compile.
         %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
         return (relu,)
 
-    tensor([[0.6924, 0.4345, 0.7433]], grad_fn=<ReluBackward0>)
+    tensor([[0.4378, 0.2960, 0.5299]], grad_fn=<ReluBackward0>)
 
 
 
@@ -221,7 +221,7 @@ Unflattened
     expected = model(*inputs)
 
     onx = to_onnx(model, inputs)
-    print(onnx_simple_text_plot(onx))
+    print(pretty_onnx(onx))
 
 
 
@@ -232,9 +232,31 @@ Unflattened
  .. code-block:: none
 
     opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='x' type=dtype('float32') shape=[1, 5]
     init: name='p_neuron_linear_weight' type=dtype('float32') shape=(3, 5)
-    init: name='p_neuron_linear_bias' type=dtype('float32') shape=(3,) -- array([ 0.1458622 , -0.0886671 , -0.09455339], dtype=float32)
+    init: name='p_neuron_linear_bias' type=dtype('float32') shape=(3,) -- array([0.12387948, 0.36959893, 0.31989416], dtype=float32)
     Gemm(x, p_neuron_linear_weight, transA=0, transB=1) -> _onx_matmul0
       Add(_onx_matmul0, p_neuron_linear_bias) -> linear
         Sigmoid(linear) -> sigmoid
@@ -255,7 +277,7 @@ Let's preserve the module.
 
 
     onx = to_onnx(model, inputs, export_modules_as_functions=True)
-    print(onnx_simple_text_plot(onx))
+    print(pretty_onnx(onx))
 
 
 
@@ -266,31 +288,88 @@ Let's preserve the module.
 
     opset: domain='' version=18
     opset: domain='aten_local_function' version=1
+    doc_string: large_model=False, inline=False, external_threshold=1024
+    function_options=FunctionOptions()
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     input: name='x' type=dtype('float32') shape=[1, 5]
-    init: name='SubNeuron2_linear.Linear_weight' type=dtype('float32') shape=(3, 5)
-    init: name='SubNeuron2_linear.Linear_bias' type=dtype('float32') shape=(3,) -- array([ 0.1458622 , -0.0886671 , -0.09455339], dtype=float32)
-    SubNeuron2[aten_local_function](x, SubNeuron2_linear.Linear_weight, SubNeuron2_linear.Linear_bias) -> neuron
+    SubNeuron2[aten_local_function](x) -> neuron
       Relu(neuron) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
     ----- function name=linear.Linear domain=aten_local_function
+    ----- doc_string: function_options=FunctionOptions(export_as_function=True, name='linear.Linear', domain='aten_local_function', external_threshold=256, move_initializer_to_constant=True, return_initializer=True, merge_allowed=True, rename_allowed=True)
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     opset: domain='' version=18
     input: 'x'
-    input: 'weight'
-    input: 'bias'
-    Transpose(weight, perm=[1,0]) -> _onx_transpose0
-      MatMul(x, _onx_transpose0) -> _onx_matmul0
-        Add(_onx_matmul0, bias) -> linear
-          Identity(linear) -> output
+    Constant(value=[[0.322591...) -> weight
+      Gemm(x, weight, transA=0, transB=1) -> _onx_matmul0
+    Constant(value=[0.1238794...) -> bias
+      Add(_onx_matmul0, bias) -> output
     output: name='output' type=? shape=?
     ----- function name=SubNeuron2 domain=aten_local_function
+    ----- doc_string: function_options=FunctionOptions(export_as_function=True, name='SubNeuron2', domain='aten_local_function', external_threshold=256, move_initializer_to_constant=True, return_initializer=True, merge_allowed=True, rename_allowed=True)
+    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
+        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
+        max_iter=-1, recursive=False, processor=CPU, order=None,
+        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
+        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
+        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
+        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
+        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
+        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
+        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
+        'ReduceSumNormalizePattern', 'ReshapePattern',
+        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
+        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
+        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
+        'SameChildrenPattern', 'SlicesSplitPattern',
+        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
+        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
+        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
+        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
+        'UnsqueezeUnsqueezePattern'])
     opset: domain='' version=18
     opset: domain='aten_local_function' version=1
     input: 'x'
-    input: 'linear.Linear_weight'
-    input: 'linear.Linear_bias'
-    linear.Linear[aten_local_function](x, linear.Linear_weight, linear.Linear_bias) -> linear
-      Sigmoid(linear) -> sigmoid
-        Identity(sigmoid) -> output
+    linear.Linear[aten_local_function](x) -> linear
+      Sigmoid(linear) -> output
     output: name='output' type=? shape=?
 
 
@@ -299,7 +378,7 @@ Let's preserve the module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.270 seconds)
+   **Total running time of the script:** (0 minutes 0.268 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_compile_102.py:
