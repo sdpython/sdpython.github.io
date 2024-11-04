@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**02:02.161** total execution time for 17 files **from all galleries**:
+**00:04.1000** total execution time for 17 files **from all galleries**:
 
 .. container::
 
@@ -32,34 +32,13 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``examples/plot_torch_aot_201.py``)
-     - 01:01.431
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``examples/plot_torch_export_201.py``)
-     - 00:44.189
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``examples/plot_executorch_102.py``)
-     - 00:07.322
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``examples/plot_optimize_101.py``)
-     - 00:03.825
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``examples/plot_torch_linreg_101.py``)
-     - 00:02.576
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``examples/plot_torch_custom_backend_101.py``)
-     - 00:02.363
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``examples/plot_torch_export_compile_102.py``)
-     - 00:00.268
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``examples/plot_rewrite_101.py``)
-     - 00:00.187
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
-     - 00:00.000
+     - 00:04.1000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py` (``examples/plot_custom_backend_llama_102.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``examples/plot_executorch_102.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``examples/plot_llama_bench_102.py``)
@@ -74,12 +53,33 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``examples/plot_onnxscript_102.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``examples/plot_optimize_101.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``examples/plot_profile_existing_onnx_101.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``examples/plot_rewrite_101.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``examples/plot_torch_aot_201.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``examples/plot_torch_custom_backend_101.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py` (``examples/plot_torch_dort_201.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``examples/plot_torch_export_101.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``examples/plot_torch_export_201.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``examples/plot_torch_export_compile_102.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``examples/plot_torch_linreg_101.py``)
      - 00:00.000
      - 0.0

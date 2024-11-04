@@ -541,9 +541,9 @@
         <article role="main" id="furo-main-content">
           <section id="design">
 <span id="l-design"></span><h1>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h1>
-<p>This module was started to experiment around function <a class="reference external" href="https://pytorch.org/docs/stable/export.html#torch.export.export" title="(in PyTorch v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
+<p>This module was started to experiment around function <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.6.0a0+git3242049 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
 and see what kind of issues occur when leveraging that function to convert
-a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> into <a class="reference external" href="https://onnx.ai/">ONNX</a>.
+a <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmain (2.6.0a0+git3242049 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> into <a class="reference external" href="https://onnx.ai/">ONNX</a>.
 The design is organized around the following main pieces:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://sdpython.github.io/doc/experimental-experiment/dev/api/graph_builder.html#experimental_experiment.xbuilder.GraphBuilder" title="(in experimental-experiment v0.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>:
@@ -553,11 +553,11 @@ It supports shape inference and constant computation with
 numpy arrays or torch tensors.</p></li>
 <li><p><a class="reference internal" href="../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter" title="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>:
 walks through a torch model and converts every piece into ONNX nodes,
-the first step is to get an <a class="reference external" href="https://pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a>, then convert every of its nodes
+the first step is to get an <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.6.0a0+git3242049 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a>, then convert every of its nodes
 into ONNX operators.</p></li>
 <li><p><a class="reference internal" href="../api/torch_interpreter/_aten_functions.html#module-experimental_experiment.torch_interpreter._aten_functions" title="experimental_experiment.torch_interpreter._aten_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">_aten_functions</span></code></a> and
 <a class="reference internal" href="../api/torch_interpreter/_aten_methods.html#module-experimental_experiment.torch_interpreter._aten_methods" title="experimental_experiment.torch_interpreter._aten_methods"><code class="xref py py-mod docutils literal notranslate"><span class="pre">_aten_methods</span></code></a>:
-a collection of functions converting every node from <a class="reference external" href="https://pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> instance
+a collection of functions converting every node from <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.6.0a0+git3242049 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> instance
 into ONNX operators. There is one function per node type.</p></li>
 <li><p><a class="reference external" href="https://sdpython.github.io/doc/experimental-experiment/dev/api/graph_builder_pattern.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="(in experimental-experiment v0.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>:
 once the model is converted, this class looks for sequence of ONNX nodes which can

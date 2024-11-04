@@ -118,7 +118,7 @@ A raw version of a 2D convolution.
 
 
 
-    def raw_convolution(data: np.array, kernel: Sequence[int]) -> np.array:
+    def raw_convolution(data: np.ndarray, kernel: Sequence[int]) -> np.ndarray:
         rx = (kernel.shape[0] - 1) // 2
         ry = (kernel.shape[1] - 1) // 2
         res = np.zeros(data.shape, dtype=data.dtype)
@@ -792,7 +792,7 @@ can be expressed as a matrix multiplication. It takes the image and the kernel s
 
 
 
-    def _get_indices(i: int, shape: Sequence[int]) -> np.array:
+    def _get_indices(i: int, shape: Sequence[int]) -> np.ndarray:
         res = np.empty((len(shape),), dtype=np.int64)
         k = len(shape) - 1
         while k > 0:
@@ -815,8 +815,8 @@ can be expressed as a matrix multiplication. It takes the image and the kernel s
 
 
     def im2col_naive_implementation(
-        data: np.array, kernel_shape: Sequence[int], fill_value: int = 0
-    ) -> np.array:
+        data: np.ndarray, kernel_shape: Sequence[int], fill_value: int = 0
+    ) -> np.ndarray:
         """
         Naive implementation for `im2col` or
         :func:`torch.nn.Unfold` (but with `padding=1`).
@@ -963,7 +963,7 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.599 seconds)
+   **Total running time of the script:** (0 minutes 5.000 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_convolutation_matmul_102.py:
