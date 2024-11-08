@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:04.1000** total execution time for 17 files **from auto_examples**:
+**00:13.030** total execution time for 23 files **from auto_examples**:
 
 .. container::
 
@@ -32,13 +32,31 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_plot_exporter_recipes_oe_custom_ops_inplace.py` (``plot_exporter_recipes_oe_custom_ops_inplace.py``)
+     - 00:11.948
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_exporter_recipes_oe_custom_ops_fct.py` (``plot_exporter_recipes_oe_custom_ops_fct.py``)
+     - 00:01.081
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``plot_convolutation_matmul_102.py``)
-     - 00:04.1000
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py` (``plot_custom_backend_llama_102.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_exporter_recipes_c_cond.py` (``plot_exporter_recipes_c_cond.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_exporter_recipes_c_custom_ops_fct.py` (``plot_exporter_recipes_c_custom_ops_fct.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_exporter_recipes_c_custom_ops_inplace.py` (``plot_exporter_recipes_c_custom_ops_inplace.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``plot_llama_bench_102.py``)
