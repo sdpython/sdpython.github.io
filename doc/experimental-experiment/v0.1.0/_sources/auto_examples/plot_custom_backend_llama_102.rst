@@ -300,10 +300,10 @@ Measure of eager mode
  .. code-block:: none
 
     warmup eager
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:06,  1.42it/s]    100%|██████████| 10/10 [00:00<00:00, 12.92it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:05,  1.80it/s]    100%|██████████| 10/10 [00:00<00:00, 16.23it/s]
     repeat eager
-      0%|          | 0/50 [00:00<?, ?it/s]     26%|██▌       | 13/50 [00:00<00:00, 125.57it/s]     54%|█████▍    | 27/50 [00:00<00:00, 129.76it/s]     82%|████████▏ | 41/50 [00:00<00:00, 130.41it/s]    100%|██████████| 50/50 [00:00<00:00, 128.47it/s]
-    avg time eager 0.007795672159991227
+      0%|          | 0/50 [00:00<?, ?it/s]     30%|███       | 15/50 [00:00<00:00, 144.57it/s]     60%|██████    | 30/50 [00:00<00:00, 117.46it/s]     92%|█████████▏| 46/50 [00:00<00:00, 132.21it/s]    100%|██████████| 50/50 [00:00<00:00, 130.79it/s]
+    avg time eager 0.007658462379986304
 
 
 
@@ -441,24 +441,24 @@ Results may be very different with a different chip.
     ----------------------
     optim=default
     warmup compiled model
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:01<00:09,  1.10s/it]    100%|██████████| 10/10 [00:01<00:00,  8.80it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:07,  1.27it/s]    100%|██████████| 10/10 [00:00<00:00, 12.15it/s]
     repeat compiled_model
-      0%|          | 0/50 [00:00<?, ?it/s]     46%|████▌     | 23/50 [00:00<00:00, 228.78it/s]     92%|█████████▏| 46/50 [00:00<00:00, 227.45it/s]    100%|██████████| 50/50 [00:00<00:00, 227.79it/s]
-    avg time custom backend with optimization='default' 0.004404186760002631
+      0%|          | 0/50 [00:00<?, ?it/s]     52%|█████▏    | 26/50 [00:00<00:00, 259.66it/s]    100%|██████████| 50/50 [00:00<00:00, 250.82it/s]
+    avg time custom backend with optimization='default' 0.003996862459971453
     ----------------------
     optim=default+onnxruntime
     warmup compiled model
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:06,  1.36it/s]    100%|██████████| 10/10 [00:00<00:00, 12.97it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:05,  1.59it/s]    100%|██████████| 10/10 [00:00<00:00, 15.08it/s]
     repeat compiled_model
-      0%|          | 0/50 [00:00<?, ?it/s]     48%|████▊     | 24/50 [00:00<00:00, 236.87it/s]     96%|█████████▌| 48/50 [00:00<00:00, 237.02it/s]    100%|██████████| 50/50 [00:00<00:00, 237.04it/s]
-    avg time custom backend with optimization='default+onnxruntime' 0.004235392539994791
+      0%|          | 0/50 [00:00<?, ?it/s]     50%|█████     | 25/50 [00:00<00:00, 247.12it/s]    100%|██████████| 50/50 [00:00<00:00, 231.87it/s]    100%|██████████| 50/50 [00:00<00:00, 233.06it/s]
+    avg time custom backend with optimization='default+onnxruntime' 0.004309071679963381
     ----------------------
     optim=default+onnxruntime+experimental
     warmup compiled model
-      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:08,  1.12it/s]    100%|██████████| 10/10 [00:00<00:00, 10.75it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     10%|█         | 1/10 [00:00<00:05,  1.52it/s]    100%|██████████| 10/10 [00:00<00:00, 14.42it/s]
     repeat compiled_model
-      0%|          | 0/50 [00:00<?, ?it/s]     50%|█████     | 25/50 [00:00<00:00, 243.78it/s]    100%|██████████| 50/50 [00:00<00:00, 237.27it/s]    100%|██████████| 50/50 [00:00<00:00, 237.73it/s]
-    avg time custom backend with optimization='default+onnxruntime+experimental' 0.004214652699956787
+      0%|          | 0/50 [00:00<?, ?it/s]     52%|█████▏    | 26/50 [00:00<00:00, 257.42it/s]    100%|██████████| 50/50 [00:00<00:00, 257.18it/s]
+    avg time custom backend with optimization='default+onnxruntime+experimental' 0.003897393740044208
 
 
 
@@ -489,10 +489,10 @@ speedup compare to eager mode, higher is better.
  .. code-block:: none
 
                                   optim processor  avg_time  warmup   N  n_custom_ops   speedup
-    0                             eager      cuda  0.007796      10  50           NaN       NaN
-    1                           default      cuda  0.004404      10  50           NaN  1.770059
-    2               default+onnxruntime      cuda  0.004235      10  50           NaN  1.840602
-    3  default+onnxruntime+experimental      cuda  0.004215      10  50           NaN  1.849659
+    0                             eager      cuda  0.007658      10  50           NaN       NaN
+    1                           default      cuda  0.003997      10  50           NaN  1.916119
+    2               default+onnxruntime      cuda  0.004309      10  50           NaN  1.777288
+    3  default+onnxruntime+experimental      cuda  0.003897      10  50           NaN  1.965021
 
 
 
@@ -525,7 +525,7 @@ Plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.941 seconds)
+   **Total running time of the script:** (0 minutes 5.547 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_custom_backend_llama_102.py:

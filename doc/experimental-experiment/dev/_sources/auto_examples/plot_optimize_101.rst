@@ -477,21 +477,23 @@ Optimization
  .. code-block:: none
 
     [GraphBuilder.optimize] start with 214 nodes
-    [GraphBuilder.optimize] #patterns=39
-    [GraphBuilderPatternOptimization.optimize] start with 214 nodes, 73 initializers, 39 patterns, priorities=[0, 1]
+    [GraphBuilder.optimize] #patterns=41
+    [GraphBuilderPatternOptimization.optimize] start with 214 nodes, 73 initializers, 41 patterns, priorities=[0, 1]
     [GraphBuilderPatternOptimization.optimize] iteration 0: 214 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] applies 48 matches, 37*CastPattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.116 | max_time=ReshapePattern:0.109
+    [GraphBuilderPatternOptimization.optimize] applies 48 matches, 37*CastPattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.005 | max_time=SoftmaxCrossEntropyLossCastPattern:0.001
     [GraphBuilderPatternOptimization.optimize] iteration 1: 159 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] increase priority to 1
     [GraphBuilderPatternOptimization.optimize] iteration 2: 159 nodes, priority=1
     [GraphBuilderPatternOptimization.optimize] applies 28 matches, 3*MulMulMulScalarPattern, 3*ReduceReshapePattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*RotaryConcatPartPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.008 | max_time=Sub1MulPattern:0.001
     [GraphBuilderPatternOptimization.optimize] iteration 3: 131 nodes, priority=1
-    [GraphBuilderPatternOptimization.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 2*TransposeReshapeMatMulPattern - time=0.006 | max_time=SwitchOrderBinaryPattern:0.001
-    [GraphBuilderPatternOptimization.optimize] iteration 4: 123 nodes, priority=1
-    [GraphBuilderPatternOptimization.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.004 | max_time=SwitchOrderBinaryPattern:0.000
-    [GraphBuilderPatternOptimization.optimize] iteration 5: 123 nodes, priority=1
-    [GraphBuilderPatternOptimization.optimize] done after 6 iterations with 123 nodes in 0.192
-    [GraphBuilder.optimize] done with 120 nodes in 0.197
+    [GraphBuilderPatternOptimization.optimize] applies 12 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulAddPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 2*TransposeReshapeMatMulPattern - time=0.005 | max_time=Reshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 4: 121 nodes, priority=1
+    [GraphBuilderPatternOptimization.optimize] applies 6 matches, 1*MatMulAddPattern, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.005 | max_time=Sub1MulPattern:0.001
+    [GraphBuilderPatternOptimization.optimize] iteration 5: 121 nodes, priority=1
+    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MatMulAddPattern replaces ['Gemm', 'Add'] - time=0.005 | max_time=Reshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization.optimize] iteration 6: 120 nodes, priority=1
+    [GraphBuilderPatternOptimization.optimize] done after 7 iterations with 120 nodes in 0.084
+    [GraphBuilder.optimize] done with 117 nodes in 0.088
 
 
 .. raw:: html
@@ -528,7 +530,7 @@ Optimization
         <tr>
           <th>0</th>
           <td>check_A</td>
-          <td>0.000373</td>
+          <td>0.000526</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -538,7 +540,7 @@ Optimization
         <tr>
           <th>1</th>
           <td>remove_identity_nodes</td>
-          <td>0.000538</td>
+          <td>0.000611</td>
           <td>0.0</td>
           <td>0.0</td>
           <td>NaN</td>
@@ -548,7 +550,7 @@ Optimization
         <tr>
           <th>2</th>
           <td>check_B</td>
-          <td>0.000334</td>
+          <td>0.000340</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -558,7 +560,7 @@ Optimization
         <tr>
           <th>3</th>
           <td>remove_unused</td>
-          <td>0.000985</td>
+          <td>0.000998</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -568,7 +570,7 @@ Optimization
         <tr>
           <th>4</th>
           <td>check_C</td>
-          <td>0.000313</td>
+          <td>0.000311</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -586,29 +588,29 @@ Optimization
           <td>...</td>
         </tr>
         <tr>
-          <th>385</th>
+          <th>443</th>
           <td>build_for_pattern</td>
-          <td>0.000561</td>
+          <td>0.000416</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>5.0</td>
+          <td>6.0</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>386</th>
+          <th>444</th>
           <td>pattern_optimization</td>
-          <td>0.193097</td>
-          <td>91.0</td>
+          <td>0.084514</td>
+          <td>94.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>387</th>
+          <th>445</th>
           <td>check_F</td>
-          <td>0.000235</td>
+          <td>0.000241</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -616,9 +618,9 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>388</th>
+          <th>446</th>
           <td>remove_unused</td>
-          <td>0.000364</td>
+          <td>0.000360</td>
           <td>3.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -626,9 +628,9 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>389</th>
+          <th>447</th>
           <td>check_G</td>
-          <td>0.000190</td>
+          <td>0.000184</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -637,7 +639,7 @@ Optimization
         </tr>
       </tbody>
     </table>
-    <p>390 rows × 7 columns</p>
+    <p>448 rows × 7 columns</p>
     </div>
     </div>
     <br />
@@ -676,19 +678,19 @@ Summary
 
                                       time_in  added  removed  iteration  match_index  instances
     pattern                                                                                     
-    apply_CastPattern                0.003196     37       37          0           36         37
-    apply_ExpandBroadcastPattern     0.000496      3        6          3            2          3
-    apply_MatMulReshape2Of3Pattern   0.001621     10       12          3           10          4
-    apply_MulMulMulScalarPattern     0.001114      6        9          2            2          3
-    apply_ReduceReshapePattern       0.000259      3        6          2            5          3
+    apply_CastPattern                0.002510     37       37          0           36         37
+    apply_ExpandBroadcastPattern     0.000251      3        6          3            2          3
+    apply_MatMulAddPattern           0.000436      5        8          5            5          4
+    apply_MatMulReshape2Of3Pattern   0.002211     10       12          3           10          4
+    apply_MulMulMulScalarPattern     0.001149      6        9          2            2          3
     ...                                   ...    ...      ...        ...          ...        ...
-    match_UnsqueezeEqualPattern      0.000388      0        0          5           28          0
-    match_UnsqueezeUnsqueezePattern  0.000639      0        0          5           48          0
-    pattern_optimization             0.193097      0       91          0            0          0
-    remove_identity_nodes            0.002122     44       88          2            0          0
-    remove_unused                    0.001349      0        3          0            0          0
+    match_UnsqueezeEqualPattern      0.000415      0        0          6           28          0
+    match_UnsqueezeUnsqueezePattern  0.000554      0        0          6           48          0
+    pattern_optimization             0.084514      0       94          0            0          0
+    remove_identity_nodes            0.002250     44       88          2            0          0
+    remove_unused                    0.001358      0        3          0            0          0
 
-    [66 rows x 6 columns]
+    [69 rows x 6 columns]
 
 
 
@@ -714,7 +716,7 @@ The total is:
 
  .. code-block:: none
 
-    number of removed nodes: 185
+    number of removed nodes: 191
 
 
 
@@ -742,7 +744,7 @@ Conversion to onnx.
 
  .. code-block:: none
 
-    number of new nodes: 120
+    number of new nodes: 117
 
 
 
@@ -767,8 +769,7 @@ It gives the following.
  .. code-block:: none
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()not-optimized
+    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[1024]
     input: name='input1' type=dtype('float32') shape=[1024]
     input: name='input2' type=dtype('float32') shape=[1024]
@@ -866,8 +867,7 @@ It gives the following.
               Mul(view_23, input31) -> _onx_mul010
           Gemm(view_22, input33, transA=1, transB=0) -> output_10
       Mul(mm_9, Reshape2Of3PatternR_input28) -> view_24
-        Gemm(view_24, input29, transA=0, transB=1) -> mm_11
-    Gemm(view_24, input30, transA=1, transB=0) -> output_9
+        Gemm(view_24, input30, transA=1, transB=0) -> output_9
     Sigmoid(input27) -> sigmoid
       Mul(input27, sigmoid) -> Sub1MulPattern--_onx_mul011
         Sub(input27, Sub1MulPattern--_onx_mul011) -> _onx_mul011
@@ -876,12 +876,12 @@ It gives the following.
         Mul(_onx_mul010, _onx_mul012) -> _onx_mul013
           Reshape(_onx_mul013, init7_s2_2048_10243) -> view_26
             Gemm(view_26, input25, transA=0, transB=1) -> mm_13
-          Add(mm_11, mm_13) -> add-mm_11
-            Reshape(add-mm_11, init7_s3_2_1024_10243) -> add_10
-              Mul(add_10, input1) -> _onx_mul014
-                Mul(_onx_mul014, input22) -> _onx_mul016
-                  ReduceSum(_onx_mul016, init7_s1_22, keepdims=1) -> sum_4
-                    Mul(sum_4, init1_s_5) -> _onx_mul018
+        Gemm(view_24, input29, mm_13, transA=0, transB=1) -> add-mm_11
+          Reshape(add-mm_11, init7_s3_2_1024_10243) -> add_10
+            Mul(add_10, input1) -> _onx_mul014
+              Mul(_onx_mul014, input22) -> _onx_mul016
+                ReduceSum(_onx_mul016, init7_s1_22, keepdims=1) -> sum_4
+                  Mul(sum_4, init1_s_5) -> _onx_mul018
             Gemm(view_26, input26, transA=1, transB=0) -> output_8
     Mul(add_10, input24) -> _onx_mul015
       ReduceSum(_onx_mul015, init7_s2_0_12, keepdims=0) -> output_1
@@ -903,7 +903,7 @@ It gives the following.
           Add(input39, view_32) -> add_13
             Transpose(add_13, perm=[0,2,1,3]) -> transpose_11
               Reshape(transpose_11, init7_s2_2048_10245) -> view_37
-                Gemm(view_37, input11, transA=0, transB=1) -> mm_17
+                Gemm(view_37, input12, transA=1, transB=0) -> output_6
     Reshape(input19, init7_s4_2_2_1024_5123) -> TransposeReshapeMatMulPatternL_input19
       Transpose(TransposeReshapeMatMulPatternL_input19, perm=[0,1,3,2]) -> MatMulReshape2Of3PatternL__unsafe_view_3
         MatMul(transpose_5, MatMulReshape2Of3PatternL__unsafe_view_3) -> view_33
@@ -932,22 +932,20 @@ It gives the following.
       Add(add_15, _onx_mul025) -> add_16
         Transpose(add_16, perm=[0,2,1,3]) -> transpose_12
           Reshape(transpose_12, init7_s2_2048_10246) -> view_39
-            Gemm(view_39, input9, transA=0, transB=1) -> mm_19
-              Add(mm_17, mm_19) -> Reshape2Of3PatternL_add_19
+            Gemm(view_39, input10, transA=1, transB=0) -> output_5
           Mul(view_36, input13) -> _onx_mul027
             Add(add_17, _onx_mul027) -> add_18
               Transpose(add_18, perm=[0,2,1,3]) -> transpose_13
                 Reshape(transpose_13, init7_s2_2048_10247) -> view_41
                   Gemm(view_41, input7, transA=0, transB=1) -> mm_21
-                Add(Reshape2Of3PatternL_add_19, mm_21) -> add-Reshape2Of3PatternL_add_19
-                  Reshape(add-Reshape2Of3PatternL_add_19, init7_s3_2_1024_102413) -> add_20
-                    Mul(add_20, input0) -> _onx_mul028
-                      Mul(_onx_mul028, input4) -> _onx_mul030
-                        ReduceSum(_onx_mul030, init7_s1_23, keepdims=1) -> sum_6
-                          Mul(sum_6, init1_s_9) -> _onx_mul032
-                Gemm(view_37, input12, transA=1, transB=0) -> output_6
-            Gemm(view_39, input10, transA=1, transB=0) -> output_5
-    Gemm(view_41, input8, transA=1, transB=0) -> output_4
+            Gemm(view_39, input9, mm_21, transA=0, transB=1) -> MatMulAddPattern--mm_19
+              Gemm(view_37, input11, MatMulAddPattern--mm_19, transA=0, transB=1) -> add-Reshape2Of3PatternL_add_19
+                Reshape(add-Reshape2Of3PatternL_add_19, init7_s3_2_1024_102413) -> add_20
+                  Mul(add_20, input0) -> _onx_mul028
+                    Mul(_onx_mul028, input4) -> _onx_mul030
+                      ReduceSum(_onx_mul030, init7_s1_23, keepdims=1) -> sum_6
+                        Mul(sum_6, init1_s_9) -> _onx_mul032
+                  Gemm(view_41, input8, transA=1, transB=0) -> output_4
     Mul(add_20, input6) -> _onx_mul029
       ReduceSum(_onx_mul029, init7_s2_0_13, keepdims=0) -> output_0
     Mul(_onx_mul028, input5) -> _onx_mul031
@@ -1049,11 +1047,223 @@ Focus on one optimizer
 
  .. code-block:: none
 
-    [GraphBuilder.optimize] start with 120 nodes
+    [GraphBuilder.optimize] start with 117 nodes
     [GraphBuilder.optimize] #patterns=1
-    [GraphBuilderPatternOptimization.optimize] start with 120 nodes, 36 initializers, 1 patterns, priorities=[1]
+    [GraphBuilderPatternOptimization.optimize] start with 117 nodes, 36 initializers, 1 patterns, priorities=[1]
     [GraphBuilderPatternOptimization.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
-    [GraphBuilderPatternOptimization.optimize] iteration 0: 120 nodes, priority=1
+    --
+
+    opset: : 18
+    init: init1_s1_: ?: ?
+    init: init1_s1_2: ?: ?
+    init: init1_s1_3: ?: ?
+    init: init1_s1_4: ?: ?
+    init: init1_s_: ?: ?
+    init: init1_s_4: ?: ?
+    init: init1_s_5: ?: ?
+    init: init1_s_8: ?: ?
+    init: init1_s_9: ?: ?
+    init: init7_s1_-1: ?: ?
+    init: init7_s1_-12: ?: ?
+    init: init7_s1_-13: ?: ?
+    init: init7_s1_2: ?: ?
+    init: init7_s1_22: ?: ?
+    init: init7_s1_23: ?: ?
+    init: init7_s2_0_1: ?: ?
+    init: init7_s2_0_12: ?: ?
+    init: init7_s2_0_13: ?: ?
+    init: init7_s2_1024_10242: ?: ?
+    init: init7_s2_2048_1024: int64: 2
+    init: init7_s2_2048_10242: int64: 2
+    init: init7_s2_2048_10243: int64: 2
+    init: init7_s2_2048_10244: int64: 2
+    init: init7_s2_2048_10245: int64: 2
+    init: init7_s2_2048_10246: int64: 2
+    init: init7_s2_2048_10247: int64: 2
+    init: init7_s3_2_1024_102413: int64: 3
+    init: init7_s3_2_1024_10242: int64: 3
+    init: init7_s3_2_1024_10243: int64: 3
+    init: init7_s4_2_1024_2_512: int64: 4
+    init: init7_s_-1: ?: ?
+    init: init1_s_12: ?: ?
+    init: init7_s4_2_2_512_10243: int64: 4
+    init: init7_s4_2_2_1024_5123: int64: 4
+    init: init7_s2_256_256: ?: ?
+    init: init7_s4_2_2_1024_10243: int64: 4
+    input:: input0                                                                  |T1: 1024
+    input:: input1                                                                  |T1: 1024
+    input:: input2                                                                  |T1: 1024
+    input:: input3                                                                  |T7: 2 x 1024
+    input:: input4                                                                  |T1: 2 x 1024 x 1024
+    input:: input5                                                                  |T1: 2 x 1024 x 1
+    input:: input6                                                                  |T1: 2 x 1024 x 1024
+    input:: input7                                                                  |T1: 1024 x 1024
+    input:: input8                                                                  |T1: 2048 x 1024
+    input:: input9                                                                  |T1: 1024 x 1024
+    input:: input10                                                                 |T1: 2048 x 1024
+    input:: input11                                                                 |T1: 1024 x 1024
+    input:: input12                                                                 |T1: 2048 x 1024
+    input:: input13                                                                 |T1: 1024 x 512
+    input:: input14                                                                 |T1: 1024 x 512
+    input:: input15                                                                 |T1: 4 x 1024 x 512
+    input:: input16                                                                 |T1: 4 x 512 x 1024
+    input:: input17                                                                 |T1: 2 x 2 x 1024 x 1024
+    input:: input18                                                                 |T1: 4 x 1024 x 1024
+    input:: input19                                                                 |T1: 4 x 1024 x 512
+    input:: input20                                                                 |T1: 1024 x 1024
+    input:: input21                                                                 |T1: 2048 x 1024
+    input:: input22                                                                 |T1: 2 x 1024 x 1024
+    input:: input23                                                                 |T1: 2 x 1024 x 1
+    input:: input24                                                                 |T1: 2 x 1024 x 1024
+    input:: input25                                                                 |T1: 1024 x 1024
+    input:: input26                                                                 |T1: 2048 x 1024
+    input:: input27                                                                 |T1: 2 x 1024 x 1024
+    input:: input28                                                                 |T1: 2 x 1024 x 1024
+    input:: input29                                                                 |T1: 1024 x 1024
+    input:: input30                                                                 |T1: 2048 x 1024
+    input:: input31                                                                 |T1: 2 x 1024 x 1024
+    input:: input32                                                                 |T1: 1024 x 1024
+    input:: input33                                                                 |T1: 2048 x 1024
+    input:: input34                                                                 |T1: 2 x 1024 x 1024
+    input:: input35                                                                 |T1: 2 x 1024 x 1
+    input:: input36                                                                 |T1: 2 x 1024 x 1024
+    input:: input37                                                                 |T1: 2 x 1024 x 1024
+    input:: input38                                                                 |T1: 2 x 2 x 1024 x 512
+    input:: input39                                                                 |T1: 2 x 2 x 1024 x 512
+    Reshape: input28, init7_s2_2048_10242 -> Reshape2Of3PatternR_input28            |T1: 2048 x 1024             - Reshape2Of3Pattern--mul17
+    Mul: input37, input2 -> _onx_mul0                                               |T1: 2 x 1024 x 1024             - mul
+    Mul: input37, input36 -> _onx_mul02                                             |T1: 2 x 1024 x 1024             - mul3
+    ReduceSum: _onx_mul02, init7_s2_0_1 -> output_2                                 |T1: 1024             - ReduceReshapePattern--sum
+    Mul: _onx_mul0, input34 -> _onx_mul03                                           |T1: 2 x 1024 x 1024             - mul5
+    Mul: _onx_mul0, input35 -> _onx_mul04                                           |T1: 2 x 1024 x 1024             - mul7
+    ReduceSum: _onx_mul03, init7_s1_2 -> sum_2                                      |T1: 2 x 1024 x 1             - sum2
+    Pow: input35, init1_s1_ -> pow_4                                                |T1: 2 x 1024 x 1             - Pow
+    Mul: sum_2, init1_s_ -> _onx_mul05                                              |T1: 2 x 1024 x 1             - mul9
+    Mul: _onx_mul05, pow_4 -> _onx_mul06                                            |T1: 2 x 1024 x 1             - mul11
+    Mul: _onx_mul06, init1_s_12 -> mul-_onx_mul06                                   |T1: 2 x 1024 x 1             - SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul15-Cst
+    Mul: mul-_onx_mul06, input34 -> _onx_mul08                                      |T1: 2 x 1024 x 1024             - SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul15-Cst2
+    Add: _onx_mul04, _onx_mul08 -> add_8                                            |T1: 2 x 1024 x 1024             - add_Tensor
+    Reshape: add_8, init7_s2_2048_1024 -> view_22                                   |T1: 2048 x 1024             - view2
+    Gemm: view_22, input32 -> mm_9                                                  |T1: 2048 x 1024             - TransposeMatMulPattern--mm2
+    Gemm: view_22, input33 -> output_10                                             |T1: 1024 x 1024             - TransposeMatMulPattern--mm
+    Reshape: mm_9, init7_s3_2_1024_10242 -> view_23                                 |T1: 2 x 1024 x 1024             - view3
+    Mul: mm_9, Reshape2Of3PatternR_input28 -> view_24                               |T1: 2048 x 1024             - Reshape2Of3Pattern--mul172
+    Gemm: view_24, input30 -> output_9                                              |T1: 1024 x 1024             - TransposeMatMulPattern--mm3
+    Mul: view_23, input31 -> _onx_mul010                                            |T1: 2 x 1024 x 1024             - mul19
+    Sigmoid: input27 -> sigmoid                                                     |T1: 2 x 1024 x 1024             - Sigmoid
+    Mul: input27, sigmoid -> Sub1MulPattern--_onx_mul011                            |T1: 2 x 1024 x 1024             - Sub1MulPattern--mul21
+    Sub: input27, Sub1MulPattern--_onx_mul011 -> _onx_mul011                        |T1: 2 x 1024 x 1024             - Sub1MulPattern--mul212
+    Add: _onx_mul011, init1_s_4 -> add_9                                            |T1: 2 x 1024 x 1024             - add_Scalar
+    Mul: sigmoid, add_9 -> _onx_mul012                                              |T1: 2 x 1024 x 1024             - mul23
+    Mul: _onx_mul010, _onx_mul012 -> _onx_mul013                                    |T1: 2 x 1024 x 1024             - mul25
+    Reshape: _onx_mul013, init7_s2_2048_10243 -> view_26                            |T1: 2048 x 1024             - view6
+    Gemm: view_26, input25 -> mm_13                                                 |T1: 2048 x 1024             - TransposeMatMulPattern--mm6
+    Gemm: view_26, input26 -> output_8                                              |T1: 1024 x 1024             - TransposeMatMulPattern--mm5
+    Gemm: view_24, input29, mm_13 -> add-mm_11                                      |T1: 2048 x 1024             - MatMulAddPattern--TransposeMatMulPattern--mm4
+    Reshape: add-mm_11, init7_s3_2_1024_10243 -> add_10                             |T1: 2 x 1024 x 1024             - ReshapeReshapeBinaryPattern--add_Tensor22
+    Mul: add_10, input1 -> _onx_mul014                                              |T1: 2 x 1024 x 1024             - mul27
+    Mul: add_10, input24 -> _onx_mul015                                             |T1: 2 x 1024 x 1024             - mul29
+    ReduceSum: _onx_mul015, init7_s2_0_12 -> output_1                               |T1: 1024             - ReduceReshapePattern--sum3
+    Mul: _onx_mul014, input22 -> _onx_mul016                                        |T1: 2 x 1024 x 1024             - mul31
+    Mul: _onx_mul014, input23 -> _onx_mul017                                        |T1: 2 x 1024 x 1024             - mul33
+    ReduceSum: _onx_mul016, init7_s1_22 -> sum_4                                    |T1: 2 x 1024 x 1             - sum4
+    Add: add_8, _onx_mul017 -> add_11                                               |T1: 2 x 1024 x 1024             - add_Tensor3
+    Pow: input23, init1_s1_2 -> pow_6                                               |T1: 2 x 1024 x 1             - Pow1
+    Mul: sum_4, init1_s_5 -> _onx_mul018                                            |T1: 2 x 1024 x 1             - mul35
+    Mul: _onx_mul018, pow_6 -> _onx_mul019                                          |T1: 2 x 1024 x 1             - mul37
+    Mul: _onx_mul019, init1_s_12 -> mul-_onx_mul019                                 |T1: 2 x 1024 x 1             - SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst
+    Mul: mul-_onx_mul019, input22 -> _onx_mul021                                    |T1: 2 x 1024 x 1024             - SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst2
+    Add: add_11, _onx_mul021 -> add_12                                              |T1: 2 x 1024 x 1024             - add_Tensor4
+    Reshape: add_12, init7_s2_2048_10244 -> view_29                                 |T1: 2048 x 1024             - view9
+    Gemm: view_29, input20 -> mm_15                                                 |T1: 2048 x 1024             - TransposeMatMulPattern--mm8
+    Gemm: view_29, input21 -> output_7                                              |T1: 1024 x 1024             - TransposeMatMulPattern--mm7
+    Reshape: mm_15, init7_s4_2_1024_2_512 -> view_31                                |T1: 2 x 1024 x 2 x 512             - ReshapeReshapePattern--view10
+    Transpose: view_31 -> transpose_5                                               |T1: 2 x 2 x 1024 x 512             - Transpose
+    Reshape: input18, init7_s4_2_2_1024_10243 -> TransposeReshapeMatMulPatternL_input18   |T1: 2 x 2 x 1024 x 1024             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm2
+    Transpose: TransposeReshapeMatMulPatternL_input18 -> MatMulReshape2Of3PatternL_transpose_6          |T1: 2 x 2 x 1024 x 1024             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm22
+    MatMul: MatMulReshape2Of3PatternL_transpose_6, transpose_5 -> view_32           |T1: 2 x 2 x 1024 x 512             - MatMulReshape2Of3Pattern--bmm2
+    Reshape: input19, init7_s4_2_2_1024_5123 -> TransposeReshapeMatMulPatternL_input19  |T1: 2 x 2 x 1024 x 512             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm23
+    Transpose: TransposeReshapeMatMulPatternL_input19 -> MatMulReshape2Of3PatternL__unsafe_view_3             |T1: 2 x 2 x 512 x 1024             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm232
+    MatMul: transpose_5, MatMulReshape2Of3PatternL__unsafe_view_3 -> view_33        |T1: 2 x 2 x 1024 x 1024             - MatMulReshape2Of3Pattern--bmm23
+    Add: input39, view_32 -> add_13                                                 |T1: 2 x 2 x 1024 x 512             - add_Tensor5
+    Mul: view_33, input17 -> _onx_mul022                                            |T1: 2 x 2 x 1024 x 1024             - Mul
+    ReduceSum: _onx_mul022, init7_s1_-1 -> _onx_reducesum0                          |T1: 2 x 2 x 1024 x 1             - softmax_backward_data
+    Mul: input17, _onx_reducesum0 -> _onx_mul023                                    |T1: 2 x 2 x 1024 x 1024             - softmax_backward_data2
+    Sub: _onx_mul022, _onx_mul023 -> _softmax_backward_data                         |T1: 2 x 2 x 1024 x 1024             - softmax_backward_data3
+    Div: _softmax_backward_data, init1_s_8 -> div_3                                 |T1: 2 x 2 x 1024 x 1024             - div_Tensor
+    Reshape: input15, init7_s4_2_2_1024_5123 -> TransposeReshapeMatMulPatternL_input15  |T1: 2 x 2 x 1024 x 512             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm32
+    Transpose: TransposeReshapeMatMulPatternL_input15 -> MatMulReshape2Of3PatternL_transpose_8          |T1: 2 x 2 x 512 x 1024             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm322
+    MatMul: MatMulReshape2Of3PatternL_transpose_8, div_3 -> view_35                 |T1: 2 x 2 x 512 x 1024             - MatMulReshape2Of3Pattern--bmm32
+    Reshape: input16, init7_s4_2_2_512_10243 -> TransposeReshapeMatMulPatternL_input16  |T1: 2 x 2 x 512 x 1024             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm42
+    Transpose: TransposeReshapeMatMulPatternL_input16 -> MatMulReshape2Of3PatternL_view_34      |T1: 2 x 2 x 1024 x 512             - TransposeReshapeMatMulPattern--MatMulReshape2Of3Pattern--bmm422
+    MatMul: div_3, MatMulReshape2Of3PatternL_view_34 -> view_36                     |T1: 2 x 2 x 1024 x 512             - MatMulReshape2Of3Pattern--bmm42
+    Transpose: view_35 -> transpose_10                                              |T1: 2 x 2 x 1024 x 512             - Transpose12345
+    Add: input38, transpose_10 -> add_14                                            |T1: 2 x 2 x 1024 x 512             - add_Tensor6
+    Mul: add_14, input14 -> _onx_mul024                                             |T1: 2 x 2 x 1024 x 512             - mul43
+    Split: _onx_mul024, init7_s2_256_256 -> slice_10, slice_11                      |T1: 2 x 2 x 1024 x 256 T1: 2 x 2 x 1024 x 256             - SlicesSplitPattern--Slice
+    Neg: slice_10 -> neg_2                                                          |T1: 2 x 2 x 1024 x 256             - Neg
+    Concat: slice_11, neg_2 -> add_15                                               |T1: 2 x 2 x 1024 x 512             - RotaryConcatPartPattern--add_Tensor7
+    Mul: add_14, input13 -> _onx_mul025                                             |T1: 2 x 2 x 1024 x 512             - mul45
+    Add: add_15, _onx_mul025 -> add_16                                              |T1: 2 x 2 x 1024 x 512             - add_Tensor8
+    Mul: view_36, input14 -> _onx_mul026                                            |T1: 2 x 2 x 1024 x 512             - mul47
+    Split: _onx_mul026, init7_s2_256_256 -> slice_12, slice_13                      |T1: 2 x 2 x 1024 x 256 T1: 2 x 2 x 1024 x 256             - SlicesSplitPattern--Slice12
+    Neg: slice_12 -> neg_3                                                          |T1: 2 x 2 x 1024 x 256             - Neg1
+    Concat: slice_13, neg_3 -> add_17                                               |T1: 2 x 2 x 1024 x 512             - RotaryConcatPartPattern--add_Tensor9
+    Mul: view_36, input13 -> _onx_mul027                                            |T1: 2 x 2 x 1024 x 512             - mul49
+    Add: add_17, _onx_mul027 -> add_18                                              |T1: 2 x 2 x 1024 x 512             - add_Tensor10
+    Transpose: add_13 -> transpose_11                                               |T1: 2 x 1024 x 2 x 512             - Transpose123456
+    Transpose: add_16 -> transpose_12                                               |T1: 2 x 1024 x 2 x 512             - Transpose1234567
+    Transpose: add_18 -> transpose_13                                               |T1: 2 x 1024 x 2 x 512             - Transpose12345678
+    Reshape: transpose_11, init7_s2_2048_10245 -> view_37                           |T1: 2048 x 1024             - ReshapeReshapePattern--_unsafe_view2
+    Gemm: view_37, input12 -> output_6                                              |T1: 1024 x 1024             - TransposeMatMulPattern--mm9
+    Reshape: transpose_12, init7_s2_2048_10246 -> view_39                           |T1: 2048 x 1024             - ReshapeReshapePattern--_unsafe_view3
+    Gemm: view_39, input10 -> output_5                                              |T1: 1024 x 1024             - TransposeMatMulPattern--mm11
+    Reshape: transpose_13, init7_s2_2048_10247 -> view_41                           |T1: 2048 x 1024             - ReshapeReshapePattern--_unsafe_view4
+    Gemm: view_41, input7 -> mm_21                                                  |T1: 2048 x 1024             - TransposeMatMulPattern--mm14
+    Gemm: view_41, input8 -> output_4                                               |T1: 1024 x 1024             - TransposeMatMulPattern--mm13
+    Gemm: view_39, input9, mm_21 -> MatMulAddPattern--mm_19                         |T1: 2048 x 1024             - MatMulAddPattern--TransposeMatMulPattern--mm12
+    Gemm: view_37, input11, MatMulAddPattern--mm_19 -> add-Reshape2Of3PatternL_add_19 |T1: 2048 x 1024             - MatMulAddPattern--MatMulAddPattern--TransposeMatMulPattern--mm102
+    Reshape: add-Reshape2Of3PatternL_add_19, init7_s3_2_1024_102413 -> add_20       |T1: 2 x 1024 x 1024             - ReshapeReshapeBinaryPattern--add_Tensor122
+    Mul: add_20, input0 -> _onx_mul028                                              |T1: 2 x 1024 x 1024             - mul51
+    Mul: add_20, input6 -> _onx_mul029                                              |T1: 2 x 1024 x 1024             - mul53
+    ReduceSum: _onx_mul029, init7_s2_0_13 -> output_0                               |T1: 1024             - ReduceReshapePattern--sum5
+    Mul: _onx_mul028, input4 -> _onx_mul030                                         |T1: 2 x 1024 x 1024             - mul55
+    Mul: _onx_mul028, input5 -> _onx_mul031                                         |T1: 2 x 1024 x 1024             - mul57
+    ReduceSum: _onx_mul030, init7_s1_23 -> sum_6                                    |T1: 2 x 1024 x 1             - sum6
+    Add: add_12, _onx_mul031 -> add_21                                              |T1: 2 x 1024 x 1024             - add_Tensor13
+    Pow: input5, init1_s1_3 -> pow_8                                                |T1: 2 x 1024 x 1             - Pow12
+    Mul: sum_6, init1_s_9 -> _onx_mul032                                            |T1: 2 x 1024 x 1             - mul59
+    Mul: _onx_mul032, pow_8 -> _onx_mul033                                          |T1: 2 x 1024 x 1             - mul61
+    Mul: _onx_mul033, init1_s_12 -> mul-_onx_mul033                                 |T1: 2 x 1024 x 1             - SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst
+    Mul: mul-_onx_mul033, input4 -> _onx_mul035                                     |T1: 2 x 1024 x 1024             - SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst2
+    Add: add_21, _onx_mul035 -> add_22                                              |T1: 2 x 1024 x 1024             - add_Tensor14
+    Equal: input3, init7_s_-1 -> eq_2                                               |T9: 2 x 1024             - Equal
+    Unsqueeze: eq_2, init7_s1_-12 -> unsqueeze_6                                    |T9: 2 x 1024 x 1             - Unsqueeze
+    Where: unsqueeze_6, init1_s1_4, add_22 -> _onx_where0                           |T1: 2 x 1024 x 1024             - masked_fill_Scalar
+    Unsqueeze: input3, init7_s1_-13 -> _onx_unsqueeze0                              |T7: 2 x 1024 x 1             - aten__unsafe_index_put
+    ConstantOfShape: init7_s2_1024_10242 -> _onx_constantofshape05                  |T1: 1024 x 1024             - aten__unsafe_index_put2
+    ScatterND: _onx_constantofshape05, _onx_unsqueeze0, _onx_where0 -> output_3     |T1: 1024 x 1024             - aten__unsafe_index_put3
+    Constant:  -> output_11                                                         |T1:              - Constant
+    Identity: output_11 -> output_12                                                |T1:              - ._update_structures_with_proto
+    Identity: output_11 -> output_13                                                |T1:              - ._update_structures_with_proto
+    Identity: output_11 -> output_14                                                |T1:              - ._update_structures_with_proto
+    output:: output_0                                                               |T1: 1024
+    output:: output_1                                                               |T1: 1024
+    output:: output_2                                                               |T1: 1024
+    output:: output_3                                                               |T1: 1024 x 1024
+    output:: output_4                                                               |T1: 1024 x 1024
+    output:: output_5                                                               |T1: 1024 x 1024
+    output:: output_6                                                               |T1: 1024 x 1024
+    output:: output_7                                                               |T1: 1024 x 1024
+    output:: output_8                                                               |T1: 1024 x 1024
+    output:: output_9                                                               |T1: 1024 x 1024
+    output:: output_10                                                              |T1: 1024 x 1024
+    output:: output_11                                                              |T1: 
+    output:: output_12                                                              |T1: 
+    output:: output_13                                                              |T1: 
+    output:: output_14                                                              |T1: 
+    --
+    [GraphBuilderPatternOptimization.optimize] iteration 0: 117 nodes, priority=1
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul5
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul7
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul11
@@ -1067,7 +1277,6 @@ Focus on one optimizer
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst2
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor4
-    [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=ReshapeReshapeBinaryPattern--add_Tensor12
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul55
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul57
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor13
@@ -1076,19 +1285,19 @@ Focus on one optimizer
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst2
     [SwitchOrderBinaryPattern.match] NONE - line: 173:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor14
     [GraphBuilderPatternOptimization.optimize] done all: -0 +0 nodes
-    [GraphBuilderPatternOptimization.optimize] done after 1 iterations with 120 nodes in 0.002
-        STAT build_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003536480071488768
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00017543099238537252
-        STAT check_pattern_B0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00016703701112419367
-        STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0007153460028348491
-        STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.00032274499244522303
-    --MODEL: 120 nodes, 40 inputs, 15 outputs, 36 initializers--
+    [GraphBuilderPatternOptimization.optimize] done after 1 iterations with 117 nodes in 0.002
+        STAT build_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003630920000432525
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00018260599972563796
+        STAT check_pattern_B0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00016704099834896624
+        STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0006910970005264971
+        STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.00031550799758406356
+    --MODEL: 117 nodes, 40 inputs, 15 outputs, 36 initializers--
          INPUT:  39 x 1t
          INPUT:   1 x 7t
         OUTPUT:  15 x 1t
           INIT:  10 x 1t
           INIT:  26 x 7t
-          NODE:  13 x Add
+          NODE:  10 x Add
           NODE:   2 x Concat
           NODE:   1 x Constant
           NODE:   1 x ConstantOfShape
@@ -1109,7 +1318,7 @@ Focus on one optimizer
           NODE:   9 x Transpose
           NODE:   2 x Unsqueeze
           NODE:   1 x Where
-    --MODEL: 120 nodes, 40 inputs, 15 outputs, 36 initializers--DETAILED--
+    --MODEL: 117 nodes, 40 inputs, 15 outputs, 36 initializers--DETAILED--
          INPUT:   3 x 1t[1024]
          INPUT:   7 x 1t[1024x1024]
          INPUT:   2 x 1t[1024x512]
@@ -1130,7 +1339,6 @@ Focus on one optimizer
           INIT:  12 x 7t[2]
           INIT:   3 x 7t[3]
           INIT:   4 x 7t[4]
-          NODE:   3 x Add -SIG- 1t[2048x1024], 1t[2048x1024]
           NODE:   1 x Add -SIG- 1t[2x1024x1024], 1t[1]
           NODE:   5 x Add -SIG- 1t[2x1024x1024], 1t[2x1024x1024]
           NODE:   4 x Add -SIG- 1t[2x2x1024x512], 1t[2x2x1024x512]
@@ -1139,7 +1347,8 @@ Focus on one optimizer
           NODE:   1 x ConstantOfShape -SIG- 7t[2]
           NODE:   1 x Div -SIG- 1t[2x2x1024x1024], 1t[1]
           NODE:   1 x Equal -SIG- 7t[2x1024], 7t[1]
-          NODE:   7 x Gemm -SIG- 1t[2048x1024], 1t[1024x1024]
+          NODE:   4 x Gemm -SIG- 1t[2048x1024], 1t[1024x1024]
+          NODE:   3 x Gemm -SIG- 1t[2048x1024], 1t[1024x1024], 1t[2048x1024]
           NODE:   7 x Gemm -SIG- 1t[2048x1024], 1t[2048x1024]
           NODE:   3 x Identity -SIG- 1t[1]
           NODE:   2 x MatMul -SIG- 1t[2x2x1024x1024], 1t[2x2x1024x512]
@@ -1180,7 +1389,7 @@ Focus on one optimizer
           NODE:   1 x Unsqueeze -SIG- 7t[2x1024], 7t[1]
           NODE:   1 x Unsqueeze -SIG- 9t[2x1024], 7t[1]
           NODE:   1 x Where -SIG- 9t[2x1024x1], 1t[1], 1t[2x1024x1024]
-    [GraphBuilder.optimize] done with 120 nodes in 0.006
+    [GraphBuilder.optimize] done with 117 nodes in 0.009
 
 
 .. raw:: html
@@ -1217,7 +1426,7 @@ Focus on one optimizer
         <tr>
           <th>0</th>
           <td>check_A</td>
-          <td>0.000212</td>
+          <td>0.000218</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1227,7 +1436,7 @@ Focus on one optimizer
         <tr>
           <th>1</th>
           <td>remove_identity_nodes</td>
-          <td>0.000320</td>
+          <td>0.000316</td>
           <td>0.0</td>
           <td>0.0</td>
           <td>NaN</td>
@@ -1237,7 +1446,7 @@ Focus on one optimizer
         <tr>
           <th>2</th>
           <td>check_B</td>
-          <td>0.000183</td>
+          <td>0.000203</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1247,7 +1456,7 @@ Focus on one optimizer
         <tr>
           <th>3</th>
           <td>remove_unused</td>
-          <td>0.000544</td>
+          <td>0.000342</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1257,7 +1466,7 @@ Focus on one optimizer
         <tr>
           <th>4</th>
           <td>check_C</td>
-          <td>0.000199</td>
+          <td>0.000180</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1267,7 +1476,7 @@ Focus on one optimizer
         <tr>
           <th>5</th>
           <td>check_pattern_00</td>
-          <td>0.000175</td>
+          <td>0.000183</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>-1.0</td>
@@ -1277,7 +1486,7 @@ Focus on one optimizer
         <tr>
           <th>6</th>
           <td>match_SwitchOrderBinaryPattern</td>
-          <td>0.000715</td>
+          <td>0.000691</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>0.0</td>
@@ -1287,7 +1496,7 @@ Focus on one optimizer
         <tr>
           <th>7</th>
           <td>remove_identity_nodes</td>
-          <td>0.000323</td>
+          <td>0.000316</td>
           <td>0.0</td>
           <td>0.0</td>
           <td>0.0</td>
@@ -1307,7 +1516,7 @@ Focus on one optimizer
         <tr>
           <th>9</th>
           <td>build_for_pattern</td>
-          <td>0.000354</td>
+          <td>0.000363</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>0.0</td>
@@ -1317,7 +1526,7 @@ Focus on one optimizer
         <tr>
           <th>10</th>
           <td>pattern_optimization</td>
-          <td>0.003997</td>
+          <td>0.006426</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1327,7 +1536,7 @@ Focus on one optimizer
         <tr>
           <th>11</th>
           <td>check_F</td>
-          <td>0.000203</td>
+          <td>0.000198</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1337,7 +1546,7 @@ Focus on one optimizer
         <tr>
           <th>12</th>
           <td>remove_unused</td>
-          <td>0.000333</td>
+          <td>0.000394</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1347,7 +1556,7 @@ Focus on one optimizer
         <tr>
           <th>13</th>
           <td>check_G</td>
-          <td>0.000184</td>
+          <td>0.000194</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1364,7 +1573,7 @@ Focus on one optimizer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.825 seconds)
+   **Total running time of the script:** (0 minutes 1.445 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:

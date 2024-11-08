@@ -81,9 +81,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[-0.6685],
-            [-0.4806],
-            [-0.3276]], grad_fn=<AddmmBackward0>)
+    tensor([[ 0.0989],
+            [-0.4838],
+            [-0.3123]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -121,9 +121,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[-0.6685],
-            [-0.4806],
-            [-0.3276]])
+    tensor([[ 0.0989],
+            [-0.4838],
+            [-0.3123]])
 
 
 
@@ -175,9 +175,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[-0.6685],
-            [-0.4806],
-            [-0.3276]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[ 0.0989],
+            [-0.4838],
+            [-0.3123]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -266,9 +266,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7217.695171356201
-    Loss after epoch 2: 5521.53674697876
-    Loss after epoch 3: 5128.17218208313
+    Loss after epoch 1: 7305.781032562256
+    Loss after epoch 2: 5443.838684082031
+    Loss after epoch 3: 5179.002107620239
     Training process has finished.
 
     OptimizedModule(
@@ -320,36 +320,15 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7196.034105300903
-    Loss after epoch 2: 5514.851593017578
-    Loss after epoch 3: 5272.892562866211
+    Loss after epoch 1: 7516.51252746582
+    Loss after epoch 2: 5555.762649536133
+    Loss after epoch 3: 5202.970405578613
     Training process has finished.
     4 were created.
 
     -- model 0 running on ['CPUExecutionProvider']
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()
-    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
-        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
-        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
-        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
-        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
-        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
-        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
-        'ReduceSumNormalizePattern', 'ReshapePattern',
-        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
-        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
-        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
-        'SameChildrenPattern', 'SlicesSplitPattern',
-        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
-        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
-        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
-        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
-        'UnsqueezeUnsqueezePattern'])
+    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input2' type=dtype('float32') shape=[5, 10]
@@ -367,28 +346,7 @@ Let's see what it looks like.
 
     -- model 1 running on ['CPUExecutionProvider']
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()
-    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
-        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
-        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
-        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
-        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
-        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
-        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
-        'ReduceSumNormalizePattern', 'ReshapePattern',
-        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
-        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
-        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
-        'SameChildrenPattern', 'SlicesSplitPattern',
-        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
-        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
-        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
-        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
-        'UnsqueezeUnsqueezePattern'])
+    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[5, 10]
     input: name='input1' type=dtype('float32') shape=[5, 32]
     input: name='input2' type=dtype('float32') shape=[32, 1]
@@ -508,39 +466,16 @@ It is needed by pytorch.
 
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
-      warnings.warn(
-    Loss after epoch 1: 7222.388540267944
-    Loss after epoch 2: 5536.2624168396
-    Loss after epoch 3: 5216.315956115723
+    Loss after epoch 1: 7669.064441680908
+    Loss after epoch 2: 5634.684083938599
+    Loss after epoch 3: 5237.810531616211
     Training process has finished.
-    4 were created.
+    2 were created.
 
     -- model 0 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()
-    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
-        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
-        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
-        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
-        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
-        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
-        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
-        'ReduceSumNormalizePattern', 'ReshapePattern',
-        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
-        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
-        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
-        'SameChildrenPattern', 'SlicesSplitPattern',
-        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
-        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
-        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
-        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
-        'UnsqueezeUnsqueezePattern'])
+    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input_dim_2' type=dtype('int64') shape=[1]
@@ -562,119 +497,7 @@ It is needed by pytorch.
     -- model 1 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()
-    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
-        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
-        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
-        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
-        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
-        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
-        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
-        'ReduceSumNormalizePattern', 'ReshapePattern',
-        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
-        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
-        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
-        'SameChildrenPattern', 'SlicesSplitPattern',
-        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
-        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
-        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
-        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
-        'UnsqueezeUnsqueezePattern'])
-    input: name='input_dim_0' type=dtype('int64') shape=[1]
-    input: name='input1' type=dtype('float32') shape=['s0', 10]
-    input: name='input2' type=dtype('float32') shape=['s0', 32]
-    input: name='input3' type=dtype('float32') shape=[32, 1]
-    input: name='input4' type=dtype('float32') shape=['s0', 1]
-    init: name='init7_s1_0' type=dtype('int64') shape=(1,) -- array([0])
-    init: name='init1_s1_' type=dtype('float32') shape=(1,) -- array([0.], dtype=float32)
-    Constant(value_float=0.0) -> output_NONE_2
-      Identity(output_NONE_2) -> output_NONE_3
-    Gemm(input4, input2, transA=1, transB=0) -> output_4
-    Gemm(input4, input3, transA=0, transB=1) -> mm
-    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_5
-    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal0
-      Where(_onx_lessorequal0, init1_s1_, mm) -> threshold_backward
-        Gemm(threshold_backward, input1, transA=1, transB=0) -> output_0
-    ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -> output_1
-    output: name='output_0' type=dtype('float32') shape=[32, 10]
-    output: name='output_1' type=dtype('float32') shape=[32]
-    output: name='output_NONE_2' type=dtype('float32') shape=None
-    output: name='output_NONE_3' type=dtype('float32') shape=None
-    output: name='output_4' type=dtype('float32') shape=[1, 32]
-    output: name='output_5' type=dtype('float32') shape=[1]
-
-    -- model 2 running on ['CPUExecutionProvider']
-
-    opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()
-    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
-        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
-        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
-        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
-        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
-        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
-        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
-        'ReduceSumNormalizePattern', 'ReshapePattern',
-        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
-        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
-        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
-        'SameChildrenPattern', 'SlicesSplitPattern',
-        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
-        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
-        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
-        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
-        'UnsqueezeUnsqueezePattern'])
-    input: name='input0' type=dtype('float32') shape=[32, 10]
-    input: name='input1' type=dtype('float32') shape=[32]
-    input: name='input_dim_2' type=dtype('int64') shape=[1]
-    input: name='input3' type=dtype('float32') shape=['s0', 10]
-    input: name='input4' type=dtype('float32') shape=[1, 32]
-    input: name='input5' type=dtype('float32') shape=[1]
-    Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
-      Relu(addmm) -> output_2
-        Gemm(output_2, input4, input5, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
-    Transpose(input4, perm=[1,0]) -> output_3
-    Identity(input3) -> output_1
-    Identity(input_dim_2) -> output_dim_4
-    output: name='output_0' type=dtype('float32') shape=['s0', 1]
-    output: name='output_1' type=dtype('float32') shape=['s0', 10]
-    output: name='output_2' type=dtype('float32') shape=['s0', 32]
-    output: name='output_3' type=dtype('float32') shape=[32, 1]
-    output: name='output_dim_4' type=dtype('int64') shape=[1]
-
-    -- model 3 running on ['CPUExecutionProvider']
-
-    opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=1024
-    function_options=FunctionOptions()
-    optimized:OptimizationOptions(remove_unused=True, remove_identity=True,
-        constant_folding=False, constant_size=1024, constant_fusing=True, verbose=0,
-        max_iter=-1, recursive=False, processor=CPU, order=None,
-        patterns=['BatchNormalizationPattern', 'BatchNormalizationTrainingPattern',
-        'CastLayerNormalizationCastPattern', 'CastPattern', 'CastCastBinaryPattern',
-        'CastOpCastPattern', 'ComputationCastOpCastPattern', 'ConvBiasNullPattern',
-        'DropoutPattern', 'ExpandPattern', 'ExpandBroadcastPattern',
-        'ExpandSwapPattern', 'GeluPattern', 'IdentityPattern',
-        'LayerNormalizationPattern', 'LayerNormalizationScalePattern',
-        'LeakyReluPattern', 'MulMulMulScalarPattern', 'ReduceReshapePattern',
-        'ReduceSumNormalizePattern', 'ReshapePattern',
-        'ReshapeMatMulReshapePattern', 'Reshape2Of3Pattern',
-        'ReshapeReshapeBinaryPattern', 'MatMulReshape2Of3Pattern',
-        'MulMulMatMulPattern', 'ReshapeReshapePattern', 'RotaryConcatPartPattern',
-        'SameChildrenPattern', 'SlicesSplitPattern',
-        'SoftmaxCrossEntropyLossCastPattern', 'Sub1MulPattern',
-        'SwitchOrderBinaryPattern', 'TransposeMatMulPattern',
-        'TransposeReshapeMatMulPattern', 'TransposeReshapeTransposePattern',
-        'TransposeTransposePattern', 'UnsqueezeEqualPattern',
-        'UnsqueezeUnsqueezePattern'])
+    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input_dim_0' type=dtype('int64') shape=[1]
     input: name='input1' type=dtype('float32') shape=['s0', 10]
     input: name='input2' type=dtype('float32') shape=['s0', 32]
@@ -775,7 +598,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.363 seconds)
+   **Total running time of the script:** (0 minutes 2.331 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

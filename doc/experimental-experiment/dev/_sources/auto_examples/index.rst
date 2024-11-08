@@ -1,7 +1,7 @@
 :orphan:
 
-Example gallery
-===============
+Examples Gallery
+================
 
 A couple of examples to illustrate different implementation
 of dot product (see also :epkg:`sphinx-gallery`).
@@ -31,6 +31,8 @@ all the graphs, the data used to draw them, and the models.
 
     python _doc/examples/plot_torch_export.py -s large
 
+See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
+
 
 
 .. raw:: html
@@ -58,74 +60,6 @@ all the graphs, the data used to draw them, and the models.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_recipes_oe_custom_ops_inplace_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_exporter_recipes_oe_custom_ops_inplace.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a custom operator inplace</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_recipes_oe_cond_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_exporter_recipes_oe_cond.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a model with a test</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_recipes_c_cond_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_exporter_recipes_c_cond.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and a model with a test</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_recipes_oe_custom_ops_fct_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_exporter_recipes_oe_custom_ops_fct.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a custom operator registered with a function</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained by running a dummy llama model. It is the backward graph.">
 
 .. only:: html
@@ -138,57 +72,6 @@ all the graphs, the data used to draw them, and the models.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">101: Graph Optimization</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_inplace_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_exporter_recipes_c_custom_ops_inplace.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator inplace</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This script demonstrates ExecuTorch on a very simple example, see also ExecuTorch Tutorial, ExecuTorch Runtime Python API Reference.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_executorch_102_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_executorch_102.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">102: First test with ExecuTorch</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_fct_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_exporter_recipes_c_custom_ops_fct.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator registered with a function</div>
     </div>
 
 
@@ -441,14 +324,7 @@ all the graphs, the data used to draw them, and the models.
    :hidden:
 
    /auto_examples/plot_onnxscript_102
-   /auto_examples/plot_exporter_recipes_oe_custom_ops_inplace
-   /auto_examples/plot_exporter_recipes_oe_cond
-   /auto_examples/plot_exporter_recipes_c_cond
-   /auto_examples/plot_exporter_recipes_oe_custom_ops_fct
    /auto_examples/plot_optimize_101
-   /auto_examples/plot_exporter_recipes_c_custom_ops_inplace
-   /auto_examples/plot_executorch_102
-   /auto_examples/plot_exporter_recipes_c_custom_ops_fct
    /auto_examples/plot_torch_export_compile_102
    /auto_examples/plot_profile_existing_onnx_101
    /auto_examples/plot_rewrite_101
