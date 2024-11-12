@@ -5,18 +5,18 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Parallelization of a vector sum with C++" href="../../index_vector_sum.html" /><link rel="prev" title="Matrices en 3 colonnes" href="spark_matrix_3_columns.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Spark et MLlib - ML - Documentation teachcompute 0.2.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -75,7 +75,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -90,22 +90,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -138,7 +179,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -262,22 +304,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebook_gallery.html">Tous les notebooks</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_long_parallel_process_joblib.html">Parallelization of a dot product with processes (joblib)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_associative.html">Associativity and matrix multiplication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_mul_timeit.html">Compares matrix multiplication implementations with timeit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_associative.html">Associativity and matrix multiplication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_parallel_process_concurrent.html">Parallelization of a dot product with processes (concurrent.futures)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot.html">Compares dot implementations (numpy, python, blas)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_filter.html">Compares filtering implementations (numpy, cython)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add.html">Measuring CUDA performance with a vector addition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_check_random_order.html">Random order for a sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_sum.html">Measuring CUDA performance with a vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_cython_omp.html">Compares dot implementations (numpy, c++, sse, openmp)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_sum.html">Measuring CUDA performance with a vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_cython.html">Compares dot implementations (numpy, cython, c++, sse)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_mul.html">Compares matrix multiplication implementations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
 </ul>
@@ -307,11 +349,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/practice/spark/spark_mllib.ipynb" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -323,12 +371,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Spark-et-MLlib---ML">
-<h1>Spark et MLlib - ML<a class="headerlink" href="#Spark-et-MLlib---ML" title="Link to this heading">¶</a></h1>
+<h1>Spark et MLlib - ML<a class="headerlink" href="#Spark-et-MLlib---ML" title="Lien vers cette rubrique">¶</a></h1>
 <p>Régression logisitique avec <a class="reference external" href="https://spark.apache.org/">Spark</a>.</p>
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">MLlib</a> est la librairie de machine learning distribué implémenté sur Spark et qui explique en partie son succès. La première mouture de la librairie était <a class="reference external" href="https://mahout.apache.org/">Mahout</a> implémentée sur <a class="reference external" href="https://hadoop.apache.org/">Hadoop</a>. <a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">MLlib</a> est devenu le standard. <a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">ML</a> est la dernière version et s’appuie sur les
 <a class="reference external" href="https://spark.apache.org/docs/latest/ml-pipeline.html#dataframe">DataFrame</a>. On retrouve les mêmes concepts que ceux de <a class="reference external" href="https://scikit-learn.org/">scikit-learn</a> tels que les <a class="reference external" href="https://spark.apache.org/docs/latest/ml-pipeline.html#main-concepts-in-pipelines">Pipeline</a>.</p>
 <section id="Data">
-<h2>Data<a class="headerlink" href="#Data" title="Link to this heading">¶</a></h2>
+<h2>Data<a class="headerlink" href="#Data" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -594,11 +642,11 @@ dtype: object
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 your 131072x1 screen size is bogus. expect trouble
-23/11/09 20:35:02 WARN Utils: Your hostname, DESKTOP-USNMVAJ resolves to a loopback address: 127.0.1.1; using 172.28.7.44 instead (on interface eth0)
-23/11/09 20:35:02 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+24/11/11 15:04:11 WARN Utils: Your hostname, xavier2024 resolves to a loopback address: 127.0.1.1; using 10.255.255.254 instead (on interface lo)
+24/11/11 15:04:11 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
 Setting default log level to &#34;WARN&#34;.
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-23/11/09 20:35:05 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+24/11/11 15:04:11 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -645,7 +693,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </section>
 <section id="Régression-logistique-(RDD)">
-<h2>Régression logistique (RDD)<a class="headerlink" href="#Régression-logistique-(RDD)" title="Link to this heading">¶</a></h2>
+<h2>Régression logistique (RDD)<a class="headerlink" href="#Régression-logistique-(RDD)" title="Lien vers cette rubrique">¶</a></h2>
 <p>On reprend l’exemple de la documentation : <a class="reference external" href="https://spark.apache.org/docs/latest/mllib-linear-methods.html">Linear Methods - RDD-based API</a>. On exclue les variables catégorielles pour garder l’exemple concis.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -717,7 +765,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-23/11/09 20:35:39 WARN Instrumentation: [2358f247] Initial coefficients will be ignored! Its dimensions (1, 6) did not match the expected size (1, 6)
+24/11/11 15:04:26 WARN Instrumentation: [4427c4d8] Initial coefficients will be ignored! Its dimensions (1, 6) did not match the expected size (1, 6)
+24/11/11 15:04:26 WARN InstanceBuilder: Failed to load implementation from:dev.ludovic.netlib.blas.JNIBLAS
 </pre></div></div>
 </div>
 <p>Pendant que ça tourne, il faut regarder la fenêtre terminal qui affiche les messages du serveur de notebook.</p>
@@ -837,14 +886,6 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
@@ -855,9 +896,9 @@ Training Error = 0.20217438039372254
 </div>
 </section>
 <section id="Régression-logisitique-(DataFrame)">
-<h2>Régression logisitique (DataFrame)<a class="headerlink" href="#Régression-logisitique-(DataFrame)" title="Link to this heading">¶</a></h2>
+<h2>Régression logisitique (DataFrame)<a class="headerlink" href="#Régression-logisitique-(DataFrame)" title="Lien vers cette rubrique">¶</a></h2>
 <p>On s’inspire de l’exemple : <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.classification.LogisticRegression.html">Régression Logistique</a>. Le code change, la préparation des données aussi. Les modèles acceptent comme entrées un vecteur colonne créé par un <a class="reference external" href="https://spark.apache.org/docs/3.1.3/api/python/reference/api/pyspark.ml.feature.VectorAssembler.html">VectorAssembler</a>.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
@@ -893,15 +934,6 @@ Training Error = 0.20217438039372254
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/xadupre/.local/lib/python3.10/site-packages/pyspark/sql/pandas/conversion.py:485: FutureWarning: is_datetime64tz_dtype is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.DatetimeTZDtype)` instead.
-  if should_localize and is_datetime64tz_dtype(s.dtype) and s.dt.tz is not None:
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -916,7 +948,7 @@ Training Error = 0.20217438039372254
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 == Physical Plan ==
-*(1) Project [age#89L, fnlwgt#91L, education_num#93L, capital_gain#99L, capital_loss#100L, hours_per_week#101L, cast((target#103 =  &lt;=50K) as float) AS Y#136, UDF(struct(age_double_VectorAssembler_eca5e915e5f5, cast(age#89L as double), fnlwgt_double_VectorAssembler_eca5e915e5f5, cast(fnlwgt#91L as double), education_num_double_VectorAssembler_eca5e915e5f5, cast(education_num#93L as double), capital_gain_double_VectorAssembler_eca5e915e5f5, cast(capital_gain#99L as double), capital_loss_double_VectorAssembler_eca5e915e5f5, cast(capital_loss#100L as double), hours_per_week_double_VectorAssembler_eca5e915e5f5, cast(hours_per_week#101L as double))) AS features#167]
+*(1) Project [age#89L, fnlwgt#91L, education_num#93L, capital_gain#99L, capital_loss#100L, hours_per_week#101L, cast((target#103 =  &lt;=50K) as float) AS Y#136, UDF(struct(age_double_VectorAssembler_5cbe6d4fd991, cast(age#89L as double), fnlwgt_double_VectorAssembler_5cbe6d4fd991, cast(fnlwgt#91L as double), education_num_double_VectorAssembler_5cbe6d4fd991, cast(education_num#93L as double), capital_gain_double_VectorAssembler_5cbe6d4fd991, cast(capital_gain#99L as double), capital_loss_double_VectorAssembler_5cbe6d4fd991, cast(capital_loss#100L as double), hours_per_week_double_VectorAssembler_5cbe6d4fd991, cast(hours_per_week#101L as double))) AS features#167]
 +- *(1) Scan ExistingRDD[age#89L,workclass#90,fnlwgt#91L,education#92,education_num#93L,marital_status#94,occupation#95,relationship#96,race#97,sex#98,capital_gain#99L,capital_loss#100L,hours_per_week#101L,native_country#102,target#103]
 
 
@@ -1008,14 +1040,6 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
@@ -1046,7 +1070,7 @@ Intercept: 1.1482462553407051
 </div>
 </section>
 <section id="Fin">
-<h2>Fin<a class="headerlink" href="#Fin" title="Link to this heading">¶</a></h2>
+<h2>Fin<a class="headerlink" href="#Fin" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -1132,10 +1156,10 @@ Intercept: 1.1482462553407051
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/translations.js?v=e6b791cb"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

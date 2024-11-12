@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -28,7 +28,7 @@ by rows or by columns.
 Vector Sum
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-61
+.. GENERATED FROM PYTHON SOURCE LINES 12-65
 
 .. code-block:: Python
 
@@ -48,7 +48,9 @@ Vector Sum
         values = numpy.ones((dim, dim), dtype=numpy.float32).ravel()
         diff = abs(vector_sum(dim, values, True) - dim**2)
 
-        res = measure_time(lambda: vector_sum(dim, values, True), max_time=0.5)
+        res = measure_time(
+            lambda dim=dim, values=values: vector_sum(dim, values, True), max_time=0.5
+        )
 
         obs.append(
             dict(
@@ -62,7 +64,9 @@ Vector Sum
         )
 
         diff = abs(vector_sum(dim, values, False) - dim**2)
-        res = measure_time(lambda: vector_sum(dim, values, False), max_time=0.5)
+        res = measure_time(
+            lambda dim=dim, values=values: vector_sum(dim, values, False), max_time=0.5
+        )
 
         obs.append(
             dict(
@@ -89,33 +93,33 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:14,  1.08s/it]     14%|█▍        | 2/14 [00:02<00:14,  1.23s/it]     21%|██▏       | 3/14 [00:03<00:14,  1.28s/it]     29%|██▊       | 4/14 [00:04<00:12,  1.26s/it]     36%|███▌      | 5/14 [00:06<00:11,  1.25s/it]     43%|████▎     | 6/14 [00:07<00:10,  1.26s/it]     50%|█████     | 7/14 [00:08<00:09,  1.29s/it]     57%|█████▋    | 8/14 [00:10<00:07,  1.27s/it]     64%|██████▍   | 9/14 [00:11<00:06,  1.29s/it]     71%|███████▏  | 10/14 [00:12<00:05,  1.28s/it]     79%|███████▊  | 11/14 [00:13<00:03,  1.24s/it]     86%|████████▌ | 12/14 [00:15<00:02,  1.25s/it]     93%|█████████▎| 13/14 [00:16<00:01,  1.21s/it]    100%|██████████| 14/14 [00:17<00:00,  1.21s/it]    100%|██████████| 14/14 [00:17<00:00,  1.24s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:01<00:14,  1.13s/it]     14%|█▍        | 2/14 [00:02<00:13,  1.14s/it]     21%|██▏       | 3/14 [00:03<00:12,  1.11s/it]     29%|██▊       | 4/14 [00:04<00:11,  1.12s/it]     36%|███▌      | 5/14 [00:05<00:10,  1.13s/it]     43%|████▎     | 6/14 [00:06<00:08,  1.12s/it]     50%|█████     | 7/14 [00:07<00:07,  1.13s/it]     57%|█████▋    | 8/14 [00:08<00:06,  1.11s/it]     64%|██████▍   | 9/14 [00:10<00:05,  1.11s/it]     71%|███████▏  | 10/14 [00:11<00:04,  1.13s/it]     79%|███████▊  | 11/14 [00:12<00:03,  1.14s/it]     86%|████████▌ | 12/14 [00:13<00:02,  1.16s/it]     93%|█████████▎| 13/14 [00:14<00:01,  1.20s/it]    100%|██████████| 14/14 [00:16<00:00,  1.18s/it]    100%|██████████| 14/14 [00:16<00:00,  1.15s/it]
     direction          cols          rows
     dim                                  
-    500        1.125726e-09  1.278846e-09
-    700        1.488420e-09  1.148282e-09
-    800        1.140735e-09  1.351736e-09
-    900        1.458899e-09  1.121927e-09
-    1000       1.511043e-09  1.473863e-09
-    1100       1.953898e-09  1.377475e-09
-    1200       1.528615e-09  1.157154e-09
-    1300       2.381678e-09  1.219445e-09
-    1400       1.898999e-09  1.525794e-09
-    1500       2.736938e-09  1.757406e-09
-    1600       4.575156e-09  1.142311e-09
-    1700       6.412007e-09  1.280492e-09
-    1800       5.874604e-09  1.197260e-09
-    2000       6.639695e-09  1.258228e-09
+    500        9.302156e-10  9.051716e-10
+    700        9.180271e-10  8.745148e-10
+    800        1.071162e-09  9.010305e-10
+    900        1.008136e-09  9.445530e-10
+    1000       1.008400e-09  1.000022e-09
+    1100       9.484113e-10  9.237196e-10
+    1200       9.801766e-10  8.883649e-10
+    1300       9.341270e-10  9.225763e-10
+    1400       1.016343e-09  8.920566e-10
+    1500       9.825746e-10  8.787933e-10
+    1600       1.484942e-09  8.804053e-10
+    1700       1.255451e-09  9.093855e-10
+    1800       1.702776e-09  9.394721e-10
+    2000       4.679174e-09  9.077715e-10
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-64
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-75
+.. GENERATED FROM PYTHON SOURCE LINES 68-79
 
 .. code-block:: Python
 
@@ -143,13 +147,13 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-79
+.. GENERATED FROM PYTHON SOURCE LINES 80-83
 
 The summation by rows is much faster as expected.
 That explains why it is usually more efficient to
@@ -158,7 +162,7 @@ transpose the first matrix before a matrix multiplication.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 19.234 seconds)
+   **Total running time of the script:** (0 minutes 17.486 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum.py:
@@ -174,6 +178,10 @@ transpose the first matrix before a matrix multiplication.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cpu_vector_sum.py <plot_bench_cpu_vector_sum.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_bench_cpu_vector_sum.zip <plot_bench_cpu_vector_sum.zip>`
 
 
 .. only:: html

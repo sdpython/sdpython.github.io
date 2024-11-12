@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_benchmark_dot_mul.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -26,11 +26,12 @@ matrix multiplication. There are many ways to be slower.
 
 Compared implementations:
 
-* :func:`dmul_cython_omp <teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp>`
+* :func:`dmul_cython_omp
+  <teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp>`
   `code <https://github.com/sdpython/teachcompute/blob/main/
   teachcompute/validation/cython/mul_cython_omp.pyx#L171>`_
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-30
+.. GENERATED FROM PYTHON SOURCE LINES 16-31
 
 .. code-block:: Python
 
@@ -56,13 +57,13 @@ Compared implementations:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-34
+.. GENERATED FROM PYTHON SOURCE LINES 32-35
 
 numpy mul
 +++++++++
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-51
+.. GENERATED FROM PYTHON SOURCE LINES 35-52
 
 .. code-block:: Python
 
@@ -91,23 +92,23 @@ numpy mul
 
  .. code-block:: none
 
-      0%|          | 0/8 [00:00<?, ?it/s]     62%|██████▎   | 5/8 [00:00<00:00, 35.20it/s]    100%|██████████| 8/8 [00:04<00:00,  1.84it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     88%|████████▊ | 7/8 [00:00<00:00, 30.26it/s]    100%|██████████| 8/8 [00:00<00:00, 21.91it/s]
         average  deviation  min_exec  ...  warmup_time  x_name    fct
-    6  0.002392   0.002224  0.000062  ...     0.003768     122  numpy
-    7  0.003237   0.003153  0.000350  ...     0.014093     142  numpy
+    6  0.000247   0.000280  0.000071  ...     0.020874     122  numpy
+    7  0.000258   0.000267  0.000086  ...     0.003845     142  numpy
 
     [2 rows x 11 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-55
+.. GENERATED FROM PYTHON SOURCE LINES 53-56
 
 Simple multiplication
 +++++++++++++++++++++
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-70
+.. GENERATED FROM PYTHON SOURCE LINES 56-71
 
 .. code-block:: Python
 
@@ -134,22 +135,22 @@ Simple multiplication
 
  .. code-block:: none
 
-      0%|          | 0/8 [00:00<?, ?it/s]     50%|█████     | 4/8 [00:00<00:00, 16.14it/s]     75%|███████▌  | 6/8 [00:01<00:00,  4.28it/s]     88%|████████▊ | 7/8 [00:02<00:00,  2.49it/s]    100%|██████████| 8/8 [00:03<00:00,  1.40it/s]    100%|██████████| 8/8 [00:03<00:00,  2.08it/s]
-    {'average': 0.003347606799999994,
+      0%|          | 0/8 [00:00<?, ?it/s]     50%|█████     | 4/8 [00:00<00:00, 24.07it/s]     88%|████████▊ | 7/8 [00:01<00:00,  3.55it/s]    100%|██████████| 8/8 [00:02<00:00,  2.73it/s]
+    {'average': np.float64(0.002499470811992069),
      'context_size': 232,
-     'deviation': 0.0001002722410258464,
-     'max_exec': 0.003453190000000177,
-     'min_exec': 0.0030643179999970014,
+     'deviation': np.float64(0.00029008705400920576),
+     'max_exec': np.float64(0.0033559929399052633),
+     'min_exec': np.float64(0.002329104199889116),
      'number': 50,
      'repeat': 10,
-     'ttime': 0.03347606799999994,
-     'warmup_time': 0.0032301000001098146,
+     'ttime': np.float64(0.02499470811992069),
+     'warmup_time': 0.002028964998316951,
      'x_name': 142}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-77
+.. GENERATED FROM PYTHON SOURCE LINES 72-78
 
 Other scenarios
 +++++++++++++++
@@ -158,19 +159,21 @@ Other scenarios
 See :func:`dmul_cython_omp
 <teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-96
+.. GENERATED FROM PYTHON SOURCE LINES 78-99
 
 .. code-block:: Python
 
 
-    for algo in range(0, 2):
+    for algo in range(2):
         for parallel in (0, 1):
             print("algo=%d parallel=%d" % (algo, parallel))
             ctxs = [
                 dict(
                     va=numpy.random.randn(n, n).astype(numpy.float64),
                     vb=numpy.random.randn(n, n).astype(numpy.float64),
-                    mul=lambda x, y: dmul_cython_omp(x, y, algo=algo, parallel=parallel),
+                    mul=lambda x, y, algo=algo, parallel=parallel: dmul_cython_omp(
+                        x, y, algo=algo, parallel=parallel
+                    ),
                     x_name=n,
                 )
                 for n in sets
@@ -190,38 +193,38 @@ See :func:`dmul_cython_omp
  .. code-block:: none
 
     algo=0 parallel=0
-      0%|          | 0/8 [00:00<?, ?it/s]     50%|█████     | 4/8 [00:00<00:00, 24.74it/s]     88%|████████▊ | 7/8 [00:02<00:00,  2.86it/s]    100%|██████████| 8/8 [00:03<00:00,  2.09it/s]
-       average  deviation  min_exec  ...  warmup_time  x_name      fct
-    6  0.00201   0.000069  0.001909  ...     0.002264     122  a=0-p=0
-    7  0.00350   0.000275  0.003198  ...     0.003187     142  a=0-p=0
+      0%|          | 0/8 [00:00<?, ?it/s]     50%|█████     | 4/8 [00:00<00:00, 23.34it/s]     88%|████████▊ | 7/8 [00:01<00:00,  3.64it/s]    100%|██████████| 8/8 [00:02<00:00,  2.79it/s]
+        average  deviation  min_exec  ...  warmup_time  x_name      fct
+    6  0.001536   0.000053  0.001451  ...     0.001489     122  a=0-p=0
+    7  0.002442   0.000105  0.002280  ...     0.002643     142  a=0-p=0
 
     [2 rows x 11 columns]
     algo=0 parallel=1
-      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:02<00:16,  2.33s/it]     25%|██▌       | 2/8 [00:04<00:14,  2.45s/it]     38%|███▊      | 3/8 [00:07<00:13,  2.67s/it]     50%|█████     | 4/8 [00:11<00:12,  3.11s/it]     62%|██████▎   | 5/8 [00:14<00:09,  3.18s/it]     75%|███████▌  | 6/8 [00:17<00:06,  3.00s/it]     88%|████████▊ | 7/8 [00:21<00:03,  3.17s/it]    100%|██████████| 8/8 [00:23<00:00,  2.80s/it]    100%|██████████| 8/8 [00:23<00:00,  2.88s/it]
+      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:04,  1.49it/s]     25%|██▌       | 2/8 [00:01<00:03,  1.87it/s]     38%|███▊      | 3/8 [00:01<00:02,  1.93it/s]     50%|█████     | 4/8 [00:02<00:02,  1.93it/s]     62%|██████▎   | 5/8 [00:02<00:01,  2.08it/s]     75%|███████▌  | 6/8 [00:02<00:00,  2.20it/s]     88%|████████▊ | 7/8 [00:03<00:00,  2.15it/s]    100%|██████████| 8/8 [00:03<00:00,  2.02it/s]    100%|██████████| 8/8 [00:03<00:00,  2.01it/s]
         average  deviation  min_exec  ...  warmup_time  x_name      fct
-    6  0.007013   0.001674  0.003740  ...     0.006802     122  a=0-p=1
-    7  0.003995   0.002629  0.001525  ...     0.000819     142  a=0-p=1
+    6  0.000967   0.000090  0.000816  ...     0.001222     122  a=0-p=1
+    7  0.001111   0.000097  0.000982  ...     0.000898     142  a=0-p=1
 
     [2 rows x 11 columns]
     algo=1 parallel=0
-      0%|          | 0/8 [00:00<?, ?it/s]     50%|█████     | 4/8 [00:00<00:00, 27.83it/s]     88%|████████▊ | 7/8 [00:01<00:00,  3.04it/s]    100%|██████████| 8/8 [00:03<00:00,  2.27it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     62%|██████▎   | 5/8 [00:00<00:00, 20.41it/s]    100%|██████████| 8/8 [00:02<00:00,  2.86it/s]    100%|██████████| 8/8 [00:02<00:00,  3.41it/s]
         average  deviation  min_exec  ...  warmup_time  x_name      fct
-    6  0.001901   0.000141  0.001733  ...     0.001777     122  a=1-p=0
-    7  0.003147   0.000174  0.002844  ...     0.002572     142  a=1-p=0
+    6  0.001274   0.000061  0.001173  ...     0.001101     122  a=1-p=0
+    7  0.002212   0.000125  0.002033  ...     0.002472     142  a=1-p=0
 
     [2 rows x 11 columns]
     algo=1 parallel=1
-      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:05,  1.37it/s]     25%|██▌       | 2/8 [00:01<00:03,  1.63it/s]     38%|███▊      | 3/8 [00:01<00:02,  1.95it/s]     50%|█████     | 4/8 [00:02<00:01,  2.08it/s]     62%|██████▎   | 5/8 [00:02<00:01,  1.96it/s]     75%|███████▌  | 6/8 [00:03<00:01,  1.51it/s]     88%|████████▊ | 7/8 [00:04<00:00,  1.47it/s]    100%|██████████| 8/8 [00:05<00:00,  1.34it/s]    100%|██████████| 8/8 [00:05<00:00,  1.54it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:04,  1.46it/s]     25%|██▌       | 2/8 [00:01<00:03,  1.78it/s]     38%|███▊      | 3/8 [00:01<00:02,  2.16it/s]     50%|█████     | 4/8 [00:01<00:01,  2.29it/s]     62%|██████▎   | 5/8 [00:02<00:01,  2.17it/s]     75%|███████▌  | 6/8 [00:02<00:00,  2.18it/s]     88%|████████▊ | 7/8 [00:03<00:00,  2.01it/s]    100%|██████████| 8/8 [00:04<00:00,  1.86it/s]    100%|██████████| 8/8 [00:04<00:00,  1.97it/s]
         average  deviation  min_exec  ...  warmup_time  x_name      fct
-    6  0.001437   0.000166  0.001162  ...     0.000865     122  a=1-p=1
-    7  0.001775   0.000353  0.001520  ...     0.000963     142  a=1-p=1
+    6  0.001159   0.000264  0.000957  ...     0.001201     122  a=1-p=1
+    7  0.001234   0.000092  0.001110  ...     0.003584     142  a=1-p=1
 
     [2 rows x 11 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-102
+.. GENERATED FROM PYTHON SOURCE LINES 100-105
 
 One left issue
 ++++++++++++++
@@ -229,7 +232,7 @@ One left issue
 Will you find it in :func:`dmul_cython_omp
 <teachcompute.validation.cython.mul_cython_omp.dmul_cython_omp>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-118
+.. GENERATED FROM PYTHON SOURCE LINES 105-121
 
 .. code-block:: Python
 
@@ -240,7 +243,7 @@ Will you find it in :func:`dmul_cython_omp
     numpy_mul = va @ vb
 
     try:
-        for a in range(0, 50):
+        for a in range(50):
             wrong_mul = dmul_cython_omp(va, vb, algo=2, parallel=1)
             assert_almost_equal(numpy_mul, wrong_mul)
             print("Iteration %d is Ok" % a)
@@ -261,19 +264,19 @@ Will you find it in :func:`dmul_cython_omp
     Arrays are not almost equal to 7 decimals
 
     Mismatched elements: 3 / 15 (20%)
-    Max absolute difference: 7.92277843
-    Max relative difference: 1.88696701e-16
-     x: array([[ 0.7306257,  3.4077594, -1.9691805,  3.2485642, -1.4901333],
-           [ 5.1295693,  0.8935477, -1.1767275, -2.6285682, -7.9227784],
-           [-1.6442586, -1.434684 , -0.0978686, -0.6146182,  1.8069683]])
-     y: array([[ 0.7306257,  3.4077594, -1.9691805,  3.2485642,  0.       ],
-           [ 5.1295693,  0.8935477, -1.1767275, -2.6285682,  0.       ],
-           [-1.6442586, -1.434684 , -0.0978686, -0.6146182,  0.       ]])
+    Max absolute difference among violations: 2.88258814
+    Max relative difference among violations: inf
+     ACTUAL: array([[-5.1077327,  4.1230599,  3.3204918, -1.1129511,  2.8825881],
+           [ 0.6988875,  0.8754879, -2.8989605,  1.2284433,  0.4185662],
+           [-1.7983699,  3.1489788, -1.1362253, -0.509742 ,  2.7538266]])
+     DESIRED: array([[-5.1077327,  4.1230599,  3.3204918, -1.1129511,  0.       ],
+           [ 0.6988875,  0.8754879, -2.8989605,  1.2284433,  0.       ],
+           [-1.7983699,  3.1489788, -1.1362253, -0.509742 ,  0.       ]])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-124
+.. GENERATED FROM PYTHON SOURCE LINES 122-127
 
 Other scenarios but transposed
 ++++++++++++++++++++++++++++++
@@ -281,20 +284,20 @@ Other scenarios but transposed
 Same differents algorithms but the second matrix
 is transposed first: ``b_trans=1``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-147
+.. GENERATED FROM PYTHON SOURCE LINES 127-150
 
 .. code-block:: Python
 
 
 
-    for algo in range(0, 2):
+    for algo in range(2):
         for parallel in (0, 1):
             print("algo=%d parallel=%d transposed" % (algo, parallel))
             ctxs = [
                 dict(
                     va=numpy.random.randn(n, n).astype(numpy.float64),
                     vb=numpy.random.randn(n, n).astype(numpy.float64),
-                    mul=lambda x, y: dmul_cython_omp(
+                    mul=lambda x, y, parallel=parallel, algo=algo: dmul_cython_omp(
                         x, y, algo=algo, parallel=parallel, b_trans=1
                     ),
                     x_name=n,
@@ -317,43 +320,43 @@ is transposed first: ``b_trans=1``.
  .. code-block:: none
 
     algo=0 parallel=0 transposed
-      0%|          | 0/8 [00:00<?, ?it/s]     62%|██████▎   | 5/8 [00:00<00:00, 21.14it/s]    100%|██████████| 8/8 [00:01<00:00,  3.86it/s]    100%|██████████| 8/8 [00:01<00:00,  4.56it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     62%|██████▎   | 5/8 [00:00<00:00, 28.42it/s]    100%|██████████| 8/8 [00:01<00:00,  5.73it/s]    100%|██████████| 8/8 [00:01<00:00,  6.73it/s]
         average  deviation  min_exec  ...  warmup_time  x_name        fct
-    6  0.000867   0.000089  0.000740  ...     0.001660     122  a=0-p=0-T
-    7  0.001602   0.000201  0.001322  ...     0.001921     142  a=0-p=0-T
+    6  0.000641   0.000067  0.000534  ...     0.000651     122  a=0-p=0-T
+    7  0.001041   0.000072  0.000943  ...     0.000847     142  a=0-p=0-T
 
     [2 rows x 11 columns]
     algo=0 parallel=1 transposed
-      0%|          | 0/8 [00:00<?, ?it/s]     25%|██▌       | 2/8 [00:00<00:01,  3.04it/s]     38%|███▊      | 3/8 [00:01<00:01,  2.99it/s]     75%|███████▌  | 6/8 [00:01<00:00,  5.54it/s]     88%|████████▊ | 7/8 [00:01<00:00,  5.69it/s]    100%|██████████| 8/8 [00:01<00:00,  5.32it/s]    100%|██████████| 8/8 [00:01<00:00,  4.79it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:01,  4.99it/s]     75%|███████▌  | 6/8 [00:00<00:00, 18.80it/s]    100%|██████████| 8/8 [00:00<00:00, 13.51it/s]
         average  deviation  min_exec  ...  warmup_time  x_name        fct
-    6  0.000316   0.000066  0.000196  ...     0.000197     122  a=0-p=1-T
-    7  0.000448   0.000082  0.000314  ...     0.000477     142  a=0-p=1-T
+    6  0.000184   0.000037  0.000150  ...     0.000168     122  a=0-p=1-T
+    7  0.000269   0.000047  0.000217  ...     0.000285     142  a=0-p=1-T
 
     [2 rows x 11 columns]
     algo=1 parallel=0 transposed
-      0%|          | 0/8 [00:00<?, ?it/s]     62%|██████▎   | 5/8 [00:00<00:00, 24.13it/s]    100%|██████████| 8/8 [00:01<00:00,  4.44it/s]    100%|██████████| 8/8 [00:01<00:00,  5.24it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     62%|██████▎   | 5/8 [00:00<00:00, 36.05it/s]    100%|██████████| 8/8 [00:01<00:00,  7.00it/s]
         average  deviation  min_exec  ...  warmup_time  x_name        fct
-    6  0.000846   0.000053  0.000787  ...     0.000754     122  a=1-p=0-T
-    7  0.001304   0.000049  0.001255  ...     0.001317     142  a=1-p=0-T
+    6  0.000640   0.000077  0.000561  ...     0.000521     122  a=1-p=0-T
+    7  0.000983   0.000077  0.000863  ...     0.001273     142  a=1-p=0-T
 
     [2 rows x 11 columns]
     algo=1 parallel=1 transposed
-      0%|          | 0/8 [00:00<?, ?it/s]     38%|███▊      | 3/8 [00:00<00:00,  7.59it/s]     50%|█████     | 4/8 [00:02<00:02,  1.65it/s]     62%|██████▎   | 5/8 [00:03<00:02,  1.19it/s]     75%|███████▌  | 6/8 [00:03<00:01,  1.64it/s]     88%|████████▊ | 7/8 [00:03<00:00,  2.04it/s]    100%|██████████| 8/8 [00:04<00:00,  2.25it/s]    100%|██████████| 8/8 [00:04<00:00,  2.00it/s]
+      0%|          | 0/8 [00:00<?, ?it/s]     12%|█▎        | 1/8 [00:00<00:01,  4.46it/s]     75%|███████▌  | 6/8 [00:00<00:00, 17.10it/s]    100%|██████████| 8/8 [00:00<00:00, 12.97it/s]    100%|██████████| 8/8 [00:00<00:00, 12.71it/s]
         average  deviation  min_exec  ...  warmup_time  x_name        fct
-    6  0.000431   0.000132  0.000254  ...     0.000255     122  a=1-p=1-T
-    7  0.000672   0.000175  0.000408  ...     0.000373     142  a=1-p=1-T
+    6  0.000183   0.000028  0.000155  ...     0.000191     122  a=1-p=1-T
+    7  0.000270   0.000034  0.000224  ...     0.000330     142  a=1-p=1-T
 
     [2 rows x 11 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-150
+.. GENERATED FROM PYTHON SOURCE LINES 151-153
 
 Let's display the results
 +++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-178
+.. GENERATED FROM PYTHON SOURCE LINES 153-181
 
 .. code-block:: Python
 
@@ -403,7 +406,7 @@ Let's display the results
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 179-182
+.. GENERATED FROM PYTHON SOURCE LINES 182-185
 
 The results depends on the machine, its
 number of cores, the compilation settings
@@ -412,7 +415,7 @@ of :epkg:`numpy` or this module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 55.111 seconds)
+   **Total running time of the script:** (0 minutes 22.283 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_dot_mul.py:
@@ -428,6 +431,10 @@ of :epkg:`numpy` or this module.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_benchmark_dot_mul.py <plot_benchmark_dot_mul.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_benchmark_dot_mul.zip <plot_benchmark_dot_mul.zip>`
 
 
 .. only:: html

@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_piecewise_linear.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -55,7 +55,7 @@ Piecewise linear regression
         losses = []
         fct = cls.apply
 
-        for t in range(max_iter):
+        for _t in range(max_iter):
 
             y_pred = fct(x, alpha_neg, alpha_pos)
             loss = (y_pred - y).pow(2).sum()
@@ -102,7 +102,7 @@ Python implementation
         x, y, device, PiecewiseLinearFunction
     )
     end = time.perf_counter()
-    print(f"duration={end - begin}, alpha_neg={alpha_neg} " f"alpha_pos={alpha_pos}")
+    print(f"duration={end - begin}, alpha_neg={alpha_neg} alpha_pos={alpha_pos}")
 
 
 
@@ -112,8 +112,8 @@ Python implementation
 
  .. code-block:: none
 
-    device: cpu
-    duration=0.10492949999934353, alpha_neg=tensor([0.2260], requires_grad=True) alpha_pos=tensor([1.7046], requires_grad=True)
+    device: cuda:0
+    duration=1.1351559789982275, alpha_neg=tensor([0.2282], device='cuda:0', requires_grad=True) alpha_pos=tensor([1.6313], device='cuda:0', requires_grad=True)
 
 
 
@@ -133,7 +133,7 @@ C++ implementation
         x, y, device, PiecewiseLinearFunctionC
     )
     end = time.perf_counter()
-    print(f"duration={end - begin}, alpha_neg={alpha_neg} " f"alpha_pos={alpha_pos}")
+    print(f"duration={end - begin}, alpha_neg={alpha_neg} alpha_pos={alpha_pos}")
 
 
 
@@ -143,7 +143,7 @@ C++ implementation
 
  .. code-block:: none
 
-    duration=0.09440030000041588, alpha_neg=tensor([0.2260], requires_grad=True) alpha_pos=tensor([1.7046], requires_grad=True)
+    duration=0.7795067870029015, alpha_neg=tensor([0.2282], device='cuda:0', requires_grad=True) alpha_pos=tensor([1.6313], device='cuda:0', requires_grad=True)
 
 
 
@@ -163,7 +163,7 @@ C++ implementation, second try
         x, y, device, PiecewiseLinearFunctionCBetter
     )
     end = time.perf_counter()
-    print(f"duration={end - begin}, alpha_neg={alpha_neg} " f"alpha_pos={alpha_pos}")
+    print(f"duration={end - begin}, alpha_neg={alpha_neg} alpha_pos={alpha_pos}")
 
 
 
@@ -173,7 +173,7 @@ C++ implementation, second try
 
  .. code-block:: none
 
-    duration=0.09008469999935187, alpha_neg=tensor([0.2260], requires_grad=True) alpha_pos=tensor([1.7046], requires_grad=True)
+    duration=0.8425100930035114, alpha_neg=tensor([0.2282], device='cuda:0', requires_grad=True) alpha_pos=tensor([1.6313], device='cuda:0', requires_grad=True)
 
 
 
@@ -221,14 +221,14 @@ Graphs
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f19fe0bd570>
+    <matplotlib.legend.Legend object at 0x7f76e25f3490>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.980 seconds)
+   **Total running time of the script:** (0 minutes 4.582 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_piecewise_linear.py:
@@ -244,6 +244,10 @@ Graphs
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_piecewise_linear.py <plot_piecewise_linear.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_piecewise_linear.zip <plot_piecewise_linear.zip>`
 
 
 .. only:: html

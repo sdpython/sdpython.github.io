@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -29,7 +29,7 @@ AVX instructions.
 Vector Sum
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-94
+.. GENERATED FROM PYTHON SOURCE LINES 13-104
 
 .. code-block:: Python
 
@@ -54,7 +54,9 @@ Vector Sum
         values = numpy.ones((dim, dim), dtype=numpy.float32).ravel()
         diff = abs(vector_sum(dim, values, True) - dim**2)
 
-        res = measure_time(lambda: vector_sum(dim, values, True), max_time=0.5)
+        res = measure_time(
+            lambda dim=dim, values=values: vector_sum(dim, values, True), max_time=0.5
+        )
 
         obs.append(
             dict(
@@ -67,7 +69,10 @@ Vector Sum
             )
         )
 
-        res = measure_time(lambda: vector_sum_parallel(dim, values, True), max_time=0.5)
+        res = measure_time(
+            lambda dim=dim, values=values: vector_sum_parallel(dim, values, True),
+            max_time=0.5,
+        )
 
         obs.append(
             dict(
@@ -81,7 +86,9 @@ Vector Sum
         )
 
         diff = abs(vector_sum_avx(dim, values) - dim**2)
-        res = measure_time(lambda: vector_sum_avx(dim, values), max_time=0.5)
+        res = measure_time(
+            lambda dim=dim, values=values: vector_sum_avx(dim, values), max_time=0.5
+        )
 
         obs.append(
             dict(
@@ -95,7 +102,10 @@ Vector Sum
         )
 
         diff = abs(vector_sum_avx_parallel(dim, values) - dim**2)
-        res = measure_time(lambda: vector_sum_avx_parallel(dim, values), max_time=0.5)
+        res = measure_time(
+            lambda dim=dim, values=values: vector_sum_avx_parallel(dim, values),
+            max_time=0.5,
+        )
 
         obs.append(
             dict(
@@ -122,33 +132,33 @@ Vector Sum
 
  .. code-block:: none
 
-      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:18<03:59, 18.44s/it]     14%|█▍        | 2/14 [00:32<03:10, 15.86s/it]     21%|██▏       | 3/14 [00:45<02:42, 14.74s/it]     29%|██▊       | 4/14 [00:54<02:03, 12.39s/it]     36%|███▌      | 5/14 [00:58<01:22,  9.12s/it]     43%|████▎     | 6/14 [01:00<00:54,  6.77s/it]     50%|█████     | 7/14 [01:04<00:42,  6.00s/it]     57%|█████▋    | 8/14 [01:10<00:36,  6.00s/it]     64%|██████▍   | 9/14 [01:13<00:25,  5.09s/it]     71%|███████▏  | 10/14 [01:18<00:19,  4.91s/it]     79%|███████▊  | 11/14 [01:22<00:13,  4.62s/it]     86%|████████▌ | 12/14 [01:25<00:08,  4.17s/it]     93%|█████████▎| 13/14 [01:28<00:03,  3.81s/it]    100%|██████████| 14/14 [01:31<00:00,  3.51s/it]    100%|██████████| 14/14 [01:31<00:00,  6.51s/it]
+      0%|          | 0/14 [00:00<?, ?it/s]      7%|▋         | 1/14 [00:02<00:29,  2.25s/it]     14%|█▍        | 2/14 [00:04<00:27,  2.27s/it]     21%|██▏       | 3/14 [00:06<00:25,  2.31s/it]     29%|██▊       | 4/14 [00:09<00:23,  2.33s/it]     36%|███▌      | 5/14 [00:11<00:20,  2.29s/it]     43%|████▎     | 6/14 [00:13<00:18,  2.27s/it]     50%|█████     | 7/14 [00:16<00:16,  2.33s/it]     57%|█████▋    | 8/14 [00:18<00:13,  2.33s/it]     64%|██████▍   | 9/14 [00:20<00:11,  2.32s/it]     71%|███████▏  | 10/14 [00:22<00:09,  2.28s/it]     79%|███████▊  | 11/14 [00:25<00:06,  2.30s/it]     86%|████████▌ | 12/14 [00:27<00:04,  2.28s/it]     93%|█████████▎| 13/14 [00:30<00:02,  2.36s/it]    100%|██████████| 14/14 [00:32<00:00,  2.39s/it]    100%|██████████| 14/14 [00:32<00:00,  2.32s/it]
     direction           avx         avx//          rows        rows//
     dim                                                              
-    500        1.292148e-10  2.554969e-09  1.462529e-09  8.035897e-09
-    700        4.268824e-10  3.070183e-09  2.488519e-09  4.196956e-09
-    800        8.060550e-10  1.926704e-09  3.743734e-09  8.999025e-09
-    900        4.352112e-10  1.555108e-09  2.135214e-09  8.146449e-09
-    1000       6.925653e-10  1.184284e-09  1.997798e-09  4.239076e-09
-    1100       5.881012e-10  1.779311e-09  2.073639e-09  3.763300e-09
-    1200       6.775749e-10  1.418281e-09  2.415427e-09  3.531702e-09
-    1300       6.490562e-10  1.510975e-09  3.308405e-09  4.086904e-09
-    1400       4.259379e-10  1.474191e-09  1.565825e-09  2.193004e-09
-    1500       3.355112e-10  1.496973e-09  1.572115e-09  1.423634e-09
-    1600       3.394400e-10  1.247542e-09  1.975824e-09  1.779570e-09
-    1700       3.190017e-10  9.375555e-10  1.777310e-09  1.295866e-09
-    1800       3.503798e-10  8.778256e-10  1.777263e-09  1.493882e-09
-    2000       3.463488e-10  8.235314e-10  1.784440e-09  1.380858e-09
+    500        9.958075e-11  1.799762e-09  1.061860e-09  7.248096e-09
+    700        1.413520e-10  4.547306e-10  9.247549e-10  6.422876e-09
+    800        1.577461e-10  1.103551e-09  1.145332e-09  2.659665e-09
+    900        1.555040e-10  4.129473e-10  9.963064e-10  2.692504e-09
+    1000       1.539935e-10  3.845168e-10  1.083427e-09  2.222530e-09
+    1100       1.517633e-10  7.426391e-09  9.503006e-10  9.228785e-09
+    1200       1.718064e-10  6.194964e-09  1.002829e-09  6.626446e-09
+    1300       1.514016e-10  4.365749e-10  9.761965e-10  1.364189e-09
+    1400       1.839206e-10  6.645550e-10  9.482699e-10  1.020237e-08
+    1500       1.712904e-10  3.568522e-09  9.053930e-10  7.238600e-09
+    1600       1.896456e-10  2.457647e-10  1.095596e-09  3.795214e-09
+    1700       2.095938e-10  2.550294e-09  8.811369e-10  4.465527e-09
+    1800       2.283987e-10  3.298829e-09  8.843935e-10  5.436270e-09
+    2000       3.008954e-10  7.148842e-10  1.015769e-09  4.330149e-09
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-97
+.. GENERATED FROM PYTHON SOURCE LINES 105-107
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-108
+.. GENERATED FROM PYTHON SOURCE LINES 107-118
 
 .. code-block:: Python
 
@@ -175,14 +185,14 @@ Plots
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-110
+.. GENERATED FROM PYTHON SOURCE LINES 119-120
 
 AVX is faster.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 33.560 seconds)
+   **Total running time of the script:** (0 minutes 34.152 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cpu_vector_sum_avx_parallel.py:
@@ -198,6 +208,10 @@ AVX is faster.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cpu_vector_sum_avx_parallel.py <plot_bench_cpu_vector_sum_avx_parallel.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_bench_cpu_vector_sum_avx_parallel.zip <plot_bench_cpu_vector_sum_avx_parallel.zip>`
 
 
 .. only:: html

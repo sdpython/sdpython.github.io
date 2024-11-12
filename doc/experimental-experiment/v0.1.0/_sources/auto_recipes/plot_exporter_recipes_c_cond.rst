@@ -58,7 +58,7 @@ We define a model with a control flow (-> graph break)
 
 
 
-    class ModuleWithControlFlow(torch.nn.Module):
+    class ForwardWithControlFlowTest(torch.nn.Module):
         def forward(self, x):
             if x.sum():
                 return x * 2
@@ -71,7 +71,7 @@ We define a model with a control flow (-> graph break)
             self.mlp = torch.nn.Sequential(
                 torch.nn.Linear(3, 2),
                 torch.nn.Linear(2, 1),
-                ModuleWithControlFlow(),
+                ForwardWithControlFlowTest(),
             )
 
         def forward(self, x):
@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[0.2175]], grad_fn=<MulBackward0>)
+    tensor([[5.4273]], grad_fn=<MulBackward0>)
 
 
 
@@ -215,7 +215,7 @@ Let's avoid the graph break by replacing the forward.
     print("the list of submodules")
     for name, mod in model.named_modules():
         print(name, type(mod))
-        if isinstance(mod, ModuleWithControlFlow):
+        if isinstance(mod, ForwardWithControlFlowTest):
             mod.forward = new_forward
 
 
@@ -231,7 +231,7 @@ Let's avoid the graph break by replacing the forward.
     mlp <class 'torch.nn.modules.container.Sequential'>
     mlp.0 <class 'torch.nn.modules.linear.Linear'>
     mlp.1 <class 'torch.nn.modules.linear.Linear'>
-    mlp.2 <class '__main__.ModuleWithControlFlow'>
+    mlp.2 <class '__main__.ForwardWithControlFlowTest'>
 
 
 
@@ -298,13 +298,13 @@ Let's export again.
     opset: domain='local_functions' version=1
     doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 3]
-    init: name='p_mlp_0_weight' type=dtype('float32') shape=(2, 3)
-    init: name='p_mlp_0_bias' type=dtype('float32') shape=(2,) -- array([-0.23885985, -0.35499105], dtype=float32)
-    init: name='p_mlp_1_weight' type=dtype('float32') shape=(1, 2) -- array([ 0.4371241, -0.5873411], dtype=float32)
-    init: name='p_mlp_1_bias' type=dtype('float32') shape=(1,) -- array([-0.31606123], dtype=float32)
     init: name='init1_s_' type=dtype('float32') shape=() -- array([0.], dtype=float32)
-    Gemm(x, p_mlp_0_weight, p_mlp_0_bias, transB=1) -> linear
-      Gemm(linear, p_mlp_1_weight, p_mlp_1_bias, transB=1) -> linear_1
+    init: name='mlp.0.weight' type=dtype('float32') shape=(2, 3)
+    init: name='mlp.0.bias' type=dtype('float32') shape=(2,) -- array([0.39745384, 0.5367278 ], dtype=float32)
+    init: name='mlp.1.weight' type=dtype('float32') shape=(1, 2) -- array([0.6619442 , 0.53932554], dtype=float32)
+    init: name='mlp.1.bias' type=dtype('float32') shape=(1,) -- array([0.44847998], dtype=float32)
+    Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
+      Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
           Greater(sum_1, init1_s_) -> gt
             If(gt, else_branch=G1, then_branch=G2) -> output_0
@@ -360,13 +360,13 @@ We can also inline the local function.
     opset: domain='local_functions' version=1
     doc_string: large_model=False, inline=True, external_threshold=1024...
     input: name='x' type=dtype('float32') shape=[1, 3]
-    init: name='p_mlp_0_weight' type=dtype('float32') shape=(2, 3)
-    init: name='p_mlp_0_bias' type=dtype('float32') shape=(2,) -- array([-0.23885985, -0.35499105], dtype=float32)
-    init: name='p_mlp_1_weight' type=dtype('float32') shape=(1, 2) -- array([ 0.4371241, -0.5873411], dtype=float32)
-    init: name='p_mlp_1_bias' type=dtype('float32') shape=(1,) -- array([-0.31606123], dtype=float32)
     init: name='init1_s_' type=dtype('float32') shape=() -- array([0.], dtype=float32)
-    Gemm(x, p_mlp_0_weight, p_mlp_0_bias, transB=1) -> linear
-      Gemm(linear, p_mlp_1_weight, p_mlp_1_bias, transB=1) -> linear_1
+    init: name='mlp.0.weight' type=dtype('float32') shape=(2, 3)
+    init: name='mlp.0.bias' type=dtype('float32') shape=(2,) -- array([0.39745384, 0.5367278 ], dtype=float32)
+    init: name='mlp.1.weight' type=dtype('float32') shape=(1, 2) -- array([0.6619442 , 0.53932554], dtype=float32)
+    init: name='mlp.1.bias' type=dtype('float32') shape=(1,) -- array([0.44847998], dtype=float32)
+    Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
+      Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
           Greater(sum_1, init1_s_) -> gt
             If(gt, else_branch=G1, then_branch=G2) -> output_0
@@ -415,7 +415,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.445 seconds)
+   **Total running time of the script:** (0 minutes 7.225 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:

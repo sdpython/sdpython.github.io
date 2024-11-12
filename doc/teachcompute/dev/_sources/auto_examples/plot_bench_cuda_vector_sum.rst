@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_bench_cuda_vector_sum.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -32,7 +32,7 @@ The objective is to measure the summation of all elements from a tensor.
 Vector Add
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-88
+.. GENERATED FROM PYTHON SOURCE LINES 16-90
 
 .. code-block:: Python
 
@@ -75,7 +75,9 @@ Vector Add
                 if f == vector_sum_atomic and dim > 2**20:
                     continue
                 diff = numpy.abs(wrap_cuda_call(f, values) - (values.sum()))
-                res = measure_time(lambda: wrap_cuda_call(f, values), max_time=0.5)
+                res = measure_time(
+                    lambda f=f, values=values: wrap_cuda_call(f, values), max_time=0.5
+                )
 
                 obs.append(
                     dict(
@@ -89,7 +91,7 @@ Vector Add
                 )
 
         diff = 0
-        res = measure_time(lambda: values.sum(), max_time=0.5)
+        res = measure_time(lambda values=values: values.sum(), max_time=0.5)
 
         obs.append(
             dict(
@@ -116,24 +118,26 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:02<00:10,  2.52s/it]     40%|████      | 2/5 [00:04<00:07,  2.45s/it]     60%|██████    | 3/5 [00:11<00:08,  4.25s/it]     80%|████████  | 4/5 [00:14<00:03,  3.95s/it]    100%|██████████| 5/5 [00:31<00:00,  8.37s/it]    100%|██████████| 5/5 [00:31<00:00,  6.20s/it]
-    fct        CUDA-vector_sum0  CUDA-vector_sum6  CUDA-vector_sum_atomic         numpy
-    dim                                                                                
-    1024           1.356106e-06      9.753873e-07                0.000003  1.531289e-09
-    32768          6.525890e-08      5.338412e-08                0.000002  3.312474e-10
-    1048576        1.191298e-08      9.133097e-09                0.000001  4.214887e-10
-    33554432       1.027293e-08      6.433465e-09                     NaN  3.360749e-10
-    268435456      9.087000e-09      6.409552e-09                     NaN  4.604212e-10
+      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:03<00:13,  3.33s/it]     40%|████      | 2/5 [00:05<00:08,  2.86s/it]     60%|██████    | 3/5 [00:09<00:06,  3.20s/it]     80%|████████  | 4/5 [00:11<00:02,  2.71s/it]    100%|██████████| 5/5 [00:16<00:00,  3.42s/it]    100%|██████████| 5/5 [00:16<00:00,  3.22s/it]
+    fct        CUDA-vector_sum0  ...         numpy
+    dim                          ...              
+    1024           2.197298e-06  ...  2.158992e-09
+    32768          7.697547e-08  ...  4.263606e-10
+    1048576        3.250116e-09  ...  3.359379e-10
+    33554432       1.124244e-09  ...  4.448769e-10
+    268435456      1.124153e-09  ...  4.430954e-10
+
+    [5 rows x 4 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-91
+.. GENERATED FROM PYTHON SOURCE LINES 91-93
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-102
+.. GENERATED FROM PYTHON SOURCE LINES 93-104
 
 .. code-block:: Python
 
@@ -161,13 +165,13 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-108
+.. GENERATED FROM PYTHON SOURCE LINES 105-110
 
 CUDA seems very slow but in fact, all the time is spent
 in moving the data from the CPU memory (Host) to the GPU memory (device).
@@ -178,7 +182,7 @@ in moving the data from the CPU memory (Host) to the GPU memory (device).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 33.883 seconds)
+   **Total running time of the script:** (0 minutes 18.169 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_sum.py:
@@ -194,6 +198,10 @@ in moving the data from the CPU memory (Host) to the GPU memory (device).
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cuda_vector_sum.py <plot_bench_cuda_vector_sum.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_bench_cuda_vector_sum.zip <plot_bench_cuda_vector_sum.zip>`
 
 
 .. only:: html

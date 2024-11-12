@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_export_model_onnx.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -65,7 +65,7 @@ The model
 
 
     def get_llama_model(
-        input_dims=[(2, 1024)],
+        input_dims=[(2, 1024)],  # noqa: B006
         hidden_size=1024,  # 4096,
         num_hidden_layers=1,
         vocab_size=32000,
@@ -135,7 +135,7 @@ The model
 The conversion to ONNX
 ======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-119
+.. GENERATED FROM PYTHON SOURCE LINES 99-118
 
 .. code-block:: Python
 
@@ -144,12 +144,11 @@ The conversion to ONNX
     def export(model, args, filename):
         import torch
 
-        with contextlib.redirect_stdout(io.StringIO()):
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                torch.onnx.export(
-                    model, args, filename, input_names=["input", "mask"], opset_version=17
-                )
+        with contextlib.redirect_stdout(io.StringIO()), warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            torch.onnx.export(
+                model, args, filename, input_names=["input", "mask"], opset_version=17
+            )
 
 
     filename = "dump_llama.onnx"
@@ -169,12 +168,12 @@ The conversion to ONNX
 
     conversion to ONNX in file {filename!r}
     done.
-    model size 276.0319871902466 Mb.
+    model size 278.05313777923584 Mb.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-124
+.. GENERATED FROM PYTHON SOURCE LINES 119-123
 
 This gives the following in :epkg:`Netron`:
 
@@ -184,7 +183,7 @@ This gives the following in :epkg:`Netron`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 23.126 seconds)
+   **Total running time of the script:** (0 minutes 7.830 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_model_onnx.py:
@@ -200,6 +199,10 @@ This gives the following in :epkg:`Netron`:
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_export_model_onnx.py <plot_export_model_onnx.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_export_model_onnx.zip <plot_export_model_onnx.zip>`
 
 
 .. only:: html

@@ -5,18 +5,18 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Matrices en 3 colonnes" href="spark_matrix_3_columns.html" /><link rel="prev" title="Mapper, Reducers customisés avec SQL" href="../mapreduce/sql_map_reduce.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Premiers pas avec Spark - Documentation teachcompute 0.2.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -75,7 +75,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -90,22 +90,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -138,7 +179,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -262,22 +304,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebook_gallery.html">Tous les notebooks</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Gallerie d’exemples</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_long_parallel_process_joblib.html">Parallelization of a dot product with processes (joblib)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_associative.html">Associativity and matrix multiplication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_mul_timeit.html">Compares matrix multiplication implementations with timeit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_associative.html">Associativity and matrix multiplication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_parallel_process_concurrent.html">Parallelization of a dot product with processes (concurrent.futures)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot.html">Compares dot implementations (numpy, python, blas)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_filter.html">Compares filtering implementations (numpy, cython)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add.html">Measuring CUDA performance with a vector addition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_check_random_order.html">Random order for a sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_sum.html">Measuring CUDA performance with a vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_cython_omp.html">Compares dot implementations (numpy, c++, sse, openmp)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_sum.html">Measuring CUDA performance with a vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_cython.html">Compares dot implementations (numpy, cython, c++, sse)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_mul.html">Compares matrix multiplication implementations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
 </ul>
@@ -307,11 +349,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/practice/spark/spark_first_steps.ipynb" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -323,7 +371,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="Premiers-pas-avec-Spark">
-<h1>Premiers pas avec Spark<a class="headerlink" href="#Premiers-pas-avec-Spark" title="Link to this heading">¶</a></h1>
+<h1>Premiers pas avec Spark<a class="headerlink" href="#Premiers-pas-avec-Spark" title="Lien vers cette rubrique">¶</a></h1>
 <p>Introduction à <a class="reference external" href="https://spark.apache.org/">Spark</a> et aux <a class="reference external" href="https://www.cs.cmu.edu/~pavlo/courses/fall2013/static/slides/spark.pdf">RDD</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -334,9 +382,9 @@
 </div>
 </div>
 <section id="Deux-ou-trois-petites-choses-à-ne-pas-oublier">
-<h2>Deux ou trois petites choses à ne pas oublier<a class="headerlink" href="#Deux-ou-trois-petites-choses-à-ne-pas-oublier" title="Link to this heading">¶</a></h2>
+<h2>Deux ou trois petites choses à ne pas oublier<a class="headerlink" href="#Deux-ou-trois-petites-choses-à-ne-pas-oublier" title="Lien vers cette rubrique">¶</a></h2>
 <section id="Local-et-cluster">
-<h3>Local et cluster<a class="headerlink" href="#Local-et-cluster" title="Link to this heading">¶</a></h3>
+<h3>Local et cluster<a class="headerlink" href="#Local-et-cluster" title="Lien vers cette rubrique">¶</a></h3>
 <p><a class="reference external" href="https://spark.apache.org/">Spark</a> n’est pas un langage de programmation mais un environnement de calcul distribué. L’installation en locale reproduit ce que <a class="reference external" href="https://spark.apache.org/">Spark</a> donnerait à grande échelle sur un cluster mais ce n’est pas rigoureusement identique. En particulier cela veut dire que si votre script tourne en local sur un petit jeu de données, il est possible qu’il échoue sur le cluster :</p>
 <ul class="simple">
 <li><p>Les dépendances du script sont installées en local mais pas sur chaque machine du cluster <a class="reference external" href="https://spark.apache.org/">Spark</a>. Cela peut se faire à l’installation du cluster pour des dépendances conséquentes ou juste avant l’exécution d’un <em>job</em> pour des dépendances ponctuelles.</p></li>
@@ -348,7 +396,7 @@
 contournante.</p>
 </section>
 <section id="Spark-et-RDD">
-<h3>Spark et RDD<a class="headerlink" href="#Spark-et-RDD" title="Link to this heading">¶</a></h3>
+<h3>Spark et RDD<a class="headerlink" href="#Spark-et-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <p><a class="reference external" href="https://spark.apache.org/">Spark</a> ne manipule pas des fichiers mais des <a class="reference external" href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">Resilient Distributed Dataset</a> ou <em>RDD</em>. En particulier :</p>
 <ol class="arabic simple">
 <li><p>Les <em>RDD</em> sont organisés en ligne : ce sont des blocs qui ne seront jamais <em>cassés</em> ni <em>modifié</em>. Ces lignes ne peuvent pas excéder 2 Go (voir <a class="reference external" href="https://issues.apache.org/jira/browse/SPARK-6235">SPARK-6235</a>) mais il est conseillé de ne pas aller au-delà de quelques Mo.</p></li>
@@ -359,12 +407,12 @@ contournante.</p>
 </ol>
 </section>
 <section id="Les-partitions">
-<h3>Les partitions<a class="headerlink" href="#Les-partitions" title="Link to this heading">¶</a></h3>
+<h3>Les partitions<a class="headerlink" href="#Les-partitions" title="Lien vers cette rubrique">¶</a></h3>
 <p>Il existe une exception au point 2 : les <strong>partitions</strong>. Une partition est un ensemble de lignes traitées par le même processus. La parallélisation ne peut excéder le nombre de partitions. Par défaut, c’est aléatoire (hash hash). Mais on peut tout-à-fait partionner selon une colonne, deux colonnes. D’ailleurs, c’est là-dessus qu’on joue pour optimiser la distribution. Si on réduit (ou grouper) selon une colonne, c’est d’autant plus rapide si le stream est déjà partitionnée sur cette colonne.
 Voir également <a class="reference external" href="https://spark.apache.org/docs/3.1.1/api/python/reference/api/pyspark.RDD.repartition.html?highlight=repartition#pyspark.RDD.repartition">pyspark.RDD.repartition</a>.</p>
 </section>
 <section id="Spark-et-Python">
-<h3>Spark et Python<a class="headerlink" href="#Spark-et-Python" title="Link to this heading">¶</a></h3>
+<h3>Spark et Python<a class="headerlink" href="#Spark-et-Python" title="Lien vers cette rubrique">¶</a></h3>
 <p>Spark est implémenté en Java. L’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">Python</a> permet de faire beaucoup de choses mais :</p>
 <ul class="simple">
 <li><p>Elle ne sera jamais aussi complète que l’API <a class="reference external" href="https://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/JavaRDD.html">Java</a>.</p></li>
@@ -372,14 +420,14 @@ Voir également <a class="reference external" href="https://spark.apache.org/doc
 </ul>
 </section>
 <section id="Librairies-sur-Spark">
-<h3>Librairies sur Spark<a class="headerlink" href="#Librairies-sur-Spark" title="Link to this heading">¶</a></h3>
+<h3>Librairies sur Spark<a class="headerlink" href="#Librairies-sur-Spark" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un des succès de Spark est de proposer des extensions dédiées à certains usages comme <a class="reference external" href="https://spark.apache.org/mllib/">MLlib</a> qui implémente des algorihmes de machine learning distribués, <a class="reference external" href="https://spark.apache.org/graphx/">GraphX</a> pour des algorithmes sur des graphes. <a class="reference external" href="https://spark.apache.org/mllib/">MLlib</a> sera bientôt remplacé par ML qui s’appuie sur les <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html#datasets-and-dataframes">DataFrame</a>.</p>
 </section>
 <section id="Vérifier-que-Spark-en-local-fonctionne">
-<h3>Vérifier que Spark en local fonctionne<a class="headerlink" href="#Vérifier-que-Spark-en-local-fonctionne" title="Link to this heading">¶</a></h3>
+<h3>Vérifier que Spark en local fonctionne<a class="headerlink" href="#Vérifier-que-Spark-en-local-fonctionne" title="Lien vers cette rubrique">¶</a></h3>
 <p>On essaye le <em>« hello world »</em> en <em>Spark</em> qui consiste à compter les mots dans un fichier. On prend le fichier du notebook.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
@@ -396,15 +444,15 @@ Voir également <a class="reference external" href="https://spark.apache.org/doc
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 your 131072x1 screen size is bogus. expect trouble
-23/11/06 17:52:51 WARN Utils: Your hostname, DESKTOP-USNMVAJ resolves to a loopback address: 127.0.1.1; using 172.28.4.178 instead (on interface eth0)
-23/11/06 17:52:51 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+24/11/11 14:58:33 WARN Utils: Your hostname, xavier2024 resolves to a loopback address: 127.0.1.1; using 10.255.255.254 instead (on interface lo)
+24/11/11 14:58:33 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
 Setting default log level to &#34;WARN&#34;.
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-23/11/06 17:52:53 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+24/11/11 14:58:33 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text_file</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;spark_first_steps.ipynb&quot;</span><span class="p">)</span>
@@ -426,7 +474,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -436,33 +484,33 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&#39;.part-00000.crc&#39;,
+[&#39;_SUCCESS&#39;,
  &#39;part-00000&#39;,
+ &#39;part-00001&#39;,
  &#39;.part-00001.crc&#39;,
- &#39;_SUCCESS&#39;,
  &#39;._SUCCESS.crc&#39;,
- &#39;part-00001&#39;]
+ &#39;.part-00000.crc&#39;]
 </pre></div></div>
 </div>
 </section>
 <section id="Sortie-en-plusieurs-fichiers">
-<h3>Sortie en plusieurs fichiers<a class="headerlink" href="#Sortie-en-plusieurs-fichiers" title="Link to this heading">¶</a></h3>
+<h3>Sortie en plusieurs fichiers<a class="headerlink" href="#Sortie-en-plusieurs-fichiers" title="Lien vers cette rubrique">¶</a></h3>
 <p>Un <em>job</em> <em>Spark</em> est distribué. La sortie d’un <em>job</em> <em>Spark</em> s’effectue sous la forme de plusieurs stream dans un répertoire, un stream par processus. Cela explique la présence de <em>part-00000</em>, <em>part-00001</em>. Le fichier <code class="docutils literal notranslate"><span class="pre">_SUCCESS</span></code> indique le statut du job.</p>
 </section>
 </section>
 <section id="Les-opérations-de-bases">
-<h2>Les opérations de bases<a class="headerlink" href="#Les-opérations-de-bases" title="Link to this heading">¶</a></h2>
+<h2>Les opérations de bases<a class="headerlink" href="#Les-opérations-de-bases" title="Lien vers cette rubrique">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://spark.apache.org/docs/latest/programming-guide.html#transformations">programming-guide.html - transformations</a>.</p>
 <p>Dans cette section, on considère les données comme un ensemble de lignes de texte. Rien de plus. Donc, pas d’information de type, des conversions quasiment tout le temps. Bref, c’est utile pour comprendre. On y revient quand le reste ne marche pas. En général, on commence par <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>. Ah oui j’oubliais, on s’en sert beaucoup quand les données ne sont pas structurées et sont décrites par du JSON, genre des logs d’un site
 internet. Chaque ligne est en fait un gros JSON.</p>
 <p>On utilise un jeu de données de machine learning <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/Adult">Adult</a> légèrement pré-traités.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -482,7 +530,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
@@ -493,7 +541,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -629,7 +677,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 <p>On enlève le nom des colonnes.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -637,7 +685,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;adult.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -662,10 +710,10 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </pre></div></div>
 </div>
 <section id="déclaration-d'un-RDD">
-<h3>déclaration d’un RDD<a class="headerlink" href="#déclaration-d'un-RDD" title="Link to this heading">¶</a></h3>
+<h3>déclaration d’un RDD<a class="headerlink" href="#déclaration-d'un-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <p>La déclaration déclare l’existence d’un <em>RDD</em> comme on déclare un fichier. Pour l’instant aucune manipulation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;adult.txt&quot;</span><span class="p">)</span>
@@ -674,9 +722,9 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </section>
 <section id="enregistrement-d'un-RDD">
-<h3>enregistrement d’un RDD<a class="headerlink" href="#enregistrement-d'un-RDD" title="Link to this heading">¶</a></h3>
+<h3>enregistrement d’un RDD<a class="headerlink" href="#enregistrement-d'un-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -686,8 +734,8 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;out/copy_adult.txt&quot;</span><span class="p">):</span>
@@ -696,16 +744,8 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span><span class="w"> </span>ls<span class="w"> </span>out/copy_adult.txt
@@ -721,7 +761,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;out/copy_adult.txt/part-00000&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -747,10 +787,10 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="lecture-locale-d'un-RDD-avec-pandas">
-<h3>lecture locale d’un RDD avec pandas<a class="headerlink" href="#lecture-locale-d'un-RDD-avec-pandas" title="Link to this heading">¶</a></h3>
+<h3>lecture locale d’un RDD avec pandas<a class="headerlink" href="#lecture-locale-d'un-RDD-avec-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <p>On lit chaque morceaux avant de les concaténer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
@@ -781,7 +821,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -863,26 +903,18 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="collect">
-<h3>collect<a class="headerlink" href="#collect" title="Link to this heading">¶</a></h3>
+<h3>collect<a class="headerlink" href="#collect" title="Lien vers cette rubrique">¶</a></h3>
 <p>Cette opération regroupe les deux précédentes en une seule. Il faut toute de même faire attention de ne pas l’exécuter sur un grand fichier sous peine de faire exploser la mémoire.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
@@ -890,7 +922,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -900,7 +932,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
@@ -911,7 +943,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -993,10 +1025,10 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="map">
-<h3>map<a class="headerlink" href="#map" title="Link to this heading">¶</a></h3>
+<h3>map<a class="headerlink" href="#map" title="Lien vers cette rubrique">¶</a></h3>
 <p>Transformer une ligne en une autre ligne. Chaque ligne est traitée indépendemment des autres.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract_column</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
@@ -1010,7 +1042,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1020,10 +1052,10 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="filter">
-<h3>filter<a class="headerlink" href="#filter" title="Link to this heading">¶</a></h3>
+<h3>filter<a class="headerlink" href="#filter" title="Lien vers cette rubrique">¶</a></h3>
 <p>Garder ou jeter une ligne. Chaque ligne est traitée indépendemment des autres.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">filter_column</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1037,7 +1069,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1048,7 +1080,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 <p>On combine souvent les deux :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">filter_column_split</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1063,7 +1095,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1074,10 +1106,10 @@ _SUCCESS  part-00000  part-00001
 <p>Il faut faire attention aux transformations successives des lignes.</p>
 </section>
 <section id="flatMap">
-<h3>flatMap<a class="headerlink" href="#flatMap" title="Link to this heading">¶</a></h3>
+<h3>flatMap<a class="headerlink" href="#flatMap" title="Lien vers cette rubrique">¶</a></h3>
 <p>C’est la principale différence avec SQL. Une ligne peut devenir un nombre variable de lignes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract_column_and_multiply_row</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
@@ -1090,16 +1122,8 @@ _SUCCESS  part-00000  part-00001
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1153,10 +1177,10 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="group-/-reduce-+-mapValues">
-<h3>group / reduce + mapValues<a class="headerlink" href="#group-/-reduce-+-mapValues" title="Link to this heading">¶</a></h3>
+<h3>group / reduce + mapValues<a class="headerlink" href="#group-/-reduce-+-mapValues" title="Lien vers cette rubrique">¶</a></h3>
 <p>Petite moyenne ?</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract_age_rich</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1178,7 +1202,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1188,14 +1212,14 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="sort">
-<h3>sort<a class="headerlink" href="#sort" title="Link to this heading">¶</a></h3>
+<h3>sort<a class="headerlink" href="#sort" title="Lien vers cette rubrique">¶</a></h3>
 <p>Je n’en parle pas. Trier un gros jeu de données est à proscrire. On peut trier au sein d’un groupe mais <strong>jamais</strong> un stream entier. Ca fait presque dix ans que j’écris des jobs map/reduce, je n’ai jamais écrit un <em>sort</em> sur tout un jeu de données. Ca s’appelle flinguer de la CPU pour rien.</p>
 </section>
 <section id="join">
-<h3>join<a class="headerlink" href="#join" title="Link to this heading">¶</a></h3>
+<h3>join<a class="headerlink" href="#join" title="Lien vers cette rubrique">¶</a></h3>
 <p>Et on remet la moyenne dans le stream initial. Il vaut mieux regarder la documentation de la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.join">join</a> avant de commencer à lire le code qui suit.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_key</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">row</span><span class="p">))</span>
@@ -1204,16 +1228,8 @@ _SUCCESS  part-00000  part-00001
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1257,10 +1273,10 @@ _SUCCESS  part-00000  part-00001
 <p>On commence à comprendre pourquoi <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a>, ça risque d’être pas mal.</p>
 </section>
 <section id="le-choix-existentiel-du-join-:-le-petit-join">
-<h3>le choix existentiel du join : le petit join<a class="headerlink" href="#le-choix-existentiel-du-join-:-le-petit-join" title="Link to this heading">¶</a></h3>
+<h3>le choix existentiel du join : le petit join<a class="headerlink" href="#le-choix-existentiel-du-join-:-le-petit-join" title="Lien vers cette rubrique">¶</a></h3>
 <p>On fait souvent une opération qui consiste à garder les lignes pour lesquelles une certaine valeur appartient à un ensemble. On peut faire un join classique ou alors l’ensemble est petit, traiter ce join comme un map. On broadcaste l’ensemble à chaque processus exécutant le map.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ages</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">broadcast</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
@@ -1269,7 +1285,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1278,7 +1294,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">ages</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -1287,7 +1303,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1298,10 +1314,10 @@ _SUCCESS  part-00000  part-00001
 </div>
 </section>
 <section id="les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert">
-<h3>les trucs qui servent parfois parce que … à l’usage ça sert<a class="headerlink" href="#les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert" title="Link to this heading">¶</a></h3>
+<h3>les trucs qui servent parfois parce que … à l’usage ça sert<a class="headerlink" href="#les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce que font les méthodes associées aux <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">RDD</a>, un peu comme les itérateurs, n’est pas toujours intuitif, mais il est à peu près sûr qu’elles vous serviront un jour (peut-être après avoir googlé ou bingé comme des fous).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
@@ -1310,7 +1326,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1319,7 +1335,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_rdd</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
@@ -1327,7 +1343,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1338,7 +1354,7 @@ _SUCCESS  part-00000  part-00001
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.histogram">histogram</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.groupByKey">groupByKey</a></p>
 </section>
 <section id="le-truc-à-retenir">
-<h3>le truc à retenir<a class="headerlink" href="#le-truc-à-retenir" title="Link to this heading">¶</a></h3>
+<h3>le truc à retenir<a class="headerlink" href="#le-truc-à-retenir" title="Lien vers cette rubrique">¶</a></h3>
 <p>collect, collect… qu’est-ce que je voulais dire déjà… Ah oui… Un job map/reduce c’est :</p>
 <ol class="arabic simple">
 <li><p>La déclaration des flux d’entrées.</p></li>
@@ -1349,11 +1365,11 @@ _SUCCESS  part-00000  part-00001
 </section>
 </section>
 <section id="Spark-DataFrame">
-<h2>Spark DataFrame<a class="headerlink" href="#Spark-DataFrame" title="Link to this heading">¶</a></h2>
+<h2>Spark DataFrame<a class="headerlink" href="#Spark-DataFrame" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a></p>
 <p>Au début, ça commence par… créer un dataframe. Et comme pour pandas, ces objets retienennt les noms et les types.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
@@ -1364,7 +1380,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1445,7 +1461,7 @@ _SUCCESS  part-00000  part-00001
 </div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sdf = spark.createDataFrame(data)  # ça marche</span>
@@ -1454,7 +1470,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1495,25 +1511,17 @@ only showing top 20 rows
 </pre></div></div>
 </div>
 <section id="Conversion-à-pandas">
-<h3>Conversion à pandas<a class="headerlink" href="#Conversion-à-pandas" title="Link to this heading">¶</a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<h3>Conversion à pandas<a class="headerlink" href="#Conversion-à-pandas" title="Lien vers cette rubrique">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1521,7 +1529,7 @@ only showing top 20 rows
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1657,9 +1665,9 @@ only showing top 20 rows
 </div>
 </section>
 <section id="Retour-aux-RDD">
-<h3>Retour aux RDD<a class="headerlink" href="#Retour-aux-RDD" title="Link to this heading">¶</a></h3>
+<h3>Retour aux RDD<a class="headerlink" href="#Retour-aux-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">rdd</span>
@@ -1667,7 +1675,7 @@ only showing top 20 rows
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1677,9 +1685,9 @@ MapPartitionsRDD[54] at javaToPython at NativeMethodAccessorImpl.java:0
 </div>
 </section>
 <section id="Récuperer-le-schéma">
-<h3>Récuperer le schéma<a class="headerlink" href="#Récuperer-le-schéma" title="Link to this heading">¶</a></h3>
+<h3>Récuperer le schéma<a class="headerlink" href="#Récuperer-le-schéma" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">schema</span>
@@ -1687,7 +1695,7 @@ MapPartitionsRDD[54] at javaToPython at NativeMethodAccessorImpl.java:0
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1696,7 +1704,7 @@ StructType([StructField(&#39;_c0&#39;, StringType(), True), StructField(&#39;_c1
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1729,10 +1737,10 @@ root
 </div>
 </section>
 <section id="Utiliser-pandas-pour-spécifer-le-format">
-<h3>Utiliser pandas pour spécifer le format<a class="headerlink" href="#Utiliser-pandas-pour-spécifer-le-format" title="Link to this heading">¶</a></h3>
+<h3>Utiliser pandas pour spécifer le format<a class="headerlink" href="#Utiliser-pandas-pour-spécifer-le-format" title="Lien vers cette rubrique">¶</a></h3>
 <p>On utilise pandas sur une partie du stream.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
@@ -1743,7 +1751,7 @@ root
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1823,25 +1831,16 @@ root
 </table>
 </div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/xadupre/.local/lib/python3.10/site-packages/pyspark/sql/pandas/conversion.py:485: FutureWarning: is_datetime64tz_dtype is deprecated and will be removed in a future version. Check `isinstance(dtype, pd.DatetimeTZDtype)` instead.
-  if should_localize and is_datetime64tz_dtype(s.dtype) and s.dt.tz is not None:
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1873,7 +1872,7 @@ root
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullsdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">sdf</span><span class="o">.</span><span class="n">rdd</span><span class="p">,</span> <span class="n">sdf</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
@@ -1881,7 +1880,7 @@ root
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullsdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1914,9 +1913,9 @@ root
 </div>
 </section>
 <section id="Enregistrement-au-format-parquet">
-<h3>Enregistrement au format parquet<a class="headerlink" href="#Enregistrement-au-format-parquet" title="Link to this heading">¶</a></h3>
+<h3>Enregistrement au format parquet<a class="headerlink" href="#Enregistrement-au-format-parquet" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullsdf</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;data_adult.schema.parquet&quot;</span><span class="p">)</span>
@@ -1928,16 +1927,64 @@ root
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-23/11/06 18:10:36 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 95.00% for 8 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 84.44% for 9 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 76.00% for 10 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 69.09% for 11 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 63.33% for 12 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 58.46% for 13 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 54.29% for 14 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 50.67% for 15 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 47.50% for 16 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 44.71% for 17 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 42.22% for 18 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 40.00% for 19 writers
+24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 38.00% for 20 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 40.00% for 19 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 42.22% for 18 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 44.71% for 17 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 47.50% for 16 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 50.67% for 15 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 54.29% for 14 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 58.46% for 13 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 63.33% for 12 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 69.09% for 11 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 76.00% for 10 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+Scaling row group sizes to 84.44% for 9 writers
+24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 95.00% for 8 writers
 
 </pre></div></div>
 </div>
 </section>
 <section id="Relecture-du-format-parquet">
-<h3>Relecture du format parquet<a class="headerlink" href="#Relecture-du-format-parquet" title="Link to this heading">¶</a></h3>
+<h3>Relecture du format parquet<a class="headerlink" href="#Relecture-du-format-parquet" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;data_adult.schema.parquet/&quot;</span><span class="p">)</span>
@@ -1945,7 +1992,7 @@ Scaling row group sizes to 95.00% for 8 writers
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1978,10 +2025,10 @@ root
 </div>
 </section>
 <section id="Dataframe-Spark-VS-Dataframe-pandas">
-<h3>Dataframe Spark VS Dataframe pandas<a class="headerlink" href="#Dataframe-Spark-VS-Dataframe-pandas" title="Link to this heading">¶</a></h3>
+<h3>Dataframe Spark VS Dataframe pandas<a class="headerlink" href="#Dataframe-Spark-VS-Dataframe-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <p>Spark a reproduit la même interface que pandas pour ses dataframes excepté que le résultat n’est pas calculé tant qu’on ne choisit pas de sauvegarder le résultat.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fifty</span> <span class="o">=</span> <span class="n">fullsdf</span><span class="p">[</span><span class="n">fullsdf</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">]</span>
@@ -1989,7 +2036,7 @@ root
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fifty</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -2032,9 +2079,9 @@ only showing top 20 rows
 </section>
 </section>
 <section id="Fin">
-<h2>Fin<a class="headerlink" href="#Fin" title="Link to this heading">¶</a></h2>
+<h2>Fin<a class="headerlink" href="#Fin" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
@@ -2151,10 +2198,10 @@ only showing top 20 rows
     </aside>
   </div>
 </div><script src="../../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
-    <script src="../../_static/translations.js?v=d99ca74e"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/translations.js?v=e6b791cb"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

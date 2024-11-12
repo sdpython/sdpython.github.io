@@ -5,17 +5,17 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Compares dot implementations (numpy, cython, c++, sse)" href="plot_benchmark_dot_cython.html" /><link rel="prev" title="Parallelization of a dot product" href="../index_dot.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.04.27 -->
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Compares dot implementations (numpy, python, blas) - Documentation teachcompute 0.2.0</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -74,7 +74,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -89,22 +89,63 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -137,7 +178,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -261,22 +303,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebook_gallery.html">Tous les notebooks</a></li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">Gallerie d’exemples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_long_parallel_process_joblib.html">Parallelization of a dot product with processes (joblib)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_benchmark_associative.html">Associativity and matrix multiplication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_dot_mul_timeit.html">Compares matrix multiplication implementations with timeit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_benchmark_associative.html">Associativity and matrix multiplication</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_parallel_process_concurrent.html">Parallelization of a dot product with processes (concurrent.futures)</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Compares dot implementations (numpy, python, blas)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum.html">Measuring CPU performance with a vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_filter.html">Compares filtering implementations (numpy, cython)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_bench_cuda_vector_add.html">Measuring CUDA performance with a vector addition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_check_random_order.html">Random order for a sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cuda_vector_sum.html">Measuring CUDA performance with a vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_dot_cython_omp.html">Compares dot implementations (numpy, c++, sse, openmp)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cuda_vector_sum.html">Measuring CUDA performance with a vector sum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_dot_cython.html">Compares dot implementations (numpy, cython, c++, sse)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_benchmark_dot_mul.html">Compares matrix multiplication implementations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_serialisation_examples.html">Sérialisation</a></li>
 </ul>
@@ -306,11 +348,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/auto_examples/plot_benchmark_dot.rst" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -324,10 +372,10 @@
           <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-benchmark-dot-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="compares-dot-implementations-numpy-python-blas">
-<span id="sphx-glr-auto-examples-plot-benchmark-dot-py"></span><h1>Compares dot implementations (numpy, python, blas)<a class="headerlink" href="#compares-dot-implementations-numpy-python-blas" title="Link to this heading">¶</a></h1>
+<span id="sphx-glr-auto-examples-plot-benchmark-dot-py"></span><h1>Compares dot implementations (numpy, python, blas)<a class="headerlink" href="#compares-dot-implementations-numpy-python-blas" title="Lien vers cette rubrique">¶</a></h1>
 <p><a class="reference external" href="https://www.numpy.org/">numpy</a> has a very fast implementation of
 the dot product. It is difficult to be better and very easy
 to be slower. This example looks into a couple of slower
@@ -347,7 +395,7 @@ implementations.</p>
 </pre></div>
 </div>
 <section id="python-dot-pydot">
-<h2>python dot: pydot<a class="headerlink" href="#python-dot-pydot" title="Link to this heading">¶</a></h2>
+<h2>python dot: pydot<a class="headerlink" href="#python-dot-pydot" title="Lien vers cette rubrique">¶</a></h2>
 <p>The first function <a class="reference internal" href="../api/validation_cython.html#teachcompute.validation.cython.dotpy.pydot" title="teachcompute.validation.cython.dotpy.pydot"><code class="xref py py-func docutils literal notranslate"><span class="pre">pydot</span></code></a> uses
 python to implement the dot product.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctxs</span></a></a> <span class="o">=</span> <span class="p">[</span>
@@ -366,34 +414,34 @@ python to implement the dot product.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/10 [00:00&lt;?, ?it/s]
- 50%|█████     | 5/10 [00:00&lt;00:00, 37.18it/s]
- 90%|█████████ | 9/10 [00:00&lt;00:00, 23.38it/s]
-100%|██████████| 10/10 [00:00&lt;00:00, 22.38it/s]
-[{&#39;average&#39;: 7.600400000228547e-06,
+ 50%|█████     | 5/10 [00:00&lt;00:00, 44.32it/s]
+100%|██████████| 10/10 [00:00&lt;00:00, 20.18it/s]
+100%|██████████| 10/10 [00:00&lt;00:00, 21.96it/s]
+[{&#39;average&#39;: np.float64(7.1148180140880884e-06),
   &#39;context_size&#39;: 232,
-  &#39;deviation&#39;: 4.248885029711499e-07,
-  &#39;max_exec&#39;: 8.723999999347142e-06,
-  &#39;min_exec&#39;: 7.301999994524522e-06,
+  &#39;deviation&#39;: np.float64(8.319901218604011e-07),
+  &#39;max_exec&#39;: np.float64(9.287340071750805e-06),
+  &#39;min_exec&#39;: np.float64(6.240200018510223e-06),
   &#39;number&#39;: 50,
   &#39;repeat&#39;: 10,
-  &#39;ttime&#39;: 7.600400000228547e-05,
-  &#39;warmup_time&#39;: 2.7599999611993553e-05,
+  &#39;ttime&#39;: np.float64(7.114818014088088e-05),
+  &#39;warmup_time&#39;: 3.305499558337033e-05,
   &#39;x_name&#39;: 10},
- {&#39;average&#39;: 5.5687400000351774e-05,
+ {&#39;average&#39;: np.float64(3.3648765980615274e-05),
   &#39;context_size&#39;: 232,
-  &#39;deviation&#39;: 5.511544605913856e-07,
-  &#39;max_exec&#39;: 5.6999999997060514e-05,
-  &#39;min_exec&#39;: 5.5131999997684036e-05,
+  &#39;deviation&#39;: np.float64(8.809493797155993e-06),
+  &#39;max_exec&#39;: np.float64(4.549306002445519e-05),
+  &#39;min_exec&#39;: np.float64(2.0034240005770698e-05),
   &#39;number&#39;: 50,
   &#39;repeat&#39;: 10,
-  &#39;ttime&#39;: 0.0005568740000035178,
-  &#39;warmup_time&#39;: 6.38999999864609e-05,
+  &#39;ttime&#39;: np.float64(0.00033648765980615275),
+  &#39;warmup_time&#39;: 4.712300142273307e-05,
   &#39;x_name&#39;: 110}]
 </pre></div>
 </div>
 </section>
 <section id="numpy-dot">
-<h2>numpy dot<a class="headerlink" href="#numpy-dot" title="Link to this heading">¶</a></h2>
+<h2>numpy dot<a class="headerlink" href="#numpy-dot" title="Lien vers cette rubrique">¶</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctxs</span></a></a> <span class="o">=</span> <span class="p">[</span>
     <span class="nb">dict</span><span class="p">(</span>
         <span class="n">va</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a></a><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span></a></a><span class="p">),</span>
@@ -410,44 +458,64 @@ python to implement the dot product.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/500 [00:00&lt;?, ?it/s]
- 21%|██        | 104/500 [00:00&lt;00:00, 1019.90it/s]
- 41%|████      | 206/500 [00:09&lt;00:15, 19.14it/s]
- 50%|████▉     | 249/500 [00:09&lt;00:10, 22.97it/s]
- 55%|█████▌    | 275/500 [00:10&lt;00:08, 27.48it/s]
- 60%|██████    | 300/500 [00:10&lt;00:06, 33.32it/s]
- 66%|██████▌   | 329/500 [00:10&lt;00:04, 42.73it/s]
- 71%|███████   | 355/500 [00:10&lt;00:02, 53.55it/s]
- 76%|███████▌  | 381/500 [00:10&lt;00:01, 67.23it/s]
- 81%|████████▏ | 407/500 [00:10&lt;00:01, 81.63it/s]
- 86%|████████▌ | 431/500 [00:10&lt;00:00, 98.48it/s]
- 91%|█████████ | 455/500 [00:10&lt;00:00, 111.85it/s]
- 96%|█████████▌| 480/500 [00:10&lt;00:00, 132.77it/s]
-100%|██████████| 500/500 [00:11&lt;00:00, 45.18it/s]
-[{&#39;average&#39;: 5.60800000130257e-07,
+ 12%|█▏        | 62/500 [00:00&lt;00:00, 616.51it/s]
+ 25%|██▍       | 124/500 [00:03&lt;00:12, 29.94it/s]
+ 30%|███       | 151/500 [00:04&lt;00:10, 33.35it/s]
+ 34%|███▎      | 168/500 [00:04&lt;00:09, 35.99it/s]
+ 36%|███▋      | 182/500 [00:04&lt;00:07, 41.65it/s]
+ 39%|███▉      | 195/500 [00:04&lt;00:06, 47.79it/s]
+ 42%|████▏     | 208/500 [00:04&lt;00:05, 53.81it/s]
+ 44%|████▍     | 220/500 [00:04&lt;00:04, 56.75it/s]
+ 47%|████▋     | 236/500 [00:05&lt;00:03, 68.39it/s]
+ 50%|████▉     | 248/500 [00:05&lt;00:03, 72.74it/s]
+ 52%|█████▏    | 261/500 [00:05&lt;00:02, 82.26it/s]
+ 55%|█████▍    | 273/500 [00:05&lt;00:03, 58.20it/s]
+ 56%|█████▋    | 282/500 [00:05&lt;00:03, 61.99it/s]
+ 59%|█████▉    | 295/500 [00:05&lt;00:02, 73.85it/s]
+ 61%|██████    | 306/500 [00:05&lt;00:02, 81.07it/s]
+ 63%|██████▎   | 317/500 [00:06&lt;00:02, 79.26it/s]
+ 65%|██████▌   | 327/500 [00:06&lt;00:02, 75.15it/s]
+ 68%|██████▊   | 340/500 [00:06&lt;00:01, 87.34it/s]
+ 71%|███████   | 355/500 [00:06&lt;00:01, 101.82it/s]
+ 73%|███████▎  | 367/500 [00:06&lt;00:01, 104.61it/s]
+ 76%|███████▌  | 379/500 [00:06&lt;00:01, 102.72it/s]
+ 78%|███████▊  | 391/500 [00:06&lt;00:01, 106.59it/s]
+ 81%|████████  | 403/500 [00:06&lt;00:01, 94.09it/s]
+ 83%|████████▎ | 413/500 [00:07&lt;00:00, 95.14it/s]
+ 85%|████████▍ | 423/500 [00:07&lt;00:01, 70.52it/s]
+ 86%|████████▋ | 432/500 [00:07&lt;00:00, 68.36it/s]
+ 89%|████████▊ | 443/500 [00:07&lt;00:00, 76.14it/s]
+ 91%|█████████ | 453/500 [00:07&lt;00:00, 80.52it/s]
+ 93%|█████████▎| 466/500 [00:07&lt;00:00, 92.21it/s]
+ 95%|█████████▌| 477/500 [00:07&lt;00:00, 94.98it/s]
+ 97%|█████████▋| 487/500 [00:08&lt;00:00, 93.61it/s]
+100%|█████████▉| 499/500 [00:08&lt;00:00, 98.81it/s]
+100%|██████████| 500/500 [00:08&lt;00:00, 61.54it/s]
+[{&#39;average&#39;: np.float64(1.3419879833236337e-06),
   &#39;context_size&#39;: 232,
-  &#39;deviation&#39;: 4.489987402473388e-09,
-  &#39;max_exec&#39;: 5.739999960496789e-07,
-  &#39;min_exec&#39;: 5.580000015470432e-07,
+  &#39;deviation&#39;: np.float64(4.8575769902713836e-08),
+  &#39;max_exec&#39;: np.float64(1.3776400010101497e-06),
+  &#39;min_exec&#39;: np.float64(1.2179798795841635e-06),
   &#39;number&#39;: 50,
   &#39;repeat&#39;: 10,
-  &#39;ttime&#39;: 5.60800000130257e-06,
-  &#39;warmup_time&#39;: 1.249999968422344e-05,
+  &#39;ttime&#39;: np.float64(1.3419879833236337e-05),
+  &#39;warmup_time&#39;: 0.00022104499657871202,
   &#39;x_name&#39;: 10},
- {&#39;average&#39;: 5.733999987569405e-07,
+ {&#39;average&#39;: np.float64(2.359903999604284e-06),
   &#39;context_size&#39;: 232,
-  &#39;deviation&#39;: 4.565084740193603e-09,
-  &#39;max_exec&#39;: 5.839999994350365e-07,
-  &#39;min_exec&#39;: 5.680000049324008e-07,
+  &#39;deviation&#39;: np.float64(1.363464003323548e-06),
+  &#39;max_exec&#39;: np.float64(5.30657998751849e-06),
+  &#39;min_exec&#39;: np.float64(1.1841800005640834e-06),
   &#39;number&#39;: 50,
   &#39;repeat&#39;: 10,
-  &#39;ttime&#39;: 5.733999987569405e-06,
-  &#39;warmup_time&#39;: 4.999999873689376e-06,
+  &#39;ttime&#39;: np.float64(2.3599039996042843e-05),
+  &#39;warmup_time&#39;: 1.2753000191878527e-05,
   &#39;x_name&#39;: 110}]
 </pre></div>
 </div>
 </section>
 <section id="blas-dot">
-<h2>blas dot<a class="headerlink" href="#blas-dot" title="Link to this heading">¶</a></h2>
+<h2>blas dot<a class="headerlink" href="#blas-dot" title="Lien vers cette rubrique">¶</a></h2>
 <p><a class="reference external" href="https://www.numpy.org/">numpy</a> implementation uses <a class="reference external" href="https://www.netlib.org/blas/">BLAS</a>.
 Let’s make a direct call to it.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctx</span></a></a> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ctxs</span></a></a><span class="p">:</span>
@@ -459,50 +527,58 @@ Let’s make a direct call to it.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/500 [00:00&lt;?, ?it/s]
-  9%|▊         | 43/500 [00:00&lt;00:01, 423.48it/s]
- 20%|█▉        | 99/500 [00:00&lt;00:00, 501.04it/s]
- 30%|███       | 150/500 [00:00&lt;00:00, 374.47it/s]
- 38%|███▊      | 191/500 [00:00&lt;00:00, 334.48it/s]
- 45%|████▌     | 227/500 [00:00&lt;00:00, 311.30it/s]
- 52%|█████▏    | 260/500 [00:00&lt;00:00, 287.30it/s]
- 58%|█████▊    | 290/500 [00:00&lt;00:00, 275.84it/s]
- 64%|██████▍   | 319/500 [00:01&lt;00:00, 264.26it/s]
- 69%|██████▉   | 346/500 [00:01&lt;00:00, 204.51it/s]
- 74%|███████▍  | 369/500 [00:01&lt;00:00, 208.93it/s]
- 78%|███████▊  | 392/500 [00:01&lt;00:00, 213.78it/s]
- 83%|████████▎ | 415/500 [00:01&lt;00:00, 162.26it/s]
- 87%|████████▋ | 434/500 [00:02&lt;00:00, 108.72it/s]
- 90%|████████▉ | 449/500 [00:05&lt;00:02, 19.92it/s]
- 92%|█████████▏| 460/500 [00:07&lt;00:03, 12.16it/s]
- 94%|█████████▎| 468/500 [00:08&lt;00:02, 12.36it/s]
- 98%|█████████▊| 489/500 [00:08&lt;00:00, 19.07it/s]
-100%|█████████▉| 499/500 [00:08&lt;00:00, 22.31it/s]
-100%|██████████| 500/500 [00:08&lt;00:00, 59.60it/s]
-[{&#39;average&#39;: 2.6987999990524263e-06,
+  7%|▋         | 34/500 [00:00&lt;00:01, 333.77it/s]
+ 18%|█▊        | 91/500 [00:00&lt;00:00, 467.49it/s]
+ 28%|██▊       | 138/500 [00:01&lt;00:03, 100.05it/s]
+ 33%|███▎      | 166/500 [00:01&lt;00:03, 109.31it/s]
+ 38%|███▊      | 189/500 [00:01&lt;00:02, 118.62it/s]
+ 42%|████▏     | 210/500 [00:01&lt;00:02, 111.76it/s]
+ 45%|████▌     | 227/500 [00:01&lt;00:02, 111.61it/s]
+ 48%|████▊     | 242/500 [00:01&lt;00:02, 117.94it/s]
+ 51%|█████▏    | 257/500 [00:02&lt;00:02, 89.46it/s]
+ 55%|█████▍    | 273/500 [00:02&lt;00:02, 99.85it/s]
+ 57%|█████▋    | 286/500 [00:02&lt;00:02, 96.53it/s]
+ 60%|█████▉    | 299/500 [00:02&lt;00:01, 102.14it/s]
+ 62%|██████▏   | 311/500 [00:02&lt;00:01, 99.65it/s]
+ 65%|██████▌   | 326/500 [00:02&lt;00:01, 110.84it/s]
+ 68%|██████▊   | 341/500 [00:02&lt;00:01, 118.64it/s]
+ 71%|███████   | 354/500 [00:03&lt;00:01, 112.08it/s]
+ 73%|███████▎  | 366/500 [00:03&lt;00:01, 112.95it/s]
+ 76%|███████▌  | 379/500 [00:03&lt;00:01, 117.20it/s]
+ 79%|███████▉  | 394/500 [00:03&lt;00:00, 125.87it/s]
+ 81%|████████▏ | 407/500 [00:03&lt;00:00, 122.20it/s]
+ 84%|████████▍ | 421/500 [00:03&lt;00:00, 126.20it/s]
+ 87%|████████▋ | 436/500 [00:03&lt;00:00, 132.62it/s]
+ 90%|█████████ | 450/500 [00:03&lt;00:00, 124.92it/s]
+ 93%|█████████▎| 463/500 [00:03&lt;00:00, 123.14it/s]
+ 95%|█████████▌| 476/500 [00:04&lt;00:00, 122.36it/s]
+100%|█████████▉| 498/500 [00:04&lt;00:00, 148.05it/s]
+100%|██████████| 500/500 [00:04&lt;00:00, 120.44it/s]
+[{&#39;average&#39;: np.float64(2.9745399951934814e-06),
   &#39;context_size&#39;: 360,
-  &#39;deviation&#39;: 1.7646801380969342e-07,
-  &#39;max_exec&#39;: 3.189999997630366e-06,
-  &#39;min_exec&#39;: 2.598000000944012e-06,
+  &#39;deviation&#39;: np.float64(3.619303911832157e-07),
+  &#39;max_exec&#39;: np.float64(3.878860006807372e-06),
+  &#39;min_exec&#39;: np.float64(2.701079938560724e-06),
   &#39;number&#39;: 50,
   &#39;repeat&#39;: 10,
-  &#39;ttime&#39;: 2.6987999990524263e-05,
-  &#39;warmup_time&#39;: 0.003485299999738345,
+  &#39;ttime&#39;: np.float64(2.9745399951934815e-05),
+  &#39;warmup_time&#39;: 5.827599670737982e-05,
   &#39;x_name&#39;: 10},
- {&#39;average&#39;: 3.9423999987775465e-06,
+ {&#39;average&#39;: np.float64(3.612484011682682e-06),
   &#39;context_size&#39;: 360,
-  &#39;deviation&#39;: 3.295376253108397e-06,
-  &#39;max_exec&#39;: 1.3802000003124704e-05,
-  &#39;min_exec&#39;: 2.7239999963057925e-06,
+  &#39;deviation&#39;: np.float64(3.3887765024843066e-07),
+  &#39;max_exec&#39;: np.float64(4.377120058052242e-06),
+  &#39;min_exec&#39;: np.float64(3.176620084559545e-06),
   &#39;number&#39;: 50,
   &#39;repeat&#39;: 10,
-  &#39;ttime&#39;: 3.9423999987775465e-05,
-  &#39;warmup_time&#39;: 1.2200000128359534e-05,
+  &#39;ttime&#39;: np.float64(3.612484011682682e-05),
+  &#39;warmup_time&#39;: 1.2769000022672117e-05,
   &#39;x_name&#39;: 110}]
 </pre></div>
 </div>
 </section>
 <section id="let-s-display-the-results">
-<h2>Let’s display the results<a class="headerlink" href="#let-s-display-the-results" title="Link to this heading">¶</a></h2>
+<h2>Let’s display the results<a class="headerlink" href="#let-s-display-the-results" title="Lien vers cette rubrique">¶</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df1</span></a></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res_pydot</span></a></a><span class="p">)</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df1</span></a></a><span class="p">[</span><span class="s2">&quot;fct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pydot&quot;</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df2</span></a></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class"><span class="n">DataFrame</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res_dot</span></a></a><span class="p">)</span>
@@ -513,7 +589,7 @@ Let’s make a direct call to it.</p>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.concat.html#pandas.concat" title="pandas.concat" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.concat.html#pandas.concat" title="pandas.concat" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">concat</span></a></a><span class="p">([</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df1</span></a></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df2</span></a></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df3</span></a></a><span class="p">])</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a></a><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a></a><span class="p">[</span><span class="s2">&quot;x_name&quot;</span><span class="p">]</span>
 
-<a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="matplotlib.figure.Figure" class="sphx-glr-backref-module-matplotlib-figure sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">fig</span></a></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span></a></a><span class="p">[</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cc</span><span class="o">.</span><span class="n">N</span></a></a> <span class="o">&lt;=</span> <span class="mi">1100</span><span class="p">]</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;fct&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="p">)</span>
@@ -530,13 +606,16 @@ Let’s make a direct call to it.</p>
 <p>The results depends on the machine, its
 number of cores, the compilation settings
 of <a class="reference external" href="https://www.numpy.org/">numpy</a> or this module.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 21.163 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 14.699 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-benchmark-dot-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/86050167ede1c4e39e6a812100dc76b7/plot_benchmark_dot.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_benchmark_dot.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/84530992b9d86ca31fbd8ada583272f7/plot_benchmark_dot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_benchmark_dot.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/8cb6efcffbd5ef17d1edc85e8ca7e276/plot_benchmark_dot.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_benchmark_dot.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -615,10 +694,10 @@ of <a class="reference external" href="https://www.numpy.org/">numpy</a> or this
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=9313ea4c"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
-    <script src="../_static/translations.js?v=d99ca74e"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/translations.js?v=e6b791cb"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

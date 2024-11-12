@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_bench_cuda_vector_add_stream.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -33,7 +33,7 @@ The script can be profiled with :epkg:`Nsight`.
 Vector Add
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-93
+.. GENERATED FROM PYTHON SOURCE LINES 17-95
 
 .. code-block:: Python
 
@@ -79,7 +79,7 @@ Vector Add
 
         if has_cuda:
             diff = numpy.abs(vector_add(values, values, 0) - (values + values)).max()
-            res = measure_time(lambda: cuda_vector_add(values), max_time=0.5)
+            res = measure_time(lambda values=values: cuda_vector_add(values), max_time=0.5)
 
             obs.append(
                 dict(
@@ -93,7 +93,9 @@ Vector Add
             )
 
             diff = numpy.abs(vector_add_stream(values, values, 0) - (values + values)).max()
-            res = measure_time(lambda: cuda_vector_add_stream(values), max_time=0.5)
+            res = measure_time(
+                lambda values=values: cuda_vector_add_stream(values), max_time=0.5
+            )
 
             obs.append(
                 dict(
@@ -121,22 +123,22 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:02,  1.06s/it]     67%|██████▋   | 2/3 [00:02<00:01,  1.09s/it]    100%|██████████| 3/3 [00:03<00:00,  1.20s/it]    100%|██████████| 3/3 [00:03<00:00,  1.17s/it]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:02,  1.32s/it]     67%|██████▋   | 2/3 [00:02<00:01,  1.26s/it]    100%|██████████| 3/3 [00:03<00:00,  1.24s/it]    100%|██████████| 3/3 [00:03<00:00,  1.25s/it]
     fct              CUDA   CUDA-stream
     dim                                
-    1024     1.898739e-06  2.682071e-06
-    32768    8.767623e-08  1.618143e-07
-    1048576  3.004102e-08  3.193165e-08
+    1024     3.541671e-06  3.894597e-06
+    32768    9.024722e-08  1.042279e-07
+    1048576  1.416836e-08  1.515374e-08
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-96
+.. GENERATED FROM PYTHON SOURCE LINES 96-98
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-108
+.. GENERATED FROM PYTHON SOURCE LINES 98-110
 
 .. code-block:: Python
 
@@ -165,13 +167,13 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-112
+.. GENERATED FROM PYTHON SOURCE LINES 111-114
 
 In practice, one stream is usually enough.
 CUDA parallelizes everything and takes all the computing power.
@@ -180,7 +182,7 @@ CUDA parallelizes everything and takes all the computing power.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.128 seconds)
+   **Total running time of the script:** (0 minutes 5.409 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_add_stream.py:
@@ -196,6 +198,10 @@ CUDA parallelizes everything and takes all the computing power.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cuda_vector_add_stream.py <plot_bench_cuda_vector_add_stream.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_bench_cuda_vector_add_stream.zip <plot_bench_cuda_vector_add_stream.zip>`
 
 
 .. only:: html

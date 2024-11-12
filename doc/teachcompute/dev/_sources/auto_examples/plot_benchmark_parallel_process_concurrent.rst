@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_benchmark_parallel_process_concurrent.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -90,7 +90,7 @@ We check that it returns the same values.
 
  .. code-block:: none
 
-    -0.20747057254518797 -0.2074705725451881
+    -11.963328675229187 -11.963328675229185
 
 
 
@@ -130,13 +130,13 @@ Let's benchmark.
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:01<00:04,  1.37s/it]     50%|█████     | 2/4 [00:03<00:04,  2.07s/it]     75%|███████▌  | 3/4 [00:23<00:10, 10.12s/it]    100%|██████████| 4/4 [02:30<00:00, 56.28s/it]    100%|██████████| 4/4 [02:30<00:00, 37.67s/it]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:16<00:48, 16.19s/it]     50%|█████     | 2/4 [00:23<00:21, 10.87s/it]     75%|███████▌  | 3/4 [00:33<00:10, 10.69s/it]    100%|██████████| 4/4 [01:16<00:00, 23.16s/it]    100%|██████████| 4/4 [01:16<00:00, 19.02s/it]
                numpy.dot   futures
     N                             
-    100000      0.000569  0.002144
-    1000000     0.001677  0.003125
-    10000000    0.020793  0.017129
-    100000000   0.118532  0.113918
+    100000      0.002819  0.029472
+    1000000     0.002338  0.011743
+    10000000    0.007796  0.012140
+    100000000   0.035683  0.038637
 
     Text(0.5, 1.0, 'Parallel / numpy dot')
 
@@ -150,7 +150,7 @@ unless the vectors are big.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (2 minutes 31.012 seconds)
+   **Total running time of the script:** (1 minutes 16.329 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_parallel_process_concurrent.py:
@@ -166,6 +166,10 @@ unless the vectors are big.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_benchmark_parallel_process_concurrent.py <plot_benchmark_parallel_process_concurrent.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_benchmark_parallel_process_concurrent.zip <plot_benchmark_parallel_process_concurrent.zip>`
 
 
 .. only:: html

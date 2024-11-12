@@ -9,7 +9,7 @@
         <title>experimental_experiment.gradient.loss_helper - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/docker.html">Start from a docker</a></li>
@@ -454,6 +455,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -583,10 +585,10 @@ columns, the sum on every line is 1.</p>
 </li>
 </ul>
 <p>Next example shows the loss with L1 and L2 loss.</p>
-<div class="graphviz"><img src="../../_images/graphviz-1647d034489b94ef4daa40d674b3388da43e8f52.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-56bec684bf66e9da86738bd6d9fe914bac27d579.png" alt="digraph{
+  nodesep=0.05;
   size=7;
   ranksep=0.25;
-  nodesep=0.05;
   orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -596,8 +598,8 @@ columns, the sum on every line is 1.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474785 ]\n [ 1.4251099]\n [34.210396 ]\n [61.476...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474754 ]\n [ 1.4251709]\n [34.210365 ]\n [61.476...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999962]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.1]&quot; fontsize=10];
   l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.9]&quot; fontsize=10];
   shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
@@ -666,10 +668,10 @@ columns, the sum on every line is 1.</p>
 }" class="graphviz" /></div>
 <p>Next example shows how to add a L2 loss with L1 and L2 penalties
 on the coefficients.</p>
-<div class="graphviz"><img src="../../_images/graphviz-73d49d7f4285fa52ec540031c03e490a87f9a6e4.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-a662305086422420b8dffdcf3d8278cef6c0f5b3.png" alt="digraph{
+  nodesep=0.05;
   size=7;
   ranksep=0.25;
-  nodesep=0.05;
   orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -679,8 +681,8 @@ on the coefficients.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.4748   ]\n [ 1.42514  ]\n [34.21041  ]\n [61.477...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999847]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474785]\n [ 1.425148]\n [34.2104  ]\n [61.476963...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000134]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_coef [shape=box label=&quot;l1_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_intercept [shape=box label=&quot;l1_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];

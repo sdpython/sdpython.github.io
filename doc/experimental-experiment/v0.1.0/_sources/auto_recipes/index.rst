@@ -76,6 +76,23 @@ See :ref:`l-exporter-recipes` for an organized version of this gallery.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.ops.higher_order.scan.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_scan_pdist_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and a model with a loop (scan)</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch.">
 
 .. only:: html
@@ -104,6 +121,7 @@ See :ref:`l-exporter-recipes` for an organized version of this gallery.
    /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
+   /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_modules
 
 

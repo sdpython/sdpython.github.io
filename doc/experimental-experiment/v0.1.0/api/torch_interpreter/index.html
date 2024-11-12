@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_interpreter - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/docker.html">Start from a docker</a></li>
@@ -454,6 +455,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -715,10 +717,14 @@ to use the default decomposition table returned by
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="n">ExportOptions</span><span class="p">(),</span>
      <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
      <span class="n">ExportOptions</span><span class="p">(</span><span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+     <span class="n">ExportOptions</span><span class="p">(),</span>
+     <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
      <span class="n">ExportOptions</span><span class="p">(</span><span class="n">jit</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
     <span class="p">[</span><span class="n">ExportOptions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
      <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
      <span class="n">ExportOptions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+     <span class="n">ExportOptions</span><span class="p">(),</span>
+     <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
      <span class="n">ExportOptions</span><span class="p">(</span><span class="n">jit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">)]</span>
 </pre></div>
 </div>
@@ -736,7 +742,7 @@ to use the default decomposition table returned by
 
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.torch_interpreter.ExportOptions.get_fallback_options">
-<span class="sig-name descname"><span class="pre">get_fallback_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#experimental_experiment.torch_interpreter.ExportOptions" title="experimental_experiment.torch_interpreter.export_options.ExportOptions"><span class="pre">ExportOptions</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/experimental_experiment/torch_interpreter/export_options.html#ExportOptions.get_fallback_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.ExportOptions.get_fallback_options" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_fallback_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#experimental_experiment.torch_interpreter.ExportOptions" title="experimental_experiment.torch_interpreter.export_options.ExportOptions"><span class="pre">ExportOptions</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/experimental_experiment/torch_interpreter/export_options.html#ExportOptions.get_fallback_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.ExportOptions.get_fallback_options" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the fallback scenario.</p>
 </dd></dl>
 
@@ -802,10 +808,10 @@ to use the default decomposition table returned by
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">tensor</span><span class="p">([[</span><span class="mf">0.6631</span><span class="p">,</span> <span class="mf">0.7472</span><span class="p">,</span> <span class="mf">0.3805</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.4877</span><span class="p">,</span> <span class="mf">0.6478</span><span class="p">,</span> <span class="mf">0.5545</span><span class="p">]],</span> <span class="n">grad_fn</span><span class="o">=&lt;</span><span class="n">ReluBackward0</span><span class="o">&gt;</span><span class="p">)</span>
-    <span class="p">[</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.663</span><span class="p">,</span> <span class="mf">0.747</span><span class="p">,</span> <span class="mf">0.381</span><span class="p">],</span>
-           <span class="p">[</span><span class="mf">0.488</span><span class="p">,</span> <span class="mf">0.648</span><span class="p">,</span> <span class="mf">0.555</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">tensor</span><span class="p">([[</span><span class="mf">0.0000</span><span class="p">,</span> <span class="mf">0.1242</span><span class="p">,</span> <span class="mf">0.0000</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.0516</span><span class="p">,</span> <span class="mf">0.2474</span><span class="p">,</span> <span class="mf">0.0000</span><span class="p">]],</span> <span class="n">grad_fn</span><span class="o">=&lt;</span><span class="n">ReluBackward0</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.124</span><span class="p">,</span> <span class="mf">0.</span>   <span class="p">],</span>
+           <span class="p">[</span><span class="mf">0.052</span><span class="p">,</span> <span class="mf">0.247</span><span class="p">,</span> <span class="mf">0.</span>   <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)]</span>
 </pre></div>
 </div>
 </dd></dl>

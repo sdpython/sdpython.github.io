@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_bench_cuda_vector_add.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -70,7 +70,7 @@ Vector Add
 
         if has_cuda:
             diff = numpy.abs(vector_add(values, values, 0) - (values + values)).max()
-            res = measure_time(lambda: cuda_vector_add(values), max_time=0.5)
+            res = measure_time(lambda values=values: cuda_vector_add(values), max_time=0.5)
 
             obs.append(
                 dict(
@@ -84,7 +84,7 @@ Vector Add
             )
 
         diff = 0
-        res = measure_time(lambda: values + values, max_time=0.5)
+        res = measure_time(lambda values=values: values + values, max_time=0.5)
 
         obs.append(
             dict(
@@ -111,13 +111,13 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:01<00:04,  1.46s/it]     50%|█████     | 2/4 [00:02<00:02,  1.29s/it]     75%|███████▌  | 3/4 [00:04<00:01,  1.34s/it]    100%|██████████| 4/4 [00:06<00:00,  1.82s/it]    100%|██████████| 4/4 [00:06<00:00,  1.65s/it]
+      0%|          | 0/4 [00:00<?, ?it/s]     25%|██▌       | 1/4 [00:01<00:05,  1.78s/it]     50%|█████     | 2/4 [00:02<00:02,  1.45s/it]     75%|███████▌  | 3/4 [00:04<00:01,  1.29s/it]    100%|██████████| 4/4 [00:05<00:00,  1.43s/it]    100%|██████████| 4/4 [00:05<00:00,  1.43s/it]
     fct               CUDA         numpy
     dim                                 
-    1024      1.271343e-06  6.823135e-10
-    32768     5.698531e-08  1.918299e-10
-    1048576   1.995813e-08  6.269388e-10
-    33554432  1.787547e-08  1.253388e-09
+    1024      3.878022e-06  8.271555e-10
+    32768     9.170654e-08  3.417430e-10
+    1048576   9.097408e-09  3.034462e-10
+    33554432  3.975486e-09  8.811870e-10
 
 
 
@@ -155,7 +155,7 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/.local/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/vv/this/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
@@ -172,7 +172,7 @@ in moving the data from the CPU memory (Host) to the GPU memory (device).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.149 seconds)
+   **Total running time of the script:** (0 minutes 12.192 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_add.py:
@@ -188,6 +188,10 @@ in moving the data from the CPU memory (Host) to the GPU memory (device).
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_bench_cuda_vector_add.py <plot_bench_cuda_vector_add.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_bench_cuda_vector_add.zip <plot_bench_cuda_vector_add.zip>`
 
 
 .. only:: html

@@ -8,7 +8,7 @@
         <title>experimental_experiment.xbuilder.graph_builder - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -221,6 +221,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/docker.html">Start from a docker</a></li>
@@ -453,6 +454,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -554,6 +556,7 @@
     <span class="n">NodeProto</span><span class="p">,</span>
     <span class="n">TensorProto</span><span class="p">,</span>
     <span class="n">TypeProto</span><span class="p">,</span>
+    <span class="n">ValueInfoProto</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">import</span> <span class="nn">onnx.helper</span> <span class="k">as</span> <span class="nn">oh</span>
 <span class="kn">import</span> <span class="nn">onnx.numpy_helper</span> <span class="k">as</span> <span class="nn">onh</span>
@@ -886,9 +889,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_registered_users</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">was_inputs_renamed</span> <span class="o">=</span> <span class="n">input_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">input_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_dynamic_shape_when_input_name_is_defined</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="k">assert</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;dynamic_shapes is expected to be empty or a dictionary &quot;</span>
+        <span class="k">assert</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;dynamic_shapes is expected to be empty or a dictionary or a tuple &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span><span class="si">}</span><span class="s2">, dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
@@ -927,37 +931,33 @@
         <span class="c1"># args_0 {0: &lt;class &#39;._bash_bench_model_runner.batch&#39;&gt;}</span>
         <span class="k">for</span> <span class="n">_k</span><span class="p">,</span> <span class="n">_v</span> <span class="ow">in</span> <span class="n">vv</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                        <span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                        <span class="n">_v</span><span class="p">,</span>
-                        <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
-                        <span class="n">input_name</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
-                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                    <span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                    <span class="n">_v</span><span class="p">,</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
+                    <span class="n">input_name</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DerivedDim</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                        <span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-                        <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
-                        <span class="n">input_name</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
-                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                    <span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
+                    <span class="n">input_name</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="c1"># It should be recursive.</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                        <span class="n">_v</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-                        <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">input_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                    <span class="n">_v</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">input_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                        <span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-                        <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
-                        <span class="n">input_name</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
-                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                    <span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">_v</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="n">_k</span><span class="p">,</span>
+                    <span class="n">input_name</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">_v</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">vv</span><span class="si">}</span><span class="s2"> for dynamic &quot;</span>
@@ -969,14 +969,25 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">),</span> <span class="s2">&quot;Call this method if self.dynamic_shapes is not None&quot;</span>
-        <span class="k">for</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_dynamic_shape_when_input_name_is_defined</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span>
+        <span class="p">)</span>
+        <span class="n">seq_dynamic_shapes</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">input_name_or_position</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq_dynamic_shapes</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">pos_vv</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-                <span class="n">pos_vv</span> <span class="o">=</span> <span class="p">[(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_name_or_position</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">pos_vv</span> <span class="o">=</span> <span class="p">[(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_name_or_position</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pos_vv</span> <span class="o">=</span> <span class="p">[((</span><span class="n">input_name_or_position</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unexpected value for input_name=</span><span class="si">{</span><span class="n">input_name</span><span class="si">!r}</span><span class="s2"> and &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected value for input_name=</span><span class="si">{</span><span class="n">input_name_or_position</span><span class="si">!r}</span><span class="s2"> and &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;v=</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">, dynamic_shapes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">pos_vv</span><span class="p">:</span>
@@ -995,36 +1006,32 @@
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_register_dynamic_object_from_dynamic_shapes_dict</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">pos_vv</span><span class="p">,</span> <span class="n">vv</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                            <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">vv</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span>
-                        <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                        <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">vv</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">input_name</span><span class="o">=</span><span class="n">input_name_or_position</span>
+                    <span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DerivedDim</span><span class="p">):</span>
                     <span class="c1"># Used to specify a dimension as a multiple of something</span>
                     <span class="c1"># We register the root.</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                            <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-                            <span class="n">axis</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
-                            <span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
-                        <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                        <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                        <span class="n">axis</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+                        <span class="n">input_name</span><span class="o">=</span><span class="n">input_name_or_position</span><span class="p">,</span>
+                    <span class="p">)</span>
                     <span class="c1"># It should be recursive.</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                            <span class="n">vv</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-                            <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">input_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                        <span class="n">vv</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                        <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">input_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                            <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
-                            <span class="n">axis</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
-                            <span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
-                        <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                        <span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                        <span class="n">axis</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+                        <span class="n">input_name</span><span class="o">=</span><span class="n">input_name_or_position</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span><span class="si">}</span><span class="s2">, vv=</span><span class="si">{</span><span class="n">vv</span><span class="si">}</span><span class="s2"> for dynamic &quot;</span>
@@ -1188,8 +1195,12 @@
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_alias</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dynals: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dynshp: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;d-dynshp: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">):</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t-dynshp: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">_d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># the rest</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;opset: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1827,11 +1838,11 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
                 <span class="n">d1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">):</span>
-                <span class="n">d1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_dim_to_str</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+                <span class="n">d1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
                 <span class="n">d2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">):</span>
-                <span class="n">d2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_dim_to_str</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+                <span class="n">d2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
                 <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span> <span class="n">d2</span><span class="p">:</span>
@@ -2277,6 +2288,29 @@
 <span class="sd">        :param axis: the dimension comes this axis</span>
 <span class="sd">        :return: the name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">_append_to_source</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">input_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
+                <span class="k">assert</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;input_name=</span><span class="si">{</span><span class="n">input_name</span><span class="si">!r}</span><span class="s2"> but axis is None for &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;dynamic shape </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, value type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">assert</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">input_name</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> cannot be defined from itself (axis=</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">), &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;value type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">:</span>
+            <span class="c1"># The dimension is already registered but it is used for another input.</span>
+            <span class="n">_append_to_source</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
         <span class="k">assert</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_objects</span><span class="p">,</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Dynamic object </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;is already there</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2286,21 +2320,7 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymFloat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymBool</span><span class="p">)</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> for value</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-
-        <span class="k">if</span> <span class="n">input_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
-            <span class="k">assert</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;input_name=</span><span class="si">{</span><span class="n">input_name</span><span class="si">!r}</span><span class="s2"> but axis is None for &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;dynamic shape </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, value is </span><span class="si">{</span><span class="n">value</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-            <span class="k">assert</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">input_name</span><span class="p">,</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> cannot be defined from itself (axis=</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">), &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;value=</span><span class="si">{</span><span class="n">value</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">input_name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
+        <span class="n">_append_to_source</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">add_dynamic_object</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">parse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span>
@@ -2551,6 +2571,9 @@
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_key</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="n">parameter_name</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Empty name cannot be used with parameter_name=</span><span class="si">{</span><span class="n">parameter_name</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="n">new_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                 <span class="k">assert</span> <span class="n">new_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to find </span><span class="si">{</span><span class="n">new_name</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="k">return</span> <span class="n">new_name</span>
@@ -2669,7 +2692,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="k">if</span> <span class="n">parameter_name</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parameter_name</span> <span class="ow">and</span> <span class="n">parameter_name</span> <span class="o">!=</span> <span class="n">name</span><span class="p">:</span>
             <span class="c1"># We want a specific name for this one, let&#39;s keep that information in</span>
             <span class="c1"># main so that we can rename them later.</span>
             <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">),</span> <span class="p">(</span>
@@ -2699,7 +2722,9 @@
 
         <span class="k">if</span> <span class="n">cst</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">):</span>
             <span class="n">cst</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_node_constant</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cst</span><span class="p">)</span>
+        <span class="n">is_constant</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_node_constant</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cst</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_constant</span> <span class="ow">and</span> <span class="n">parameter_name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_node_constant</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="n">cst</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_key</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -2994,7 +3019,7 @@
                 <span class="sa">f</span><span class="s2">&quot;Source is available for </span><span class="si">{</span><span class="n">dim</span><span class="si">!r}</span><span class="s2">, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;source=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_dim_to_str</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to expression a dynamic dimension</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">name</span>
@@ -3315,6 +3340,46 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_input</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">elem_type</span> <span class="o">=</span> <span class="n">_get_type</span><span class="p">(</span><span class="n">elem_type</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_dynamic_shape_when_input_name_is_defined</span><span class="p">:</span>
+            <span class="c1">#</span>
+            <span class="c1"># dynamic shapes were defined as tuple,</span>
+            <span class="c1"># we need to propagate the information to the names</span>
+            <span class="c1"># dynamic_dimensions_source={&#39;dim&#39;: [{&#39;axis&#39;: 1, &#39;input_name&#39;: 0}]}</span>
+            <span class="k">for</span> <span class="n">dim_name</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;input_name&quot;</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;input_name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
+                    <span class="p">):</span>
+                        <span class="n">d</span><span class="p">[</span><span class="s2">&quot;input_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_name</span>
+                        <span class="k">if</span> <span class="n">shape</span><span class="p">:</span>
+                            <span class="n">axis</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;axis&quot;</span><span class="p">]</span>
+                            <span class="k">assert</span> <span class="n">axis</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Unexpected shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">!r}</span><span class="s2"> and axis=</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">, &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;dim_name=</span><span class="si">{</span><span class="n">dim_name</span><span class="si">!r}</span><span class="s2">, self.dynamic_dimensions_source=&quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="si">}</span><span class="s2"> &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, input_name=</span><span class="si">{</span><span class="n">input_name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;self.dynamic_shapes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2"> &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;self.input_names=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_names</span><span class="si">}</span><span class="s2">&quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
+                            <span class="n">dim_name_axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">dim_name</span> <span class="o">!=</span> <span class="n">dim_name_axis</span><span class="p">:</span>
+                                <span class="k">assert</span> <span class="p">(</span>
+                                    <span class="n">dim_name_axis</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_alias</span>
+                                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_alias</span><span class="p">[</span><span class="n">dim_name_axis</span><span class="p">]</span> <span class="o">==</span> <span class="n">dim_name</span>
+                                <span class="p">),</span> <span class="p">(</span>
+                                    <span class="s2">&quot;Alias mismatch for </span><span class="si">{dim_name_axis!r}</span><span class="s2">, existing is &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_alias</span><span class="p">[</span><span class="n">dim_name_axis</span><span class="p">]</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;new is </span><span class="si">{</span><span class="n">dim_name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;for input </span><span class="si">{</span><span class="n">input_name</span><span class="si">!r}</span><span class="s2"> and shape </span><span class="si">{</span><span class="n">shape</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                                <span class="p">)</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_alias</span><span class="p">[</span><span class="n">dim_name_axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim_name</span>
+                            <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                                <span class="n">dim_name</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">axis</span> <span class="k">else</span> <span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+                            <span class="p">)</span>
+
         <span class="n">dyn_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_dynamic_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fill_dynamic_alias</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">new_dyn_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_dynamic_alias</span><span class="p">(</span><span class="n">dyn_shape</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -4040,7 +4105,7 @@
 
 <div class="viewcode-block" id="GraphBuilder.update_node_constant">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.graph_builder.GraphBuilder.update_node_constant">[docs]</a>
-    <span class="k">def</span> <span class="nf">update_node_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_node_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates a constant NodeProto.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -4053,7 +4118,8 @@
                 <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.update_node_constant] new constant &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, node=</span><span class="si">{</span><span class="kc">None</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="GraphBuilder.get_attribute">
@@ -4260,14 +4326,19 @@
         <span class="k">return</span> <span class="n">output_names</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_build_large_initializers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_build_large_initializers</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">external_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">full_parameter_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">external_threshold</span><span class="p">,</span> <span class="nb">int</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">external_threshold</span><span class="p">)</span><span class="si">}</span><span class="s2"> for external_threshold&quot;</span>
         <span class="n">new_inits</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">large_inits</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_norename</span><span class="p">)</span>
+            <span class="p">):</span>
                 <span class="c1"># Those parameters are present under another name already.</span>
                 <span class="k">continue</span>
             <span class="n">itype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
@@ -4311,7 +4382,9 @@
             <span class="p">)</span>
 
         <span class="n">init_dict</span><span class="p">,</span> <span class="n">large_inits</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_build_large_initializers</span><span class="p">(</span><span class="n">external_threshold</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_build_large_initializers</span><span class="p">(</span>
+                <span class="n">external_threshold</span><span class="p">,</span> <span class="n">full_parameter_name</span><span class="o">=</span><span class="n">full_parameter_name</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">large_model</span>
             <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">,</span> <span class="p">{})</span>
         <span class="p">)</span>
@@ -4325,8 +4398,9 @@
                 <span class="p">)</span>
             <span class="n">initializer</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="ow">not</span> <span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_norename</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_norename</span><span class="p">)</span>
                 <span class="p">):</span>
                     <span class="c1"># Those parameters are present under another name already.</span>
                     <span class="k">continue</span>
@@ -4409,6 +4483,12 @@
         <span class="n">large_inits</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">init_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">full_parameter_name</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_norename</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="c1"># Those parameters are present under another name already.</span>
+                <span class="k">continue</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
                 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                 <span class="k">continue</span>
@@ -4811,6 +4891,13 @@
                 <span class="n">stats</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">statso</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stats</span> <span class="o">=</span> <span class="n">statso</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">:</span>
+                <span class="c1"># Adding the true names back.</span>
+                <span class="n">update</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">:</span>
+                        <span class="n">update</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">update</span><span class="p">)</span>
 
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The onnx model is empty after optimization (no node).&quot;</span>
@@ -4819,6 +4906,12 @@
 
         <span class="n">opsets</span> <span class="o">=</span> <span class="p">[</span><span class="n">oh</span><span class="o">.</span><span class="n">make_opsetid</span><span class="p">(</span><span class="o">*</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
         <span class="k">if</span> <span class="n">function_options</span><span class="o">.</span><span class="n">export_as_function</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.to_onnx] make_function &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">)</span><span class="si">}</span><span class="s2"> inits &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span><span class="si">}</span><span class="s2"> params&quot;</span>
+                <span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="n">function_options</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">FunctionOptions</span><span class="o">.</span><span class="n">empty_names</span>
                 <span class="ow">and</span> <span class="n">function_options</span><span class="o">.</span><span class="n">domain</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">FunctionOptions</span><span class="o">.</span><span class="n">empty_names</span>
@@ -4881,7 +4974,11 @@
             <span class="n">ir_version</span> <span class="o">=</span> <span class="n">_default_OPSET_TO_IR_VERSION</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.to_onnx] make_model&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.to_onnx] make_model &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">)</span><span class="si">}</span><span class="s2"> inits &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span><span class="si">}</span><span class="s2"> params&quot;</span>
+            <span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.time_evaluation_constants_] &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time_evaluation_constants_</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -4893,8 +4990,68 @@
         <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">,</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Some parameters are renamed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but there is no initializer</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
             <span class="c1"># We rename.</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Should be done&quot;</span><span class="p">)</span>
+            <span class="n">nodes_add</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">setp</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+
+                <span class="n">needs_rewrite</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                        <span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hidden_inputs</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">hidden</span> <span class="o">&amp;</span> <span class="n">setp</span><span class="p">:</span>
+                            <span class="n">needs_rewrite</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="c1"># needs rewrite</span>
+                            <span class="n">new_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rename_inputs_in_subgraph</span><span class="p">(</span>
+                                <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span>
+                            <span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">needs_rewrite</span><span class="p">:</span>
+                    <span class="n">seti</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">seti</span> <span class="o">&amp;</span> <span class="n">setp</span><span class="p">):</span>
+                        <span class="n">nodes_add</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+                <span class="n">node2</span> <span class="o">=</span> <span class="n">NodeProto</span><span class="p">()</span>
+                <span class="n">node2</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">doc_string</span>
+                <span class="n">node2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">node2</span><span class="o">.</span><span class="n">op_type</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
+                <span class="n">node2</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span>
+                <span class="n">node2</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">])</span>
+                <span class="n">node2</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+                <span class="n">atts</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                        <span class="n">atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+                    <span class="n">new_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rename_inputs_in_subgraph</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">)</span>
+                    <span class="n">atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_g</span><span class="p">))</span>
+
+                <span class="n">node2</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atts</span><span class="p">)</span>
+                <span class="n">nodes_add</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node2</span><span class="p">)</span>
+
+            <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes_add</span><span class="p">)</span>
+
+            <span class="n">seti</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">seti</span> <span class="o">&amp;</span> <span class="n">setp</span><span class="p">:</span>
+                <span class="n">new_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setp</span><span class="p">:</span>
+                        <span class="n">v</span> <span class="o">=</span> <span class="n">ValueInfoProto</span><span class="p">()</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                        <span class="n">new_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_inputs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
             <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
@@ -4905,6 +5062,11 @@
             <span class="n">large_model</span><span class="o">=</span><span class="n">large_model</span><span class="p">,</span>
             <span class="n">external_threshold</span><span class="o">=</span><span class="n">external_threshold</span><span class="p">,</span>
             <span class="n">full_parameter_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span> <span class="ow">or</span> <span class="n">initializers</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Some parameters are renamed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameter_renaming</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;self.initializers_dict=</span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;but there is no initializer</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">initializers</span><span class="p">)</span>
 
@@ -5796,12 +5958,35 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GraphProto</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Renames inputs.</span>
+<span class="sd">        There is a weird case when one of the result defined in the inner context</span>
+<span class="sd">        is overriden by the subgraph itself. We should assume this case never happens.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># graph inputs and outputs should node be changed, initializer as well</span>
+        <span class="c1"># graph inputs and outputs should not be changed, initializer as well</span>
         <span class="n">to_rename</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span>
+        <span class="n">was_copied</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">to_rename</span><span class="p">:</span>
+            <span class="c1"># An input of the graph is overrides one of the replacements.</span>
+            <span class="c1"># The replacement should noe take place then.</span>
+            <span class="n">replacements</span> <span class="o">=</span> <span class="n">replacements</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">to_rename</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">replacements</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">to_rename</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span>
+            <span class="n">was_copied</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
             <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_rename_inputs_in_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">replacements</span><span class="p">,</span> <span class="n">to_rename</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">to_rename</span><span class="p">:</span>
+                <span class="c1"># An output overrides a replacement</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">was_copied</span><span class="p">:</span>
+                    <span class="n">replacements</span> <span class="o">=</span> <span class="n">replacements</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">was_copied</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">to_rename</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="n">replacements</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">to_rename</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
             <span class="n">nodes</span><span class="p">,</span>
             <span class="n">graph</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -6326,10 +6511,7 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">sh</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                    <span class="n">sh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">sh</span><span class="p">),</span> <span class="n">input_name</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">i</span>
-                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">sh</span><span class="p">),</span> <span class="n">input_name</span><span class="o">=</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update_shape_types_with_proto</span><span class="p">(</span>
@@ -6448,10 +6630,9 @@
                 <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">sh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sh</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                         <span class="k">continue</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_dynamic_object</span><span class="p">(</span><span class="n">sh</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
-                            <span class="n">sh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">sh</span><span class="p">),</span> <span class="n">input_name</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span>
-                        <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_object</span><span class="p">(</span>
+                        <span class="n">sh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">(</span><span class="n">sh</span><span class="p">),</span> <span class="n">input_name</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span>
+                    <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_shape</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
@@ -6999,18 +7180,27 @@
 
 <div class="viewcode-block" id="GraphBuilder.has_local_function">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.graph_builder.GraphBuilder.has_local_function">[docs]</a>
-    <span class="k">def</span> <span class="nf">has_local_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_local_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if a local function exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span></div>
 
 
+<div class="viewcode-block" id="GraphBuilder.get_local_function">
+<a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.graph_builder.GraphBuilder.get_local_function">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_local_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionProto</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a local function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">domain</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="GraphBuilder.get_local_function_outputs">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.graph_builder.GraphBuilder.get_local_function_outputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_local_function_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_local_function_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the outputs of a local functions.</span>
+<span class="sd">        Returns the outputs of a local function.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">domain</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">output</span></div>
 

@@ -8,7 +8,7 @@
         <title>experimental_experiment.torch_interpreter.onnx_export - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -221,6 +221,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/docker.html">Start from a docker</a></li>
@@ -453,6 +454,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -753,7 +755,7 @@
 <a class="viewcode-back" href="../../../api/torch_interpreter/onnx_export.html#experimental_experiment.torch_interpreter.SubModuleNaming">[docs]</a>
 <span class="k">class</span> <span class="nc">SubModuleNaming</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class which maps class types and local functions in order to give</span>
+<span class="sd">    A class which maps class submodule name and local functions in order to give</span>
 <span class="sd">    short but unique names.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -789,12 +791,20 @@
 
 
 
+<div class="viewcode-block" id="ParameterNaming">
+<a class="viewcode-back" href="../../../api/torch_interpreter/onnx_export.html#experimental_experiment.torch_interpreter.ParameterNaming">[docs]</a>
 <span class="k">class</span> <span class="nc">ParameterNaming</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class which maps parameters name in the original module and the different</span>
+<span class="sd">    they have in the fx.graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mod</span><span class="p">:</span> <span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mod</span> <span class="o">=</span> <span class="n">mod</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id_modules</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unable_to_map</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">mod</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
@@ -805,6 +815,8 @@
                 <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Two parameters have similar names </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> mapped into </span><span class="si">{</span><span class="n">new_key</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">submod</span> <span class="ow">in</span> <span class="n">mod</span><span class="o">.</span><span class="n">named_modules</span><span class="p">():</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -815,22 +827,68 @@
                     <span class="n">new_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_modules</span>
                 <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Two modules have similar names </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> mapped into </span><span class="si">{</span><span class="n">new_key</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_id_modules</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id_modules</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">updates</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">:</span>
+            <span class="n">kl</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">kl</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">kl</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Ambiguities for weights </span><span class="si">{</span><span class="n">kl</span><span class="si">!r}</span><span class="s2"> and </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">updates</span><span class="p">[</span><span class="n">kl</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">updates</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;torch.nn.Parameter&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span>  <span class="c1"># noqa: F821</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;torch.nn.Parameter&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">from_node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;from_node&quot;</span><span class="p">]</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">from_node</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> seems shared accross multiple objects</span><span class="si">{</span><span class="n">from_node</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">from_node</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;L__self___&quot;</span><span class="p">):</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;L__self___&quot;</span><span class="p">)</span> <span class="p">:]</span>
-        <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">,</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unable to find parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> from </span><span class="si">{</span><span class="n">from_node</span><span class="si">!r}</span><span class="s2">, key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="nb">str</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;from_node&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">from_node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;from_node&quot;</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">from_node</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> seems shared accross multiple objects</span><span class="si">{</span><span class="n">from_node</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;p_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;p_fn_&quot;</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;p_fn_&quot;</span><span class="p">)</span> <span class="p">:]</span>
+        <span class="k">elif</span> <span class="s2">&quot;from_node&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">from_node</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;L__self___&quot;</span><span class="p">):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;L__self___&quot;</span><span class="p">)</span> <span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to find parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> from node </span><span class="si">{</span><span class="n">node</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;with a null prefix, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;with node.meta=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">:</span>
+            <span class="c1"># There may be unknown name if the module dynamically creates name.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unable_to_map</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">name</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_idmap</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">key</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">res</span><span class="p">,</span> <span class="nb">str</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, type(res)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_make_builder_interpreter</span><span class="p">(</span>
@@ -853,6 +911,7 @@
     <span class="n">local_domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;local_functions&quot;</span><span class="p">,</span>
     <span class="n">submodule_naming</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">parameter_naming</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">module_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
     <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.fx.GraphModule&quot;</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
     <span class="n">GraphBuilder</span><span class="p">,</span>
@@ -884,6 +943,7 @@
 <span class="sd">    :param local_domain: domain name to use for local functions if not specified</span>
 <span class="sd">    :param submodule_naming: a function which returns a submodule name in the onnx graph</span>
 <span class="sd">    :param parameter_naming: a function which returns a parameter name in the onnx graph</span>
+<span class="sd">    :param module_name: name of the module, to help retrieve the parameter name</span>
 <span class="sd">    :return: onnx model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1051,6 +1111,7 @@
         <span class="n">function_options</span><span class="o">=</span><span class="n">function_options</span><span class="p">,</span>
         <span class="n">submodule_naming</span><span class="o">=</span><span class="n">submodule_naming</span> <span class="ow">or</span> <span class="n">SubModuleNaming</span><span class="p">(</span><span class="n">mod</span><span class="p">),</span>
         <span class="n">parameter_naming</span><span class="o">=</span><span class="n">parameter_naming</span> <span class="ow">or</span> <span class="n">ParameterNaming</span><span class="p">(</span><span class="n">mod</span><span class="p">),</span>
+        <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">exported_program</span> <span class="ow">or</span> <span class="n">graph_module</span><span class="p">),</span> <span class="n">builder</span><span class="p">,</span> <span class="n">interpreter</span>
 
@@ -1248,60 +1309,12 @@
 
     <span class="n">verbose</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TO_ONNX_VERBOSE&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)))</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] build the graph module with input_names=</span><span class="si">{</span><span class="n">input_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] build the graph module from </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span><span class="si">}</span><span class="s2">, type(args)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">input_names</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] build the graph module with input_names=</span><span class="si">{</span><span class="n">input_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dynamic_shapes</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="n">dyn_shapes</span> <span class="o">=</span> <span class="n">dynamic_shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_wrapped</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">)</span> <span class="k">else</span> <span class="n">dynamic_shapes</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">input_names</span><span class="p">:</span>
-            <span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;input</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dyn_shapes</span><span class="p">))]</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dyn_shapes</span><span class="p">),</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Mismatch number of inputs, input_names=</span><span class="si">{</span><span class="n">input_names</span><span class="si">!r}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;dyn_shapes=</span><span class="si">{</span><span class="n">dyn_shapes</span><span class="si">!r}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
-        <span class="n">dict_dynamic_shapes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">dyn_shapes</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">)</span><span class="si">}</span><span class="s2"> for dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">dict_dynamic_shapes</span> <span class="o">=</span> <span class="n">dynamic_shapes</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">dict_dynamic_shapes</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">use_dynamic_shapes</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">elif</span> <span class="n">input_names</span><span class="p">:</span>
-        <span class="c1"># Let&#39;s rewrite the dynamic shapes with the true name</span>
-        <span class="n">use_dynamic_shapes</span> <span class="o">=</span> <span class="n">_replacements_dynamic_shapes</span><span class="p">(</span>
-            <span class="n">mod</span><span class="p">,</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">kwargs</span><span class="p">,</span>
-            <span class="n">dynamic_shapes</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">dict_dynamic_shapes</span><span class="p">,</span>
-            <span class="n">input_names</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">use_dynamic_shapes</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">dynamic_shapes</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-            <span class="k">else</span> <span class="n">_replacements_dynamic_shapes</span><span class="p">(</span>
-                <span class="n">mod</span><span class="p">,</span>
-                <span class="n">args</span><span class="p">,</span>
-                <span class="n">kwargs</span><span class="p">,</span>
-                <span class="n">dynamic_shapes</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="n">dict_dynamic_shapes</span><span class="p">,</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">dynamic_shapes</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[to_onnx] use_dynamic_shapes=</span><span class="si">{</span><span class="n">use_dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">assert</span> <span class="n">use_dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">use_dynamic_shapes</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">))),</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;type(use_dynamic_shapes)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">use_dynamic_shapes</span><span class="p">)</span><span class="si">}</span><span class="s2"> should have the &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;same type as args or a dictionary: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2">, dict_dynamic_shapes=</span><span class="si">{</span><span class="n">dict_dynamic_shapes</span><span class="si">}</span><span class="s2">, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;use_dynamic_shapes=</span><span class="si">{</span><span class="n">use_dynamic_shapes</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
     <span class="n">graph_module</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">interpreter</span> <span class="o">=</span> <span class="n">_make_builder_interpreter</span><span class="p">(</span>
         <span class="n">mod</span><span class="o">=</span><span class="n">mod</span><span class="p">,</span>
         <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
@@ -1312,11 +1325,12 @@
         <span class="n">optimization_options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
         <span class="n">raise_list</span><span class="o">=</span><span class="n">raise_list</span><span class="p">,</span>
-        <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">use_dynamic_shapes</span><span class="p">,</span>
+        <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span>
         <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span>
         <span class="n">export_options</span><span class="o">=</span><span class="n">export_options</span><span class="p">,</span>
         <span class="n">optimize_submodules</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
         <span class="n">function_options</span><span class="o">=</span><span class="n">function_options</span><span class="p">,</span>
+        <span class="n">module_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">add_stats</span> <span class="o">=</span> <span class="p">{}</span>

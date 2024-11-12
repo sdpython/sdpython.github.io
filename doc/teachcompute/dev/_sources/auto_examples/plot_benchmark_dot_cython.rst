@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_benchmark_dot_cython.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -30,7 +30,8 @@ the following:
 * :func:`dot_product <teachcompute.validation.cython.dot_cython.dot_product>`
   `dot_product <https://github.com/sdpython/teachcompute/blob/
   main/teachcompute/validation/cython/dot_cython.pyx#L15>`_
-* :func:`ddot_cython_array <teachcompute.validation.cython.dot_cython.ddot_cython_array>`
+* :func:`ddot_cython_array
+  <teachcompute.validation.cython.dot_cython.ddot_cython_array>`
   `ddot_cython_array <https://github.com/sdpython/teachcompute/blob/
   main/teachcompute/validation/cython/dot_cython.pyx#L29>`_
 * :func:`ddot_cython_array_optim
@@ -43,11 +44,12 @@ the following:
 * :func:`ddot_array_16 <teachcompute.validation.cython.dot_cython.ddot_array_16>`
   `ddot_array_16 <https://github.com/sdpython/teachcompute/blob/
   main/teachcompute/validation/cython/dot_cython.pyx#L188>`_
-* :func:`ddot_array_16_sse <teachcompute.validation.cython.dot_cython.ddot_array_16_sse>`
+* :func:`ddot_array_16_sse
+  <teachcompute.validation.cython.dot_cython.ddot_array_16_sse>`
   `ddot_array_16_sse <https://github.com/sdpython/teachcompute/blob/
   main/teachcompute/validation/cython/dot_cython.pyx#L230>`_
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-66
+.. GENERATED FROM PYTHON SOURCE LINES 33-68
 
 .. code-block:: Python
 
@@ -93,13 +95,13 @@ the following:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-70
+.. GENERATED FROM PYTHON SOURCE LINES 69-72
 
 numpy dot
 +++++++++
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-78
+.. GENERATED FROM PYTHON SOURCE LINES 72-80
 
 .. code-block:: Python
 
@@ -119,24 +121,24 @@ numpy dot
 
  .. code-block:: none
 
-      0%|          | 0/100 [00:00<?, ?it/s]     98%|█████████▊| 98/100 [00:00<00:00, 979.11it/s]    100%|██████████| 100/100 [00:00<00:00, 966.28it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     73%|███████▎  | 73/100 [00:00<00:00, 729.74it/s]    100%|██████████| 100/100 [00:00<00:00, 697.86it/s]
          average     deviation  min_exec  ...  warmup_time  x_name        fct
-    97  0.000003  6.093308e-08  0.000002  ...     0.000013    9710  numpy.dot
-    98  0.000003  2.499603e-07  0.000003  ...     0.000020    9810  numpy.dot
-    99  0.000002  1.052162e-07  0.000002  ...     0.000014    9910  numpy.dot
+    97  0.000004  5.619979e-07  0.000003  ...     0.000014    9710  numpy.dot
+    98  0.000004  4.847581e-07  0.000003  ...     0.000012    9810  numpy.dot
+    99  0.000004  1.200792e-06  0.000003  ...     0.000011    9910  numpy.dot
 
     [3 rows x 11 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-82
+.. GENERATED FROM PYTHON SOURCE LINES 81-84
 
 Several cython dot
 ++++++++++++++++++
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-98
+.. GENERATED FROM PYTHON SOURCE LINES 84-100
 
 .. code-block:: Python
 
@@ -164,58 +166,58 @@ Several cython dot
 
  .. code-block:: none
 
-      0%|          | 0/10 [00:00<?, ?it/s]     50%|█████     | 5/10 [00:00<00:00, 48.46it/s]    100%|██████████| 10/10 [00:00<00:00, 19.64it/s]    100%|██████████| 10/10 [00:00<00:00, 21.55it/s]
+      0%|          | 0/10 [00:00<?, ?it/s]     50%|█████     | 5/10 [00:00<00:00, 37.43it/s]     90%|█████████ | 9/10 [00:00<00:00, 15.98it/s]    100%|██████████| 10/10 [00:00<00:00, 15.53it/s]
         average  deviation  min_exec  ...  warmup_time  x_name          fct
-    7  0.000140   0.000003  0.000136  ...     0.000142     710  dot_product
-    8  0.000177   0.000038  0.000156  ...     0.000158     810  dot_product
-    9  0.000179   0.000008  0.000175  ...     0.000177     910  dot_product
+    7  0.000226   0.000061  0.000151  ...     0.000223     710  dot_product
+    8  0.000228   0.000042  0.000173  ...     0.000237     810  dot_product
+    9  0.000266   0.000056  0.000191  ...     0.000199     910  dot_product
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     52%|█████▏    | 52/100 [00:00<00:00, 507.30it/s]    100%|██████████| 100/100 [00:00<00:00, 284.65it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     44%|████▍     | 44/100 [00:00<00:00, 431.56it/s]     88%|████████▊ | 88/100 [00:00<00:00, 283.18it/s]    100%|██████████| 100/100 [00:00<00:00, 275.06it/s]
          average     deviation  min_exec  ...  warmup_time  x_name                fct
-    97  0.000012  3.919590e-07  0.000012  ...     0.000028    9710  ddot_cython_array
-    98  0.000014  1.615427e-06  0.000013  ...     0.000029    9810  ddot_cython_array
-    99  0.000013  2.936753e-07  0.000013  ...     0.000021    9910  ddot_cython_array
+    97  0.000012  3.422998e-06  0.000009  ...     0.000020    9710  ddot_cython_array
+    98  0.000010  1.483251e-06  0.000009  ...     0.000022    9810  ddot_cython_array
+    99  0.000009  8.385466e-07  0.000009  ...     0.000021    9910  ddot_cython_array
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     51%|█████     | 51/100 [00:00<00:00, 505.30it/s]    100%|██████████| 100/100 [00:00<00:00, 287.57it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     57%|█████▋    | 57/100 [00:00<00:00, 561.78it/s]    100%|██████████| 100/100 [00:00<00:00, 342.23it/s]
          average     deviation  ...  x_name                      fct
-    97  0.000012  3.260690e-07  ...    9710  ddot_cython_array_optim
-    98  0.000012  2.699690e-07  ...    9810  ddot_cython_array_optim
-    99  0.000012  2.400454e-07  ...    9910  ddot_cython_array_optim
+    97  0.000009  1.964734e-07  ...    9710  ddot_cython_array_optim
+    98  0.000011  2.940348e-06  ...    9810  ddot_cython_array_optim
+    99  0.000010  1.142207e-06  ...    9910  ddot_cython_array_optim
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     51%|█████     | 51/100 [00:00<00:00, 503.65it/s]    100%|██████████| 100/100 [00:00<00:00, 283.57it/s]
-         average     deviation  min_exec  ...  warmup_time  x_name         fct
-    97  0.000012  4.664114e-07  0.000012  ...     0.000018    9710  ddot_array
-    98  0.000012  2.514716e-07  0.000012  ...     0.000018    9810  ddot_array
-    99  0.000013  1.607867e-06  0.000012  ...     0.000022    9910  ddot_array
+      0%|          | 0/100 [00:00<?, ?it/s]     50%|█████     | 50/100 [00:00<00:00, 492.02it/s]    100%|██████████| 100/100 [00:00<00:00, 288.84it/s]    100%|██████████| 100/100 [00:00<00:00, 307.58it/s]
+         average  deviation  min_exec  ...  warmup_time  x_name         fct
+    97  0.000017   0.000009  0.000012  ...     0.000018    9710  ddot_array
+    98  0.000014   0.000001  0.000012  ...     0.000034    9810  ddot_array
+    99  0.000011   0.000001  0.000010  ...     0.000027    9910  ddot_array
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     67%|██████▋   | 67/100 [00:00<00:00, 665.03it/s]    100%|██████████| 100/100 [00:00<00:00, 490.87it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     67%|██████▋   | 67/100 [00:00<00:00, 664.74it/s]    100%|██████████| 100/100 [00:00<00:00, 509.76it/s]
          average     deviation  min_exec  ...  warmup_time  x_name            fct
-    97  0.000007  1.865304e-07  0.000006  ...     0.000021    9710  ddot_array_16
-    98  0.000006  1.038200e-07  0.000006  ...     0.000018    9810  ddot_array_16
-    99  0.000007  4.855401e-07  0.000007  ...     0.000024    9910  ddot_array_16
+    97  0.000007  2.034337e-06  0.000006  ...     0.000017    9710  ddot_array_16
+    98  0.000008  8.386058e-07  0.000007  ...     0.000021    9810  ddot_array_16
+    99  0.000009  3.665782e-07  0.000008  ...     0.000024    9910  ddot_array_16
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     87%|████████▋ | 87/100 [00:00<00:00, 861.90it/s]    100%|██████████| 100/100 [00:00<00:00, 780.12it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     82%|████████▏ | 82/100 [00:00<00:00, 795.20it/s]    100%|██████████| 100/100 [00:00<00:00, 693.75it/s]
          average     deviation  min_exec  ...  warmup_time  x_name                fct
-    97  0.000004  1.391546e-08  0.000004  ...     0.000024    9710  ddot_array_16_sse
-    98  0.000004  1.292169e-07  0.000004  ...     0.000020    9810  ddot_array_16_sse
-    99  0.000004  7.972453e-09  0.000004  ...     0.000014    9910  ddot_array_16_sse
+    97  0.000003  2.172306e-07  0.000003  ...     0.000014    9710  ddot_array_16_sse
+    98  0.000004  6.489630e-07  0.000003  ...     0.000015    9810  ddot_array_16_sse
+    99  0.000003  1.767073e-07  0.000003  ...     0.000023    9910  ddot_array_16_sse
 
     [3 rows x 11 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-101
+.. GENERATED FROM PYTHON SOURCE LINES 101-103
 
 Let's display the results
 +++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-121
+.. GENERATED FROM PYTHON SOURCE LINES 103-123
 
 .. code-block:: Python
 
@@ -234,7 +236,7 @@ Let's display the results
         logy=True, logx=True, ax=ax[1, 1]
     )
     ax[0, 0].set_title("Comparison of cython ddot implementations")
-    ax[0, 1].set_title("Comparison of cython ddot implementations" "\nwithout dot_product")
+    ax[0, 1].set_title("Comparison of cython ddot implementations\nwithout dot_product")
 
     ###################
     # :epkg:`numpy` is faster but we are able to catch up.
@@ -257,14 +259,14 @@ Let's display the results
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-126
+.. GENERATED FROM PYTHON SOURCE LINES 124-128
 
 Same for floats
 +++++++++++++++
 
 Let's for single floats.
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-156
+.. GENERATED FROM PYTHON SOURCE LINES 128-158
 
 .. code-block:: Python
 
@@ -311,46 +313,46 @@ Let's for single floats.
 
  .. code-block:: none
 
-      0%|          | 0/100 [00:00<?, ?it/s]    100%|██████████| 100/100 [00:00<00:00, 1349.82it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]    100%|██████████| 100/100 [00:00<00:00, 1015.88it/s]
          average     deviation  min_exec  ...  warmup_time  x_name  fct
-    97  0.000002  3.370458e-09  0.000002  ...     0.000010    9710  dot
-    98  0.000002  7.255342e-09  0.000002  ...     0.000008    9810  dot
-    99  0.000002  5.059644e-09  0.000002  ...     0.000010    9910  dot
+    97  0.000003  1.160534e-06  0.000002  ...     0.000110    9710  dot
+    98  0.000002  1.534211e-07  0.000002  ...     0.000015    9810  dot
+    99  0.000002  4.696813e-07  0.000002  ...     0.000008    9910  dot
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     51%|█████     | 51/100 [00:00<00:00, 509.74it/s]    100%|██████████| 100/100 [00:00<00:00, 288.94it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     54%|█████▍    | 54/100 [00:00<00:00, 530.75it/s]    100%|██████████| 100/100 [00:00<00:00, 336.73it/s]
          average     deviation  min_exec  ...  warmup_time  x_name                fct
-    97  0.000012  4.738001e-07  0.000012  ...     0.000017    9710  sdot_cython_array
-    98  0.000013  1.219627e-06  0.000012  ...     0.000022    9810  sdot_cython_array
-    99  0.000012  4.456777e-07  0.000012  ...     0.000020    9910  sdot_cython_array
+    97  0.000010  2.593688e-06  0.000008  ...     0.000013    9710  sdot_cython_array
+    98  0.000009  6.537024e-07  0.000008  ...     0.000013    9810  sdot_cython_array
+    99  0.000009  1.271740e-06  0.000008  ...     0.000014    9910  sdot_cython_array
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     52%|█████▏    | 52/100 [00:00<00:00, 502.44it/s]    100%|██████████| 100/100 [00:00<00:00, 286.29it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     57%|█████▋    | 57/100 [00:00<00:00, 560.74it/s]    100%|██████████| 100/100 [00:00<00:00, 347.06it/s]
          average     deviation  ...  x_name                      fct
-    97  0.000012  1.560405e-07  ...    9710  sdot_cython_array_optim
-    98  0.000013  5.861514e-07  ...    9810  sdot_cython_array_optim
-    99  0.000012  2.063391e-07  ...    9910  sdot_cython_array_optim
+    97  0.000009  4.817641e-07  ...    9710  sdot_cython_array_optim
+    98  0.000009  1.792688e-06  ...    9810  sdot_cython_array_optim
+    99  0.000009  8.121792e-07  ...    9910  sdot_cython_array_optim
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     51%|█████     | 51/100 [00:00<00:00, 496.85it/s]    100%|██████████| 100/100 [00:00<00:00, 281.93it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     56%|█████▌    | 56/100 [00:00<00:00, 542.80it/s]    100%|██████████| 100/100 [00:00<00:00, 345.13it/s]
          average     deviation  min_exec  ...  warmup_time  x_name         fct
-    97  0.000012  3.187071e-07  0.000012  ...     0.000016    9710  sdot_array
-    98  0.000012  2.984842e-07  0.000012  ...     0.000020    9810  sdot_array
-    99  0.000013  3.354402e-07  0.000012  ...     0.000017    9910  sdot_array
+    97  0.000009  7.199072e-07  0.000008  ...     0.000013    9710  sdot_array
+    98  0.000009  3.365492e-07  0.000009  ...     0.000017    9810  sdot_array
+    99  0.000009  1.962220e-07  0.000008  ...     0.000012    9910  sdot_array
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     63%|██████▎   | 63/100 [00:00<00:00, 628.94it/s]    100%|██████████| 100/100 [00:00<00:00, 424.37it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     70%|███████   | 70/100 [00:00<00:00, 691.94it/s]    100%|██████████| 100/100 [00:00<00:00, 516.70it/s]
          average     deviation  min_exec  ...  warmup_time  x_name            fct
-    97  0.000007  1.391853e-06  0.000006  ...     0.000054    9710  sdot_array_16
-    98  0.000007  2.197745e-07  0.000006  ...     0.000014    9810  sdot_array_16
-    99  0.000007  3.757621e-07  0.000007  ...     0.000023    9910  sdot_array_16
+    97  0.000010  8.293641e-06  0.000007  ...     0.000014    9710  sdot_array_16
+    98  0.000009  2.818870e-06  0.000007  ...     0.000018    9810  sdot_array_16
+    99  0.000007  2.819661e-07  0.000007  ...     0.000016    9910  sdot_array_16
 
     [3 rows x 11 columns]
-      0%|          | 0/100 [00:00<?, ?it/s]     86%|████████▌ | 86/100 [00:00<00:00, 847.48it/s]    100%|██████████| 100/100 [00:00<00:00, 806.03it/s]
+      0%|          | 0/100 [00:00<?, ?it/s]     83%|████████▎ | 83/100 [00:00<00:00, 828.34it/s]    100%|██████████| 100/100 [00:00<00:00, 797.59it/s]
          average     deviation  min_exec  ...  warmup_time  x_name                fct
-    97  0.000003  6.378326e-07  0.000003  ...     0.000041    9710  sdot_array_16_sse
-    98  0.000003  6.358742e-08  0.000003  ...     0.000016    9810  sdot_array_16_sse
-    99  0.000003  5.147139e-07  0.000003  ...     0.000011    9910  sdot_array_16_sse
+    97  0.000003  2.282910e-07  0.000002  ...     0.000008    9710  sdot_array_16_sse
+    98  0.000003  2.415674e-07  0.000003  ...     0.000008    9810  sdot_array_16_sse
+    99  0.000003  8.935738e-09  0.000003  ...     0.000009    9910  sdot_array_16_sse
 
     [3 rows x 11 columns]
 
@@ -361,7 +363,7 @@ Let's for single floats.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.147 seconds)
+   **Total running time of the script:** (0 minutes 5.423 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_dot_cython.py:
@@ -377,6 +379,10 @@ Let's for single floats.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_benchmark_dot_cython.py <plot_benchmark_dot_cython.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_benchmark_dot_cython.zip <plot_benchmark_dot_cython.zip>`
 
 
 .. only:: html

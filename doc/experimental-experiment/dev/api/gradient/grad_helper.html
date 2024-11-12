@@ -9,7 +9,7 @@
         <title>experimental_experiment.gradient.grad_helper - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/docker.html">Start from a docker</a></li>
@@ -454,6 +455,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -578,10 +580,10 @@ the gradient is saved to that path</p></li>
 from <a class="reference external" href="https://onnxruntime.ai/docs/get-started/training-on-device.html">onnxruntime-training</a>. This graph is meant to be used
 with <cite>OrtGradientForwardBackward</cite> and includes
 operator <cite>YieldOp</cite>. That’s the graph looks this way:</p>
-<div class="graphviz"><img src="../../_images/graphviz-01d1666531db81710182cdbf5bd99c4588d9e0d5.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-e0ffa5f4ed8cc736e926f1cb589c27b3f04d92cd.png" alt="digraph{
+  nodesep=0.05;
   size=7;
   ranksep=0.25;
-  nodesep=0.05;
   orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -646,10 +648,10 @@ operator <cite>YieldOp</cite>. That’s the graph looks this way:</p>
 initial graph and must be replaced by the gradient of these
 outputs to compute the gradient of the weights and the inputs.
 After they are replaced, it looks this way:</p>
-<div class="graphviz"><img src="../../_images/graphviz-e214afc649a11bfd00bbf2268575eed170d43f69.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-a75e1e4fe2e57548fc0da53a0f78f8936f4dbcc4.png" alt="digraph{
+  nodesep=0.05;
   size=7;
   ranksep=0.25;
-  nodesep=0.05;
   orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -701,10 +703,10 @@ After they are replaced, it looks this way:</p>
   Ad_Add_Grad_Reshape_4 -&gt; X_grad;
 }" class="graphviz" /></div>
 <p>The user can still compute the outputs.</p>
-<div class="graphviz"><img src="../../_images/graphviz-16166be934477c9ee94a2967dba031b1d90c28a7.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-3f868fca5d7a63395a4fb7a2ef3358f011459743.png" alt="digraph{
+  nodesep=0.05;
   size=7;
   ranksep=0.25;
-  nodesep=0.05;
   orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
@@ -763,10 +765,10 @@ After they are replaced, it looks this way:</p>
 }" class="graphviz" /></div>
 <p>The input gradient can be filled with a constant matrix
 filled with one and with the expected shape.</p>
-<div class="graphviz"><img src="../../_images/graphviz-54894b25d909a2e03d1a91c0b63300be352674ce.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-198e375e867ab48c4b6cabe57e7d81eae5b8570e.png" alt="digraph{
+  nodesep=0.05;
   size=7;
   ranksep=0.25;
-  nodesep=0.05;
   orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];

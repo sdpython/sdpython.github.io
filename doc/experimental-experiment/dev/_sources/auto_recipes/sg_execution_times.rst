@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:08.873** total execution time for 4 files **from auto_recipes**:
+**00:09.579** total execution time for 5 files **from auto_recipes**:
 
 .. container::
 
@@ -32,15 +32,18 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
-     - 00:06.291
-     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``plot_exporter_recipes_c_cond.py``)
-     - 00:01.445
+     - 00:07.225
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py` (``plot_exporter_recipes_c_custom_ops_inplace.py``)
-     - 00:00.623
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
+     - 00:02.354
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py` (``plot_exporter_recipes_c_custom_ops_fct.py``)
-     - 00:00.514
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py` (``plot_exporter_recipes_c_custom_ops_inplace.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
+     - 00:00.000
      - 0.0

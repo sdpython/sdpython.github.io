@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_benchmark_dot_mul_timeit.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -30,7 +30,8 @@ Compared implementations:
 * :func:`multiply_matrix <teachcompute.validation.cython.td_mul_cython.multiply_matrix>`
   `multiply_matrix <https://github.com/sdpython/teachcompute/blob/main/
   teachcompute/validation/cython/td_mul_cython.pyx#L14>`_
-* :func:`c_multiply_matrix <teachcompute.validation.cython.td_mul_cython.c_multiply_matrix>`
+* :func:`c_multiply_matrix
+  <teachcompute.validation.cython.td_mul_cython.c_multiply_matrix>`
   `c_multiply_matrix <https://github.com/sdpython/teachcompute/blob/main/
   teachcompute/validation/cython/td_mul_cython.pyx#L69>`_
 * :func:`c_multiply_matrix_parallel
@@ -46,7 +47,7 @@ Compared implementations:
 Preparation
 +++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-53
+.. GENERATED FROM PYTHON SOURCE LINES 31-54
 
 .. code-block:: Python
 
@@ -80,14 +81,14 @@ Preparation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-58
+.. GENERATED FROM PYTHON SOURCE LINES 55-59
 
 Measures
 ++++++++
 
 numpy
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-61
+.. GENERATED FROM PYTHON SOURCE LINES 59-62
 
 .. code-block:: Python
 
@@ -102,16 +103,16 @@ numpy
 
  .. code-block:: none
 
-    numpy time 0.011885600000823615
+    numpy time 0.067679797000892
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-63
+.. GENERATED FROM PYTHON SOURCE LINES 63-64
 
 python implementation
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-68
+.. GENERATED FROM PYTHON SOURCE LINES 64-69
 
 .. code-block:: Python
 
@@ -128,16 +129,16 @@ python implementation
 
  .. code-block:: none
 
-    python implementation 7.265511200001129
+    python implementation 7.336435834993608
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-70
+.. GENERATED FROM PYTHON SOURCE LINES 70-71
 
 cython implementation
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-75
+.. GENERATED FROM PYTHON SOURCE LINES 71-76
 
 .. code-block:: Python
 
@@ -154,16 +155,16 @@ cython implementation
 
  .. code-block:: none
 
-    cython implementation 0.1918974000000162
+    cython implementation 0.12964998700044816
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-77
+.. GENERATED FROM PYTHON SOURCE LINES 77-78
 
 cython implementation parallelized
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-82
+.. GENERATED FROM PYTHON SOURCE LINES 78-83
 
 .. code-block:: Python
 
@@ -180,16 +181,16 @@ cython implementation parallelized
 
  .. code-block:: none
 
-    cython implementation parallelized 0.9288433000001532
+    cython implementation parallelized 0.5565220380012761
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-84
+.. GENERATED FROM PYTHON SOURCE LINES 84-85
 
 cython implementation parallelized, AVX + transposed
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-91
+.. GENERATED FROM PYTHON SOURCE LINES 85-92
 
 .. code-block:: Python
 
@@ -208,16 +209,16 @@ cython implementation parallelized, AVX + transposed
 
  .. code-block:: none
 
-    cython implementation parallelized avx 0.8376110999997763
+    cython implementation parallelized avx 0.014571653002349194
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-93
+.. GENERATED FROM PYTHON SOURCE LINES 93-94
 
 Speed up...
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-98
+.. GENERATED FROM PYTHON SOURCE LINES 94-99
 
 .. code-block:: Python
 
@@ -234,10 +235,10 @@ Speed up...
 
  .. code-block:: none
 
-    numpy is 611.286868 faster than pure python.
-    numpy is 16.145369 faster than cython.
-    numpy is 78.148625 faster than parallelized cython.
-    numpy is 70.472765 faster than avx parallelized cython.
+    numpy is 108.399200 faster than pure python.
+    numpy is 1.915638 faster than cython.
+    numpy is 8.222868 faster than parallelized cython.
+    numpy is 0.215303 faster than avx parallelized cython.
 
 
 
@@ -245,7 +246,7 @@ Speed up...
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.253 seconds)
+   **Total running time of the script:** (0 minutes 8.139 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_dot_mul_timeit.py:
@@ -261,6 +262,10 @@ Speed up...
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_benchmark_dot_mul_timeit.py <plot_benchmark_dot_mul_timeit.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_benchmark_dot_mul_timeit.zip <plot_benchmark_dot_mul_timeit.zip>`
 
 
 .. only:: html

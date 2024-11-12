@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_test_helper - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/docker.html">Start from a docker</a></li>
@@ -454,6 +455,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -589,9 +591,9 @@ an error happened</p></li>
         <span class="p">(</span><span class="n">norm_1</span><span class="p">):</span> <span class="n">LayerNorm</span><span class="p">((</span><span class="mi">16</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">(</span><span class="n">norm_2</span><span class="p">):</span> <span class="n">LayerNorm</span><span class="p">((</span><span class="mi">16</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
       <span class="p">)</span>
-    <span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">950</span><span class="p">,</span> <span class="mi">325</span><span class="p">,</span> <span class="mi">370</span><span class="p">,</span> <span class="mi">147</span><span class="p">,</span> <span class="mi">732</span><span class="p">,</span> <span class="mi">849</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">777</span><span class="p">,</span> <span class="mi">866</span><span class="p">,</span> <span class="mi">306</span><span class="p">,</span> <span class="mi">391</span><span class="p">,</span> <span class="mi">934</span><span class="p">,</span> <span class="mi">648</span><span class="p">,</span> <span class="mi">223</span><span class="p">,</span>
-             <span class="mi">135</span><span class="p">,</span> <span class="mi">624</span><span class="p">,</span> <span class="mi">477</span><span class="p">,</span>  <span class="mi">17</span><span class="p">,</span> <span class="mi">431</span><span class="p">,</span> <span class="mi">484</span><span class="p">,</span> <span class="mi">576</span><span class="p">,</span> <span class="mi">590</span><span class="p">,</span> <span class="mi">282</span><span class="p">,</span> <span class="mi">462</span><span class="p">,</span> <span class="mi">549</span><span class="p">,</span> <span class="mi">925</span><span class="p">,</span> <span class="mi">845</span><span class="p">,</span> <span class="mi">261</span><span class="p">,</span>
-             <span class="mi">101</span><span class="p">,</span> <span class="mi">247</span><span class="p">]]),))</span>
+    <span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">761</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">316</span><span class="p">,</span> <span class="mi">621</span><span class="p">,</span> <span class="mi">797</span><span class="p">,</span> <span class="mi">684</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">382</span><span class="p">,</span>  <span class="mi">59</span><span class="p">,</span> <span class="mi">590</span><span class="p">,</span> <span class="mi">779</span><span class="p">,</span> <span class="mi">619</span><span class="p">,</span> <span class="mi">538</span><span class="p">,</span>  <span class="mi">85</span><span class="p">,</span>
+             <span class="mi">746</span><span class="p">,</span> <span class="mi">879</span><span class="p">,</span> <span class="mi">659</span><span class="p">,</span> <span class="mi">194</span><span class="p">,</span> <span class="mi">916</span><span class="p">,</span> <span class="mi">543</span><span class="p">,</span> <span class="mi">877</span><span class="p">,</span> <span class="mi">711</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">678</span><span class="p">,</span> <span class="mi">437</span><span class="p">,</span>  <span class="mi">57</span><span class="p">,</span> <span class="mi">287</span><span class="p">,</span> <span class="mi">948</span><span class="p">,</span>
+             <span class="mi">388</span><span class="p">,</span> <span class="mi">635</span><span class="p">]]),))</span>
 </pre></div>
 </div>
 </dd></dl>

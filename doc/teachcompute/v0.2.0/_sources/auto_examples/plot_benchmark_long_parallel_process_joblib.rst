@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_benchmark_long_parallel_process_joblib.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -85,7 +85,7 @@ We check that it returns the same values.
 
  .. code-block:: none
 
-    3.95418605643733 3.9541860564373317
+    -10.23337031156038 -10.233370311560382
 
 
 
@@ -132,11 +132,11 @@ Let's benchmark.
 
  .. code-block:: none
 
-      0%|          | 0/2 [00:00<?, ?it/s]     50%|█████     | 1/2 [00:00<00:00,  1.95it/s]    100%|██████████| 2/2 [00:00<00:00,  2.09it/s]    100%|██████████| 2/2 [00:00<00:00,  2.07it/s]
-          numpy.dot    joblib
-    N                        
-    1000   0.000003  0.010030
-    2000   0.000002  0.008846
+      0%|          | 0/2 [00:00<?, ?it/s]     50%|█████     | 1/2 [00:00<00:00,  1.75it/s]    100%|██████████| 2/2 [00:01<00:00,  1.74it/s]    100%|██████████| 2/2 [00:01<00:00,  1.74it/s]
+             numpy.dot    joblib
+    N                           
+    1000  6.035540e-07  0.011176
+    2000  2.451846e-06  0.011197
 
     Text(0.5, 1.0, 'Parallel / numpy dot')
 
@@ -149,7 +149,7 @@ The parallelisation is inefficient.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.460 seconds)
+   **Total running time of the script:** (0 minutes 2.228 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_long_parallel_process_joblib.py:
@@ -165,6 +165,10 @@ The parallelisation is inefficient.
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_benchmark_long_parallel_process_joblib.py <plot_benchmark_long_parallel_process_joblib.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_benchmark_long_parallel_process_joblib.zip <plot_benchmark_long_parallel_process_joblib.zip>`
 
 
 .. only:: html

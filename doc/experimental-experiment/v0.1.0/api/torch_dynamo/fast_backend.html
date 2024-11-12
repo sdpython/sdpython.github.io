@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_dynamo.fast_backend - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/docker.html">Start from a docker</a></li>
@@ -454,6 +455,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -642,12 +644,13 @@ the model is run.</p>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [onnx_custom_backend] starts conversion to onnx.
+    [to_onnx] build the graph module from &lt;class &#39;torch.fx.graph_module.GraphModule.__new__.&lt;locals&gt;.GraphModuleImpl&#39;&gt;, type(args)=&lt;class &#39;tuple&#39;&gt;
     [to_onnx] build the graph module with input_names=[&#39;input0&#39;, &#39;input1&#39;, &#39;input2&#39;, &#39;input3&#39;, &#39;input4&#39;]
     [_make_builder_interpreter] use existing &lt;class &#39;torch.fx.graph_module.GraphModule.__new__.&lt;locals&gt;.GraphModuleImpl&#39;&gt;
-    [to_onnx] graph module done in 0.00016291000065393746 s
+    [to_onnx] graph module done in 0.0002588479983387515 s
     [to_onnx] start creating the onnx nodes
     [to_onnx] interpreter.function_options=FunctionOptions(export_as_function=True, name=&#39;*&#39;, domain=&#39;*&#39;, external_threshold=256, move_initializer_to_constant=True, return_initializer=True, merge_allowed=True, rename_allowed=True)
-    [to_onnx] 13 onnx nodes done in 0.0014407939997909125 s
+    [to_onnx] 13 onnx nodes done in 0.002746648002357688 s
     [to_onnx] start conversion to onnx (before optimization)
     [GraphBuilder.optimize] start with 13 nodes
     [GraphBuilder.optimize] #patterns=41
@@ -655,22 +658,22 @@ the model is run.</p>
     [GraphBuilderPatternOptimization.optimize] iteration 0: 7 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] increase priority to 1
     [GraphBuilderPatternOptimization.optimize] iteration 1: 7 nodes, priority=1
-    [GraphBuilderPatternOptimization.optimize] applies 2 matches, 2*MatMulAddPattern - time=0.000 | max_time=MatMulAddPattern:0.000
+    [GraphBuilderPatternOptimization.optimize] applies 2 matches, 2*MatMulAddPattern - time=0.001 | max_time=Reshape2Of3Pattern:0.000
     [GraphBuilderPatternOptimization.optimize] iteration 2: 5 nodes, priority=1
     [GraphBuilderPatternOptimization.optimize] applies 2 matches, 2*TransposeMatMulPattern - time=0.000 | max_time=TransposeMatMulPattern:0.000
     [GraphBuilderPatternOptimization.optimize] iteration 3: 3 nodes, priority=1
-    [GraphBuilderPatternOptimization.optimize] done after 4 iterations with 3 nodes in 0.005
-    [GraphBuilder.optimize] done with 3 nodes in 0.005
-    [GraphBuilder-CCM.to_onnx] make_model
-    [GraphBuilder-CCM.time_evaluation_constants_] 0
-    [GraphBuilder-CCM._build_initializers] start with 0 initializers, large_model=False, external_threshold=1024
-    [GraphBuilder-CCM._build_initializers] switch low/high order
-    [GraphBuilder-CCM._build_initializers] done in 6.509981176350266e-07s with 0 initializers, 0 large initializers
-    [to_onnx] to_onnx done in 0.005444413000077475s and 3 nodes, 0 initializers, 5 inputs, 1 outputs
-    [onnx_custom_backend] to_onnx done in 0.0073888940023607574 with 3 nodes and 0 local functions.
+    [GraphBuilderPatternOptimization.optimize] done after 4 iterations with 3 nodes in 0.007
+    [GraphBuilder.optimize] done with 3 nodes in 0.008
+    [GraphBuilder-VRK.to_onnx] make_model 0 inits 0 params
+    [GraphBuilder-VRK.time_evaluation_constants_] 0
+    [GraphBuilder-VRK._build_initializers] start with 0 initializers, large_model=False, external_threshold=1024
+    [GraphBuilder-VRK._build_initializers] switch low/high order
+    [GraphBuilder-VRK._build_initializers] done in 9.00996383279562e-07s with 0 initializers, 0 large initializers
+    [to_onnx] to_onnx done in 0.008545954995497596s and 3 nodes, 0 initializers, 5 inputs, 1 outputs
+    [onnx_custom_backend] to_onnx done in 0.011863695006468333 with 3 nodes and 0 local functions.
     [onnx_custom_backend] starts creating InferenceSession
-    [onnx_custom_backend] InferenceSession done in 0.0020578830008162186
-    discrepancies: 5.960464477539063e-08
+    [onnx_custom_backend] InferenceSession done in 0.14823250700283097
+    discrepancies: 0.0
 </pre></div>
 </div>
 </dd></dl>

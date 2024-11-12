@@ -9,7 +9,7 @@
         <title>Phi3 - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,6 +222,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/errors.html">Frequent Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_strict.html">Parameter torch.export.export(…, strict: bool)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/docker.html">Start from a docker</a></li>
@@ -454,6 +455,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
 </ul>
 </li>
@@ -588,20 +590,6 @@
     doc_string: large_model=False, inline=False, external_threshold=102...
     input: name=&#39;input_ids&#39; type=dtype(&#39;int64&#39;) shape=[2, 1024]
     input: name=&#39;attention_mask&#39; type=dtype(&#39;float32&#39;) shape=[2, 1024]
-    init: name=&#39;p_layers_0_input_layernorm_weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
-    init: name=&#39;p_layers_0_post_attention_layernorm_weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
-    init: name=&#39;p_layers_1_input_layernorm_weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
-    init: name=&#39;p_layers_1_post_attention_layernorm_weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
-    init: name=&#39;p_norm_weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
-    init: name=&#39;p_embed_tokens_weight&#39; type=dtype(&#39;float32&#39;) shape=(1024, 32)
-    init: name=&#39;p_layers_0_self_attn_qkv_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(96, 32)
-    init: name=&#39;p_layers_0_self_attn_o_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
-    init: name=&#39;p_layers_0_mlp_gate_up_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
-    init: name=&#39;p_layers_0_mlp_down_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 16)
-    init: name=&#39;p_layers_1_self_attn_qkv_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(96, 32)
-    init: name=&#39;p_layers_1_self_attn_o_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
-    init: name=&#39;p_layers_1_mlp_gate_up_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
-    init: name=&#39;p_layers_1_mlp_down_proj_weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 16)
     init: name=&#39;b_layers_0_self_attn_rotary_emb_inv_freq&#39; type=dtype(&#39;float32&#39;) shape=(8,)
     init: name=&#39;b_layers_1_self_attn_rotary_emb_inv_freq&#39; type=dtype(&#39;float32&#39;) shape=(8,)
     init: name=&#39;init7_s_0&#39; type=dtype(&#39;int64&#39;) shape=() -- array([0])
@@ -625,8 +613,22 @@
     init: name=&#39;init7_s2_0_12&#39; type=dtype(&#39;int64&#39;) shape=(2,) -- array([0, 1])
     init: name=&#39;init7_s3_32_32_32&#39; type=dtype(&#39;int64&#39;) shape=(3,) -- array([32, 32, 32])
     init: name=&#39;init7_s2_8_8&#39; type=dtype(&#39;int64&#39;) shape=(2,) -- array([8, 8])
+    init: name=&#39;layers.0.input_layernorm.weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
+    init: name=&#39;layers.0.post_attention_layernorm.weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
+    init: name=&#39;layers.1.input_layernorm.weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
+    init: name=&#39;layers.1.post_attention_layernorm.weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
+    init: name=&#39;norm.weight&#39; type=dtype(&#39;float32&#39;) shape=(32,)
+    init: name=&#39;embed_tokens.weight&#39; type=dtype(&#39;float32&#39;) shape=(1024, 32)
+    init: name=&#39;layers.0.self_attn.qkv_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(96, 32)
+    init: name=&#39;layers.0.self_attn.o_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
+    init: name=&#39;layers.0.mlp.gate_up_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
+    init: name=&#39;layers.0.mlp.down_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 16)
+    init: name=&#39;layers.1.self_attn.qkv_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(96, 32)
+    init: name=&#39;layers.1.self_attn.o_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
+    init: name=&#39;layers.1.mlp.gate_up_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 32)
+    init: name=&#39;layers.1.mlp.down_proj.weight&#39; type=dtype(&#39;float32&#39;) shape=(32, 16)
     ConstantOfShape(init7_s2_1024_1024, value=[-3.402823...) -&gt; full
-    Gather(p_embed_tokens_weight, input_ids) -&gt; embedding
+    Gather(embed_tokens.weight, input_ids) -&gt; embedding
       Pow(embedding, init1_s1_2) -&gt; pow_1
         ReduceMean(pow_1, init7_s1_-1, keepdims=1) -&gt; mean
     Range(init7_s_0, init7_s_1024, init7_s_1) -&gt; arange
@@ -649,8 +651,8 @@
         Sqrt(add_1) -&gt; _onx_sqrt0
           Reciprocal(_onx_sqrt0) -&gt; rsqrt
       Mul(embedding, rsqrt) -&gt; mul_1
-        Mul(p_layers_0_input_layernorm_weight, mul_1) -&gt; mul_2
-    Transpose(p_layers_0_self_attn_qkv_proj_weight, perm=[1,0]) -&gt; _onx_transpose0
+        Mul(layers.0.input_layernorm.weight, mul_1) -&gt; mul_2
+    Transpose(layers.0.self_attn.qkv_proj.weight, perm=[1,0]) -&gt; _onx_transpose0
       MatMul(mul_2, _onx_transpose0) -&gt; linear
         Split(linear, init7_s3_32_32_32, axis=2) -&gt; slice_21, slice_22, slice_23
           Reshape(slice_21, init7_s4_2_1024_2_16) -&gt; view_1
@@ -684,7 +686,7 @@
             MatMul(softmax, output_2) -&gt; matmul_2
               Transpose(matmul_2, perm=[0,2,1,3]) -&gt; transpose_5
                 Reshape(transpose_5, init7_s3_2_1024_32) -&gt; view_4
-    Transpose(p_layers_0_self_attn_o_proj_weight, perm=[1,0]) -&gt; _onx_transpose02
+    Transpose(layers.0.self_attn.o_proj.weight, perm=[1,0]) -&gt; _onx_transpose02
       MatMul(view_4, _onx_transpose02) -&gt; linear_1
       Add(embedding, linear_1) -&gt; add_5
         Pow(add_5, init1_s1_2) -&gt; pow_2
@@ -694,14 +696,14 @@
         Sqrt(add_6) -&gt; _onx_sqrt02
           Reciprocal(_onx_sqrt02) -&gt; rsqrt_1
         Mul(add_5, rsqrt_1) -&gt; mul_7
-          Mul(p_layers_0_post_attention_layernorm_weight, mul_7) -&gt; mul_8
-    Transpose(p_layers_0_mlp_gate_up_proj_weight, perm=[1,0]) -&gt; _onx_transpose03
+          Mul(layers.0.post_attention_layernorm.weight, mul_7) -&gt; mul_8
+    Transpose(layers.0.mlp.gate_up_proj.weight, perm=[1,0]) -&gt; _onx_transpose03
       MatMul(mul_8, _onx_transpose03) -&gt; linear_2
         Split(linear_2, axis=-1, num_outputs=2) -&gt; split#0, split#1
           Sigmoid(split#0) -&gt; _onx_sigmoid0
           Mul(split#0, _onx_sigmoid0) -&gt; silu
           Mul(split#1, silu) -&gt; mul_9
-    Transpose(p_layers_0_mlp_down_proj_weight, perm=[1,0]) -&gt; _onx_transpose04
+    Transpose(layers.0.mlp.down_proj.weight, perm=[1,0]) -&gt; _onx_transpose04
       MatMul(mul_9, _onx_transpose04) -&gt; linear_3
         Add(add_5, linear_3) -&gt; add_7
           Pow(add_7, init1_s1_2) -&gt; pow_3
@@ -711,8 +713,8 @@
         Sqrt(add_8) -&gt; _onx_sqrt03
           Reciprocal(_onx_sqrt03) -&gt; rsqrt_2
           Mul(add_7, rsqrt_2) -&gt; mul_10
-            Mul(p_layers_1_input_layernorm_weight, mul_10) -&gt; mul_11
-    Transpose(p_layers_1_self_attn_qkv_proj_weight, perm=[1,0]) -&gt; _onx_transpose05
+            Mul(layers.1.input_layernorm.weight, mul_10) -&gt; mul_11
+    Transpose(layers.1.self_attn.qkv_proj.weight, perm=[1,0]) -&gt; _onx_transpose05
       MatMul(mul_11, _onx_transpose05) -&gt; linear_4
         Split(linear_4, init7_s3_32_32_32, axis=2) -&gt; slice_37, slice_38, slice_39
           Reshape(slice_37, init7_s4_2_1024_2_16) -&gt; view_5
@@ -746,7 +748,7 @@
             MatMul(softmax_1, output_4) -&gt; matmul_5
               Transpose(matmul_5, perm=[0,2,1,3]) -&gt; transpose_11
                 Reshape(transpose_11, init7_s3_2_1024_32) -&gt; view_8
-    Transpose(p_layers_1_self_attn_o_proj_weight, perm=[1,0]) -&gt; _onx_transpose06
+    Transpose(layers.1.self_attn.o_proj.weight, perm=[1,0]) -&gt; _onx_transpose06
       MatMul(view_8, _onx_transpose06) -&gt; linear_5
         Add(add_7, linear_5) -&gt; add_12
           Pow(add_12, init1_s1_2) -&gt; pow_4
@@ -756,14 +758,14 @@
         Sqrt(add_13) -&gt; _onx_sqrt04
           Reciprocal(_onx_sqrt04) -&gt; rsqrt_3
           Mul(add_12, rsqrt_3) -&gt; mul_16
-            Mul(p_layers_1_post_attention_layernorm_weight, mul_16) -&gt; mul_17
-    Transpose(p_layers_1_mlp_gate_up_proj_weight, perm=[1,0]) -&gt; _onx_transpose07
+            Mul(layers.1.post_attention_layernorm.weight, mul_16) -&gt; mul_17
+    Transpose(layers.1.mlp.gate_up_proj.weight, perm=[1,0]) -&gt; _onx_transpose07
       MatMul(mul_17, _onx_transpose07) -&gt; linear_6
         Split(linear_6, axis=-1, num_outputs=2) -&gt; split_1#0, split_1#1
           Sigmoid(split_1#0) -&gt; _onx_sigmoid02
           Mul(split_1#0, _onx_sigmoid02) -&gt; silu_1
           Mul(split_1#1, silu_1) -&gt; mul_18
-    Transpose(p_layers_1_mlp_down_proj_weight, perm=[1,0]) -&gt; _onx_transpose08
+    Transpose(layers.1.mlp.down_proj.weight, perm=[1,0]) -&gt; _onx_transpose08
       MatMul(mul_18, _onx_transpose08) -&gt; linear_7
         Add(add_12, linear_7) -&gt; add_14
           Pow(add_14, init1_s1_2) -&gt; pow_5
@@ -773,7 +775,7 @@
         Sqrt(add_15) -&gt; _onx_sqrt05
           Reciprocal(_onx_sqrt05) -&gt; rsqrt_4
           Mul(add_14, rsqrt_4) -&gt; mul_19
-            Mul(p_norm_weight, mul_19) -&gt; output_0
+            Mul(norm.weight, mul_19) -&gt; output_0
     output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[2, 1024, 32]
     output: name=&#39;output_1&#39; type=dtype(&#39;float32&#39;) shape=[2, 2, 1024, 16]
     output: name=&#39;output_2&#39; type=dtype(&#39;float32&#39;) shape=[2, 2, 1024, 16]
