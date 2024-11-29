@@ -41,7 +41,7 @@ We appy loops to the pairwise distances (:class:`torch.nn.PairwiseDistance`).
     import torch
     from onnx_array_api.plotting.graphviz_helper import plot_dot
     from experimental_experiment.helpers import pretty_onnx
-    from experimental_experiment.torch_interpreter import to_onnx
+    from experimental_experiment.torch_interpreter import to_onnx, ExportOptions
 
 
     class ModuleWithControlFlowLoop(torch.nn.Module):
@@ -69,7 +69,7 @@ We appy loops to the pairwise distances (:class:`torch.nn.PairwiseDistance`).
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=1.857952760531134e-07
+    shape=(3, 5), discrepancies=3.576581368847087e-07
 
 
 
@@ -99,7 +99,7 @@ It works if the input size never change.
     graph():
         %x : [num_users=3] = placeholder[target=x]
         %y : [num_users=3] = placeholder[target=y]
-        %empty : [num_users=3] = call_function[target=torch.ops.aten.empty.memory_format](args = ([3, 5],), kwargs = {dtype: torch.float32, device: cpu, pin_memory: False})
+        %empty : [num_users=4] = call_function[target=torch.ops.aten.empty.memory_format](args = ([3, 5],), kwargs = {dtype: torch.float32, device: cpu, pin_memory: False})
         %slice_1 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 0, 1), kwargs = {})
         %sub : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_1), kwargs = {})
         %mul : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%sub, %sub), kwargs = {})
@@ -107,33 +107,24 @@ It works if the input size never change.
         %sqrt : [num_users=1] = call_function[target=torch.ops.aten.sqrt.default](args = (%sum_1,), kwargs = {})
         %select : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 0), kwargs = {})
         %slice_2 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select, 0, 0, 9223372036854775807), kwargs = {})
-        %copy : [num_users=1] = call_function[target=torch.ops.aten.copy.default](args = (%slice_2, %sqrt), kwargs = {})
-        %select_1 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 0), kwargs = {})
-        %slice_scatter : [num_users=1] = call_function[target=torch.ops.aten.slice_scatter.default](args = (%select_1, %copy, 0, 0, 9223372036854775807), kwargs = {})
-        %select_scatter : [num_users=3] = call_function[target=torch.ops.aten.select_scatter.default](args = (%empty, %slice_scatter, 0, 0), kwargs = {})
-        %slice_4 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 1, 2), kwargs = {})
-        %sub_1 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_4), kwargs = {})
+        %copy_ : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%slice_2, %sqrt), kwargs = {})
+        %slice_3 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 1, 2), kwargs = {})
+        %sub_1 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_3), kwargs = {})
         %mul_1 : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%sub_1, %sub_1), kwargs = {})
         %sum_2 : [num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul_1, [1]), kwargs = {})
         %sqrt_1 : [num_users=1] = call_function[target=torch.ops.aten.sqrt.default](args = (%sum_2,), kwargs = {})
-        %select_4 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%select_scatter, 0, 1), kwargs = {})
-        %slice_6 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select_4, 0, 0, 9223372036854775807), kwargs = {})
-        %copy_1 : [num_users=1] = call_function[target=torch.ops.aten.copy.default](args = (%slice_6, %sqrt_1), kwargs = {})
-        %select_5 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%select_scatter, 0, 1), kwargs = {})
-        %slice_scatter_1 : [num_users=1] = call_function[target=torch.ops.aten.slice_scatter.default](args = (%select_5, %copy_1, 0, 0, 9223372036854775807), kwargs = {})
-        %select_scatter_1 : [num_users=3] = call_function[target=torch.ops.aten.select_scatter.default](args = (%select_scatter, %slice_scatter_1, 0, 1), kwargs = {})
-        %slice_8 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 2, 3), kwargs = {})
-        %sub_2 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_8), kwargs = {})
+        %select_1 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 1), kwargs = {})
+        %slice_4 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select_1, 0, 0, 9223372036854775807), kwargs = {})
+        %copy__1 : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%slice_4, %sqrt_1), kwargs = {})
+        %slice_5 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 2, 3), kwargs = {})
+        %sub_2 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_5), kwargs = {})
         %mul_2 : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%sub_2, %sub_2), kwargs = {})
         %sum_3 : [num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul_2, [1]), kwargs = {})
         %sqrt_2 : [num_users=1] = call_function[target=torch.ops.aten.sqrt.default](args = (%sum_3,), kwargs = {})
-        %select_8 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%select_scatter_1, 0, 2), kwargs = {})
-        %slice_10 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select_8, 0, 0, 9223372036854775807), kwargs = {})
-        %copy_2 : [num_users=1] = call_function[target=torch.ops.aten.copy.default](args = (%slice_10, %sqrt_2), kwargs = {})
-        %select_9 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%select_scatter_1, 0, 2), kwargs = {})
-        %slice_scatter_2 : [num_users=1] = call_function[target=torch.ops.aten.slice_scatter.default](args = (%select_9, %copy_2, 0, 0, 9223372036854775807), kwargs = {})
-        %select_scatter_2 : [num_users=1] = call_function[target=torch.ops.aten.select_scatter.default](args = (%select_scatter_1, %slice_scatter_2, 0, 2), kwargs = {})
-        return (select_scatter_2,)
+        %select_2 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 2), kwargs = {})
+        %slice_6 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select_2, 0, 0, 9223372036854775807), kwargs = {})
+        %copy__2 : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%slice_6, %sqrt_2), kwargs = {})
+        return (empty,)
 
 
 
@@ -223,7 +214,7 @@ We need to rewrite the module with function
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=1.857952760531134e-07
+    shape=(3, 5), discrepancies=3.576581368847087e-07
 
 
 
@@ -254,6 +245,38 @@ That works. Let's export again.
         %x : [num_users=1] = placeholder[target=x]
         %y : [num_users=1] = placeholder[target=y]
         %scan_combine_graph_0 : [num_users=1] = get_attr[target=scan_combine_graph_0]
+        %scan : [num_users=2] = call_function[target=torch.ops.higher_order.scan](args = (%scan_combine_graph_0, [%y], [%x], 0, False, []), kwargs = {})
+        %getitem : [num_users=0] = call_function[target=operator.getitem](args = (%scan, 0), kwargs = {})
+        %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%scan, 1), kwargs = {})
+        return (getitem_1,)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 106-108
+
+The graph shows some unused results and this might confuse the exporter.
+We need to run :meth:`torch.export.ExportedProgram.run_decompositions`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 108-111
+
+.. code-block:: Python
+
+    ep = ep.run_decompositions({})
+    print(ep.graph)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    graph():
+        %x : [num_users=1] = placeholder[target=x]
+        %y : [num_users=1] = placeholder[target=y]
+        %scan_combine_graph_0 : [num_users=1] = get_attr[target=scan_combine_graph_0]
         %scan : [num_users=1] = call_function[target=torch.ops.higher_order.scan](args = (%scan_combine_graph_0, [%y], [%x], 0, False, []), kwargs = {})
         %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%scan, 1), kwargs = {})
         return (getitem_1,)
@@ -261,17 +284,20 @@ That works. Let's export again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-107
+.. GENERATED FROM PYTHON SOURCE LINES 112-113
 
 Let's export again with ONNX.
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-113
+.. GENERATED FROM PYTHON SOURCE LINES 113-122
 
 .. code-block:: Python
 
 
     onx = to_onnx(
-        model, (x, y), dynamic_shapes={"x": {0: x_rows, 1: dim}, "y": {0: y_rows, 1: dim}}
+        model,
+        (x, y),
+        dynamic_shapes={"x": {0: x_rows, 1: dim}, "y": {0: y_rows, 1: dim}},
+        export_options=ExportOptions(decomposition_table="default"),
     )
     print(pretty_onnx(onx))
 
@@ -315,11 +341,11 @@ Let's export again with ONNX.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-115
+.. GENERATED FROM PYTHON SOURCE LINES 123-124
 
 We can also inline the local function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-125
+.. GENERATED FROM PYTHON SOURCE LINES 124-135
 
 .. code-block:: Python
 
@@ -329,6 +355,7 @@ We can also inline the local function.
         (x, y),
         dynamic_shapes={"x": {0: x_rows, 1: dim}, "y": {0: y_rows, 1: dim}},
         inline=True,
+        export_options=ExportOptions(decomposition_table="default"),
     )
     print(pretty_onnx(onx))
 
@@ -365,11 +392,11 @@ We can also inline the local function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-127
+.. GENERATED FROM PYTHON SOURCE LINES 136-137
 
 And visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-129
+.. GENERATED FROM PYTHON SOURCE LINES 137-139
 
 .. code-block:: Python
 
@@ -396,7 +423,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.354 seconds)
+   **Total running time of the script:** (0 minutes 1.879 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_scan_pdist.py:

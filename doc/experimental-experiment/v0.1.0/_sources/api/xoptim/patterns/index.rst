@@ -12,6 +12,7 @@ experimental_experiment.xoptim.patterns
 
     onnx_any
     onnx_cast
+    onnx_clip
     onnx_conv
     onnx_dropout
     onnx_equal
@@ -23,8 +24,10 @@ experimental_experiment.xoptim.patterns
     onnx_reduce
     onnx_reshape
     onnx_rotary
+    onnx_slice
     onnx_split
     onnx_sub
+    onnx_sequence
     onnx_transpose
     onnx_unsqueeze
 

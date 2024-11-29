@@ -43,23 +43,6 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This script gathers a couple of examples based on onnxscript.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_onnxscript_102_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">102: Examples with onnxscript</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained by running a dummy llama model. It is the backward graph.">
 
 .. only:: html
@@ -72,57 +55,6 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">101: Graph Optimization</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="export, unflatten and compile =============================">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_compile_102_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">102: Tweak onnx export</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Profiles any onnx model on CPU.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_profile_existing_onnx_101_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">101: Profile an existing model with onnxruntime</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to rewrite a graph using a pattern.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_rewrite_101_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_rewrite_101.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">101: Onnx Model Rewriting</div>
     </div>
 
 
@@ -145,18 +77,35 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the examples introduced on this page Custom Backends. It uses backend experimental_experiment.torch_dynamo.onnx_custom_backend based on onnxruntime and running on CPU or CUDA. It could easily replaced by experimental_experiment.torch_dynamo.onnx_debug_backend. This one based on the reference implemented from onnx can show the intermediate results if needed. It is very slow.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to rewrite a graph using a pattern.">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_custom_backend_101_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_rewrite_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py`
+  :ref:`sphx_glr_auto_examples_plot_rewrite_101.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">101: A custom backend for torch</div>
+      <div class="sphx-glr-thumbnail-title">101: Onnx Model Rewriting</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Profiles any onnx model on CPU.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_profile_existing_onnx_101_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">101: Profile an existing model with onnxruntime</div>
     </div>
 
 
@@ -196,18 +145,103 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the function torch.compile and the ability to use a custom backend (see Custom Backends) to test the optimization of a model by fusing simple element-wise kernels.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This script gathers a couple of examples based on onnxscript.">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_custom_backend_llama_102_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_onnxscript_102_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py`
+  :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">102: Fuse kernels in a small Llama Model</div>
+      <div class="sphx-glr-thumbnail-title">102: Examples with onnxscript</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The script is calling many times the script experimental_experiment.torch_bench.dort_bench.py.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_bench_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Measure LLAMA speed</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="export, unflatten and compile =============================">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_compile_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Tweak onnx export</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and onnxrt backend.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_201_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and onnxrt backend.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_201_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT Training</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was converted into ONNX through different processes:">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_201_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_export_201.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">201: Evaluate different ways to export a torch model to ONNX</div>
     </div>
 
 
@@ -245,74 +279,6 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
     </div>
 
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The script is calling many times the script experimental_experiment.torch_bench.dort_bench.py.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_llama_bench_102_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">102: Measure LLAMA speed</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and onnxrt backend.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_aot_201_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT Training</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="It compares DORT to eager mode and onnxrt backend.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_dort_201_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">201: Evaluate DORT</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was converted into ONNX through different processes:">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_export_201_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_torch_export_201.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">201: Evaluate different ways to export a torch model to ONNX</div>
-    </div>
-
-
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -323,22 +289,20 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_onnxscript_102
    /auto_examples/plot_optimize_101
-   /auto_examples/plot_torch_export_compile_102
-   /auto_examples/plot_profile_existing_onnx_101
-   /auto_examples/plot_rewrite_101
    /auto_examples/plot_torch_linreg_101
-   /auto_examples/plot_torch_custom_backend_101
+   /auto_examples/plot_rewrite_101
+   /auto_examples/plot_profile_existing_onnx_101
    /auto_examples/plot_torch_export_101
    /auto_examples/plot_convolutation_matmul_102
-   /auto_examples/plot_custom_backend_llama_102
+   /auto_examples/plot_onnxscript_102
+   /auto_examples/plot_llama_bench_102
+   /auto_examples/plot_torch_export_compile_102
+   /auto_examples/plot_torch_dort_201
+   /auto_examples/plot_torch_aot_201
+   /auto_examples/plot_torch_export_201
    /auto_examples/plot_llama_diff_export_301
    /auto_examples/plot_llama_diff_dort_301
-   /auto_examples/plot_llama_bench_102
-   /auto_examples/plot_torch_aot_201
-   /auto_examples/plot_torch_dort_201
-   /auto_examples/plot_torch_export_201
 
 
 .. only:: html

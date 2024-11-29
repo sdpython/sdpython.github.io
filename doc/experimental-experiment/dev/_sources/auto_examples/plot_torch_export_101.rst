@@ -333,10 +333,10 @@ Loops are not captured.
         %xs_1 : [num_users=1] = placeholder[target=xs_1]
         %linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%x, %p_linear_weight, %p_linear_bias), kwargs = {})
         %mul : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%xs_0, 1), kwargs = {})
-        %add : [num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%x, %mul), kwargs = {})
+        %add_ : [num_users=1] = call_function[target=torch.ops.aten.add_.Tensor](args = (%x, %mul), kwargs = {})
         %mul_1 : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%xs_1, 2), kwargs = {})
-        %add_1 : [num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%add, %mul_1), kwargs = {})
-        return (add_1, linear)
+        %add__1 : [num_users=0] = call_function[target=torch.ops.aten.add_.Tensor](args = (%add_, %mul_1), kwargs = {})
+        return (linear,)
 
 
 
@@ -524,27 +524,34 @@ And now?
 
  .. code-block:: none
 
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/unflatten.py:706: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/unflatten.py:700: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1794: UserWarning: Node _spec_0 target _spec_0 _spec_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/unflatten.py:845: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      spec_node = gm.graph.get_attr(name)  # type: ignore[union-attr, operator]
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/unflatten.py:839: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      spec_node = gm.graph.get_attr(name)  # type: ignore[union-attr, operator]
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node _spec_0 target _spec_0 _spec_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1794: UserWarning: Node _spec_1 target _spec_1 _spec_1 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node _spec_1 target _spec_1 _spec_1 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node _spec_2 target _spec_2 _spec_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     -- preserved?
     graph():
-        %x : [num_users=1] = placeholder[target=x]
+        %x_1 : [num_users=1] = placeholder[target=x]
         %_spec_0 : [num_users=1] = get_attr[target=_spec_0]
         %_spec_1 : [num_users=1] = get_attr[target=_spec_1]
-        %tree_unflatten : [num_users=1] = call_function[target=torch.utils._pytree.tree_unflatten](args = ([%x], %_spec_0), kwargs = {})
-        %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%tree_unflatten, 0), kwargs = {})
-        %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%getitem, 0), kwargs = {})
-        %my_neuron : [num_users=1] = call_module[target=my_neuron](args = (%getitem_1,), kwargs = {})
-        %tree_flatten_spec : [num_users=1] = call_function[target=torch.fx._pytree.tree_flatten_spec](args = (%my_neuron, %_spec_1), kwargs = {})
-        %getitem_3 : [num_users=1] = call_function[target=operator.getitem](args = (%tree_flatten_spec, 0), kwargs = {})
-        %neg : [num_users=1] = call_function[target=torch.ops.aten.neg.default](args = (%getitem_3,), kwargs = {})
-        return (neg,)
+        %_spec_2 : [num_users=1] = get_attr[target=_spec_2]
+        %tree_flatten : [num_users=1] = call_function[target=torch.utils._pytree.tree_flatten](args = ((%x_1,),), kwargs = {})
+        %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%tree_flatten, 0), kwargs = {})
+        %x : [num_users=1] = call_function[target=operator.getitem](args = (%getitem, 0), kwargs = {})
+        %tree_unflatten_1 : [num_users=1] = call_function[target=torch.utils._pytree.tree_unflatten](args = ([%x], %_spec_1), kwargs = {})
+        %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%tree_unflatten_1, 0), kwargs = {})
+        %getitem_2 : [num_users=1] = call_function[target=operator.getitem](args = (%getitem_1, 0), kwargs = {})
+        %my_neuron : [num_users=1] = call_module[target=my_neuron](args = (%getitem_2,), kwargs = {})
+        %tree_flatten_spec : [num_users=1] = call_function[target=torch.fx._pytree.tree_flatten_spec](args = (%my_neuron, %_spec_2), kwargs = {})
+        %getitem_4 : [num_users=1] = call_function[target=operator.getitem](args = (%tree_flatten_spec, 0), kwargs = {})
+        %neg : [num_users=1] = call_function[target=torch.ops.aten.neg.default](args = (%getitem_4,), kwargs = {})
+        %tree_unflatten : [num_users=1] = call_function[target=torch.utils._pytree.tree_unflatten](args = ((%neg,), %_spec_0), kwargs = {})
+        return tree_unflatten
 
 
 
@@ -557,7 +564,7 @@ and it is a provite API.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.489 seconds)
+   **Total running time of the script:** (0 minutes 0.825 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:

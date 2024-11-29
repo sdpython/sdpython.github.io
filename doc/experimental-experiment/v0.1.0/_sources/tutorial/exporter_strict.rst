@@ -1,5 +1,3 @@
-.. _l-exporter-recipes:
-
 ================================================
 Parameter torch.export.export(..., strict: bool)
 ================================================
@@ -43,7 +41,7 @@ Here is an example with scan.
     print(torch.export.export(model, (x,), strict=True).graph)
 
 strict=False
-===========
+============
 
 'from_node' missing in node.meta
 ++++++++++++++++++++++++++++++++
@@ -76,6 +74,9 @@ This expression cannot be captured with ``strict=False``.
         (torch.arange(2) + 10).to(torch.float32).reshape((1, 1, 2)),
         torch.Tensor([1, 2]).to(torch.int32),
     )
+
+    model = UpdateModel()
+
     try:
         torch.export.export(model, (x,), strict=False)
     except Exception as e:

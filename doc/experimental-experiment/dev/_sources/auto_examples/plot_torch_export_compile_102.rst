@@ -181,7 +181,7 @@ Another graph obtained with torch.compile.
         %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
         return (relu,)
 
-    tensor([[0.5898, 0.6889, 0.4627]], grad_fn=<ReluBackward0>)
+    tensor([[0.6552, 0.5897, 0.2633]], grad_fn=<ReluBackward0>)
 
 
 
@@ -234,9 +234,9 @@ Unflattened
     opset: domain='' version=18
     doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 5]
-    init: name='p_neuron_linear_weight' type=dtype('float32') shape=(3, 5)
-    init: name='p_neuron_linear_bias' type=dtype('float32') shape=(3,) -- array([ 0.2922235 , -0.24605706, -0.41816953], dtype=float32)
-    Gemm(x, p_neuron_linear_weight, p_neuron_linear_bias, transB=1) -> linear
+    init: name='neuron.linear.weight' type=float32 shape=(3, 5)           -- DynamoInterpret.placeholder.1/P(neuron.linear.weight)
+    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([ 0.12533724,  0.42496616, -0.15737206], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+    Gemm(x, neuron.linear.weight, neuron.linear.bias, transB=1) -> linear
       Sigmoid(linear) -> sigmoid
         Relu(sigmoid) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
@@ -275,21 +275,21 @@ Let's preserve the module.
     ----- doc_string: function_options=FunctionOptions(export_as_function=Tru...
     opset: domain='' version=18
     input: 'x'
-    input: 'weight'
-    input: 'bias'
-    Transpose(weight, perm=[1,0]) -> _onx_transpose0
-      Transpose(_onx_transpose0, perm=[1,0]) -> GemmTransposePattern--_onx_transpose0
-        Gemm(x, GemmTransposePattern--_onx_transpose0, bias, transB=1) -> output
+    Constant(value=[[0.283794...) -> weight
+      Transpose(weight, perm=[1,0]) -> _onx_transpose0
+        Transpose(_onx_transpose0, perm=[1,0]) -> GemmTransposePattern--_onx_transpose0
+    Constant(value=[0.1253372...) -> bias
+      Gemm(x, GemmTransposePattern--_onx_transpose0, bias, transB=1) -> output
+    Constant(value=[[0.283794...) -> neuron.linear.weight
+    Constant(value=[0.1253372...) -> neuron.linear.bias
     output: name='output' type=? shape=?
     ----- function name=__main__.SubNeuron2 domain=aten_local_function
     ----- doc_string: function_options=FunctionOptions(export_as_function=Tru...
     opset: domain='' version=18
     opset: domain='aten_local_function' version=1
     input: 'x'
-    Constant(value=[[0.379791...) -> neuron.linear.weight
-    Constant(value=[0.2922235...) -> neuron.linear.bias
-      Linear[aten_local_function](x, neuron.linear.weight, neuron.linear.bias) -> linear
-        Sigmoid(linear) -> output
+    Linear[aten_local_function](x) -> linear
+      Sigmoid(linear) -> output
     output: name='output' type=? shape=?
 
 
@@ -298,7 +298,7 @@ Let's preserve the module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.409 seconds)
+   **Total running time of the script:** (0 minutes 0.218 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_compile_102.py:

@@ -177,8 +177,8 @@ Optimization
     [GraphBuilderPatternOptimization.optimize] iteration 0: 3 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
     [GraphBuilderPatternOptimization.optimize] iteration 1: 1 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.002
-    [GraphBuilder.optimize] done with 1 nodes in 0.002
+    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.003
+    [GraphBuilder.optimize] done with 1 nodes in 0.004
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cuda' version=1
     doc_string: large_model=False, inline=False, external_threshold=102...
@@ -300,7 +300,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.200 seconds)
+   **Total running time of the script:** (0 minutes 0.246 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

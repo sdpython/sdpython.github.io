@@ -963,7 +963,7 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.466 seconds)
+   **Total running time of the script:** (0 minutes 0.402 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_convolutation_matmul_102.py:

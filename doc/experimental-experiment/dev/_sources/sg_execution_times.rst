@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:09.579** total execution time for 21 files **from all galleries**:
+**08:43.801** total execution time for 19 files **from all galleries**:
 
 .. container::
 
@@ -32,66 +32,60 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``recipes/plot_exporter_recipes_c_cond.py``)
-     - 00:07.225
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``recipes/plot_exporter_recipes_c_scan_pdist.py``)
-     - 00:02.354
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py` (``examples/plot_custom_backend_llama_102.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py` (``recipes/plot_exporter_coverage.py``)
+     - 03:45.696
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_llama_bench_102.py` (``examples/plot_llama_bench_102.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``examples/plot_llama_diff_dort_301.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``examples/plot_llama_diff_export_301.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``examples/plot_onnxscript_102.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``examples/plot_optimize_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``examples/plot_profile_existing_onnx_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``examples/plot_rewrite_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``examples/plot_torch_aot_201.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``examples/plot_torch_custom_backend_101.py``)
-     - 00:00.000
+     - 01:51.027
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_dort_201.py` (``examples/plot_torch_dort_201.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``examples/plot_torch_export_101.py``)
-     - 00:00.000
+     - 00:59.105
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``examples/plot_torch_export_201.py``)
-     - 00:00.000
+     - 00:49.538
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``examples/plot_torch_export_compile_102.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_examples_plot_torch_aot_201.py` (``examples/plot_torch_aot_201.py``)
+     - 00:48.711
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``examples/plot_torch_linreg_101.py``)
-     - 00:00.000
+     - 00:07.997
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py` (``recipes/plot_exporter_recipes_c_custom_ops_fct.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_dort_301.py` (``examples/plot_llama_diff_dort_301.py``)
+     - 00:05.532
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py` (``recipes/plot_exporter_recipes_c_custom_ops_inplace.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_examples_plot_llama_diff_export_301.py` (``examples/plot_llama_diff_export_301.py``)
+     - 00:04.279
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``recipes/plot_exporter_recipes_c_modules.py``)
-     - 00:00.000
+     - 00:02.873
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``recipes/plot_exporter_recipes_oe_cond.py``)
+     - 00:01.945
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``recipes/plot_exporter_recipes_c_scan_pdist.py``)
+     - 00:01.879
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``examples/plot_profile_existing_onnx_101.py``)
+     - 00:01.643
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``examples/plot_optimize_101.py``)
+     - 00:01.120
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``examples/plot_torch_export_101.py``)
+     - 00:00.825
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``recipes/plot_exporter_recipes_c_cond.py``)
+     - 00:00.701
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
+     - 00:00.402
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``examples/plot_rewrite_101.py``)
+     - 00:00.246
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``examples/plot_torch_export_compile_102.py``)
+     - 00:00.218
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``examples/plot_onnxscript_102.py``)
+     - 00:00.063
      - 0.0

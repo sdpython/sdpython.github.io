@@ -14,6 +14,28 @@ ways to rewrite them so that the exporter works.
 
 See :ref:`l-exporter-recipes` for an organized version of this gallery.
 
+A couple of examples to illustrate different implementation
+of dot product (see also :epkg:`sphinx-gallery`).
+
+Getting started
++++++++++++++++
+
+pytorch nightly build should be installed, see
+`Start Locally <https://pytorch.org/get-started/locally/>`_.
+
+::
+
+    git clone https://github.com/sdpython/experimental-experiment.git
+    pip install onnxruntime-gpu pynvml
+    pip install -r requirements-dev.txt    
+    export PYTHONPATH=$PYTHONPATH:<this folder>
+
+Common Errors
++++++++++++++
+
+Some of them are exposed in the examples. Others may be found at
+:ref:`l-frequent-exporter-errors`.
+
 
 
 
@@ -25,52 +47,18 @@ See :ref:`l-exporter-recipes` for an organized version of this gallery.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
+    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases.">
 
 .. only:: html
 
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_cond_thumb.png
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_coverage_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py`
+  :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">to_onnx and a model with a test</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_inplace_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator inplace</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_fct_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator registered with a function</div>
+      <div class="sphx-glr-thumbnail-title">Measures the exporter success on many test cases</div>
     </div>
 
 
@@ -93,6 +81,23 @@ See :ref:`l-exporter-recipes` for an organized version of this gallery.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_cond_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and a model with a test</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch.">
 
 .. only:: html
@@ -108,6 +113,23 @@ See :ref:`l-exporter-recipes` for an organized version of this gallery.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_cond_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a model with a test</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -118,11 +140,11 @@ See :ref:`l-exporter-recipes` for an organized version of this gallery.
 .. toctree::
    :hidden:
 
-   /auto_recipes/plot_exporter_recipes_c_cond
-   /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
-   /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
+   /auto_recipes/plot_exporter_coverage
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
+   /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_modules
+   /auto_recipes/plot_exporter_recipes_oe_cond
 
 
 .. only:: html
