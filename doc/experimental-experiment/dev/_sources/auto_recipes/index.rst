@@ -47,7 +47,7 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases.">
+    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-exported-program-cases shows the exported program for many of those cases.">
 
 .. only:: html
 

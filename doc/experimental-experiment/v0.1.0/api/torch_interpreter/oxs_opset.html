@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="experimental_experiment.torch_interpreter.eval" href="eval/index.html" /><link rel="prev" title="experimental_experiment.torch_interpreter.oxs_dispatcher" href="oxs_dispatcher.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="experimental_experiment.torch_interpreter.tracing" href="tracing.html" /><link rel="prev" title="experimental_experiment.torch_interpreter.oxs_dispatcher" href="oxs_dispatcher.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>experimental_experiment.torch_interpreter.oxs_opset - experimental-experiment 0.1.0 documentation</title>
@@ -218,6 +218,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/pytorch.html">pytorch and onnx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/onnx.html">onnx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/exported.html">Exported Programs</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../tutorial/exporter_recipes.html">Exporter Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Exporter Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
@@ -286,16 +287,17 @@
 <li class="toctree-l3"><a class="reference internal" href="aten_functions.html">experimental_experiment.torch_interpreter.aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="aten_methods.html">experimental_experiment.torch_interpreter.aten_methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dispatcher.html">experimental_experiment.torch_interpreter.dispatcher</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="export_options.html">experimental_experiment.torch_interpreter.export_options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="interpreter.html">experimental_experiment.torch_interpreter.interpreter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_export.html">experimental_experiment.torch_interpreter.onnx_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="onnx_export_errors.html">experimental_experiment.torch_interpreter.onnx_export_errors</a></li>
 <li class="toctree-l3"><a class="reference internal" href="oxs_dispatcher.html">experimental_experiment.torch_interpreter.oxs_dispatcher</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">experimental_experiment.torch_interpreter.oxs_opset</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="tracing.html">experimental_experiment.torch_interpreter.tracing</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../torch_models/index.html">experimental_experiment.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -498,7 +500,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -587,12 +588,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="eval/index.html">
+          <a class="next-page" href="tracing.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">experimental_experiment.torch_interpreter.eval</div>
+                <div class="title">experimental_experiment.torch_interpreter.tracing</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

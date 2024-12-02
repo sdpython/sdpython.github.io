@@ -217,6 +217,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/pytorch.html">pytorch and onnx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/onnx.html">onnx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/exported.html">Exported Programs</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/exporter_recipes.html">Exporter Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Exporter Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
@@ -285,16 +286,17 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/aten_functions.html">experimental_experiment.torch_interpreter.aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/aten_methods.html">experimental_experiment.torch_interpreter.aten_methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/dispatcher.html">experimental_experiment.torch_interpreter.dispatcher</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch_interpreter/eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch_interpreter/eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/export_options.html">experimental_experiment.torch_interpreter.export_options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/interpreter.html">experimental_experiment.torch_interpreter.interpreter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/onnx_export.html">experimental_experiment.torch_interpreter.onnx_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/onnx_export_errors.html">experimental_experiment.torch_interpreter.onnx_export_errors</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/oxs_dispatcher.html">experimental_experiment.torch_interpreter.oxs_dispatcher</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/oxs_opset.html">experimental_experiment.torch_interpreter.oxs_opset</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch_interpreter/eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch_interpreter/eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/tracing.html">experimental_experiment.torch_interpreter.tracing</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_models/index.html">experimental_experiment.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -497,7 +499,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -559,6 +560,7 @@
 <span class="sd">    :param tracing: use symbolic tracing</span>
 <span class="sd">    :param jit: use jit to get a graph then converts it into a fx graph</span>
 <span class="sd">    :param strategy: to overwrite all the previous parameters with just a value</span>
+<span class="sd">    :param remove_inplace: remove inplace nodes</span>
 <span class="sd">    :param aten_as_function: keeps aten function as local function to keep a faithful</span>
 <span class="sd">        translation of the fx graph.</span>
 
@@ -570,7 +572,9 @@
 <span class="sd">        import pprint</span>
 <span class="sd">        from experimental_experiment.torch_interpreter import ExportOptions</span>
 
+<span class="sd">        print(&quot;-- default fallback&quot;)</span>
 <span class="sd">        pprint.pprint(ExportOptions().get_fallback_options())</span>
+<span class="sd">        print(&quot;-- default fallback with decomposition&quot;)</span>
 <span class="sd">        pprint.pprint(</span>
 <span class="sd">            ExportOptions(decomposition_table=&quot;default&quot;).get_fallback_options()</span>
 <span class="sd">        )</span>
@@ -580,19 +584,29 @@
 <span class="sd">    it may be useful to try different values for strict and to apply decompositions</span>
 <span class="sd">    ``decomposition_table=&#39;default&#39;``. The decompositions removes unused results</span>
 <span class="sd">    coming from inplace modifications.</span>
+
+<span class="sd">    A graph is considered as invalid if decompositions were not run and</span>
+<span class="sd">    there is one node with no user. This usually indicates one inplace</span>
+<span class="sd">    operation is still part of the graph.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_allowed</span> <span class="o">=</span> <span class="p">{</span>
         <span class="kc">None</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s2">&quot;none&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;strict-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;strict-decomposition&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tracing&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
         <span class="s2">&quot;nostrict&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+        <span class="s2">&quot;nostrict-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;nostrict-decomposition&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;strict&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+        <span class="s2">&quot;jit-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;jit-decomposition&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;jit&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
         <span class="s2">&quot;fallback-default&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
-        <span class="s2">&quot;fallback-decomposition&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;fallback-dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;fallback-decomposition&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;decomposition&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
         <span class="s2">&quot;dec&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;decomposition_table&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
@@ -610,6 +624,7 @@
         <span class="n">strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dynamo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">aten_as_function</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">remove_inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">strict</span> <span class="o">=</span> <span class="n">strict</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span> <span class="o">=</span> <span class="n">fallback</span>
@@ -621,6 +636,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jit</span> <span class="o">=</span> <span class="n">jit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aten_as_function</span> <span class="o">=</span> <span class="n">aten_as_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace</span> <span class="o">=</span> <span class="n">remove_inplace</span>
 
         <span class="k">if</span> <span class="n">strategy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed</span><span class="p">,</span> <span class="p">(</span>
@@ -671,12 +687,14 @@
     <span class="k">def</span> <span class="nf">get_fallback_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;ExportOptions&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the fallback scenario.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;fallback&quot;</span><span class="p">,</span> <span class="s2">&quot;fallback-default&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+            <span class="n">other_dec</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span> <span class="k">else</span> <span class="s2">&quot;default&quot;</span>
             <span class="k">return</span> <span class="p">[</span>
                 <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">),</span>
                 <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">),</span>
+                <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="n">other_dec</span><span class="p">),</span>
+                <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="n">other_dec</span><span class="p">),</span>
                 <span class="n">ExportOptions</span><span class="p">(</span><span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">),</span>
-                <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-                <span class="n">ExportOptions</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                <span class="n">ExportOptions</span><span class="p">(</span><span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="n">other_dec</span><span class="p">),</span>
                 <span class="n">ExportOptions</span><span class="p">(</span><span class="n">jit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">decomposition_table</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">),</span>
             <span class="p">]</span>
         <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;strict&quot;</span><span class="p">:</span>
@@ -704,11 +722,17 @@
         <span class="n">input_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.fx.GraphModule&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Exports the model into an exported program.&quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">torch</span>
+        <span class="kn">from</span> <span class="nn">.tracing</span> <span class="kn">import</span> <span class="n">CustomTracer</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s2">&quot;fallback&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fallback</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;fallback&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fallback-dec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fallback-decomposition&quot;</span><span class="p">,</span>
+        <span class="p">}:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_working</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[ExportOptions.export] fallback&quot;</span><span class="p">)</span>
             <span class="n">tries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fallback_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="p">)</span>
@@ -717,7 +741,7 @@
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] tries </span><span class="si">{</span><span class="n">ion</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tries</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">opt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">opt</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
                         <span class="n">mod</span><span class="p">,</span>
                         <span class="n">args</span><span class="p">,</span>
                         <span class="n">kwargs</span><span class="p">,</span>
@@ -726,10 +750,64 @@
                         <span class="n">same_signature</span><span class="o">=</span><span class="n">same_signature</span><span class="p">,</span>
                         <span class="n">input_names</span><span class="o">=</span><span class="n">input_names</span><span class="p">,</span>
                         <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                        <span class="n">verbose</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">verbose</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">excs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">excs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">opt</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="n">se</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] fails due to </span><span class="si">{</span><span class="n">se</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">):</span>
+                    <span class="n">inplace_nodes</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">_inplace_nodes</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">inplace_nodes</span><span class="p">:</span>
+                        <span class="c1"># One node has no users, this usually</span>
+                        <span class="c1"># indicates an inplace modifications.</span>
+                        <span class="c1"># This is rejected.</span>
+                        <span class="n">excs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="p">(</span>
+                                <span class="n">opt</span><span class="p">,</span>
+                                <span class="sa">f</span><span class="s2">&quot;Probable inplace modifications, &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;there are nodes with no users: </span><span class="si">{</span><span class="n">inplace_nodes</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] fails due to </span><span class="si">{</span><span class="n">excs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">opt</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">:</span>
+                            <span class="c1"># We try with decomposition if possible and to save time.</span>
+                            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span>
+                                    <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] current decomposition_table=&quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">opt</span><span class="o">.</span><span class="n">decomposition_table</span><span class="si">}</span><span class="s2">, let&#39;s try with &#39;default&#39;&quot;</span>
+                                <span class="p">)</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">)</span>
+                            <span class="n">inplace_nodes</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">_inplace_nodes</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">inplace_nodes</span><span class="p">:</span>
+                                <span class="c1"># it fails</span>
+                                <span class="n">excs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="p">(</span>
+                                        <span class="n">opt</span><span class="p">,</span>
+                                        <span class="sa">f</span><span class="s2">&quot;Probable inplace modifications, &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;even after decomposition. &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;there are nodes with no users: </span><span class="si">{</span><span class="n">inplace_nodes</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                                    <span class="p">)</span>
+                                <span class="p">)</span>
+                                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                                    <span class="nb">print</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] fails again with &quot;</span>
+                                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">excs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                                    <span class="p">)</span>
+                                <span class="k">continue</span>
+                            <span class="n">opt</span><span class="o">.</span><span class="n">decomposition_table</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] winning options </span><span class="si">{</span><span class="n">opt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_working</span> <span class="o">=</span> <span class="n">opt</span>
+                <span class="k">return</span> <span class="n">res</span>
 
             <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -746,8 +824,9 @@
             <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracing</span><span class="p">:</span>
-            <span class="n">tracer_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Tracer</span>
-            <span class="n">graph</span> <span class="o">=</span> <span class="n">tracer_class</span><span class="p">()</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+            <span class="kn">from</span> <span class="nn">.tracing</span> <span class="kn">import</span> <span class="n">CustomTracer</span>
+
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="p">()</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
             <span class="n">gm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">gm</span>
 
@@ -843,6 +922,13 @@
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">dec</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_inplace</span><span class="p">:</span>
+            <span class="n">modified</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="p">()</span><span class="o">.</span><span class="n">remove_inplace</span><span class="p">(</span><span class="n">exported_program</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">modified</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] </span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2"> inplaced nodes were removed&quot;</span><span class="p">)</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">lint</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

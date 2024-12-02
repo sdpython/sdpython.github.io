@@ -218,6 +218,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/pytorch.html">pytorch and onnx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/onnx.html">onnx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/exported.html">Exported Programs</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../tutorial/exporter_recipes.html">Exporter Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Exporter Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
@@ -286,16 +287,17 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/aten_functions.html">experimental_experiment.torch_interpreter.aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/aten_methods.html">experimental_experiment.torch_interpreter.aten_methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/dispatcher.html">experimental_experiment.torch_interpreter.dispatcher</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch_interpreter/eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/torch_interpreter/eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/export_options.html">experimental_experiment.torch_interpreter.export_options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/interpreter.html">experimental_experiment.torch_interpreter.interpreter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/onnx_export.html">experimental_experiment.torch_interpreter.onnx_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/onnx_export_errors.html">experimental_experiment.torch_interpreter.onnx_export_errors</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/oxs_dispatcher.html">experimental_experiment.torch_interpreter.oxs_dispatcher</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/oxs_opset.html">experimental_experiment.torch_interpreter.oxs_opset</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch_interpreter/eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../api/torch_interpreter/eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/tracing.html">experimental_experiment.torch_interpreter.tracing</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch_models/index.html">experimental_experiment.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -498,7 +500,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -542,9 +543,9 @@
         <article role="main" id="furo-main-content">
           <section id="design">
 <span id="l-design"></span><h1>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h1>
-<p>This module was started to experiment around function <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.6.0a0+git7224cd4 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
+<p>This module was started to experiment around function <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.6.0a0+gitfc74ec4 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
 and see what kind of issues occur when leveraging that function to convert
-a <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmain (2.6.0a0+git7224cd4 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> into <a class="reference external" href="https://onnx.ai/">ONNX</a>.
+a <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmain (2.6.0a0+gitfc74ec4 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> into <a class="reference external" href="https://onnx.ai/">ONNX</a>.
 The design is organized around the following main pieces:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>:
@@ -554,11 +555,11 @@ It supports shape inference and constant computation with
 numpy arrays or torch tensors.</p></li>
 <li><p><a class="reference internal" href="../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter" title="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>:
 walks through a torch model and converts every piece into ONNX nodes,
-the first step is to get an <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.6.0a0+git7224cd4 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a>, then convert every of its nodes
+the first step is to get an <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.6.0a0+gitfc74ec4 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a>, then convert every of its nodes
 into ONNX operators.</p></li>
 <li><p><a class="reference internal" href="../api/torch_interpreter/_aten_functions.html#module-experimental_experiment.torch_interpreter._aten_functions" title="experimental_experiment.torch_interpreter._aten_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">_aten_functions</span></code></a> and
 <a class="reference internal" href="../api/torch_interpreter/_aten_methods.html#module-experimental_experiment.torch_interpreter._aten_methods" title="experimental_experiment.torch_interpreter._aten_methods"><code class="xref py py-mod docutils literal notranslate"><span class="pre">_aten_methods</span></code></a>:
-a collection of functions converting every node from <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.6.0a0+git7224cd4 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> instance
+a collection of functions converting every node from <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.6.0a0+gitfc74ec4 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> instance
 into ONNX operators. There is one function per node type.</p></li>
 <li><p><a class="reference internal" href="../api/xoptim/index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>:
 once the model is converted, this class looks for sequence of ONNX nodes which can

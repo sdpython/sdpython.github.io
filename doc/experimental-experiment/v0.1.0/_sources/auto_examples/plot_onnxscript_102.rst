@@ -129,7 +129,7 @@ Then we export the model into ONNX.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.063 seconds)
+   **Total running time of the script:** (0 minutes 0.129 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_onnxscript_102.py:

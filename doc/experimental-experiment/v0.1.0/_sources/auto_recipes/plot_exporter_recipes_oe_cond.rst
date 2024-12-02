@@ -106,7 +106,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([-0.1335], grad_fn=<MulBackward0>)
+    tensor([1.6173], grad_fn=<MulBackward0>)
 
 
 
@@ -192,7 +192,7 @@ But the model is not exactly the same as the initial model.
        producer_version: "2.6.0.dev20241128+cu124"
     >
     main_graph (float[3] input_1) => (float[1] mul) 
-       <float[2] "model.mlp.0.bias" =  {-0.338635,0.0595371}, float[2,3] "model.mlp.0.weight" =  {-0.242943,-0.563175,-0.405737,-0.01796,-0.565998,-0.313221}, float[1] "model.mlp.1.bias" =  {0.358802}, float[1,2] "model.mlp.1.weight" =  {0.318995,0.264204}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
+       <float[2] "model.mlp.0.bias" =  {-0.288676,-0.368527}, float[2,3] "model.mlp.0.weight" =  {-0.471258,0.324141,0.257305,0.0853913,-0.559284,-0.361027}, float[1] "model.mlp.1.bias" =  {-0.145392}, float[1,2] "model.mlp.1.weight" =  {0.501595,-0.663844}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
        [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
@@ -357,7 +357,7 @@ Let's export again.
        producer_version: "2.6.0.dev20241128+cu124"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2,3] "mlp.0.weight" =  {-0.242943,-0.563175,-0.405737,-0.01796,-0.565998,-0.313221}, float[2] "mlp.0.bias" =  {-0.338635,0.0595371}, float[1,2] "mlp.1.weight" =  {0.318995,0.264204}, float[1] "mlp.1.bias" =  {0.358802}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2,3] "mlp.0.weight" =  {-0.471258,0.324141,0.257305,0.0853913,-0.559284,-0.361027}, float[2] "mlp.0.bias" =  {-0.288676,-0.368527}, float[1,2] "mlp.1.weight" =  {0.501595,-0.663844}, float[1] "mlp.1.bias" =  {-0.145392}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
        [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
@@ -461,12 +461,12 @@ Let's optimize to see a small model.
        producer_version: "2.6.0.dev20241128+cu124"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2] "mlp.0.bias" =  {-0.338635,0.0595371}, float[1] "mlp.1.bias" =  {0.358802}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {-0.288676,-0.368527}, float[1] "mlp.1.bias" =  {-0.145392}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {-0.242943,-0.01796,-0.563175,-0.565998,-0.405737,-0.313221}> ()
+       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {-0.471258,0.0853913,0.324141,-0.559284,0.257305,-0.361027}> ()
        [node_MatMul_32] val_9 = MatMul (x, t)
        [node_Add_33] view_1 = Add (val_9, "mlp.0.bias")
-       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {0.318995,0.264204}> ()
+       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {0.501595,-0.663844}> ()
        [node_MatMul_34] val_10 = MatMul (view_1, t_1)
        [node_Add_35] view_3 = Add (val_10, "mlp.1.bias")
        [node_ReduceSum_16] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (view_3)
@@ -488,7 +488,7 @@ Let's optimize to see a small model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.945 seconds)
+   **Total running time of the script:** (0 minutes 3.240 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_cond.py:

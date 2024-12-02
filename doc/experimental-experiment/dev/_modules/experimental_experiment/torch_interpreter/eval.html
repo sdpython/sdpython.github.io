@@ -217,6 +217,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/pytorch.html">pytorch and onnx</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/onnx.html">onnx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/exported.html">Exported Programs</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tutorial/exporter_recipes.html">Exporter Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Exporter Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_custom.html">Recipes with to_onnx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tutorial/exporter_recipes_onnx_export.html">Recipes with torch.onnx.export</a></li>
@@ -285,16 +286,17 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/aten_functions.html">experimental_experiment.torch_interpreter.aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/aten_methods.html">experimental_experiment.torch_interpreter.aten_methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/dispatcher.html">experimental_experiment.torch_interpreter.dispatcher</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch_interpreter/eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/torch_interpreter/eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/export_options.html">experimental_experiment.torch_interpreter.export_options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/interpreter.html">experimental_experiment.torch_interpreter.interpreter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/onnx_export.html">experimental_experiment.torch_interpreter.onnx_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/onnx_export_errors.html">experimental_experiment.torch_interpreter.onnx_export_errors</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/oxs_dispatcher.html">experimental_experiment.torch_interpreter.oxs_dispatcher</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/oxs_opset.html">experimental_experiment.torch_interpreter.oxs_opset</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch_interpreter/eval/index.html">experimental_experiment.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/torch_interpreter/eval/model_cases.html">experimental_experiment.torch_interpreter.eval.model_cases</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_interpreter/tracing.html">experimental_experiment.torch_interpreter.tracing</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_models/index.html">experimental_experiment.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of experimental_experiment.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -497,7 +499,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -737,7 +738,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- graph&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">exported</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">exported</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;export-strict-dec&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;export-strict-dec&quot;</span><span class="p">,</span> <span class="s2">&quot;export-strict-decomposition&quot;</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">exported</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
                 <span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
@@ -767,7 +768,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- graph&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">exported</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">exported</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;export-nostrict-dec&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;export-nostrict-dec&quot;</span><span class="p">,</span> <span class="s2">&quot;export-nostrict-decomposition&quot;</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">exported</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
                 <span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span>
@@ -785,9 +786,10 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">exported</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">exported</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;export-tracing&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">..tracing</span> <span class="kn">import</span> <span class="n">CustomTracer</span>
+
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">tracer_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Tracer</span>
-            <span class="n">graph</span> <span class="o">=</span> <span class="n">tracer_class</span><span class="p">()</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+            <span class="n">graph</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="p">()</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
             <span class="n">mod</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
@@ -797,6 +799,43 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- graph&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mod</span>
+    <span class="k">if</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;export-jit&quot;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">torch._export.converter</span> <span class="kn">import</span> <span class="n">TS2EPConverter</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">jit_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span>
+                <span class="n">model</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">check_trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">exported</span> <span class="o">=</span> <span class="n">TS2EPConverter</span><span class="p">(</span><span class="n">jit_model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- graph&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exported</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">success</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">error_step</span><span class="o">=</span><span class="s2">&quot;export&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">exported</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;export-jit-dec&quot;</span><span class="p">,</span> <span class="s2">&quot;export-jit-decomposition&quot;</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">torch._export.converter</span> <span class="kn">import</span> <span class="n">TS2EPConverter</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">jit_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span>
+                <span class="n">model</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">check_trace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">exported</span> <span class="o">=</span> <span class="n">TS2EPConverter</span><span class="p">(</span><span class="n">jit_model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- graph before decomposition&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exported</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+            <span class="n">exported</span> <span class="o">=</span> <span class="n">exported</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">({})</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- graph after decomposition&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">exported</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">success</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">error_step</span><span class="o">=</span><span class="s2">&quot;export&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">exported</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
+
     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
@@ -1191,7 +1230,9 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--      got=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">with_min_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">del</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
     <span class="k">del</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span>
-    <span class="n">disc</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.1</span> <span class="k">else</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">disc</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.1</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">model_cls</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">exported</span><span class="o">=</span><span class="n">mod</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.1</span><span class="p">:</span>
         <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;diff.0&quot;</span>
         <span class="n">disc</span><span class="p">[</span><span class="s2">&quot;error_step&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;diff.0&quot;</span>

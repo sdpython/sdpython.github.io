@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**03:53.093** total execution time for 5 files **from auto_recipes**:
+**05:31.172** total execution time for 5 files **from auto_recipes**:
 
 .. container::
 
@@ -33,17 +33,17 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py` (``plot_exporter_coverage.py``)
-     - 03:45.696
+     - 05:20.582
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
-     - 00:02.873
+     - 00:04.004
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
-     - 00:01.945
+     - 00:03.240
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
-     - 00:01.879
+     - 00:02.555
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``plot_exporter_recipes_c_cond.py``)
-     - 00:00.701
+     - 00:00.790
      - 0.0

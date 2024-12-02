@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.0371]], grad_fn=<MulBackward0>)
+    tensor([[-0.0941]], grad_fn=<MulBackward0>)
 
 
 
@@ -300,9 +300,9 @@ Let's export again.
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.00840394, -0.11727551], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([ 0.59868324, -0.28809536], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.4004984], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.3753294 , -0.21192105], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([-0.30853087, -0.33114356], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.29828057], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
       Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -362,9 +362,9 @@ We can also inline the local function.
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.00840394, -0.11727551], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([ 0.59868324, -0.28809536], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.4004984], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.3753294 , -0.21192105], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([-0.30853087, -0.33114356], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.29828057], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
       Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -415,7 +415,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.701 seconds)
+   **Total running time of the script:** (0 minutes 0.790 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:
