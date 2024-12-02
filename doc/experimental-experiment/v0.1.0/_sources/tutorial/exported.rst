@@ -16,9 +16,15 @@ to the original model.
     import textwrap
     from experimental_experiment.torch_interpreter.eval import discover, run_exporter
 
-
     cases = discover()
+    print()
     for name, cls_model in sorted(cases.items()):
+        print(f"* :ref:`{name} <l-model-case-export-{name}>`")
+    print()
+
+    for name, cls_model in sorted(cases.items()):
+        print()
+        print(f".. _l-model-case-export-{name}:")
         print()
         print(name)
         print("=" * len(name))

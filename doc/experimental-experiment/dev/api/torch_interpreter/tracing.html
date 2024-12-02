@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_interpreter.tracing - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -500,6 +500,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -561,7 +562,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.torch_interpreter.tracing.</span></span><span class="sig-name descname"><span class="pre">CustomParameterProxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TracerBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Node" title="(in PyTorch vmain (2.6.0a0+gitfc74ec4 ))"><span class="pre">Node</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/experimental_experiment/torch_interpreter/tracing.html#CustomParameterProxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.tracing.CustomParameterProxy" title="Link to this definition">¶</a></dt>
 <dd><p>A special proxy which lets “shape”, “size”, “dim”, and a few other
 attribute accesses pass through to the underlying  module parameter object,
-so that conditional tests on these attributes will not throw exception during tracing</p>
+so that conditional tests on these attributes will not throw exception during tracing.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -634,7 +635,7 @@ Works with <a class="reference internal" href="#experimental_experiment.torch_in
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.torch_interpreter.tracing.CustomTracer.getattr">
 <span class="sig-name descname"><span class="pre">getattr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_proxy_cache</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/experimental_experiment/torch_interpreter/tracing.html#CustomTracer.getattr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.torch_interpreter.tracing.CustomTracer.getattr" title="Link to this definition">¶</a></dt>
-<dd><p>See :meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>torch.fx.Tracer.getattr.</p>
+<dd><p>See <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Tracer.getattr" title="(in PyTorch vmain (2.6.0a0+gitfc74ec4 ))"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.fx.Tracer.getattr()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -654,8 +655,10 @@ Works with <a class="reference internal" href="#experimental_experiment.torch_in
 <li><p><strong>fn</strong> – function</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>new_name</p>
+</dd>
 </dl>
-<p>:return new_name</p>
 </dd></dl>
 
 <dl class="py method">
@@ -677,26 +680,24 @@ can either be an <code class="docutils literal notranslate"><span class="pre">nn
 <p>Note that after this call, <code class="docutils literal notranslate"><span class="pre">self.root</span></code> may be different from the <code class="docutils literal notranslate"><span class="pre">root</span></code> passed
 in here. For example, when a free function is passed to <code class="docutils literal notranslate"><span class="pre">trace()</span></code>, we will
 create an <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> instance to use as the root and add embedded constants to.</p>
-<p>Args:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>root (Union[Module, Callable]): Either a <code class="docutils literal notranslate"><span class="pre">Module</span></code> or a function to be</dt><dd><p>traced through. Backwards-compatibility for this parameter is
-guaranteed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – Either a <code class="docutils literal notranslate"><span class="pre">Module</span></code> or a function to be
+traced through. Backwards-compatibility for this parameter is
+guaranteed.</p></li>
+<li><p><strong>concrete_args</strong> – Concrete arguments that should
+not be treated as Proxies. This parameter is experimental and
+its backwards-compatibility is <em>NOT</em> guaranteed.</p></li>
+<li><p><strong>remove_inplace</strong> – Removes inplace nodes</p></li>
+<li><p><strong>update_model_with_attribute</strong> – in some cases (control flow),
+the model needs to be</p></li>
+</ul>
 </dd>
-<dt>concrete_args (Optional[Dict[str, any]]): Concrete arguments that should</dt><dd><p>not be treated as Proxies. This parameter is experimental and
-its backwards-compatibility is <em>NOT</em> guaranteed.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">Graph</span></code> representing the semantics of the passed-in <code class="docutils literal notranslate"><span class="pre">root</span></code>.</p>
 </dd>
 </dl>
-<p>remove_inplace (bool): Removes inplace nodes
-update_model_with_attribute (bool): in some cases (control flow),</p>
-<blockquote>
-<div><p>the model needs to be</p>
-</div></blockquote>
-</div></blockquote>
-<p>Returns:</p>
-<blockquote>
-<div><p>A <code class="docutils literal notranslate"><span class="pre">Graph</span></code> representing the semantics of the passed-in <code class="docutils literal notranslate"><span class="pre">root</span></code>.</p>
-</div></blockquote>
 </dd></dl>
 
 </dd></dl>
