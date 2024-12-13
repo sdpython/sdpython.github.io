@@ -47,7 +47,58 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-exported-program-cases shows the exported program for many of those cases.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_dynamic_shapes_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_dynamic_shapes.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">A few tricks about dynamic shapes</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This continues example l-plot-torch-export-with-dynamic-cache-201.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_inputs_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_inputs.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Do no use Module as inputs!</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We will a class used in many model: transformers.cache_utils.DynamicCache.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_with_dyamic_cache_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_with_dyamic_cache.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export a model using a custom type as input</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-exp-cases shows the exported program for many of those cases.">
 
 .. only:: html
 
@@ -59,6 +110,23 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measures the exporter success on many test cases</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly. If there is an issue, you can go to the following line: torch/fx/experimental/symbolic_shapes.py#L5965 and look for log.info(&quot;set_replacement %s = %s (%s) %s&quot;, a, tgt, msg, tgt_bound) and add before or after, something like:">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_phi2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and Phi-2</div>
     </div>
 
 
@@ -115,6 +183,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_phi2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">torch.onnx.export and Phi-2</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
 
 .. only:: html
@@ -140,10 +225,15 @@ Some of them are exposed in the examples. Others may be found at
 .. toctree::
    :hidden:
 
+   /auto_recipes/plot_exporter_exporter_dynamic_shapes
+   /auto_recipes/plot_exporter_exporter_inputs
+   /auto_recipes/plot_exporter_exporter_with_dyamic_cache
    /auto_recipes/plot_exporter_coverage
+   /auto_recipes/plot_exporter_recipes_c_phi2
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_modules
+   /auto_recipes/plot_exporter_recipes_oe_phi2
    /auto_recipes/plot_exporter_recipes_oe_cond
 
 

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**05:31.172** total execution time for 5 files **from auto_recipes**:
+**00:37.331** total execution time for 10 files **from auto_recipes**:
 
 .. container::
 
@@ -32,18 +32,33 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py` (``plot_exporter_recipes_oe_phi2.py``)
+     - 00:37.331
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py` (``plot_exporter_coverage.py``)
-     - 05:20.582
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
-     - 00:04.004
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_dynamic_shapes.py` (``plot_exporter_exporter_dynamic_shapes.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
-     - 00:03.240
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_inputs.py` (``plot_exporter_exporter_inputs.py``)
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
-     - 00:02.555
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_with_dyamic_cache.py` (``plot_exporter_exporter_with_dyamic_cache.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``plot_exporter_recipes_c_cond.py``)
-     - 00:00.790
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``plot_exporter_recipes_c_phi2.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
+     - 00:00.000
      - 0.0

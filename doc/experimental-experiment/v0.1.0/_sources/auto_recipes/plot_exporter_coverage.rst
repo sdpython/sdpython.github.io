@@ -25,10 +25,10 @@ Measures the exporter success on many test cases
 
 All test cases can be found in module
 :mod:`experimental_experiment.torch_interpreter.eval.model_cases`.
-Page :ref:`l-exported-program-cases` shows the exported
+Page :ref:`l-exp-cases` shows the exported
 program for many of those cases.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-59
+.. GENERATED FROM PYTHON SOURCE LINES 13-63
 
 .. code-block:: Python
 
@@ -40,7 +40,11 @@ program for many of those cases.
         description=__doc__,
         exporter=("all", "an exporter to rerun"),
         dynamic=("all", "use dyanmic shapes"),
-        case=("all", "model cases"),
+        case=(
+            "three",
+            "model cases, two for the first two (to test), "
+            "all to select all, a name or a regular expression fior a subset",
+        ),
         quiet=("1", "0 or 1"),
         verbose=("1", "verbosity"),
         expose="exporter,dyanmic,case,quiet,verbose",
@@ -86,736 +90,56 @@ program for many of those cases.
 
  .. code-block:: none
 
-      0%|          | 0/1092 [00:00<?, ?it/s]      0%|          | 2/1092 [00:00<02:07,  8.56it/s]      0%|          | 4/1092 [00:00<01:41, 10.67it/s]      1%|          | 8/1092 [00:00<01:05, 16.48it/s]      1%|          | 10/1092 [00:01<02:08,  8.40it/s]      1%|          | 12/1092 [00:01<03:17,  5.48it/s]      1%|          | 13/1092 [00:02<04:41,  3.83it/s]      1%|▏         | 15/1092 [00:02<03:43,  4.82it/s]      1%|▏         | 16/1092 [00:02<03:33,  5.03it/s]      2%|▏         | 18/1092 [00:03<05:17,  3.38it/s]      2%|▏         | 21/1092 [00:03<03:15,  5.47it/s]      2%|▏         | 23/1092 [00:03<02:52,  6.19it/s]      2%|▏         | 25/1092 [00:04<02:35,  6.86it/s]      2%|▏         | 27/1092 [00:05<04:46,  3.72it/s]      3%|▎         | 29/1092 [00:05<03:52,  4.58it/s]      3%|▎         | 30/1092 [00:05<03:43,  4.74it/s]      3%|▎         | 32/1092 [00:05<02:59,  5.91it/s]      3%|▎         | 35/1092 [00:05<02:03,  8.56it/s]      3%|▎         | 37/1092 [00:06<02:08,  8.19it/s]      4%|▎         | 39/1092 [00:07<03:53,  4.50it/s]      4%|▎         | 40/1092 [00:07<04:57,  3.53it/s]      4%|▍         | 41/1092 [00:08<06:01,  2.91it/s]      4%|▍         | 43/1092 [00:08<04:17,  4.07it/s]      4%|▍         | 44/1092 [00:08<04:17,  4.07it/s]      4%|▍         | 46/1092 [00:08<03:28,  5.02it/s]      4%|▍         | 49/1092 [00:09<02:17,  7.60it/s]      5%|▍         | 51/1092 [00:09<02:44,  6.32it/s]      5%|▍         | 52/1092 [00:09<03:12,  5.40it/s]      5%|▍         | 54/1092 [00:10<04:04,  4.24it/s]      5%|▌         | 55/1092 [00:11<07:14,  2.39it/s]      5%|▌         | 57/1092 [00:11<05:15,  3.28it/s]      5%|▌         | 58/1092 [00:12<04:57,  3.48it/s]      5%|▌         | 60/1092 [00:12<03:46,  4.56it/s]      6%|▌         | 64/1092 [00:12<02:17,  7.46it/s]      6%|▌         | 66/1092 [00:13<02:52,  5.95it/s]      6%|▌         | 68/1092 [00:13<03:10,  5.38it/s]      6%|▋         | 69/1092 [00:14<04:09,  4.10it/s]      7%|▋         | 71/1092 [00:14<03:09,  5.38it/s]      7%|▋         | 72/1092 [00:15<05:12,  3.26it/s]      7%|▋         | 74/1092 [00:15<04:04,  4.17it/s]      7%|▋         | 77/1092 [00:15<02:36,  6.51it/s]      7%|▋         | 79/1092 [00:15<02:46,  6.10it/s]      7%|▋         | 81/1092 [00:16<02:43,  6.18it/s]      8%|▊         | 82/1092 [00:16<04:01,  4.18it/s]      8%|▊         | 83/1092 [00:17<04:59,  3.37it/s]      8%|▊         | 85/1092 [00:17<03:41,  4.55it/s]      8%|▊         | 86/1092 [00:17<03:50,  4.36it/s]      8%|▊         | 88/1092 [00:17<03:17,  5.08it/s]      8%|▊         | 91/1092 [00:18<02:12,  7.55it/s]      9%|▊         | 93/1092 [00:19<04:17,  3.88it/s]      9%|▊         | 94/1092 [00:19<04:26,  3.75it/s]      9%|▉         | 96/1092 [00:20<04:46,  3.47it/s]      9%|▉         | 97/1092 [00:20<05:39,  2.93it/s]      9%|▉         | 99/1092 [00:20<03:58,  4.16it/s]      9%|▉         | 100/1092 [00:21<03:50,  4.30it/s]      9%|▉         | 102/1092 [00:21<03:08,  5.26it/s]     10%|▉         | 105/1092 [00:21<02:03,  8.01it/s]     10%|▉         | 107/1092 [00:21<02:18,  7.10it/s]     10%|▉         | 109/1092 [00:22<02:21,  6.94it/s]     10%|█         | 110/1092 [00:23<05:42,  2.87it/s]     10%|█         | 111/1092 [00:24<06:36,  2.48it/s]     10%|█         | 113/1092 [00:24<04:37,  3.53it/s]     10%|█         | 114/1092 [00:24<04:22,  3.73it/s]     11%|█         | 116/1092 [00:24<03:18,  4.92it/s]     11%|█         | 119/1092 [00:24<02:14,  7.24it/s]     11%|█         | 121/1092 [00:25<02:14,  7.20it/s]     11%|█         | 122/1092 [00:25<02:31,  6.39it/s]     11%|█▏        | 124/1092 [00:25<03:16,  4.93it/s]     11%|█▏        | 125/1092 [00:26<04:25,  3.65it/s]     12%|█▏        | 127/1092 [00:26<03:09,  5.08it/s]     12%|█▏        | 128/1092 [00:27<05:01,  3.20it/s]     12%|█▏        | 130/1092 [00:27<03:49,  4.18it/s]     12%|█▏        | 134/1092 [00:27<02:16,  7.03it/s]     12%|█▏        | 136/1092 [00:28<02:37,  6.08it/s]     13%|█▎        | 138/1092 [00:28<03:13,  4.92it/s]     13%|█▎        | 139/1092 [00:29<04:09,  3.83it/s]     13%|█▎        | 142/1092 [00:29<02:54,  5.45it/s]     13%|█▎        | 144/1092 [00:29<02:23,  6.60it/s]     14%|█▎        | 148/1092 [00:29<01:30, 10.40it/s]     14%|█▎        | 150/1092 [00:30<03:15,  4.82it/s]     14%|█▍        | 152/1092 [00:31<03:39,  4.27it/s]     14%|█▍        | 154/1092 [00:32<03:57,  3.94it/s]     14%|█▍        | 155/1092 [00:32<03:37,  4.31it/s]     14%|█▍        | 156/1092 [00:32<03:31,  4.42it/s]     14%|█▍        | 158/1092 [00:32<02:58,  5.22it/s]     15%|█▍        | 161/1092 [00:32<01:59,  7.82it/s]     15%|█▍        | 163/1092 [00:33<02:06,  7.37it/s]     15%|█▌        | 165/1092 [00:33<02:13,  6.97it/s]     15%|█▌        | 166/1092 [00:34<05:37,  2.75it/s]     15%|█▌        | 167/1092 [00:35<06:10,  2.50it/s]     15%|█▌        | 169/1092 [00:35<04:21,  3.54it/s]     16%|█▌        | 170/1092 [00:35<04:29,  3.42it/s]     16%|█▌        | 172/1092 [00:36<03:21,  4.56it/s]Traceback (most recent call last):
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph_module.py", line 387, in __call__
-        return super(self.cls, obj).__call__(*args, **kwargs)  # type: ignore[misc]
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-        return self._call_impl(*args, **kwargs)
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-        return forward_call(*args, **kwargs)
-      File "<eval_with_key>.3237 from /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/eval/model_cases.py:610 in forward", line 9, in forward
-        add = sub + lx;  sub = lx = None
-    TypeError: unsupported operand type(s) for +: 'Tensor' and 'list'
-
-    Call using an FX-traced Module, line 9 of the traced Module's generated forward function:
-        sub = sigmoid - buff;  sigmoid = buff = None
-        add = sub + lx;  sub = lx = None
-
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- HERE
-        return add
-
-    
-
-     16%|█▌        | 175/1092 [00:36<02:16,  6.74it/s]     16%|█▌        | 177/1092 [00:36<02:35,  5.87it/s]     16%|█▋        | 178/1092 [00:36<02:48,  5.43it/s]     16%|█▋        | 180/1092 [00:37<03:08,  4.83it/s]     17%|█▋        | 181/1092 [00:38<06:30,  2.33it/s]     17%|█▋        | 183/1092 [00:39<04:37,  3.27it/s]     17%|█▋        | 184/1092 [00:39<04:46,  3.17it/s]     17%|█▋        | 186/1092 [00:39<04:10,  3.62it/s]Traceback (most recent call last):
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph_module.py", line 387, in __call__
-        return super(self.cls, obj).__call__(*args, **kwargs)  # type: ignore[misc]
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
-        return self._call_impl(*args, **kwargs)
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
-        return forward_call(*args, **kwargs)
-      File "<eval_with_key>.3411 from /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/eval/model_cases.py:610 in forward", line 9, in forward
-        add = sub + lx;  sub = lx = None
-    TypeError: unsupported operand type(s) for +: 'Tensor' and 'list'
-
-    Call using an FX-traced Module, line 9 of the traced Module's generated forward function:
-        sub = sigmoid - buff;  sigmoid = buff = None
-        add = sub + lx;  sub = lx = None
-
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ <--- HERE
-        return add
-
-    
-
-     17%|█▋        | 189/1092 [00:40<02:52,  5.24it/s]     17%|█▋        | 190/1092 [00:40<02:42,  5.55it/s]     17%|█▋        | 191/1092 [00:40<03:24,  4.41it/s]     18%|█▊        | 192/1092 [00:40<03:52,  3.88it/s]     18%|█▊        | 194/1092 [00:41<04:27,  3.35it/s]     18%|█▊        | 195/1092 [00:42<05:45,  2.60it/s]     18%|█▊        | 197/1092 [00:42<04:01,  3.71it/s]     18%|█▊        | 198/1092 [00:42<03:47,  3.94it/s]     18%|█▊        | 200/1092 [00:43<05:05,  2.92it/s]     19%|█▊        | 203/1092 [00:43<03:06,  4.77it/s]     19%|█▊        | 204/1092 [00:43<02:55,  5.07it/s]     19%|█▉        | 205/1092 [00:44<03:12,  4.61it/s]     19%|█▉        | 206/1092 [00:44<03:05,  4.78it/s]     19%|█▉        | 208/1092 [00:45<03:28,  4.23it/s]     19%|█▉        | 209/1092 [00:45<04:40,  3.15it/s]     19%|█▉        | 211/1092 [00:45<03:19,  4.43it/s]     19%|█▉        | 212/1092 [00:46<03:47,  3.86it/s]     20%|█▉        | 214/1092 [00:46<03:16,  4.46it/s]     20%|█▉        | 217/1092 [00:46<02:19,  6.29it/s]     20%|██        | 219/1092 [00:47<02:45,  5.26it/s]     20%|██        | 220/1092 [00:48<05:21,  2.71it/s]     20%|██        | 222/1092 [00:49<05:12,  2.78it/s]     20%|██        | 223/1092 [00:49<06:09,  2.35it/s]     21%|██        | 226/1092 [00:50<03:52,  3.72it/s]     21%|██        | 228/1092 [00:50<03:06,  4.64it/s]     21%|██        | 232/1092 [00:50<01:53,  7.58it/s]     21%|██▏       | 234/1092 [00:50<02:08,  6.66it/s]     22%|██▏       | 236/1092 [00:51<02:37,  5.42it/s]     22%|██▏       | 237/1092 [00:52<04:53,  2.91it/s]     22%|██▏       | 239/1092 [00:52<03:39,  3.88it/s]     22%|██▏       | 240/1092 [00:52<03:34,  3.97it/s]     22%|██▏       | 242/1092 [00:53<02:51,  4.96it/s]     22%|██▏       | 245/1092 [00:53<01:55,  7.35it/s]     23%|██▎       | 247/1092 [00:53<01:57,  7.18it/s]     23%|██▎       | 249/1092 [00:53<01:53,  7.42it/s]     23%|██▎       | 250/1092 [00:54<02:54,  4.83it/s]     23%|██▎       | 251/1092 [00:55<04:01,  3.48it/s]     23%|██▎       | 253/1092 [00:55<02:54,  4.82it/s]     23%|██▎       | 254/1092 [00:55<03:05,  4.51it/s]     23%|██▎       | 256/1092 [00:56<05:01,  2.77it/s]     24%|██▎       | 259/1092 [00:56<03:05,  4.50it/s]     24%|██▍       | 261/1092 [00:57<03:01,  4.58it/s]     24%|██▍       | 262/1092 [00:57<03:15,  4.25it/s]     24%|██▍       | 264/1092 [00:58<03:42,  3.72it/s]     24%|██▍       | 265/1092 [00:58<04:42,  2.92it/s]     24%|██▍       | 267/1092 [00:59<03:34,  3.84it/s]     25%|██▍       | 268/1092 [00:59<03:41,  3.72it/s]     25%|██▍       | 269/1092 [00:59<03:15,  4.21it/s]     25%|██▍       | 270/1092 [00:59<02:55,  4.67it/s]     25%|██▌       | 273/1092 [00:59<01:43,  7.92it/s]     25%|██▌       | 275/1092 [01:00<02:19,  5.87it/s]     25%|██▌       | 276/1092 [01:00<02:15,  6.01it/s]     25%|██▌       | 278/1092 [01:01<04:37,  2.94it/s]     26%|██▌       | 279/1092 [01:02<05:53,  2.30it/s]     26%|██▌       | 281/1092 [01:02<04:25,  3.05it/s]     26%|██▌       | 282/1092 [01:03<04:30,  3.00it/s]     26%|██▌       | 283/1092 [01:03<04:03,  3.32it/s]     26%|██▌       | 284/1092 [01:03<04:26,  3.03it/s]     26%|██▋       | 287/1092 [01:03<02:30,  5.35it/s]     26%|██▋       | 288/1092 [01:04<02:48,  4.78it/s]     26%|██▋       | 289/1092 [01:04<03:30,  3.81it/s]     27%|██▋       | 290/1092 [01:05<04:04,  3.29it/s]     27%|██▋       | 292/1092 [01:06<06:14,  2.14it/s]     27%|██▋       | 293/1092 [01:07<06:52,  1.94it/s]     27%|██▋       | 295/1092 [01:07<04:41,  2.83it/s]     27%|██▋       | 296/1092 [01:07<05:17,  2.51it/s]     27%|██▋       | 297/1092 [01:08<04:44,  2.80it/s]     27%|██▋       | 298/1092 [01:08<04:08,  3.20it/s]     28%|██▊       | 301/1092 [01:08<02:39,  4.97it/s]     28%|██▊       | 302/1092 [01:08<02:43,  4.84it/s]     28%|██▊       | 303/1092 [01:09<04:06,  3.20it/s]     28%|██▊       | 304/1092 [01:09<03:56,  3.34it/s]     28%|██▊       | 306/1092 [01:10<05:09,  2.54it/s]     28%|██▊       | 307/1092 [01:11<06:37,  1.98it/s]     28%|██▊       | 309/1092 [01:12<04:30,  2.90it/s]     28%|██▊       | 310/1092 [01:13<06:31,  2.00it/s]     28%|██▊       | 311/1092 [01:13<05:28,  2.38it/s]     29%|██▊       | 312/1092 [01:13<05:14,  2.48it/s]     29%|██▉       | 315/1092 [01:13<02:50,  4.57it/s]     29%|██▉       | 316/1092 [01:13<02:49,  4.58it/s]     29%|██▉       | 317/1092 [01:14<03:24,  3.79it/s]     29%|██▉       | 318/1092 [01:14<03:53,  3.32it/s]     29%|██▉       | 320/1092 [01:15<04:17,  2.99it/s]     29%|██▉       | 321/1092 [01:16<05:31,  2.33it/s]     30%|██▉       | 323/1092 [01:16<03:43,  3.44it/s]     30%|██▉       | 324/1092 [01:16<04:13,  3.03it/s]     30%|██▉       | 325/1092 [01:17<03:41,  3.46it/s]     30%|██▉       | 326/1092 [01:17<03:09,  4.05it/s]     30%|███       | 329/1092 [01:17<01:57,  6.49it/s]     30%|███       | 330/1092 [01:17<02:02,  6.24it/s]     30%|███       | 331/1092 [01:19<05:35,  2.27it/s]     30%|███       | 332/1092 [01:19<04:52,  2.60it/s]     31%|███       | 334/1092 [01:20<05:20,  2.36it/s]     31%|███       | 335/1092 [01:21<06:54,  1.83it/s]     31%|███       | 337/1092 [01:21<04:43,  2.66it/s]     31%|███       | 338/1092 [01:21<05:18,  2.37it/s]     31%|███       | 339/1092 [01:22<04:44,  2.65it/s]     31%|███       | 340/1092 [01:22<05:18,  2.36it/s]     31%|███▏      | 343/1092 [01:23<03:08,  3.98it/s]     32%|███▏      | 344/1092 [01:23<03:10,  3.93it/s]     32%|███▏      | 345/1092 [01:23<03:29,  3.57it/s]     32%|███▏      | 346/1092 [01:24<04:07,  3.02it/s]     32%|███▏      | 348/1092 [01:25<06:48,  1.82it/s]     32%|███▏      | 349/1092 [01:26<07:41,  1.61it/s]     32%|███▏      | 351/1092 [01:27<05:21,  2.30it/s]     32%|███▏      | 352/1092 [01:27<05:40,  2.17it/s]     32%|███▏      | 353/1092 [01:27<05:05,  2.42it/s]     32%|███▏      | 354/1092 [01:28<05:48,  2.12it/s]     33%|███▎      | 357/1092 [01:28<03:27,  3.55it/s]     33%|███▎      | 358/1092 [01:29<03:27,  3.54it/s]     33%|███▎      | 359/1092 [01:29<04:09,  2.94it/s]     33%|███▎      | 360/1092 [01:30<05:02,  2.42it/s]     33%|███▎      | 362/1092 [01:31<05:30,  2.21it/s]     33%|███▎      | 363/1092 [01:33<09:22,  1.30it/s]     33%|███▎      | 365/1092 [01:34<07:57,  1.52it/s]     34%|███▎      | 366/1092 [01:35<10:09,  1.19it/s]     34%|███▎      | 367/1092 [01:36<09:33,  1.26it/s]     34%|███▎      | 368/1092 [01:37<11:05,  1.09it/s]     34%|███▍      | 369/1092 [01:37<08:57,  1.35it/s]     34%|███▍      | 370/1092 [01:38<07:28,  1.61it/s]     34%|███▍      | 371/1092 [01:38<07:49,  1.54it/s]     34%|███▍      | 372/1092 [01:39<07:15,  1.65it/s]     34%|███▍      | 373/1092 [01:41<10:53,  1.10it/s]     34%|███▍      | 374/1092 [01:42<13:43,  1.15s/it]     34%|███▍      | 376/1092 [01:44<13:26,  1.13s/it]     35%|███▍      | 377/1092 [01:47<18:34,  1.56s/it]     35%|███▍      | 379/1092 [01:49<14:31,  1.22s/it]     35%|███▍      | 380/1092 [01:51<17:56,  1.51s/it]     35%|███▍      | 381/1092 [01:52<16:12,  1.37s/it]     35%|███▍      | 382/1092 [01:54<16:48,  1.42s/it]     35%|███▌      | 383/1092 [01:54<13:00,  1.10s/it]     35%|███▌      | 384/1092 [01:54<10:06,  1.17it/s]     35%|███▌      | 385/1092 [01:55<10:07,  1.16it/s]     35%|███▌      | 386/1092 [01:56<09:01,  1.30it/s]     35%|███▌      | 387/1092 [01:58<13:28,  1.15s/it]     36%|███▌      | 388/1092 [02:00<15:43,  1.34s/it]     36%|███▌      | 390/1092 [02:03<17:19,  1.48s/it]     36%|███▌      | 391/1092 [02:05<19:35,  1.68s/it]     36%|███▌      | 393/1092 [02:05<12:02,  1.03s/it]     36%|███▌      | 394/1092 [02:06<10:47,  1.08it/s]     36%|███▌      | 395/1092 [02:06<08:45,  1.33it/s]     36%|███▋      | 396/1092 [02:07<08:07,  1.43it/s]     37%|███▋      | 399/1092 [02:07<04:17,  2.69it/s]     37%|███▋      | 400/1092 [02:07<04:00,  2.88it/s]     37%|███▋      | 401/1092 [02:08<04:43,  2.44it/s]     37%|███▋      | 402/1092 [02:08<05:14,  2.19it/s]     37%|███▋      | 404/1092 [02:10<07:44,  1.48it/s]     37%|███▋      | 405/1092 [02:11<08:36,  1.33it/s]     37%|███▋      | 407/1092 [02:12<05:50,  1.96it/s]     37%|███▋      | 408/1092 [02:12<06:13,  1.83it/s]     37%|███▋      | 409/1092 [02:13<05:11,  2.20it/s]     38%|███▊      | 410/1092 [02:13<05:53,  1.93it/s]     38%|███▊      | 413/1092 [02:13<03:11,  3.54it/s]     38%|███▊      | 414/1092 [02:14<03:14,  3.48it/s]     38%|███▊      | 415/1092 [02:15<04:38,  2.43it/s]     38%|███▊      | 416/1092 [02:15<05:57,  1.89it/s]     38%|███▊      | 418/1092 [02:17<06:44,  1.67it/s]     38%|███▊      | 419/1092 [02:19<11:28,  1.02s/it]     39%|███▊      | 421/1092 [02:20<07:19,  1.53it/s]     39%|███▊      | 422/1092 [02:20<06:31,  1.71it/s]     39%|███▉      | 424/1092 [02:20<04:51,  2.29it/s]     39%|███▉      | 427/1092 [02:20<02:53,  3.84it/s]     39%|███▉      | 429/1092 [02:21<02:43,  4.06it/s]     39%|███▉      | 430/1092 [02:21<02:56,  3.76it/s]     40%|███▉      | 432/1092 [02:22<03:06,  3.54it/s]     40%|███▉      | 433/1092 [02:22<03:47,  2.90it/s]     40%|███▉      | 435/1092 [02:23<02:44,  4.00it/s]     40%|███▉      | 436/1092 [02:23<03:05,  3.55it/s]     40%|████      | 438/1092 [02:23<02:43,  3.99it/s]     40%|████      | 441/1092 [02:24<01:47,  6.04it/s]     40%|████      | 442/1092 [02:24<01:41,  6.39it/s]     41%|████      | 443/1092 [02:24<02:11,  4.94it/s]     41%|████      | 444/1092 [02:26<05:12,  2.07it/s]     41%|████      | 446/1092 [02:26<04:30,  2.39it/s]     41%|████      | 447/1092 [02:27<05:18,  2.02it/s]     41%|████      | 449/1092 [02:27<03:33,  3.01it/s]     41%|████      | 450/1092 [02:27<03:39,  2.92it/s]     41%|████▏     | 452/1092 [02:28<02:51,  3.73it/s]     42%|████▏     | 455/1092 [02:28<01:50,  5.78it/s]     42%|████▏     | 457/1092 [02:28<02:07,  4.98it/s]     42%|████▏     | 458/1092 [02:29<02:19,  4.54it/s]     42%|████▏     | 460/1092 [02:29<02:47,  3.78it/s]     42%|████▏     | 461/1092 [02:30<03:40,  2.87it/s]     42%|████▏     | 463/1092 [02:30<02:39,  3.95it/s]     42%|████▏     | 464/1092 [02:32<05:07,  2.04it/s]     43%|████▎     | 466/1092 [02:32<03:58,  2.63it/s]     43%|████▎     | 469/1092 [02:32<02:30,  4.13it/s]     43%|████▎     | 470/1092 [02:32<02:18,  4.51it/s]     43%|████▎     | 471/1092 [02:33<02:56,  3.53it/s]     43%|████▎     | 472/1092 [02:33<03:06,  3.32it/s]     43%|████▎     | 474/1092 [02:34<03:17,  3.13it/s]     43%|████▎     | 475/1092 [02:35<04:16,  2.40it/s]     44%|████▎     | 477/1092 [02:35<02:52,  3.57it/s]     44%|████▍     | 478/1092 [02:35<02:59,  3.42it/s]     44%|████▍     | 480/1092 [02:36<02:32,  4.02it/s]     44%|████▍     | 483/1092 [02:36<01:34,  6.47it/s]     44%|████▍     | 485/1092 [02:36<02:03,  4.91it/s]     45%|████▍     | 486/1092 [02:38<04:23,  2.30it/s]     45%|████▍     | 488/1092 [02:38<03:54,  2.57it/s]     45%|████▍     | 489/1092 [02:39<04:29,  2.24it/s]     45%|████▍     | 491/1092 [02:39<03:13,  3.10it/s]     45%|████▌     | 492/1092 [02:40<03:34,  2.80it/s]     45%|████▌     | 494/1092 [02:40<03:16,  3.05it/s]     46%|████▌     | 497/1092 [02:41<02:13,  4.46it/s]     46%|████▌     | 498/1092 [02:41<02:14,  4.41it/s]     46%|████▌     | 499/1092 [02:42<02:59,  3.31it/s]     46%|████▌     | 500/1092 [02:42<03:42,  2.65it/s]     46%|████▌     | 502/1092 [02:43<04:06,  2.40it/s]     46%|████▌     | 503/1092 [02:44<05:27,  1.80it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      0%|          | 0/84 [00:00<?, ?it/s]      1%|          | 1/84 [00:04<05:32,  4.00s/it]      8%|▊         | 7/84 [00:05<00:46,  1.67it/s]     11%|█         | 9/84 [00:06<00:40,  1.85it/s]     12%|█▏        | 10/84 [00:06<00:34,  2.15it/s]     14%|█▍        | 12/84 [00:07<00:37,  1.91it/s]     15%|█▌        | 13/84 [00:07<00:36,  1.92it/s]     18%|█▊        | 15/84 [00:08<00:24,  2.77it/s]     25%|██▌       | 21/84 [00:08<00:09,  6.50it/s]     29%|██▊       | 24/84 [00:08<00:09,  6.07it/s]     31%|███       | 26/84 [00:09<00:10,  5.69it/s]     33%|███▎      | 28/84 [00:09<00:10,  5.58it/s]     39%|███▉      | 33/84 [00:09<00:05,  9.22it/s]     44%|████▍     | 37/84 [00:10<00:04,  9.81it/s]     46%|████▋     | 39/84 [00:10<00:04,  9.84it/s]     49%|████▉     | 41/84 [00:11<00:09,  4.72it/s]     52%|█████▏    | 44/84 [00:11<00:06,  6.38it/s]     58%|█████▊    | 49/84 [00:11<00:03, 10.17it/s]     62%|██████▏   | 52/84 [00:12<00:03,  9.43it/s]     64%|██████▍   | 54/84 [00:12<00:03,  7.64it/s]     67%|██████▋   | 56/84 [00:13<00:05,  5.56it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     46%|████▌     | 505/1092 [02:44<03:37,  2.70it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     46%|████▋     | 506/1092 [02:46<05:55,  1.65it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+     73%|███████▎  | 61/84 [00:13<00:02,  9.11it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      getattr_node = gm.graph.get_attr(lifted_node)
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+     77%|███████▋  | 65/84 [00:13<00:01, 10.27it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      getattr_node = gm.graph.get_attr(lifted_node)
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+     80%|███████▉  | 67/84 [00:13<00:01,  9.84it/s]     82%|████████▏ | 69/84 [00:14<00:02,  5.20it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      getattr_node = gm.graph.get_attr(lifted_node)
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+      warnings.warn(
+     86%|████████▌ | 72/84 [00:15<00:01,  6.94it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+      getattr_node = gm.graph.get_attr(lifted_node)
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
-     47%|████▋     | 508/1092 [02:46<04:17,  2.27it/s]/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/eval/model_cases.py:405: TracerWarning: torch.tensor results are registered as constants in the trace. You can safely ignore this warning if you use this function to create tensors out of constant variables that would be the same every time you call this function. In any other case, this might cause the trace to be incorrect.
-      z = torch.tensor([0], dtype=torch.float32)
-     47%|████▋     | 511/1092 [02:46<02:33,  3.78it/s]     47%|████▋     | 512/1092 [02:46<02:23,  4.03it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+     93%|█████████▎| 78/84 [00:15<00:00, 11.76it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     47%|████▋     | 513/1092 [02:47<02:42,  3.57it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     47%|████▋     | 514/1092 [02:47<03:13,  2.98it/s]     47%|████▋     | 516/1092 [02:48<03:16,  2.92it/s]     47%|████▋     | 517/1092 [02:49<04:06,  2.33it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     48%|████▊     | 519/1092 [02:49<03:05,  3.09it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1801: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
-     48%|████▊     | 520/1092 [02:50<03:48,  2.50it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     48%|████▊     | 521/1092 [02:50<03:09,  3.01it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     48%|████▊     | 522/1092 [02:50<03:33,  2.67it/s]/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/eval/model_cases.py:405: TracerWarning: torch.tensor results are registered as constants in the trace. You can safely ignore this warning if you use this function to create tensors out of constant variables that would be the same every time you call this function. In any other case, this might cause the trace to be incorrect.
-      z = torch.tensor([0], dtype=torch.float32)
-     48%|████▊     | 525/1092 [02:51<02:09,  4.38it/s]     48%|████▊     | 526/1092 [02:51<01:55,  4.91it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     48%|████▊     | 527/1092 [02:51<02:50,  3.31it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     48%|████▊     | 528/1092 [02:53<06:16,  1.50it/s]     49%|████▊     | 530/1092 [02:54<05:34,  1.68it/s]     49%|████▊     | 531/1092 [02:55<06:19,  1.48it/s]     49%|████▉     | 533/1092 [02:55<04:02,  2.31it/s]     49%|████▉     | 534/1092 [02:56<03:49,  2.44it/s]     49%|████▉     | 536/1092 [02:56<02:58,  3.11it/s]     49%|████▉     | 539/1092 [02:56<01:50,  5.00it/s]     49%|████▉     | 540/1092 [02:56<01:41,  5.46it/s]     50%|████▉     | 541/1092 [02:57<02:16,  4.03it/s]     50%|████▉     | 542/1092 [02:57<02:33,  3.58it/s]     50%|████▉     | 544/1092 [02:58<02:57,  3.09it/s]     50%|████▉     | 545/1092 [03:00<06:18,  1.44it/s]     50%|█████     | 547/1092 [03:00<04:23,  2.06it/s]     50%|█████     | 548/1092 [03:01<04:48,  1.88it/s]     50%|█████     | 549/1092 [03:01<03:53,  2.33it/s]     50%|█████     | 550/1092 [03:02<03:55,  2.31it/s]     51%|█████     | 553/1092 [03:02<02:17,  3.92it/s]     51%|█████     | 554/1092 [03:02<02:04,  4.32it/s]     51%|█████     | 555/1092 [03:03<03:07,  2.86it/s]     51%|█████     | 556/1092 [03:03<03:32,  2.52it/s]     51%|█████     | 558/1092 [03:04<03:34,  2.49it/s]     51%|█████     | 559/1092 [03:05<04:36,  1.93it/s]     52%|█████▏    | 565/1092 [03:05<01:41,  5.21it/s]     52%|█████▏    | 571/1092 [03:05<00:55,  9.35it/s]     53%|█████▎    | 574/1092 [03:06<01:14,  6.93it/s]     53%|█████▎    | 579/1092 [03:06<00:52,  9.83it/s]     54%|█████▎    | 586/1092 [03:07<00:41, 12.32it/s]     54%|█████▍    | 589/1092 [03:07<00:44, 11.26it/s]     54%|█████▍    | 591/1092 [03:08<01:44,  4.81it/s]     54%|█████▍    | 593/1092 [03:09<01:36,  5.14it/s]     55%|█████▍    | 596/1092 [03:09<01:14,  6.64it/s]     55%|█████▍    | 598/1092 [03:09<01:26,  5.72it/s]     55%|█████▍    | 600/1092 [03:10<01:41,  4.86it/s]     55%|█████▌    | 601/1092 [03:11<02:16,  3.59it/s]     55%|█████▌    | 603/1092 [03:11<01:54,  4.26it/s]     55%|█████▌    | 604/1092 [03:11<01:55,  4.24it/s]     55%|█████▌    | 606/1092 [03:12<01:38,  4.94it/s]     56%|█████▌    | 609/1092 [03:12<01:05,  7.34it/s]     56%|█████▌    | 611/1092 [03:12<01:17,  6.21it/s]     56%|█████▌    | 612/1092 [03:12<01:33,  5.15it/s]     56%|█████▌    | 614/1092 [03:13<02:06,  3.78it/s]     56%|█████▋    | 615/1092 [03:15<04:20,  1.83it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     57%|█████▋    | 618/1092 [03:15<02:41,  2.93it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     57%|█████▋    | 620/1092 [03:15<02:04,  3.79it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     57%|█████▋    | 624/1092 [03:16<01:13,  6.40it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     57%|█████▋    | 626/1092 [03:16<01:16,  6.06it/s]     58%|█████▊    | 628/1092 [03:17<01:30,  5.14it/s]     58%|█████▊    | 629/1092 [03:17<01:55,  4.00it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     58%|█████▊    | 631/1092 [03:17<01:28,  5.20it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     58%|█████▊    | 632/1092 [03:17<01:38,  4.67it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     58%|█████▊    | 634/1092 [03:18<01:22,  5.56it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     58%|█████▊    | 637/1092 [03:18<00:54,  8.39it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     59%|█████▊    | 639/1092 [03:18<00:55,  8.11it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     59%|█████▊    | 641/1092 [03:20<02:19,  3.23it/s]     59%|█████▉    | 642/1092 [03:20<02:45,  2.72it/s]     59%|█████▉    | 643/1092 [03:21<03:10,  2.35it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     59%|█████▉    | 646/1092 [03:21<02:01,  3.68it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     59%|█████▉    | 648/1092 [03:21<01:37,  4.56it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     60%|█████▉    | 652/1092 [03:22<00:58,  7.55it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     60%|█████▉    | 654/1092 [03:22<01:07,  6.52it/s]     60%|██████    | 656/1092 [03:23<01:26,  5.03it/s]     60%|██████    | 657/1092 [03:23<01:48,  3.99it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     60%|██████    | 659/1092 [03:23<01:26,  5.02it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     60%|██████    | 660/1092 [03:24<01:25,  5.04it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     61%|██████    | 662/1092 [03:25<02:27,  2.91it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     61%|██████    | 665/1092 [03:25<01:35,  4.46it/s]     61%|██████    | 666/1092 [03:25<01:29,  4.75it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     61%|██████    | 667/1092 [03:25<01:34,  4.50it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     61%|██████    | 668/1092 [03:26<01:44,  4.05it/s]     61%|██████▏   | 670/1092 [03:26<01:56,  3.63it/s]     61%|██████▏   | 671/1092 [03:27<02:30,  2.80it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     62%|██████▏   | 673/1092 [03:27<01:44,  4.03it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     62%|██████▏   | 674/1092 [03:27<01:38,  4.22it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     62%|██████▏   | 676/1092 [03:28<01:16,  5.44it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_4 target lifted_tensor_4 lifted_tensor_4 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     62%|██████▏   | 679/1092 [03:28<00:49,  8.34it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     62%|██████▏   | 681/1092 [03:28<00:53,  7.62it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     63%|██████▎   | 683/1092 [03:28<00:56,  7.20it/s]     63%|██████▎   | 684/1092 [03:29<01:31,  4.45it/s]     63%|██████▎   | 685/1092 [03:31<04:06,  1.65it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     63%|██████▎   | 687/1092 [03:31<02:45,  2.44it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     63%|██████▎   | 688/1092 [03:31<02:31,  2.66it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     63%|██████▎   | 690/1092 [03:32<01:57,  3.43it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_4 target lifted_tensor_4 lifted_tensor_4 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     63%|██████▎   | 693/1092 [03:32<01:11,  5.59it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     64%|██████▎   | 695/1092 [03:32<01:17,  5.15it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     64%|██████▍   | 697/1092 [03:33<01:11,  5.54it/s]     64%|██████▍   | 698/1092 [03:33<01:44,  3.76it/s]     64%|██████▍   | 699/1092 [03:34<02:11,  2.98it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     64%|██████▍   | 702/1092 [03:34<01:27,  4.48it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     64%|██████▍   | 704/1092 [03:34<01:15,  5.16it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     65%|██████▍   | 707/1092 [03:34<00:50,  7.60it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     65%|██████▍   | 709/1092 [03:35<00:51,  7.41it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     65%|██████▌   | 711/1092 [03:35<00:53,  7.08it/s]     65%|██████▌   | 712/1092 [03:37<02:45,  2.30it/s]     65%|██████▌   | 713/1092 [03:38<03:06,  2.04it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     65%|██████▌   | 715/1092 [03:38<02:06,  2.99it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     66%|██████▌   | 716/1092 [03:38<01:57,  3.19it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     66%|██████▌   | 718/1092 [03:38<01:38,  3.79it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     66%|██████▌   | 721/1092 [03:39<01:00,  6.11it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     66%|██████▌   | 723/1092 [03:39<01:00,  6.07it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node bias target bias bias of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     66%|██████▋   | 725/1092 [03:39<00:59,  6.16it/s]     66%|██████▋   | 726/1092 [03:40<01:33,  3.93it/s]     67%|██████▋   | 727/1092 [03:41<02:02,  2.98it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     67%|██████▋   | 729/1092 [03:41<01:24,  4.29it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     67%|██████▋   | 730/1092 [03:41<01:20,  4.50it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     67%|██████▋   | 732/1092 [03:41<01:06,  5.39it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_5 target lifted_tensor_5 lifted_tensor_5 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     67%|██████▋   | 734/1092 [03:41<00:50,  7.05it/s]     67%|██████▋   | 736/1092 [03:41<00:44,  7.98it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     68%|██████▊   | 738/1092 [03:43<02:10,  2.71it/s]     68%|██████▊   | 740/1092 [03:44<01:59,  2.94it/s]     68%|██████▊   | 741/1092 [03:44<02:11,  2.67it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_5 target lifted_tensor_5 lifted_tensor_5 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     68%|██████▊   | 747/1092 [03:44<00:57,  6.02it/s]     69%|██████▉   | 754/1092 [03:45<00:43,  7.76it/s]     69%|██████▉   | 756/1092 [03:46<00:50,  6.61it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     69%|██████▉   | 757/1092 [03:46<00:50,  6.64it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     69%|██████▉   | 758/1092 [03:46<00:55,  6.04it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     70%|██████▉   | 760/1092 [03:46<00:51,  6.40it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_5 target lifted_tensor_5 lifted_tensor_5 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     70%|██████▉   | 762/1092 [03:46<00:41,  7.93it/s]     70%|██████▉   | 764/1092 [03:47<00:42,  7.63it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     70%|███████   | 765/1092 [03:47<00:45,  7.12it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node params target params params of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     70%|███████   | 766/1092 [03:47<00:47,  6.94it/s]     70%|███████   | 768/1092 [03:49<02:24,  2.24it/s]     70%|███████   | 769/1092 [03:50<02:32,  2.12it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_5 target lifted_tensor_5 lifted_tensor_5 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     71%|███████   | 775/1092 [03:50<00:59,  5.33it/s]     72%|███████▏  | 782/1092 [03:50<00:41,  7.44it/s]     72%|███████▏  | 784/1092 [03:51<00:50,  6.14it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     72%|███████▏  | 786/1092 [03:51<00:50,  6.11it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     72%|███████▏  | 788/1092 [03:51<00:46,  6.48it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     72%|███████▏  | 791/1092 [03:52<00:35,  8.37it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     73%|███████▎  | 793/1092 [03:52<00:37,  8.05it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     73%|███████▎  | 795/1092 [03:52<00:39,  7.43it/s]     73%|███████▎  | 796/1092 [03:53<01:08,  4.30it/s]     73%|███████▎  | 797/1092 [03:54<01:32,  3.18it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     73%|███████▎  | 799/1092 [03:54<01:10,  4.14it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     73%|███████▎  | 800/1092 [03:55<02:08,  2.28it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     73%|███████▎  | 802/1092 [03:55<01:33,  3.11it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     74%|███████▎  | 805/1092 [03:55<00:57,  5.03it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     74%|███████▍  | 807/1092 [03:56<00:54,  5.19it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     74%|███████▍  | 809/1092 [03:56<00:51,  5.50it/s]     74%|███████▍  | 810/1092 [03:57<01:07,  4.16it/s]     74%|███████▍  | 811/1092 [03:57<01:28,  3.17it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     74%|███████▍  | 813/1092 [03:57<01:01,  4.54it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     75%|███████▍  | 814/1092 [03:58<01:06,  4.19it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     75%|███████▍  | 816/1092 [03:58<00:55,  4.98it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     75%|███████▌  | 819/1092 [03:58<00:38,  7.12it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     75%|███████▌  | 821/1092 [03:58<00:36,  7.43it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     75%|███████▌  | 822/1092 [03:59<00:42,  6.39it/s]     75%|███████▌  | 824/1092 [04:00<01:48,  2.48it/s]     76%|███████▌  | 825/1092 [04:01<02:07,  2.10it/s]     76%|███████▌  | 826/1092 [04:01<01:48,  2.46it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     76%|███████▌  | 828/1092 [04:02<01:22,  3.20it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     76%|███████▌  | 831/1092 [04:02<00:50,  5.12it/s]     76%|███████▋  | 834/1092 [04:02<00:35,  7.20it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     77%|███████▋  | 836/1092 [04:02<00:40,  6.31it/s]     77%|███████▋  | 838/1092 [04:03<00:54,  4.66it/s]     77%|███████▋  | 839/1092 [04:04<01:18,  3.24it/s]     77%|███████▋  | 840/1092 [04:04<01:07,  3.71it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     77%|███████▋  | 842/1092 [04:04<00:57,  4.33it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     77%|███████▋  | 844/1092 [04:05<00:48,  5.15it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     78%|███████▊  | 847/1092 [04:05<00:32,  7.59it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     78%|███████▊  | 849/1092 [04:05<00:33,  7.29it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     78%|███████▊  | 851/1092 [04:05<00:36,  6.63it/s]     78%|███████▊  | 852/1092 [04:07<01:54,  2.09it/s]     78%|███████▊  | 853/1092 [04:08<02:07,  1.87it/s]     78%|███████▊  | 854/1092 [04:08<01:46,  2.24it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     78%|███████▊  | 856/1092 [04:09<01:21,  2.89it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     79%|███████▊  | 859/1092 [04:09<00:50,  4.66it/s]     79%|███████▉  | 862/1092 [04:09<00:33,  6.92it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     79%|███████▉  | 864/1092 [04:09<00:37,  6.07it/s]     79%|███████▉  | 866/1092 [04:10<00:52,  4.26it/s]     79%|███████▉  | 867/1092 [04:11<01:23,  2.68it/s]     79%|███████▉  | 868/1092 [04:11<01:12,  3.07it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     80%|███████▉  | 870/1092 [04:12<01:00,  3.68it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     80%|███████▉  | 872/1092 [04:12<00:49,  4.43it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_4 target lifted_tensor_4 lifted_tensor_4 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     80%|███████▉  | 873/1092 [04:12<00:44,  4.90it/s]     80%|████████  | 875/1092 [04:12<00:32,  6.65it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     80%|████████  | 877/1092 [04:13<00:38,  5.58it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     80%|████████  | 878/1092 [04:13<00:39,  5.38it/s]     81%|████████  | 880/1092 [04:15<01:39,  2.13it/s]     81%|████████  | 881/1092 [04:16<01:53,  1.85it/s]     81%|████████  | 882/1092 [04:16<01:34,  2.22it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     81%|████████  | 883/1092 [04:16<01:17,  2.70it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     81%|████████  | 884/1092 [04:16<01:09,  2.97it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_2 target lifted_tensor_2 lifted_tensor_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_3 target lifted_tensor_3 lifted_tensor_3 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_4 target lifted_tensor_4 lifted_tensor_4 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     81%|████████  | 887/1092 [04:16<00:38,  5.35it/s]     81%|████████▏ | 889/1092 [04:17<00:30,  6.67it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
-      getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_0 target lifted_tensor_0 lifted_tensor_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
-      warnings.warn(
-     82%|████████▏ | 891/1092 [04:17<00:32,  6.20it/s]     82%|████████▏ | 892/1092 [04:17<00:31,  6.31it/s]     82%|████████▏ | 894/1092 [04:18<00:45,  4.32it/s]     82%|████████▏ | 895/1092 [04:19<01:06,  2.94it/s]     82%|████████▏ | 897/1092 [04:19<00:46,  4.18it/s]     82%|████████▏ | 898/1092 [04:19<00:47,  4.11it/s]     82%|████████▏ | 900/1092 [04:19<00:42,  4.54it/s]     83%|████████▎ | 903/1092 [04:19<00:26,  7.04it/s]     83%|████████▎ | 905/1092 [04:20<00:30,  6.22it/s]     83%|████████▎ | 906/1092 [04:20<00:34,  5.43it/s]     83%|████████▎ | 908/1092 [04:22<01:26,  2.13it/s]     83%|████████▎ | 909/1092 [04:23<01:31,  2.00it/s]     83%|████████▎ | 911/1092 [04:23<01:05,  2.76it/s]     84%|████████▎ | 912/1092 [04:23<01:05,  2.73it/s]     84%|████████▎ | 914/1092 [04:24<00:56,  3.16it/s]     84%|████████▍ | 917/1092 [04:24<00:34,  5.03it/s]     84%|████████▍ | 919/1092 [04:25<00:39,  4.37it/s]     84%|████████▍ | 920/1092 [04:25<00:42,  4.06it/s]     84%|████████▍ | 922/1092 [04:26<00:47,  3.61it/s]     85%|████████▍ | 923/1092 [04:26<00:56,  2.97it/s]     85%|████████▍ | 926/1092 [04:27<00:40,  4.15it/s]     85%|████████▍ | 928/1092 [04:27<00:34,  4.78it/s]     85%|████████▌ | 931/1092 [04:27<00:23,  6.87it/s]     85%|████████▌ | 933/1092 [04:27<00:25,  6.25it/s]     86%|████████▌ | 934/1092 [04:28<00:27,  5.71it/s]     86%|████████▌ | 935/1092 [04:28<00:25,  6.14it/s]     86%|████████▌ | 936/1092 [04:30<01:21,  1.91it/s]     86%|████████▌ | 937/1092 [04:30<01:23,  1.87it/s]     86%|████████▌ | 939/1092 [04:30<00:55,  2.75it/s]     86%|████████▌ | 940/1092 [04:31<00:54,  2.78it/s]     86%|████████▋ | 942/1092 [04:31<00:43,  3.44it/s]     87%|████████▋ | 945/1092 [04:31<00:27,  5.26it/s]     87%|████████▋ | 946/1092 [04:32<00:26,  5.42it/s]     87%|████████▋ | 947/1092 [04:32<00:35,  4.11it/s]     87%|████████▋ | 948/1092 [04:32<00:42,  3.39it/s]     87%|████████▋ | 950/1092 [04:33<00:45,  3.12it/s]     87%|████████▋ | 951/1092 [04:34<01:00,  2.32it/s]     87%|████████▋ | 954/1092 [04:34<00:37,  3.65it/s]     88%|████████▊ | 956/1092 [04:35<00:31,  4.36it/s]     88%|████████▊ | 959/1092 [04:35<00:20,  6.53it/s]     88%|████████▊ | 961/1092 [04:37<00:48,  2.72it/s]     88%|████████▊ | 962/1092 [04:37<00:45,  2.84it/s]     88%|████████▊ | 964/1092 [04:38<00:44,  2.85it/s]     88%|████████▊ | 965/1092 [04:38<00:53,  2.36it/s]     89%|████████▊ | 967/1092 [04:38<00:37,  3.33it/s]     89%|████████▊ | 969/1092 [04:39<00:27,  4.53it/s]     89%|████████▉ | 973/1092 [04:39<00:16,  7.28it/s]     89%|████████▉ | 975/1092 [04:39<00:14,  8.00it/s]     89%|████████▉ | 977/1092 [04:39<00:12,  9.52it/s]     90%|████████▉ | 979/1092 [04:40<00:25,  4.39it/s]     90%|████████▉ | 982/1092 [04:41<00:21,  5.23it/s]     90%|█████████ | 984/1092 [04:41<00:19,  5.52it/s]     90%|█████████ | 986/1092 [04:41<00:15,  6.80it/s]     90%|█████████ | 988/1092 [04:41<00:15,  6.72it/s]     91%|█████████ | 990/1092 [04:42<00:18,  5.47it/s]     91%|█████████ | 991/1092 [04:42<00:17,  5.68it/s]     91%|█████████ | 992/1092 [04:43<00:26,  3.84it/s]     91%|█████████ | 993/1092 [04:45<01:07,  1.46it/s]     91%|█████████ | 995/1092 [04:45<00:44,  2.19it/s]     91%|█████████ | 996/1092 [04:45<00:43,  2.22it/s]     91%|█████████▏| 998/1092 [04:46<00:33,  2.81it/s]     92%|█████████▏| 1000/1092 [04:46<00:22,  4.00it/s]     92%|█████████▏| 1001/1092 [04:46<00:22,  4.02it/s]     92%|█████████▏| 1002/1092 [04:46<00:22,  4.04it/s]     92%|█████████▏| 1003/1092 [04:47<00:26,  3.39it/s]     92%|█████████▏| 1004/1092 [04:47<00:28,  3.07it/s]     92%|█████████▏| 1006/1092 [04:48<00:31,  2.74it/s]     92%|█████████▏| 1007/1092 [04:49<00:39,  2.13it/s]     92%|█████████▏| 1009/1092 [04:49<00:26,  3.13it/s]     92%|█████████▏| 1010/1092 [04:49<00:24,  3.30it/s]     93%|█████████▎| 1012/1092 [04:50<00:18,  4.31it/s]     93%|█████████▎| 1015/1092 [04:50<00:11,  6.63it/s]     93%|█████████▎| 1016/1092 [04:50<00:10,  7.00it/s]     93%|█████████▎| 1017/1092 [04:50<00:13,  5.61it/s]     93%|█████████▎| 1018/1092 [04:50<00:13,  5.33it/s]     93%|█████████▎| 1020/1092 [04:53<00:40,  1.79it/s]     93%|█████████▎| 1021/1092 [04:53<00:42,  1.68it/s]     94%|█████████▎| 1023/1092 [04:54<00:28,  2.43it/s]     94%|█████████▍| 1024/1092 [04:54<00:28,  2.41it/s]     94%|█████████▍| 1026/1092 [04:54<00:23,  2.85it/s]     94%|█████████▍| 1027/1092 [04:55<00:19,  3.31it/s]     94%|█████████▍| 1029/1092 [04:55<00:14,  4.46it/s]     94%|█████████▍| 1030/1092 [04:55<00:13,  4.72it/s]     94%|█████████▍| 1031/1092 [04:56<00:18,  3.25it/s]     95%|█████████▍| 1032/1092 [04:56<00:19,  3.05it/s]     95%|█████████▍| 1034/1092 [04:57<00:21,  2.73it/s]     95%|█████████▍| 1035/1092 [04:58<00:27,  2.07it/s]     95%|█████████▍| 1037/1092 [04:58<00:17,  3.09it/s]     95%|█████████▌| 1038/1092 [04:58<00:17,  3.08it/s]     95%|█████████▌| 1040/1092 [04:58<00:13,  3.95it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/_export/converter.py:1474: UserWarning: Manually populate buff into state_dict ExportedProgram, but it is never used by the ExportedProgram.
-      warnings.warn(
-     95%|█████████▌| 1041/1092 [04:59<00:11,  4.45it/s]     96%|█████████▌| 1043/1092 [04:59<00:08,  6.10it/s]     96%|█████████▌| 1045/1092 [04:59<00:07,  6.08it/s]     96%|█████████▌| 1046/1092 [05:01<00:21,  2.17it/s]     96%|█████████▌| 1048/1092 [05:01<00:18,  2.39it/s]     96%|█████████▌| 1049/1092 [05:02<00:20,  2.07it/s]     96%|█████████▌| 1051/1092 [05:02<00:13,  2.94it/s]     96%|█████████▋| 1052/1092 [05:03<00:13,  3.00it/s]     97%|█████████▋| 1054/1092 [05:03<00:11,  3.37it/s]/home/xadupre/vv/this/lib/python3.10/site-packages/torch/_export/converter.py:1474: UserWarning: Manually populate buff into state_dict ExportedProgram, but it is never used by the ExportedProgram.
-      warnings.warn(
-     97%|█████████▋| 1057/1092 [05:03<00:06,  5.04it/s]     97%|█████████▋| 1058/1092 [05:03<00:06,  5.29it/s]     97%|█████████▋| 1059/1092 [05:04<00:07,  4.16it/s]     97%|█████████▋| 1060/1092 [05:04<00:09,  3.25it/s]     97%|█████████▋| 1062/1092 [05:05<00:11,  2.70it/s]     97%|█████████▋| 1063/1092 [05:06<00:13,  2.12it/s]     98%|█████████▊| 1065/1092 [05:06<00:08,  3.22it/s]     98%|█████████▊| 1066/1092 [05:07<00:07,  3.52it/s]     98%|█████████▊| 1068/1092 [05:08<00:11,  2.11it/s]     98%|█████████▊| 1071/1092 [05:08<00:05,  3.59it/s]     98%|█████████▊| 1073/1092 [05:08<00:04,  4.33it/s]     98%|█████████▊| 1075/1092 [05:09<00:03,  4.75it/s]     99%|█████████▊| 1076/1092 [05:09<00:04,  3.45it/s]     99%|█████████▊| 1077/1092 [05:10<00:05,  2.88it/s]     99%|█████████▉| 1079/1092 [05:10<00:03,  4.14it/s]     99%|█████████▉| 1080/1092 [05:10<00:02,  4.28it/s]     99%|█████████▉| 1082/1092 [05:11<00:02,  4.68it/s]     99%|█████████▉| 1083/1092 [05:11<00:01,  5.16it/s]     99%|█████████▉| 1085/1092 [05:11<00:01,  6.94it/s]    100%|█████████▉| 1087/1092 [05:11<00:00,  5.62it/s]    100%|█████████▉| 1088/1092 [05:12<00:00,  4.47it/s]    100%|█████████▉| 1090/1092 [05:13<00:00,  3.29it/s]    100%|█████████▉| 1091/1092 [05:13<00:00,  2.75it/s]    100%|██████████| 1092/1092 [05:13<00:00,  3.48it/s]
+     96%|█████████▋| 81/84 [00:15<00:00, 11.15it/s]    100%|██████████| 84/84 [00:16<00:00,  7.65it/s]    100%|██████████| 84/84 [00:16<00:00,  5.19it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-61
+.. GENERATED FROM PYTHON SOURCE LINES 64-65
 
 The results
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-70
+.. GENERATED FROM PYTHON SOURCE LINES 65-74
 
 .. code-block:: Python
 
@@ -836,29 +160,29 @@ The results
 
  .. code-block:: none
 
-          abs  rel  success                                          model_cls                                           exported           name  dynamic             exporter                                              error error_step
-    0     0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  AtenAsStrided        0      custom-nostrict                                                              
-    1     0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  AtenAsStrided        0  custom-nostrict-dec                                                              
-    2     0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  AtenAsStrided        0        custom-strict                                                              
-    3     0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  AtenAsStrided        0    custom-strict-dec                                                              
-    4     0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  AtenAsStrided        0       custom-tracing                                                              
-    ...   ...  ...      ...                                                ...                                                ...            ...      ...                  ...                                                ...        ...
-    1087  0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  GraphModule()\n\n\n\ndef forward(self, x):\n  ...   TypeBFloat16        1  export-nostrict-dec                                                              
-    1088  0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  GraphModule()\n\n\n\ndef forward(self, x):\n  ...   TypeBFloat16        1        export-strict                                                              
-    1089  0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  GraphModule()\n\n\n\ndef forward(self, x):\n  ...   TypeBFloat16        1    export-strict-dec                                                              
-    1090  0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  GraphModule()\n\n\n\ndef forward(self, x):\n  ...   TypeBFloat16        1       export-tracing                                                              
-    1091  NaN  NaN        0                                                NaN                                                NaN   TypeBFloat16        1               script  number of input names provided (4) exceeded nu...     export
+        abs  rel  success                                          model_cls                                           exported                                               onnx         name  dynamic             exporter                                              error error_step
+    0   0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  ir_version: 8\ndoc_string: "large_model=False,...  AtenRollPos        0      custom-nostrict                                                              
+    1   0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  ir_version: 8\ndoc_string: "large_model=False,...  AtenRollPos        0  custom-nostrict-dec                                                              
+    2   0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  ir_version: 8\ndoc_string: "large_model=False,...  AtenRollPos        0        custom-strict                                                              
+    3   0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  ir_version: 8\ndoc_string: "large_model=False,...  AtenRollPos        0    custom-strict-dec                                                              
+    4   0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  <function run_exporter.<locals>.<lambda> at 0x...  ir_version: 8\ndoc_string: "large_model=False,...  AtenRollPos        0       custom-tracing                                                              
+    ..  ...  ...      ...                                                ...                                                ...                                                ...          ...      ...                  ...                                                ...        ...
+    79  NaN  NaN        0                                                NaN                                                NaN                                                NaN   InplaceAdd        1  export-nostrict-dec           name 'run_decompositions' is not defined     export
+    80  0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  GraphModule()\n\n\n\ndef forward(self, x):\n  ...                                               None   InplaceAdd        1        export-strict                                                              
+    81  NaN  NaN        0                                                NaN                                                NaN                                                NaN   InplaceAdd        1    export-strict-dec           name 'run_decompositions' is not defined     export
+    82  0.0  0.0        1  <class 'experimental_experiment.torch_interpre...  GraphModule()\n\n\n\ndef forward(self, x):\n  ...                                               None   InplaceAdd        1       export-tracing                                                              
+    83  NaN  NaN        0                                                NaN                                                NaN                                                NaN   InplaceAdd        1               script  number of input names provided (3) exceeded nu...     export
 
-    [1092 rows x 10 columns]
-
-
+    [84 rows x 11 columns]
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-72
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 75-76
 
 Errors if any or all successes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-81
+.. GENERATED FROM PYTHON SOURCE LINES 76-85
 
 .. code-block:: Python
 
@@ -879,21 +203,14 @@ Errors if any or all successes.
 
  .. code-block:: none
 
-    exporter                            custom-nostrict custom-nostrict-dec custom-strict custom-strict-dec custom-tracing    dynamo dynamo-ir export-jit export-nostrict export-nostrict-dec export-strict export-strict-dec export-tracing  script
-    dynamic name                                                                                                                                                                                                                                    
-    0       AtenAsStrided                                                                                                                                                                                                                           
-            AtenInterpolate                                                                                                                                                                                                                         
-            AtenNonZero                                                                                                                                                                                                                             
-            AtenNonZeroTuple                                                                                                                                                                                                                        
-            AtenRollPos                                                                                                                                                                                                                             
-    ...                                             ...                 ...           ...               ...            ...       ...       ...        ...             ...                 ...           ...               ...            ...     ...
-    1       SignatureInt2                        export              export        export            export         export    export    export      run.0           run.0               run.0         run.0             run.0                  input
-            SignatureListFixedLength                                                                                                                run.1                                                                                      input
-            SignatureListVariableLength          diff.1              diff.1        diff.1            diff.1         export    diff.1    diff.1      run.1           run.1               run.1         run.1             run.1                  input
-            SignatureShapeAsIndex                                                                                                                                                                                                                   
-            TypeBFloat16                                                                                                    ort-init  ort-init                                                                                                export
-
-    [78 rows x 14 columns]
+    exporter             custom-nostrict custom-nostrict-dec custom-strict custom-strict-dec custom-tracing dynamo dynamo-ir export-jit export-nostrict export-nostrict-dec export-strict export-strict-dec export-tracing  script
+    dynamic name                                                                                                                                                                                                                  
+    0       AtenRollPos                                                                                                                                              export                          export                       
+            AtenRollRelu                                                                                                                                             export                          export                       
+            InplaceAdd                                                                                                                                               export                          export                       
+    1       AtenRollPos                                                                                                                                              export                          export                 export
+            AtenRollRelu                                                                                                                                             export                          export                 export
+            InplaceAdd                                                                                                            run.1                              export                          export                 export
 
 
 
@@ -901,7 +218,7 @@ Errors if any or all successes.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (5 minutes 20.582 seconds)
+   **Total running time of the script:** (0 minutes 18.982 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_coverage.py:
