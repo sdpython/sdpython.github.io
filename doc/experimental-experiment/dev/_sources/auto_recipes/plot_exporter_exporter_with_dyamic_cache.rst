@@ -139,7 +139,7 @@ Let's export.
  .. code-block:: none
 
     export failed with It looks like one of the inputs with type `<class 'transformers.cache_utils.DynamicCache'>` is not supported or pytree-flattenable. 
-    Exported graphs inputs can only contain the following supported types: [<class 'torch.Tensor'>, <class 'torch.SymInt'>, <class 'torch.SymFloat'>, <class 'torch.SymBool'>, <class 'torch.ScriptObject'>, <class 'triton.language.core.dtype'>, <class 'torch.iinfo'>, <class 'torch._C._CudaDeviceProperties'>, <class 'bytes'>, <class 'complex'>, <class 'torch.finfo'>, <class 'int'>, <class 'NoneType'>, <class 'code'>, <class 'bool'>, <class 'torch.layout'>, <class 'NotImplementedType'>, <class 'torch.device'>, <class 'ellipsis'>, <class 'torch.nn.attention._SDPBackend'>, <class 'float'>, <class 'torch.memory_format'>, <class 'torch.dtype'>, <class 'str'>]. 
+    Exported graphs inputs can only contain the following supported types: [<class 'torch.Tensor'>, <class 'torch.SymInt'>, <class 'torch.SymFloat'>, <class 'torch.SymBool'>, <class 'torch.ScriptObject'>, <class 'int'>, <class 'torch.layout'>, <class 'torch.device'>, <class 'torch.memory_format'>, <class 'NoneType'>, <class 'torch.dtype'>, <class 'float'>, <class 'bool'>, <class 'triton.language.core.dtype'>, <class 'code'>, <class 'torch.iinfo'>, <class 'complex'>, <class 'torch.nn.attention._SDPBackend'>, <class 'ellipsis'>, <class 'str'>, <class 'torch.finfo'>, <class 'bytes'>, <class 'torch._C._CudaDeviceProperties'>, <class 'NotImplementedType'>]. 
     If you are using a custom class object, please register a pytree_flatten/unflatten function using `torch.utils._pytree.register_pytree_node` or `torch.export.register_dataclass`.
 
 
@@ -280,7 +280,6 @@ With dynamic shapes now.
 
  .. code-block:: none
 
-    ******************************************** s0 4 <class 'sympy.core.numbers.Integer'> range_refined_to_singleton VR[4, 4]
     FAILS: Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
       - Not all values of batch = L['x'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (4).
 
@@ -358,7 +357,7 @@ Let's undo the registration.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.052 seconds)
+   **Total running time of the script:** (0 minutes 0.656 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_with_dyamic_cache.py:
@@ -378,6 +377,9 @@ Let's undo the registration.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_exporter_exporter_with_dyamic_cache.zip <plot_exporter_exporter_with_dyamic_cache.zip>`
+
+
+.. include:: plot_exporter_exporter_with_dyamic_cache.recommendations
 
 
 .. only:: html

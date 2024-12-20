@@ -98,6 +98,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="scikit-learn and torch to train a linear regression.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_lr_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Linear Regression and export to ONNX</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-exp-cases shows the exported program for many of those cases.">
 
 .. only:: html
@@ -127,6 +144,40 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">to_onnx and Phi-2</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_inplace_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator inplace</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_custom_ops_fct_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator registered with a function</div>
     </div>
 
 
@@ -228,8 +279,11 @@ Some of them are exposed in the examples. Others may be found at
    /auto_recipes/plot_exporter_exporter_dynamic_shapes
    /auto_recipes/plot_exporter_exporter_inputs
    /auto_recipes/plot_exporter_exporter_with_dyamic_cache
+   /auto_recipes/plot_exporter_recipes_oe_lr
    /auto_recipes/plot_exporter_coverage
    /auto_recipes/plot_exporter_recipes_c_phi2
+   /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
+   /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_modules

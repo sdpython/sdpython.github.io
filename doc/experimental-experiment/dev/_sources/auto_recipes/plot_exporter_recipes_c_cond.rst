@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.0941]], grad_fn=<MulBackward0>)
+    tensor([[1.9152]], grad_fn=<MulBackward0>)
 
 
 
@@ -139,7 +139,7 @@ As expected, it does not export.
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 42, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
         return forward_call(*args, **kwargs)
       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 27, in forward
         if x.sum():
@@ -178,7 +178,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 42, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
         return forward_call(*args, **kwargs)
       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 27, in forward
         if x.sum():
@@ -300,9 +300,9 @@ Let's export again.
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.3753294 , -0.21192105], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([-0.30853087, -0.33114356], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.29828057], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.04260134, -0.17140499], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.55206984, 0.0329923 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.44438952], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
       Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -362,9 +362,9 @@ We can also inline the local function.
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.3753294 , -0.21192105], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([-0.30853087, -0.33114356], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.29828057], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.04260134, -0.17140499], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.55206984, 0.0329923 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.44438952], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
       Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -403,19 +403,13 @@ And visually.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Axes: >
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.790 seconds)
+   **Total running time of the script:** (0 minutes 0.676 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:
@@ -435,6 +429,9 @@ And visually.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_exporter_recipes_c_cond.zip <plot_exporter_recipes_c_cond.zip>`
+
+
+.. include:: plot_exporter_recipes_c_cond.recommendations
 
 
 .. only:: html

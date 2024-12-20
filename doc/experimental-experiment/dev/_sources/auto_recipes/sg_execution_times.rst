@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:37.331** total execution time for 10 files **from auto_recipes**:
+**00:45.077** total execution time for 11 files **from auto_recipes**:
 
 .. container::
 
@@ -32,8 +32,23 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``plot_exporter_recipes_c_phi2.py``)
+     - 00:18.126
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py` (``plot_exporter_recipes_oe_phi2.py``)
-     - 00:37.331
+     - 00:16.675
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
+     - 00:03.973
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
+     - 00:03.563
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
+     - 00:02.064
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``plot_exporter_recipes_c_cond.py``)
+     - 00:00.676
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py` (``plot_exporter_coverage.py``)
      - 00:00.000
@@ -47,18 +62,6 @@ Computation times
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_with_dyamic_cache.py` (``plot_exporter_exporter_with_dyamic_cache.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_cond.py` (``plot_exporter_recipes_c_cond.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``plot_exporter_recipes_c_phi2.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py` (``plot_exporter_recipes_oe_lr.py``)
      - 00:00.000
      - 0.0

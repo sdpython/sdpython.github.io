@@ -106,12 +106,6 @@ And visually.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Axes: >
 
 
 
@@ -177,8 +171,8 @@ Optimization
     [GraphBuilderPatternOptimization.optimize] iteration 0: 3 nodes, priority=0
     [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
     [GraphBuilderPatternOptimization.optimize] iteration 1: 1 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.002
-    [GraphBuilder.optimize] done with 1 nodes in 0.003
+    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.001
+    [GraphBuilder.optimize] done with 1 nodes in 0.002
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cuda' version=1
     doc_string: large_model=False, inline=False, external_threshold=102...
@@ -210,12 +204,6 @@ And visually.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Axes: >
 
 
 
@@ -300,7 +288,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.237 seconds)
+   **Total running time of the script:** (0 minutes 0.208 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:
@@ -320,6 +308,9 @@ shapes are identical.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_rewrite_101.zip <plot_rewrite_101.zip>`
+
+
+.. include:: plot_rewrite_101.recommendations
 
 
 .. only:: html

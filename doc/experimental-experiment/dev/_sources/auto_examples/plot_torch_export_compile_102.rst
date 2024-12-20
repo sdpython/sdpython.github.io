@@ -181,7 +181,7 @@ Another graph obtained with torch.compile.
         %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
         return (relu,)
 
-    tensor([[0.6901, 0.2676, 0.6252]], grad_fn=<ReluBackward0>)
+    tensor([[0.2611, 0.5184, 0.7222]], grad_fn=<ReluBackward0>)
 
 
 
@@ -235,7 +235,7 @@ Unflattened
     doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 5]
     init: name='neuron.linear.weight' type=float32 shape=(3, 5)           -- DynamoInterpret.placeholder.1/P(neuron.linear.weight)
-    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.2372776 ,  0.43374655, -0.4053279 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.41757116,  0.08138233,  0.22417201], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
     Gemm(x, neuron.linear.weight, neuron.linear.bias, transB=1) -> linear
       Sigmoid(linear) -> sigmoid
         Relu(sigmoid) -> output_0
@@ -275,13 +275,13 @@ Let's preserve the module.
     ----- doc_string: function_options=FunctionOptions(export_as_function=Tru...
     opset: domain='' version=18
     input: 'x'
-    Constant(value=[[-0.27874...) -> weight
+    Constant(value=[[-0.25066...) -> weight
       Transpose(weight, perm=[1,0]) -> _onx_transpose0
         Transpose(_onx_transpose0, perm=[1,0]) -> GemmTransposePattern--_onx_transpose0
-    Constant(value=[-0.237277...) -> bias
+    Constant(value=[-0.417571...) -> bias
       Gemm(x, GemmTransposePattern--_onx_transpose0, bias, transB=1) -> output
-    Constant(value=[[-0.27874...) -> neuron.linear.weight
-    Constant(value=[-0.237277...) -> neuron.linear.bias
+    Constant(value=[[-0.25066...) -> neuron.linear.weight
+    Constant(value=[-0.417571...) -> neuron.linear.bias
     output: name='output' type=? shape=?
     ----- function name=__main__.SubNeuron2 domain=aten_local_function
     ----- doc_string: function_options=FunctionOptions(export_as_function=Tru...
@@ -298,7 +298,7 @@ Let's preserve the module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.288 seconds)
+   **Total running time of the script:** (0 minutes 0.195 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_compile_102.py:
@@ -318,6 +318,9 @@ Let's preserve the module.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_torch_export_compile_102.zip <plot_torch_export_compile_102.zip>`
+
+
+.. include:: plot_torch_export_compile_102.recommendations
 
 
 .. only:: html

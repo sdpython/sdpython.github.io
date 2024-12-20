@@ -26,7 +26,10 @@ torch.onnx.export and Phi-2
 Exports model `Phi-2 <https://huggingface.co/microsoft/phi-2>`_.
 We use a dummy model. The main difficulty is to set the dynamic shapes properly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-119
+Model
++++++
+
+.. GENERATED FROM PYTHON SOURCE LINES 13-122
 
 .. code-block:: Python
 
@@ -36,6 +39,7 @@ We use a dummy model. The main difficulty is to set the dynamic shapes properly.
     import onnx
     import torch
     import transformers
+    from onnx_array_api.plotting.graphviz_helper import plot_dot
     from experimental_experiment.helpers import string_type, pretty_onnx
 
 
@@ -134,7 +138,7 @@ We use a dummy model. The main difficulty is to set the dynamic shapes properly.
     inputs = data["inputs"]
     dynamic_shapes = data["dynamic_shapes"]
 
-    print("inputs", string_type(inputs))
+    print("inputs", string_type(inputs, with_shape=True))
     print("dynamic_shapes", dynamic_shapes)
 
 
@@ -146,20 +150,20 @@ We use a dummy model. The main difficulty is to set the dynamic shapes properly.
 
  .. code-block:: none
 
-    inputs dict(input_ids:T7r2,attention_mask:T7r2,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
+    inputs dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80,T1s2x32x30x80], value_cache=#2[T1s2x32x30x80,T1s2x32x30x80]))
     dynamic_shapes {'input_ids': {0: <class '__main__.batch'>, 1: <class '__main__.seq_length'>}, 'attention_mask': {0: <class '__main__.batch'>, 1: <_DimHint.DYNAMIC: 3>}, 'past_key_values': [[{0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}, {0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}], [{0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}, {0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}]]}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-124
+.. GENERATED FROM PYTHON SOURCE LINES 123-127
 
 Let's check it is working.
 We need to copy the input before calling the model
-because it modified the inputs and they are not properly
+because it modifies the inputs and they are not properly
 set up when the export starts.
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-126
+.. GENERATED FROM PYTHON SOURCE LINES 127-129
 
 .. code-block:: Python
 
@@ -174,27 +178,98 @@ set up when the export starts.
  .. code-block:: none
 
 
-    CausalLMOutputWithPast(loss=None, logits=tensor([[[ 7.7958e-01, -5.1097e-02, -1.2548e-03,  ...,  1.1410e-01,
-              -1.0254e+00, -3.5402e-01],
-             [ 1.2719e+00, -8.8096e-01,  1.9672e+00,  ..., -3.7581e-01,
-               5.0060e-01,  4.2716e-02],
-             [ 1.0466e-01,  8.6281e-01,  1.2004e+00,  ..., -7.8266e-01,
-               1.5700e+00,  5.7322e-01]],
+    CausalLMOutputWithPast(loss=None, logits=tensor([[[ 9.6265e-01,  3.7639e-01, -1.3292e+00,  ..., -1.0676e-03,
+               4.6708e-01,  3.7059e-01],
+             [ 1.5374e+00,  1.5214e+00, -9.4288e-01,  ...,  1.3344e+00,
+              -4.0183e-01, -1.3003e-02],
+             [ 6.1904e-02,  1.2486e+00, -1.5581e+00,  ...,  1.4394e+00,
+               1.8182e-01, -9.7775e-01]],
 
-            [[ 2.7004e-02, -1.8990e-01,  2.1624e+00,  ...,  2.0817e+00,
-              -1.1729e+00,  1.2009e+00],
-             [ 1.5470e+00,  1.3773e-01,  2.1809e-01,  ...,  1.0064e+00,
-              -7.1340e-01,  1.2455e+00],
-             [ 4.7926e-02, -2.2724e-01,  7.0910e-01,  ...,  1.8769e-01,
-               1.2895e+00, -2.6944e-01]]], grad_fn=<ViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
+            [[-6.1760e-01,  6.2589e-01, -1.4408e+00,  ..., -3.2613e-01,
+               7.2200e-01, -9.4777e-01],
+             [ 2.0299e-01,  1.7264e+00, -4.9078e-01,  ..., -1.0258e+00,
+               1.3857e+00,  2.7226e-01],
+             [ 1.1295e-01, -1.7574e-01, -8.3614e-01,  ..., -1.0082e+00,
+               1.8203e+00,  5.9326e-02]]], grad_fn=<ViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-128
+.. GENERATED FROM PYTHON SOURCE LINES 130-134
 
-Let's export with :func:`experimental_experiment.torch_interpreter.to_onnx`.
+Export
+++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-147
+Let's export with :func:`torch.onnx.export`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 134-146
+
+.. code-block:: Python
+
+
+    try:
+        torch.onnx.export(
+            copy.deepcopy(model),
+            (),
+            kwargs=copy.deepcopy(inputs),
+            dynamic_shapes=dynamic_shapes,
+            dynamo=True,
+        )
+    except Exception as e:
+        print(f"export failed due to {e}")
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:820: FutureWarning: 'onnxscript.values.Op.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
+      param_schemas = callee.param_schemas()
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:820: FutureWarning: 'onnxscript.values.OnnxFunction.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
+      param_schemas = callee.param_schemas()
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`...
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`... ❌
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export`...
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export`... ❌
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with Torch Script...
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/modeling_utils.py:5055: FutureWarning: `_is_quantized_training_enabled` is going to be deprecated in transformers 4.39.0. Please use `model.hf_quantizer.is_trainable` instead
+      warnings.warn(
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/cache_utils.py:460: TracerWarning: Using len to get tensor shape might cause the trace to be incorrect. Recommended usage would be tensor.shape[0]. Passing a tensor of different shape might lead to errors or silently give incorrect results.
+      or len(self.key_cache[layer_idx]) == 0  # the layer has no cache
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py:1126: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+      if sequence_length != 1:
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/cache_utils.py:444: TracerWarning: Using len to get tensor shape might cause the trace to be incorrect. Recommended usage would be tensor.shape[0]. Passing a tensor of different shape might lead to errors or silently give incorrect results.
+      len(self.key_cache[layer_idx]) == 0
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with Torch Script... ❌
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with internal Dynamo apis...
+    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with internal Dynamo apis... ❌
+    export failed due to Failed to export the model with torch.export. This is step 1/3 of exporting the model to ONNX. Next steps:
+    - Modify the model code for `torch.export.export` to succeed. Refer to https://pytorch.org/docs/stable/generated/exportdb/index.html for more information.
+    - Debug `torch.export.export` and summit a PR to PyTorch.
+    - Create an issue in the PyTorch GitHub repository against the *torch.export* component and attach the full error stack as well as reproduction scripts.
+
+    ## Exception summary
+
+    <class 'torch._dynamo.exc.UserError'>: Cannot associate shape [[{0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}, {0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}], [{0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}, {0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
+    For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#dynamic-shapes-validation
+
+    (Refer to the full stack trace above for more information.)
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 147-153
+
+The export fails for a couple of reason but it is possible to patch the
+code to make it work. All those modifications are put in place by
+:func:`onnx_export_errors <experimental_experiment.torch_interpreter.onnx_export_errors>`
+and reverted after the export is done. Among other things, this function registers
+serialization functions as shown in example
+:ref:`l-plot-torch-export-with-dynamic-cache-201`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 153-171
 
 .. code-block:: Python
 
@@ -203,16 +278,15 @@ Let's export with :func:`experimental_experiment.torch_interpreter.to_onnx`.
         bypass_export_some_errors,
     )
 
-
     with bypass_export_some_errors(
         patch_transformers=True, replace_dynamic_cache=True, verbose=1
     ) as modificator:
-        print("inputs before", string_type(inputs))
+        print("inputs before", string_type(inputs, with_shape=True))
         inputs = modificator(inputs)
-        print("inputs after", string_type(inputs))
+        print("inputs after", string_type(inputs, with_shape=True))
         # ep = torch.export.export(model, (), inputs, dynamic_shapes=dynamic_shapes, strict=False)
         ep = torch.onnx.export(
-            model, (), kwargs=inputs, dynamic_shapes=dynamic_shapes, dynamo=True
+            model, (), kwargs=copy.deepcopy(inputs), dynamic_shapes=dynamic_shapes, dynamo=True
         )
         ep.optimize()
         ep.save("plot_exporter_recipes_oe_phi2.onnx")
@@ -229,23 +303,20 @@ Let's export with :func:`experimental_experiment.torch_interpreter.to_onnx`.
     [bypass_export_some_errors] register MambaCache
     [bypass_export_some_errors] register DynamicCache
     [bypass_export_some_errors] register patched_DynamicCache
+    [bypass_export_some_errors] patch sympy
     [bypass_export_some_errors] patch pytorch
     [bypass_export_some_errors] patch transformers
     [bypass_export_some_errors] replace DynamicCache
-    inputs before dict(input_ids:T7r2,attention_mask:T7r2,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
-    inputs after dict(input_ids:T7r2,attention_mask:T7r2,past_key_values:patched_DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
-    /home/xadupre/github/onnxscript/onnxscript/converter.py:820: FutureWarning: 'onnxscript.values.Op.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
-      param_schemas = callee.param_schemas()
-    /home/xadupre/github/onnxscript/onnxscript/converter.py:820: FutureWarning: 'onnxscript.values.OnnxFunction.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
-      param_schemas = callee.param_schemas()
+    inputs before dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80,T1s2x32x30x80], value_cache=#2[T1s2x32x30x80,T1s2x32x30x80]))
+    inputs after dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:patched_DynamicCache(key_cache=#2[T1s2x32x30x80,T1s2x32x30x80], value_cache=#2[T1s2x32x30x80,T1s2x32x30x80]))
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`...
-    We detected that you are passing `past_key_values` as a tuple of tuples. This is deprecated and will be removed in v4.47. Please convert your cache or use an appropriate `Cache` class (https://huggingface.co/docs/transformers/kv_cache#legacy-cache-format)
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`... ✅
     [torch.onnx] Run decomposition...
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
     [torch.onnx] Translate the graph into ONNX... ✅
     Applied 31 of general pattern rewrite rules.
+    [bypass_export_some_errors] restored sympy functions
     [bypass_export_some_errors] restored pytorch functions
     [bypass_export_some_errors] restored transformer
     [bypass_export_some_errors] restored DynamicCache
@@ -256,17 +327,21 @@ Let's export with :func:`experimental_experiment.torch_interpreter.to_onnx`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-149
+.. GENERATED FROM PYTHON SOURCE LINES 172-176
+
+Exported Model
+++++++++++++++
 
 Let's display the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-152
+.. GENERATED FROM PYTHON SOURCE LINES 176-180
 
 .. code-block:: Python
 
 
     onx = onnx.load("plot_exporter_recipes_oe_phi2.onnx")
     print(pretty_onnx(onx))
+
 
 
 
@@ -708,10 +783,32 @@ Let's display the model.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 181-182
+
+Visually.
+
+.. GENERATED FROM PYTHON SOURCE LINES 182-184
+
+.. code-block:: Python
+
+
+    plot_dot(onx)
+
+
+
+.. image-sg:: /auto_recipes/images/sphx_glr_plot_exporter_recipes_oe_phi2_001.png
+   :alt: plot exporter recipes oe phi2
+   :srcset: /auto_recipes/images/sphx_glr_plot_exporter_recipes_oe_phi2_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 37.331 seconds)
+   **Total running time of the script:** (0 minutes 16.675 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_phi2.py:
@@ -731,6 +828,9 @@ Let's display the model.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_exporter_recipes_oe_phi2.zip <plot_exporter_recipes_oe_phi2.zip>`
+
+
+.. include:: plot_exporter_recipes_oe_phi2.recommendations
 
 
 .. only:: html

@@ -287,10 +287,6 @@ Let's export with dynamic shapes.
 
  .. code-block:: none
 
-    ******************************************** s4 s2 <class 'sympy.core.symbol.Symbol'> solve VR[2, 1024]
-    ******************************************** s3 s1 <class 'sympy.core.symbol.Symbol'> solve VR[2, 1024]
-    ******************************************** s1 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, 1024]
-    ******************************************** s3 s0 <class 'sympy.core.symbol.Symbol'> find VR[2, 1024]
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, 8, 7, 1]", dc_key_cache_0: "f32[s0, 8, s2, 6]", dc_value_cache_0: "f32[s0, 8, s2, 6]"):
@@ -611,7 +607,6 @@ Let's export with dynamic shapes.
 
  .. code-block:: none
 
-    ******************************************** s0 4 <class 'sympy.core.numbers.Integer'> range_refined_to_singleton VR[4, 4]
     It did not work: Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
       - Not all values of batch = L['x'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (4).
 
@@ -653,10 +648,6 @@ we changed the base class.
 
  .. code-block:: none
 
-    ******************************************** s4 s2 <class 'sympy.core.symbol.Symbol'> solve VR[2, 1024]
-    ******************************************** s3 s1 <class 'sympy.core.symbol.Symbol'> solve VR[2, 1024]
-    ******************************************** s1 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, 1024]
-    ******************************************** s3 s0 <class 'sympy.core.symbol.Symbol'> find VR[2, 1024]
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, 8, 7, 1]", dc_key_cache_0: "f32[s0, 8, s2, 6]", dc_value_cache_0: "f32[s0, 8, s2, 6]"):
@@ -713,7 +704,7 @@ We remove the changes for pytorch.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.473 seconds)
+   **Total running time of the script:** (0 minutes 0.825 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_inputs.py:
@@ -733,6 +724,9 @@ We remove the changes for pytorch.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_exporter_exporter_inputs.zip <plot_exporter_exporter_inputs.zip>`
+
+
+.. include:: plot_exporter_exporter_inputs.recommendations
 
 
 .. only:: html

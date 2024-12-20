@@ -133,9 +133,6 @@ Then we could make it a different one.
 
  .. code-block:: none
 
-    ******************************************** s2 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, int_oo]
-    ******************************************** s5 s1 + s3 <class 'sympy.core.add.Add'> solve VR[4, int_oo]
-    ******************************************** s4 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, int_oo]
     L['z'].size()[1] = 7 is not equal to L['x'].size()[1] = 3
 
 
@@ -171,9 +168,6 @@ Still no luck but with ``torch.export.Dim.DYNAMIC``.
 
  .. code-block:: none
 
-    ******************************************** s2 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, int_oo]
-    ******************************************** s5 s1 + s3 <class 'sympy.core.add.Add'> solve VR[4, int_oo]
-    ******************************************** s4 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, int_oo]
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, s1]", y: "f32[s0, s3]", z: "f32[s0, s1 + s3]"):
@@ -217,9 +211,6 @@ Still no luck but with ``torch.export.Dim.AUTO``.
 
  .. code-block:: none
 
-    ******************************************** s1 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, int_oo]
-    ******************************************** s4 s2 + 3 <class 'sympy.core.add.Add'> solve VR[5, int_oo]
-    ******************************************** s3 s0 <class 'sympy.core.symbol.Symbol'> solve VR[2, int_oo]
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, 3]", y: "f32[s0, s2]", z: "f32[s0, s2 + 3]"):
@@ -238,7 +229,7 @@ Still no luck but with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.095 seconds)
+   **Total running time of the script:** (0 minutes 1.050 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_dynamic_shapes.py:
@@ -258,6 +249,9 @@ Still no luck but with ``torch.export.Dim.AUTO``.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_exporter_exporter_dynamic_shapes.zip <plot_exporter_exporter_dynamic_shapes.zip>`
+
+
+.. include:: plot_exporter_exporter_dynamic_shapes.recommendations
 
 
 .. only:: html

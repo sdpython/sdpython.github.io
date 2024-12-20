@@ -576,12 +576,6 @@ Conv
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Axes: >
 
 
 
@@ -656,7 +650,6 @@ Gradient
     [_onnx_derivative_fw] optimize
     [_onnx_derivative_fw] done
 
-    <Axes: >
 
 
 
@@ -737,12 +730,6 @@ ConvTranspose
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Axes: >
 
 
 
@@ -963,7 +950,7 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.623 seconds)
+   **Total running time of the script:** (0 minutes 0.488 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_convolutation_matmul_102.py:
@@ -983,6 +970,9 @@ adding terms? That's the purpose of function ``col2im`` defined so that:
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_convolutation_matmul_102.zip <plot_convolutation_matmul_102.zip>`
+
+
+.. include:: plot_convolutation_matmul_102.recommendations
 
 
 .. only:: html

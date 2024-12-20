@@ -72,8 +72,8 @@ print(f"SGDRegressor: sl2={sl2}, sr2={sr2}")
 
 
 ###############################
-# torch
-# =====
+# Linrar Regression with pytorch
+# ==============================
 
 
 class TorchLinearRegression(torch.nn.Module):
@@ -163,6 +163,9 @@ plot_dot(onx)
 ###############################
 # With dynamic shapes
 # ===================
+#
+# The dynamic shapes are used by :func:`torch.export.export` and must
+# follow the convention described there.
 
 onx = to_onnx(
     model,

@@ -106,7 +106,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([1.6173], grad_fn=<MulBackward0>)
+    tensor([-0.0060], grad_fn=<MulBackward0>)
 
 
 
@@ -137,7 +137,7 @@ As expected, it does not export.
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 40, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
         return forward_call(*args, **kwargs)
       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 25, in forward
         if x.sum():
@@ -178,9 +178,9 @@ But the model is not exactly the same as the initial model.
       if x.sum():
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with Torch Script... ✅
     [torch.onnx] Run decomposition...
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this/lib/python3.10/site-packages/torch/fx/graph.py:1800: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1801: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
@@ -189,10 +189,10 @@ But the model is not exactly the same as the initial model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18],
        producer_name: "pytorch",
-       producer_version: "2.6.0.dev20241128+cu124"
+       producer_version: "2.6.0.dev20241218+cu126"
     >
     main_graph (float[3] input_1) => (float[1] mul) 
-       <float[2] "model.mlp.0.bias" =  {-0.288676,-0.368527}, float[2,3] "model.mlp.0.weight" =  {-0.471258,0.324141,0.257305,0.0853913,-0.559284,-0.361027}, float[1] "model.mlp.1.bias" =  {-0.145392}, float[1,2] "model.mlp.1.weight" =  {0.501595,-0.663844}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
+       <float[2] "model.mlp.0.bias" =  {-0.387315,0.575025}, float[2,3] "model.mlp.0.weight" =  {0.450252,-0.150934,0.0201048,-0.0447158,0.0897293,-0.271865}, float[1] "model.mlp.1.bias" =  {0.327608}, float[1,2] "model.mlp.1.weight" =  {0.539077,-0.334738}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
        [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
@@ -354,10 +354,10 @@ Let's export again.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.6.0.dev20241128+cu124"
+       producer_version: "2.6.0.dev20241218+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2,3] "mlp.0.weight" =  {-0.471258,0.324141,0.257305,0.0853913,-0.559284,-0.361027}, float[2] "mlp.0.bias" =  {-0.288676,-0.368527}, float[1,2] "mlp.1.weight" =  {0.501595,-0.663844}, float[1] "mlp.1.bias" =  {-0.145392}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2,3] "mlp.0.weight" =  {0.450252,-0.150934,0.0201048,-0.0447158,0.0897293,-0.271865}, float[2] "mlp.0.bias" =  {-0.387315,0.575025}, float[1,2] "mlp.1.weight" =  {0.539077,-0.334738}, float[1] "mlp.1.bias" =  {0.327608}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
        [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
@@ -458,15 +458,15 @@ Let's optimize to see a small model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.6.0.dev20241128+cu124"
+       producer_version: "2.6.0.dev20241218+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2] "mlp.0.bias" =  {-0.288676,-0.368527}, float[1] "mlp.1.bias" =  {-0.145392}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {-0.387315,0.575025}, float[1] "mlp.1.bias" =  {0.327608}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {-0.471258,0.0853913,0.324141,-0.559284,0.257305,-0.361027}> ()
+       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {0.450252,-0.0447158,-0.150934,0.0897293,0.0201048,-0.271865}> ()
        [node_MatMul_32] val_9 = MatMul (x, t)
        [node_Add_33] view_1 = Add (val_9, "mlp.0.bias")
-       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {0.501595,-0.663844}> ()
+       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {0.539077,-0.334738}> ()
        [node_MatMul_34] val_10 = MatMul (view_1, t_1)
        [node_Add_35] view_3 = Add (val_10, "mlp.1.bias")
        [node_ReduceSum_16] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (view_3)
@@ -488,7 +488,7 @@ Let's optimize to see a small model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.240 seconds)
+   **Total running time of the script:** (0 minutes 2.064 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_cond.py:
@@ -508,6 +508,9 @@ Let's optimize to see a small model.
     .. container:: sphx-glr-download sphx-glr-download-zip
 
       :download:`Download zipped: plot_exporter_recipes_oe_cond.zip <plot_exporter_recipes_oe_cond.zip>`
+
+
+.. include:: plot_exporter_recipes_oe_cond.recommendations
 
 
 .. only:: html

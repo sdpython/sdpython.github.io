@@ -43,18 +43,18 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained by running a dummy llama model. It is the backward graph.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the examples introduced on this page Custom Backends. It uses backend experimental_experiment.torch_dynamo.onnx_custom_backend based on onnxruntime and running on CPU or CUDA. It could easily replaced by experimental_experiment.torch_dynamo.onnx_debug_backend. This one based on the reference implemented from onnx can show the intermediate results if needed. It is very slow.">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimize_101_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_custom_backend_101_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_optimize_101.py`
+  :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">101: Graph Optimization</div>
+      <div class="sphx-glr-thumbnail-title">101: A custom backend for torch</div>
     </div>
 
 
@@ -72,6 +72,23 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">101: Linear Regression and export to ONNX</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to optimize a graph using pattern optimization. The graph was obtained by running a dummy llama model. It is the backward graph.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_optimize_101_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_optimize_101.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">101: Onnx Model Optimization based on Pattern Rewriting</div>
     </div>
 
 
@@ -157,6 +174,23 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">102: Examples with onnxscript</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example leverages the function torch.compile and the ability to use a custom backend (see Custom Backends) to test the optimization of a model by fusing simple element-wise kernels.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_custom_backend_llama_102_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_custom_backend_llama_102.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">102: Fuse kernels in a small Llama Model</div>
     </div>
 
 
@@ -289,13 +323,15 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_optimize_101
+   /auto_examples/plot_torch_custom_backend_101
    /auto_examples/plot_torch_linreg_101
+   /auto_examples/plot_optimize_101
    /auto_examples/plot_rewrite_101
    /auto_examples/plot_profile_existing_onnx_101
    /auto_examples/plot_torch_export_101
    /auto_examples/plot_convolutation_matmul_102
    /auto_examples/plot_onnxscript_102
+   /auto_examples/plot_custom_backend_llama_102
    /auto_examples/plot_llama_bench_102
    /auto_examples/plot_torch_export_compile_102
    /auto_examples/plot_torch_dort_201
