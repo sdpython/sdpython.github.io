@@ -92,7 +92,7 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [31.55793987 -0.15404633 -0.29814966 -0.12105706  4.35872861], 0.10233234583956419
+    coefficients: [56.38244387  0.5770467  -0.27179352 -0.17977844 87.39211585], -0.7461468698925735
 
 
 
@@ -120,7 +120,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=98.79912059521222, r2=0.9060205536990547
+    LinearRegression: l2=104.45926148324381, r2=0.9900853195154307
 
 
 
@@ -151,23 +151,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 27.04, NNZs: 5, Bias: 0.677888, T: 750, Avg. loss: 143.210602
+    Norm: 90.36, NNZs: 5, Bias: -3.915096, T: 750, Avg. loss: 1128.792782
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 30.49, NNZs: 5, Bias: 0.405055, T: 1500, Avg. loss: 55.468876
+    Norm: 100.41, NNZs: 5, Bias: -2.070357, T: 1500, Avg. loss: 89.719156
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 31.30, NNZs: 5, Bias: 0.126806, T: 2250, Avg. loss: 51.837841
+    Norm: 102.90, NNZs: 5, Bias: -1.230144, T: 2250, Avg. loss: 56.806330
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 31.69, NNZs: 5, Bias: 0.142602, T: 3000, Avg. loss: 51.466929
+    Norm: 103.57, NNZs: 5, Bias: -0.817407, T: 3000, Avg. loss: 54.068156
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 31.72, NNZs: 5, Bias: 0.088899, T: 3750, Avg. loss: 51.384296
+    Norm: 103.76, NNZs: 5, Bias: -0.705649, T: 3750, Avg. loss: 53.800090
     Total training time: 0.00 seconds.
     /home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/linear_model/_stochastic_gradient.py:1603: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [31.41452968 -0.20326068 -0.24422897 -0.18402664  4.35053917], [0.08889909]
+    coefficients: [56.17412819  0.70272795 -0.22302871 -0.12567694 87.23423196], [-0.70564943]
 
 
 
@@ -195,7 +195,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=98.39413498803201, sr2=0.9064057830704636
+    SGDRegressor: sl2=104.80387801884915, sr2=0.9900526104689401
 
 
 
@@ -266,11 +266,11 @@ Linrar Regression with pytorch
 
  .. code-block:: none
 
-    iteration 0, loss=312444.125
-    iteration 1, loss=91631.875
-    iteration 2, loss=78284.1171875
-    iteration 3, loss=77413.71875
-    iteration 4, loss=77361.1484375
+    iteration 0, loss=2722916.5
+    iteration 1, loss=185292.390625
+    iteration 2, loss=85758.1328125
+    iteration 3, loss=81153.671875
+    iteration 4, loss=80872.5234375
 
 
 
@@ -297,7 +297,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=99.30217465702843, tr2=0.905542039903546
+    TorchLinearRegression: tl2=106.0972932831966, tr2=0.9899298468298163
 
 
 
@@ -326,9 +326,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[31.5076,  0.1727, -0.3712, -0.2093,  4.3239]], requires_grad=True)
+    tensor([[56.0553,  1.0021, -0.1311, -0.1884, 87.3813]], requires_grad=True)
     Parameter containing:
-    tensor([-0.0265], requires_grad=True)
+    tensor([-0.6641], requires_grad=True)
 
 
 
@@ -375,8 +375,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[-49.87089 ],
-           [ 52.269424]], dtype=float32)]
+    [array([[ 73.37293],
+           [-72.40014]], dtype=float32)]
 
 
 
@@ -405,17 +405,20 @@ And the model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 164-169
+.. GENERATED FROM PYTHON SOURCE LINES 164-171
 
 With dynamic shapes
 ===================
 
 The dynamic shapes are used by :func:`torch.export.export` and must
-follow the convention described there.
+follow the convention described there. The dynamic dimension allows
+any value. The model is then valid for many different shapes.
+That's usually what users need.
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-178
+.. GENERATED FROM PYTHON SOURCE LINES 171-183
 
 .. code-block:: Python
+
 
 
     onx = to_onnx(
@@ -430,6 +433,8 @@ follow the convention described there.
 
 
 
+
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -438,7 +443,7 @@ follow the convention described there.
     doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=['batch', 5]
     init: name='linear.weight' type=float32 shape=(1, 5)                  -- DynamoInterpret.placeholder.1/P(linear.weight)
-    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.0265037], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.6640948], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
     Transpose(linear.weight, perm=[1,0]) -> _onx_transpose0
       Transpose(_onx_transpose0, perm=[1,0]) -> GemmTransposePattern--_onx_transpose0
         Gemm(x, GemmTransposePattern--_onx_transpose0, linear.bias, transB=1) -> output_0
@@ -447,10 +452,49 @@ follow the convention described there.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 184-186
+
+For simplicity, it is possible to use ``torch.export.Dim.DYNAMIC``
+or ``torch.export.Dim.AUTO``.
+
+.. GENERATED FROM PYTHON SOURCE LINES 186-195
+
+.. code-block:: Python
+
+
+    onx = to_onnx(
+        model,
+        (torch.Tensor(X_test[:2]),),
+        input_names=["x"],
+        dynamic_shapes={"x": {0: torch.export.Dim.DYNAMIC}},
+    )
+
+    print(pretty_onnx(onx))
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    opset: domain='' version=18
+    doc_string: large_model=False, inline=False, external_threshold=102...
+    input: name='x' type=dtype('float32') shape=['DYN0', 5]
+    init: name='linear.weight' type=float32 shape=(1, 5)                  -- DynamoInterpret.placeholder.1/P(linear.weight)
+    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.6640948], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+    Transpose(linear.weight, perm=[1,0]) -> _onx_transpose0
+      Transpose(_onx_transpose0, perm=[1,0]) -> GemmTransposePattern--_onx_transpose0
+        Gemm(x, GemmTransposePattern--_onx_transpose0, linear.bias, transB=1) -> output_0
+    output: name='output_0' type=dtype('float32') shape=['DYN0', 1]
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.298 seconds)
+   **Total running time of the script:** (0 minutes 9.233 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg_101.py:

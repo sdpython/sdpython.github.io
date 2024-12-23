@@ -581,8 +581,6 @@ already has many examples about it. Here are some corner cases.</p>
 <li><p><a class="reference internal" href="../auto_recipes/plot_exporter_exporter_inputs.html#l-plot-exporter-nn-modules-inputs"><span class="std std-ref">Do no use Module as inputs!</span></a></p></li>
 </ul>
 <p><strong>strict = ?</strong></p>
-<p>The parameter <em>strict</em> of <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.6.0a0+git8136daf ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> usually has no impact
-except in some rare cases.</p>
 <p>The exporter relies on <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.6.0a0+git8136daf ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>. It exposes a parameter called
 <cite>strict: bool = True</cite> (true by default).
 The behaviour is different in some specific configuration.
@@ -593,7 +591,7 @@ kind of model and tells which one is supported and how it is converted.</p>
 This class has a method <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram.run_decompositions" title="(in PyTorch vmain (2.6.0a0+git8136daf ))"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.export.ExportedProgram.run_decompositions()</span></code></a>
 which converts the graph into another, usually longer but using
 a reduced set of functions or primitive. The converter to ONNX
-has less function to support to convert this second graph.</p>
+has less functions to support to convert this second graph.</p>
 </section>
 <section id="torch-onnx-export-export-to-onnx">
 <h2>torch.onnx.export: export to ONNX<a class="headerlink" href="#torch-onnx-export-export-to-onnx" title="Link to this heading">¶</a></h2>
@@ -618,7 +616,14 @@ has less function to support to convert this second graph.</p>
 <li><p><a class="reference internal" href="../auto_recipes/plot_exporter_recipes_oe_phi2.html#l-plot-exporter-recipes-onnx-exporter-phi2"><span class="std std-ref">torch.onnx.export and Phi-2</span></a></p></li>
 </ul>
 <p><strong>Optimization</strong></p>
-<p>See <a class="reference external" href="https://onnxscript.ai/tutorial/rewriter/rewrite_patterns.html">Pattern-based Rewrite Using Rules With onnxscript</a>.</p>
+<p>It is recommended to optimize the obtained model by running
+method <a class="reference external" href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.ONNXProgram.optimize" title="(in PyTorch vmain (2.6.0a0+git8136daf ))"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.onnx.ONNXProgram.optimize()</span></code></a>. It removes
+many unncessary nodes (Identity, multiplication by 1) and other
+patterns. It tries to find patterns it knows how to optimize.
+See <a class="reference external" href="https://onnxscript.ai/tutorial/rewriter/rewrite_patterns.html">Pattern-based Rewrite Using Rules With onnxscript</a>.</p>
+<p><strong>Issues</strong></p>
+<p>You can post issues in <a class="reference external" href="https://github.com/pytorch/pytorch/issues">pytorch/issues</a>
+and label it with <code class="docutils literal notranslate"><span class="pre">module:onnx</span></code> if you find an issue.</p>
 </section>
 <section id="frequent-exceptions-or-errors-with-the-exporter">
 <h2>Frequent Exceptions or Errors with the Exporter<a class="headerlink" href="#frequent-exceptions-or-errors-with-the-exporter" title="Link to this heading">¶</a></h2>

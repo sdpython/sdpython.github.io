@@ -184,7 +184,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -551,7 +551,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -577,6 +577,32 @@ integers or floats. It also tries tests and loops.</p>
 <li class="toctree-l1"><a class="reference internal" href="exported_onnx_dynamic.html">Exported ONNX with Dynamic Shapes</a></li>
 </ul>
 </div>
+<section id="tested-scenarios">
+<span id="l-scenarios-exported-program-export"></span><h2>Tested Scenarios<a class="headerlink" href="#tested-scenarios" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>jit</strong>: tries to capture the graph by using <a class="reference external" href="https://pytorch.org/docs/main/jit.html#module-torch.jit" title="(in PyTorch vmain (2.6.0a0+git8136daf ))"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch.jit</span></code></a></p></li>
+<li><p><strong>jit-decall</strong>: tries to capture the graph by using <a class="reference external" href="https://pytorch.org/docs/main/jit.html#module-torch.jit" title="(in PyTorch vmain (2.6.0a0+git8136daf ))"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch.jit</span></code></a>
+then applies decompositions</p></li>
+<li><p><strong>nostrict</strong>: call <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export(...,</span> <span class="pre">strict=False)()</span></code></p></li>
+<li><p><strong>nostrict-decall</strong>: call <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export(...,</span> <span class="pre">strict=False)()</span></code>,
+then applies decompositions</p></li>
+<li><p><strong>strict</strong>: call <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export(...,</span> <span class="pre">strict=True)()</span></code></p></li>
+<li><p><strong>strict-decall</strong>: call <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export(...,</span> <span class="pre">strict=True)()</span></code>,
+then applies decompositions</p></li>
+<li><p><strong>tracing</strong>: trace the execution of the model, it does flatten list,
+dictionaries or custom classes but the graph does not always produce aten function.</p></li>
+</ul>
+<p>And for ONNX:</p>
+<ul class="simple">
+<li><p><strong>custom-fallback</strong>: tries to export with different sceanrios
+then to convert into ONNX with the custom exporter</p></li>
+<li><p><strong>custom-tracing</strong>: traces the model and then converts
+into ONNX with the custom exporter</p></li>
+<li><p><strong>dynamo-ir</strong>: calls <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.onnx.export(...,</span> <span class="pre">dynamo=True)()</span></code> and then
+optimizes the model</p></li>
+<li><p><strong>script</strong>: calls <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.onnx.export(...,</span> <span class="pre">dynamo=False)()</span></code></p></li>
+</ul>
+</section>
 </section>
 
         </article>
@@ -622,8 +648,27 @@ integers or floats. It also tries tests and loops.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Supported Model Signatures</a><ul>
+<li><a class="reference internal" href="#tested-scenarios">Tested Scenarios</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

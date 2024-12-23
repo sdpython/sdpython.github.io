@@ -91,8 +91,7 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [-1.52678363e-01  4.81531186e+01  6.42954043e+01 -1.90152247e-02
-     -2.10422973e-01], -0.0024843283844364628
+    coefficients: [85.7266137   0.54365542 -0.47417646  0.14308565 83.0227801 ], -0.32099368077895774
 
 
 
@@ -120,7 +119,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=92.55085646195683, r2=0.9871892691280045
+    LinearRegression: l2=82.61398803274115, r2=0.9943508775796576
 
 
 
@@ -151,24 +150,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 69.10, NNZs: 5, Bias: 0.294272, T: 750, Avg. loss: 687.174653
+    Norm: 101.99, NNZs: 5, Bias: 0.905350, T: 750, Avg. loss: 1492.871647
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 77.45, NNZs: 5, Bias: 0.130717, T: 1500, Avg. loss: 79.308657
+    Norm: 114.62, NNZs: 5, Bias: 0.309294, T: 1500, Avg. loss: 103.576653
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 79.51, NNZs: 5, Bias: -0.001988, T: 2250, Avg. loss: 58.927697
+    Norm: 117.85, NNZs: 5, Bias: -0.224167, T: 2250, Avg. loss: 55.100169
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 80.03, NNZs: 5, Bias: -0.057954, T: 3000, Avg. loss: 57.496833
+    Norm: 118.70, NNZs: 5, Bias: -0.280716, T: 3000, Avg. loss: 51.076056
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 80.36, NNZs: 5, Bias: -0.117119, T: 3750, Avg. loss: 57.316691
+    Norm: 119.02, NNZs: 5, Bias: -0.298354, T: 3750, Avg. loss: 50.647849
     Total training time: 0.00 seconds.
     /home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/linear_model/_stochastic_gradient.py:1603: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [-1.75637160e-01  4.83375481e+01  6.41925528e+01  1.36168917e-02
-     -2.77860867e-01], [-0.11711857]
+    coefficients: [85.52604634  0.55636061 -0.38129115  0.12451204 82.76468875], [-0.29835388]
 
 
 
@@ -196,7 +194,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=92.0893419873538, sr2=0.9872531511703074
+    SGDRegressor: sl2=82.70791552806412, sr2=0.9943444548426326
 
 
 
@@ -267,11 +265,11 @@ Linrar Regression with pytorch
 
  .. code-block:: none
 
-    iteration 0, loss=1643633.375
-    iteration 1, loss=158838.421875
-    iteration 2, loss=89816.515625
-    iteration 3, loss=86460.359375
-    iteration 4, loss=86275.578125
+    iteration 0, loss=3485232.25
+    iteration 1, loss=235112.15625
+    iteration 2, loss=83166.5390625
+    iteration 3, loss=76271.9140625
+    iteration 4, loss=76042.984375
 
 
 
@@ -298,7 +296,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=92.1086611070357, tr2=0.9872504770508839
+    TorchLinearRegression: tl2=82.87197072387023, tr2=0.9943332367921925
 
 
 
@@ -327,9 +325,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[-0.4810, 47.9366, 64.2478, -0.3368, -0.4574]], requires_grad=True)
+    tensor([[85.7707,  0.6480, -0.3048,  0.1690, 83.1559]], requires_grad=True)
     Parameter containing:
-    tensor([0.0190], requires_grad=True)
+    tensor([-0.5220], requires_grad=True)
 
 
 
@@ -357,6 +355,10 @@ Let's convert it to ONNX.
 
  .. code-block:: none
 
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:820: FutureWarning: 'onnxscript.values.Op.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
+      param_schemas = callee.param_schemas()
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:820: FutureWarning: 'onnxscript.values.OnnxFunction.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
+      param_schemas = callee.param_schemas()
     [torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`...
     [torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`... ✅
     [torch.onnx] Run decomposition...
@@ -388,8 +390,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[ 80.546555],
-           [-33.39189 ]], dtype=float32)]
+    [array([[100.55247 ],
+           [ 30.123825]], dtype=float32)]
 
 
 
@@ -457,7 +459,7 @@ With dynamic shapes
 The dynamic shapes are used by :func:`torch.export.export` and must
 follow the convention described there.
 
-.. GENERATED FROM PYTHON SOURCE LINES 182-193
+.. GENERATED FROM PYTHON SOURCE LINES 182-194
 
 .. code-block:: Python
 
@@ -466,6 +468,52 @@ follow the convention described there.
         model,
         (torch.Tensor(X_test[:2]),),
         dynamic_shapes={"x": {0: torch.export.Dim("batch")}},
+        dynamo=True,
+    )
+    ep.optimize()
+    onx = ep.model_proto
+
+    print(pretty_onnx(onx))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    [torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`...
+    [torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`... ✅
+    [torch.onnx] Run decomposition...
+    [torch.onnx] Run decomposition... ✅
+    [torch.onnx] Translate the graph into ONNX...
+    [torch.onnx] Translate the graph into ONNX... ✅
+    opset: domain='pkg.onnxscript.torch_lib.common' version=1
+    opset: domain='' version=18
+    input: name='x' type=dtype('float32') shape=['s0', 5]
+    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.5220167], dtype=float32)
+    Constant(value=[[85.77066...) -> t
+      Gemm(x, t, linear.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm
+    output: name='addmm' type=dtype('float32') shape=['s0', 1]
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 195-197
+
+For simplicity, it is possible to use ``torch.export.Dim.DYNAMIC``
+or ``torch.export.Dim.AUTO``.
+
+.. GENERATED FROM PYTHON SOURCE LINES 197-208
+
+.. code-block:: Python
+
+
+    ep = torch.onnx.export(
+        model,
+        (torch.Tensor(X_test[:2]),),
+        dynamic_shapes={"x": {0: torch.export.Dim.AUTO}},
         dynamo=True,
     )
     ep.optimize()
@@ -489,8 +537,8 @@ follow the convention described there.
     opset: domain='pkg.onnxscript.torch_lib.common' version=1
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['s0', 5]
-    init: name='linear.bias' type=float32 shape=(1,) -- array([0.01901066], dtype=float32)
-    Constant(value=[[-0.48103...) -> t
+    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.5220167], dtype=float32)
+    Constant(value=[[85.77066...) -> t
       Gemm(x, t, linear.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm
     output: name='addmm' type=dtype('float32') shape=['s0', 1]
 
@@ -500,7 +548,7 @@ follow the convention described there.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.257 seconds)
+   **Total running time of the script:** (0 minutes 3.612 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_lr.py:
