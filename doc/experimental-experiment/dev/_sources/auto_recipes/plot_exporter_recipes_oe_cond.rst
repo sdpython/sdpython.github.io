@@ -106,7 +106,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([-0.0060], grad_fn=<MulBackward0>)
+    tensor([-1.3283], grad_fn=<MulBackward0>)
 
 
 
@@ -132,7 +132,7 @@ As expected, it does not export.
 
  .. code-block:: none
 
-    Dynamic control flow is not supported at the moment. Please use functorch.experimental.control_flow.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
+    Dynamic control flow is not supported at the moment. Please use torch.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
 
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 40, in forward
@@ -189,10 +189,10 @@ But the model is not exactly the same as the initial model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18],
        producer_name: "pytorch",
-       producer_version: "2.6.0.dev20241218+cu126"
+       producer_version: "2.7.0.dev20250110+cu126"
     >
     main_graph (float[3] input_1) => (float[1] mul) 
-       <float[2] "model.mlp.0.bias" =  {-0.387315,0.575025}, float[2,3] "model.mlp.0.weight" =  {0.450252,-0.150934,0.0201048,-0.0447158,0.0897293,-0.271865}, float[1] "model.mlp.1.bias" =  {0.327608}, float[1,2] "model.mlp.1.weight" =  {0.539077,-0.334738}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
+       <float[2] "model.mlp.0.bias" =  {0.102349,0.15469}, float[2,3] "model.mlp.0.weight" =  {-0.187618,0.0221874,-0.200107,-0.43745,0.0108417,-0.00826051}, float[1] "model.mlp.1.bias" =  {-0.661953}, float[1,2] "model.mlp.1.weight" =  {-0.214951,0.377962}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
        [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
@@ -354,10 +354,10 @@ Let's export again.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.6.0.dev20241218+cu126"
+       producer_version: "2.7.0.dev20250110+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2,3] "mlp.0.weight" =  {0.450252,-0.150934,0.0201048,-0.0447158,0.0897293,-0.271865}, float[2] "mlp.0.bias" =  {-0.387315,0.575025}, float[1,2] "mlp.1.weight" =  {0.539077,-0.334738}, float[1] "mlp.1.bias" =  {0.327608}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2,3] "mlp.0.weight" =  {-0.187618,0.0221874,-0.200107,-0.43745,0.0108417,-0.00826051}, float[2] "mlp.0.bias" =  {0.102349,0.15469}, float[1,2] "mlp.1.weight" =  {-0.214951,0.377962}, float[1] "mlp.1.bias" =  {-0.661953}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
        [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
@@ -458,15 +458,15 @@ Let's optimize to see a small model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.6.0.dev20241218+cu126"
+       producer_version: "2.7.0.dev20250110+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2] "mlp.0.bias" =  {-0.387315,0.575025}, float[1] "mlp.1.bias" =  {0.327608}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {0.102349,0.15469}, float[1] "mlp.1.bias" =  {-0.661953}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {0.450252,-0.0447158,-0.150934,0.0897293,0.0201048,-0.271865}> ()
+       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {-0.187618,-0.43745,0.0221874,0.0108417,-0.200107,-0.00826051}> ()
        [node_MatMul_32] val_9 = MatMul (x, t)
        [node_Add_33] view_1 = Add (val_9, "mlp.0.bias")
-       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {0.539077,-0.334738}> ()
+       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {-0.214951,0.377962}> ()
        [node_MatMul_34] val_10 = MatMul (view_1, t_1)
        [node_Add_35] view_3 = Add (val_10, "mlp.1.bias")
        [node_ReduceSum_16] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (view_3)
@@ -488,7 +488,7 @@ Let's optimize to see a small model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.064 seconds)
+   **Total running time of the script:** (0 minutes 1.766 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_cond.py:

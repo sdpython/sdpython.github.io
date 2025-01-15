@@ -115,7 +115,7 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-exp-cases shows the exported program for many of those cases.">
+    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-export-supported-signatures shows the exported program for many of those cases.">
 
 .. only:: html
 
@@ -217,6 +217,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="We try to make it easier to export with dynamic shapes. To do that, we run the model at least twice with a different set of inputs and we try to guess the dynamic shapes found along the way.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_ds_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_ds.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and infer dynamic shapes</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch.">
 
 .. only:: html
@@ -229,6 +246,23 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">to_onnx and submodules from LLMs</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-exporter-recipes-custom-phi2 shows how to export a simple LLM model with dynamic shapes. What if it does not work?">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_phi35_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi35.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx, failures Phi-3.5-mini-instruct</div>
     </div>
 
 
@@ -286,7 +320,9 @@ Some of them are exposed in the examples. Others may be found at
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
+   /auto_recipes/plot_exporter_recipes_c_ds
    /auto_recipes/plot_exporter_recipes_c_modules
+   /auto_recipes/plot_exporter_recipes_c_phi35
    /auto_recipes/plot_exporter_recipes_oe_phi2
    /auto_recipes/plot_exporter_recipes_oe_cond
 

@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[1.9152]], grad_fn=<MulBackward0>)
+    tensor([[1.9776]], grad_fn=<MulBackward0>)
 
 
 
@@ -134,7 +134,7 @@ As expected, it does not export.
 
  .. code-block:: none
 
-    Dynamic control flow is not supported at the moment. Please use functorch.experimental.control_flow.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
+    Dynamic control flow is not supported at the moment. Please use torch.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
 
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 42, in forward
@@ -173,7 +173,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
 
  .. code-block:: none
 
-    Dynamic control flow is not supported at the moment. Please use functorch.experimental.control_flow.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
+    Dynamic control flow is not supported at the moment. Please use torch.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
 
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 42, in forward
@@ -299,12 +299,16 @@ Let's export again.
     doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
+    init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
+    init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.04260134, -0.17140499], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.55206984, 0.0329923 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.44438952], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([ 0.56070024, -0.4817675 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.5954296 , 0.06232887], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.65326595], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
-      Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
+    Reshape(mlp.1.weight, init7_s2_-1_1) -> _onx_transpose_p_mlp_1_weight0
+      Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
+      Gemm(linear, GemmTransposePattern--_onx_transpose_p_mlp_1_weight0, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
           Greater(sum_1, init1_s_) -> gt
             If(gt, else_branch=G1, then_branch=G2) -> output_0
@@ -321,8 +325,8 @@ Let's export again.
     input: 'linear_1'
     Constant(value=2.0) -> init1_s_
     Constant(value=[1]) -> init7_s1_1
-      Reshape(init1_s_, init7_s1_1) -> _onx_reshape0
-        Mul(linear_1, _onx_reshape0) -> output_0
+      Reshape(init1_s_, init7_s1_1) -> _onx_reshape_init1_s_0
+        Mul(linear_1, _onx_reshape_init1_s_0) -> output_0
     output: name='output_0' type=? shape=?
     ----- function name=false_graph_0 domain=local_functions
     ----- doc_string: function_options=FunctionOptions(export_as_function=Tru...
@@ -361,12 +365,16 @@ We can also inline the local function.
     doc_string: large_model=False, inline=True, external_threshold=1024...
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
+    init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
+    init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.04260134, -0.17140499], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.55206984, 0.0329923 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.44438952], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([ 0.56070024, -0.4817675 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.5954296 , 0.06232887], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.65326595], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
-      Gemm(linear, mlp.1.weight, mlp.1.bias, transB=1) -> linear_1
+    Reshape(mlp.1.weight, init7_s2_-1_1) -> _onx_transpose_p_mlp_1_weight0
+      Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
+      Gemm(linear, GemmTransposePattern--_onx_transpose_p_mlp_1_weight0, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
           Greater(sum_1, init1_s_) -> gt
             If(gt, else_branch=G1, then_branch=G2) -> output_0
@@ -377,8 +385,8 @@ We can also inline the local function.
     ----- subgraph ---- If - aten_cond - att.then_branch=G2 -- level=1 --  -> cond#0
     Constant(value=[1]) -> init7_s1_122
     Constant(value=2.0) -> init1_s_22
-      Reshape(init1_s_22, init7_s1_122) -> _onx_reshape032
-    Mul(linear_1, _onx_reshape032) -> cond#0
+      Reshape(init1_s_22, init7_s1_122) -> _onx_reshape_init1_s_022
+    Mul(linear_1, _onx_reshape_init1_s_022) -> cond#0
     output: name='cond#0' type='NOTENSOR' shape=None
 
 
@@ -409,7 +417,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.676 seconds)
+   **Total running time of the script:** (0 minutes 1.412 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:

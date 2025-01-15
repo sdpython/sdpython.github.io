@@ -250,6 +250,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_quick_gelu.html">.reference.ops.op_quick_gelu</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_replace_zero.html">.reference.ops.op_replace_zero</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_rotary.html">.reference.ops.op_rotary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_qlinear_average_pool.html">.reference.ops.op_qlinear_average_pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_qlinear_conv.html">.reference.ops.op_qlinear_conv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_scatter_elements.html">.reference.ops.op_scatter_elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_scatternd_of_shape.html">.reference.ops.op_scatternd_of_shape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/reference/ops/op_simplified_layer_normalization.html">.reference.ops.op_simplified_layer_normalization</a></li>
@@ -260,6 +262,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/reference/evaluator.html">.reference.evaluator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/reference/ort_evaluator.html">.reference.ort_evaluator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/reference/quantized_tensor.html">.reference.quantized_tensor</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/convert/index.html">.convert</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of .convert</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -315,7 +318,6 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xbuilder/index.html">.xbuilder</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of .xbuilder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/_dtype_helper.html">.xbuilder._dtype_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/_graph_builder_runtime.html">.xbuilder._graph_builder_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/_onnx_helper.html">.xbuilder._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xbuilder/_shape_helper.html">.xbuilder._shape_helper</a></li>
@@ -496,6 +498,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../tools/index.html">Tools from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Tools from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../tools/lighten.html">python -m experimental_experiment lighten and unlighten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tools/optimize.html">python -m experimental_experiment optimize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools/print.html">python -m experimental_experiment print</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../tools/run.html">python -m experimental_experiment run</a></li>
 </ul>
 </li>
@@ -505,10 +508,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous/export_times.html">Export Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous/long_outputs.html">Long Outputs uneasy to read</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../miscellaneous/models/index.html">Supported Models By the Custom Backend</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of Supported Models By the Custom Backend</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../miscellaneous/models/llama.html">LLaMa</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../miscellaneous/models/mistral.html">Mistral</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../miscellaneous/models/phi.html">Phi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../miscellaneous/models/phi3.html">Phi3</a></li>
 </ul>
 </li>
 </ul>
@@ -555,6 +555,7 @@
           <h1>Source code for experimental_experiment.torch_interpreter.onnx_export_errors</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">.onnx_export_serialization</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">flatten_with_keys_dynamic_cache</span><span class="p">,</span>
@@ -587,10 +588,13 @@
             <span class="n">_is_torch_jit_trace</span><span class="o">=</span><span class="n">_is_torch_jit_trace</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SKIP_SOLVE_CONSTRAINTS&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;[_catch_produce_guards_and_solve_constraints] ERROR&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;produce_guards_and_solve_constraints failed</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;produce_guards_and_solve_constraints failed, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;fake_mode=</span><span class="si">{</span><span class="n">fake_mode</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;equalities_inputs=</span><span class="si">{</span><span class="n">equalities_inputs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -718,6 +722,7 @@
     <span class="n">patch_torch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">patch_transformers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">replace_dynamic_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">catch_constraints</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -729,6 +734,10 @@
 <span class="sd">    :param replace_dynamic_cache: replaces DynamicCache by a patched class</span>
 <span class="sd">        avoiding issues with the dynamic shapes inferences,</span>
 <span class="sd">        it should be True with LLM using that class and only during the export</span>
+<span class="sd">    :param catch_constraints: catch constraints related to dynamic shapes,</span>
+<span class="sd">        as a result, some dynamic dimension may turn into static ones,</span>
+<span class="sd">        the environment variable ``SKIP_SOLVE_CONSTRAINTS=0``</span>
+<span class="sd">        can be put to stop at that stage.</span>
 
 <span class="sd">    The list of available patches.</span>
 
@@ -826,7 +835,7 @@
     <span class="c1">###############</span>
 
     <span class="k">if</span> <span class="n">patch_torch</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">.patches.patch_torch</span> <span class="kn">import</span> <span class="n">patched_infer_size</span>
+        <span class="kn">from</span> <span class="nn">.patches.patch_torch</span> <span class="kn">import</span> <span class="n">patched_infer_size</span><span class="p">,</span> <span class="n">patched__broadcast_shapes</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[bypass_export_some_errors] patch pytorch&quot;</span><span class="p">)</span>
@@ -839,7 +848,19 @@
         <span class="n">f_mark_static_address</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="o">**</span><span class="n">y_</span><span class="p">:</span> <span class="kc">None</span>
 
-        <span class="c1"># torch._export.non_strict_utils.produce_guards_and_solve_constraints</span>
+        <span class="c1"># torch._subclasses.fake_impls.infer_size</span>
+        <span class="n">f_infer_size</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">patched_infer_size</span>
+
+        <span class="c1"># torch._refs._broadcast_shapes</span>
+        <span class="n">f__broadcast_shapes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_meta_registrations</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span>
+
+    <span class="c1"># torch._export.non_strict_utils.produce_guards_and_solve_constraints</span>
+    <span class="k">if</span> <span class="n">catch_constraints</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[bypass_export_some_errors] catch produce_guards_and_solve_constraints&quot;</span><span class="p">)</span>
         <span class="n">f_produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span>
         <span class="p">)</span>
@@ -848,10 +869,6 @@
                 <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
             <span class="p">)</span>
         <span class="p">)</span>
-
-        <span class="c1"># torch._subclasses.fake_impls.infer_size</span>
-        <span class="n">f_infer_size</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">patched_infer_size</span>
 
     <span class="c1">####################</span>
     <span class="c1"># patch transformers</span>
@@ -920,15 +937,23 @@
             <span class="c1"># this should disappear when torch.jit is removed</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span> <span class="o">=</span> <span class="n">f_jit_isinstance</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span> <span class="o">=</span> <span class="n">f_mark_static_address</span>
+            <span class="c1"># tracked by https://github.com/pytorch/pytorch/issues/143495</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">f_infer_size</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">f__broadcast_shapes</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">_meta_registrations</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">f__broadcast_shapes</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[bypass_export_some_errors] restored pytorch functions&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">catch_constraints</span><span class="p">:</span>
             <span class="c1"># to catch or skip dynamic_shapes issues</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">f_produce_guards_and_solve_constraints</span>
             <span class="p">)</span>
-            <span class="c1"># tracked by https://github.com/pytorch/pytorch/issues/143495</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">f_infer_size</span>
-
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[bypass_export_some_errors] restored pytorch functions&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;[bypass_export_some_errors] restored produce_guards_and_solve_constraints&quot;</span>
+                <span class="p">)</span>
 
         <span class="c1">##############</span>
         <span class="c1"># transformers</span>

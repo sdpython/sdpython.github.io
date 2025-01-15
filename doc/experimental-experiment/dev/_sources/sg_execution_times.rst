@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:12.846** total execution time for 29 files **from all galleries**:
+**00:29.539** total execution time for 31 files **from all galleries**:
 
 .. container::
 
@@ -32,11 +32,17 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``examples/plot_torch_linreg_101.py``)
-     - 00:09.233
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``recipes/plot_exporter_recipes_c_phi2.py``)
+     - 00:18.311
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py` (``recipes/plot_exporter_recipes_oe_lr.py``)
-     - 00:03.612
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi35.py` (``recipes/plot_exporter_recipes_c_phi35.py``)
+     - 00:05.563
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``recipes/plot_exporter_recipes_c_modules.py``)
+     - 00:05.317
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_ds.py` (``recipes/plot_exporter_recipes_c_ds.py``)
+     - 00:00.348
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
      - 00:00.000
@@ -83,6 +89,9 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``examples/plot_torch_export_compile_102.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``examples/plot_torch_linreg_101.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py` (``recipes/plot_exporter_coverage.py``)
      - 00:00.000
      - 0.0
@@ -104,16 +113,13 @@ Computation times
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py` (``recipes/plot_exporter_recipes_c_custom_ops_inplace.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``recipes/plot_exporter_recipes_c_modules.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``recipes/plot_exporter_recipes_c_phi2.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``recipes/plot_exporter_recipes_c_scan_pdist.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``recipes/plot_exporter_recipes_oe_cond.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py` (``recipes/plot_exporter_recipes_oe_lr.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py` (``recipes/plot_exporter_recipes_oe_phi2.py``)

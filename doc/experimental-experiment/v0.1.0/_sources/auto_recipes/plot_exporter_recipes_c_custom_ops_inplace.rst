@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[ 0.8728, -0.5332, -0.0337]])
+    tensor([[-0.2874, -0.0972,  0.8321]])
 
 
 
@@ -156,32 +156,6 @@ The exporter fails with the same eror as it expects torch.export.export to work.
 
 
 
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    (inplace) Unsupported target <OpOverload(op='mylib.numpy_sin', overload='default')>, target_name='mylib::numpy_sin', name='numpy_sin', node.args=(x, zeros) at position 2/4
-    --original graph--
-    graph():
-        %x : [num_users=1] = placeholder[target=x]
-        %zeros : [num_users=2] = call_function[target=torch.ops.aten.zeros.default](args = ([1, 3],), kwargs = {device: cpu, pin_memory: False})
-        %numpy_sin : [num_users=0] = call_function[target=torch.ops.mylib.numpy_sin.default](args = (%x, %zeros), kwargs = {})
-        return (zeros,)
-    --graph
-    ExportedProgram:
-        class GraphModule(torch.nn.Module):
-            def forward(self, x: "f32[1, 3]"):
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_custom_ops_inplace.py:41 in forward, code: out = torch.zeros(x.shape)
-                zeros: "f32[1, 3]" = torch.ops.aten.zeros.default([1, 3], device = device(type='cpu'), pin_memory = False)
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/custom_ops.py:641 in __call__, code: return self._opoverload(*args, **kwargs)
-                numpy_sin = torch.ops.mylib.numpy_sin.default(x, zeros);  x = numpy_sin = None
-                return (zeros,)
-            
-    Graph signature: ExportGraphSignature(input_specs=[InputSpec(kind=<InputKind.USER_INPUT: 1>, arg=TensorArgument(name='x'), target=None, persistent=None)], output_specs=[OutputSpec(kind=<OutputKind.USER_OUTPUT: 1>, arg=TensorArgument(name='zeros'), target=None)])
-    Range constraints: {}
 
 
 
@@ -393,7 +367,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.564 seconds)
+   **Total running time of the script:** (0 minutes 2.665 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py:

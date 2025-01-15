@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.612** total execution time for 13 files **from auto_recipes**:
+**00:29.539** total execution time for 15 files **from auto_recipes**:
 
 .. container::
 
@@ -32,8 +32,17 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py` (``plot_exporter_recipes_oe_lr.py``)
-     - 00:03.612
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``plot_exporter_recipes_c_phi2.py``)
+     - 00:18.311
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi35.py` (``plot_exporter_recipes_c_phi35.py``)
+     - 00:05.563
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
+     - 00:05.317
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_ds.py` (``plot_exporter_recipes_c_ds.py``)
+     - 00:00.348
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py` (``plot_exporter_coverage.py``)
      - 00:00.000
@@ -56,16 +65,13 @@ Computation times
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py` (``plot_exporter_recipes_c_custom_ops_inplace.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``plot_exporter_recipes_c_modules.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``plot_exporter_recipes_c_phi2.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``plot_exporter_recipes_c_scan_pdist.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``plot_exporter_recipes_oe_cond.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py` (``plot_exporter_recipes_oe_lr.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py` (``plot_exporter_recipes_oe_phi2.py``)

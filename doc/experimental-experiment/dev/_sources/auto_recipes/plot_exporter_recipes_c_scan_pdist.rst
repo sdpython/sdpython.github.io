@@ -69,7 +69,7 @@ We appy loops to the pairwise distances (:class:`torch.nn.PairwiseDistance`).
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=1.936821636405739e-07
+    shape=(3, 5), discrepancies=2.407352539535168e-07
 
 
 
@@ -214,7 +214,7 @@ We need to rewrite the module with function
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=1.936821636405739e-07
+    shape=(3, 5), discrepancies=2.407352539535168e-07
 
 
 
@@ -417,7 +417,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.563 seconds)
+   **Total running time of the script:** (0 minutes 2.813 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_scan_pdist.py:

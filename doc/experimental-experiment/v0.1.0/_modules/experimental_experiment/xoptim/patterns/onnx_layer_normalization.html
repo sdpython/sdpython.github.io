@@ -250,6 +250,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_quick_gelu.html">.reference.ops.op_quick_gelu</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_replace_zero.html">.reference.ops.op_replace_zero</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_rotary.html">.reference.ops.op_rotary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_qlinear_average_pool.html">.reference.ops.op_qlinear_average_pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_qlinear_conv.html">.reference.ops.op_qlinear_conv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_scatter_elements.html">.reference.ops.op_scatter_elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_scatternd_of_shape.html">.reference.ops.op_scatternd_of_shape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_simplified_layer_normalization.html">.reference.ops.op_simplified_layer_normalization</a></li>
@@ -260,6 +262,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/evaluator.html">.reference.evaluator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/ort_evaluator.html">.reference.ort_evaluator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/quantized_tensor.html">.reference.quantized_tensor</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/convert/index.html">.convert</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of .convert</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -315,7 +318,6 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xbuilder/index.html">.xbuilder</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of .xbuilder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xbuilder/_dtype_helper.html">.xbuilder._dtype_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xbuilder/_graph_builder_runtime.html">.xbuilder._graph_builder_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xbuilder/_onnx_helper.html">.xbuilder._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xbuilder/_shape_helper.html">.xbuilder._shape_helper</a></li>
@@ -496,6 +498,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../tools/index.html">Tools from the command line</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Tools from the command line</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../tools/lighten.html">python -m experimental_experiment lighten and unlighten</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../tools/optimize.html">python -m experimental_experiment optimize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../tools/print.html">python -m experimental_experiment print</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../tools/run.html">python -m experimental_experiment run</a></li>
 </ul>
 </li>
@@ -505,10 +508,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../miscellaneous/export_times.html">Export Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../miscellaneous/long_outputs.html">Long Outputs uneasy to read</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../miscellaneous/models/index.html">Supported Models By the Custom Backend</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of Supported Models By the Custom Backend</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../miscellaneous/models/llama.html">LLaMa</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../miscellaneous/models/mistral.html">Mistral</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../miscellaneous/models/phi.html">Phi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../miscellaneous/models/phi3.html">Phi3</a></li>
 </ul>
 </li>
 </ul>
@@ -557,8 +557,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">from_array</span>
-<span class="kn">from</span> <span class="nn">...helpers</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span> <span class="nn">...helpers</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span> <span class="n">from_array_extended</span>
 <span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
@@ -718,7 +717,7 @@
                     <span class="p">[</span><span class="n">shape</span><span class="p">],</span>
                     <span class="p">[</span><span class="n">scale</span><span class="p">],</span>
                     <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">red</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="n">value</span><span class="o">=</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)),</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">from_array_extended</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="n">bias</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_Bi_</span><span class="si">{</span><span class="n">red</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -728,7 +727,7 @@
                     <span class="p">[</span><span class="n">shape</span><span class="p">],</span>
                     <span class="p">[</span><span class="n">bias</span><span class="p">],</span>
                     <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">red</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="n">value</span><span class="o">=</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)),</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">from_array_extended</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 

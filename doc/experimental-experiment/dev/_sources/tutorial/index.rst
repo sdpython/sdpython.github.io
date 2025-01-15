@@ -43,6 +43,8 @@ which converts the graph into another, usually longer but using
 a reduced set of functions or primitive. The converter to ONNX
 has less functions to support to convert this second graph.
 
+.. _l-exporter-recipes:
+
 torch.onnx.export: export to ONNX
 =================================
 
@@ -81,6 +83,8 @@ See :epkg:`Pattern-based Rewrite Using Rules With onnxscript`.
 
 You can post issues in `pytorch/issues <https://github.com/pytorch/pytorch/issues>`_
 and label it with ``module:onnx`` if you find an issue.
+
+.. _l-frequent-exporter-errors:
 
 Frequent Exceptions or Errors with the Exporter
 ===============================================
@@ -202,6 +206,13 @@ It is used to investigate export issues raised by :func:`torch.export.export`.
 
 * :ref:`Export a linear regression <l-plot-torch-linreg-101>`
 
+**Dynamic Shapes**
+
+Dynamic shapes must be used to produce a model able to deal with
+inputs having different shapes even though they have the same rank.
+
+* :ref:`l-plot-exporter-recipes-custom-ds`
+
 **Control Flow**
 
 * :ref:`l-plot-exporter-recipes-custom-cond`
@@ -216,9 +227,10 @@ It is used to investigate export issues raised by :func:`torch.export.export`.
 
 * :ref:`l-plot-exporter-recipes-custom-modules`
 
-**Model**
+**LLM Models**
 
 * :ref:`l-plot-exporter-recipes-custom-phi2`
+* :ref:`l-plot-exporter-recipes-custom-phi35`
 
 **Optimization**
 
