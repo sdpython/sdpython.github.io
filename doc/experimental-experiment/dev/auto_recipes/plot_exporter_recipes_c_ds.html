@@ -483,12 +483,14 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
 </ul>
 </li>
@@ -637,38 +639,38 @@ to finally guess the dynamic shapes.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; __main__: Model
   DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;},), {})
-  &gt; ((CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447],),{})
-  &gt; ((CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674],),{})
+  &gt; ((CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496],),{})
+  &gt; ((CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367],),{})
     &gt;&gt;&gt; ma: MA
       DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-      &gt; ((CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447],CT1s5x6[-14.00912857055664,0.9951249361038208:A-1.2295843745271364]),{})
-      &gt; ((CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674],CT1s6x6[-15.834121704101562,0.9997711181640625:A-1.0218034098959632]),{})
-      &lt; (CT1s5x6[-16.883289337158203,2.212246894836426:A-1.2043150981267294],)
-      &lt; (CT1s6x6[-18.937061309814453,2.247560977935791:A-0.9633365460774965],)
+      &gt; ((CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496],CT1s5x6[-5.855304718017578,0.9999058246612549:A-0.7025150872766972]),{})
+      &gt; ((CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367],CT1s6x6[-11.211071014404297,0.9910044074058533:A-1.6185989735854998]),{})
+      &lt; (CT1s5x6[-7.473568439483643,2.216357707977295:A-0.68682375450929],)
+      &lt; (CT1s6x6[-13.70550537109375,2.2497808933258057:A-1.797695554792881],)
     &lt;&lt;&lt;
     &gt;&gt;&gt; masmm: MASMM
       DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-      &gt; ((CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447],CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447],CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447]),{})
-      &gt; ((CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674],CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674],CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674]),{})
+      &gt; ((CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496],CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496],CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496]),{})
+      &gt; ((CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367],CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367],CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367]),{})
         &gt;&gt;&gt; ma: MA
           DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-          &gt; ((CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447],CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447]),{})
-          &gt; ((CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674],CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674]),{})
-          &lt; (CT1s5x6[-5.748323440551758,4.122785568237305:A0.05053848574558894],)
-          &lt; (CT1s6x6[-6.205881118774414,3.867060661315918:A0.11693364811233348],)
+          &gt; ((CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496],CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496]),{})
+          &gt; ((CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367],CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367]),{})
+          &lt; (CT1s5x6[-3.236527442932129,3.3668365478515625:A0.03138269620637099],)
+          &lt; (CT1s6x6[-4.988868713378906,6.797675609588623:A-0.3581931156416734],)
         &lt;&lt;&lt;
         &gt;&gt;&gt; mm: MM
           DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-          &gt; ((CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447],CT1s5x6[-2.874161720275879,2.0613927841186523:A0.02526924287279447]),{})
-          &gt; ((CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674],CT1s6x6[-3.102940559387207,1.933530330657959:A0.05846682405616674]),{})
-          &lt; (CT1s5x6[0.004518688190728426,8.260805130004883:A1.280122860815997],)
-          &lt; (CT1s6x6[0.00015887459449004382,9.628240585327148:A1.13873706725806],)
+          &gt; ((CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496],CT1s5x6[-1.6182637214660645,1.6834182739257812:A0.015691348103185496]),{})
+          &gt; ((CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367],CT1s6x6[-2.494434356689453,3.3988378047943115:A-0.1790965578208367]),{})
+          &lt; (CT1s5x6[0.0006233706953935325,2.833897113800049:A0.7338977855455596],)
+          &lt; (CT1s6x6[0.0059312377125024796,11.552098274230957:A1.2604058814597212],)
         &lt;&lt;&lt;
-      &lt; (CT1s5x6[-14.00912857055664,0.9951249361038208:A-1.2295843745271364],)
-      &lt; (CT1s6x6[-15.834121704101562,0.9997711181640625:A-1.0218034098959632],)
+      &lt; (CT1s5x6[-5.855304718017578,0.9999058246612549:A-0.7025150872766972],)
+      &lt; (CT1s6x6[-11.211071014404297,0.9910044074058533:A-1.6185989735854998],)
     &lt;&lt;&lt;
-  &lt; (CT1s5x6[-16.883289337158203,2.212246894836426:A-1.2043150981267294],)
-  &lt; (CT1s6x6[-18.937061309814453,2.247560977935791:A-0.9633365460774965],)
+  &lt; (CT1s5x6[-7.473568439483643,2.216357707977295:A-0.68682375450929],)
+  &lt; (CT1s6x6[-13.70550537109375,2.2497808933258057:A-1.797695554792881],)
 &lt;&lt;&lt;
 </pre></div>
 </div>
@@ -713,7 +715,7 @@ output:: output_0                                                               
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_recipes_c_ds_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_ds_001.png" alt="plot exporter recipes c ds" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.250 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_recipes_c_ds_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_ds_001.png" alt="plot exporter recipes c ds" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.152 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-c-ds-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d5d2a0c804b6256509a35f6dc312f4b6/plot_exporter_recipes_c_ds.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_c_ds.ipynb</span></code></a></p>

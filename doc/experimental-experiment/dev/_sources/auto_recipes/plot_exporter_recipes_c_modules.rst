@@ -177,7 +177,7 @@ A few fixes were applied to the original code.
 
  .. code-block:: none
 
-    output: shape=torch.Size([1, 30, 16]), min=-4.510217666625977, max=4.5664896965026855
+    output: shape=torch.Size([1, 30, 16]), min=-4.817917346954346, max=4.618869781494141
 
 
 
@@ -406,7 +406,7 @@ Let's check there is no discrepancy.
 
  .. code-block:: none
 
-    output: shape=(1, 30, 16), min=-4.510217666625977, max=4.5664896965026855
+    output: shape=(1, 30, 16), min=-4.817917346954346, max=4.618869781494141
     max discrepancy=4.76837158203125e-07
 
 
@@ -592,13 +592,13 @@ Now the ONNX graph.
     opset: domain='aten_local_function' version=1
     input: 'cat'
     input: 'weight'
-    Constant(value=[-0.051155...) -> bias
+    Constant(value=[-0.045708...) -> bias
     Constant(value=[-1, 32]) -> init7_s2_-1_32
       Reshape(cat, init7_s2_-1_32) -> MatMulAddPattern--cat
       Gemm(MatMulAddPattern--cat, weight, bias, transB=1) -> MatMulAddPattern--cat2
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1
       Reshape(MatMulAddPattern--cat2, init7_s3_1_30_-1) -> output
-    Constant(value=[-0.051155...) -> decoder.attention.linear.bias
+    Constant(value=[-0.045708...) -> decoder.attention.linear.bias
     output: name='output' type=? shape=?
     ----- function name=__main__.MultiAttentionBlock domain=aten_local_function
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -645,13 +645,13 @@ Now the ONNX graph.
     opset: domain='aten_local_function' version=1
     input: 'relu'
     input: 'weight'
-    Constant(value=[-0.051893...) -> bias
+    Constant(value=[0.0182421...) -> bias
     Constant(value=[-1, 128]) -> init7_s2_-1_128
       Reshape(relu, init7_s2_-1_128) -> MatMulAddPattern--relu
       Gemm(MatMulAddPattern--relu, weight, bias, transB=1) -> MatMulAddPattern--relu2
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1
       Reshape(MatMulAddPattern--relu2, init7_s3_1_30_-1) -> output
-    Constant(value=[-0.051893...) -> decoder.feed_forward.linear_2.bias
+    Constant(value=[0.0182421...) -> decoder.feed_forward.linear_2.bias
     output: name='output' type=? shape=?
     ----- function name=__main__.FeedForward domain=aten_local_function
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -718,7 +718,7 @@ We check again there is no new discrepancies.
 
  .. code-block:: none
 
-    output: shape=(1, 30, 16), min=-4.510217666625977, max=4.5664896965026855
+    output: shape=(1, 30, 16), min=-4.817917346954346, max=4.618869781494141
     max discrepancy=4.76837158203125e-07
 
 
@@ -862,14 +862,14 @@ The ONNX graph can still be inline after this.
         Softmax(masked_fill__11, axis=-1) -> softmax__11
         MatMul(softmax__11, value__11) -> attention_1__6
           Concat(attention_0__6, attention_1__6, axis=-1) -> cat__6_0
-    Constant(value=[-0.051155...) -> bias__15
+    Constant(value=[-0.045708...) -> bias__15
     Constant(value=[-1, 32]) -> init7_s2_-1_32__15
       Reshape(cat__6_0, init7_s2_-1_32__15) -> MatMulAddPattern--cat__15
       Gemm(MatMulAddPattern--cat__15, decoder.attention.linear.weight, bias__15, transB=1) -> MatMulAddPattern--cat2__15
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1__15
       Reshape(MatMulAddPattern--cat2__15, init7_s3_1_30_-1__15) -> attention__4
         Add(attention__4, embedding) -> add_1__4
-    Constant(value=[-0.051155...) -> decoder.attention.linear.bias__15
+    Constant(value=[-0.045708...) -> decoder.attention.linear.bias__15
     Constant(value=[1.0, 1.0,...) -> init1_s16___16
     Constant(value=[0.0, 0.0,...) -> init1_s16_2__16
       LayerNormalization(add_1__4, init1_s16___16, init1_s16_2__16, axis=-1, epsilon=0.00, stash_type=1) -> norm_2__4
@@ -879,14 +879,14 @@ The ONNX graph can still be inline after this.
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1__18
       Reshape(MatMulAddPattern--layer_norm_12__18, init7_s3_1_30_-1__18) -> linear_1__17
         Relu(linear_1__17) -> relu__17
-    Constant(value=[-0.051893...) -> bias__20
+    Constant(value=[0.0182421...) -> bias__20
     Constant(value=[-1, 128]) -> init7_s2_-1_128__20
       Reshape(relu__17, init7_s2_-1_128__20) -> MatMulAddPattern--relu__20
       Gemm(MatMulAddPattern--relu__20, decoder.feed_forward.linear_2.weight, bias__20, transB=1) -> MatMulAddPattern--relu2__20
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1__20
       Reshape(MatMulAddPattern--relu2__20, init7_s3_1_30_-1__20) -> feed_forward__4
         Add(feed_forward__4, add_1__4) -> output_0
-    Constant(value=[-0.051893...) -> decoder.feed_forward.linear_2.bias__20
+    Constant(value=[0.0182421...) -> decoder.feed_forward.linear_2.bias__20
     output: name='output_0' type=dtype('float32') shape=[1, 30, 16]
 
 
@@ -924,200 +924,200 @@ Let's how it goes.
 
  .. code-block:: none
 
-    [GraphBuilder-TNS.optimize] start with 73 nodes
-    [GraphBuilder-TNS.optimize] #patterns=62
-    [GraphBuilder-TNS.remove_unused] remove_initializer 1:1/47:embedding.embedding.weight:torch.float32[torch.Size([1024, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 2:3/47:embedding.pe.weight:torch.float32[torch.Size([1024, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 3:5/47:decoder.norm_1.weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 4:7/47:decoder.norm_1.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 5:9/47:decoder.attention.attention.0.query.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 6:11/47:decoder.attention.attention.0.key.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 7:13/47:decoder.attention.attention.0.value.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 8:15/47:decoder.attention.attention.1.query.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 9:17/47:decoder.attention.attention.1.key.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 10:19/47:decoder.attention.attention.1.value.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 11:21/47:decoder.attention.linear.weight:torch.float32[torch.Size([16, 32])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 12:23/47:decoder.attention.linear.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 13:25/47:decoder.norm_2.weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 14:27/47:decoder.norm_2.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 15:29/47:decoder.feed_forward.linear_1.weight:torch.float32[torch.Size([128, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 16:31/47:decoder.feed_forward.linear_1.bias:torch.float32[torch.Size([128])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 17:33/47:decoder.feed_forward.linear_2.weight:torch.float32[torch.Size([16, 128])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 18:35/47:decoder.feed_forward.linear_2.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 1:4/46:p_decoder_attention_attention_0_query_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 2:5/46:p_decoder_attention_attention_0_key_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 3:6/46:p_decoder_attention_attention_0_value_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 4:7/46:p_decoder_attention_attention_1_query_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 5:8/46:p_decoder_attention_attention_1_key_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 6:9/46:p_decoder_attention_attention_1_value_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 7:10/46:p_decoder_attention_linear_weight:torch.float32[torch.Size([16, 32])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 8:14/46:p_decoder_feed_forward_linear_1_weight:torch.float32[torch.Size([128, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 9:16/46:p_decoder_feed_forward_linear_2_weight:torch.float32[torch.Size([16, 128])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 10:18/46:b_decoder_attention_attention_0_mask:torch.float32[torch.Size([256, 256])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 11:19/46:b_decoder_attention_attention_1_mask:torch.float32[torch.Size([256, 256])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 12:23/46:init1_s_:float32[()]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 13:24/46:init7_s1_1:int64[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 14:25/46:init7_s1_0:int64[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 15:26/46:init7_s1_30:int64[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 16:27/46:init1_s_2:float32[()]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 17:33/46:slice_1:torch.float32[torch.Size([30, 256])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 18:40/46:slice_3:torch.float32[torch.Size([30, 256])]
-    [GraphBuilderPatternOptimization-TNS.optimize] start with 53 nodes, 28 initializers, 62 patterns, priorities=[0, 1, 2, 3]
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   1/62 - P0 - BatchNormalizationPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   2/62 - P0 - BatchNormalizationTrainingPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   3/62 - P0 - CastPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   4/62 - P0 - ConvBiasNullPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   5/62 - P0 - ExpandPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   6/62 - P0 - GeluErfPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   7/62 - P0 - GeluOrtPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   8/62 - P0 - GeluPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern   9/62 - P0 - IdentityPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  10/62 - P0 - LeakyReluPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  11/62 - P0 - ReshapePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  12/62 - P0 - ReshapeReshapePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  13/62 - P0 - SameChildrenPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  14/62 - P0 - SoftmaxCrossEntropyLossCastPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  15/62 - P0 - SqueezeUnsqueezePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  16/62 - P0 - TransposeReshapeTransposePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  17/62 - P0 - TransposeTransposePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  18/62 - P0 - UnsqueezeUnsqueezePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  19/62 - P1 - BiasGeluPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  20/62 - P1 - BiasSoftmaxPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  21/62 - P1 - CastCastBinaryPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  22/62 - P1 - CastLayerNormalizationCastPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  23/62 - P1 - CastOpCastPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  24/62 - P1 - ClipClipPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  25/62 - P1 - ComputationCastOpCastPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  26/62 - P1 - DropoutPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  27/62 - P1 - ExpandBroadcastPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  28/62 - P1 - ExpandSwapPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  29/62 - P1 - FastGeluPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  30/62 - P1 - GemmTransposePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  31/62 - P1 - LayerNormalizationPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  32/62 - P1 - LayerNormalizationScalePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  33/62 - P1 - MatMulAddPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  34/62 - P1 - MatMulReshape2Of3Pattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  35/62 - P1 - MulMulMatMulPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  36/62 - P1 - MulMulMulScalarPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  37/62 - P1 - OrtBatchNormalizationTrainingPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  38/62 - P1 - QuickGeluPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  39/62 - P1 - ReduceReshapePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  40/62 - P1 - ReduceSumNormalizePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  41/62 - P1 - Reshape2Of3Pattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  42/62 - P1 - ReshapeMatMulReshapePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  43/62 - P1 - ReshapeReshapeBinaryPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  44/62 - P1 - RotaryConcatPartPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  45/62 - P1 - SequenceConstructAtPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  46/62 - P1 - SimplifiedLayerNormalizationPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  47/62 - P1 - SliceSlicePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  48/62 - P1 - SlicesSplitPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  49/62 - P1 - SoftmaxGradPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  50/62 - P1 - SplitConcatPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  51/62 - P1 - Sub1MulPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  52/62 - P1 - SwitchOrderBinaryPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  53/62 - P1 - SwitchReshapeActivationPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  54/62 - P1 - TransposeEqualReshapePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  55/62 - P1 - TransposeMatMulPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  56/62 - P1 - TransposeReshapeMatMulPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  57/62 - P1 - UnsqueezeEqualPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  58/62 - P2 - FusedConvPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  59/62 - P2 - FusedMatMulDivPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  60/62 - P2 - FusedMatMulPattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  61/62 - P3 - FusedMatMulTransposePattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] use pattern  62/62 - P3 - FusedMatMulx2Pattern()
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 0: 53 nodes, priority=0
-    [GraphBuilderPatternOptimization-TNS.optimize] applies 6 matches, 2*CastPattern, 4*IdentityPattern - time=0.010 | max_time=GeluOrtPattern:0.003
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 1: 47 nodes, priority=0
-    [GraphBuilderPatternOptimization-TNS.optimize] increase priority to 1
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 2: 47 nodes, priority=1
-    [GraphBuilderPatternOptimization-TNS.optimize] applies 5 matches, 2*LayerNormalizationPattern, 3*MatMulAddPattern - time=0.008 | max_time=GeluOrtPattern:0.001
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 3: 38 nodes, priority=1
-    [GraphBuilderPatternOptimization-TNS.optimize] applies 3 matches, 3*GemmTransposePattern - time=0.005 | max_time=LeakyReluPattern:0.000
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 4: 41 nodes, priority=1
-    [GraphBuilderPatternOptimization-TNS.optimize] applies 1 matches, [0]=MatchResult: SwitchReshapeActivationPattern replaces ['Gemm', 'Reshape', 'Relu'] - time=0.003 | max_time=TransposeMatMulPattern:0.000
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 5: 41 nodes, priority=1
-    [GraphBuilderPatternOptimization-TNS.optimize] increase priority to 2
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 6: 41 nodes, priority=2
-    [GraphBuilderPatternOptimization-TNS.optimize] applies 2 matches, 2*FusedMatMulPattern - time=0.003 | max_time=FusedMatMulPattern:0.000
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 7: 37 nodes, priority=2
-    [GraphBuilderPatternOptimization-TNS.optimize] increase priority to 3
-    [GraphBuilderPatternOptimization-TNS.optimize] iteration 8: 37 nodes, priority=3
-    [GraphBuilderPatternOptimization-TNS.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
-    [GraphBuilderPatternOptimization-TNS.optimize] done after 9 iterations with 37 nodes in 0.059
-        STAT apply_CastPattern +2 -2 #it=1 maxmatch=1 i=2 - time=0.00028926700088049984
-        STAT apply_FusedMatMulPattern +2 -6 #it=1 maxmatch=1 i=2 - time=0.00041151200002786936
-        STAT apply_GemmTransposePattern +6 -3 #it=1 maxmatch=2 i=3 - time=0.0008532059991921415
-        STAT apply_IdentityPattern +4 -4 #it=1 maxmatch=5 i=4 - time=0.00038327999936882406
-        STAT apply_LayerNormalizationPattern +2 -14 #it=1 maxmatch=1 i=2 - time=0.0018230929999845102
-        STAT apply_MatMulAddPattern +9 -6 #it=1 maxmatch=4 i=3 - time=0.0020676379990618443
-        STAT apply_SwitchReshapeActivationPattern +3 -3 #it=1 maxmatch=0 i=1 - time=0.0005021819997637067
-        STAT build_graph_for_pattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.001907437000227219
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0001878989996839664
-        STAT check_pattern_A0 +0 -0 #it=5 maxmatch=0 i=0 - time=0.0033815779988799477
-        STAT check_pattern_B0 +0 -0 #it=3 maxmatch=0 i=0 - time=0.00042096600009244867
-        STAT match_BatchNormalizationPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0004117739990761038
-        STAT match_BatchNormalizationTrainingPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.00041743600286281435
-        STAT match_BiasGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002682980002646218
-        STAT match_BiasSoftmaxPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0003322020002087811
-        STAT match_CastCastBinaryPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0004884240006504115
-        STAT match_CastLayerNormalizationCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0004045449977638782
-        STAT match_CastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0005290169983709347
-        STAT match_CastPattern +0 -0 #it=9 maxmatch=2 i=2 - time=0.00042581799971230794
-        STAT match_ClipClipPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00022733399873686722
-        STAT match_ComputationCastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00034595200031617424
-        STAT match_ConvBiasNullPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.0004396700005599996
-        STAT match_DropoutPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0002030199984801584
-        STAT match_ExpandBroadcastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00021781000123155536
-        STAT match_ExpandPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.0003482909996819217
-        STAT match_ExpandSwapPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00028983100037294207
-        STAT match_FastGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0003841050001938129
-        STAT match_FusedConvPattern +0 -0 #it=3 maxmatch=0 i=0 - time=7.6924001405132e-05
-        STAT match_FusedMatMulDivPattern +0 -0 #it=3 maxmatch=2 i=0 - time=0.00014003899923409335
-        STAT match_FusedMatMulPattern +0 -0 #it=3 maxmatch=2 i=2 - time=0.00029966700094519183
-        STAT match_FusedMatMulTransposePattern +0 -0 #it=1 maxmatch=0 i=0 - time=4.601199998433003e-05
-        STAT match_FusedMatMulx2Pattern +0 -0 #it=1 maxmatch=0 i=0 - time=5.5126000006566755e-05
-        STAT match_GeluErfPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.003318321000733704
-        STAT match_GeluOrtPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.005463082999995095
-        STAT match_GeluPattern +0 -0 #it=9 maxmatch=2 i=0 - time=1.1064001228078268e-05
-        STAT match_GemmTransposePattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.0004724160007754108
-        STAT match_IdentityPattern +0 -0 #it=9 maxmatch=6 i=4 - time=0.002832441998180002
-        STAT match_LayerNormalizationPattern +0 -0 #it=7 maxmatch=2 i=2 - time=0.000577201998567034
-        STAT match_LayerNormalizationScalePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0002760029992714408
-        STAT match_LeakyReluPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.003279254997323733
-        STAT match_MatMulAddPattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.0009649769990573986
-        STAT match_MatMulReshape2Of3Pattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0007978750008987845
-        STAT match_MulMulMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0006005459999869345
-        STAT match_MulMulMulScalarPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0003205520006304141
-        STAT match_OrtBatchNormalizationTrainingPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00038853100068081403
-        STAT match_QuickGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002628839993121801
-        STAT match_ReduceReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0003347040010339697
-        STAT match_ReduceSumNormalizePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00028284499876463087
-        STAT match_Reshape2Of3Pattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0006234550000954187
-        STAT match_ReshapeMatMulReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00046909799948480213
-        STAT match_ReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0007118320008885348
-        STAT match_ReshapeReshapeBinaryPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00040977300068334443
-        STAT match_ReshapeReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0006596829989575781
-        STAT match_RotaryConcatPartPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00033558499944774667
-        STAT match_SameChildrenPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0010584079991531326
-        STAT match_SequenceConstructAtPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002598229993964196
-        STAT match_SimplifiedLayerNormalizationPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0006131509999249829
-        STAT match_SliceSlicePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002567889996498707
-        STAT match_SlicesSplitPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00025431099857087247
-        STAT match_SoftmaxCrossEntropyLossCastPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.004591632000483514
-        STAT match_SoftmaxGradPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002616120000311639
-        STAT match_SplitConcatPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00024881399895093637
-        STAT match_SqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0003613840017351322
-        STAT match_Sub1MulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002794680003717076
-        STAT match_SwitchOrderBinaryPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0006603900019399589
-        STAT match_SwitchReshapeActivationPattern +0 -0 #it=7 maxmatch=5 i=1 - time=0.00040558299951953813
-        STAT match_TransposeEqualReshapePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0005080499995528953
-        STAT match_TransposeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0008507550001013442
-        STAT match_TransposeReshapeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00048374500147474464
-        STAT match_TransposeReshapeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00042268800279998686
-        STAT match_TransposeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00039413599915860686
-        STAT match_UnsqueezeEqualPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.000389257999813708
-        STAT match_UnsqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0003400569994482794
-        STAT remove_identity_nodes +9 -15 #it=3 maxmatch=0 i=0 - time=0.0008870500005286885
+    [GraphBuilder-SWU.optimize] start with 73 nodes
+    [GraphBuilder-SWU.optimize] #patterns=62
+    [GraphBuilder-SWU.remove_unused] remove_initializer 1:1/47:embedding.embedding.weight:torch.float32[torch.Size([1024, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 2:3/47:embedding.pe.weight:torch.float32[torch.Size([1024, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 3:5/47:decoder.norm_1.weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 4:7/47:decoder.norm_1.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 5:9/47:decoder.attention.attention.0.query.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 6:11/47:decoder.attention.attention.0.key.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 7:13/47:decoder.attention.attention.0.value.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 8:15/47:decoder.attention.attention.1.query.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 9:17/47:decoder.attention.attention.1.key.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 10:19/47:decoder.attention.attention.1.value.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 11:21/47:decoder.attention.linear.weight:torch.float32[torch.Size([16, 32])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 12:23/47:decoder.attention.linear.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 13:25/47:decoder.norm_2.weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 14:27/47:decoder.norm_2.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 15:29/47:decoder.feed_forward.linear_1.weight:torch.float32[torch.Size([128, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 16:31/47:decoder.feed_forward.linear_1.bias:torch.float32[torch.Size([128])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 17:33/47:decoder.feed_forward.linear_2.weight:torch.float32[torch.Size([16, 128])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 18:35/47:decoder.feed_forward.linear_2.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 1:4/46:p_decoder_attention_attention_0_query_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 2:5/46:p_decoder_attention_attention_0_key_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 3:6/46:p_decoder_attention_attention_0_value_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 4:7/46:p_decoder_attention_attention_1_query_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 5:8/46:p_decoder_attention_attention_1_key_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 6:9/46:p_decoder_attention_attention_1_value_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 7:10/46:p_decoder_attention_linear_weight:torch.float32[torch.Size([16, 32])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 8:14/46:p_decoder_feed_forward_linear_1_weight:torch.float32[torch.Size([128, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 9:16/46:p_decoder_feed_forward_linear_2_weight:torch.float32[torch.Size([16, 128])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 10:18/46:b_decoder_attention_attention_0_mask:torch.float32[torch.Size([256, 256])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 11:19/46:b_decoder_attention_attention_1_mask:torch.float32[torch.Size([256, 256])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 12:23/46:init1_s_:float32[()]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 13:24/46:init7_s1_1:int64[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 14:25/46:init7_s1_0:int64[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 15:26/46:init7_s1_30:int64[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 16:27/46:init1_s_2:float32[()]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 17:33/46:slice_1:torch.float32[torch.Size([30, 256])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 18:40/46:slice_3:torch.float32[torch.Size([30, 256])]
+    [GraphBuilderPatternOptimization-SWU.optimize] start with 53 nodes, 28 initializers, 62 patterns, priorities=[0, 1, 2, 3]
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   1/62 - P0 - BatchNormalizationPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   2/62 - P0 - BatchNormalizationTrainingPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   3/62 - P0 - CastPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   4/62 - P0 - ConvBiasNullPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   5/62 - P0 - ExpandPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   6/62 - P0 - GeluErfPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   7/62 - P0 - GeluOrtPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   8/62 - P0 - GeluPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern   9/62 - P0 - IdentityPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  10/62 - P0 - LeakyReluPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  11/62 - P0 - ReshapePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  12/62 - P0 - ReshapeReshapePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  13/62 - P0 - SameChildrenPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  14/62 - P0 - SoftmaxCrossEntropyLossCastPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  15/62 - P0 - SqueezeUnsqueezePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  16/62 - P0 - TransposeReshapeTransposePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  17/62 - P0 - TransposeTransposePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  18/62 - P0 - UnsqueezeUnsqueezePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  19/62 - P1 - BiasGeluPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  20/62 - P1 - BiasSoftmaxPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  21/62 - P1 - CastCastBinaryPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  22/62 - P1 - CastLayerNormalizationCastPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  23/62 - P1 - CastOpCastPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  24/62 - P1 - ClipClipPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  25/62 - P1 - ComputationCastOpCastPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  26/62 - P1 - DropoutPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  27/62 - P1 - ExpandBroadcastPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  28/62 - P1 - ExpandSwapPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  29/62 - P1 - FastGeluPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  30/62 - P1 - GemmTransposePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  31/62 - P1 - LayerNormalizationPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  32/62 - P1 - LayerNormalizationScalePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  33/62 - P1 - MatMulAddPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  34/62 - P1 - MatMulReshape2Of3Pattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  35/62 - P1 - MulMulMatMulPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  36/62 - P1 - MulMulMulScalarPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  37/62 - P1 - OrtBatchNormalizationTrainingPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  38/62 - P1 - QuickGeluPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  39/62 - P1 - ReduceReshapePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  40/62 - P1 - ReduceSumNormalizePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  41/62 - P1 - Reshape2Of3Pattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  42/62 - P1 - ReshapeMatMulReshapePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  43/62 - P1 - ReshapeReshapeBinaryPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  44/62 - P1 - RotaryConcatPartPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  45/62 - P1 - SequenceConstructAtPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  46/62 - P1 - SimplifiedLayerNormalizationPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  47/62 - P1 - SliceSlicePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  48/62 - P1 - SlicesSplitPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  49/62 - P1 - SoftmaxGradPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  50/62 - P1 - SplitConcatPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  51/62 - P1 - Sub1MulPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  52/62 - P1 - SwitchOrderBinaryPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  53/62 - P1 - SwitchReshapeActivationPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  54/62 - P1 - TransposeEqualReshapePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  55/62 - P1 - TransposeMatMulPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  56/62 - P1 - TransposeReshapeMatMulPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  57/62 - P1 - UnsqueezeEqualPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  58/62 - P2 - FusedConvPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  59/62 - P2 - FusedMatMulDivPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  60/62 - P2 - FusedMatMulPattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  61/62 - P3 - FusedMatMulTransposePattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] use pattern  62/62 - P3 - FusedMatMulx2Pattern()
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 0: 53 nodes, priority=0
+    [GraphBuilderPatternOptimization-SWU.optimize] applies 6 matches, 2*CastPattern, 4*IdentityPattern - time=0.004 | max_time=SoftmaxCrossEntropyLossCastPattern:0.001
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 1: 47 nodes, priority=0
+    [GraphBuilderPatternOptimization-SWU.optimize] increase priority to 1
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 2: 47 nodes, priority=1
+    [GraphBuilderPatternOptimization-SWU.optimize] applies 5 matches, 2*LayerNormalizationPattern, 3*MatMulAddPattern - time=0.003 | max_time=SimplifiedLayerNormalizationPattern:0.000
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 3: 38 nodes, priority=1
+    [GraphBuilderPatternOptimization-SWU.optimize] applies 3 matches, 3*GemmTransposePattern - time=0.002 | max_time=GeluOrtPattern:0.000
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 4: 41 nodes, priority=1
+    [GraphBuilderPatternOptimization-SWU.optimize] applies 1 matches, [0]=MatchResult: SwitchReshapeActivationPattern replaces ['Gemm', 'Reshape', 'Relu'] - time=0.002 | max_time=GeluErfPattern:0.000
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 5: 41 nodes, priority=1
+    [GraphBuilderPatternOptimization-SWU.optimize] increase priority to 2
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 6: 41 nodes, priority=2
+    [GraphBuilderPatternOptimization-SWU.optimize] applies 2 matches, 2*FusedMatMulPattern - time=0.003 | max_time=FusedMatMulDivPattern:0.000
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 7: 37 nodes, priority=2
+    [GraphBuilderPatternOptimization-SWU.optimize] increase priority to 3
+    [GraphBuilderPatternOptimization-SWU.optimize] iteration 8: 37 nodes, priority=3
+    [GraphBuilderPatternOptimization-SWU.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
+    [GraphBuilderPatternOptimization-SWU.optimize] done after 9 iterations with 37 nodes in 0.034
+        STAT apply_CastPattern +2 -2 #it=1 maxmatch=1 i=2 - time=0.00015819300006114645
+        STAT apply_FusedMatMulPattern +2 -6 #it=1 maxmatch=1 i=2 - time=0.0003944749996662722
+        STAT apply_GemmTransposePattern +6 -3 #it=1 maxmatch=2 i=3 - time=0.0003535030000421102
+        STAT apply_IdentityPattern +4 -4 #it=1 maxmatch=5 i=4 - time=0.00016351100020983722
+        STAT apply_LayerNormalizationPattern +2 -14 #it=1 maxmatch=1 i=2 - time=0.00034214699917356484
+        STAT apply_MatMulAddPattern +9 -6 #it=1 maxmatch=4 i=3 - time=0.0008887850008250098
+        STAT apply_SwitchReshapeActivationPattern +3 -3 #it=1 maxmatch=0 i=1 - time=0.00023448100000678096
+        STAT build_graph_for_pattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0015477609986191965
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00018840699976863107
+        STAT check_pattern_A0 +0 -0 #it=5 maxmatch=0 i=0 - time=0.001257096002518665
+        STAT check_pattern_B0 +0 -0 #it=3 maxmatch=0 i=0 - time=0.00029872899904148653
+        STAT match_BatchNormalizationPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.00031274599950847914
+        STAT match_BatchNormalizationTrainingPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.00026997899931302527
+        STAT match_BiasGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017083199963963125
+        STAT match_BiasSoftmaxPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0001620639995962847
+        STAT match_CastCastBinaryPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00035003499851882225
+        STAT match_CastLayerNormalizationCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00024378000125580002
+        STAT match_CastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0003883540002789232
+        STAT match_CastPattern +0 -0 #it=9 maxmatch=2 i=2 - time=0.00035291599760967074
+        STAT match_ClipClipPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0001723829991533421
+        STAT match_ComputationCastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.000287013000161096
+        STAT match_ConvBiasNullPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.0002709869977479684
+        STAT match_DropoutPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0001753429996824707
+        STAT match_ExpandBroadcastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00021030100015195785
+        STAT match_ExpandPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.00025742100024217507
+        STAT match_ExpandSwapPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00016290599978674436
+        STAT match_FastGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017585300065547926
+        STAT match_FusedConvPattern +0 -0 #it=3 maxmatch=0 i=0 - time=7.819699931133073e-05
+        STAT match_FusedMatMulDivPattern +0 -0 #it=3 maxmatch=2 i=0 - time=0.00023174899979494512
+        STAT match_FusedMatMulPattern +0 -0 #it=3 maxmatch=2 i=2 - time=0.0003211820003343746
+        STAT match_FusedMatMulTransposePattern +0 -0 #it=1 maxmatch=0 i=0 - time=4.689900015364401e-05
+        STAT match_FusedMatMulx2Pattern +0 -0 #it=1 maxmatch=0 i=0 - time=6.082999971113168e-05
+        STAT match_GeluErfPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0017294150011366582
+        STAT match_GeluOrtPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.002051687999482965
+        STAT match_GeluPattern +0 -0 #it=9 maxmatch=2 i=0 - time=7.73000192566542e-06
+        STAT match_GemmTransposePattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.0002939120004157303
+        STAT match_IdentityPattern +0 -0 #it=9 maxmatch=6 i=4 - time=0.001350396000816545
+        STAT match_LayerNormalizationPattern +0 -0 #it=7 maxmatch=2 i=2 - time=0.00027451500045572175
+        STAT match_LayerNormalizationScalePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00019592700027715182
+        STAT match_LeakyReluPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0019591270001910743
+        STAT match_MatMulAddPattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.0006091400000514113
+        STAT match_MatMulReshape2Of3Pattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0005531920005523716
+        STAT match_MulMulMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.000383634999707283
+        STAT match_MulMulMulScalarPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00023342499935097294
+        STAT match_OrtBatchNormalizationTrainingPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00026495600013731746
+        STAT match_QuickGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017093299993575783
+        STAT match_ReduceReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00021562399979302427
+        STAT match_ReduceSumNormalizePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00016594899989286205
+        STAT match_Reshape2Of3Pattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0004108360008103773
+        STAT match_ReshapeMatMulReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00032628099779685726
+        STAT match_ReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0004818599991267547
+        STAT match_ReshapeReshapeBinaryPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00029340499895624816
+        STAT match_ReshapeReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0003888380006173975
+        STAT match_RotaryConcatPartPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002288489977217978
+        STAT match_SameChildrenPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0007049190007819561
+        STAT match_SequenceConstructAtPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017791299887903733
+        STAT match_SimplifiedLayerNormalizationPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00039150199700088706
+        STAT match_SliceSlicePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0001704540009086486
+        STAT match_SlicesSplitPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017196399949170882
+        STAT match_SoftmaxCrossEntropyLossCastPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0027186349989278824
+        STAT match_SoftmaxGradPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017971699980989797
+        STAT match_SplitConcatPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0001856419985415414
+        STAT match_SqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00025218299924745224
+        STAT match_Sub1MulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0001919270007419982
+        STAT match_SwitchOrderBinaryPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00043712399929063395
+        STAT match_SwitchReshapeActivationPattern +0 -0 #it=7 maxmatch=5 i=1 - time=0.0002555269993536058
+        STAT match_TransposeEqualReshapePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0003347870015204535
+        STAT match_TransposeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0005276440006127814
+        STAT match_TransposeReshapeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0003208439993613865
+        STAT match_TransposeReshapeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00029334600094443886
+        STAT match_TransposeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0002699490014492767
+        STAT match_UnsqueezeEqualPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002519809995646938
+        STAT match_UnsqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0002157099997930345
+        STAT remove_identity_nodes +9 -15 #it=3 maxmatch=0 i=0 - time=0.0006123419989307877
     --MODEL: 37 nodes, 1 inputs, 1 outputs, 34 initializers--
              INPUT:   1 x 7t
          INPUT-SEQ:   1 x Falset
@@ -1175,19 +1175,19 @@ Let's how it goes.
           NODE:   1 x Transpose -SIG- 1t[32x16]-perm=1;0
           NODE:   2 x Where -SIG- 9t[30x30], 1t[1], 1t[1x30x30]
           NODE:   2 x com.microsoft.FusedMatMul -SIG- 1t[1x30x16], 1t[1x30x16]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 1:2/34:p_decoder_norm_1_weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 2:3/34:p_decoder_norm_1_bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 3:5/34:p_decoder_norm_2_weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 4:6/34:p_decoder_norm_2_bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 5:9/34:init7_s1_-1:int64[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 6:10/34:init1_s1_:float32[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 7:11/34:init1_s1_2:float32[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 8:16/34:_reshape_init1_s_0:float32[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 9:22/34:_reshape_init1_s_02:float32[(1,)]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 1:16/28:_onx_transpose_p_decoder_attention_linear_weight0:torch.float32[torch.Size([32, 16])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 2:17/28:_onx_transpose_p_decoder_feed_forward_linear_1_weight0:torch.float32[torch.Size([16, 128])]
-    [GraphBuilder-TNS.remove_unused] remove_initializer 3:18/28:_onx_transpose_p_decoder_feed_forward_linear_2_weight0:torch.float32[torch.Size([128, 16])]
-    [GraphBuilder-TNS.optimize] done with 34 nodes in 0.070
+    [GraphBuilder-SWU.remove_unused] remove_initializer 1:2/34:p_decoder_norm_1_weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 2:3/34:p_decoder_norm_1_bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 3:5/34:p_decoder_norm_2_weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 4:6/34:p_decoder_norm_2_bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 5:9/34:init7_s1_-1:int64[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 6:10/34:init1_s1_:float32[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 7:11/34:init1_s1_2:float32[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 8:16/34:_reshape_init1_s_0:float32[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 9:22/34:_reshape_init1_s_02:float32[(1,)]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 1:16/28:_onx_transpose_p_decoder_attention_linear_weight0:torch.float32[torch.Size([32, 16])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 2:17/28:_onx_transpose_p_decoder_feed_forward_linear_1_weight0:torch.float32[torch.Size([16, 128])]
+    [GraphBuilder-SWU.remove_unused] remove_initializer 3:18/28:_onx_transpose_p_decoder_feed_forward_linear_2_weight0:torch.float32[torch.Size([128, 16])]
+    [GraphBuilder-SWU.optimize] done with 34 nodes in 0.043
     opset: domain='' version=18
     opset: domain='com.microsoft' version=1
     input: name='input_ids' type=dtype('int64') shape=[1, 30]
@@ -1368,13 +1368,13 @@ We reduce the verbosity...
     opset: domain='com.microsoft' version=1
     input: 'cat'
     input: 'GemmTransposePattern--_onx_transpose_weight0'
-    Constant(value=[-0.051155...) -> bias
+    Constant(value=[-0.045708...) -> bias
     Constant(value=[-1, 32]) -> init7_s2_-1_32
       Reshape(cat, init7_s2_-1_32) -> MatMulAddPattern--cat
       Gemm(MatMulAddPattern--cat, GemmTransposePattern--_onx_transpose_weight0, bias, transB=1) -> MatMulAddPattern--cat2
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1
       Reshape(MatMulAddPattern--cat2, init7_s3_1_30_-1) -> output
-    Constant(value=[-0.051155...) -> decoder.attention.linear.bias
+    Constant(value=[-0.045708...) -> decoder.attention.linear.bias
     output: name='output' type=? shape=?
     ----- function name=__main__.MultiAttentionBlock domain=aten_local_function
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -1425,13 +1425,13 @@ We reduce the verbosity...
     opset: domain='com.microsoft' version=1
     input: 'relu'
     input: 'GemmTransposePattern--_onx_transpose_weight0'
-    Constant(value=[-0.051893...) -> bias
+    Constant(value=[0.0182421...) -> bias
     Constant(value=[-1, 128]) -> init7_s2_-1_128
       Reshape(relu, init7_s2_-1_128) -> MatMulAddPattern--relu
       Gemm(MatMulAddPattern--relu, GemmTransposePattern--_onx_transpose_weight0, bias, transB=1) -> MatMulAddPattern--relu2
     Constant(value=[1, 30, -1...) -> init7_s3_1_30_-1
       Reshape(MatMulAddPattern--relu2, init7_s3_1_30_-1) -> output
-    Constant(value=[-0.051893...) -> decoder.feed_forward.linear_2.bias
+    Constant(value=[0.0182421...) -> decoder.feed_forward.linear_2.bias
     output: name='output' type=? shape=?
     ----- function name=__main__.FeedForward domain=aten_local_function
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -1514,200 +1514,200 @@ This coudl even be decided at runtime.
 
  .. code-block:: none
 
-    [GraphBuilder-ZCA.optimize] start with 73 nodes
-    [GraphBuilder-ZCA.optimize] #patterns=62
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 1:1/47:embedding.embedding.weight:torch.float32[torch.Size([1024, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 2:3/47:embedding.pe.weight:torch.float32[torch.Size([1024, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 3:5/47:decoder.norm_1.weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 4:7/47:decoder.norm_1.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 5:9/47:decoder.attention.attention.0.query.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 6:11/47:decoder.attention.attention.0.key.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 7:13/47:decoder.attention.attention.0.value.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 8:15/47:decoder.attention.attention.1.query.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 9:17/47:decoder.attention.attention.1.key.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 10:19/47:decoder.attention.attention.1.value.weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 11:21/47:decoder.attention.linear.weight:torch.float32[torch.Size([16, 32])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 12:23/47:decoder.attention.linear.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 13:25/47:decoder.norm_2.weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 14:27/47:decoder.norm_2.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 15:29/47:decoder.feed_forward.linear_1.weight:torch.float32[torch.Size([128, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 16:31/47:decoder.feed_forward.linear_1.bias:torch.float32[torch.Size([128])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 17:33/47:decoder.feed_forward.linear_2.weight:torch.float32[torch.Size([16, 128])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 18:35/47:decoder.feed_forward.linear_2.bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 1:4/46:p_decoder_attention_attention_0_query_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 2:5/46:p_decoder_attention_attention_0_key_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 3:6/46:p_decoder_attention_attention_0_value_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 4:7/46:p_decoder_attention_attention_1_query_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 5:8/46:p_decoder_attention_attention_1_key_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 6:9/46:p_decoder_attention_attention_1_value_weight:torch.float32[torch.Size([16, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 7:10/46:p_decoder_attention_linear_weight:torch.float32[torch.Size([16, 32])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 8:14/46:p_decoder_feed_forward_linear_1_weight:torch.float32[torch.Size([128, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 9:16/46:p_decoder_feed_forward_linear_2_weight:torch.float32[torch.Size([16, 128])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 10:18/46:b_decoder_attention_attention_0_mask:torch.float32[torch.Size([256, 256])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 11:19/46:b_decoder_attention_attention_1_mask:torch.float32[torch.Size([256, 256])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 12:23/46:init1_s_:float32[()]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 13:24/46:init7_s1_1:int64[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 14:25/46:init7_s1_0:int64[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 15:26/46:init7_s1_30:int64[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 16:27/46:init1_s_2:float32[()]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 17:33/46:slice_1:torch.float32[torch.Size([30, 256])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 18:40/46:slice_3:torch.float32[torch.Size([30, 256])]
-    [GraphBuilderPatternOptimization-ZCA.optimize] start with 53 nodes, 28 initializers, 62 patterns, priorities=[0, 1, 2, 3]
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   1/62 - P0 - BatchNormalizationPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   2/62 - P0 - BatchNormalizationTrainingPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   3/62 - P0 - CastPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   4/62 - P0 - ConvBiasNullPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   5/62 - P0 - ExpandPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   6/62 - P0 - GeluErfPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   7/62 - P0 - GeluOrtPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   8/62 - P0 - GeluPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern   9/62 - P0 - IdentityPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  10/62 - P0 - LeakyReluPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  11/62 - P0 - ReshapePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  12/62 - P0 - ReshapeReshapePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  13/62 - P0 - SameChildrenPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  14/62 - P0 - SoftmaxCrossEntropyLossCastPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  15/62 - P0 - SqueezeUnsqueezePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  16/62 - P0 - TransposeReshapeTransposePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  17/62 - P0 - TransposeTransposePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  18/62 - P0 - UnsqueezeUnsqueezePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  19/62 - P1 - BiasGeluPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  20/62 - P1 - BiasSoftmaxPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  21/62 - P1 - CastCastBinaryPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  22/62 - P1 - CastLayerNormalizationCastPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  23/62 - P1 - CastOpCastPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  24/62 - P1 - ClipClipPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  25/62 - P1 - ComputationCastOpCastPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  26/62 - P1 - DropoutPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  27/62 - P1 - ExpandBroadcastPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  28/62 - P1 - ExpandSwapPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  29/62 - P1 - FastGeluPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  30/62 - P1 - GemmTransposePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  31/62 - P1 - LayerNormalizationPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  32/62 - P1 - LayerNormalizationScalePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  33/62 - P1 - MatMulAddPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  34/62 - P1 - MatMulReshape2Of3Pattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  35/62 - P1 - MulMulMatMulPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  36/62 - P1 - MulMulMulScalarPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  37/62 - P1 - OrtBatchNormalizationTrainingPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  38/62 - P1 - QuickGeluPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  39/62 - P1 - ReduceReshapePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  40/62 - P1 - ReduceSumNormalizePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  41/62 - P1 - Reshape2Of3Pattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  42/62 - P1 - ReshapeMatMulReshapePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  43/62 - P1 - ReshapeReshapeBinaryPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  44/62 - P1 - RotaryConcatPartPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  45/62 - P1 - SequenceConstructAtPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  46/62 - P1 - SimplifiedLayerNormalizationPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  47/62 - P1 - SliceSlicePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  48/62 - P1 - SlicesSplitPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  49/62 - P1 - SoftmaxGradPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  50/62 - P1 - SplitConcatPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  51/62 - P1 - Sub1MulPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  52/62 - P1 - SwitchOrderBinaryPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  53/62 - P1 - SwitchReshapeActivationPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  54/62 - P1 - TransposeEqualReshapePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  55/62 - P1 - TransposeMatMulPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  56/62 - P1 - TransposeReshapeMatMulPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  57/62 - P1 - UnsqueezeEqualPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  58/62 - P2 - FusedConvPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  59/62 - P2 - FusedMatMulDivPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  60/62 - P2 - FusedMatMulPattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  61/62 - P3 - FusedMatMulTransposePattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] use pattern  62/62 - P3 - FusedMatMulx2Pattern()
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 0: 53 nodes, priority=0
-    [GraphBuilderPatternOptimization-ZCA.optimize] applies 6 matches, 2*CastPattern, 4*IdentityPattern - time=0.005 | max_time=SoftmaxCrossEntropyLossCastPattern:0.001
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 1: 47 nodes, priority=0
-    [GraphBuilderPatternOptimization-ZCA.optimize] increase priority to 1
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 2: 47 nodes, priority=1
-    [GraphBuilderPatternOptimization-ZCA.optimize] applies 5 matches, 2*LayerNormalizationPattern, 3*MatMulAddPattern - time=0.005 | max_time=MatMulAddPattern:0.000
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 3: 38 nodes, priority=1
-    [GraphBuilderPatternOptimization-ZCA.optimize] applies 3 matches, 3*GemmTransposePattern - time=0.003 | max_time=SwitchOrderBinaryPattern:0.000
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 4: 41 nodes, priority=1
-    [GraphBuilderPatternOptimization-ZCA.optimize] applies 1 matches, [0]=MatchResult: SwitchReshapeActivationPattern replaces ['Gemm', 'Reshape', 'Relu'] - time=0.003 | max_time=LeakyReluPattern:0.000
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 5: 41 nodes, priority=1
-    [GraphBuilderPatternOptimization-ZCA.optimize] increase priority to 2
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 6: 41 nodes, priority=2
-    [GraphBuilderPatternOptimization-ZCA.optimize] applies 2 matches, 2*FusedMatMulPattern - time=0.003 | max_time=FusedMatMulPattern:0.000
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 7: 37 nodes, priority=2
-    [GraphBuilderPatternOptimization-ZCA.optimize] increase priority to 3
-    [GraphBuilderPatternOptimization-ZCA.optimize] iteration 8: 37 nodes, priority=3
-    [GraphBuilderPatternOptimization-ZCA.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
-    [GraphBuilderPatternOptimization-ZCA.optimize] done after 9 iterations with 37 nodes in 0.042
-        STAT apply_CastPattern +2 -2 #it=1 maxmatch=1 i=2 - time=0.00016845800018927548
-        STAT apply_FusedMatMulPattern +2 -6 #it=1 maxmatch=1 i=2 - time=0.0004289029993742588
-        STAT apply_GemmTransposePattern +6 -3 #it=1 maxmatch=2 i=3 - time=0.00042827200013562106
-        STAT apply_IdentityPattern +4 -4 #it=1 maxmatch=5 i=4 - time=0.00021389899939094903
-        STAT apply_LayerNormalizationPattern +2 -14 #it=1 maxmatch=1 i=2 - time=0.00034658199911064
-        STAT apply_MatMulAddPattern +9 -6 #it=1 maxmatch=4 i=3 - time=0.0008908239997253986
-        STAT apply_SwitchReshapeActivationPattern +3 -3 #it=1 maxmatch=0 i=1 - time=0.00024509200011380017
-        STAT build_graph_for_pattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0021155309987079818
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00010803999975905754
-        STAT check_pattern_A0 +0 -0 #it=5 maxmatch=0 i=0 - time=0.0015798890008227318
-        STAT check_pattern_B0 +0 -0 #it=3 maxmatch=0 i=0 - time=0.0003580629991120077
-        STAT match_BatchNormalizationPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0003439090005485923
-        STAT match_BatchNormalizationTrainingPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.00029084800007694867
-        STAT match_BiasGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00024081399988062913
-        STAT match_BiasSoftmaxPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00041934700129786506
-        STAT match_CastCastBinaryPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00040492300013283966
-        STAT match_CastLayerNormalizationCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0003034899991689599
-        STAT match_CastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0004525300028035417
-        STAT match_CastPattern +0 -0 #it=9 maxmatch=2 i=2 - time=0.00030262600012065377
-        STAT match_ClipClipPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00020342400057415944
-        STAT match_ComputationCastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0003022860018973006
-        STAT match_ConvBiasNullPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.00027501100066729123
-        STAT match_DropoutPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00021024000034230994
-        STAT match_ExpandBroadcastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00020050000057381112
-        STAT match_ExpandPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.00027211000087845605
-        STAT match_ExpandSwapPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00019049599995923927
-        STAT match_FastGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002436460008539143
-        STAT match_FusedConvPattern +0 -0 #it=3 maxmatch=0 i=0 - time=0.00011518700011947658
-        STAT match_FusedMatMulDivPattern +0 -0 #it=3 maxmatch=2 i=0 - time=0.00021052200008853106
-        STAT match_FusedMatMulPattern +0 -0 #it=3 maxmatch=2 i=2 - time=0.0004454669997357996
-        STAT match_FusedMatMulTransposePattern +0 -0 #it=1 maxmatch=0 i=0 - time=7.832499977666885e-05
-        STAT match_FusedMatMulx2Pattern +0 -0 #it=1 maxmatch=0 i=0 - time=9.532799958833493e-05
-        STAT match_GeluErfPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0020829159975619405
-        STAT match_GeluOrtPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0025365109995618695
-        STAT match_GeluPattern +0 -0 #it=9 maxmatch=2 i=0 - time=6.658000529569108e-06
-        STAT match_GemmTransposePattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.00040456599890603684
-        STAT match_IdentityPattern +0 -0 #it=9 maxmatch=6 i=4 - time=0.001821350000682287
-        STAT match_LayerNormalizationPattern +0 -0 #it=7 maxmatch=2 i=2 - time=0.0002917479996540351
-        STAT match_LayerNormalizationScalePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0002310979980393313
-        STAT match_LeakyReluPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0024188349989344715
-        STAT match_MatMulAddPattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.0008964589997049188
-        STAT match_MatMulReshape2Of3Pattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0007205750025605084
-        STAT match_MulMulMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.000453087000096275
-        STAT match_MulMulMulScalarPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00027565400068851886
-        STAT match_OrtBatchNormalizationTrainingPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0004024820018457831
-        STAT match_QuickGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00024147900057869265
-        STAT match_ReduceReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00030821000018477207
-        STAT match_ReduceSumNormalizePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0002071250009976211
-        STAT match_Reshape2Of3Pattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0005853299999216688
-        STAT match_ReshapeMatMulReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0004187580016150605
-        STAT match_ReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0006453730011344305
-        STAT match_ReshapeReshapeBinaryPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00038986900017334847
-        STAT match_ReshapeReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0005647639991366304
-        STAT match_RotaryConcatPartPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0003017450007973821
-        STAT match_SameChildrenPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0009127300008913153
-        STAT match_SequenceConstructAtPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00024008899981708964
-        STAT match_SimplifiedLayerNormalizationPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.000317839000672393
-        STAT match_SliceSlicePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00028654599918809254
-        STAT match_SlicesSplitPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002609349994600052
-        STAT match_SoftmaxCrossEntropyLossCastPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0028104940001867362
-        STAT match_SoftmaxGradPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00022786699992138892
-        STAT match_SplitConcatPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002472890000717598
-        STAT match_SqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00028981000014027813
-        STAT match_Sub1MulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00025663000178610673
-        STAT match_SwitchOrderBinaryPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0007365460005530622
-        STAT match_SwitchReshapeActivationPattern +0 -0 #it=7 maxmatch=5 i=1 - time=0.00039985099920158973
-        STAT match_TransposeEqualReshapePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0005534880001505371
-        STAT match_TransposeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0008358989989574184
-        STAT match_TransposeReshapeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00045671100178878987
-        STAT match_TransposeReshapeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00036627400004363153
-        STAT match_TransposeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00035040200054936577
-        STAT match_UnsqueezeEqualPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0004020789992864593
-        STAT match_UnsqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00028892299815197475
-        STAT remove_identity_nodes +9 -15 #it=3 maxmatch=0 i=0 - time=0.0008103600002868916
+    [GraphBuilder-LOA.optimize] start with 73 nodes
+    [GraphBuilder-LOA.optimize] #patterns=62
+    [GraphBuilder-LOA.remove_unused] remove_initializer 1:1/47:embedding.embedding.weight:torch.float32[torch.Size([1024, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 2:3/47:embedding.pe.weight:torch.float32[torch.Size([1024, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 3:5/47:decoder.norm_1.weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 4:7/47:decoder.norm_1.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 5:9/47:decoder.attention.attention.0.query.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 6:11/47:decoder.attention.attention.0.key.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 7:13/47:decoder.attention.attention.0.value.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 8:15/47:decoder.attention.attention.1.query.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 9:17/47:decoder.attention.attention.1.key.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 10:19/47:decoder.attention.attention.1.value.weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 11:21/47:decoder.attention.linear.weight:torch.float32[torch.Size([16, 32])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 12:23/47:decoder.attention.linear.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 13:25/47:decoder.norm_2.weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 14:27/47:decoder.norm_2.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 15:29/47:decoder.feed_forward.linear_1.weight:torch.float32[torch.Size([128, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 16:31/47:decoder.feed_forward.linear_1.bias:torch.float32[torch.Size([128])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 17:33/47:decoder.feed_forward.linear_2.weight:torch.float32[torch.Size([16, 128])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 18:35/47:decoder.feed_forward.linear_2.bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 1:4/46:p_decoder_attention_attention_0_query_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 2:5/46:p_decoder_attention_attention_0_key_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 3:6/46:p_decoder_attention_attention_0_value_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 4:7/46:p_decoder_attention_attention_1_query_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 5:8/46:p_decoder_attention_attention_1_key_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 6:9/46:p_decoder_attention_attention_1_value_weight:torch.float32[torch.Size([16, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 7:10/46:p_decoder_attention_linear_weight:torch.float32[torch.Size([16, 32])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 8:14/46:p_decoder_feed_forward_linear_1_weight:torch.float32[torch.Size([128, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 9:16/46:p_decoder_feed_forward_linear_2_weight:torch.float32[torch.Size([16, 128])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 10:18/46:b_decoder_attention_attention_0_mask:torch.float32[torch.Size([256, 256])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 11:19/46:b_decoder_attention_attention_1_mask:torch.float32[torch.Size([256, 256])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 12:23/46:init1_s_:float32[()]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 13:24/46:init7_s1_1:int64[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 14:25/46:init7_s1_0:int64[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 15:26/46:init7_s1_30:int64[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 16:27/46:init1_s_2:float32[()]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 17:33/46:slice_1:torch.float32[torch.Size([30, 256])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 18:40/46:slice_3:torch.float32[torch.Size([30, 256])]
+    [GraphBuilderPatternOptimization-LOA.optimize] start with 53 nodes, 28 initializers, 62 patterns, priorities=[0, 1, 2, 3]
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   1/62 - P0 - BatchNormalizationPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   2/62 - P0 - BatchNormalizationTrainingPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   3/62 - P0 - CastPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   4/62 - P0 - ConvBiasNullPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   5/62 - P0 - ExpandPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   6/62 - P0 - GeluErfPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   7/62 - P0 - GeluOrtPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   8/62 - P0 - GeluPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern   9/62 - P0 - IdentityPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  10/62 - P0 - LeakyReluPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  11/62 - P0 - ReshapePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  12/62 - P0 - ReshapeReshapePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  13/62 - P0 - SameChildrenPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  14/62 - P0 - SoftmaxCrossEntropyLossCastPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  15/62 - P0 - SqueezeUnsqueezePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  16/62 - P0 - TransposeReshapeTransposePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  17/62 - P0 - TransposeTransposePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  18/62 - P0 - UnsqueezeUnsqueezePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  19/62 - P1 - BiasGeluPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  20/62 - P1 - BiasSoftmaxPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  21/62 - P1 - CastCastBinaryPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  22/62 - P1 - CastLayerNormalizationCastPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  23/62 - P1 - CastOpCastPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  24/62 - P1 - ClipClipPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  25/62 - P1 - ComputationCastOpCastPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  26/62 - P1 - DropoutPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  27/62 - P1 - ExpandBroadcastPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  28/62 - P1 - ExpandSwapPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  29/62 - P1 - FastGeluPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  30/62 - P1 - GemmTransposePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  31/62 - P1 - LayerNormalizationPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  32/62 - P1 - LayerNormalizationScalePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  33/62 - P1 - MatMulAddPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  34/62 - P1 - MatMulReshape2Of3Pattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  35/62 - P1 - MulMulMatMulPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  36/62 - P1 - MulMulMulScalarPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  37/62 - P1 - OrtBatchNormalizationTrainingPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  38/62 - P1 - QuickGeluPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  39/62 - P1 - ReduceReshapePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  40/62 - P1 - ReduceSumNormalizePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  41/62 - P1 - Reshape2Of3Pattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  42/62 - P1 - ReshapeMatMulReshapePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  43/62 - P1 - ReshapeReshapeBinaryPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  44/62 - P1 - RotaryConcatPartPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  45/62 - P1 - SequenceConstructAtPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  46/62 - P1 - SimplifiedLayerNormalizationPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  47/62 - P1 - SliceSlicePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  48/62 - P1 - SlicesSplitPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  49/62 - P1 - SoftmaxGradPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  50/62 - P1 - SplitConcatPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  51/62 - P1 - Sub1MulPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  52/62 - P1 - SwitchOrderBinaryPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  53/62 - P1 - SwitchReshapeActivationPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  54/62 - P1 - TransposeEqualReshapePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  55/62 - P1 - TransposeMatMulPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  56/62 - P1 - TransposeReshapeMatMulPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  57/62 - P1 - UnsqueezeEqualPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  58/62 - P2 - FusedConvPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  59/62 - P2 - FusedMatMulDivPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  60/62 - P2 - FusedMatMulPattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  61/62 - P3 - FusedMatMulTransposePattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] use pattern  62/62 - P3 - FusedMatMulx2Pattern()
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 0: 53 nodes, priority=0
+    [GraphBuilderPatternOptimization-LOA.optimize] applies 6 matches, 2*CastPattern, 4*IdentityPattern - time=0.004 | max_time=SoftmaxCrossEntropyLossCastPattern:0.001
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 1: 47 nodes, priority=0
+    [GraphBuilderPatternOptimization-LOA.optimize] increase priority to 1
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 2: 47 nodes, priority=1
+    [GraphBuilderPatternOptimization-LOA.optimize] applies 5 matches, 2*LayerNormalizationPattern, 3*MatMulAddPattern - time=0.003 | max_time=SimplifiedLayerNormalizationPattern:0.000
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 3: 38 nodes, priority=1
+    [GraphBuilderPatternOptimization-LOA.optimize] applies 3 matches, 3*GemmTransposePattern - time=0.002 | max_time=MatMulAddPattern:0.000
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 4: 41 nodes, priority=1
+    [GraphBuilderPatternOptimization-LOA.optimize] applies 1 matches, [0]=MatchResult: SwitchReshapeActivationPattern replaces ['Gemm', 'Reshape', 'Relu'] - time=0.002 | max_time=MatMulReshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 5: 41 nodes, priority=1
+    [GraphBuilderPatternOptimization-LOA.optimize] increase priority to 2
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 6: 41 nodes, priority=2
+    [GraphBuilderPatternOptimization-LOA.optimize] applies 2 matches, 2*FusedMatMulPattern - time=0.002 | max_time=FusedMatMulPattern:0.000
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 7: 37 nodes, priority=2
+    [GraphBuilderPatternOptimization-LOA.optimize] increase priority to 3
+    [GraphBuilderPatternOptimization-LOA.optimize] iteration 8: 37 nodes, priority=3
+    [GraphBuilderPatternOptimization-LOA.optimize] stops current_priority_index=4, priorities=[0, 1, 2, 3]
+    [GraphBuilderPatternOptimization-LOA.optimize] done after 9 iterations with 37 nodes in 0.033
+        STAT apply_CastPattern +2 -2 #it=1 maxmatch=1 i=2 - time=0.0001522169995951117
+        STAT apply_FusedMatMulPattern +2 -6 #it=1 maxmatch=1 i=2 - time=0.00036536300012812717
+        STAT apply_GemmTransposePattern +6 -3 #it=1 maxmatch=2 i=3 - time=0.0003550530000211438
+        STAT apply_IdentityPattern +4 -4 #it=1 maxmatch=5 i=4 - time=0.00017411299995728768
+        STAT apply_LayerNormalizationPattern +2 -14 #it=1 maxmatch=1 i=2 - time=0.00046392200056288857
+        STAT apply_MatMulAddPattern +9 -6 #it=1 maxmatch=4 i=3 - time=0.00086744300006103
+        STAT apply_SwitchReshapeActivationPattern +3 -3 #it=1 maxmatch=0 i=1 - time=0.00023726100062049227
+        STAT build_graph_for_pattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0015779450004629325
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00011087300026701996
+        STAT check_pattern_A0 +0 -0 #it=5 maxmatch=0 i=0 - time=0.0013545629972213646
+        STAT check_pattern_B0 +0 -0 #it=3 maxmatch=0 i=0 - time=0.00021752600059699034
+        STAT match_BatchNormalizationPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0003196100005879998
+        STAT match_BatchNormalizationTrainingPattern +0 -0 #it=9 maxmatch=0 i=0 - time=0.0002686949992494192
+        STAT match_BiasGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00016841100023157196
+        STAT match_BiasSoftmaxPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002926219995060819
+        STAT match_CastCastBinaryPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0003586920001907856
+        STAT match_CastLayerNormalizationCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00024182999914046377
+        STAT match_CastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0003835300003629527
+        STAT match_CastPattern +0 -0 #it=9 maxmatch=2 i=2 - time=0.0002812469983837218
+        STAT match_ClipClipPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00024740100070630433
+        STAT match_ComputationCastOpCastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00026390800121589564
+        STAT match_ConvBiasNullPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.0002588360021036351
+        STAT match_DropoutPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00017144399953394895
+        STAT match_ExpandBroadcastPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.0001682539987086784
+        STAT match_ExpandPattern +0 -0 #it=9 maxmatch=2 i=0 - time=0.00028788999861717457
+        STAT match_ExpandSwapPattern +0 -0 #it=7 maxmatch=0 i=0 - time=0.00015768799949000822
+        STAT match_FastGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0001888409997263807
+        STAT match_FusedConvPattern +0 -0 #it=3 maxmatch=0 i=0 - time=7.265400017786305e-05
+        STAT match_FusedMatMulDivPattern +0 -0 #it=3 maxmatch=2 i=0 - time=0.00013397400016401662
+        STAT match_FusedMatMulPattern +0 -0 #it=3 maxmatch=2 i=2 - time=0.00029220299893495394
+        STAT match_FusedMatMulTransposePattern +0 -0 #it=1 maxmatch=0 i=0 - time=3.844799994112691e-05
+        STAT match_FusedMatMulx2Pattern +0 -0 #it=1 maxmatch=0 i=0 - time=5.046400019637076e-05
+        STAT match_GeluErfPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0016771659993537469
+        STAT match_GeluOrtPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0019645430002128705
+        STAT match_GeluPattern +0 -0 #it=9 maxmatch=2 i=0 - time=7.645001460332423e-06
+        STAT match_GemmTransposePattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.00030071299988776445
+        STAT match_IdentityPattern +0 -0 #it=9 maxmatch=6 i=4 - time=0.0016021230021578958
+        STAT match_LayerNormalizationPattern +0 -0 #it=7 maxmatch=2 i=2 - time=0.0002550469998823246
+        STAT match_LayerNormalizationScalePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00019081800110143377
+        STAT match_LeakyReluPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0019310130001031212
+        STAT match_MatMulAddPattern +0 -0 #it=7 maxmatch=5 i=3 - time=0.0006626870008403785
+        STAT match_MatMulReshape2Of3Pattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0005669709980793414
+        STAT match_MulMulMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00032718399870645953
+        STAT match_MulMulMulScalarPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0002095930003633839
+        STAT match_OrtBatchNormalizationTrainingPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00032811999972182093
+        STAT match_QuickGeluPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0001793689998521586
+        STAT match_ReduceReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00021049499900982482
+        STAT match_ReduceSumNormalizePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0001659219988141558
+        STAT match_Reshape2Of3Pattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.000397525998778292
+        STAT match_ReshapeMatMulReshapePattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.0003029180006706156
+        STAT match_ReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0004901169995719101
+        STAT match_ReshapeReshapeBinaryPattern +0 -0 #it=7 maxmatch=2 i=0 - time=0.00029520799944293685
+        STAT match_ReshapeReshapePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0003815199997916352
+        STAT match_RotaryConcatPartPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00022308600091491826
+        STAT match_SameChildrenPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0006135510011517908
+        STAT match_SequenceConstructAtPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017357900105707813
+        STAT match_SimplifiedLayerNormalizationPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00034464500004105503
+        STAT match_SliceSlicePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00016505000166944228
+        STAT match_SlicesSplitPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00017870400097308448
+        STAT match_SoftmaxCrossEntropyLossCastPattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0026777179991768207
+        STAT match_SoftmaxGradPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00019699100175785134
+        STAT match_SplitConcatPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0002107579985022312
+        STAT match_SqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00022342600277625024
+        STAT match_Sub1MulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00018361100137553876
+        STAT match_SwitchOrderBinaryPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0004325619975134032
+        STAT match_SwitchReshapeActivationPattern +0 -0 #it=7 maxmatch=5 i=1 - time=0.0002786859995467239
+        STAT match_TransposeEqualReshapePattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00032476299929840025
+        STAT match_TransposeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0005431630024759215
+        STAT match_TransposeReshapeMatMulPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.00036118300067755627
+        STAT match_TransposeReshapeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.00027373299872124335
+        STAT match_TransposeTransposePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0002632530004120781
+        STAT match_UnsqueezeEqualPattern +0 -0 #it=7 maxmatch=5 i=0 - time=0.0003137760013487423
+        STAT match_UnsqueezeUnsqueezePattern +0 -0 #it=9 maxmatch=6 i=0 - time=0.0002274189992022002
+        STAT remove_identity_nodes +9 -15 #it=3 maxmatch=0 i=0 - time=0.00048052400052256417
     --MODEL: 37 nodes, 1 inputs, 1 outputs, 34 initializers--
              INPUT:   1 x 7t
          INPUT-SEQ:   1 x Falset
@@ -1765,19 +1765,19 @@ This coudl even be decided at runtime.
           NODE:   1 x Transpose -SIG- 1t[32x16]-perm=1;0
           NODE:   2 x Where -SIG- 9t[30x30], 1t[1], 1t[1x30x30]
           NODE:   2 x com.microsoft.FusedMatMul -SIG- 1t[1x30x16], 1t[1x30x16]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 1:2/34:p_decoder_norm_1_weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 2:3/34:p_decoder_norm_1_bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 3:5/34:p_decoder_norm_2_weight:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 4:6/34:p_decoder_norm_2_bias:torch.float32[torch.Size([16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 5:9/34:init7_s1_-1:int64[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 6:10/34:init1_s1_:float32[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 7:11/34:init1_s1_2:float32[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 8:16/34:_reshape_init1_s_0:float32[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 9:22/34:_reshape_init1_s_02:float32[(1,)]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 1:16/28:_onx_transpose_p_decoder_attention_linear_weight0:torch.float32[torch.Size([32, 16])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 2:17/28:_onx_transpose_p_decoder_feed_forward_linear_1_weight0:torch.float32[torch.Size([16, 128])]
-    [GraphBuilder-ZCA.remove_unused] remove_initializer 3:18/28:_onx_transpose_p_decoder_feed_forward_linear_2_weight0:torch.float32[torch.Size([128, 16])]
-    [GraphBuilder-ZCA.optimize] done with 34 nodes in 0.052
+    [GraphBuilder-LOA.remove_unused] remove_initializer 1:2/34:p_decoder_norm_1_weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 2:3/34:p_decoder_norm_1_bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 3:5/34:p_decoder_norm_2_weight:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 4:6/34:p_decoder_norm_2_bias:torch.float32[torch.Size([16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 5:9/34:init7_s1_-1:int64[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 6:10/34:init1_s1_:float32[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 7:11/34:init1_s1_2:float32[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 8:16/34:_reshape_init1_s_0:float32[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 9:22/34:_reshape_init1_s_02:float32[(1,)]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 1:16/28:_onx_transpose_p_decoder_attention_linear_weight0:torch.float32[torch.Size([32, 16])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 2:17/28:_onx_transpose_p_decoder_feed_forward_linear_1_weight0:torch.float32[torch.Size([16, 128])]
+    [GraphBuilder-LOA.remove_unused] remove_initializer 3:18/28:_onx_transpose_p_decoder_feed_forward_linear_2_weight0:torch.float32[torch.Size([128, 16])]
+    [GraphBuilder-LOA.optimize] done with 34 nodes in 0.041
     opset: domain='' version=18
     opset: domain='com.microsoft' version=1
     input: name='input_ids' type=dtype('int64') shape=[1, 30]
@@ -1887,49 +1887,49 @@ which operators were fused into bigger ones only implemented by
     ------------
     001 ~ | INITIA float32  2:256x256            AOCQ                 b_ | INITIA float32  1:1                  ?AAA                 in
     002 - | INITIA float32  2:256x256            AOCQ                 b_ |                                                             
-    003 ~ | INITIA float32                       AAAA                 in | INITIA float32  2:16x16              BABY                 _o
-    004 ~ | INITIA int64    1:1                  BAAA                 in | INITIA float32  2:16x16              ZZAC                 _o
-    005 ~ | INITIA int64    1:1                  AAAA                 in | INITIA float32  2:16x16              AAAB                 _o
+    003 ~ | INITIA float32                       AAAA                 in | INITIA float32  2:16x16              AABA                 _o
+    004 ~ | INITIA int64    1:1                  BAAA                 in | INITIA float32  2:16x16              ZCBA                 _o
+    005 ~ | INITIA int64    1:1                  AAAA                 in | INITIA float32  2:16x16              AYAY                 _o
     006 ~ | INITIA int64    1:1                  EAAA                 in | INITIA float32  2:30x30              KGSP                 sl
     007 ~ | INITIA float32                       AAAA                 in | INITIA float32  1:1                  AAAA                 _r
-    008 ~ | INITIA float32  1:1                  ?AAA                 in | INITIA float32  2:16x16              BABZ                 _o
-    009 ~ | INITIA float32  1:16                 EEEE                 in | INITIA float32  2:16x16              YAZB                 _o
-    010 ~ | INITIA float32  1:16                 AAAA                 in | INITIA float32  2:16x16              AABA                 _o
+    008 ~ | INITIA float32  1:1                  ?AAA                 in | INITIA float32  2:16x16              BZZA                 _o
+    009 ~ | INITIA float32  1:16                 EEEE                 in | INITIA float32  2:16x16              ABAB                 _o
+    010 ~ | INITIA float32  1:16                 AAAA                 in | INITIA float32  2:16x16              ZBAB                 _o
     011 ~ | INITIA int64    1:2                  ZGAA                 in | INITIA float32  2:30x30              KGSP                 sl
     012 ~ | INITIA int64    1:3                  BEZA                 in | INITIA float32  1:1                  AAAA                 _r
     013 ~ | INITIA int64    1:2                  ZQAA                 in | INITIA float32  1:16                 EEEE                 in
     014 ~ | INITIA int64    1:2                  ZYAA                 in | INITIA float32  1:16                 AAAA                 in
-    015 - | INITIA float32  2:1024x16            DMDZ                 em |                                                             
-    016 - | INITIA float32  2:1024x16            PLFZ                 em |                                                             
-    017 ~ | INITIA float32  2:16x16              ZBAA                 de | INITIA int64    1:2                  ZGAA                 in
-    018 ~ | INITIA float32  2:16x16              AZZB                 de | INITIA int64    1:3                  BEZA                 in
-    019 ~ | INITIA float32  2:16x16              AAAA                 de | INITIA int64    1:2                  ZQAA                 in
-    020 ~ | INITIA float32  2:16x16              AAAA                 de | INITIA int64    1:2                  ZYAA                 in
-    021 ~ | INITIA float32  2:16x16              AAAA                 de | INITIA float32  2:16x32              BZYA                 Ge
-    022 ~ | INITIA float32  2:16x16              CZAB                 de | INITIA float32  2:128x16             AAZA                 Ge
-    023 ~ | INITIA float32  2:16x32              BZYA                 de | INITIA float32  2:16x128             AAAA                 Ge
-    024 + |                                                              | INITIA float32  2:1024x16            DMDZ                 em 
-    025 + |                                                              | INITIA float32  2:1024x16            PLFZ                 em 
+    015 - | INITIA float32  2:1024x16            EWKQ                 em |                                                             
+    016 - | INITIA float32  2:1024x16            QPUO                 em |                                                             
+    017 ~ | INITIA float32  2:16x16              ACZA                 de | INITIA int64    1:2                  ZGAA                 in
+    018 ~ | INITIA float32  2:16x16              AABA                 de | INITIA int64    1:3                  BEZA                 in
+    019 ~ | INITIA float32  2:16x16              AZZZ                 de | INITIA int64    1:2                  ZQAA                 in
+    020 ~ | INITIA float32  2:16x16              AAZA                 de | INITIA int64    1:2                  ZYAA                 in
+    021 ~ | INITIA float32  2:16x16              CAAB                 de | INITIA float32  2:16x32              AACZ                 Ge
+    022 ~ | INITIA float32  2:16x16              ABAA                 de | INITIA float32  2:128x16             WBAA                 Ge
+    023 ~ | INITIA float32  2:16x32              AACZ                 de | INITIA float32  2:16x128             AACB                 Ge
+    024 + |                                                              | INITIA float32  2:1024x16            EWKQ                 em 
+    025 + |                                                              | INITIA float32  2:1024x16            QPUO                 em 
     026 = | INITIA float32  1:16                 AAAA                 de | INITIA float32  1:16                 AAAA                 de
-    027 - | INITIA float32  2:128x16             AAZA                 de |                                                             
-    028 = | INITIA float32  1:128                ABBA                 de | INITIA float32  1:128                ABBA                 de
-    029 - | INITIA float32  2:16x128             AAAA                 de |                                                             
+    027 - | INITIA float32  2:128x16             WBAA                 de |                                                             
+    028 = | INITIA float32  1:128                AABB                 de | INITIA float32  1:128                AABB                 de
+    029 - | INITIA float32  2:16x128             AACB                 de |                                                             
     030 = | INITIA float32  1:16                 AAAA                 de | INITIA float32  1:16                 AAAA                 de
     031 = | INPUT  int64    2:1x30               COAD                 in | INPUT  int64    2:1x30               COAD                 in
-    032 = | RESULT float32  3:1x30x16            DAEL Gather          em | RESULT float32  3:1x30x16            DAEL Gather          em
-    033 = | RESULT float32  3:1x30x16            ETBV Gather          em | RESULT float32  3:1x30x16            ETBV Gather          em
-    034 = | RESULT float32  3:1x30x16            HTGF Add             ad | RESULT float32  3:1x30x16            HTGF Add             ad
-    035 = | RESULT float32  3:1x30x16            CYZB LayerNormalizat _o | RESULT float32  3:1x30x16            CYZB LayerNormalizat _o
-    036 - | RESULT float32  2:16x16              BABY Transpose       _o |                                                             
-    037 = | RESULT float32  3:1x30x16            PEZU MatMul          li | RESULT float32  3:1x30x16            PEZU MatMul          li
-    038 - | RESULT float32  2:16x16              ZZAC Transpose       _o |                                                             
-    039 = | RESULT float32  3:1x30x16            YGAD MatMul          li | RESULT float32  3:1x30x16            YGAD MatMul          li
-    040 - | RESULT float32  2:16x16              AAAB Transpose       _o |                                                             
-    041 - | RESULT float32  3:1x30x16            ZAZH MatMul          li |                                                             
-    042 - | RESULT float32  3:1x16x30            YYDJ Transpose       tr |                                                             
-    043 ~ | RESULT float32  3:1x30x30            UAMW MatMul          ma | RESULT float32  3:1x30x30            ZADT FusedMatMul     _o
+    032 = | RESULT float32  3:1x30x16            BMXM Gather          em | RESULT float32  3:1x30x16            BMXM Gather          em
+    033 = | RESULT float32  3:1x30x16            AMMY Gather          em | RESULT float32  3:1x30x16            AMMY Gather          em
+    034 = | RESULT float32  3:1x30x16            AYJJ Add             ad | RESULT float32  3:1x30x16            AYJJ Add             ad
+    035 = | RESULT float32  3:1x30x16            AABZ LayerNormalizat _o | RESULT float32  3:1x30x16            AABZ LayerNormalizat _o
+    036 - | RESULT float32  2:16x16              AABA Transpose       _o |                                                             
+    037 = | RESULT float32  3:1x30x16            HEFT MatMul          li | RESULT float32  3:1x30x16            HEFT MatMul          li
+    038 - | RESULT float32  2:16x16              ZCBA Transpose       _o |                                                             
+    039 = | RESULT float32  3:1x30x16            BAAY MatMul          li | RESULT float32  3:1x30x16            BAAY MatMul          li
+    040 - | RESULT float32  2:16x16              AYAY Transpose       _o |                                                             
+    041 - | RESULT float32  3:1x30x16            AGAG MatMul          li |                                                             
+    042 - | RESULT float32  3:1x16x30            HDTV Transpose       tr |                                                             
+    043 ~ | RESULT float32  3:1x30x30            HGPV MatMul          ma | RESULT float32  3:1x30x30            IIYF FusedMatMul     _o
     044 - | RESULT float32  1:1                  AAAA Reshape         _r |                                                             
-    045 ~ | RESULT float32  3:1x30x30            ZADT Mul             _o | RESULT float32  3:1x30x16            ZAZH MatMul          li
+    045 ~ | RESULT float32  3:1x30x30            IIYF Mul             _o | RESULT float32  3:1x30x16            AGAG MatMul          li
     046 - | RESULT int64    1:2                  AAAA Concat          Sl |                                                             
     047 - | RESULT int64    1:2                  EEAA Concat          Sl |                                                             
     048 - | RESULT int64    1:2                  ABAA Concat          Sl |                                                             
@@ -1937,18 +1937,18 @@ which operators were fused into bigger ones only implemented by
     050 - | RESULT float32  1:1                  AAAA Reshape         _r |                                                             
     051 = | RESULT bool     2:30x30              HLZC Equal           eq | RESULT bool     2:30x30              HLZC Equal           eq
     052 = | RESULT float32  3:1x30x30            ???? Where           ma | RESULT float32  3:1x30x30            ???? Where           ma
-    053 = | RESULT float32  3:1x30x30            IGHH Softmax         so | RESULT float32  3:1x30x30            IGHH Softmax         so
-    054 = | RESULT float32  3:1x30x16            AZAB MatMul          ma | RESULT float32  3:1x30x16            AZAB MatMul          ma
-    055 - | RESULT float32  2:16x16              BABZ Transpose       _o |                                                             
-    056 = | RESULT float32  3:1x30x16            YSTD MatMul          li | RESULT float32  3:1x30x16            YSTD MatMul          li
-    057 - | RESULT float32  2:16x16              YAZB Transpose       _o |                                                             
-    058 = | RESULT float32  3:1x30x16            WFWY MatMul          li | RESULT float32  3:1x30x16            WFWY MatMul          li
-    059 - | RESULT float32  2:16x16              AABA Transpose       _o |                                                             
-    060 - | RESULT float32  3:1x30x16            CZCV MatMul          li |                                                             
-    061 - | RESULT float32  3:1x16x30            GIRQ Transpose       tr |                                                             
-    062 ~ | RESULT float32  3:1x30x30            SWYM MatMul          ma | RESULT float32  3:1x30x30            EFAX FusedMatMul     _o
+    053 = | RESULT float32  3:1x30x30            HGHH Softmax         so | RESULT float32  3:1x30x30            HGHH Softmax         so
+    054 = | RESULT float32  3:1x30x16            UCDD MatMul          ma | RESULT float32  3:1x30x16            UCDD MatMul          ma
+    055 - | RESULT float32  2:16x16              BZZA Transpose       _o |                                                             
+    056 = | RESULT float32  3:1x30x16            XWPZ MatMul          li | RESULT float32  3:1x30x16            XWPZ MatMul          li
+    057 - | RESULT float32  2:16x16              ABAB Transpose       _o |                                                             
+    058 = | RESULT float32  3:1x30x16            DZSN MatMul          li | RESULT float32  3:1x30x16            DZSN MatMul          li
+    059 - | RESULT float32  2:16x16              ZBAB Transpose       _o |                                                             
+    060 - | RESULT float32  3:1x30x16            YDAT MatMul          li |                                                             
+    061 - | RESULT float32  3:1x16x30            VGHY Transpose       tr |                                                             
+    062 ~ | RESULT float32  3:1x30x30            SGEU MatMul          ma | RESULT float32  3:1x30x30            YIHZ FusedMatMul     _o
     063 - | RESULT float32  1:1                  AAAA Reshape         _r |                                                             
-    064 ~ | RESULT float32  3:1x30x30            EFAX Mul             _o | RESULT float32  3:1x30x16            CZCV MatMul          li
+    064 ~ | RESULT float32  3:1x30x30            YIHZ Mul             _o | RESULT float32  3:1x30x16            YDAT MatMul          li
     065 - | RESULT int64    1:2                  AAAA Concat          Sl |                                                             
     066 - | RESULT int64    1:2                  EEAA Concat          Sl |                                                             
     067 - | RESULT int64    1:2                  ABAA Concat          Sl |                                                             
@@ -1956,23 +1956,23 @@ which operators were fused into bigger ones only implemented by
     069 - | RESULT float32  1:1                  AAAA Reshape         _r |                                                             
     070 = | RESULT bool     2:30x30              HLZC Equal           eq | RESULT bool     2:30x30              HLZC Equal           eq
     071 = | RESULT float32  3:1x30x30            ???? Where           ma | RESULT float32  3:1x30x30            ???? Where           ma
-    072 = | RESULT float32  3:1x30x30            HGHH Softmax         so | RESULT float32  3:1x30x30            HGHH Softmax         so
-    073 = | RESULT float32  3:1x30x16            GBAZ MatMul          ma | RESULT float32  3:1x30x16            GBAZ MatMul          ma
-    074 = | RESULT float32  3:1x30x32            FAAA Concat          ca | RESULT float32  3:1x30x32            FAAA Concat          ca
-    075 = | RESULT float32  2:30x32              FAAA Reshape         Ma | RESULT float32  2:30x32              FAAA Reshape         Ma
-    076 = | RESULT float32  2:30x16              BDCC Gemm            Ma | RESULT float32  2:30x16              BDCC Gemm            Ma
-    077 = | RESULT float32  3:1x30x16            BDCC Reshape         li | RESULT float32  3:1x30x16            BDCC Reshape         li
-    078 = | RESULT float32  3:1x30x16            JXJI Add             ad | RESULT float32  3:1x30x16            JXJI Add             ad
-    079 = | RESULT float32  3:1x30x16            BZZB LayerNormalizat _o | RESULT float32  3:1x30x16            BZZB LayerNormalizat _o
-    080 = | RESULT float32  2:30x16              BZZB Reshape         Ma | RESULT float32  2:30x16              BZZB Reshape         Ma
-    081 = | RESULT float32  2:30x128             UGAS Gemm            Sw | RESULT float32  2:30x128             UGAS Gemm            Sw
-    082 = | RESULT float32  2:30x128             AAKY Relu            Sw | RESULT float32  2:30x128             AAKY Relu            Sw
-    083 = | RESULT float32  3:1x30x128           AAKY Reshape         re | RESULT float32  3:1x30x128           AAKY Reshape         re
-    084 = | RESULT float32  2:30x128             AAKY Reshape         Ma | RESULT float32  2:30x128             AAKY Reshape         Ma
-    085 = | RESULT float32  2:30x16              ABZY Gemm            Ma | RESULT float32  2:30x16              ABZY Gemm            Ma
-    086 = | RESULT float32  3:1x30x16            ABZY Reshape         li | RESULT float32  3:1x30x16            ABZY Reshape         li
-    087 = | RESULT float32  3:1x30x16            JYIG Add             ou | RESULT float32  3:1x30x16            JYIG Add             ou
-    088 = | OUTPUT float32  3:1x30x16            JYIG                 ou | OUTPUT float32  3:1x30x16            JYIG                 ou
+    072 = | RESULT float32  3:1x30x30            IHHH Softmax         so | RESULT float32  3:1x30x30            IHHH Softmax         so
+    073 = | RESULT float32  3:1x30x16            AABZ MatMul          ma | RESULT float32  3:1x30x16            AABZ MatMul          ma
+    074 = | RESULT float32  3:1x30x32            TBEB Concat          ca | RESULT float32  3:1x30x32            TBEB Concat          ca
+    075 = | RESULT float32  2:30x32              TBEB Reshape         Ma | RESULT float32  2:30x32              TBEB Reshape         Ma
+    076 = | RESULT float32  2:30x16              TUYW Gemm            Ma | RESULT float32  2:30x16              TUYW Gemm            Ma
+    077 = | RESULT float32  3:1x30x16            TUYW Reshape         li | RESULT float32  3:1x30x16            TUYW Reshape         li
+    078 = | RESULT float32  3:1x30x16            URGF Add             ad | RESULT float32  3:1x30x16            URGF Add             ad
+    079 = | RESULT float32  3:1x30x16            AABZ LayerNormalizat _o | RESULT float32  3:1x30x16            AABZ LayerNormalizat _o
+    080 = | RESULT float32  2:30x16              AABZ Reshape         Ma | RESULT float32  2:30x16              AABZ Reshape         Ma
+    081 = | RESULT float32  2:30x128             MPKO Gemm            Sw | RESULT float32  2:30x128             MPKO Gemm            Sw
+    082 = | RESULT float32  2:30x128             NFFO Relu            Sw | RESULT float32  2:30x128             NFFO Relu            Sw
+    083 = | RESULT float32  3:1x30x128           NFFO Reshape         re | RESULT float32  3:1x30x128           NFFO Reshape         re
+    084 = | RESULT float32  2:30x128             NFFO Reshape         Ma | RESULT float32  2:30x128             NFFO Reshape         Ma
+    085 = | RESULT float32  2:30x16              BDGI Gemm            Ma | RESULT float32  2:30x16              BDGI Gemm            Ma
+    086 = | RESULT float32  3:1x30x16            BDGI Reshape         li | RESULT float32  3:1x30x16            BDGI Reshape         li
+    087 = | RESULT float32  3:1x30x16            WVMN Add             ou | RESULT float32  3:1x30x16            WVMN Add             ou
+    088 = | OUTPUT float32  3:1x30x16            WVMN                 ou | OUTPUT float32  3:1x30x16            WVMN                 ou
 
 
 
@@ -1985,7 +1985,7 @@ can be of any length. But that's a topic for another example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.909 seconds)
+   **Total running time of the script:** (0 minutes 3.708 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_modules.py:

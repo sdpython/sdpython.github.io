@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.2882, -0.0380, -0.9997]])
+    tensor([[-0.1970,  0.0305,  0.2549]])
 
 
 
@@ -365,7 +365,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.471 seconds)
+   **Total running time of the script:** (0 minutes 1.613 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py:

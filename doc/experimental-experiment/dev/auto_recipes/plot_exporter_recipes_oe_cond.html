@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Command Lines" href="../command_lines.html" /><link rel="prev" title="to_onnx and submodules from LLMs" href="plot_exporter_recipes_c_modules.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Command Lines" href="../command_lines.html" /><link rel="prev" title="torch.onnx.export and Phi-2" href="plot_exporter_recipes_oe_phi2.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>torch.onnx.export and a model with a test - experimental-experiment 0.1.0 documentation</title>
@@ -483,12 +483,14 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">torch.onnx.export and a model with a test</a></li>
 </ul>
 </li>
@@ -610,7 +612,7 @@ to use <a class="reference external" href="https://pytorch.org/docs/main/generat
 <span class="n">model</span><span class="p">(</span><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-0.6087], grad_fn=&lt;MulBackward0&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0.3413], grad_fn=&lt;MulBackward0&gt;)
 </pre></div>
 </div>
 <p>As expected, it does not export.</p>
@@ -661,10 +663,10 @@ But the model is not exactly the same as the initial model.</p>
    ir_version: 10,
    opset_import: [&quot;pkg.onnxscript.torch_lib.common&quot; : 1, &quot;&quot; : 18],
    producer_name: &quot;pytorch&quot;,
-   producer_version: &quot;2.7.0.dev20250124+cu126&quot;
+   producer_version: &quot;2.7.0.dev20250130+cu126&quot;
 &gt;
 main_graph (float[3] input_1) =&gt; (float[1] mul)
-   &lt;float[2] &quot;model.mlp.0.bias&quot; =  {-0.463044,0.014747}, float[2,3] &quot;model.mlp.0.weight&quot; =  {0.132014,0.0673384,-0.491595,0.250684,0.239314,-0.0842815}, float[1] &quot;model.mlp.1.bias&quot; =  {-0.669497}, float[1,2] &quot;model.mlp.1.weight&quot; =  {-0.698139,0.644801}, float[2] linear, float[1] linear_1, float scalar_tensor_default&gt;
+   &lt;float[2] &quot;model.mlp.0.bias&quot; =  {-0.221143,-0.247102}, float[2,3] &quot;model.mlp.0.weight&quot; =  {0.231354,-0.255796,0.0359441,0.298362,-0.0870362,0.161169}, float[1] &quot;model.mlp.1.bias&quot; =  {0.214936}, float[1,2] &quot;model.mlp.1.weight&quot; =  {-0.452569,0.453443}, float[2] linear, float[1] linear_1, float scalar_tensor_default&gt;
 {
    [node_Transpose_0] val_0 = Transpose &lt;perm: ints = [1, 0]&gt; (&quot;model.mlp.0.weight&quot;)
    [node_MatMul_1] val_1 = MatMul (input_1, val_0)
@@ -763,10 +765,10 @@ mlp.2 &lt;class &#39;__main__.ForwardWithControlFlowTest&#39;&gt;
    ir_version: 10,
    opset_import: [&quot;pkg.onnxscript.torch_lib.common&quot; : 1, &quot;&quot; : 18, &quot;pkg.torch.__subgraph__&quot; : 1],
    producer_name: &quot;pytorch&quot;,
-   producer_version: &quot;2.7.0.dev20250124+cu126&quot;
+   producer_version: &quot;2.7.0.dev20250130+cu126&quot;
 &gt;
 main_graph (float[3] x) =&gt; (float[1] getitem)
-   &lt;float[2,3] &quot;mlp.0.weight&quot; =  {0.132014,0.0673384,-0.491595,0.250684,0.239314,-0.0842815}, float[2] &quot;mlp.0.bias&quot; =  {-0.463044,0.014747}, float[1,2] &quot;mlp.1.weight&quot; =  {-0.698139,0.644801}, float[1] &quot;mlp.1.bias&quot; =  {-0.669497}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
+   &lt;float[2,3] &quot;mlp.0.weight&quot; =  {0.231354,-0.255796,0.0359441,0.298362,-0.0870362,0.161169}, float[2] &quot;mlp.0.bias&quot; =  {-0.221143,-0.247102}, float[1,2] &quot;mlp.1.weight&quot; =  {-0.452569,0.453443}, float[1] &quot;mlp.1.bias&quot; =  {0.214936}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
 {
    [node_Transpose_0] val_0 = Transpose &lt;perm: ints = [1, 0]&gt; (&quot;mlp.0.weight&quot;)
    [node_MatMul_1] val_1 = MatMul (x, val_0)
@@ -840,15 +842,15 @@ IsScalar (input) =&gt; (return_val)
    ir_version: 10,
    opset_import: [&quot;pkg.onnxscript.torch_lib.common&quot; : 1, &quot;&quot; : 18, &quot;pkg.torch.__subgraph__&quot; : 1],
    producer_name: &quot;pytorch&quot;,
-   producer_version: &quot;2.7.0.dev20250124+cu126&quot;
+   producer_version: &quot;2.7.0.dev20250130+cu126&quot;
 &gt;
 main_graph (float[3] x) =&gt; (float[1] getitem)
-   &lt;float[2] &quot;mlp.0.bias&quot; =  {-0.463044,0.014747}, float[1] &quot;mlp.1.bias&quot; =  {-0.669497}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
+   &lt;float[2] &quot;mlp.0.bias&quot; =  {-0.221143,-0.247102}, float[1] &quot;mlp.1.bias&quot; =  {0.214936}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
 {
-   [node_Constant_11] val_0 = Constant &lt;value: tensor = float[3,2] val_0 {0.132014,0.250684,0.0673384,0.239314,-0.491595,-0.0842815}&gt; ()
+   [node_Constant_11] val_0 = Constant &lt;value: tensor = float[3,2] val_0 {0.231354,0.298362,-0.255796,-0.0870362,0.0359441,0.161169}&gt; ()
    [node_MatMul_1] val_1 = MatMul (x, val_0)
    [node_Add_2] linear = Add (val_1, &quot;mlp.0.bias&quot;)
-   [node_Constant_12] val_2 = Constant &lt;value: tensor = float[2,1] val_2 {-0.698139,0.644801}&gt; ()
+   [node_Constant_12] val_2 = Constant &lt;value: tensor = float[2,1] val_2 {-0.452569,0.453443}&gt; ()
    [node_MatMul_4] val_3 = MatMul (linear, val_2)
    [node_Add_5] linear_1 = Add (val_3, &quot;mlp.1.bias&quot;)
    [node_ReduceSum_6] sum_1 = ReduceSum &lt;noop_with_empty_axes: int = 0, keepdims: int = 0&gt; (linear_1)
@@ -865,7 +867,7 @@ main_graph (float[3] x) =&gt; (float[1] getitem)
 }
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.204 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.730 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-oe-cond-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e104018877845c3ce4bb11930263b080/plot_exporter_recipes_oe_cond.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_oe_cond.ipynb</span></code></a></p>
@@ -905,14 +907,14 @@ main_graph (float[3] x) =&gt; (float[1] getitem)
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="plot_exporter_recipes_c_modules.html">
+          <a class="prev-page" href="plot_exporter_recipes_oe_phi2.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">to_onnx and submodules from LLMs</div>
+                <div class="title">torch.onnx.export and Phi-2</div>
                 
               </div>
             </a>

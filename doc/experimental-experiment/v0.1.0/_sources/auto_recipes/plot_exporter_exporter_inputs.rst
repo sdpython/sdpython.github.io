@@ -704,7 +704,7 @@ We remove the changes for pytorch.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.427 seconds)
+   **Total running time of the script:** (0 minutes 0.448 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_inputs.py:

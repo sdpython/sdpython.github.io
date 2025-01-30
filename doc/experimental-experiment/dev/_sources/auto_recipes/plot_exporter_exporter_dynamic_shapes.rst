@@ -229,7 +229,7 @@ Still no luck but with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.390 seconds)
+   **Total running time of the script:** (0 minutes 0.661 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_dynamic_shapes.py:

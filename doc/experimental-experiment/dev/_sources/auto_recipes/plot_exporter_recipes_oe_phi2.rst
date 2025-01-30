@@ -178,14 +178,14 @@ set up when the export starts.
  .. code-block:: none
 
 
-    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.7569,  0.4859,  0.4088,  ..., -0.4032, -0.7717, -0.5502],
-             [ 0.6789, -0.7240, -0.7428,  ...,  0.5461, -0.0515, -0.1739],
-             [-1.5102,  1.2819, -1.2042,  ...,  1.5620, -0.7191,  0.6504]],
+    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.4397,  0.6500,  0.9195,  ...,  0.1219,  1.1371,  0.6988],
+             [-1.5441, -0.8557,  0.0479,  ...,  1.0506,  1.4617, -0.6143],
+             [-1.1326,  0.5319,  2.1875,  ...,  1.8674,  2.4659, -1.5886]],
 
-            [[-0.1648, -1.2281, -0.7153,  ...,  0.3940,  0.8489,  2.1163],
-             [-0.3209,  1.1117, -0.6325,  ..., -0.0221,  0.6810,  0.9581],
-             [-0.0104, -0.6523, -0.7061,  ..., -0.2591,  0.4950,  0.2335]]],
-           grad_fn=<UnsafeViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
+            [[-0.8923,  0.4607,  0.1598,  ..., -0.6037,  0.4478, -0.2961],
+             [-1.7842, -1.6504, -0.1200,  ..., -0.0211,  1.0021,  0.2516],
+             [-1.5971, -1.2554,  0.4499,  ...,  1.3327, -1.2743, -1.6635]]],
+           grad_fn=<ViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
 
 
 
@@ -236,8 +236,6 @@ Let's export with :func:`torch.onnx.export`.
     /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/cache_utils.py:444: TracerWarning: Using len to get tensor shape might cause the trace to be incorrect. Recommended usage would be tensor.shape[0]. Passing a tensor of different shape might lead to errors or silently give incorrect results.
       len(self.key_cache[layer_idx]) == 0
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with Torch Script... ❌
-    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with internal Dynamo apis...
-    [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with internal Dynamo apis... ❌
     export failed due to Failed to export the model with torch.export. This is step 1/3 of exporting the model to ONNX. Next steps:
     - Modify the model code for `torch.export.export` to succeed. Refer to https://pytorch.org/docs/stable/generated/exportdb/index.html for more information.
     - Debug `torch.export.export` and summit a PR to PyTorch.
@@ -348,12 +346,12 @@ Let's display the model.
     opset: domain='pkg.onnxscript.torch_lib.common' version=1
     opset: domain='' version=18
     opset: domain='pkg.onnxscript.torch_lib' version=1
-    input: name='input_ids' type=dtype('int64') shape=['2', '3']
-    input: name='attention_mask' type=dtype('int64') shape=['2', 's11 + 3']
-    input: name='past_key_values_key_cache_0' type=dtype('float32') shape=['2', 32, 's11', 80]
-    input: name='past_key_values_key_cache_1' type=dtype('float32') shape=['2', 32, 's11', 80]
-    input: name='past_key_values_value_cache_0' type=dtype('float32') shape=['2', 32, 's11', 80]
-    input: name='past_key_values_value_cache_1' type=dtype('float32') shape=['2', 32, 's11', 80]
+    input: name='input_ids' type=dtype('int64') shape=['s0', 's1']
+    input: name='attention_mask' type=dtype('int64') shape=['s0', 's1 + s11']
+    input: name='past_key_values_key_cache_0' type=dtype('float32') shape=['s0', 32, 's11', 80]
+    input: name='past_key_values_key_cache_1' type=dtype('float32') shape=['s0', 32, 's11', 80]
+    input: name='past_key_values_value_cache_0' type=dtype('float32') shape=['s0', 32, 's11', 80]
+    input: name='past_key_values_value_cache_1' type=dtype('float32') shape=['s0', 32, 's11', 80]
     init: name='model.embed_tokens.weight' type=float32 shape=(51200, 2560)
     init: name='model.layers.0.self_attn.q_proj.weight' type=float32 shape=(2560, 2560)
     init: name='model.layers.0.self_attn.q_proj.bias' type=float32 shape=(2560,)
@@ -386,25 +384,25 @@ Let's display the model.
     init: name='model.final_layernorm.weight' type=float32 shape=(2560,)
     init: name='model.final_layernorm.bias' type=float32 shape=(2560,)
     init: name='lm_head.weight' type=float32 shape=(51200, 2560)
+    init: name='lm_head.bias' type=float32 shape=(51200,)
     Constant(value_int=1) -> diagonal
     Shape(input_ids, end=1, start=0) -> val_0
-      Squeeze(val_0) -> sym_size_int_63
+      Squeeze(val_0) -> sym_size_int_51
     Shape(input_ids, end=2, start=1) -> val_1
-      Squeeze(val_1) -> sym_size_int_64
-        Mul(sym_size_int_63, sym_size_int_64) -> mul_171
+      Squeeze(val_1) -> sym_size_int_52
     Shape(past_key_values_key_cache_0, end=3, start=2) -> val_2
-      Squeeze(val_2) -> sym_size_int_65
-        Add(sym_size_int_65, sym_size_int_64) -> add_4
+      Squeeze(val_2) -> sym_size_int_53
+        Add(sym_size_int_53, sym_size_int_52) -> add_4
     Gather(model.embed_tokens.weight, input_ids, axis=0) -> embedding
       LayerNormalization(embedding, model.layers.0.input_layernorm.weight, model.layers.0.input_layernorm.bias, epsilon=0.00, axis=-1) -> layer_norm
     Constant(value=1.0) -> val_3
     Constant(value=1) -> val_4
-      Range(sym_size_int_65, add_4, val_4) -> arange
+      Range(sym_size_int_53, add_4, val_4) -> arange
     Constant(value=0) -> dim_0
       Unsqueeze(arange, dim_0) -> unsqueeze
     Constant(value=-3.4028234...) -> val_6
     Constant(value=[-1]) -> val_7
-      Reshape(sym_size_int_64, val_7, allowzero=0) -> val_8
+      Reshape(sym_size_int_52, val_7, allowzero=0) -> val_8
     Constant(value=[-1]) -> val_9
       Reshape(add_4, val_9, allowzero=0) -> val_10
         Concat(val_8, val_10, axis=0) -> val_11
@@ -425,7 +423,7 @@ Let's display the model.
     Constant(value=0) -> val_18
     Constant(value=2) -> val_26
     Constant(value=[-1]) -> val_42
-      Reshape(sym_size_int_63, val_42, allowzero=0) -> val_43
+      Reshape(sym_size_int_51, val_42, allowzero=0) -> val_43
     Constant(value=[1]) -> val_44
     Constant(value=[-1]) -> val_45
       Concat(val_43, val_44, val_45, val_45, axis=0) -> val_46
@@ -473,399 +471,290 @@ Let's display the model.
           Concat(transpose, transpose, axis=-1) -> cat
             Cos(cat) -> cos
             Sin(cat) -> sin
-    Constant(value=[-1]) -> val_244
-      Reshape(mul_171, val_244, allowzero=0) -> val_245
-    Constant(value=[2560]) -> val_246
-      Concat(val_245, val_246, axis=0) -> val_247
-        Reshape(layer_norm, val_247, allowzero=0) -> view_1
-    Transpose(model.layers.0.self_attn.q_proj.weight, perm=[1,0]) -> t
-      Gemm(view_1, t, model.layers.0.self_attn.q_proj.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm
-    Constant(value=[-1]) -> val_249
-      Reshape(sym_size_int_63, val_249, allowzero=0) -> val_250
-    Constant(value=[-1]) -> val_251
-      Reshape(sym_size_int_64, val_251, allowzero=0) -> val_252
-      Concat(val_250, val_252, val_246, axis=0) -> val_253
-        Reshape(addmm, val_253, allowzero=0) -> view_2
+    Transpose(model.layers.0.self_attn.q_proj.weight, perm=[1,0]) -> val_244
+      MatMul(layer_norm, val_244) -> val_245
+        Add(val_245, model.layers.0.self_attn.q_proj.bias) -> linear
+    Constant(value=[-1]) -> val_246
+      Reshape(sym_size_int_51, val_246, allowzero=0) -> val_247
+    Constant(value=[-1]) -> val_248
+      Reshape(sym_size_int_52, val_248, allowzero=0) -> val_249
+    Constant(value=[80]) -> val_250
+      Concat(val_247, val_249, val_45, val_250, axis=0) -> val_251
+        Reshape(linear, val_251, allowzero=0) -> view_1
+          Transpose(view_1, perm=[0,2,1,3]) -> transpose_1
+    Transpose(model.layers.0.self_attn.k_proj.weight, perm=[1,0]) -> val_253
+      MatMul(layer_norm, val_253) -> val_254
+        Add(val_254, model.layers.0.self_attn.k_proj.bias) -> linear_1
     Constant(value=[-1]) -> val_255
-      Reshape(sym_size_int_63, val_255, allowzero=0) -> val_256
+      Reshape(sym_size_int_51, val_255, allowzero=0) -> val_256
     Constant(value=[-1]) -> val_257
-      Reshape(sym_size_int_64, val_257, allowzero=0) -> val_258
-    Constant(value=[80]) -> val_259
-      Concat(val_256, val_258, val_45, val_259, axis=0) -> val_260
-        Reshape(view_2, val_260, allowzero=0) -> view_3
-          Transpose(view_3, perm=[0,2,1,3]) -> transpose_1
-    Constant(value=[-1]) -> val_262
-      Reshape(mul_171, val_262, allowzero=0) -> val_263
-      Concat(val_263, val_246, axis=0) -> val_264
-        Reshape(layer_norm, val_264, allowzero=0) -> view_4
-    Transpose(model.layers.0.self_attn.k_proj.weight, perm=[1,0]) -> t_1
-      Gemm(view_4, t_1, model.layers.0.self_attn.k_proj.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_1
-    Constant(value=[-1]) -> val_266
-      Reshape(sym_size_int_63, val_266, allowzero=0) -> val_267
-    Constant(value=[-1]) -> val_268
-      Reshape(sym_size_int_64, val_268, allowzero=0) -> val_269
-      Concat(val_267, val_269, val_246, axis=0) -> val_270
-        Reshape(addmm_1, val_270, allowzero=0) -> view_5
-    Constant(value=[-1]) -> val_272
-      Reshape(sym_size_int_63, val_272, allowzero=0) -> val_273
-    Constant(value=[-1]) -> val_274
-      Reshape(sym_size_int_64, val_274, allowzero=0) -> val_275
-      Concat(val_273, val_275, val_45, val_259, axis=0) -> val_276
-        Reshape(view_5, val_276, allowzero=0) -> view_6
-          Transpose(view_6, perm=[0,2,1,3]) -> transpose_2
-    Constant(value=[-1]) -> val_278
-      Reshape(mul_171, val_278, allowzero=0) -> val_279
-      Concat(val_279, val_246, axis=0) -> val_280
-        Reshape(layer_norm, val_280, allowzero=0) -> view_7
-    Transpose(model.layers.0.self_attn.v_proj.weight, perm=[1,0]) -> t_2
-      Gemm(view_7, t_2, model.layers.0.self_attn.v_proj.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_2
-    Constant(value=[-1]) -> val_282
-      Reshape(sym_size_int_63, val_282, allowzero=0) -> val_283
-    Constant(value=[-1]) -> val_284
-      Reshape(sym_size_int_64, val_284, allowzero=0) -> val_285
-      Concat(val_283, val_285, val_246, axis=0) -> val_286
-        Reshape(addmm_2, val_286, allowzero=0) -> view_8
-    Constant(value=[-1]) -> val_288
-      Reshape(sym_size_int_63, val_288, allowzero=0) -> val_289
-    Constant(value=[-1]) -> val_290
-      Reshape(sym_size_int_64, val_290, allowzero=0) -> val_291
-      Concat(val_289, val_291, val_45, val_259, axis=0) -> val_292
-        Reshape(view_8, val_292, allowzero=0) -> view_9
-          Transpose(view_9, perm=[0,2,1,3]) -> transpose_3
+      Reshape(sym_size_int_52, val_257, allowzero=0) -> val_258
+      Concat(val_256, val_258, val_45, val_250, axis=0) -> val_259
+        Reshape(linear_1, val_259, allowzero=0) -> view_2
+          Transpose(view_2, perm=[0,2,1,3]) -> transpose_2
+    Transpose(model.layers.0.self_attn.v_proj.weight, perm=[1,0]) -> val_261
+      MatMul(layer_norm, val_261) -> val_262
+        Add(val_262, model.layers.0.self_attn.v_proj.bias) -> linear_2
+    Constant(value=[-1]) -> val_263
+      Reshape(sym_size_int_51, val_263, allowzero=0) -> val_264
+    Constant(value=[-1]) -> val_265
+      Reshape(sym_size_int_52, val_265, allowzero=0) -> val_266
+      Concat(val_264, val_266, val_45, val_250, axis=0) -> val_267
+        Reshape(linear_2, val_267, allowzero=0) -> view_3
+          Transpose(view_3, perm=[0,2,1,3]) -> transpose_3
             Concat(past_key_values_value_cache_0, transpose_3, axis=-2) -> cat_6
-    Constant(value=[0]) -> val_296
-    Constant(value=[32]) -> val_300
-    Constant(value=[3]) -> val_303
-    Constant(value_ints=[1]) -> val_304
-      Slice(transpose_1, val_296, val_300, val_303, val_304) -> slice_24
-    Constant(value=[32]) -> val_307
-    Constant(value=[922337203...) -> val_310
-    Constant(value=[3]) -> val_313
-    Constant(value_ints=[1]) -> val_314
-      Slice(transpose_1, val_307, val_310, val_313, val_314) -> slice_25
-    Constant(value=[0]) -> val_317
-    Constant(value=[32]) -> val_320
-    Constant(value=[3]) -> val_323
-    Constant(value_ints=[1]) -> val_324
-      Slice(transpose_2, val_317, val_320, val_323, val_324) -> slice_26
-    Constant(value=[32]) -> val_327
-    Constant(value=[922337203...) -> val_330
-    Constant(value=[3]) -> val_333
-    Constant(value_ints=[1]) -> val_334
-      Slice(transpose_2, val_327, val_330, val_333, val_334) -> slice_27
+    Constant(value=[0]) -> val_271
+    Constant(value=[32]) -> val_275
+    Constant(value=[3]) -> val_278
+    Constant(value_ints=[1]) -> val_279
+      Slice(transpose_1, val_271, val_275, val_278, val_279) -> slice_24
+    Constant(value=[32]) -> val_282
+    Constant(value=[922337203...) -> val_285
+    Constant(value=[3]) -> val_288
+    Constant(value_ints=[1]) -> val_289
+      Slice(transpose_1, val_282, val_285, val_288, val_289) -> slice_25
+    Constant(value=[0]) -> val_292
+    Constant(value=[32]) -> val_295
+    Constant(value=[3]) -> val_298
+    Constant(value_ints=[1]) -> val_299
+      Slice(transpose_2, val_292, val_295, val_298, val_299) -> slice_26
+    Constant(value=[32]) -> val_302
+    Constant(value=[922337203...) -> val_305
+    Constant(value=[3]) -> val_308
+    Constant(value_ints=[1]) -> val_309
+      Slice(transpose_2, val_302, val_305, val_308, val_309) -> slice_27
     Constant(value=1) -> dim_0_9
       Unsqueeze(cos, dim_0_9) -> unsqueeze_10
-        Mul(slice_24, unsqueeze_10) -> mul_233
+        Mul(slice_24, unsqueeze_10) -> mul_214
     Constant(value=1) -> dim_0_10
       Unsqueeze(sin, dim_0_10) -> unsqueeze_11
-    Constant(value=[0]) -> val_337
-    Constant(value=[16]) -> val_341
-    Constant(value=[3]) -> val_344
-    Constant(value_ints=[1]) -> val_345
-      Slice(slice_24, val_337, val_341, val_344, val_345) -> slice_28
-    Constant(value=[16]) -> val_348
-    Constant(value=[922337203...) -> val_351
-    Constant(value=[3]) -> val_354
-    Constant(value_ints=[1]) -> val_355
-      Slice(slice_24, val_348, val_351, val_354, val_355) -> slice_29
+    Constant(value=[0]) -> val_312
+    Constant(value=[16]) -> val_316
+    Constant(value=[3]) -> val_319
+    Constant(value_ints=[1]) -> val_320
+      Slice(slice_24, val_312, val_316, val_319, val_320) -> slice_28
+    Constant(value=[16]) -> val_323
+    Constant(value=[922337203...) -> val_326
+    Constant(value=[3]) -> val_329
+    Constant(value_ints=[1]) -> val_330
+      Slice(slice_24, val_323, val_326, val_329, val_330) -> slice_29
         Neg(slice_29) -> neg
         Concat(neg, slice_28, axis=-1) -> cat_1
-        Mul(cat_1, unsqueeze_11) -> mul_250
-          Add(mul_233, mul_250) -> add_306
-        Concat(add_306, slice_25, axis=-1) -> cat_3
-    Mul(slice_26, unsqueeze_10) -> mul_258
-    Constant(value=[0]) -> val_358
-    Constant(value=[16]) -> val_361
-    Constant(value=[3]) -> val_364
-    Constant(value_ints=[1]) -> val_365
-      Slice(slice_26, val_358, val_361, val_364, val_365) -> slice_30
-    Constant(value=[16]) -> val_368
-    Constant(value=[922337203...) -> val_371
-    Constant(value=[3]) -> val_374
-    Constant(value_ints=[1]) -> val_375
-      Slice(slice_26, val_368, val_371, val_374, val_375) -> slice_31
+        Mul(cat_1, unsqueeze_11) -> mul_231
+          Add(mul_214, mul_231) -> add_288
+        Concat(add_288, slice_25, axis=-1) -> cat_3
+    Mul(slice_26, unsqueeze_10) -> mul_239
+    Constant(value=[0]) -> val_333
+    Constant(value=[16]) -> val_336
+    Constant(value=[3]) -> val_339
+    Constant(value_ints=[1]) -> val_340
+      Slice(slice_26, val_333, val_336, val_339, val_340) -> slice_30
+    Constant(value=[16]) -> val_343
+    Constant(value=[922337203...) -> val_346
+    Constant(value=[3]) -> val_349
+    Constant(value_ints=[1]) -> val_350
+      Slice(slice_26, val_343, val_346, val_349, val_350) -> slice_31
         Neg(slice_31) -> neg_1
         Concat(neg_1, slice_30, axis=-1) -> cat_2
-        Mul(cat_2, unsqueeze_11) -> mul_275
-      Add(mul_258, mul_275) -> add_342
-        Concat(add_342, slice_27, axis=-1) -> cat_4
+        Mul(cat_2, unsqueeze_11) -> mul_256
+      Add(mul_239, mul_256) -> add_324
+        Concat(add_324, slice_27, axis=-1) -> cat_4
           Concat(past_key_values_key_cache_0, cat_4, axis=-2) -> cat_5
-            Shape(cat_5, start=0) -> val_408
-    Constant(value_ints=[9223372036854775807]) -> val_409
-      Slice(val_408, val_45, val_409) -> val_410
-    Constant(value=[-2]) -> val_411
-      Slice(val_408, val_411, val_45) -> val_412
-    Constant(value_ints=[-9223372036854775808]) -> val_413
-      Slice(val_408, val_413, val_411) -> val_414
-        Concat(val_414, val_410, val_412, axis=0) -> val_419
-    Constant(value_ints=[-1]) -> val_415
-      Concat(val_415, val_412, val_410, axis=0) -> val_416
-        Reshape(cat_5, val_416, allowzero=0) -> val_417
-          Transpose(val_417, perm=[0,2,1]) -> val_418
-          Reshape(val_418, val_419, allowzero=0) -> val_420
-    Constant(value=0.33437013...) -> val_421
-      Mul(cat_3, val_421) -> val_422
-    Constant(value=0.33437013...) -> val_423
-      Mul(val_420, val_423) -> val_424
-        MatMul(val_422, val_424) -> val_425
-          Add(val_425, slice_scatter_2) -> val_426
-            Softmax(val_426, axis=-1) -> val_427
-              MatMul(val_427, cat_6) -> scaled_dot_product_attention
+            Shape(cat_5, start=0) -> val_383
+    Constant(value_ints=[9223372036854775807]) -> val_384
+      Slice(val_383, val_45, val_384) -> val_385
+    Constant(value=[-2]) -> val_386
+      Slice(val_383, val_386, val_45) -> val_387
+    Constant(value_ints=[-9223372036854775808]) -> val_388
+      Slice(val_383, val_388, val_386) -> val_389
+        Concat(val_389, val_385, val_387, axis=0) -> val_394
+    Constant(value_ints=[-1]) -> val_390
+      Concat(val_390, val_387, val_385, axis=0) -> val_391
+        Reshape(cat_5, val_391, allowzero=0) -> val_392
+          Transpose(val_392, perm=[0,2,1]) -> val_393
+          Reshape(val_393, val_394, allowzero=0) -> val_395
+    Constant(value=0.33437013...) -> val_396
+      Mul(cat_3, val_396) -> val_397
+    Constant(value=0.33437013...) -> val_398
+      Mul(val_395, val_398) -> val_399
+        MatMul(val_397, val_399) -> val_400
+          Add(val_400, slice_scatter_2) -> val_401
+            Softmax(val_401, axis=-1) -> val_402
+              MatMul(val_402, cat_6) -> scaled_dot_product_attention
                 Transpose(scaled_dot_product_attention, perm=[0,2,1,3]) -> transpose_4
-    Constant(value=[-1]) -> val_430
-      Reshape(sym_size_int_63, val_430, allowzero=0) -> val_431
-    Constant(value=[-1]) -> val_432
-      Reshape(sym_size_int_64, val_432, allowzero=0) -> val_433
-      Concat(val_431, val_433, val_45, axis=0) -> val_434
-        Reshape(transpose_4, val_434, allowzero=0) -> view_10
-    Constant(value=[-1]) -> val_436
-      Reshape(mul_171, val_436, allowzero=0) -> val_437
-      Concat(val_437, val_246, axis=0) -> val_438
-        Reshape(view_10, val_438, allowzero=0) -> view_11
-    Transpose(model.layers.0.self_attn.dense.weight, perm=[1,0]) -> t_3
-      Gemm(view_11, t_3, model.layers.0.self_attn.dense.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_3
-    Constant(value=[-1]) -> val_440
-      Reshape(sym_size_int_63, val_440, allowzero=0) -> val_441
-    Constant(value=[-1]) -> val_442
-      Reshape(sym_size_int_64, val_442, allowzero=0) -> val_443
-      Concat(val_441, val_443, val_246, axis=0) -> val_444
-        Reshape(addmm_3, val_444, allowzero=0) -> view_12
-    Constant(value=[-1]) -> val_446
-      Reshape(mul_171, val_446, allowzero=0) -> val_447
-      Concat(val_447, val_246, axis=0) -> val_448
-        Reshape(layer_norm, val_448, allowzero=0) -> view_13
-    Transpose(model.layers.0.mlp.fc1.weight, perm=[1,0]) -> t_4
-      Gemm(view_13, t_4, model.layers.0.mlp.fc1.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_4
-    Constant(value=[-1]) -> val_450
-      Reshape(sym_size_int_63, val_450, allowzero=0) -> val_451
-    Constant(value=[-1]) -> val_452
-      Reshape(sym_size_int_64, val_452, allowzero=0) -> val_453
-    Constant(value=[10240]) -> val_454
-      Concat(val_451, val_453, val_454, axis=0) -> val_455
-        Reshape(addmm_4, val_455, allowzero=0) -> view_14
-    Constant(value=0.5) -> val_457
-      Mul(view_14, val_457) -> mul_356
-    Constant(value=3.0) -> val_458
-      Pow(view_14, val_458) -> pow_1
-    Constant(value=0.04471499...) -> val_459
-      Mul(pow_1, val_459) -> mul_363
-        Add(view_14, mul_363) -> add_438
-    Constant(value=0.79788458...) -> val_460
-      Mul(add_438, val_460) -> mul_370
-        Tanh(mul_370) -> tanh
-      Add(tanh, val_3) -> add_451
-        Mul(mul_356, add_451) -> mul_380
-    Constant(value=[-1]) -> val_461
-      Reshape(mul_171, val_461, allowzero=0) -> val_462
-      Concat(val_462, val_454, axis=0) -> val_463
-        Reshape(mul_380, val_463, allowzero=0) -> view_15
-    Transpose(model.layers.0.mlp.fc2.weight, perm=[1,0]) -> t_5
-      Gemm(view_15, t_5, model.layers.0.mlp.fc2.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_5
-    Constant(value=[-1]) -> val_465
-      Reshape(sym_size_int_63, val_465, allowzero=0) -> val_466
-    Constant(value=[-1]) -> val_467
-      Reshape(sym_size_int_64, val_467, allowzero=0) -> val_468
-      Concat(val_466, val_468, val_246, axis=0) -> val_469
-        Reshape(addmm_5, val_469, allowzero=0) -> view_16
-          Add(view_12, view_16) -> add_474
-      Add(add_474, embedding) -> add_479
-        LayerNormalization(add_479, model.layers.1.input_layernorm.weight, model.layers.1.input_layernorm.bias, epsilon=0.00, axis=-1) -> layer_norm_1
-    Constant(value=[-1]) -> val_471
-      Reshape(mul_171, val_471, allowzero=0) -> val_472
-      Concat(val_472, val_246, axis=0) -> val_473
-        Reshape(layer_norm_1, val_473, allowzero=0) -> view_17
-    Transpose(model.layers.1.self_attn.q_proj.weight, perm=[1,0]) -> t_6
-      Gemm(view_17, t_6, model.layers.1.self_attn.q_proj.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_6
-    Constant(value=[-1]) -> val_475
-      Reshape(sym_size_int_63, val_475, allowzero=0) -> val_476
-    Constant(value=[-1]) -> val_477
-      Reshape(sym_size_int_64, val_477, allowzero=0) -> val_478
-      Concat(val_476, val_478, val_246, axis=0) -> val_479
-        Reshape(addmm_6, val_479, allowzero=0) -> view_18
-    Constant(value=[-1]) -> val_481
-      Reshape(sym_size_int_63, val_481, allowzero=0) -> val_482
-    Constant(value=[-1]) -> val_483
-      Reshape(sym_size_int_64, val_483, allowzero=0) -> val_484
-      Concat(val_482, val_484, val_45, val_259, axis=0) -> val_485
-        Reshape(view_18, val_485, allowzero=0) -> view_19
-          Transpose(view_19, perm=[0,2,1,3]) -> transpose_5
-    Constant(value=[-1]) -> val_487
-      Reshape(mul_171, val_487, allowzero=0) -> val_488
-      Concat(val_488, val_246, axis=0) -> val_489
-        Reshape(layer_norm_1, val_489, allowzero=0) -> view_20
-    Transpose(model.layers.1.self_attn.k_proj.weight, perm=[1,0]) -> t_7
-      Gemm(view_20, t_7, model.layers.1.self_attn.k_proj.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_7
-    Constant(value=[-1]) -> val_491
-      Reshape(sym_size_int_63, val_491, allowzero=0) -> val_492
-    Constant(value=[-1]) -> val_493
-      Reshape(sym_size_int_64, val_493, allowzero=0) -> val_494
-      Concat(val_492, val_494, val_246, axis=0) -> val_495
-        Reshape(addmm_7, val_495, allowzero=0) -> view_21
-    Constant(value=[-1]) -> val_497
-      Reshape(sym_size_int_63, val_497, allowzero=0) -> val_498
-    Constant(value=[-1]) -> val_499
-      Reshape(sym_size_int_64, val_499, allowzero=0) -> val_500
-      Concat(val_498, val_500, val_45, val_259, axis=0) -> val_501
-        Reshape(view_21, val_501, allowzero=0) -> view_22
-          Transpose(view_22, perm=[0,2,1,3]) -> transpose_6
-    Constant(value=[-1]) -> val_503
-      Reshape(mul_171, val_503, allowzero=0) -> val_504
-      Concat(val_504, val_246, axis=0) -> val_505
-        Reshape(layer_norm_1, val_505, allowzero=0) -> view_23
-    Transpose(model.layers.1.self_attn.v_proj.weight, perm=[1,0]) -> t_8
-      Gemm(view_23, t_8, model.layers.1.self_attn.v_proj.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_8
-    Constant(value=[-1]) -> val_507
-      Reshape(sym_size_int_63, val_507, allowzero=0) -> val_508
-    Constant(value=[-1]) -> val_509
-      Reshape(sym_size_int_64, val_509, allowzero=0) -> val_510
-      Concat(val_508, val_510, val_246, axis=0) -> val_511
-        Reshape(addmm_8, val_511, allowzero=0) -> view_24
-    Constant(value=[-1]) -> val_513
-      Reshape(sym_size_int_63, val_513, allowzero=0) -> val_514
-    Constant(value=[-1]) -> val_515
-      Reshape(sym_size_int_64, val_515, allowzero=0) -> val_516
-      Concat(val_514, val_516, val_45, val_259, axis=0) -> val_517
-        Reshape(view_24, val_517, allowzero=0) -> view_25
-          Transpose(view_25, perm=[0,2,1,3]) -> transpose_7
+    Constant(value=[-1]) -> val_405
+      Reshape(sym_size_int_51, val_405, allowzero=0) -> val_406
+    Constant(value=[-1]) -> val_407
+      Reshape(sym_size_int_52, val_407, allowzero=0) -> val_408
+      Concat(val_406, val_408, val_45, axis=0) -> val_409
+        Reshape(transpose_4, val_409, allowzero=0) -> view_4
+    Transpose(model.layers.0.self_attn.dense.weight, perm=[1,0]) -> val_411
+      MatMul(view_4, val_411) -> val_412
+        Add(val_412, model.layers.0.self_attn.dense.bias) -> linear_3
+    Transpose(model.layers.0.mlp.fc1.weight, perm=[1,0]) -> val_413
+      MatMul(layer_norm, val_413) -> val_414
+        Add(val_414, model.layers.0.mlp.fc1.bias) -> linear_4
+    Constant(value=0.5) -> val_415
+      Mul(linear_4, val_415) -> mul_323
+    Constant(value=3.0) -> val_416
+      Pow(linear_4, val_416) -> pow_1
+    Constant(value=0.04471499...) -> val_417
+      Mul(pow_1, val_417) -> mul_330
+        Add(linear_4, mul_330) -> add_408
+    Constant(value=0.79788458...) -> val_418
+      Mul(add_408, val_418) -> mul_337
+        Tanh(mul_337) -> tanh
+      Add(tanh, val_3) -> add_421
+        Mul(mul_323, add_421) -> mul_347
+    Transpose(model.layers.0.mlp.fc2.weight, perm=[1,0]) -> val_419
+      MatMul(mul_347, val_419) -> val_420
+        Add(val_420, model.layers.0.mlp.fc2.bias) -> linear_5
+          Add(linear_3, linear_5) -> add_438
+      Add(add_438, embedding) -> add_443
+        LayerNormalization(add_443, model.layers.1.input_layernorm.weight, model.layers.1.input_layernorm.bias, epsilon=0.00, axis=-1) -> layer_norm_1
+    Transpose(model.layers.1.self_attn.q_proj.weight, perm=[1,0]) -> val_421
+      MatMul(layer_norm_1, val_421) -> val_422
+        Add(val_422, model.layers.1.self_attn.q_proj.bias) -> linear_6
+    Constant(value=[-1]) -> val_423
+      Reshape(sym_size_int_51, val_423, allowzero=0) -> val_424
+    Constant(value=[-1]) -> val_425
+      Reshape(sym_size_int_52, val_425, allowzero=0) -> val_426
+      Concat(val_424, val_426, val_45, val_250, axis=0) -> val_427
+        Reshape(linear_6, val_427, allowzero=0) -> view_5
+          Transpose(view_5, perm=[0,2,1,3]) -> transpose_5
+    Transpose(model.layers.1.self_attn.k_proj.weight, perm=[1,0]) -> val_429
+      MatMul(layer_norm_1, val_429) -> val_430
+        Add(val_430, model.layers.1.self_attn.k_proj.bias) -> linear_7
+    Constant(value=[-1]) -> val_431
+      Reshape(sym_size_int_51, val_431, allowzero=0) -> val_432
+    Constant(value=[-1]) -> val_433
+      Reshape(sym_size_int_52, val_433, allowzero=0) -> val_434
+      Concat(val_432, val_434, val_45, val_250, axis=0) -> val_435
+        Reshape(linear_7, val_435, allowzero=0) -> view_6
+          Transpose(view_6, perm=[0,2,1,3]) -> transpose_6
+    Transpose(model.layers.1.self_attn.v_proj.weight, perm=[1,0]) -> val_437
+      MatMul(layer_norm_1, val_437) -> val_438
+        Add(val_438, model.layers.1.self_attn.v_proj.bias) -> linear_8
+    Constant(value=[-1]) -> val_439
+      Reshape(sym_size_int_51, val_439, allowzero=0) -> val_440
+    Constant(value=[-1]) -> val_441
+      Reshape(sym_size_int_52, val_441, allowzero=0) -> val_442
+      Concat(val_440, val_442, val_45, val_250, axis=0) -> val_443
+        Reshape(linear_8, val_443, allowzero=0) -> view_7
+          Transpose(view_7, perm=[0,2,1,3]) -> transpose_7
             Concat(past_key_values_value_cache_1, transpose_7, axis=-2) -> cat_12
-    Constant(value=[0]) -> val_521
-    Constant(value=[32]) -> val_524
-    Constant(value=[3]) -> val_527
-    Constant(value_ints=[1]) -> val_528
-      Slice(transpose_5, val_521, val_524, val_527, val_528) -> slice_38
-    Constant(value=[32]) -> val_531
-    Constant(value=[922337203...) -> val_534
-    Constant(value=[3]) -> val_537
-    Constant(value_ints=[1]) -> val_538
-      Slice(transpose_5, val_531, val_534, val_537, val_538) -> slice_39
-    Constant(value=[0]) -> val_541
-    Constant(value=[32]) -> val_544
-    Constant(value=[3]) -> val_547
-    Constant(value_ints=[1]) -> val_548
-      Slice(transpose_6, val_541, val_544, val_547, val_548) -> slice_40
-    Constant(value=[32]) -> val_551
-    Constant(value=[922337203...) -> val_554
-    Constant(value=[3]) -> val_557
-    Constant(value_ints=[1]) -> val_558
-      Slice(transpose_6, val_551, val_554, val_557, val_558) -> slice_41
+    Constant(value=[0]) -> val_447
+    Constant(value=[32]) -> val_450
+    Constant(value=[3]) -> val_453
+    Constant(value_ints=[1]) -> val_454
+      Slice(transpose_5, val_447, val_450, val_453, val_454) -> slice_38
+    Constant(value=[32]) -> val_457
+    Constant(value=[922337203...) -> val_460
+    Constant(value=[3]) -> val_463
+    Constant(value_ints=[1]) -> val_464
+      Slice(transpose_5, val_457, val_460, val_463, val_464) -> slice_39
+    Constant(value=[0]) -> val_467
+    Constant(value=[32]) -> val_470
+    Constant(value=[3]) -> val_473
+    Constant(value_ints=[1]) -> val_474
+      Slice(transpose_6, val_467, val_470, val_473, val_474) -> slice_40
+    Constant(value=[32]) -> val_477
+    Constant(value=[922337203...) -> val_480
+    Constant(value=[3]) -> val_483
+    Constant(value_ints=[1]) -> val_484
+      Slice(transpose_6, val_477, val_480, val_483, val_484) -> slice_41
     Constant(value=1) -> dim_0_11
       Unsqueeze(cos, dim_0_11) -> unsqueeze_12
-        Mul(slice_38, unsqueeze_12) -> mul_474
+        Mul(slice_38, unsqueeze_12) -> mul_413
     Constant(value=1) -> dim_0_12
       Unsqueeze(sin, dim_0_12) -> unsqueeze_13
-    Constant(value=[0]) -> val_561
-    Constant(value=[16]) -> val_564
-    Constant(value=[3]) -> val_567
-    Constant(value_ints=[1]) -> val_568
-      Slice(slice_38, val_561, val_564, val_567, val_568) -> slice_42
-    Constant(value=[16]) -> val_571
-    Constant(value=[922337203...) -> val_574
-    Constant(value=[3]) -> val_577
-    Constant(value_ints=[1]) -> val_578
-      Slice(slice_38, val_571, val_574, val_577, val_578) -> slice_43
+    Constant(value=[0]) -> val_487
+    Constant(value=[16]) -> val_490
+    Constant(value=[3]) -> val_493
+    Constant(value_ints=[1]) -> val_494
+      Slice(slice_38, val_487, val_490, val_493, val_494) -> slice_42
+    Constant(value=[16]) -> val_497
+    Constant(value=[922337203...) -> val_500
+    Constant(value=[3]) -> val_503
+    Constant(value_ints=[1]) -> val_504
+      Slice(slice_38, val_497, val_500, val_503, val_504) -> slice_43
         Neg(slice_43) -> neg_2
         Concat(neg_2, slice_42, axis=-1) -> cat_7
-        Mul(cat_7, unsqueeze_13) -> mul_491
-          Add(mul_474, mul_491) -> add_604
-        Concat(add_604, slice_39, axis=-1) -> cat_9
-    Mul(slice_40, unsqueeze_12) -> mul_499
-    Constant(value=[0]) -> val_581
-    Constant(value=[16]) -> val_584
-    Constant(value=[3]) -> val_587
-    Constant(value_ints=[1]) -> val_588
-      Slice(slice_40, val_581, val_584, val_587, val_588) -> slice_44
-    Constant(value=[16]) -> val_591
-    Constant(value=[922337203...) -> val_594
-    Constant(value=[3]) -> val_597
-    Constant(value_ints=[1]) -> val_598
-      Slice(slice_40, val_591, val_594, val_597, val_598) -> slice_45
+        Mul(cat_7, unsqueeze_13) -> mul_430
+          Add(mul_413, mul_430) -> add_550
+        Concat(add_550, slice_39, axis=-1) -> cat_9
+    Mul(slice_40, unsqueeze_12) -> mul_438
+    Constant(value=[0]) -> val_507
+    Constant(value=[16]) -> val_510
+    Constant(value=[3]) -> val_513
+    Constant(value_ints=[1]) -> val_514
+      Slice(slice_40, val_507, val_510, val_513, val_514) -> slice_44
+    Constant(value=[16]) -> val_517
+    Constant(value=[922337203...) -> val_520
+    Constant(value=[3]) -> val_523
+    Constant(value_ints=[1]) -> val_524
+      Slice(slice_40, val_517, val_520, val_523, val_524) -> slice_45
         Neg(slice_45) -> neg_3
         Concat(neg_3, slice_44, axis=-1) -> cat_8
-        Mul(cat_8, unsqueeze_13) -> mul_516
-      Add(mul_499, mul_516) -> add_640
-        Concat(add_640, slice_41, axis=-1) -> cat_10
+        Mul(cat_8, unsqueeze_13) -> mul_455
+      Add(mul_438, mul_455) -> add_586
+        Concat(add_586, slice_41, axis=-1) -> cat_10
           Concat(past_key_values_key_cache_1, cat_10, axis=-2) -> cat_11
-            Shape(cat_11, start=0) -> val_630
-      Slice(val_630, val_411, val_45) -> val_633
-    Constant(value_ints=[9223372036854775807]) -> val_631
-      Slice(val_630, val_45, val_631) -> val_632
-    Constant(value_ints=[-9223372036854775808]) -> val_634
-      Slice(val_630, val_634, val_411) -> val_635
-        Concat(val_635, val_632, val_633, axis=0) -> val_640
-    Constant(value_ints=[-1]) -> val_636
-      Concat(val_636, val_633, val_632, axis=0) -> val_637
-        Reshape(cat_11, val_637, allowzero=0) -> val_638
-          Transpose(val_638, perm=[0,2,1]) -> val_639
-          Reshape(val_639, val_640, allowzero=0) -> val_641
-    Constant(value=0.33437013...) -> val_642
-      Mul(cat_9, val_642) -> val_643
-    Constant(value=0.33437013...) -> val_644
-      Mul(val_641, val_644) -> val_645
-        MatMul(val_643, val_645) -> val_646
-          Add(val_646, slice_scatter_2) -> val_647
-            Softmax(val_647, axis=-1) -> val_648
-              MatMul(val_648, cat_12) -> scaled_dot_product_attention_1
+            Shape(cat_11, start=0) -> val_556
+      Slice(val_556, val_386, val_45) -> val_559
+    Constant(value_ints=[9223372036854775807]) -> val_557
+      Slice(val_556, val_45, val_557) -> val_558
+    Constant(value_ints=[-9223372036854775808]) -> val_560
+      Slice(val_556, val_560, val_386) -> val_561
+        Concat(val_561, val_558, val_559, axis=0) -> val_566
+    Constant(value_ints=[-1]) -> val_562
+      Concat(val_562, val_559, val_558, axis=0) -> val_563
+        Reshape(cat_11, val_563, allowzero=0) -> val_564
+          Transpose(val_564, perm=[0,2,1]) -> val_565
+          Reshape(val_565, val_566, allowzero=0) -> val_567
+    Constant(value=0.33437013...) -> val_568
+      Mul(cat_9, val_568) -> val_569
+    Constant(value=0.33437013...) -> val_570
+      Mul(val_567, val_570) -> val_571
+        MatMul(val_569, val_571) -> val_572
+          Add(val_572, slice_scatter_2) -> val_573
+            Softmax(val_573, axis=-1) -> val_574
+              MatMul(val_574, cat_12) -> scaled_dot_product_attention_1
                 Transpose(scaled_dot_product_attention_1, perm=[0,2,1,3]) -> transpose_8
-    Constant(value=[-1]) -> val_651
-      Reshape(sym_size_int_63, val_651, allowzero=0) -> val_652
-    Constant(value=[-1]) -> val_653
-      Reshape(sym_size_int_64, val_653, allowzero=0) -> val_654
-      Concat(val_652, val_654, val_45, axis=0) -> val_655
-        Reshape(transpose_8, val_655, allowzero=0) -> view_26
-    Constant(value=[-1]) -> val_657
-      Reshape(mul_171, val_657, allowzero=0) -> val_658
-      Concat(val_658, val_246, axis=0) -> val_659
-        Reshape(view_26, val_659, allowzero=0) -> view_27
-    Transpose(model.layers.1.self_attn.dense.weight, perm=[1,0]) -> t_9
-      Gemm(view_27, t_9, model.layers.1.self_attn.dense.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_9
-    Constant(value=[-1]) -> val_661
-      Reshape(sym_size_int_63, val_661, allowzero=0) -> val_662
-    Constant(value=[-1]) -> val_663
-      Reshape(sym_size_int_64, val_663, allowzero=0) -> val_664
-      Concat(val_662, val_664, val_246, axis=0) -> val_665
-        Reshape(addmm_9, val_665, allowzero=0) -> view_28
-    Constant(value=[-1]) -> val_667
-      Reshape(mul_171, val_667, allowzero=0) -> val_668
-      Concat(val_668, val_246, axis=0) -> val_669
-        Reshape(layer_norm_1, val_669, allowzero=0) -> view_29
-    Transpose(model.layers.1.mlp.fc1.weight, perm=[1,0]) -> t_10
-      Gemm(view_29, t_10, model.layers.1.mlp.fc1.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_10
-    Constant(value=[-1]) -> val_671
-      Reshape(sym_size_int_63, val_671, allowzero=0) -> val_672
-    Constant(value=[-1]) -> val_673
-      Reshape(sym_size_int_64, val_673, allowzero=0) -> val_674
-      Concat(val_672, val_674, val_454, axis=0) -> val_675
-        Reshape(addmm_10, val_675, allowzero=0) -> view_30
-      Mul(view_30, val_457) -> mul_597
-    Pow(view_30, val_458) -> pow_2
-      Mul(pow_2, val_459) -> mul_604
-        Add(view_30, mul_604) -> add_736
-      Mul(add_736, val_460) -> mul_611
-        Tanh(mul_611) -> tanh_1
-      Add(tanh_1, val_3) -> add_749
-        Mul(mul_597, add_749) -> mul_621
-    Constant(value=[-1]) -> val_677
-      Reshape(mul_171, val_677, allowzero=0) -> val_678
-      Concat(val_678, val_454, axis=0) -> val_679
-        Reshape(mul_621, val_679, allowzero=0) -> view_31
-    Transpose(model.layers.1.mlp.fc2.weight, perm=[1,0]) -> t_11
-      Gemm(view_31, t_11, model.layers.1.mlp.fc2.bias, beta=1.00, transB=0, alpha=1.00, transA=0) -> addmm_11
-    Constant(value=[-1]) -> val_681
-      Reshape(sym_size_int_63, val_681, allowzero=0) -> val_682
-    Constant(value=[-1]) -> val_683
-      Reshape(sym_size_int_64, val_683, allowzero=0) -> val_684
-      Concat(val_682, val_684, val_246, axis=0) -> val_685
-        Reshape(addmm_11, val_685, allowzero=0) -> view_32
-          Add(view_28, view_32) -> add_772
-        Add(add_772, add_479) -> add_777
-          LayerNormalization(add_777, model.final_layernorm.weight, model.final_layernorm.bias, epsilon=0.00, axis=-1) -> layer_norm_2
-    Transpose(lm_head.weight, perm=[1,0]) -> t_12
-      MatMul(layer_norm_2, t_12) -> matmul_1
-    output: name='matmul_1' type=dtype('float32') shape=['', '', 51200]
-    output: name='cat_5' type=dtype('float32') shape=['2', 32, '', 80]
-    output: name='cat_11' type=dtype('float32') shape=['2', 32, '', 80]
-    output: name='cat_6' type=dtype('float32') shape=['2', 32, '', 80]
-    output: name='cat_12' type=dtype('float32') shape=['2', 32, '', 80]
+    Constant(value=[-1]) -> val_577
+      Reshape(sym_size_int_51, val_577, allowzero=0) -> val_578
+    Constant(value=[-1]) -> val_579
+      Reshape(sym_size_int_52, val_579, allowzero=0) -> val_580
+      Concat(val_578, val_580, val_45, axis=0) -> val_581
+        Reshape(transpose_8, val_581, allowzero=0) -> view_8
+    Transpose(model.layers.1.self_attn.dense.weight, perm=[1,0]) -> val_583
+      MatMul(view_8, val_583) -> val_584
+        Add(val_584, model.layers.1.self_attn.dense.bias) -> linear_9
+    Transpose(model.layers.1.mlp.fc1.weight, perm=[1,0]) -> val_585
+      MatMul(layer_norm_1, val_585) -> val_586
+        Add(val_586, model.layers.1.mlp.fc1.bias) -> linear_10
+      Mul(linear_10, val_415) -> mul_522
+    Pow(linear_10, val_416) -> pow_2
+      Mul(pow_2, val_417) -> mul_529
+        Add(linear_10, mul_529) -> add_670
+      Mul(add_670, val_418) -> mul_536
+        Tanh(mul_536) -> tanh_1
+      Add(tanh_1, val_3) -> add_683
+        Mul(mul_522, add_683) -> mul_546
+    Transpose(model.layers.1.mlp.fc2.weight, perm=[1,0]) -> val_587
+      MatMul(mul_546, val_587) -> val_588
+        Add(val_588, model.layers.1.mlp.fc2.bias) -> linear_11
+          Add(linear_9, linear_11) -> add_700
+        Add(add_700, add_443) -> add_705
+          LayerNormalization(add_705, model.final_layernorm.weight, model.final_layernorm.bias, epsilon=0.00, axis=-1) -> layer_norm_2
+    Transpose(lm_head.weight, perm=[1,0]) -> val_619
+      MatMul(layer_norm_2, val_619) -> val_620
+        Add(val_620, lm_head.bias) -> linear_12
+    output: name='linear_12' type=dtype('float32') shape=['s0', 's1', 51200]
+    output: name='cat_5' type=dtype('float32') shape=['s0', 32, 's1 + s11', 80]
+    output: name='cat_11' type=dtype('float32') shape=['s0', 32, 's1 + s11', 80]
+    output: name='cat_6' type=dtype('float32') shape=['s0', 32, 's1 + s11', 80]
+    output: name='cat_12' type=dtype('float32') shape=['s0', 32, 's1 + s11', 80]
 
 
 
@@ -895,7 +784,7 @@ Visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.976 seconds)
+   **Total running time of the script:** (0 minutes 14.478 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_phi2.py:

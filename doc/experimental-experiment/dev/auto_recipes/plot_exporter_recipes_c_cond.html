@@ -483,12 +483,14 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
 </ul>
 </li>
@@ -613,7 +615,7 @@ to introduce function <a class="reference external" href="https://pytorch.org/do
 <span class="n">model</span><span class="p">(</span><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.0215]], grad_fn=&lt;MulBackward0&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-1.8689]], grad_fn=&lt;MulBackward0&gt;)
 </pre></div>
 </div>
 <p>As expected, it does not export.</p>
@@ -719,9 +721,9 @@ init: name=&#39;init1_s_&#39; type=float32 shape=() -- array([0.], dtype=float32
 init: name=&#39;init7_s2_-1_1&#39; type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
 init: name=&#39;init7_s2_1_-1&#39; type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
 init: name=&#39;mlp.0.weight&#39; type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([-0.5179606,  0.3202068], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-init: name=&#39;mlp.1.weight&#39; type=float32 shape=(1, 2) -- array([0.40068612, 0.45178875], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([0.08901229], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([-0.51190156,  0.30025372], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+init: name=&#39;mlp.1.weight&#39; type=float32 shape=(1, 2) -- array([0.25805596, 0.30869582], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([-0.498573], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
 Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -&gt; linear
 Reshape(mlp.1.weight, init7_s2_-1_1) -&gt; _onx_transpose_p_mlp_1_weight0
   Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -&gt; GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
@@ -766,9 +768,9 @@ init: name=&#39;init1_s_&#39; type=float32 shape=() -- array([0.], dtype=float32
 init: name=&#39;init7_s2_-1_1&#39; type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
 init: name=&#39;init7_s2_1_-1&#39; type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
 init: name=&#39;mlp.0.weight&#39; type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([-0.5179606,  0.3202068], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-init: name=&#39;mlp.1.weight&#39; type=float32 shape=(1, 2) -- array([0.40068612, 0.45178875], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([0.08901229], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([-0.51190156,  0.30025372], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+init: name=&#39;mlp.1.weight&#39; type=float32 shape=(1, 2) -- array([0.25805596, 0.30869582], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([-0.498573], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
 Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -&gt; linear
 Reshape(mlp.1.weight, init7_s2_-1_1) -&gt; _onx_transpose_p_mlp_1_weight0
   Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -&gt; GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
@@ -792,7 +794,7 @@ output: name=&#39;cond#0&#39; type=&#39;NOTENSOR&#39; shape=None
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" alt="plot exporter recipes c cond" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.590 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" alt="plot exporter recipes c cond" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.541 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-c-cond-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/adca796342d24fd5aaa28897cda969ad/plot_exporter_recipes_c_cond.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_c_cond.ipynb</span></code></a></p>
@@ -808,12 +810,12 @@ output: name=&#39;cond#0&#39; type=&#39;NOTENSOR&#39; shape=None
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Tests cannot be exported into ONNX unless they refactored to use torch.cond."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_oe_cond_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_recipes_oe_cond.html#sphx-glr-auto-recipes-plot-exporter-recipes-oe-cond-py"><span class="std std-ref">torch.onnx.export and a model with a test</span></a></p>
   <div class="sphx-glr-thumbnail-title">torch.onnx.export and a model with a test</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_custom_ops_fct_thumb.png" />
-<p><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-custom-ops-fct-py"><span class="std std-ref">to_onnx and a custom operator registered with a function</span></a></p>
-  <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator registered with a function</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.ops.higher_order.scan."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_scan_pdist_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_recipes_c_scan_pdist.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-scan-pdist-py"><span class="std std-ref">to_onnx and a model with a loop (scan)</span></a></p>
   <div class="sphx-glr-thumbnail-title">to_onnx and a model with a loop (scan)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_custom_ops_fct_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-custom-ops-fct-py"><span class="std std-ref">to_onnx and a custom operator registered with a function</span></a></p>
+  <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator registered with a function</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>

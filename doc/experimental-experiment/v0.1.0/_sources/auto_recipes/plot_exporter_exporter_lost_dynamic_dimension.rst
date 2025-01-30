@@ -401,7 +401,7 @@ It finally works.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.299 seconds)
+   **Total running time of the script:** (0 minutes 4.679 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_lost_dynamic_dimension.py:

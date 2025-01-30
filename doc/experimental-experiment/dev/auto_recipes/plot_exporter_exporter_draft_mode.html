@@ -483,12 +483,14 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
 </ul>
 </li>
@@ -771,6 +773,9 @@ to download the full example code.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96]))
 </pre></div>
 </div>
+</section>
+<section id="draft-export">
+<h2>Draft Export<a class="headerlink" href="#draft-export" title="Link to this heading">¶</a></h2>
 <p>The function we want to try.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/torch_interpreter/onnx_export_errors.html#experimental_experiment.torch_interpreter.onnx_export_errors.register_additional_serialization_functions" title="experimental_experiment.torch_interpreter.onnx_export_errors.register_additional_serialization_functions" class="sphx-glr-backref-module-experimental_experiment-torch_interpreter-onnx_export_errors sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/torch_interpreter/onnx_export_errors.html#experimental_experiment.torch_interpreter.onnx_export_errors.register_additional_serialization_functions" title="experimental_experiment.torch_interpreter.onnx_export_errors.register_additional_serialization_functions" class="sphx-glr-backref-module-experimental_experiment-torch_interpreter-onnx_export_errors sphx-glr-backref-type-py-function"><span class="n">register_additional_serialization_functions</span></a></a><span class="p">():</span>
     <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a><span class="p">,</span> <span class="n">report</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">_draft_export</span><span class="o">.</span><span class="n">draft_export</span><span class="p">(</span>
@@ -788,17 +793,18 @@ Please follow the instructions to fix the errors.
 ###################################################################################################
 
 1. Data dependent error.
-    When exporting, we were unable to figure out if the expression `Eq(u0, 1)` always holds.
+    When exporting, we were unable to evaluate the value of `Eq(u0, 1)`.
     This was encountered 2 times.
     This occurred at the following stacktrace:
-        File /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py, lineno 386, in _longrope_frequency_update.
+        File /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py, lineno 386, in _longrope_frequency_update:
+        `if seq_len &gt; original_max_position_embeddings:`
     As a result, it was specialized to a constant (e.g. `0` in the 1st occurrence), and asserts were inserted into the graph.
 
     Please add `torch._check(...)` to the original code to assert this data-dependent assumption.
     Please refer to https://docs.google.com/document/d/1kZ_BbB3JnoLbUZleDT6635dHs88ZVYId8jT-yTFgf3A/edit#heading=h.boi2xurpqa0o for more details.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.867 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.581 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-exporter-draft-mode-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fac2194c537b3717f092996e7e7733be/plot_exporter_exporter_draft_mode.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_exporter_draft_mode.ipynb</span></code></a></p>
@@ -817,9 +823,9 @@ Please follow the instructions to fix the errors.
 </div><div class="sphx-glr-thumbcontainer" tooltip="torch.export.export often breaks on big models because there are control flows or instructions breaking the propagation of dynamic shapes (see ...). The function usually gives an indication where the model implementation can be fixed but in case, that is not possible, we can try to export the model piece by piece: every module is converted separately from its submodule. A model can be exported even if one of its submodules cannot."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_phi35_piece_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_exporter_phi35_piece.html#sphx-glr-auto-recipes-plot-exporter-exporter-phi35-piece-py"><span class="std std-ref">Export Phi-3.5-mini-instruct piece by piece</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct piece by piece</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_modules_thumb.png" />
-<p><a class="reference internal" href="plot_exporter_recipes_c_modules.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-modules-py"><span class="std std-ref">to_onnx and submodules from LLMs</span></a></p>
-  <div class="sphx-glr-thumbnail-title">to_onnx and submodules from LLMs</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_oe_phi2_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html#sphx-glr-auto-recipes-plot-exporter-recipes-oe-phi2-py"><span class="std std-ref">torch.onnx.export and Phi-2</span></a></p>
+  <div class="sphx-glr-thumbnail-title">torch.onnx.export and Phi-2</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
@@ -881,6 +887,7 @@ Please follow the instructions to fix the errors.
             <ul>
 <li><a class="reference internal" href="#">Export Phi-3.5-mini-instruct with draft_export</a><ul>
 <li><a class="reference internal" href="#model">Model</a></li>
+<li><a class="reference internal" href="#draft-export">Draft Export</a></li>
 </ul>
 </li>
 </ul>

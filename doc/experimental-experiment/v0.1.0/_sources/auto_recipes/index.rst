@@ -200,6 +200,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly. If there is an issue, you can go to the following line: torch/fx/experimental/symbolic_shapes.py#L5965 and look for log.info(&quot;set_replacement %s = %s (%s) %s&quot;, a, tgt, msg, tgt_bound) and add before or after, something like:">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_phi2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and Phi-2</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators.">
 
 .. only:: html
@@ -302,6 +319,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_phi2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">torch.onnx.export and Phi-2</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Tests cannot be exported into ONNX unless they refactored to use torch.cond.">
 
 .. only:: html
@@ -336,12 +370,14 @@ Some of them are exposed in the examples. Others may be found at
    /auto_recipes/plot_exporter_exporter_with_dyamic_cache
    /auto_recipes/plot_exporter_recipes_oe_lr
    /auto_recipes/plot_exporter_coverage
+   /auto_recipes/plot_exporter_recipes_c_phi2
    /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_ds
    /auto_recipes/plot_exporter_recipes_c_modules
+   /auto_recipes/plot_exporter_recipes_oe_phi2
    /auto_recipes/plot_exporter_recipes_oe_cond
 
 

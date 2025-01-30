@@ -238,11 +238,14 @@ Model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-207
+.. GENERATED FROM PYTHON SOURCE LINES 206-210
+
+Draft Export
+++++++++++++
 
 The function we want to try.
 
-.. GENERATED FROM PYTHON SOURCE LINES 207-213
+.. GENERATED FROM PYTHON SOURCE LINES 210-216
 
 .. code-block:: Python
 
@@ -259,11 +262,11 @@ The function we want to try.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 214-215
+.. GENERATED FROM PYTHON SOURCE LINES 217-218
 
 Let's print the report.
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-216
+.. GENERATED FROM PYTHON SOURCE LINES 218-219
 
 .. code-block:: Python
 
@@ -283,10 +286,11 @@ Let's print the report.
     ###################################################################################################
 
     1. Data dependent error.
-        When exporting, we were unable to figure out if the expression `Eq(u0, 1)` always holds.
+        When exporting, we were unable to evaluate the value of `Eq(u0, 1)`.
         This was encountered 2 times.
         This occurred at the following stacktrace: 
-            File /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py, lineno 386, in _longrope_frequency_update.
+            File /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py, lineno 386, in _longrope_frequency_update:
+            `if seq_len > original_max_position_embeddings:`
         As a result, it was specialized to a constant (e.g. `0` in the 1st occurrence), and asserts were inserted into the graph.
 
         Please add `torch._check(...)` to the original code to assert this data-dependent assumption.
@@ -300,7 +304,7 @@ Let's print the report.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.867 seconds)
+   **Total running time of the script:** (0 minutes 5.581 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_draft_mode.py:
