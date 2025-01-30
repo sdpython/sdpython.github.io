@@ -139,7 +139,7 @@ Let's export.
  .. code-block:: none
 
     export failed with It looks like one of the inputs with type `<class 'transformers.cache_utils.DynamicCache'>` is not supported or pytree-flattenable. 
-    Exported graphs inputs can only contain the following supported types: [<class 'torch.Tensor'>, <class 'torch.SymInt'>, <class 'torch.SymFloat'>, <class 'torch.SymBool'>, <class 'torch.ScriptObject'>, <class 'int'>, <class 'torch.layout'>, <class 'torch.device'>, <class 'NoneType'>, <class 'float'>, <class 'torch._C._CudaDeviceProperties'>, <class 'torch.memory_format'>, <class 'torch.dtype'>, <class 'bool'>, <class 'triton.language.core.dtype'>, <class 'code'>, <class 'complex'>, <class 'ellipsis'>, <class 'torch.nn.attention._SDPBackend'>, <class 'str'>, <class 'torch.iinfo'>, <class 'bytes'>, <class 'torch.finfo'>, <class 'NotImplementedType'>]. 
+    Exported graphs inputs can only contain the following supported types: [<class 'torch.Tensor'>, <class 'torch.SymInt'>, <class 'torch.SymFloat'>, <class 'torch.SymBool'>, <class 'torch.ScriptObject'>, <class 'int'>, <class 'torch.finfo'>, <class 'torch._C._CudaDeviceProperties'>, <class 'NoneType'>, <class 'torch.layout'>, <class 'float'>, <class 'torch.device'>, <class 'triton.language.core.dtype'>, <class 'bool'>, <class 'torch.memory_format'>, <class 'code'>, <class 'torch.dtype'>, <class 'complex'>, <class 'ellipsis'>, <class 'str'>, <class 'torch.nn.attention._SDPBackend'>, <class 'bytes'>, <class 'torch.iinfo'>, <class 'NotImplementedType'>]. 
     If you are using a custom class object, please register a pytree_flatten/unflatten function using `torch.utils._pytree.register_pytree_node` or `torch.export.register_dataclass`.
 
 
@@ -357,7 +357,7 @@ Let's undo the registration.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.433 seconds)
+   **Total running time of the script:** (0 minutes 0.175 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_with_dyamic_cache.py:

@@ -69,7 +69,7 @@ We appy loops to the pairwise distances (:class:`torch.nn.PairwiseDistance`).
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=2.407352539535168e-07
+    shape=(3, 5), discrepancies=2.2661087761832732e-07
 
 
 
@@ -214,7 +214,7 @@ We need to rewrite the module with function
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=2.407352539535168e-07
+    shape=(3, 5), discrepancies=2.2661087761832732e-07
 
 
 
@@ -311,19 +311,18 @@ Let's export again with ONNX.
 
     opset: domain='' version=18
     opset: domain='local_functions' version=1
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=['x_rows', 'dim']
     input: name='y' type=dtype('float32') shape=['y_rows', 'dim']
     Scan(y, x, body=G1, num_scan_inputs=1, scan_input_directions=[0], scan_output_axes=[0], scan_output_directions=[0]) -> scan#0, output_0
     output: name='output_0' type=dtype('float32') shape=['x_rows', 'y_rows']
-    ----- subgraph ---- Scan - aten_scan - att.body=G1 -- level=1 -- init_0_y,scan_0_x -> output_0,output_1
+    ----- subgraph ---- Scan - scan - att.body=G1 -- level=1 -- init_0_y,scan_0_x -> output_0,output_1
     input: name='init_0_y' type='NOTENSOR' shape=None
     input: name='scan_0_x' type='NOTENSOR' shape=None
     scan_combine_graph_0[local_functions](init_0_y, scan_0_x) -> output_0, output_1
     output: name='output_0' type='NOTENSOR' shape=None
     output: name='output_1' type='NOTENSOR' shape=None
     ----- function name=scan_combine_graph_0 domain=local_functions
-    ----- doc_string: function_options=FunctionOptions(export_as_function=Tru...
+    ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
     opset: domain='' version=18
     input: 'arg0_1'
     input: 'arg1_1'
@@ -370,12 +369,11 @@ We can also inline the local function.
 
     opset: domain='' version=18
     opset: domain='local_functions' version=1
-    doc_string: large_model=False, inline=True, external_threshold=1024...
     input: name='x' type=dtype('float32') shape=['x_rows', 'dim']
     input: name='y' type=dtype('float32') shape=['y_rows', 'dim']
     Scan(y, x, body=G1, num_scan_inputs=1, scan_input_directions=[0], scan_output_axes=[0], scan_output_directions=[0]) -> scan#0, output_0
     output: name='output_0' type=dtype('float32') shape=['x_rows', 'y_rows']
-    ----- subgraph ---- Scan - aten_scan - att.body=G1 -- level=1 -- init_0_y,scan_0_x -> output_0,output_1
+    ----- subgraph ---- Scan - scan - att.body=G1 -- level=1 -- init_0_y,scan_0_x -> output_0,output_1
     input: name='init_0_y' type='NOTENSOR' shape=None
     input: name='scan_0_x' type='NOTENSOR' shape=None
     Constant(value=[1]) -> init7_s1_12
@@ -417,7 +415,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.813 seconds)
+   **Total running time of the script:** (0 minutes 1.898 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_scan_pdist.py:

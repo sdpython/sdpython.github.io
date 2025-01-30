@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.2874, -0.0972,  0.8321]])
+    tensor([[-0.2882, -0.0380, -0.9997]])
 
 
 
@@ -295,7 +295,6 @@ And we convert again.
  .. code-block:: none
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init7_s2_1_3' type=int64 shape=(2,) -- array([1, 3])      -- Opset.make_node.1/Shape
     ConstantOfShape(init7_s2_1_3, value=[nan]) -> zeros
@@ -334,7 +333,6 @@ And we convert again with optimization this time.
  .. code-block:: none
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 3]
     Sin(x) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
@@ -367,7 +365,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.665 seconds)
+   **Total running time of the script:** (0 minutes 0.471 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py:

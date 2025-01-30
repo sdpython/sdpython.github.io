@@ -101,7 +101,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[ 0.9375, -0.9889, -0.9661]])
+    tensor([[0.9686, 0.6710, 0.9622]])
 
 
 
@@ -157,7 +157,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
 
     Unable to interpret function <class 'torch._ops.OpOverload'>: <OpOverload(op='aten.view_as', overload='default')>, searched for ['aten::view_as', 'view_as_default'] and attributes ['__qualname__', '__name__'], args=(x, x), kwargs={}
     --DEBUG--
-    [GraphBuilder-RKY] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+    [GraphBuilder-NSQ] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
     --PARAMETERS--
     dynamic_examples=
     --SHAPE--
@@ -166,6 +166,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
     dynamic_objects_rev=
     dynamic_dimensions_source={}
     dynamic_dimensions_source_flat=None
+    output_dynamic_dimensions_source_flat=None
     dynamic_alias={}
     dynamic_shapes=None
     _known_types={'x': 1}
@@ -192,8 +193,8 @@ The exporter fails with the same eror as it expects torch.export.export to work.
     -- process.progress --
     node 1/5 target=aten.view_as.default
     --
-    [GraphBuilder-RKY.make_tensor_input] x[1:1x3]
-    [GraphBuilder-RKY] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+    [GraphBuilder-NSQ.make_tensor_input] x[1:1x3]
+    [GraphBuilder-NSQ] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 
 
 
@@ -257,7 +258,7 @@ Let's check it runs again.
  .. code-block:: none
 
 
-    tensor([[ 0.9375, -0.9889, -0.9661]])
+    tensor([[0.9686, 0.6710, 0.9622]])
 
 
 
@@ -356,7 +357,6 @@ And we convert again.
  .. code-block:: none
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 3]
     Sin(x) -> numpy_sin
       Identity(numpy_sin) -> output_0
@@ -386,7 +386,6 @@ And we convert again with optimization this time.
  .. code-block:: none
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='x' type=dtype('float32') shape=[1, 3]
     Sin(x) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
@@ -449,7 +448,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.472 seconds)
+   **Total running time of the script:** (0 minutes 0.296 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py:

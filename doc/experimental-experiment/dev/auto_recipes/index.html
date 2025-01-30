@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="A few tricks about dynamic shapes" href="plot_exporter_exporter_dynamic_shapes.html" /><link rel="prev" title="301: Compares LLAMA exporters for onnxrt backend" href="../auto_examples/plot_llama_diff_dort_301.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="A dynamic dimension lost by torch.export.export" href="plot_exporter_exporter_lost_dynamic_dimension.html" /><link rel="prev" title="301: Compares LLAMA exporters for onnxrt backend" href="../auto_examples/plot_llama_diff_dort_301.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Exporter Recipes Gallery - experimental-experiment 0.1.0 documentation</title>
@@ -286,7 +286,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/_torch_helper.html">.torch_interpreter._torch_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/aten_functions.html">.torch_interpreter.aten_functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/aten_methods.html">.torch_interpreter.aten_methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/diagnose.html">.torch_interpreter.diagnose</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/dispatcher.html">.torch_interpreter.dispatcher</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch_interpreter/eval/index.html">.torch_interpreter.eval</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of .torch_interpreter.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../api/torch_interpreter/eval/model_cases.html">.torch_interpreter.eval.model_cases</a></li>
@@ -299,6 +298,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/onnx_export_serialization.html">.torch_interpreter.onnx_export_serialization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/oxs_dispatcher.html">.torch_interpreter.oxs_dispatcher</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/oxs_opset.html">.torch_interpreter.oxs_opset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/piece_by_piece.html">.torch_interpreter.piece_by_piece</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch_interpreter/piece_by_piece_serialize.html">.torch_interpreter.piece_by_piece_serialize</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../api/torch_interpreter/patches/index.html">.torch_interpreter.patches</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of .torch_interpreter.patches</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../api/torch_interpreter/patches/patch_torch.html">.torch_interpreter.patches.patch_torch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/torch_interpreter/patches/patch_transformers.html">.torch_interpreter.patches.patch_transformers</a></li>
@@ -355,6 +356,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_any.html">.xoptim.patterns.onnx_any</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_cast.html">.xoptim.patterns.onnx_cast</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_clip.html">.xoptim.patterns.onnx_clip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_constants.html">.xoptim.patterns.onnx_constants</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_conv.html">.xoptim.patterns.onnx_conv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_dropout.html">.xoptim.patterns.onnx_dropout</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/xoptim/patterns/onnx_equal.html">.xoptim.patterns.onnx_equal</a></li>
@@ -472,20 +474,21 @@
 </ul>
 </li>
 <li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Exporter Recipes Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Exporter Recipes Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_lost_dynamic_dimension.html">A dynamic dimension lost by torch.export.export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_dynamic_shapes.html">A few tricks about dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_inputs.html">Do no use Module as inputs!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_phi35_piece.html">Export Phi-3.5-mini-instruct piece by piece</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_c_phi35.html">to_onnx, failures Phi-3.5-mini-instruct</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
 </ul>
 </li>
@@ -564,7 +567,7 @@
         <article role="main" id="furo-main-content">
           <section id="exporter-recipes-gallery">
 <h1>Exporter Recipes Gallery<a class="headerlink" href="#exporter-recipes-gallery" title="Link to this heading">¶</a></h1>
-<p>A model can be converted to ONNX if <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.7.0a0+git8c2aa0c ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> is
+<p>A model can be converted to ONNX if <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.7.0a0+git6b41f31 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> is
 able to convert that model into a graph. This is not always
 possible but usually possible with some code changes.
 These changes may not be desired as they may hurt the performance
@@ -590,12 +593,24 @@ export PYTHONPATH=$PYTHONPATH:&lt;this folder&gt;
 <h2>Common Errors<a class="headerlink" href="#common-errors" title="Link to this heading">¶</a></h2>
 <p>Some of them are exposed in the examples. Others may be found at
 <a class="reference internal" href="../tutorial/index.html#l-frequent-exporter-errors"><span class="std std-ref">Frequent Exceptions or Errors with the Exporter</span></a>.</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_dynamic_shapes_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes ensures a model is valid not matter what the dimension value is for a dynamic dimension. torch.export.export is trying to keep track of that information for every intermediate result the model produces. But something it fails. Let&#x27;s see one case."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_lost_dynamic_dimension_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_exporter_lost_dynamic_dimension.html#sphx-glr-auto-recipes-plot-exporter-exporter-lost-dynamic-dimension-py"><span class="std std-ref">A dynamic dimension lost by torch.export.export</span></a></p>
+  <div class="sphx-glr-thumbnail-title">A dynamic dimension lost by torch.export.export</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_dynamic_shapes_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_exporter_dynamic_shapes.html#sphx-glr-auto-recipes-plot-exporter-exporter-dynamic-shapes-py"><span class="std std-ref">A few tricks about dynamic shapes</span></a></p>
   <div class="sphx-glr-thumbnail-title">A few tricks about dynamic shapes</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This continues example l-plot-torch-export-with-dynamic-cache-201."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_inputs_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_exporter_inputs.html#sphx-glr-auto-recipes-plot-exporter-exporter-inputs-py"><span class="std std-ref">Do no use Module as inputs!</span></a></p>
   <div class="sphx-glr-thumbnail-title">Do no use Module as inputs!</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="torch.export.export often breaks on big models because there are control flows or instructions breaking the propagation of dynamic shapes (see ...). The function usually gives an indication where the model implementation can be fixed but in case, that is not possible, we can try to export the model piece by piece: every module is converted separately from its submodule. A model can be exported even if one of its submodules cannot."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_phi35_piece_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_exporter_phi35_piece.html#sphx-glr-auto-recipes-plot-exporter-exporter-phi35-piece-py"><span class="std std-ref">Export Phi-3.5-mini-instruct piece by piece</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct piece by piece</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tries torch.export._draft_export.draft_export."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_draft_mode_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_exporter_draft_mode.html#sphx-glr-auto-recipes-plot-exporter-exporter-draft-mode-py"><span class="std std-ref">Export Phi-3.5-mini-instruct with draft_export</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct with draft_export</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tries torch._export.tools.report_exportability."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_reportibility_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_exporter_reportibility.html#sphx-glr-auto-recipes-plot-exporter-exporter-reportibility-py"><span class="std std-ref">Export Phi-3.5-mini-instruct with report_exportability</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct with report_exportability</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="We will a class used in many model: transformers.cache_utils.DynamicCache."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_with_dyamic_cache_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_exporter_with_dyamic_cache.html#sphx-glr-auto-recipes-plot-exporter-exporter-with-dyamic-cache-py"><span class="std std-ref">Export a model using a custom type as input</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export a model using a custom type as input</div>
@@ -605,9 +620,6 @@ export PYTHONPATH=$PYTHONPATH:&lt;this folder&gt;
 </div><div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-export-supported-signatures shows the exported program for many of those cases."><img alt="" src="../_images/sphx_glr_plot_exporter_coverage_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_coverage.html#sphx-glr-auto-recipes-plot-exporter-coverage-py"><span class="std std-ref">Measures the exporter success on many test cases</span></a></p>
   <div class="sphx-glr-thumbnail-title">Measures the exporter success on many test cases</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly. If there is an issue, you can go to the following line: torch/fx/experimental/symbolic_shapes.py#L5965 and look for log.info(&quot;set_replacement %s = %s (%s) %s&quot;, a, tgt, msg, tgt_bound) and add before or after, something like:"><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_phi2_thumb.png" />
-<p><a class="reference internal" href="plot_exporter_recipes_c_phi2.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-phi2-py"><span class="std std-ref">to_onnx and Phi-2</span></a></p>
-  <div class="sphx-glr-thumbnail-title">to_onnx and Phi-2</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_custom_ops_inplace_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_recipes_c_custom_ops_inplace.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-custom-ops-inplace-py"><span class="std std-ref">to_onnx and a custom operator inplace</span></a></p>
   <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator inplace</div>
@@ -626,13 +638,7 @@ export PYTHONPATH=$PYTHONPATH:&lt;this folder&gt;
 </div><div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_modules_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_recipes_c_modules.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-modules-py"><span class="std std-ref">to_onnx and submodules from LLMs</span></a></p>
   <div class="sphx-glr-thumbnail-title">to_onnx and submodules from LLMs</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-exporter-recipes-custom-phi2 shows how to export a simple LLM model with dynamic shapes. What if it does not work?"><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_c_phi35_thumb.png" />
-<p><a class="reference internal" href="plot_exporter_recipes_c_phi35.html#sphx-glr-auto-recipes-plot-exporter-recipes-c-phi35-py"><span class="std std-ref">to_onnx, failures Phi-3.5-mini-instruct</span></a></p>
-  <div class="sphx-glr-thumbnail-title">to_onnx, failures Phi-3.5-mini-instruct</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_oe_phi2_thumb.png" />
-<p><a class="reference internal" href="plot_exporter_recipes_oe_phi2.html#sphx-glr-auto-recipes-plot-exporter-recipes-oe-phi2-py"><span class="std std-ref">torch.onnx.export and Phi-2</span></a></p>
-  <div class="sphx-glr-thumbnail-title">torch.onnx.export and Phi-2</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_oe_cond_thumb.png" />
+</div><div class="sphx-glr-thumbcontainer" tooltip="Tests cannot be exported into ONNX unless they refactored to use torch.cond."><img alt="" src="../_images/sphx_glr_plot_exporter_recipes_oe_cond_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_recipes_oe_cond.html#sphx-glr-auto-recipes-plot-exporter-recipes-oe-cond-py"><span class="std std-ref">torch.onnx.export and a model with a test</span></a></p>
   <div class="sphx-glr-thumbnail-title">torch.onnx.export and a model with a test</div>
 </div></div><div class="toctree-wrapper compound">
@@ -654,12 +660,12 @@ export PYTHONPATH=$PYTHONPATH:&lt;this folder&gt;
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="plot_exporter_exporter_dynamic_shapes.html">
+          <a class="next-page" href="plot_exporter_exporter_lost_dynamic_dimension.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">A few tricks about dynamic shapes</div>
+                <div class="title">A dynamic dimension lost by torch.export.export</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

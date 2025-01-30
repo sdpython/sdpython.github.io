@@ -47,6 +47,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes ensures a model is valid not matter what the dimension value is for a dynamic dimension. torch.export.export is trying to keep track of that information for every intermediate result the model produces. But something it fails. Let&#x27;s see one case.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_lost_dynamic_dimension_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_lost_dynamic_dimension.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">A dynamic dimension lost by torch.export.export</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
 
 .. only:: html
@@ -76,6 +93,57 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Do no use Module as inputs!</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="torch.export.export often breaks on big models because there are control flows or instructions breaking the propagation of dynamic shapes (see ...). The function usually gives an indication where the model implementation can be fixed but in case, that is not possible, we can try to export the model piece by piece: every module is converted separately from its submodule. A model can be exported even if one of its submodules cannot.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_phi35_piece_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_phi35_piece.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct piece by piece</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tries torch.export._draft_export.draft_export.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_draft_mode_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_draft_mode.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct with draft_export</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tries torch._export.tools.report_exportability.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_reportibility_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_reportibility.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct with report_exportability</div>
     </div>
 
 
@@ -127,23 +195,6 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measures the exporter success on many test cases</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly. If there is an issue, you can go to the following line: torch/fx/experimental/symbolic_shapes.py#L5965 and look for log.info(&quot;set_replacement %s = %s (%s) %s&quot;, a, tgt, msg, tgt_bound) and add before or after, something like:">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_phi2_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and Phi-2</div>
     </div>
 
 
@@ -251,41 +302,7 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-exporter-recipes-custom-phi2 shows how to export a simple LLM model with dynamic shapes. What if it does not work?">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_phi35_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi35.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx, failures Phi-3.5-mini-instruct</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_phi2_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and Phi-2</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tests cannot be exported into ONNX unless they refactored to use torch.cond.">
 
 .. only:: html
 
@@ -310,20 +327,21 @@ Some of them are exposed in the examples. Others may be found at
 .. toctree::
    :hidden:
 
+   /auto_recipes/plot_exporter_exporter_lost_dynamic_dimension
    /auto_recipes/plot_exporter_exporter_dynamic_shapes
    /auto_recipes/plot_exporter_exporter_inputs
+   /auto_recipes/plot_exporter_exporter_phi35_piece
+   /auto_recipes/plot_exporter_exporter_draft_mode
+   /auto_recipes/plot_exporter_exporter_reportibility
    /auto_recipes/plot_exporter_exporter_with_dyamic_cache
    /auto_recipes/plot_exporter_recipes_oe_lr
    /auto_recipes/plot_exporter_coverage
-   /auto_recipes/plot_exporter_recipes_c_phi2
    /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_ds
    /auto_recipes/plot_exporter_recipes_c_modules
-   /auto_recipes/plot_exporter_recipes_c_phi35
-   /auto_recipes/plot_exporter_recipes_oe_phi2
    /auto_recipes/plot_exporter_recipes_oe_cond
 
 

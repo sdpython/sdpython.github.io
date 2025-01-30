@@ -23,14 +23,13 @@
 torch.onnx.export and a model with a test
 =========================================
 
-Control flow cannot be exported with a change.
-The code of the model can be changed or patched
-to introduce function :func:`torch.cond`.
+Tests cannot be exported into ONNX unless they refactored
+to use :func:`torch.cond`.
 
 A model with a test
 +++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-19
+.. GENERATED FROM PYTHON SOURCE LINES 13-18
 
 .. code-block:: Python
 
@@ -46,11 +45,11 @@ A model with a test
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
+.. GENERATED FROM PYTHON SOURCE LINES 19-20
 
 We define a model with a control flow (-> graph break)
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-46
+.. GENERATED FROM PYTHON SOURCE LINES 20-45
 
 .. code-block:: Python
 
@@ -86,11 +85,11 @@ We define a model with a control flow (-> graph break)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 Let's check it runs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-51
+.. GENERATED FROM PYTHON SOURCE LINES 47-50
 
 .. code-block:: Python
 
@@ -106,15 +105,15 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([-1.3283], grad_fn=<MulBackward0>)
+    tensor([-0.6087], grad_fn=<MulBackward0>)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-53
+.. GENERATED FROM PYTHON SOURCE LINES 51-52
 
 As expected, it does not export.
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-59
+.. GENERATED FROM PYTHON SOURCE LINES 52-58
 
 .. code-block:: Python
 
@@ -135,11 +134,11 @@ As expected, it does not export.
     Dynamic control flow is not supported at the moment. Please use torch.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
 
     from user code:
-       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 40, in forward
+       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 39, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1760, in _call_impl
         return forward_call(*args, **kwargs)
-      File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 25, in forward
+      File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 24, in forward
         if x.sum():
 
     Set TORCH_LOGS="+dynamo" and TORCHDYNAMO_VERBOSE=1 for more information
@@ -148,9 +147,10 @@ As expected, it does not export.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-62
+.. GENERATED FROM PYTHON SOURCE LINES 59-62
 
-It does export with torch.onnx.export because it uses JIT to trace the execution.
+It does export with :func:`torch.onnx.export` because
+it uses JIT to trace the execution.
 But the model is not exactly the same as the initial model.
 
 .. GENERATED FROM PYTHON SOURCE LINES 62-66
@@ -174,13 +174,13 @@ But the model is not exactly the same as the initial model.
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export`...
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export`... ❌
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with Torch Script...
-    /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:25: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+    /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:24: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
       if x.sum():
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with Torch Script... ✅
     [torch.onnx] Run decomposition...
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:75: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:81: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1801: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1790: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
@@ -189,30 +189,20 @@ But the model is not exactly the same as the initial model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250110+cu126"
+       producer_version: "2.7.0.dev20250124+cu126"
     >
     main_graph (float[3] input_1) => (float[1] mul) 
-       <float[2] "model.mlp.0.bias" =  {0.102349,0.15469}, float[2,3] "model.mlp.0.weight" =  {-0.187618,0.0221874,-0.200107,-0.43745,0.0108417,-0.00826051}, float[1] "model.mlp.1.bias" =  {-0.661953}, float[1,2] "model.mlp.1.weight" =  {-0.214951,0.377962}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float scalar_tensor_default>
+       <float[2] "model.mlp.0.bias" =  {-0.463044,0.014747}, float[2,3] "model.mlp.0.weight" =  {0.132014,0.0673384,-0.491595,0.250684,0.239314,-0.0842815}, float[1] "model.mlp.1.bias" =  {-0.669497}, float[1,2] "model.mlp.1.weight" =  {-0.698139,0.644801}, float[2] linear, float[1] linear_1, float scalar_tensor_default>
     {
-       [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
-       [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
-       [node_Reshape_2] view = Reshape <allowzero: int = 0> (input_1, val_1)
-       [node_Transpose_3] t = Transpose <perm: ints = [1, 0]> ("model.mlp.0.weight")
-       [node_Gemm_4] addmm = Gemm <beta: float = 1, transB: int = 0, alpha: float = 1, transA: int = 0> (view, t, "model.mlp.0.bias")
-       [node_Constant_5] val_2 = Constant <value: tensor = int64[1] {2}> ()
-       [node_Cast_6] val_3 = Cast <to: int = 7> (val_2)
-       [node_Reshape_7] view_1 = Reshape <allowzero: int = 0> (addmm, val_3)
-       [node_Constant_8] val_4 = Constant <value: tensor = int64[2] {1,2}> ()
-       [node_Cast_9] val_5 = Cast <to: int = 7> (val_4)
-       [node_Reshape_10] view_2 = Reshape <allowzero: int = 0> (view_1, val_5)
-       [node_Transpose_11] t_1 = Transpose <perm: ints = [1, 0]> ("model.mlp.1.weight")
-       [node_Gemm_12] addmm_1 = Gemm <beta: float = 1, transB: int = 0, alpha: float = 1, transA: int = 0> (view_2, t_1, "model.mlp.1.bias")
-       [node_Constant_13] val_6 = Constant <value: tensor = int64[1] {1}> ()
-       [node_Cast_14] val_7 = Cast <to: int = 7> (val_6)
-       [node_Reshape_15] view_3 = Reshape <allowzero: int = 0> (addmm_1, val_7)
-       [node_Constant_16] val_8 = Constant <value: tensor = int64 {2}> ()
-       [node_Cast_17] scalar_tensor_default = Cast <to: int = 1> (val_8)
-       [node_Mul_18] mul = Mul (view_3, scalar_tensor_default)
+       [node_Transpose_0] val_0 = Transpose <perm: ints = [1, 0]> ("model.mlp.0.weight")
+       [node_MatMul_1] val_1 = MatMul (input_1, val_0)
+       [node_Add_2] linear = Add (val_1, "model.mlp.0.bias")
+       [node_Transpose_3] val_2 = Transpose <perm: ints = [1, 0]> ("model.mlp.1.weight")
+       [node_MatMul_4] val_3 = MatMul (linear, val_2)
+       [node_Add_5] linear_1 = Add (val_3, "model.mlp.1.bias")
+       [node_Constant_6] val_4 = Constant <value: tensor = int64 {2}> ()
+       [node_Cast_7] scalar_tensor_default = Cast <to: int = 1> (val_4)
+       [node_Mul_8] mul = Mul (linear_1, scalar_tensor_default)
     }
     <
       domain: "pkg.onnxscript.torch_lib.common",
@@ -354,54 +344,44 @@ Let's export again.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250110+cu126"
+       producer_version: "2.7.0.dev20250124+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2,3] "mlp.0.weight" =  {-0.187618,0.0221874,-0.200107,-0.43745,0.0108417,-0.00826051}, float[2] "mlp.0.bias" =  {0.102349,0.15469}, float[1,2] "mlp.1.weight" =  {-0.214951,0.377962}, float[1] "mlp.1.bias" =  {-0.661953}, float[1,3] view, float[3,2] t, float[1,2] addmm, float[2] view_1, float[1,2] view_2, float[2,1] t_1, float[1,1] addmm_1, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2,3] "mlp.0.weight" =  {0.132014,0.0673384,-0.491595,0.250684,0.239314,-0.0842815}, float[2] "mlp.0.bias" =  {-0.463044,0.014747}, float[1,2] "mlp.1.weight" =  {-0.698139,0.644801}, float[1] "mlp.1.bias" =  {-0.669497}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_0] val_0 = Constant <value: tensor = int64[2] {1,3}> ()
-       [node_Cast_1] val_1 = Cast <to: int = 7> (val_0)
-       [node_Reshape_2] view = Reshape <allowzero: int = 0> (x, val_1)
-       [node_Transpose_3] t = Transpose <perm: ints = [1, 0]> ("mlp.0.weight")
-       [node_Gemm_4] addmm = Gemm <beta: float = 1, transB: int = 0, alpha: float = 1, transA: int = 0> (view, t, "mlp.0.bias")
-       [node_Constant_5] val_2 = Constant <value: tensor = int64[1] {2}> ()
-       [node_Cast_6] val_3 = Cast <to: int = 7> (val_2)
-       [node_Reshape_7] view_1 = Reshape <allowzero: int = 0> (addmm, val_3)
-       [node_Constant_8] val_4 = Constant <value: tensor = int64[2] {1,2}> ()
-       [node_Cast_9] val_5 = Cast <to: int = 7> (val_4)
-       [node_Reshape_10] view_2 = Reshape <allowzero: int = 0> (view_1, val_5)
-       [node_Transpose_11] t_1 = Transpose <perm: ints = [1, 0]> ("mlp.1.weight")
-       [node_Gemm_12] addmm_1 = Gemm <beta: float = 1, transB: int = 0, alpha: float = 1, transA: int = 0> (view_2, t_1, "mlp.1.bias")
-       [node_Constant_13] val_6 = Constant <value: tensor = int64[1] {1}> ()
-       [node_Cast_14] val_7 = Cast <to: int = 7> (val_6)
-       [node_Reshape_15] view_3 = Reshape <allowzero: int = 0> (addmm_1, val_7)
-       [node_ReduceSum_16] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (view_3)
-       [node_Constant_17] val_8 = Constant <value: tensor = int64 {0}> ()
-       [node_Cast_18] scalar_tensor_default = Cast <to: int = 1> (val_8)
-       [node_Greater_19] gt = Greater (sum_1, scalar_tensor_default)
-       [node_If_20] getitem = If (gt) <then_branch: graph = true_graph_0 () => ( mul_true_graph_0) {
-          [node_true_graph_0_0] mul_true_graph_0 = pkg.torch.__subgraph__.true_graph_0 (view_3)
+       [node_Transpose_0] val_0 = Transpose <perm: ints = [1, 0]> ("mlp.0.weight")
+       [node_MatMul_1] val_1 = MatMul (x, val_0)
+       [node_Add_2] linear = Add (val_1, "mlp.0.bias")
+       [node_Transpose_3] val_2 = Transpose <perm: ints = [1, 0]> ("mlp.1.weight")
+       [node_MatMul_4] val_3 = MatMul (linear, val_2)
+       [node_Add_5] linear_1 = Add (val_3, "mlp.1.bias")
+       [node_ReduceSum_6] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (linear_1)
+       [node_Constant_7] val_4 = Constant <value: tensor = int64 {0}> ()
+       [node_Cast_8] scalar_tensor_default = Cast <to: int = 1> (val_4)
+       [node_Greater_9] gt = Greater (sum_1, scalar_tensor_default)
+       [node_If_10] getitem = If (gt) <then_branch: graph = true_graph_0 () => ( mul_true_graph_0) {
+          [node_true_graph_0_0] mul_true_graph_0 = pkg.torch.__subgraph__.true_graph_0 (linear_1)
        }, else_branch: graph = false_graph_0 () => ( neg_false_graph_0) {
-          [node_false_graph_0_0] neg_false_graph_0 = pkg.torch.__subgraph__.false_graph_0 (view_3)
+          [node_false_graph_0_0] neg_false_graph_0 = pkg.torch.__subgraph__.false_graph_0 (linear_1)
        }>
     }
     <
       domain: "pkg.torch.__subgraph__",
       opset_import: ["" : 18]
     >
-    false_graph_0 (view_3) => (neg)
+    false_graph_0 (linear_1) => (neg)
     {
-       [node_Neg_0] neg = Neg (view_3)
+       [node_Neg_0] neg = Neg (linear_1)
     }
     <
       domain: "pkg.torch.__subgraph__",
       opset_import: ["" : 18]
     >
-    true_graph_0 (view_3) => (mul)
+    true_graph_0 (linear_1) => (mul)
     {
        [node_Constant_0] val_0 = Constant <value: tensor = int64 {2}> ()
        [node_Cast_1] scalar_tensor_default = Cast <to: int = 1> (val_0)
-       [node_Mul_2] mul = Mul (view_3, scalar_tensor_default)
+       [node_Mul_2] mul = Mul (linear_1, scalar_tensor_default)
     }
     <
       domain: "pkg.onnxscript.torch_lib.common",
@@ -453,32 +433,31 @@ Let's optimize to see a small model.
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
     [torch.onnx] Translate the graph into ONNX... ✅
-    Applied 2 of general pattern rewrite rules.
     <
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250110+cu126"
+       producer_version: "2.7.0.dev20250124+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2] "mlp.0.bias" =  {0.102349,0.15469}, float[1] "mlp.1.bias" =  {-0.661953}, float[3,2] t, float[2] val_9, float[2] view_1, float[2,1] t_1, float[1] val_10, float[1] view_3, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {-0.463044,0.014747}, float[1] "mlp.1.bias" =  {-0.669497}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_23] t = Constant <value: tensor = float[3,2] t {-0.187618,-0.43745,0.0221874,0.0108417,-0.200107,-0.00826051}> ()
-       [node_MatMul_32] val_9 = MatMul (x, t)
-       [node_Add_33] view_1 = Add (val_9, "mlp.0.bias")
-       [node_Constant_28] t_1 = Constant <value: tensor = float[2,1] t_1 {-0.214951,0.377962}> ()
-       [node_MatMul_34] val_10 = MatMul (view_1, t_1)
-       [node_Add_35] view_3 = Add (val_10, "mlp.1.bias")
-       [node_ReduceSum_16] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (view_3)
-       [node_Constant_31] scalar_tensor_default = Constant <value: tensor = float scalar_tensor_default {0}> ()
-       [node_Greater_19] gt = Greater (sum_1, scalar_tensor_default)
-       [node_If_20] getitem = If (gt) <then_branch: graph = true_graph_0 () => (float[1] mul_true_graph_0) 
+       [node_Constant_11] val_0 = Constant <value: tensor = float[3,2] val_0 {0.132014,0.250684,0.0673384,0.239314,-0.491595,-0.0842815}> ()
+       [node_MatMul_1] val_1 = MatMul (x, val_0)
+       [node_Add_2] linear = Add (val_1, "mlp.0.bias")
+       [node_Constant_12] val_2 = Constant <value: tensor = float[2,1] val_2 {-0.698139,0.644801}> ()
+       [node_MatMul_4] val_3 = MatMul (linear, val_2)
+       [node_Add_5] linear_1 = Add (val_3, "mlp.1.bias")
+       [node_ReduceSum_6] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (linear_1)
+       [node_Constant_13] scalar_tensor_default = Constant <value: tensor = float scalar_tensor_default {0}> ()
+       [node_Greater_9] gt = Greater (sum_1, scalar_tensor_default)
+       [node_If_10] getitem = If (gt) <then_branch: graph = true_graph_0 () => (float[1] mul_true_graph_0) 
           <float scalar_tensor_default_2>
     {
           [node_Constant_1] scalar_tensor_default_2 = Constant <value: tensor = float scalar_tensor_default_2 {2}> ()
-          [node_Mul_2] mul_true_graph_0 = Mul (view_3, scalar_tensor_default_2)
+          [node_Mul_2] mul_true_graph_0 = Mul (linear_1, scalar_tensor_default_2)
        }, else_branch: graph = false_graph_0 () => (float[1] neg_false_graph_0) {
-          [node_Neg_0] neg_false_graph_0 = Neg (view_3)
+          [node_Neg_0] neg_false_graph_0 = Neg (linear_1)
        }>
     }
 
@@ -488,7 +467,7 @@ Let's optimize to see a small model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.766 seconds)
+   **Total running time of the script:** (0 minutes 2.204 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_cond.py:
