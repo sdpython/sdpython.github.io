@@ -524,15 +524,15 @@ And now?
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:833: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:843: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:825: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:835: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1801: UserWarning: Node _spec_0 target _spec_0 _spec_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1790: UserWarning: Node _spec_0 target _spec_0 _spec_0 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1801: UserWarning: Node _spec_1 target _spec_1 _spec_1 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1790: UserWarning: Node _spec_1 target _spec_1 _spec_1 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1801: UserWarning: Node _spec_2 target _spec_2 _spec_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1790: UserWarning: Node _spec_2 target _spec_2 _spec_2 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     -- preserved?
     graph():
@@ -564,7 +564,7 @@ and it is a provite API.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.581 seconds)
+   **Total running time of the script:** (0 minutes 0.507 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:

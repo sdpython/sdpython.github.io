@@ -475,23 +475,25 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_recipes/index.html">Exporter Recipes Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Exporter Recipes Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_lost_dynamic_dimension.html">A dynamic dimension lost by torch.export.export</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_dynamic_shapes.html">A few tricks about dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_inputs.html">Do no use Module as inputs!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_phi35_piece.html">Export Phi-3.5-mini-instruct piece by piece</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_named_ds_auto.html">to_onnx: Rename Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_named_ds_auto.html">torch.onnx.export: Rename Dynamic Shapes</a></li>
 </ul>
 </li>
 </ul>
@@ -680,37 +682,37 @@ the model is run.</p>
     [to_onnx] build the graph module from &lt;class &#39;torch.fx.graph_module.GraphModule.__new__.&lt;locals&gt;.GraphModuleImpl&#39;&gt;, type(args)=&lt;class &#39;tuple&#39;&gt;
     [to_onnx] build the graph module with input_names=[&#39;input0&#39;, &#39;input1&#39;, &#39;input2&#39;, &#39;input3&#39;, &#39;input4&#39;]
     [_make_builder_interpreter] use existing &lt;class &#39;torch.fx.graph_module.GraphModule.__new__.&lt;locals&gt;.GraphModuleImpl&#39;&gt;
-    [to_onnx] graph module done in 0.00039476199981436366 s
+    [to_onnx] graph module done in 0.0003621459982241504 s
     [to_onnx] start creating the onnx nodes
     [to_onnx] interpreter.function_options=FunctionOptions(export_as_function=True, name=&#39;*&#39;, domain=&#39;*&#39;, external_threshold=256, move_initializer_to_constant=True, return_initializer=True, merge_allowed=True, rename_allowed=True)
-    [to_onnx] 13 onnx nodes done in 0.0015491860003749025 s
+    [to_onnx] 13 onnx nodes done in 0.001682250000158092 s
     [to_onnx] start conversion to onnx (before optimization) mask_outputs=None
-    [GraphBuilder-XFK.optimize] start with 13 nodes
-    [GraphBuilder-XFK.optimize] #patterns=48
-    [GraphBuilder-XFK.optimize] start with subgraphs
-    [GraphBuilder-XFK.optimize] done with subgraphs
-    [GraphBuilderPatternOptimization-XFK.optimize] start with 7 nodes, 0 initializers, 48 patterns, priorities=[0, 1]
-    [GraphBuilderPatternOptimization-XFK.optimize] iteration 0: 7 nodes, priority=0
-    [GraphBuilderPatternOptimization-XFK.optimize] increase priority to 1
-    [GraphBuilderPatternOptimization-XFK.optimize] iteration 1: 7 nodes, priority=1
-    [GraphBuilderPatternOptimization-XFK.optimize] applies 3 matches, 2*MatMulAddPattern, 1*TransposeEqualReshapePattern - time=0.001 | max_time=MatMulAddPattern:0.000
-    [GraphBuilderPatternOptimization-XFK.optimize] iteration 2: 5 nodes, priority=1
-    [GraphBuilderPatternOptimization-XFK.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces [&#39;Transpose&#39;, &#39;Gemm&#39;] - time=0.000 | max_time=TransposeMatMulPattern:0.000
-    [GraphBuilderPatternOptimization-XFK.optimize] iteration 3: 4 nodes, priority=1
-    [GraphBuilderPatternOptimization-XFK.optimize] stops current_priority_index=2, priorities=[0, 1]
-    [GraphBuilderPatternOptimization-XFK.optimize] done after 4 iterations with 4 nodes in 0.004
-    [GraphBuilder-XFK.optimize] done with 4 nodes in 0.005
-    [GraphBuilder-XFK.to_onnx] make_model 1 inits 0 params
-    [GraphBuilder-XFK.time_evaluation_constants_] 0
-    [GraphBuilder-XFK._build_initializers] start with 1 initializers, large_model=False, external_threshold=1024
-    [GraphBuilder-XFK._build_initializers] switch low/high order
-    [GraphBuilder-XFK._build_initializers] done in 7.419994290103205e-07s with 1 initializers, 0 large initializers
-    [GraphBuilder-XFK._add_shape_information] dynamic shapes replacements={}
-    [to_onnx] to_onnx done in 0.005763418999777059s and 4 nodes, 1 initializers, 5 inputs, 1 outputs
-    [onnx_custom_backend] to_onnx done in 0.00817244399968331 with 4 nodes and 0 local functions.
+    [GraphBuilder-RJK.optimize] start with 13 nodes
+    [GraphBuilder-RJK.optimize] #patterns=48
+    [GraphBuilder-RJK.optimize] start with subgraphs
+    [GraphBuilder-RJK.optimize] done with subgraphs
+    [GraphBuilderPatternOptimization-RJK.optimize] start with 7 nodes, 0 initializers, 48 patterns, priorities=[0, 1]
+    [GraphBuilderPatternOptimization-RJK.optimize] iteration 0: 7 nodes, priority=0
+    [GraphBuilderPatternOptimization-RJK.optimize] increase priority to 1
+    [GraphBuilderPatternOptimization-RJK.optimize] iteration 1: 7 nodes, priority=1
+    [GraphBuilderPatternOptimization-RJK.optimize] applies 3 matches, 2*MatMulAddPattern, 1*TransposeEqualReshapePattern - time=0.001 | max_time=MatMulReshape2Of3Pattern:0.000
+    [GraphBuilderPatternOptimization-RJK.optimize] iteration 2: 5 nodes, priority=1
+    [GraphBuilderPatternOptimization-RJK.optimize] applies 1 matches, [0]=MatchResult: TransposeMatMulPattern replaces [&#39;Transpose&#39;, &#39;Gemm&#39;] - time=0.000 | max_time=TransposeMatMulPattern:0.000
+    [GraphBuilderPatternOptimization-RJK.optimize] iteration 3: 4 nodes, priority=1
+    [GraphBuilderPatternOptimization-RJK.optimize] stops current_priority_index=2, priorities=[0, 1]
+    [GraphBuilderPatternOptimization-RJK.optimize] done after 4 iterations with 4 nodes in 0.005
+    [GraphBuilder-RJK.optimize] done with 4 nodes in 0.008
+    [GraphBuilder-RJK.to_onnx] make_model 1 inits 0 params
+    [GraphBuilder-RJK.time_evaluation_constants_] 0
+    [GraphBuilder-RJK._build_initializers] start with 1 initializers, large_model=False, external_threshold=1024
+    [GraphBuilder-RJK._build_initializers] switch low/high order
+    [GraphBuilder-RJK._build_initializers] done in 1.4069992175791413e-06s with 1 initializers, 0 large initializers
+    [GraphBuilder-RJK._add_shape_information] dynamic shapes replacements={}
+    [to_onnx] to_onnx done in 0.009351513002911815s and 4 nodes, 1 initializers, 5 inputs, 1 outputs
+    [onnx_custom_backend] to_onnx done in 0.011721514001692412 with 4 nodes and 0 local functions.
     [onnx_custom_backend] starts creating InferenceSession
-    [onnx_custom_backend] InferenceSession done in 0.010647271999914665
-    discrepancies: 0.0
+    [onnx_custom_backend] InferenceSession done in 0.004507008001382928
+    discrepancies: 1.4901161193847656e-08
 </pre></div>
 </div>
 </dd></dl>

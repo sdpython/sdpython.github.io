@@ -165,17 +165,17 @@ Optimization
 
  .. code-block:: none
 
-    [GraphBuilder.optimize] start with 3 nodes
-    [GraphBuilder.optimize] #patterns=1
-    [GraphBuilderPatternOptimization.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0]
-    [GraphBuilderPatternOptimization.optimize] iteration 0: 3 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
-    [GraphBuilderPatternOptimization.optimize] iteration 1: 1 nodes, priority=0
-    [GraphBuilderPatternOptimization.optimize] done after 2 iterations with 1 nodes in 0.001
-    [GraphBuilder.optimize] done with 1 nodes in 0.002
+    [GraphBuilder-CRG.optimize] start with 3 nodes
+    [GraphBuilder-CRG.optimize] #patterns=1
+    [GraphBuilderPatternOptimization-CRG.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0]
+    [GraphBuilderPatternOptimization-CRG.optimize] iteration 0: 3 nodes, priority=0
+    [GraphBuilderPatternOptimization-CRG.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
+    [GraphBuilderPatternOptimization-CRG.optimize] iteration 1: 1 nodes, priority=0
+    [GraphBuilderPatternOptimization-CRG.optimize] stops current_priority_index=1, priorities=[0]
+    [GraphBuilderPatternOptimization-CRG.optimize] done after 2 iterations with 1 nodes in 0.002
+    [GraphBuilder-CRG.optimize] done with 1 nodes in 0.002
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cuda' version=1
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='X' type=dtype('float32') shape=[1, 'b', 'c']
     input: name='Y' type=dtype('float32') shape=['a', 'b', 'c']
     MulMulSigmoid[onnx_extended.ortops.optim.cuda](X, Y) -> final
@@ -274,7 +274,6 @@ shapes are identical.
 
     [MulMulSigmoidPattern2.validate_mapping] match not valid because shapes are differentX:(1, 'b', 'c') != ysy:('a', 'b', 'c')
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='X' type=dtype('float32') shape=[1, 'b', 'c']
     input: name='Y' type=dtype('float32') shape=['a', 'b', 'c']
     Sigmoid(Y) -> sy
@@ -288,7 +287,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.208 seconds)
+   **Total running time of the script:** (0 minutes 0.214 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

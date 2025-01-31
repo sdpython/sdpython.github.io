@@ -169,7 +169,7 @@ Let's check the model runs.
 
 .. GENERATED FROM PYTHON SOURCE LINES 109-110
 
-Let's check it works with others shapes.
+Let's check it works with other shapes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 110-120
 
@@ -486,7 +486,7 @@ Let's check the model runs.
 
 .. GENERATED FROM PYTHON SOURCE LINES 288-289
 
-Let's check it works with others shapes.
+Let's check it works with other shapes.
 
 .. GENERATED FROM PYTHON SOURCE LINES 289-299
 
@@ -704,7 +704,7 @@ We remove the changes for pytorch.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.448 seconds)
+   **Total running time of the script:** (0 minutes 0.521 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_inputs.py:

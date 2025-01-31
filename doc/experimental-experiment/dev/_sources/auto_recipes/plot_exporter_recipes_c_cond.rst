@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-1.8689]], grad_fn=<MulBackward0>)
+    tensor([[1.2353]], grad_fn=<MulBackward0>)
 
 
 
@@ -301,9 +301,9 @@ Let's export again.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.51190156,  0.30025372], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.25805596, 0.30869582], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.498573], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.48895305,  0.03137514], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([-0.20195505,  0.20825668], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.6335081], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
     Reshape(mlp.1.weight, init7_s2_-1_1) -> _onx_transpose_p_mlp_1_weight0
       Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
@@ -366,9 +366,9 @@ We can also inline the local function.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.51190156,  0.30025372], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.25805596, 0.30869582], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.498573], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.48895305,  0.03137514], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([-0.20195505,  0.20825668], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([0.6335081], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
     Reshape(mlp.1.weight, init7_s2_-1_1) -> _onx_transpose_p_mlp_1_weight0
       Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
@@ -415,7 +415,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.541 seconds)
+   **Total running time of the script:** (0 minutes 0.722 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:

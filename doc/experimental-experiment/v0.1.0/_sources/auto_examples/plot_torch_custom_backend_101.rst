@@ -81,9 +81,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[-0.3681],
-            [-0.4283],
-            [-0.3903]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.0775],
+            [ 0.3281],
+            [-0.1836]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -121,9 +121,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[-0.3681],
-            [-0.4283],
-            [-0.3903]])
+    tensor([[-0.0775],
+            [ 0.3281],
+            [-0.1836]])
 
 
 
@@ -175,9 +175,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[-0.3681],
-            [-0.4283],
-            [-0.3903]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.0775],
+            [ 0.3281],
+            [-0.1836]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -266,9 +266,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7115.4635009765625
-    Loss after epoch 2: 5537.834320068359
-    Loss after epoch 3: 5264.50315284729
+    Loss after epoch 1: 7615.123643875122
+    Loss after epoch 2: 5477.861282348633
+    Loss after epoch 3: 5238.587326049805
     Training process has finished.
 
     OptimizedModule(
@@ -320,24 +320,24 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7317.680768966675
-    Loss after epoch 2: 5454.985719680786
-    Loss after epoch 3: 5184.497909545898
+    Loss after epoch 1: 7359.452781677246
+    Loss after epoch 2: 5448.723485946655
+    Loss after epoch 3: 5228.355693817139
     Training process has finished.
     4 were created.
 
     -- model 0 running on ['CPUExecutionProvider']
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
     input: name='input2' type=dtype('float32') shape=[5, 10]
     input: name='input3' type=dtype('float32') shape=[1, 32]
     input: name='input4' type=dtype('float32') shape=[1]
+    init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     Gemm(input2, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-        Gemm(output_2, input3, input4, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
-    Transpose(input3, perm=[1,0]) -> output_3
+    Reshape(input3, init7_s2_-1_1) -> output_3
+      Gemm(output_2, output_3, input4, alpha=1.00, beta=1.00) -> output_0
     Identity(input2) -> output_1
     output: name='output_0' type=dtype('float32') shape=[5, 1]
     output: name='output_1' type=dtype('float32') shape=[5, 10]
@@ -346,19 +346,21 @@ Let's see what it looks like.
 
     -- model 1 running on ['CPUExecutionProvider']
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[5, 10]
     input: name='input1' type=dtype('float32') shape=[5, 32]
     input: name='input2' type=dtype('float32') shape=[32, 1]
     input: name='input3' type=dtype('float32') shape=[5, 1]
     init: name='init7_s1_0' type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
     init: name='init1_s1_' type=float32 shape=(1,) -- array([0.], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
+    init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape##TransposeEqualReshapePattern.apply.new_shape
     Constant(value_float=0.0) -> output_NONE_2
-    Gemm(input3, input1, transA=1, transB=0) -> output_3
-    Gemm(input3, input2, transA=0, transB=1) -> mm
+    Reshape(input2, init7_s2_1_-1) -> t_2
+      MatMul(input3, t_2) -> mm
+    Reshape(input3, init7_s2_1_-1) -> t_3
+      MatMul(t_3, input1) -> output_3
     ReduceSum(input3, init7_s1_0, keepdims=0) -> output_4
-    LessOrEqual(input1, init1_s1_) -> _onx_lessorequal0
-      Where(_onx_lessorequal0, init1_s1_, mm) -> threshold_backward
+    LessOrEqual(input1, init1_s1_) -> _onx_lessorequal_detach_30
+      Where(_onx_lessorequal_detach_30, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input0, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -> output_1
     output: name='output_0' type=dtype('float32') shape=[32, 10]
@@ -454,52 +456,54 @@ It is needed by pytorch.
 
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:130: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7578.120079040527
-    Loss after epoch 2: 5524.598566055298
-    Loss after epoch 3: 5265.00016784668
+    Loss after epoch 1: 7375.786293029785
+    Loss after epoch 2: 5557.6948528289795
+    Loss after epoch 3: 5344.436475753784
     Training process has finished.
     2 were created.
 
     -- model 0 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
     input: name='input0' type=dtype('float32') shape=[32, 10]
     input: name='input1' type=dtype('float32') shape=[32]
-    input: name='input_dim_2' type=dtype('int64') shape=[1]
+    input: name='input_dim_2' type=dtype('int64') shape=None
     input: name='input3' type=dtype('float32') shape=['s0', 10]
     input: name='input4' type=dtype('float32') shape=[1, 32]
     input: name='input5' type=dtype('float32') shape=[1]
+    init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-        Gemm(output_2, input4, input5, transA=0, transB=1, alpha=1.00, beta=1.00) -> output_0
-    Transpose(input4, perm=[1,0]) -> output_3
+    Reshape(input4, init7_s2_-1_1) -> output_3
+      Gemm(output_2, output_3, input5, alpha=1.00, beta=1.00) -> output_0
     Identity(input3) -> output_1
     Identity(input_dim_2) -> output_dim_4
     output: name='output_0' type=dtype('float32') shape=['s0', 1]
     output: name='output_1' type=dtype('float32') shape=['s0', 10]
     output: name='output_2' type=dtype('float32') shape=['s0', 32]
     output: name='output_3' type=dtype('float32') shape=[32, 1]
-    output: name='output_dim_4' type=dtype('int64') shape=[1]
+    output: name='output_dim_4' type=dtype('int64') shape=None
 
     -- model 1 running on ['CPUExecutionProvider']
 
     opset: domain='' version=18
-    doc_string: large_model=False, inline=False, external_threshold=102...
-    input: name='input_dim_0' type=dtype('int64') shape=[1]
+    input: name='input_dim_0' type=dtype('int64') shape=None
     input: name='input1' type=dtype('float32') shape=['s0', 10]
     input: name='input2' type=dtype('float32') shape=['s0', 32]
     input: name='input3' type=dtype('float32') shape=[32, 1]
     input: name='input4' type=dtype('float32') shape=['s0', 1]
     init: name='init7_s1_0' type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
     init: name='init1_s1_' type=float32 shape=(1,) -- array([0.], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
+    init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape##TransposeEqualReshapePattern.apply.new_shape
     Constant(value_float=0.0) -> output_NONE_2
       Identity(output_NONE_2) -> output_NONE_3
-    Gemm(input4, input2, transA=1, transB=0) -> output_4
-    Gemm(input4, input3, transA=0, transB=1) -> mm
+    Reshape(input3, init7_s2_1_-1) -> t_2
+      MatMul(input4, t_2) -> mm
+    Reshape(input4, init7_s2_1_-1) -> t_3
+      MatMul(t_3, input2) -> output_4
     ReduceSum(input4, init7_s1_0, keepdims=0) -> output_5
-    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal0
-      Where(_onx_lessorequal0, init1_s1_, mm) -> threshold_backward
+    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal_detach_30
+      Where(_onx_lessorequal_detach_30, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=0) -> output_1
     output: name='output_0' type=dtype('float32') shape=[32, 10]
@@ -574,7 +578,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.305 seconds)
+   **Total running time of the script:** (0 minutes 10.597 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

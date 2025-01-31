@@ -270,12 +270,93 @@ with the two sets of inputs and stores every intermediate input and output.
 
  .. code-block:: none
 
-    [_trace_forward_execution]  __main__ - Phi3ForCausalLM
-    [_trace_forward_execution] .. model - Phi3Model
-    [_trace_forward_execution] .. lm_head - Linear
+    [_trace_forward_execution]  __main__-Phi3ForCausalLM.forward
+    [_trace_forward_execution] .. model-Phi3Model.forward
+    [_trace_forward_execution] .... embed_tokens-Embedding.forward
+    [_trace_forward_execution] .... layers[0]-Phi3DecoderLayer.forward
+    [_trace_forward_execution] ...... self_attn-Phi3Attention.forward
+    [_trace_forward_execution] ........ o_proj-Linear.forward
+    [_trace_forward_execution] ........ qkv_proj-Linear.forward
+    [_trace_forward_execution] ...... mlp-Phi3MLP.forward
+    [_trace_forward_execution] ........ gate_up_proj-Linear.forward
+    [_trace_forward_execution] ........ down_proj-Linear.forward
+    [_trace_forward_execution] ........ activation_fn-SiLU.forward
+    [_trace_forward_execution] ...... input_layernorm-Phi3RMSNorm.forward
+    [_trace_forward_execution] ...... post_attention_layernorm-Phi3RMSNorm.forward
+    [_trace_forward_execution] ...... resid_attn_dropout-Dropout.forward
+    [_trace_forward_execution] ...... resid_mlp_dropout-Dropout.forward
+    [_trace_forward_execution] .... layers[1]-Phi3DecoderLayer.forward
+    [_trace_forward_execution] ...... self_attn-Phi3Attention.forward
+    [_trace_forward_execution] ........ o_proj-Linear.forward
+    [_trace_forward_execution] ........ qkv_proj-Linear.forward
+    [_trace_forward_execution] ...... mlp-Phi3MLP.forward
+    [_trace_forward_execution] ........ gate_up_proj-Linear.forward
+    [_trace_forward_execution] ........ down_proj-Linear.forward
+    [_trace_forward_execution] ........ activation_fn-SiLU.forward
+    [_trace_forward_execution] ...... input_layernorm-Phi3RMSNorm.forward
+    [_trace_forward_execution] ...... post_attention_layernorm-Phi3RMSNorm.forward
+    [_trace_forward_execution] ...... resid_attn_dropout-Dropout.forward
+    [_trace_forward_execution] ...... resid_mlp_dropout-Dropout.forward
+    [_trace_forward_execution] .... norm-Phi3RMSNorm.forward
+    [_trace_forward_execution] .... rotary_emb-Phi3RotaryEmbedding.forward
+    [_trace_forward_execution] .. lm_head-Linear.forward
     [trace_execution_piece_by_piece] run with dict(args:(),kwargs:dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x96,T1s2x32x30x96], value_cache=#2[T1s2x32x30x96,T1s2x32x30x96])))
     [__main__:Phi3ForCausalLM] > **dict(input_ids:T7r2,attention_mask:T7r2,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
     [model:Phi3Model]   > **dict(input_ids:T7r2,attention_mask:T7r2,position_ids:None,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),inputs_embeds:None,use_cache:None,output_attentions:bool,output_hidden_states:bool,return_dict:bool,cache_position:None)
+    [embed_tokens:Embedding]     > T7r2
+    [embed_tokens:Embedding]     < T1r3
+    [rotary_emb:Phi3RotaryEmbedding]     > *(T1r3,T7r2)
+    [rotary_emb:Phi3RotaryEmbedding]     < *(T1r3,T1r3)
+    [layers[0]:Phi3DecoderLayer]     > *(T1r3,), **dict(attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [input_layernorm:Phi3RMSNorm]       > T1r3
+    [input_layernorm:Phi3RMSNorm]       < T1r3
+    [self_attn:Phi3Attention]       > **dict(hidden_states:T1r3,attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [qkv_proj:Linear]         > T1r3
+    [qkv_proj:Linear]         < T1r3
+    [o_proj:Linear]         > T1r3
+    [o_proj:Linear]         < T1r3
+    [self_attn:Phi3Attention]       < *(T1r3,None)
+    [resid_attn_dropout:Dropout]       > T1r3
+    [resid_attn_dropout:Dropout]       < T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       > T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       < T1r3
+    [mlp:Phi3MLP]       > T1r3
+    [gate_up_proj:Linear]         > T1r3
+    [gate_up_proj:Linear]         < T1r3
+    [activation_fn:SiLU]         > T1r3
+    [activation_fn:SiLU]         < T1r3
+    [down_proj:Linear]         > T1r3
+    [down_proj:Linear]         < T1r3
+    [mlp:Phi3MLP]       < T1r3
+    [resid_mlp_dropout:Dropout]       > T1r3
+    [resid_mlp_dropout:Dropout]       < T1r3
+    [layers[0]:Phi3DecoderLayer]     < *(T1r3,)
+    [layers[1]:Phi3DecoderLayer]     > *(T1r3,), **dict(attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [input_layernorm:Phi3RMSNorm]       > T1r3
+    [input_layernorm:Phi3RMSNorm]       < T1r3
+    [self_attn:Phi3Attention]       > **dict(hidden_states:T1r3,attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [qkv_proj:Linear]         > T1r3
+    [qkv_proj:Linear]         < T1r3
+    [o_proj:Linear]         > T1r3
+    [o_proj:Linear]         < T1r3
+    [self_attn:Phi3Attention]       < *(T1r3,None)
+    [resid_attn_dropout:Dropout]       > T1r3
+    [resid_attn_dropout:Dropout]       < T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       > T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       < T1r3
+    [mlp:Phi3MLP]       > T1r3
+    [gate_up_proj:Linear]         > T1r3
+    [gate_up_proj:Linear]         < T1r3
+    [activation_fn:SiLU]         > T1r3
+    [activation_fn:SiLU]         < T1r3
+    [down_proj:Linear]         > T1r3
+    [down_proj:Linear]         < T1r3
+    [mlp:Phi3MLP]       < T1r3
+    [resid_mlp_dropout:Dropout]       > T1r3
+    [resid_mlp_dropout:Dropout]       < T1r3
+    [layers[1]:Phi3DecoderLayer]     < *(T1r3,)
+    [norm:Phi3RMSNorm]     > T1r3
+    [norm:Phi3RMSNorm]     < T1r3
     [model:Phi3Model]   < *dict(last_hidden_state:T1r3,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
     [lm_head:Linear]   > T1r3
     [lm_head:Linear]   < T1r3
@@ -283,221 +364,275 @@ with the two sets of inputs and stores every intermediate input and output.
     [trace_execution_piece_by_piece] run with dict(args:(),kwargs:dict(input_ids:T7s3x4,attention_mask:T7s3x35,past_key_values:DynamicCache(key_cache=#2[T1s3x32x31x96,T1s3x32x31x96], value_cache=#2[T1s3x32x31x96,T1s3x32x31x96])))
     [__main__:Phi3ForCausalLM] > **dict(input_ids:T7r2,attention_mask:T7r2,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
     [model:Phi3Model]   > **dict(input_ids:T7r2,attention_mask:T7r2,position_ids:None,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),inputs_embeds:None,use_cache:None,output_attentions:bool,output_hidden_states:bool,return_dict:bool,cache_position:None)
+    [embed_tokens:Embedding]     > T7r2
+    [embed_tokens:Embedding]     < T1r3
+    [rotary_emb:Phi3RotaryEmbedding]     > *(T1r3,T7r2)
+    [rotary_emb:Phi3RotaryEmbedding]     < *(T1r3,T1r3)
+    [layers[0]:Phi3DecoderLayer]     > *(T1r3,), **dict(attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [input_layernorm:Phi3RMSNorm]       > T1r3
+    [input_layernorm:Phi3RMSNorm]       < T1r3
+    [self_attn:Phi3Attention]       > **dict(hidden_states:T1r3,attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [qkv_proj:Linear]         > T1r3
+    [qkv_proj:Linear]         < T1r3
+    [o_proj:Linear]         > T1r3
+    [o_proj:Linear]         < T1r3
+    [self_attn:Phi3Attention]       < *(T1r3,None)
+    [resid_attn_dropout:Dropout]       > T1r3
+    [resid_attn_dropout:Dropout]       < T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       > T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       < T1r3
+    [mlp:Phi3MLP]       > T1r3
+    [gate_up_proj:Linear]         > T1r3
+    [gate_up_proj:Linear]         < T1r3
+    [activation_fn:SiLU]         > T1r3
+    [activation_fn:SiLU]         < T1r3
+    [down_proj:Linear]         > T1r3
+    [down_proj:Linear]         < T1r3
+    [mlp:Phi3MLP]       < T1r3
+    [resid_mlp_dropout:Dropout]       > T1r3
+    [resid_mlp_dropout:Dropout]       < T1r3
+    [layers[0]:Phi3DecoderLayer]     < *(T1r3,)
+    [layers[1]:Phi3DecoderLayer]     > *(T1r3,), **dict(attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [input_layernorm:Phi3RMSNorm]       > T1r3
+    [input_layernorm:Phi3RMSNorm]       < T1r3
+    [self_attn:Phi3Attention]       > **dict(hidden_states:T1r3,attention_mask:T1r4,position_ids:T7r2,past_key_value:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]),output_attentions:bool,use_cache:bool,cache_position:T7r1,position_embeddings:(T1r3,T1r3))
+    [qkv_proj:Linear]         > T1r3
+    [qkv_proj:Linear]         < T1r3
+    [o_proj:Linear]         > T1r3
+    [o_proj:Linear]         < T1r3
+    [self_attn:Phi3Attention]       < *(T1r3,None)
+    [resid_attn_dropout:Dropout]       > T1r3
+    [resid_attn_dropout:Dropout]       < T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       > T1r3
+    [post_attention_layernorm:Phi3RMSNorm]       < T1r3
+    [mlp:Phi3MLP]       > T1r3
+    [gate_up_proj:Linear]         > T1r3
+    [gate_up_proj:Linear]         < T1r3
+    [activation_fn:SiLU]         > T1r3
+    [activation_fn:SiLU]         < T1r3
+    [down_proj:Linear]         > T1r3
+    [down_proj:Linear]         < T1r3
+    [mlp:Phi3MLP]       < T1r3
+    [resid_mlp_dropout:Dropout]       > T1r3
+    [resid_mlp_dropout:Dropout]       < T1r3
+    [layers[1]:Phi3DecoderLayer]     < *(T1r3,)
+    [norm:Phi3RMSNorm]     > T1r3
+    [norm:Phi3RMSNorm]     < T1r3
     [model:Phi3Model]   < *dict(last_hidden_state:T1r3,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
     [lm_head:Linear]   > T1r3
     [lm_head:Linear]   < T1r3
     [__main__:Phi3ForCausalLM] < *dict(logits:T1r3,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
     [trace_forward_execution] traced execution of model Phi3ForCausalLM
     >>> __main__: Phi3ForCausalLM
-      > ((),dict(input_ids:CT7s2x3[4664,31570:A17677.166666666668],attention_mask:CT7s2x33[1,1:A1.0],past_key_values:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.524319648742676,4.446798324584961:A0.00045197112875037246],CT1s2x32x30x96[-4.23585319519043,4.715499401092529:A-0.005312503596610355]], value_cache=#2[CT1s2x32x30x96[-4.324870586395264,4.5727949142456055:A-0.0008027056451969537],CT1s2x32x30x96[-4.677217960357666,5.006890296936035:A0.0019749061087091166]])))
-      > ((),dict(input_ids:CT7s3x4[608,30304:A20014.666666666668],attention_mask:CT7s3x35[1,1:A1.0],past_key_values:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.5164971351623535,4.401163578033447:A-0.0006134297668116055],CT1s3x32x31x96[-4.406899452209473,4.658656597137451:A-0.0018093928141991926]], value_cache=#2[CT1s3x32x31x96[-4.715044021606445,4.725687026977539:A0.0017272961305985642],CT1s3x32x31x96[-5.0299248695373535,5.066045761108398:A0.0021334321277751466]])))
+      > ((),dict(input_ids:CT7s2x3[1926,30157:A15287.666666666666],attention_mask:CT7s2x33[1,1:A1.0],past_key_values:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.6383233070373535,4.422898292541504:A-0.0035022671144108],CT1s2x32x30x96[-4.655252456665039,4.282486438751221:A-0.0009285174642691407]], value_cache=#2[CT1s2x32x30x96[-4.561790943145752,4.394318103790283:A0.002781494748319777],CT1s2x32x30x96[-4.386584758758545,5.087398052215576:A-0.000443269511274274]])))
+      > ((),dict(input_ids:CT7s3x4[913,26609:A14189.0],attention_mask:CT7s3x35[1,1:A1.0],past_key_values:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.731935024261475,4.380406379699707:A-0.002659257337925612],CT1s3x32x31x96[-4.263330936431885,4.456257343292236:A-0.001896037205008988]], value_cache=#2[CT1s3x32x31x96[-4.831547260284424,4.720435619354248:A0.0003485915722994343],CT1s3x32x31x96[-4.535431861877441,4.804716110229492:A-0.0013735615768043663]])))
         >>> model: Phi3Model
-          > ((),dict(input_ids:CT7s2x3[4664,31570:A17677.166666666668],attention_mask:CT7s2x33[1,1:A1.0],position_ids:None,past_key_values:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.524319648742676,4.446798324584961:A0.00045197112875037246],CT1s2x32x30x96[-4.23585319519043,4.715499401092529:A-0.005312503596610355]], value_cache=#2[CT1s2x32x30x96[-4.324870586395264,4.5727949142456055:A-0.0008027056451969537],CT1s2x32x30x96[-4.677217960357666,5.006890296936035:A0.0019749061087091166]]),inputs_embeds:None,use_cache:None,output_attentions:bool=False,output_hidden_states:bool=False,return_dict:bool=True,cache_position:None))
-          > ((),dict(input_ids:CT7s3x4[608,30304:A20014.666666666668],attention_mask:CT7s3x35[1,1:A1.0],position_ids:None,past_key_values:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.5164971351623535,4.401163578033447:A-0.0006134297668116055],CT1s3x32x31x96[-4.406899452209473,4.658656597137451:A-0.0018093928141991926]], value_cache=#2[CT1s3x32x31x96[-4.715044021606445,4.725687026977539:A0.0017272961305985642],CT1s3x32x31x96[-5.0299248695373535,5.066045761108398:A0.0021334321277751466]]),inputs_embeds:None,use_cache:None,output_attentions:bool=False,output_hidden_states:bool=False,return_dict:bool=True,cache_position:None))
+          > ((),dict(input_ids:CT7s2x3[1926,30157:A15287.666666666666],attention_mask:CT7s2x33[1,1:A1.0],position_ids:None,past_key_values:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.6383233070373535,4.422898292541504:A-0.0035022671144108],CT1s2x32x30x96[-4.655252456665039,4.282486438751221:A-0.0009285174642691407]], value_cache=#2[CT1s2x32x30x96[-4.561790943145752,4.394318103790283:A0.002781494748319777],CT1s2x32x30x96[-4.386584758758545,5.087398052215576:A-0.000443269511274274]]),inputs_embeds:None,use_cache:None,output_attentions:bool=False,output_hidden_states:bool=False,return_dict:bool=True,cache_position:None))
+          > ((),dict(input_ids:CT7s3x4[913,26609:A14189.0],attention_mask:CT7s3x35[1,1:A1.0],position_ids:None,past_key_values:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.731935024261475,4.380406379699707:A-0.002659257337925612],CT1s3x32x31x96[-4.263330936431885,4.456257343292236:A-0.001896037205008988]], value_cache=#2[CT1s3x32x31x96[-4.831547260284424,4.720435619354248:A0.0003485915722994343],CT1s3x32x31x96[-4.535431861877441,4.804716110229492:A-0.0013735615768043663]]),inputs_embeds:None,use_cache:None,output_attentions:bool=False,output_hidden_states:bool=False,return_dict:bool=True,cache_position:None))
             >>> embed_tokens: Embedding
-              > ((CT7s2x3[4664,31570:A17677.166666666668],),{})
-              > ((CT7s3x4[608,30304:A20014.666666666668],),{})
-              < (CT1s2x3x3072[-0.0765041932463646,0.07427593320608139:A4.3293902790490314e-05],)
-              < (CT1s3x4x3072[-0.07915466278791428,0.08391024172306061:A2.2362938498739677e-05],)
+              > ((CT7s2x3[1926,30157:A15287.666666666666],),{})
+              > ((CT7s3x4[913,26609:A14189.0],),{})
+              < (CT1s2x3x3072[-0.08306732773780823,0.08018296211957932:A0.00011067436948413044],)
+              < (CT1s3x4x3072[-0.08019158989191055,0.08220747858285904:A8.251460977446893e-05],)
             <<<
             >>> layers[0]: Phi3DecoderLayer
-              > ((CT1s2x3x3072[-0.0765041932463646,0.07427593320608139:A4.3293902790490314e-05],),dict(attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.524319648742676,4.446798324584961:A0.00045197112875037246],CT1s2x32x30x96[-4.23585319519043,4.715499401092529:A-0.005312503596610355]], value_cache=#2[CT1s2x32x30x96[-4.324870586395264,4.5727949142456055:A-0.0008027056451969537],CT1s2x32x30x96[-4.677217960357666,5.006890296936035:A0.0019749061087091166]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
-              > ((CT1s3x4x3072[-0.07915466278791428,0.08391024172306061:A2.2362938498739677e-05],),dict(attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.5164971351623535,4.401163578033447:A-0.0006134297668116055],CT1s3x32x31x96[-4.406899452209473,4.658656597137451:A-0.0018093928141991926]], value_cache=#2[CT1s3x32x31x96[-4.715044021606445,4.725687026977539:A0.0017272961305985642],CT1s3x32x31x96[-5.0299248695373535,5.066045761108398:A0.0021334321277751466]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
+              > ((CT1s2x3x3072[-0.08306732773780823,0.08018296211957932:A0.00011067436948413044],),dict(attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.6383233070373535,4.422898292541504:A-0.0035022671144108],CT1s2x32x30x96[-4.655252456665039,4.282486438751221:A-0.0009285174642691407]], value_cache=#2[CT1s2x32x30x96[-4.561790943145752,4.394318103790283:A0.002781494748319777],CT1s2x32x30x96[-4.386584758758545,5.087398052215576:A-0.000443269511274274]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
+              > ((CT1s3x4x3072[-0.08019158989191055,0.08220747858285904:A8.251460977446893e-05],),dict(attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.731935024261475,4.380406379699707:A-0.002659257337925612],CT1s3x32x31x96[-4.263330936431885,4.456257343292236:A-0.001896037205008988]], value_cache=#2[CT1s3x32x31x96[-4.831547260284424,4.720435619354248:A0.0003485915722994343],CT1s3x32x31x96[-4.535431861877441,4.804716110229492:A-0.0013735615768043663]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
                 >>> self_attn: Phi3Attention
-                  > ((),dict(hidden_states:CT1s2x3x3072[-3.8076090812683105,3.682769775390625:A0.00216633024901035],attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.524319648742676,4.446798324584961:A0.00045197112875037246],CT1s2x32x30x96[-4.23585319519043,4.715499401092529:A-0.005312503596610355]], value_cache=#2[CT1s2x32x30x96[-4.324870586395264,4.5727949142456055:A-0.0008027056451969537],CT1s2x32x30x96[-4.677217960357666,5.006890296936035:A0.0019749061087091166]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
-                  > ((),dict(hidden_states:CT1s3x4x3072[-3.9569787979125977,4.13375186920166:A0.0011474127630010224],attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.5164971351623535,4.401163578033447:A-0.0006134297668116055],CT1s3x32x31x96[-4.406899452209473,4.658656597137451:A-0.0018093928141991926]], value_cache=#2[CT1s3x32x31x96[-4.715044021606445,4.725687026977539:A0.0017272961305985642],CT1s3x32x31x96[-5.0299248695373535,5.066045761108398:A0.0021334321277751466]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
+                  > ((),dict(hidden_states:CT1s2x3x3072[-4.07381534576416,3.967752695083618:A0.005547375635928849],attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x30x96[-4.6383233070373535,4.422898292541504:A-0.0035022671144108],CT1s2x32x30x96[-4.655252456665039,4.282486438751221:A-0.0009285174642691407]], value_cache=#2[CT1s2x32x30x96[-4.561790943145752,4.394318103790283:A0.002781494748319777],CT1s2x32x30x96[-4.386584758758545,5.087398052215576:A-0.000443269511274274]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
+                  > ((),dict(hidden_states:CT1s3x4x3072[-3.992448091506958,4.066098213195801:A0.004094581482353199],attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x31x96[-4.731935024261475,4.380406379699707:A-0.002659257337925612],CT1s3x32x31x96[-4.263330936431885,4.456257343292236:A-0.001896037205008988]], value_cache=#2[CT1s3x32x31x96[-4.831547260284424,4.720435619354248:A0.0003485915722994343],CT1s3x32x31x96[-4.535431861877441,4.804716110229492:A-0.0013735615768043663]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
                     >>> o_proj: Linear
-                      > ((CT1s2x3x3072[-2.0857884883880615,2.227522850036621:A-0.00166854337468071],),{})
-                      > ((CT1s3x4x3072[-1.9925907850265503,2.740478515625:A-4.3969838686671224e-05],),{})
-                      < (CT1s2x3x3072[-1.7465921640396118,1.7467150688171387:A-0.00036754129455908295],)
-                      < (CT1s3x4x3072[-1.576282024383545,1.5121502876281738:A-0.0039008252983229064],)
+                      > ((CT1s2x3x3072[-1.827728033065796,2.0529401302337646:A0.0046290373323797],),{})
+                      > ((CT1s3x4x3072[-1.831414818763733,1.9729397296905518:A-0.0016202278740744288],),{})
+                      < (CT1s2x3x3072[-1.427620768547058,1.4870259761810303:A-0.0034037739528369254],)
+                      < (CT1s3x4x3072[-1.4522504806518555,1.604917049407959:A0.006740730577790701],)
                     <<<
                     >>> qkv_proj: Linear
-                      > ((CT1s2x3x3072[-3.8076090812683105,3.682769775390625:A0.00216633024901035],),{})
-                      > ((CT1s3x4x3072[-3.9569787979125977,4.13375186920166:A0.0011474127630010224],),{})
-                      < (CT1s2x3x9216[-4.55996561050415,4.785744667053223:A-0.0007797792564158752],)
-                      < (CT1s3x4x9216[-5.212952136993408,4.804689407348633:A0.003576188889704634],)
+                      > ((CT1s2x3x3072[-4.07381534576416,3.967752695083618:A0.005547375635928849],),{})
+                      > ((CT1s3x4x3072[-3.992448091506958,4.066098213195801:A0.004094581482353199],),{})
+                      < (CT1s2x3x9216[-4.315618515014648,4.688002109527588:A0.0031265301673405097],)
+                      < (CT1s3x4x9216[-4.777982711791992,4.703427791595459:A-0.005237230659852693],)
                     <<<
-                  < (CT1s2x3x3072[-1.7465921640396118,1.7467150688171387:A-0.00036754129455908295],None)
-                  < (CT1s3x4x3072[-1.576282024383545,1.5121502876281738:A-0.0039008252983229064],None)
+                  < (CT1s2x3x3072[-1.427620768547058,1.4870259761810303:A-0.0034037739528369254],None)
+                  < (CT1s3x4x3072[-1.4522504806518555,1.604917049407959:A0.006740730577790701],None)
                 <<<
                 >>> mlp: Phi3MLP
-                  > ((CT1s2x3x3072[-3.766619920730591,3.8079004287719727:A-0.0007900578330600884],),{})
-                  > ((CT1s3x4x3072[-4.20332670211792,4.075958251953125:A-0.010097015604570991],),{})
+                  > ((CT1s2x3x3072[-3.7734475135803223,3.673424005508423:A-0.008422457108856918],),{})
+                  > ((CT1s3x4x3072[-3.722879648208618,4.036346435546875:A0.018334169059275936],),{})
                     >>> gate_up_proj: Linear
-                      > ((CT1s2x3x3072[-3.766619920730591,3.8079004287719727:A-0.0007900578330600884],),{})
-                      > ((CT1s3x4x3072[-4.20332670211792,4.075958251953125:A-0.010097015604570991],),{})
-                      < (CT1s2x3x16384[-4.626908779144287,4.744266033172607:A0.0004144351753060012],)
-                      < (CT1s3x4x16384[-5.071014404296875,5.014136791229248:A0.002499560848283622],)
+                      > ((CT1s2x3x3072[-3.7734475135803223,3.673424005508423:A-0.008422457108856918],),{})
+                      > ((CT1s3x4x3072[-3.722879648208618,4.036346435546875:A0.018334169059275936],),{})
+                      < (CT1s2x3x16384[-4.821575164794922,4.749272346496582:A-0.004448725162994549],)
+                      < (CT1s3x4x16384[-4.964662075042725,4.792863845825195:A0.00240860671094012],)
                     <<<
                     >>> down_proj: Linear
-                      > ((CT1s2x3x8192[-9.626221656799316,10.6359224319458:A-0.003712694137561807],),{})
-                      > ((CT1s3x4x8192[-10.604706764221191,13.27551555633545:A-0.0009531583248854041],),{})
-                      < (CT1s2x3x3072[-5.091585636138916,5.638833045959473:A0.013511776874464785],)
-                      < (CT1s3x4x3072[-5.19716215133667,5.227738857269287:A-0.003959400700043463],)
+                      > ((CT1s2x3x8192[-9.801362037658691,10.829329490661621:A-0.00024725358225864805],),{})
+                      > ((CT1s3x4x8192[-8.595328330993652,9.225577354431152:A0.0038693266681385234],),{})
+                      < (CT1s2x3x3072[-5.5982537269592285,6.071797847747803:A0.0014455462089068129],)
+                      < (CT1s3x4x3072[-5.901676654815674,5.963698863983154:A-0.002790240660424893],)
                     <<<
                     >>> activation_fn: SiLU
-                      > ((CT1s2x3x8192[-4.296870231628418,4.744266033172607:A-0.00018980784703141276],),{})
-                      > ((CT1s3x4x8192[-5.071014404296875,5.014136791229248:A-0.002123918648494557],),{})
-                      < (CT1s2x3x8192[-0.27846455574035645,4.70334005355835:A0.2433877349765435],)
-                      < (CT1s3x4x8192[-0.27846455574035645,4.981045722961426:A0.24466585338180846],)
+                      > ((CT1s2x3x8192[-4.821575164794922,4.4840168952941895:A-0.002275999769707937],),{})
+                      > ((CT1s3x4x8192[-4.964662075042725,4.792863845825195:A-0.0009792285298739027],),{})
+                      < (CT1s2x3x8192[-0.27846455574035645,4.433966636657715:A0.24414615958645203],)
+                      < (CT1s3x4x8192[-0.27846455574035645,4.7534637451171875:A0.24591329612694465],)
                     <<<
-                  < (CT1s2x3x3072[-5.091585636138916,5.638833045959473:A0.013511776874464785],)
-                  < (CT1s3x4x3072[-5.19716215133667,5.227738857269287:A-0.003959400700043463],)
+                  < (CT1s2x3x3072[-5.5982537269592285,6.071797847747803:A0.0014455462089068129],)
+                  < (CT1s3x4x3072[-5.901676654815674,5.963698863983154:A-0.002790240660424893],)
                 <<<
                 >>> input_layernorm: Phi3RMSNorm
-                  > ((CT1s2x3x3072[-0.0765041932463646,0.07427593320608139:A4.3293902790490314e-05],),{})
-                  > ((CT1s3x4x3072[-0.07915466278791428,0.08391024172306061:A2.2362938498739677e-05],),{})
-                  < (CT1s2x3x3072[-3.8076090812683105,3.682769775390625:A0.00216633024901035],)
-                  < (CT1s3x4x3072[-3.9569787979125977,4.13375186920166:A0.0011474127630010224],)
+                  > ((CT1s2x3x3072[-0.08306732773780823,0.08018296211957932:A0.00011067436948413044],),{})
+                  > ((CT1s3x4x3072[-0.08019158989191055,0.08220747858285904:A8.251460977446893e-05],),{})
+                  < (CT1s2x3x3072[-4.07381534576416,3.967752695083618:A0.005547375635928849],)
+                  < (CT1s3x4x3072[-3.992448091506958,4.066098213195801:A0.004094581482353199],)
                 <<<
                 >>> post_attention_layernorm: Phi3RMSNorm
-                  > ((CT1s2x3x3072[-1.716892957687378,1.7488868236541748:A-0.00032424742236179956],),{})
-                  > ((CT1s3x4x3072[-1.5904587507247925,1.5101318359375:A-0.0038784623282745023],),{})
-                  < (CT1s2x3x3072[-3.766619920730591,3.8079004287719727:A-0.0007900578330600884],)
-                  < (CT1s3x4x3072[-4.20332670211792,4.075958251953125:A-0.010097015604570991],)
+                  > ((CT1s2x3x3072[-1.4386417865753174,1.4993441104888916:A-0.0032930996335791304],),{})
+                  > ((CT1s3x4x3072[-1.4525972604751587,1.6054736375808716:A0.006823245127608383],),{})
+                  < (CT1s2x3x3072[-3.7734475135803223,3.673424005508423:A-0.008422457108856918],)
+                  < (CT1s3x4x3072[-3.722879648208618,4.036346435546875:A0.018334169059275936],)
                 <<<
                 >>> resid_attn_dropout: Dropout
-                  > ((CT1s2x3x3072[-1.7465921640396118,1.7467150688171387:A-0.00036754129455908295],),{})
-                  > ((CT1s3x4x3072[-1.576282024383545,1.5121502876281738:A-0.0039008252983229064],),{})
-                  < (CT1s2x3x3072[-1.7465921640396118,1.7467150688171387:A-0.00036754129455908295],)
-                  < (CT1s3x4x3072[-1.576282024383545,1.5121502876281738:A-0.0039008252983229064],)
+                  > ((CT1s2x3x3072[-1.427620768547058,1.4870259761810303:A-0.0034037739528369254],),{})
+                  > ((CT1s3x4x3072[-1.4522504806518555,1.604917049407959:A0.006740730577790701],),{})
+                  < (CT1s2x3x3072[-1.427620768547058,1.4870259761810303:A-0.0034037739528369254],)
+                  < (CT1s3x4x3072[-1.4522504806518555,1.604917049407959:A0.006740730577790701],)
                 <<<
                 >>> resid_mlp_dropout: Dropout
-                  > ((CT1s2x3x3072[-5.091585636138916,5.638833045959473:A0.013511776874464785],),{})
-                  > ((CT1s3x4x3072[-5.19716215133667,5.227738857269287:A-0.003959400700043463],),{})
-                  < (CT1s2x3x3072[-5.091585636138916,5.638833045959473:A0.013511776874464785],)
-                  < (CT1s3x4x3072[-5.19716215133667,5.227738857269287:A-0.003959400700043463],)
+                  > ((CT1s2x3x3072[-5.5982537269592285,6.071797847747803:A0.0014455462089068129],),{})
+                  > ((CT1s3x4x3072[-5.901676654815674,5.963698863983154:A-0.002790240660424893],),{})
+                  < (CT1s2x3x3072[-5.5982537269592285,6.071797847747803:A0.0014455462089068129],)
+                  < (CT1s3x4x3072[-5.901676654815674,5.963698863983154:A-0.002790240660424893],)
                 <<<
-              < (CT1s2x3x3072[-5.3348307609558105,6.06136417388916:A0.013187529813725027],)
-              < (CT1s3x4x3072[-5.88392448425293,5.575860977172852:A-0.00783786298630831],)
+              < (CT1s2x3x3072[-5.81913948059082,5.713836669921875:A-0.0018475531795856012],)
+              < (CT1s3x4x3072[-6.7342939376831055,6.567790985107422:A0.00403300459763361],)
             <<<
             >>> layers[1]: Phi3DecoderLayer
-              > ((CT1s2x3x3072[-5.3348307609558105,6.06136417388916:A0.013187529813725027],),dict(attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.269703388214111,5.904300689697266:A-0.0008714742347480582],CT1s2x32x30x96[-4.23585319519043,4.715499401092529:A-0.005312503596610355]], value_cache=#2[CT1s2x32x33x96[-4.365392684936523,4.5727949142456055:A-0.0001598371759914454],CT1s2x32x30x96[-4.677217960357666,5.006890296936035:A0.0019749061087091166]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
-              > ((CT1s3x4x3072[-5.88392448425293,5.575860977172852:A-0.00783786298630831],),dict(attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.257526397705078,6.271761417388916:A5.3596344517194334e-05],CT1s3x32x31x96[-4.406899452209473,4.658656597137451:A-0.0018093928141991926]], value_cache=#2[CT1s3x32x35x96[-4.715044021606445,4.725687026977539:A0.0016024406523245105],CT1s3x32x31x96[-5.0299248695373535,5.066045761108398:A0.0021334321277751466]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
+              > ((CT1s2x3x3072[-5.81913948059082,5.713836669921875:A-0.0018475531795856012],),dict(attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.257540702819824,5.124209403991699:A-0.003196788084440659],CT1s2x32x30x96[-4.655252456665039,4.282486438751221:A-0.0009285174642691407]], value_cache=#2[CT1s2x32x33x96[-4.561790943145752,4.394318103790283:A0.002350516678099157],CT1s2x32x30x96[-4.386584758758545,5.087398052215576:A-0.000443269511274274]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
+              > ((CT1s3x4x3072[-6.7342939376831055,6.567790985107422:A0.00403300459763361],),dict(attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.593832492828369,5.213327407836914:A-0.003202959405071999],CT1s3x32x31x96[-4.263330936431885,4.456257343292236:A-0.001896037205008988]], value_cache=#2[CT1s3x32x35x96[-4.831547260284424,4.720435619354248:A-0.0005023535074368147],CT1s3x32x31x96[-4.535431861877441,4.804716110229492:A-0.0013735615768043663]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
                 >>> self_attn: Phi3Attention
-                  > ((),dict(hidden_states:CT1s2x3x3072[-3.71167254447937,4.351285934448242:A0.009349946014120251],attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.269703388214111,5.904300689697266:A-0.0008714742347480582],CT1s2x32x30x96[-4.23585319519043,4.715499401092529:A-0.005312503596610355]], value_cache=#2[CT1s2x32x33x96[-4.365392684936523,4.5727949142456055:A-0.0001598371759914454],CT1s2x32x30x96[-4.677217960357666,5.006890296936035:A0.0019749061087091166]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
-                  > ((),dict(hidden_states:CT1s3x4x3072[-4.0989861488342285,3.8373234272003174:A-0.005813611555114445],attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.257526397705078,6.271761417388916:A5.3596344517194334e-05],CT1s3x32x31x96[-4.406899452209473,4.658656597137451:A-0.0018093928141991926]], value_cache=#2[CT1s3x32x35x96[-4.715044021606445,4.725687026977539:A0.0016024406523245105],CT1s3x32x31x96[-5.0299248695373535,5.066045761108398:A0.0021334321277751466]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
+                  > ((),dict(hidden_states:CT1s2x3x3072[-4.09100341796875,4.030111789703369:A-0.001383308456963069],attention_mask:CT1s2x1x3x33[-3.4028234663852886e+38,-0.0:A-1.0311586261773601e+37],position_ids:CT7s1x3[30,32:A31.0],past_key_value:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.257540702819824,5.124209403991699:A-0.003196788084440659],CT1s2x32x30x96[-4.655252456665039,4.282486438751221:A-0.0009285174642691407]], value_cache=#2[CT1s2x32x33x96[-4.561790943145752,4.394318103790283:A0.002350516678099157],CT1s2x32x30x96[-4.386584758758545,5.087398052215576:A-0.000443269511274274]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s3[30,32:A31.0],position_embeddings:(CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])))
+                  > ((),dict(hidden_states:CT1s3x4x3072[-4.805418491363525,4.775954246520996:A0.0029569381308761754],attention_mask:CT1s3x1x4x35[-3.4028234663852886e+38,-0.0:A-1.4583529141651237e+37],position_ids:CT7s1x4[31,34:A32.5],past_key_value:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.593832492828369,5.213327407836914:A-0.003202959405071999],CT1s3x32x31x96[-4.263330936431885,4.456257343292236:A-0.001896037205008988]], value_cache=#2[CT1s3x32x35x96[-4.831547260284424,4.720435619354248:A-0.0005023535074368147],CT1s3x32x31x96[-4.535431861877441,4.804716110229492:A-0.0013735615768043663]]),output_attentions:bool=False,use_cache:bool=True,cache_position:CT7s4[31,34:A32.5],position_embeddings:(CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])))
                     >>> o_proj: Linear
-                      > ((CT1s2x3x3072[-2.0965793132781982,2.4613635540008545:A0.001581031349573831],),{})
-                      > ((CT1s3x4x3072[-2.2842745780944824,2.885471820831299:A-0.00010379927480992067],),{})
-                      < (CT1s2x3x3072[-1.727698802947998,1.9539368152618408:A-0.0024682869261406872],)
-                      < (CT1s3x4x3072[-1.7709965705871582,1.708268642425537:A0.0010327714551263195],)
+                      > ((CT1s2x3x3072[-4.020685195922852,2.674964666366577:A-0.00013759772180973093],),{})
+                      > ((CT1s3x4x3072[-2.6122562885284424,2.658212661743164:A-0.0002009009938143248],),{})
+                      < (CT1s2x3x3072[-1.8699411153793335,1.553274154663086:A0.0054730174840579415],)
+                      < (CT1s3x4x3072[-1.613895058631897,1.6024682521820068:A0.0034523024632070096],)
                     <<<
                     >>> qkv_proj: Linear
-                      > ((CT1s2x3x3072[-3.71167254447937,4.351285934448242:A0.009349946014120251],),{})
-                      > ((CT1s3x4x3072[-4.0989861488342285,3.8373234272003174:A-0.005813611555114445],),{})
-                      < (CT1s2x3x9216[-4.554075717926025,4.405378818511963:A-0.004489510061266292],)
-                      < (CT1s3x4x9216[-4.208725929260254,5.463718891143799:A0.004831148010973047],)
+                      > ((CT1s2x3x3072[-4.09100341796875,4.030111789703369:A-0.001383308456963069],),{})
+                      > ((CT1s3x4x3072[-4.805418491363525,4.775954246520996:A0.0029569381308761754],),{})
+                      < (CT1s2x3x9216[-4.736824989318848,4.913894176483154:A0.005468381911252133],)
+                      < (CT1s3x4x9216[-4.8616557121276855,4.58002233505249:A0.0018776633773416893],)
                     <<<
-                  < (CT1s2x3x3072[-1.727698802947998,1.9539368152618408:A-0.0024682869261406872],None)
-                  < (CT1s3x4x3072[-1.7709965705871582,1.708268642425537:A0.0010327714551263195],None)
+                  < (CT1s2x3x3072[-1.8699411153793335,1.553274154663086:A0.0054730174840579415],None)
+                  < (CT1s3x4x3072[-1.613895058631897,1.6024682521820068:A0.0034523024632070096],None)
                 <<<
                 >>> mlp: Phi3MLP
-                  > ((CT1s2x3x3072[-3.549666166305542,4.110150337219238:A0.007339953932229193],),{})
-                  > ((CT1s3x4x3072[-4.205822467803955,4.059736251831055:A-0.004850264546526262],),{})
+                  > ((CT1s2x3x3072[-3.806696653366089,4.0461812019348145:A0.002403160079169927],),{})
+                  > ((CT1s3x4x3072[-4.820797443389893,4.334407329559326:A0.005289986026752026],),{})
                     >>> gate_up_proj: Linear
-                      > ((CT1s2x3x3072[-3.549666166305542,4.110150337219238:A0.007339953932229193],),{})
-                      > ((CT1s3x4x3072[-4.205822467803955,4.059736251831055:A-0.004850264546526262],),{})
-                      < (CT1s2x3x16384[-4.71592903137207,4.544133186340332:A0.0010123075836598143],)
-                      < (CT1s3x4x16384[-5.153237819671631,5.296940803527832:A0.0010891516607924128],)
+                      > ((CT1s2x3x3072[-3.806696653366089,4.0461812019348145:A0.002403160079169927],),{})
+                      > ((CT1s3x4x3072[-4.820797443389893,4.334407329559326:A0.005289986026752026],),{})
+                      < (CT1s2x3x16384[-4.276189804077148,4.889461994171143:A0.004154219779817225],)
+                      < (CT1s3x4x16384[-5.150392055511475,4.979555130004883:A-0.00304460610584556],)
                     <<<
                     >>> down_proj: Linear
-                      > ((CT1s2x3x8192[-9.733989715576172,9.656818389892578:A-0.00035077506349431273],),{})
-                      > ((CT1s3x4x8192[-10.086795806884766,11.529891014099121:A0.004240172249181878],),{})
-                      < (CT1s2x3x3072[-5.305871963500977,5.178980827331543:A0.0036938989775308073],)
-                      < (CT1s3x4x3072[-6.050964832305908,5.4576826095581055:A0.0023353122698810897],)
+                      > ((CT1s2x3x8192[-8.113507270812988,9.472539901733398:A0.0020876293706956314],),{})
+                      > ((CT1s3x4x8192[-11.213486671447754,11.590143203735352:A0.000469281663918795],),{})
+                      < (CT1s2x3x3072[-5.216437339782715,6.053864479064941:A-0.007060474994255451],)
+                      < (CT1s3x4x3072[-5.934596538543701,5.2051215171813965:A-0.0035336170861784114],)
                     <<<
                     >>> activation_fn: SiLU
-                      > ((CT1s2x3x8192[-4.71592903137207,4.544133186340332:A0.0006271271668936151],),{})
-                      > ((CT1s3x4x8192[-4.761664867401123,4.957876682281494:A-0.002479409858256195],),{})
-                      < (CT1s2x3x8192[-0.27846455574035645,4.496339797973633:A0.24618416685490122],)
-                      < (CT1s3x4x8192[-0.27846455574035645,4.923276424407959:A0.2438934481976652],)
+                      > ((CT1s2x3x8192[-4.276189804077148,4.889461994171143:A0.004177494788758433],),{})
+                      > ((CT1s3x4x8192[-5.150392055511475,4.41855525970459:A-0.0038667097259761363],),{})
+                      < (CT1s2x3x8192[-0.27846452593803406,4.852941513061523:A0.2492913767233189],)
+                      < (CT1s3x4x8192[-0.27846455574035645,4.365938663482666:A0.2424479720547118],)
                     <<<
-                  < (CT1s2x3x3072[-5.305871963500977,5.178980827331543:A0.0036938989775308073],)
-                  < (CT1s3x4x3072[-6.050964832305908,5.4576826095581055:A0.0023353122698810897],)
+                  < (CT1s2x3x3072[-5.216437339782715,6.053864479064941:A-0.007060474994255451],)
+                  < (CT1s3x4x3072[-5.934596538543701,5.2051215171813965:A-0.0035336170861784114],)
                 <<<
                 >>> input_layernorm: Phi3RMSNorm
-                  > ((CT1s2x3x3072[-5.3348307609558105,6.06136417388916:A0.013187529813725027],),{})
-                  > ((CT1s3x4x3072[-5.88392448425293,5.575860977172852:A-0.00783786298630831],),{})
-                  < (CT1s2x3x3072[-3.71167254447937,4.351285934448242:A0.009349946014120251],)
-                  < (CT1s3x4x3072[-4.0989861488342285,3.8373234272003174:A-0.005813611555114445],)
+                  > ((CT1s2x3x3072[-5.81913948059082,5.713836669921875:A-0.0018475531795856012],),{})
+                  > ((CT1s3x4x3072[-6.7342939376831055,6.567790985107422:A0.00403300459763361],),{})
+                  < (CT1s2x3x3072[-4.09100341796875,4.030111789703369:A-0.001383308456963069],)
+                  < (CT1s3x4x3072[-4.805418491363525,4.775954246520996:A0.0029569381308761754],)
                 <<<
                 >>> post_attention_layernorm: Phi3RMSNorm
-                  > ((CT1s2x3x3072[-5.136703968048096,5.932700157165527:A0.010719243169357165],),{})
-                  > ((CT1s3x4x3072[-5.9217209815979,6.042370319366455:A-0.006805091526985052],),{})
-                  < (CT1s2x3x3072[-3.549666166305542,4.110150337219238:A0.007339953932229193],)
-                  < (CT1s3x4x3072[-4.205822467803955,4.059736251831055:A-0.004850264546526262],)
+                  > ((CT1s2x3x3072[-5.5596604347229,5.9727888107299805:A0.003625464379739343],),{})
+                  > ((CT1s3x4x3072[-7.030299663543701,6.196286201477051:A0.007485306892375674],),{})
+                  < (CT1s2x3x3072[-3.806696653366089,4.0461812019348145:A0.002403160079169927],)
+                  < (CT1s3x4x3072[-4.820797443389893,4.334407329559326:A0.005289986026752026],)
                 <<<
                 >>> resid_attn_dropout: Dropout
-                  > ((CT1s2x3x3072[-1.727698802947998,1.9539368152618408:A-0.0024682869261406872],),{})
-                  > ((CT1s3x4x3072[-1.7709965705871582,1.708268642425537:A0.0010327714551263195],),{})
-                  < (CT1s2x3x3072[-1.727698802947998,1.9539368152618408:A-0.0024682869261406872],)
-                  < (CT1s3x4x3072[-1.7709965705871582,1.708268642425537:A0.0010327714551263195],)
+                  > ((CT1s2x3x3072[-1.8699411153793335,1.553274154663086:A0.0054730174840579415],),{})
+                  > ((CT1s3x4x3072[-1.613895058631897,1.6024682521820068:A0.0034523024632070096],),{})
+                  < (CT1s2x3x3072[-1.8699411153793335,1.553274154663086:A0.0054730174840579415],)
+                  < (CT1s3x4x3072[-1.613895058631897,1.6024682521820068:A0.0034523024632070096],)
                 <<<
                 >>> resid_mlp_dropout: Dropout
-                  > ((CT1s2x3x3072[-5.305871963500977,5.178980827331543:A0.0036938989775308073],),{})
-                  > ((CT1s3x4x3072[-6.050964832305908,5.4576826095581055:A0.0023353122698810897],),{})
-                  < (CT1s2x3x3072[-5.305871963500977,5.178980827331543:A0.0036938989775308073],)
-                  < (CT1s3x4x3072[-6.050964832305908,5.4576826095581055:A0.0023353122698810897],)
+                  > ((CT1s2x3x3072[-5.216437339782715,6.053864479064941:A-0.007060474994255451],),{})
+                  > ((CT1s3x4x3072[-5.934596538543701,5.2051215171813965:A-0.0035336170861784114],),{})
+                  < (CT1s2x3x3072[-5.216437339782715,6.053864479064941:A-0.007060474994255451],)
+                  < (CT1s3x4x3072[-5.934596538543701,5.2051215171813965:A-0.0035336170861784114],)
                 <<<
-              < (CT1s2x3x3072[-8.349817276000977,9.60705280303955:A0.014413142231104657],)
-              < (CT1s3x4x3072[-7.1743621826171875,7.833809852600098:A-0.004469779496957926],)
+              < (CT1s2x3x3072[-8.007316589355469,7.950407981872559:A-0.003435011149122147],)
+              < (CT1s3x4x3072[-8.958703994750977,7.521454334259033:A0.003951689586352182],)
             <<<
             >>> norm: Phi3RMSNorm
-              > ((CT1s2x3x3072[-8.349817276000977,9.60705280303955:A0.014413142231104657],),{})
-              > ((CT1s3x4x3072[-7.1743621826171875,7.833809852600098:A-0.004469779496957926],),{})
-              < (CT1s2x3x3072[-4.329084396362305,4.684192657470703:A0.0072901403956184335],)
-              < (CT1s3x4x3072[-3.6584055423736572,3.9267525672912598:A-0.002269768673042044],)
+              > ((CT1s2x3x3072[-8.007316589355469,7.950407981872559:A-0.003435011149122147],),{})
+              > ((CT1s3x4x3072[-8.958703994750977,7.521454334259033:A0.003951689586352182],),{})
+              < (CT1s2x3x3072[-3.9787144660949707,4.065525054931641:A-0.0015723454703411794],)
+              < (CT1s3x4x3072[-4.457744598388672,3.877598524093628:A0.002080924662687068],)
             <<<
             >>> rotary_emb: Phi3RotaryEmbedding
-              > ((CT1s2x3x3072[-0.0765041932463646,0.07427593320608139:A4.3293902790490314e-05],CT7s1x3[30,32:A31.0]),{})
-              > ((CT1s3x4x3072[-0.07915466278791428,0.08391024172306061:A2.2362938498739677e-05],CT7s1x4[31,34:A32.5]),{})
+              > ((CT1s2x3x3072[-0.08306732773780823,0.08018296211957932:A0.00011067436948413044],CT7s1x3[30,32:A31.0]),{})
+              > ((CT1s3x4x3072[-0.08019158989191055,0.08220747858285904:A8.251460977446893e-05],CT7s1x4[31,34:A32.5]),{})
               < (CT1s1x3x96[-1.1855769157409668,1.1902371644973755:A0.746652018013669],CT1s1x3x96[-1.1887905597686768,1.190193772315979:A0.1589894221542636])
               < (CT1s1x4x96[-1.1855769157409668,1.190237045288086:A0.7129333875218435],CT1s1x4x96[-1.1719439029693604,1.1902378797531128:A0.18296290554159592])
             <<<
-          < (dict(last_hidden_state:CT1s2x3x3072[-4.329084396362305,4.684192657470703:A0.0072901403956184335],past_key_values:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.269703388214111,5.904300689697266:A-0.0008714742347480582],CT1s2x32x33x96[-5.159628391265869,5.257333278656006:A-0.003930519807112116]], value_cache=#2[CT1s2x32x33x96[-4.365392684936523,4.5727949142456055:A-0.0001598371759914454],CT1s2x32x33x96[-4.677217960357666,5.006890296936035:A0.0021848251059774755]])),)
-          < (dict(last_hidden_state:CT1s3x4x3072[-3.6584055423736572,3.9267525672912598:A-0.002269768673042044],past_key_values:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.257526397705078,6.271761417388916:A5.3596344517194334e-05],CT1s3x32x35x96[-5.084636211395264,4.978662967681885:A-0.002626009440932474]], value_cache=#2[CT1s3x32x35x96[-4.715044021606445,4.725687026977539:A0.0016024406523245105],CT1s3x32x35x96[-5.0299248695373535,5.066045761108398:A0.001982277264531371]])),)
+          < (dict(last_hidden_state:CT1s2x3x3072[-3.9787144660949707,4.065525054931641:A-0.0015723454703411794],past_key_values:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.257540702819824,5.124209403991699:A-0.003196788084440659],CT1s2x32x33x96[-5.2950439453125,5.101772785186768:A0.0005665109786626474]], value_cache=#2[CT1s2x32x33x96[-4.561790943145752,4.394318103790283:A0.002350516678099157],CT1s2x32x33x96[-4.736824989318848,5.087398052215576:A-0.0007748850698348344]])),)
+          < (dict(last_hidden_state:CT1s3x4x3072[-4.457744598388672,3.877598524093628:A0.002080924662687068],past_key_values:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.593832492828369,5.213327407836914:A-0.003202959405071999],CT1s3x32x35x96[-5.725250244140625,5.474720001220703:A-0.001029906491431944]], value_cache=#2[CT1s3x32x35x96[-4.831547260284424,4.720435619354248:A-0.0005023535074368147],CT1s3x32x35x96[-4.8616557121276855,4.804716110229492:A-0.0020244930790110586]])),)
         <<<
         >>> lm_head: Linear
-          > ((CT1s2x3x3072[-4.329084396362305,4.684192657470703:A0.0072901403956184335],),{})
-          > ((CT1s3x4x3072[-3.6584055423736572,3.9267525672912598:A-0.002269768673042044],),{})
-          < (CT1s2x3x32064[-4.806385040283203,4.561767101287842:A-7.084682205524456e-05],)
-          < (CT1s3x4x32064[-4.770487308502197,5.134904384613037:A0.0011637009553284994],)
+          > ((CT1s2x3x3072[-3.9787144660949707,4.065525054931641:A-0.0015723454703411794],),{})
+          > ((CT1s3x4x3072[-4.457744598388672,3.877598524093628:A0.002080924662687068],),{})
+          < (CT1s2x3x32064[-5.129799842834473,5.195614337921143:A-0.0013133137086102555],)
+          < (CT1s3x4x32064[-4.8343825340271,5.137273788452148:A0.0004936027517846812],)
         <<<
-      < (dict(logits:CT1s2x3x32064[-4.806385040283203,4.561767101287842:A-7.084682205524456e-05],past_key_values:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.269703388214111,5.904300689697266:A-0.0008714742347480582],CT1s2x32x33x96[-5.159628391265869,5.257333278656006:A-0.003930519807112116]], value_cache=#2[CT1s2x32x33x96[-4.365392684936523,4.5727949142456055:A-0.0001598371759914454],CT1s2x32x33x96[-4.677217960357666,5.006890296936035:A0.0021848251059774755]])),)
-      < (dict(logits:CT1s3x4x32064[-4.770487308502197,5.134904384613037:A0.0011637009553284994],past_key_values:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.257526397705078,6.271761417388916:A5.3596344517194334e-05],CT1s3x32x35x96[-5.084636211395264,4.978662967681885:A-0.002626009440932474]], value_cache=#2[CT1s3x32x35x96[-4.715044021606445,4.725687026977539:A0.0016024406523245105],CT1s3x32x35x96[-5.0299248695373535,5.066045761108398:A0.001982277264531371]])),)
+      < (dict(logits:CT1s2x3x32064[-5.129799842834473,5.195614337921143:A-0.0013133137086102555],past_key_values:DynamicCache(key_cache=#2[CT1s2x32x33x96[-5.257540702819824,5.124209403991699:A-0.003196788084440659],CT1s2x32x33x96[-5.2950439453125,5.101772785186768:A0.0005665109786626474]], value_cache=#2[CT1s2x32x33x96[-4.561790943145752,4.394318103790283:A0.002350516678099157],CT1s2x32x33x96[-4.736824989318848,5.087398052215576:A-0.0007748850698348344]])),)
+      < (dict(logits:CT1s3x4x32064[-4.8343825340271,5.137273788452148:A0.0004936027517846812],past_key_values:DynamicCache(key_cache=#2[CT1s3x32x35x96[-5.593832492828369,5.213327407836914:A-0.003202959405071999],CT1s3x32x35x96[-5.725250244140625,5.474720001220703:A-0.001029906491431944]], value_cache=#2[CT1s3x32x35x96[-4.831547260284424,4.720435619354248:A-0.0005023535074368147],CT1s3x32x35x96[-4.8616557121276855,4.804716110229492:A-0.0020244930790110586]])),)
     <<<
-    [_untrace_forward_execution]  __main__ - Phi3ForCausalLM
-    [_untrace_forward_execution] .. model - Phi3Model
-    [_untrace_forward_execution] .... embed_tokens - Embedding
-    [_untrace_forward_execution] .... layers[0] - Phi3DecoderLayer
-    [_untrace_forward_execution] ...... self_attn - Phi3Attention
-    [_untrace_forward_execution] ........ o_proj - Linear
-    [_untrace_forward_execution] ........ qkv_proj - Linear
-    [_untrace_forward_execution] ...... mlp - Phi3MLP
-    [_untrace_forward_execution] ........ gate_up_proj - Linear
-    [_untrace_forward_execution] ........ down_proj - Linear
-    [_untrace_forward_execution] ........ activation_fn - SiLU
-    [_untrace_forward_execution] ...... input_layernorm - Phi3RMSNorm
-    [_untrace_forward_execution] ...... post_attention_layernorm - Phi3RMSNorm
-    [_untrace_forward_execution] ...... resid_attn_dropout - Dropout
-    [_untrace_forward_execution] ...... resid_mlp_dropout - Dropout
-    [_untrace_forward_execution] .... layers[1] - Phi3DecoderLayer
-    [_untrace_forward_execution] ...... self_attn - Phi3Attention
-    [_untrace_forward_execution] ........ o_proj - Linear
-    [_untrace_forward_execution] ........ qkv_proj - Linear
-    [_untrace_forward_execution] ...... mlp - Phi3MLP
-    [_untrace_forward_execution] ........ gate_up_proj - Linear
-    [_untrace_forward_execution] ........ down_proj - Linear
-    [_untrace_forward_execution] ........ activation_fn - SiLU
-    [_untrace_forward_execution] ...... input_layernorm - Phi3RMSNorm
-    [_untrace_forward_execution] ...... post_attention_layernorm - Phi3RMSNorm
-    [_untrace_forward_execution] ...... resid_attn_dropout - Dropout
-    [_untrace_forward_execution] ...... resid_mlp_dropout - Dropout
-    [_untrace_forward_execution] .... norm - Phi3RMSNorm
-    [_untrace_forward_execution] .... rotary_emb - Phi3RotaryEmbedding
-    [_untrace_forward_execution] .. lm_head - Linear
+    [_untrace_forward_execution]  __main__-Phi3ForCausalLM
+    [_untrace_forward_execution] .. model-Phi3Model
+    [_untrace_forward_execution] .... embed_tokens-Embedding
+    [_untrace_forward_execution] .... layers[0]-Phi3DecoderLayer
+    [_untrace_forward_execution] ...... self_attn-Phi3Attention
+    [_untrace_forward_execution] ........ o_proj-Linear
+    [_untrace_forward_execution] ........ qkv_proj-Linear
+    [_untrace_forward_execution] ...... mlp-Phi3MLP
+    [_untrace_forward_execution] ........ gate_up_proj-Linear
+    [_untrace_forward_execution] ........ down_proj-Linear
+    [_untrace_forward_execution] ........ activation_fn-SiLU
+    [_untrace_forward_execution] ...... input_layernorm-Phi3RMSNorm
+    [_untrace_forward_execution] ...... post_attention_layernorm-Phi3RMSNorm
+    [_untrace_forward_execution] ...... resid_attn_dropout-Dropout
+    [_untrace_forward_execution] ...... resid_mlp_dropout-Dropout
+    [_untrace_forward_execution] .... layers[1]-Phi3DecoderLayer
+    [_untrace_forward_execution] ...... self_attn-Phi3Attention
+    [_untrace_forward_execution] ........ o_proj-Linear
+    [_untrace_forward_execution] ........ qkv_proj-Linear
+    [_untrace_forward_execution] ...... mlp-Phi3MLP
+    [_untrace_forward_execution] ........ gate_up_proj-Linear
+    [_untrace_forward_execution] ........ down_proj-Linear
+    [_untrace_forward_execution] ........ activation_fn-SiLU
+    [_untrace_forward_execution] ...... input_layernorm-Phi3RMSNorm
+    [_untrace_forward_execution] ...... post_attention_layernorm-Phi3RMSNorm
+    [_untrace_forward_execution] ...... resid_attn_dropout-Dropout
+    [_untrace_forward_execution] ...... resid_mlp_dropout-Dropout
+    [_untrace_forward_execution] .... norm-Phi3RMSNorm
+    [_untrace_forward_execution] .... rotary_emb-Phi3RotaryEmbedding
+    [_untrace_forward_execution] .. lm_head-Linear
 
 
 
@@ -720,37 +855,37 @@ the refactoring to make it work.
 
     ----------------------
 
-    [try_export-FX]  __main__ - Phi3ForCausalLM --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
-    [try_export-FX] .. model - Phi3Model --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
-    [try_export-FX] .... embed_tokens - Embedding --- OK
-    [try_export-FX] .... layers[0] - Phi3DecoderLayer --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
-    [try_export-FX] ...... self_attn - Phi3Attention --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
-    [try_export-FX] ........ o_proj - Linear --- OK
-    [try_export-FX] ........ qkv_proj - Linear --- OK
-    [try_export-FX] ...... mlp - Phi3MLP --- OK
-    [try_export-FX] ...... input_layernorm - Phi3RMSNorm --- OK
-    [try_export-FX] ...... post_attention_layernorm - Phi3RMSNorm --- OK
-    [try_export-FX] ...... resid_attn_dropout - Dropout --- OK
-    [try_export-FX] ...... resid_mlp_dropout - Dropout --- OK
-    [try_export-FX] .... layers[1] - Phi3DecoderLayer --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
-    [try_export-FX] ...... self_attn - Phi3Attention --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
-    [try_export-FX] ........ o_proj - Linear --- OK
-    [try_export-FX] ........ qkv_proj - Linear --- OK
-    [try_export-FX] ...... mlp - Phi3MLP --- OK
-    [try_export-FX] ...... input_layernorm - Phi3RMSNorm --- OK
-    [try_export-FX] ...... post_attention_layernorm - Phi3RMSNorm --- OK
-    [try_export-FX] ...... resid_attn_dropout - Dropout --- OK
-    [try_export-FX] ...... resid_mlp_dropout - Dropout --- OK
-    [try_export-FX] .... norm - Phi3RMSNorm --- OK
-    [try_export-FX] .... rotary_emb - Phi3RotaryEmbedding --- FAIL, step=EXPORT, reason=Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
-    [try_export-FX] .... rotary_emb - Phi3RotaryEmbedding --- FAIL
-    [try_export-FX] .. lm_head - Linear --- OK
+    [try_export-FX]  __main__-Phi3ForCausalLM --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
+    [try_export-FX] .. model-Phi3Model --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
+    [try_export-FX] .... embed_tokens-Embedding --- OK: 
+    [try_export-FX] .... layers[0]-Phi3DecoderLayer --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
+    [try_export-FX] ...... self_attn-Phi3Attention --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
+    [try_export-FX] ........ o_proj-Linear --- OK: 
+    [try_export-FX] ........ qkv_proj-Linear --- OK: 
+    [try_export-FX] ...... mlp-Phi3MLP --- OK: 
+    [try_export-FX] ...... input_layernorm-Phi3RMSNorm --- OK: 
+    [try_export-FX] ...... post_attention_layernorm-Phi3RMSNorm --- OK: 
+    [try_export-FX] ...... resid_attn_dropout-Dropout --- OK: 
+    [try_export-FX] ...... resid_mlp_dropout-Dropout --- OK: 
+    [try_export-FX] .... layers[1]-Phi3DecoderLayer --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
+    [try_export-FX] ...... self_attn-Phi3Attention --- FAIL, step=EXPORT, reason=Cannot associate shape [[{0: DYN, 2: DYN}, {0: DYN, 2: DYN}], [{0: DYN, 2: DYN}, {0: DYN, 2: DYN}]] specified at `dynamic_shapes['past_key_value']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_value']` (expected None)
+    [try_export-FX] ........ o_proj-Linear --- OK: 
+    [try_export-FX] ........ qkv_proj-Linear --- OK: 
+    [try_export-FX] ...... mlp-Phi3MLP --- OK: 
+    [try_export-FX] ...... input_layernorm-Phi3RMSNorm --- OK: 
+    [try_export-FX] ...... post_attention_layernorm-Phi3RMSNorm --- OK: 
+    [try_export-FX] ...... resid_attn_dropout-Dropout --- OK: 
+    [try_export-FX] ...... resid_mlp_dropout-Dropout --- OK: 
+    [try_export-FX] .... norm-Phi3RMSNorm --- OK: 
+    [try_export-FX] .... rotary_emb-Phi3RotaryEmbedding --- FAIL, step=EXPORT, reason=Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
+    [try_export-FX] .... rotary_emb-Phi3RotaryEmbedding --- FAIL: Could not guard on data-depend...
+    [try_export-FX] .. lm_head-Linear --- OK: 
     success: 2
-    __main__                         Phi3ForCausalLM       FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: D...'
-    ..model                          Phi3Model             FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: D...'
+    __main__                         Phi3ForCausalLM       FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: DYN, 2: DYN...'
+    ..model                          Phi3Model             FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: DYN, 2: DYN...'
     ....embed_tokens                 Embedding             OK -- ExportedProgram
-    ....layers[0]                    Phi3DecoderLayer      FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: D...'
-    ......self_attn                  Phi3Attention         FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: D...'
+    ....layers[0]                    Phi3DecoderLayer      FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: DYN, 2: DYN...'
+    ......self_attn                  Phi3Attention         FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: DYN, 2: DYN...'
     ........o_proj                   Linear                OK -- ExportedProgram
     ........qkv_proj                 Linear                OK -- ExportedProgram
     ......mlp                        Phi3MLP               OK -- ExportedProgram
@@ -761,8 +896,8 @@ the refactoring to make it work.
     ......post_attention_layernorm   Phi3RMSNorm           OK -- ExportedProgram
     ......resid_attn_dropout         Dropout               OK -- ExportedProgram
     ......resid_mlp_dropout          Dropout               OK -- ExportedProgram
-    ....layers[1]                    Phi3DecoderLayer      FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: D...'
-    ......self_attn                  Phi3Attention         FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: D...'
+    ....layers[1]                    Phi3DecoderLayer      FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: DYN, 2: DYN...'
+    ......self_attn                  Phi3Attention         FAIL -- step=EXPORT, reason='Cannot associate shape [[{0: DYN, 2: DYN...'
     ........o_proj                   Linear                OK -- ExportedProgram
     ........qkv_proj                 Linear                OK -- ExportedProgram
     ......mlp                        Phi3MLP               OK -- ExportedProgram
@@ -774,7 +909,7 @@ the refactoring to make it work.
     ......resid_attn_dropout         Dropout               OK -- ExportedProgram
     ......resid_mlp_dropout          Dropout               OK -- ExportedProgram
     ....norm                         Phi3RMSNorm           OK -- ExportedProgram
-    ....rotary_emb                   Phi3RotaryEmbedding   FAIL -- step=EXPORT, reason='Could not guard on data-depend...'
+    ....rotary_emb                   Phi3RotaryEmbedding   FAIL -- step=EXPORT, reason='Could not guard on data-dependent expres...'
     ..lm_head                        Linear                OK -- ExportedProgram
 
 
@@ -793,7 +928,7 @@ This will be something for another example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.513 seconds)
+   **Total running time of the script:** (0 minutes 6.108 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_phi35_piece.py:

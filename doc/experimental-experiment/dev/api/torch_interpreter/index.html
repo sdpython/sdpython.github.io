@@ -475,23 +475,25 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_recipes/index.html">Exporter Recipes Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Exporter Recipes Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_lost_dynamic_dimension.html">A dynamic dimension lost by torch.export.export</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_dynamic_shapes.html">A few tricks about dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_inputs.html">Do no use Module as inputs!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_phi35_piece.html">Export Phi-3.5-mini-instruct piece by piece</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_exporter_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_c_named_ds_auto.html">to_onnx: Rename Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_recipes/plot_exporter_recipes_oe_named_ds_auto.html">torch.onnx.export: Rename Dynamic Shapes</a></li>
 </ul>
 </li>
 </ul>
@@ -889,10 +891,10 @@ to make it easier to trace the code source</p></li>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">tensor</span><span class="p">([[</span><span class="mf">0.0000</span><span class="p">,</span> <span class="mf">0.0592</span><span class="p">,</span> <span class="mf">0.0000</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.0000</span><span class="p">,</span> <span class="mf">0.0000</span><span class="p">,</span> <span class="mf">0.0000</span><span class="p">]],</span> <span class="n">grad_fn</span><span class="o">=&lt;</span><span class="n">ReluBackward0</span><span class="o">&gt;</span><span class="p">)</span>
-    <span class="p">[</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.059</span><span class="p">,</span> <span class="mf">0.</span>   <span class="p">],</span>
-           <span class="p">[</span><span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.</span>   <span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">tensor</span><span class="p">([[</span><span class="mf">3.0989e-01</span><span class="p">,</span> <span class="mf">4.4034e-01</span><span class="p">,</span> <span class="mf">0.0000e+00</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">4.1134e-01</span><span class="p">,</span> <span class="mf">2.5242e-04</span><span class="p">,</span> <span class="mf">4.2938e-02</span><span class="p">]],</span> <span class="n">grad_fn</span><span class="o">=&lt;</span><span class="n">ReluBackward0</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">array</span><span class="p">([[</span><span class="mf">3.099e-01</span><span class="p">,</span> <span class="mf">4.403e-01</span><span class="p">,</span> <span class="mf">0.000e+00</span><span class="p">],</span>
+           <span class="p">[</span><span class="mf">4.113e-01</span><span class="p">,</span> <span class="mf">2.524e-04</span><span class="p">,</span> <span class="mf">4.294e-02</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float32</span><span class="p">)]</span>
 </pre></div>
 </div>
 </dd></dl>

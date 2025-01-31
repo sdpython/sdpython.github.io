@@ -64,23 +64,6 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_dynamic_shapes_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_dynamic_shapes.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">A few tricks about dynamic shapes</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This continues example l-plot-torch-export-with-dynamic-cache-201.">
 
 .. only:: html
@@ -153,14 +136,31 @@ Some of them are exposed in the examples. Others may be found at
 
 .. only:: html
 
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_with_dyamic_cache_thumb.png
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_with_dynamic_cache_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_with_dyamic_cache.py`
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_with_dynamic_cache.py`
 
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Export a model using a custom type as input</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes need to be specified to get a model able to cope with different dimensions. Input rank are expected to be the same but the dimension may change. The user has the ability to set them up or to call a function able to infer them from two sets of inputs having different values for the dynamic dimensions.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_infer_ds_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_infer_ds.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Infer dynamic shapes before exporting</div>
     </div>
 
 
@@ -195,6 +195,23 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measures the exporter success on many test cases</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_dynamic_shapes_auto_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_dynamic_shapes_auto.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when dynamic shapes has constraints</div>
     </div>
 
 
@@ -285,23 +302,6 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We try to make it easier to export with dynamic shapes. To do that, we run the model at least twice with a different set of inputs and we try to guess the dynamic shapes found along the way.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_ds_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_ds.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and infer dynamic shapes</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch.">
 
 .. only:: html
@@ -314,6 +314,23 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">to_onnx and submodules from LLMs</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example given in l-plot-exporter-dynamic_shapes can only be exported with dynamic shapes using torch.export.Dim.AUTO. As a result, the exported onnx models have dynamic dimensions with unpredictable names.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_named_ds_auto_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx: Rename Dynamic Shapes</div>
     </div>
 
 
@@ -351,6 +368,23 @@ Some of them are exposed in the examples. Others may be found at
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example given in l-plot-exporter-dynamic_shapes can only be exported with dynamic shapes using torch.export.Dim.AUTO. As a result, the exported onnx models have dynamic dimensions with unpredictable names.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_named_ds_auto_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_named_ds_auto.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">torch.onnx.export: Rename Dynamic Shapes</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -362,23 +396,25 @@ Some of them are exposed in the examples. Others may be found at
    :hidden:
 
    /auto_recipes/plot_exporter_exporter_lost_dynamic_dimension
-   /auto_recipes/plot_exporter_exporter_dynamic_shapes
    /auto_recipes/plot_exporter_exporter_inputs
    /auto_recipes/plot_exporter_exporter_phi35_piece
    /auto_recipes/plot_exporter_exporter_draft_mode
    /auto_recipes/plot_exporter_exporter_reportibility
-   /auto_recipes/plot_exporter_exporter_with_dyamic_cache
+   /auto_recipes/plot_exporter_exporter_with_dynamic_cache
+   /auto_recipes/plot_exporter_exporter_infer_ds
    /auto_recipes/plot_exporter_recipes_oe_lr
    /auto_recipes/plot_exporter_coverage
+   /auto_recipes/plot_exporter_exporter_dynamic_shapes_auto
    /auto_recipes/plot_exporter_recipes_c_phi2
    /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
-   /auto_recipes/plot_exporter_recipes_c_ds
    /auto_recipes/plot_exporter_recipes_c_modules
+   /auto_recipes/plot_exporter_recipes_c_named_ds_auto
    /auto_recipes/plot_exporter_recipes_oe_phi2
    /auto_recipes/plot_exporter_recipes_oe_cond
+   /auto_recipes/plot_exporter_recipes_oe_named_ds_auto
 
 
 .. only:: html

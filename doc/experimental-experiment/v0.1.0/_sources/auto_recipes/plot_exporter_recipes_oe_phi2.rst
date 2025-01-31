@@ -178,13 +178,13 @@ set up when the export starts.
  .. code-block:: none
 
 
-    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.4397,  0.6500,  0.9195,  ...,  0.1219,  1.1371,  0.6988],
-             [-1.5441, -0.8557,  0.0479,  ...,  1.0506,  1.4617, -0.6143],
-             [-1.1326,  0.5319,  2.1875,  ...,  1.8674,  2.4659, -1.5886]],
+    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.4283,  1.4034, -0.7891,  ...,  0.5327, -0.9800, -0.2947],
+             [ 0.5437,  1.1914, -1.1685,  ..., -2.0245,  1.2630,  1.0255],
+             [-0.6199,  0.9831,  0.7693,  ...,  0.8923,  0.2086,  0.2852]],
 
-            [[-0.8923,  0.4607,  0.1598,  ..., -0.6037,  0.4478, -0.2961],
-             [-1.7842, -1.6504, -0.1200,  ..., -0.0211,  1.0021,  0.2516],
-             [-1.5971, -1.2554,  0.4499,  ...,  1.3327, -1.2743, -1.6635]]],
+            [[-0.4755, -0.7645,  0.5872,  ...,  0.9709,  0.6555, -0.3843],
+             [ 0.1826,  1.5114,  0.5027,  ...,  0.2421,  0.5863, -0.2181],
+             [ 0.7475,  1.3277, -0.8341,  ...,  0.3511,  1.4484,  0.0632]]],
            grad_fn=<ViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
 
 
@@ -220,10 +220,6 @@ Let's export with :func:`torch.onnx.export`.
 
  .. code-block:: none
 
-    /home/xadupre/github/onnxscript/onnxscript/converter.py:823: FutureWarning: 'onnxscript.values.Op.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
-      param_schemas = callee.param_schemas()
-    /home/xadupre/github/onnxscript/onnxscript/converter.py:823: FutureWarning: 'onnxscript.values.OnnxFunction.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
-      param_schemas = callee.param_schemas()
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`...
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`... ❌
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export`...
@@ -784,7 +780,7 @@ Visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.478 seconds)
+   **Total running time of the script:** (0 minutes 17.805 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_phi2.py:

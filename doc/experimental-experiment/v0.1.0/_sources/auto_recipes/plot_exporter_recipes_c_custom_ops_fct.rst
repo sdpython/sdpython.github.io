@@ -101,7 +101,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.9184,  0.1085,  0.9256]])
+    tensor([[-0.0308,  0.4018, -0.6035]])
 
 
 
@@ -157,7 +157,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
 
     Unable to interpret function <class 'torch._ops.OpOverload'>: <OpOverload(op='aten.view_as', overload='default')>, searched for ['aten::view_as', 'view_as_default'] and attributes ['__qualname__', '__name__'], args=(x, x), kwargs={}
     --DEBUG--
-    [GraphBuilder-WHC] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+    [GraphBuilder-OZG] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
     --PARAMETERS--
     dynamic_examples=
     --SHAPE--
@@ -193,8 +193,8 @@ The exporter fails with the same eror as it expects torch.export.export to work.
     -- process.progress --
     node 1/5 target=aten.view_as.default
     --
-    [GraphBuilder-WHC.make_tensor_input] x[1:1x3]
-    [GraphBuilder-WHC] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+    [GraphBuilder-OZG.make_tensor_input] x[1:1x3]
+    [GraphBuilder-OZG] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 
 
 
@@ -258,7 +258,7 @@ Let's check it runs again.
  .. code-block:: none
 
 
-    tensor([[-0.9184,  0.1085,  0.9256]])
+    tensor([[-0.0308,  0.4018, -0.6035]])
 
 
 
@@ -448,7 +448,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.214 seconds)
+   **Total running time of the script:** (0 minutes 0.285 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py:
