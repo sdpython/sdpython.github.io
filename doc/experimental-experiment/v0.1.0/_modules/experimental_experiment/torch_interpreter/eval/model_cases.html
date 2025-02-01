@@ -474,21 +474,26 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../auto_recipes/index.html">Exporter Recipes Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Exporter Recipes Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_lost_dynamic_dimension.html">A dynamic dimension lost by torch.export.export</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_dynamic_shapes.html">A few tricks about dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_inputs.html">Do no use Module as inputs!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_phi35_piece.html">Export Phi-3.5-mini-instruct piece by piece</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_with_dyamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_scan_pdist.html">Export a model with a loop (scan)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_exporter_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_phi2.html">to_onnx and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_custom_ops_inplace.html">to_onnx and a custom operator inplace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_custom_ops_fct.html">to_onnx and a custom operator registered with a function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_scan_pdist.html">to_onnx and a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_cond.html">to_onnx and a model with a test</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_ds.html">to_onnx and infer dynamic shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_modules.html">to_onnx and submodules from LLMs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_c_named_ds_auto.html">to_onnx: Rename Dynamic Shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_oe_phi2.html">torch.onnx.export and Phi-2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_oe_cond.html">torch.onnx.export and a model with a test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../auto_recipes/plot_exporter_recipes_oe_named_ds_auto.html">torch.onnx.export: Rename Dynamic Shapes</a></li>
 </ul>
 </li>
 </ul>
@@ -1090,7 +1095,7 @@
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">init</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">carry</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">higher_order</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
-            <span class="n">ControlFlowScan</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="p">[</span><span class="n">init</span><span class="p">],</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">additional_inputs</span><span class="o">=</span><span class="p">[]</span>
+            <span class="n">ControlFlowScan</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="p">[</span><span class="n">init</span><span class="p">],</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">additional_inputs</span><span class="o">=</span><span class="p">[]</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">carry</span></div>
 
@@ -1121,7 +1126,7 @@
             <span class="n">ControlFlowScan2Carried</span><span class="o">.</span><span class="n">add</span><span class="p">,</span>
             <span class="p">[</span><span class="n">init1</span><span class="p">,</span> <span class="n">init2</span><span class="p">],</span>
             <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">],</span>
-            <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="c1"># dim=0,  # 01/31/2025, not supported anymore</span>
             <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">additional_inputs</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
@@ -1157,7 +1162,7 @@
             <span class="n">ControlFlowScanCDist</span><span class="o">.</span><span class="n">dist</span><span class="p">,</span>
             <span class="p">[</span><span class="n">x</span><span class="p">],</span>
             <span class="p">[</span><span class="n">x</span><span class="p">],</span>
-            <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="c1"># dim=0,  # 01/31/2025, not supported anymore</span>
             <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">additional_inputs</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
@@ -1195,7 +1200,7 @@
             <span class="n">ControlFlowScanCDist2</span><span class="o">.</span><span class="n">dist</span><span class="p">,</span>
             <span class="p">[</span><span class="n">z</span><span class="p">],</span>
             <span class="p">[</span><span class="n">x</span><span class="p">],</span>
-            <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="c1"># dim=0,  # 01/31/2025, not supported anymore</span>
             <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">additional_inputs</span><span class="o">=</span><span class="p">[</span><span class="n">y</span><span class="p">],</span>
         <span class="p">)</span>
@@ -1232,7 +1237,7 @@
             <span class="n">ControlFlowScanCDistXY</span><span class="o">.</span><span class="n">dist</span><span class="p">,</span>
             <span class="p">[</span><span class="n">y</span><span class="p">],</span>
             <span class="p">[</span><span class="n">x</span><span class="p">],</span>
-            <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="c1"># dim=0,  # 01/31/2025, not supported anymore</span>
             <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">additional_inputs</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>

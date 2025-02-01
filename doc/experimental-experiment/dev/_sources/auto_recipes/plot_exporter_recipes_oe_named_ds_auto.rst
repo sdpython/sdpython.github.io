@@ -27,11 +27,10 @@ Example given in :ref:`l-plot-exporter-dynamic_shapes` can only be exported
 with dynamic shapes using ``torch.export.Dim.AUTO``. As a result, the exported
 onnx models have dynamic dimensions with unpredictable names.
 
-
 Model with unpredictable names for dynamic shapes
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-31
+.. GENERATED FROM PYTHON SOURCE LINES 14-30
 
 .. code-block:: Python
 
@@ -42,13 +41,13 @@ Model with unpredictable names for dynamic shapes
 
     class Model(torch.nn.Module):
         def forward(self, x, y, z):
-            return torch.cat((x, y), axis=1) + z
+            return torch.cat((x, y), axis=1) + z[:, ::2]
 
 
     model = Model()
     x = torch.randn(2, 3)
-    y = torch.randn(2, 4)
-    z = torch.randn(2, 7)
+    y = torch.randn(2, 5)
+    z = torch.randn(2, 16)
     model(x, y, z)
 
 
@@ -60,29 +59,25 @@ Model with unpredictable names for dynamic shapes
  .. code-block:: none
 
 
-    tensor([[-1.6513,  1.1737, -1.2368, -1.3783,  0.1198, -0.1255, -0.7514],
-            [-0.0431,  2.0627,  0.5756,  0.2171, -3.1869, -0.2709,  1.3927]])
+    tensor([[-1.4056, -1.3240, -0.5327,  1.7165,  0.3170,  2.3521, -0.5517, -1.7379],
+            [ 2.0277,  0.4392,  0.1686,  2.5376, -0.2782,  0.4608, -1.4493,  1.8486]])
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-33
+.. GENERATED FROM PYTHON SOURCE LINES 31-32
 
 Let's export it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-45
+.. GENERATED FROM PYTHON SOURCE LINES 32-40
 
 .. code-block:: Python
 
 
-    batch = torch.export.Dim("batch")
+    AUTO = torch.export.Dim.AUTO
     ep = torch.export.export(
         model,
         (x, y, z),
-        dynamic_shapes=(
-            {0: batch, 1: torch.export.Dim.AUTO},
-            {0: batch, 1: torch.export.Dim.AUTO},
-            {0: batch, 1: torch.export.Dim.AUTO},
-        ),
+        dynamic_shapes=({0: AUTO, 1: AUTO}, {0: AUTO, 1: AUTO}, {0: AUTO, 1: AUTO}),
     )
 
 
@@ -92,11 +87,11 @@ Let's export it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-47
+.. GENERATED FROM PYTHON SOURCE LINES 41-42
 
 Let's convert it into ONNX.
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-55
+.. GENERATED FROM PYTHON SOURCE LINES 42-50
 
 .. code-block:: Python
 
@@ -122,13 +117,13 @@ Let's convert it into ONNX.
     [torch.onnx] Translate the graph into ONNX... ✅
      input: EXTERNAL[s0,s1] x
      input: EXTERNAL[s0,s3] y
-     input: EXTERNAL[s0,s1 + s3] z
-    output: EXTERNAL[s0,s1 + s3] add_3
+     input: EXTERNAL[s0,s5] z
+    output: EXTERNAL[s0,s1 + s3] add_11
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-62
+.. GENERATED FROM PYTHON SOURCE LINES 51-57
 
 Rename the dynamic shapes
 +++++++++++++++++++++++++
@@ -137,7 +132,7 @@ We just need to give the onnx exporter the same information
 :func:`torch.export.export` was given but we replace ``AUTO``
 by the name this dimension should have.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-77
+.. GENERATED FROM PYTHON SOURCE LINES 57-72
 
 .. code-block:: Python
 
@@ -145,9 +140,9 @@ by the name this dimension should have.
     onx = torch.onnx.export(
         ep,
         dynamic_shapes=(
-            {0: batch, 1: "dx"},
-            {0: batch, 1: "dy"},
-            {0: batch, 1: "dx+dy"},
+            {0: "batch", 1: "dx"},
+            {0: "batch", 1: "dy"},
+            {0: "batch", 1: "dx+dy"},
         ),
     ).model_proto
 
@@ -170,18 +165,18 @@ by the name this dimension should have.
     [torch.onnx] Translate the graph into ONNX... ✅
      input: EXTERNAL[s0,s1] x
      input: EXTERNAL[s0,s3] y
-     input: EXTERNAL[s0,s1 + s3] z
-    output: EXTERNAL[s0,s1 + s3] add_3
+     input: EXTERNAL[s0,s5] z
+    output: EXTERNAL[s0,s1 + s3] add_11
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-80
+.. GENERATED FROM PYTHON SOURCE LINES 73-75
 
 A model with an unknown output shape
 ++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-91
+.. GENERATED FROM PYTHON SOURCE LINES 75-86
 
 .. code-block:: Python
 
@@ -208,31 +203,28 @@ A model with an unknown output shape
     tensor([[0, 0],
             [0, 1],
             [1, 0],
-            [1, 1],
             [2, 0],
-            [2, 1],
-            [4, 1],
-            [5, 0],
-            [5, 1],
+            [4, 0],
             [6, 0],
             [6, 1],
-            [7, 0],
-            [7, 1],
-            [8, 0],
             [9, 1]])
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-93
+.. GENERATED FROM PYTHON SOURCE LINES 87-88
 
 Let's export it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-97
+.. GENERATED FROM PYTHON SOURCE LINES 88-96
 
 .. code-block:: Python
 
 
-    ep = torch.export.export(model, (x,), dynamic_shapes=({0: batch, 1: torch.export.Dim.AUTO},))
+    ep = torch.export.export(
+        model,
+        (x,),
+        dynamic_shapes=({0: torch.export.Dim("batch"), 1: AUTO},),
+    )
     print(ep)
 
 
@@ -246,14 +238,14 @@ Let's export it.
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "i64[s0, s1]"):
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_named_ds_auto.py:84 in forward, code: return torch.nonzero(x)
+                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_named_ds_auto.py:79 in forward, code: return torch.nonzero(x)
                 nonzero: "i64[u0, 2]" = torch.ops.aten.nonzero.default(x);  x = None
             
                  # 
                 sym_size_int_3: "Sym(u0)" = torch.ops.aten.sym_size.int(nonzero, 0)
                 sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_3);  sym_constrain_range_for_size_default = None
             
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_named_ds_auto.py:84 in forward, code: return torch.nonzero(x)
+                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_named_ds_auto.py:79 in forward, code: return torch.nonzero(x)
                 ge_1: "Sym(u0 >= 0)" = sym_size_int_3 >= 0;  sym_size_int_3 = None
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(ge_1, "Runtime assertion failed for expression u0 >= 0 on node 'ge_1'");  ge_1 = _assert_scalar_default = None
                 return (nonzero,)
@@ -265,16 +257,16 @@ Let's export it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-99
+.. GENERATED FROM PYTHON SOURCE LINES 97-98
 
 Let's export it into ONNX.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-107
+.. GENERATED FROM PYTHON SOURCE LINES 98-106
 
 .. code-block:: Python
 
 
-    onx = torch.onnx.export(ep, dynamic_shapes=({0: batch, 1: "dx"},)).model_proto
+    onx = torch.onnx.export(ep, dynamic_shapes=({0: "batch", 1: "dx"},), dynamo=True).model_proto
 
     for inp in onx.graph.input:
         print(f" input: {pretty_onnx(inp)}")
@@ -299,7 +291,7 @@ Let's export it into ONNX.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-114
+.. GENERATED FROM PYTHON SOURCE LINES 107-113
 
 The exporter has detected a dimension could not be infered
 from the input shape somewhere in the graph and introduced a
@@ -308,7 +300,7 @@ Let's rename it as well. Let's also change the output name
 because the functionality may not be implemented yet when
 the output dynamic shapes are given as a tuple.
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-134
+.. GENERATED FROM PYTHON SOURCE LINES 113-134
 
 .. code-block:: Python
 
@@ -316,14 +308,15 @@ the output dynamic shapes are given as a tuple.
     try:
         onx = torch.onnx.export(
             ep,
-            dynamic_shapes=({0: batch, 1: "dx"},),
+            dynamic_shapes=({0: "batch", 1: "dx"},),
             output_dynamic_shapes={"zeros": {0: "num_zeros"}},
             output_names=["zeros"],
+            dynamo=True,
         ).model_proto
         raise AssertionError(
             "able to rename output dynamic dimensions, please update the tutorial"
         )
-    except torch.onnx._internal.exporter._errors.ConversionError as e:
+    except (TypeError, torch.onnx._internal.exporter._errors.ConversionError) as e:
         print(f"unable to rename output dynamic dimensions due to {e}")
         onx = None
 
@@ -340,19 +333,7 @@ the output dynamic shapes are given as a tuple.
 
  .. code-block:: none
 
-    [torch.onnx] Run decomposition...
-    [torch.onnx] Run decomposition... ❌
-    unable to rename output dynamic dimensions due to Failed to decompose the FX graph for ONNX compatibility. This is step 2/3 of exporting the model to ONNX. Next steps:
-    - Create an issue in the PyTorch GitHub repository against the *torch.export* component and attach the full error stack as well as reproduction scripts.
-    - Create an error report with `torch.onnx.export(..., report=True)`, and save the ExportedProgram as a pt2 file. Create an issue in the PyTorch GitHub repository against the *onnx* component. Attach the error report and the pt2 model.
-
-    ## Exception summary
-
-    <class 'torch.fx.experimental.symbolic_shapes.PendingUnbackedSymbolNotFound'>: Pending unbacked symbols {u4} not in returned outputs [FakeTensor(..., size=(s0, s1), dtype=torch.int64)] .
-    Did you accidentally call new_dynamic_size() or item() more times than you needed to in your fake implementation?
-    For more help, see https://docs.google.com/document/d/1RWrH-3wLEpzR9kCS6gGBNen_-Fs-8PVbWWFE5AcgeWE/edit
-
-    (Refer to the full stack trace above for more information.)
+    unable to rename output dynamic dimensions due to export() got an unexpected keyword argument 'output_dynamic_shapes'
 
 
 
@@ -360,7 +341,7 @@ the output dynamic shapes are given as a tuple.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.064 seconds)
+   **Total running time of the script:** (0 minutes 2.669 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_named_ds_auto.py:

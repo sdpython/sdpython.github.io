@@ -29,6 +29,10 @@ already has many examples about it. Here are some corner cases.
 * :ref:`l-plot-exporter-lost_dynamic_dimension`
 * :ref:`l-plot-exporter-exporter-infer-ds`
 
+**Control Flow**
+
+* :ref:`l-plot-exporter-exporter-pdist`
+
 **Custom Types as Inputs**
 
 * :ref:`l-plot-torch-export-with-dynamic-cache-201`
@@ -237,7 +241,7 @@ Section :ref:`l-torch-export-export-ds provides` a couple of examples
 on how to define them, as their definition aligns with those used
 in :func:`torch.export.export`.
 
-* :ref:`l-plot-exporter-recipes-custom-modules`
+* :ref:`l-plot-exporter-recipes-custom-named-dynamic-shapes`
 
 **Control Flow**
 

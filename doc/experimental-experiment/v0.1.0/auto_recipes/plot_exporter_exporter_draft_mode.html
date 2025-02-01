@@ -480,6 +480,7 @@
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_scan_pdist.html">Export a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
@@ -789,13 +790,24 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>##############################################################################################
-Congratuations: No issues are found during export, and it was able to soundly produce a graph.
-You can now change back to torch.export.export()
-##############################################################################################
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>###################################################################################################
+WARNING: 1 issue(s) found during export, and it was not able to soundly produce a graph.
+Please follow the instructions to fix the errors.
+###################################################################################################
+
+1. Data dependent error.
+    When exporting, we were unable to evaluate the value of `Eq(u0, 1)`.
+    This was encountered 2 times.
+    This occurred at the following stacktrace:
+        File /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py, lineno 386, in _longrope_frequency_update:
+        `if seq_len &gt; original_max_position_embeddings:`
+    As a result, it was specialized to a constant (e.g. `0` in the 1st occurrence), and asserts were inserted into the graph.
+
+    Please add `torch._check(...)` to the original code to assert this data-dependent assumption.
+    Please refer to https://docs.google.com/document/d/1kZ_BbB3JnoLbUZleDT6635dHs88ZVYId8jT-yTFgf3A/edit#heading=h.boi2xurpqa0o for more details.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.673 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 16.031 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-exporter-draft-mode-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/fac2194c537b3717f092996e7e7733be/plot_exporter_exporter_draft_mode.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_exporter_draft_mode.ipynb</span></code></a></p>

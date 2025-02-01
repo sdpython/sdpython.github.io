@@ -480,6 +480,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_scan_pdist.html">Export a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
@@ -699,13 +700,13 @@ set up when the export starts.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">(</span><span class="o">**</span><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.4283,  1.4034, -0.7891,  ...,  0.5327, -0.9800, -0.2947],
-         [ 0.5437,  1.1914, -1.1685,  ..., -2.0245,  1.2630,  1.0255],
-         [-0.6199,  0.9831,  0.7693,  ...,  0.8923,  0.2086,  0.2852]],
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.0527,  2.1904, -0.7771,  ..., -0.1380,  1.5488, -1.0399],
+         [-0.0605, -0.3221, -0.2274,  ...,  1.0397, -2.5695, -1.0675],
+         [ 0.2903,  1.5978, -0.5193,  ...,  0.6445, -0.5092, -0.3258]],
 
-        [[-0.4755, -0.7645,  0.5872,  ...,  0.9709,  0.6555, -0.3843],
-         [ 0.1826,  1.5114,  0.5027,  ...,  0.2421,  0.5863, -0.2181],
-         [ 0.7475,  1.3277, -0.8341,  ...,  0.3511,  1.4484,  0.0632]]],
+        [[ 2.2036,  2.2190,  0.2870,  ...,  0.1952, -1.1020, -0.8126],
+         [-1.4998,  1.7958,  1.1381,  ...,  0.6665,  0.6016,  1.5307],
+         [-0.3105, -0.6205,  1.0866,  ...,  2.4962,  1.6240, -0.7642]]],
        grad_fn=&lt;ViewBackward0&gt;), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
 </pre></div>
 </div>
@@ -1228,7 +1229,7 @@ output: name=&#39;cat_12&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;,
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_recipes_oe_phi2_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_oe_phi2_001.png" alt="plot exporter recipes oe phi2" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 17.805 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_recipes_oe_phi2_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_oe_phi2_001.png" alt="plot exporter recipes oe phi2" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 18.031 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-oe-phi2-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c72c61b21256b4102c29e2cd06550f0a/plot_exporter_recipes_oe_phi2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_oe_phi2.ipynb</span></code></a></p>

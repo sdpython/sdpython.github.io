@@ -69,7 +69,7 @@ We appy loops to the pairwise distances (:class:`torch.nn.PairwiseDistance`).
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=2.4455857339233944e-07
+    shape=(3, 5), discrepancies=3.376475081751096e-07
 
 
 
@@ -196,7 +196,7 @@ We need to rewrite the module with function
                 dist,
                 [y],
                 [x],
-                dim=0,
+                # dim=0,
                 reverse=False,
                 additional_inputs=[],
             )
@@ -214,7 +214,7 @@ We need to rewrite the module with function
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=2.4455857339233944e-07
+    shape=(3, 5), discrepancies=3.376475081751096e-07
 
 
 
@@ -245,7 +245,7 @@ That works. Let's export again.
         %x : [num_users=1] = placeholder[target=x]
         %y : [num_users=1] = placeholder[target=y]
         %scan_combine_graph_0 : [num_users=1] = get_attr[target=scan_combine_graph_0]
-        %scan : [num_users=2] = call_function[target=torch.ops.higher_order.scan](args = (%scan_combine_graph_0, [%y], [%x], 0, False, []), kwargs = {})
+        %scan : [num_users=2] = call_function[target=torch.ops.higher_order.scan](args = (%scan_combine_graph_0, [%y], [%x], False, []), kwargs = {})
         %getitem : [num_users=0] = call_function[target=operator.getitem](args = (%scan, 0), kwargs = {})
         %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%scan, 1), kwargs = {})
         return (getitem_1,)
@@ -277,7 +277,7 @@ We need to run :meth:`torch.export.ExportedProgram.run_decompositions`.
         %x : [num_users=1] = placeholder[target=x]
         %y : [num_users=1] = placeholder[target=y]
         %scan_combine_graph_0 : [num_users=1] = get_attr[target=scan_combine_graph_0]
-        %scan : [num_users=1] = call_function[target=torch.ops.higher_order.scan](args = (%scan_combine_graph_0, [%y], [%x], 0, False, []), kwargs = {})
+        %scan : [num_users=1] = call_function[target=torch.ops.higher_order.scan](args = (%scan_combine_graph_0, [%y], [%x], False, []), kwargs = {})
         %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%scan, 1), kwargs = {})
         return (getitem_1,)
 
@@ -415,7 +415,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.878 seconds)
+   **Total running time of the script:** (0 minutes 2.279 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_scan_pdist.py:

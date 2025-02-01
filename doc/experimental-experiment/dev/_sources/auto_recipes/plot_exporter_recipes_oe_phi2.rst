@@ -178,13 +178,13 @@ set up when the export starts.
  .. code-block:: none
 
 
-    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.4283,  1.4034, -0.7891,  ...,  0.5327, -0.9800, -0.2947],
-             [ 0.5437,  1.1914, -1.1685,  ..., -2.0245,  1.2630,  1.0255],
-             [-0.6199,  0.9831,  0.7693,  ...,  0.8923,  0.2086,  0.2852]],
+    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.0527,  2.1904, -0.7771,  ..., -0.1380,  1.5488, -1.0399],
+             [-0.0605, -0.3221, -0.2274,  ...,  1.0397, -2.5695, -1.0675],
+             [ 0.2903,  1.5978, -0.5193,  ...,  0.6445, -0.5092, -0.3258]],
 
-            [[-0.4755, -0.7645,  0.5872,  ...,  0.9709,  0.6555, -0.3843],
-             [ 0.1826,  1.5114,  0.5027,  ...,  0.2421,  0.5863, -0.2181],
-             [ 0.7475,  1.3277, -0.8341,  ...,  0.3511,  1.4484,  0.0632]]],
+            [[ 2.2036,  2.2190,  0.2870,  ...,  0.1952, -1.1020, -0.8126],
+             [-1.4998,  1.7958,  1.1381,  ...,  0.6665,  0.6016,  1.5307],
+             [-0.3105, -0.6205,  1.0866,  ...,  2.4962,  1.6240, -0.7642]]],
            grad_fn=<ViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
 
 
@@ -780,7 +780,7 @@ Visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.805 seconds)
+   **Total running time of the script:** (0 minutes 18.031 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_phi2.py:

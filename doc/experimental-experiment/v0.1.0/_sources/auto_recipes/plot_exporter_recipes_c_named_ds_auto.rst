@@ -18,7 +18,7 @@
 .. _sphx_glr_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py:
 
 
-.. _l-plot-exporter-recipes-custom-modules:
+.. _l-plot-exporter-recipes-custom-named-dynamic-shapes:
 
 to_onnx: Rename Dynamic Shapes
 ==============================
@@ -27,11 +27,10 @@ Example given in :ref:`l-plot-exporter-dynamic_shapes` can only be exported
 with dynamic shapes using ``torch.export.Dim.AUTO``. As a result, the exported
 onnx models have dynamic dimensions with unpredictable names.
 
-
 Model with unpredictable names for dynamic shapes
 +++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-32
+.. GENERATED FROM PYTHON SOURCE LINES 14-31
 
 .. code-block:: Python
 
@@ -43,13 +42,13 @@ Model with unpredictable names for dynamic shapes
 
     class Model(torch.nn.Module):
         def forward(self, x, y, z):
-            return torch.cat((x, y), axis=1) + z
+            return torch.cat((x, y), axis=1) + z[:, ::2]
 
 
     model = Model()
     x = torch.randn(2, 3)
-    y = torch.randn(2, 4)
-    z = torch.randn(2, 7)
+    y = torch.randn(2, 5)
+    z = torch.randn(2, 16)
     model(x, y, z)
 
 
@@ -61,29 +60,25 @@ Model with unpredictable names for dynamic shapes
  .. code-block:: none
 
 
-    tensor([[ 1.8996,  1.2016,  2.0227, -0.4598,  0.8081, -1.5352,  2.7321],
-            [ 0.6667,  1.4264, -0.7807,  1.6898,  1.5034, -0.7262, -0.0777]])
+    tensor([[ 1.9698,  1.8367,  0.5590,  3.3390, -1.1166,  0.2100, -3.4309, -0.7227],
+            [-0.5223,  0.3746, -0.8368,  2.2754, -0.7859,  0.7766, -1.3078,  0.4274]])
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-34
+.. GENERATED FROM PYTHON SOURCE LINES 32-33
 
 Let's export it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-46
+.. GENERATED FROM PYTHON SOURCE LINES 33-41
 
 .. code-block:: Python
 
 
-    batch = torch.export.Dim("batch")
+    AUTO = torch.export.Dim.AUTO
     ep = torch.export.export(
         model,
         (x, y, z),
-        dynamic_shapes=(
-            {0: batch, 1: torch.export.Dim.AUTO},
-            {0: batch, 1: torch.export.Dim.AUTO},
-            {0: batch, 1: torch.export.Dim.AUTO},
-        ),
+        dynamic_shapes=({0: AUTO, 1: AUTO}, {0: AUTO, 1: AUTO}, {0: AUTO, 1: AUTO}),
     )
 
 
@@ -93,11 +88,11 @@ Let's export it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
 Let's convert it into ONNX.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-56
+.. GENERATED FROM PYTHON SOURCE LINES 43-51
 
 .. code-block:: Python
 
@@ -117,15 +112,15 @@ Let's convert it into ONNX.
 
  .. code-block:: none
 
-     input: EXTERNAL[s0,s1] x
-     input: EXTERNAL[s2,s3] y
-     input: EXTERNAL[s4,s5] z
-    output: EXTERNAL[s0,s1+s3] output_0
+     input: FLOAT[s0,s1] x
+     input: FLOAT[s2,s3] y
+     input: FLOAT[s4,s5] z
+    output: FLOAT[s0,s1+s3] output_0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-63
+.. GENERATED FROM PYTHON SOURCE LINES 52-58
 
 Rename the dynamic shapes
 +++++++++++++++++++++++++
@@ -134,7 +129,7 @@ We just need to give the onnx exporter the same information
 :func:`torch.export.export` was given but we replace ``AUTO``
 by the name this dimension should have.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-78
+.. GENERATED FROM PYTHON SOURCE LINES 58-73
 
 .. code-block:: Python
 
@@ -142,9 +137,9 @@ by the name this dimension should have.
     onx = to_onnx(
         ep,
         dynamic_shapes=(
-            {0: batch, 1: "dx"},
-            {0: batch, 1: "dy"},
-            {0: batch, 1: "dx+dy"},
+            {0: "batch", 1: "dx"},
+            {0: "batch", 1: "dy"},
+            {0: "batch", 1: "dx+dy"},
         ),
     )
 
@@ -161,20 +156,20 @@ by the name this dimension should have.
 
  .. code-block:: none
 
-     input: EXTERNAL[batch,dx] x
-     input: EXTERNAL[batch,dy] y
-     input: EXTERNAL[batch,dx+dy] z
-    output: EXTERNAL[batch,dx+dy] output_0
+     input: FLOAT[batch,dx] x
+     input: FLOAT[batch,dy] y
+     input: FLOAT[batch,dx+dy] z
+    output: FLOAT[batch,dx+dy] output_0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-81
+.. GENERATED FROM PYTHON SOURCE LINES 74-76
 
 A model with an unknown output shape
 ++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-92
+.. GENERATED FROM PYTHON SOURCE LINES 76-87
 
 .. code-block:: Python
 
@@ -199,26 +194,30 @@ A model with an unknown output shape
 
 
     tensor([[1, 0],
-            [2, 1],
             [3, 0],
-            [3, 1],
-            [4, 0],
+            [4, 1],
             [5, 1],
+            [6, 0],
+            [6, 1],
+            [7, 0],
+            [7, 1],
             [8, 0],
-            [9, 0]])
+            [8, 1]])
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-94
+.. GENERATED FROM PYTHON SOURCE LINES 88-89
 
 Let's export it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-98
+.. GENERATED FROM PYTHON SOURCE LINES 89-95
 
 .. code-block:: Python
 
 
-    ep = torch.export.export(model, (x,), dynamic_shapes=({0: batch, 1: torch.export.Dim.AUTO},))
+    ep = torch.export.export(
+        model, (x,), dynamic_shapes=({0: torch.export.Dim("batch"), 1: AUTO},)
+    )
     print(ep)
 
 
@@ -232,14 +231,14 @@ Let's export it.
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "i64[s0, s1]"):
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_named_ds_auto.py:85 in forward, code: return torch.nonzero(x)
+                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_named_ds_auto.py:80 in forward, code: return torch.nonzero(x)
                 nonzero: "i64[u0, 2]" = torch.ops.aten.nonzero.default(x);  x = None
             
                  # 
                 sym_size_int_3: "Sym(u0)" = torch.ops.aten.sym_size.int(nonzero, 0)
                 sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_3);  sym_constrain_range_for_size_default = None
             
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_named_ds_auto.py:85 in forward, code: return torch.nonzero(x)
+                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_named_ds_auto.py:80 in forward, code: return torch.nonzero(x)
                 ge_1: "Sym(u0 >= 0)" = sym_size_int_3 >= 0;  sym_size_int_3 = None
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(ge_1, "Runtime assertion failed for expression u0 >= 0 on node 'ge_1'");  ge_1 = _assert_scalar_default = None
                 return (nonzero,)
@@ -251,16 +250,16 @@ Let's export it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-100
+.. GENERATED FROM PYTHON SOURCE LINES 96-97
 
 Let's export it into ONNX.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-108
+.. GENERATED FROM PYTHON SOURCE LINES 97-105
 
 .. code-block:: Python
 
 
-    onx = to_onnx(ep, dynamic_shapes=({0: batch, 1: "dx"},))
+    onx = to_onnx(ep, dynamic_shapes=({0: "batch", 1: "dx"},))
 
     for inp in onx.graph.input:
         print(f" input: {pretty_onnx(inp)}")
@@ -281,7 +280,7 @@ Let's export it into ONNX.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-115
+.. GENERATED FROM PYTHON SOURCE LINES 106-112
 
 The exporter has detected a dimension could not be infered
 from the input shape somewhere in the graph and introduced a
@@ -290,14 +289,14 @@ Let's rename it as well. Let's also change the output name
 because the functionality may not be implemented yet when
 the output dynamic shapes are given as a tuple.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-127
+.. GENERATED FROM PYTHON SOURCE LINES 112-124
 
 .. code-block:: Python
 
 
     onx = to_onnx(
         ep,
-        dynamic_shapes=({0: batch, 1: "dx"},),
+        dynamic_shapes=({0: "batch", 1: "dx"},),
         output_dynamic_shapes={"zeros": {0: "num_zeros"}},
         output_names=["zeros"],
     )
@@ -323,7 +322,7 @@ the output dynamic shapes are given as a tuple.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.240 seconds)
+   **Total running time of the script:** (0 minutes 6.187 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py:

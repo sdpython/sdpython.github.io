@@ -480,6 +480,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_scan_pdist.html">Export a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
@@ -614,7 +615,7 @@ to use <a class="reference external" href="https://pytorch.org/docs/main/generat
 <span class="n">model</span><span class="p">(</span><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([-0.3520], grad_fn=&lt;MulBackward0&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([1.4821], grad_fn=&lt;MulBackward0&gt;)
 </pre></div>
 </div>
 <p>As expected, it does not export.</p>
@@ -665,10 +666,10 @@ But the model is not exactly the same as the initial model.</p>
    ir_version: 10,
    opset_import: [&quot;pkg.onnxscript.torch_lib.common&quot; : 1, &quot;&quot; : 18],
    producer_name: &quot;pytorch&quot;,
-   producer_version: &quot;2.7.0.dev20250130+cu126&quot;
+   producer_version: &quot;2.7.0.dev20250131+cu126&quot;
 &gt;
 main_graph (float[3] input_1) =&gt; (float[1] mul)
-   &lt;float[2] &quot;model.mlp.0.bias&quot; =  {-0.0467932,0.418181}, float[2,3] &quot;model.mlp.0.weight&quot; =  {-0.172034,0.307799,-0.436813,-0.205383,-0.309195,0.227569}, float[1] &quot;model.mlp.1.bias&quot; =  {0.126597}, float[1,2] &quot;model.mlp.1.weight&quot; =  {-0.4192,-0.283751}, float[2] linear, float[1] linear_1, float scalar_tensor_default&gt;
+   &lt;float[2] &quot;model.mlp.0.bias&quot; =  {0.232382,0.244881}, float[2,3] &quot;model.mlp.0.weight&quot; =  {-0.574301,0.373175,0.415458,0.317575,0.370257,-0.316719}, float[1] &quot;model.mlp.1.bias&quot; =  {0.0553073}, float[1,2] &quot;model.mlp.1.weight&quot; =  {0.70186,-0.326448}, float[2] linear, float[1] linear_1, float scalar_tensor_default&gt;
 {
    [node_Transpose_0] val_0 = Transpose &lt;perm: ints = [1, 0]&gt; (&quot;model.mlp.0.weight&quot;)
    [node_MatMul_1] val_1 = MatMul (input_1, val_0)
@@ -767,10 +768,10 @@ mlp.2 &lt;class &#39;__main__.ForwardWithControlFlowTest&#39;&gt;
    ir_version: 10,
    opset_import: [&quot;pkg.onnxscript.torch_lib.common&quot; : 1, &quot;&quot; : 18, &quot;pkg.torch.__subgraph__&quot; : 1],
    producer_name: &quot;pytorch&quot;,
-   producer_version: &quot;2.7.0.dev20250130+cu126&quot;
+   producer_version: &quot;2.7.0.dev20250131+cu126&quot;
 &gt;
 main_graph (float[3] x) =&gt; (float[1] getitem)
-   &lt;float[2,3] &quot;mlp.0.weight&quot; =  {-0.172034,0.307799,-0.436813,-0.205383,-0.309195,0.227569}, float[2] &quot;mlp.0.bias&quot; =  {-0.0467932,0.418181}, float[1,2] &quot;mlp.1.weight&quot; =  {-0.4192,-0.283751}, float[1] &quot;mlp.1.bias&quot; =  {0.126597}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
+   &lt;float[2,3] &quot;mlp.0.weight&quot; =  {-0.574301,0.373175,0.415458,0.317575,0.370257,-0.316719}, float[2] &quot;mlp.0.bias&quot; =  {0.232382,0.244881}, float[1,2] &quot;mlp.1.weight&quot; =  {0.70186,-0.326448}, float[1] &quot;mlp.1.bias&quot; =  {0.0553073}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
 {
    [node_Transpose_0] val_0 = Transpose &lt;perm: ints = [1, 0]&gt; (&quot;mlp.0.weight&quot;)
    [node_MatMul_1] val_1 = MatMul (x, val_0)
@@ -844,15 +845,15 @@ IsScalar (input) =&gt; (return_val)
    ir_version: 10,
    opset_import: [&quot;pkg.onnxscript.torch_lib.common&quot; : 1, &quot;&quot; : 18, &quot;pkg.torch.__subgraph__&quot; : 1],
    producer_name: &quot;pytorch&quot;,
-   producer_version: &quot;2.7.0.dev20250130+cu126&quot;
+   producer_version: &quot;2.7.0.dev20250131+cu126&quot;
 &gt;
 main_graph (float[3] x) =&gt; (float[1] getitem)
-   &lt;float[2] &quot;mlp.0.bias&quot; =  {-0.0467932,0.418181}, float[1] &quot;mlp.1.bias&quot; =  {0.126597}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
+   &lt;float[2] &quot;mlp.0.bias&quot; =  {0.232382,0.244881}, float[1] &quot;mlp.1.bias&quot; =  {0.0553073}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt&gt;
 {
-   [node_Constant_11] val_0 = Constant &lt;value: tensor = float[3,2] val_0 {-0.172034,-0.205383,0.307799,-0.309195,-0.436813,0.227569}&gt; ()
+   [node_Constant_11] val_0 = Constant &lt;value: tensor = float[3,2] val_0 {-0.574301,0.317575,0.373175,0.370257,0.415458,-0.316719}&gt; ()
    [node_MatMul_1] val_1 = MatMul (x, val_0)
    [node_Add_2] linear = Add (val_1, &quot;mlp.0.bias&quot;)
-   [node_Constant_12] val_2 = Constant &lt;value: tensor = float[2,1] val_2 {-0.4192,-0.283751}&gt; ()
+   [node_Constant_12] val_2 = Constant &lt;value: tensor = float[2,1] val_2 {0.70186,-0.326448}&gt; ()
    [node_MatMul_4] val_3 = MatMul (linear, val_2)
    [node_Add_5] linear_1 = Add (val_3, &quot;mlp.1.bias&quot;)
    [node_ReduceSum_6] sum_1 = ReduceSum &lt;noop_with_empty_axes: int = 0, keepdims: int = 0&gt; (linear_1)
@@ -869,7 +870,7 @@ main_graph (float[3] x) =&gt; (float[1] getitem)
 }
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.658 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.815 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-oe-cond-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e104018877845c3ce4bb11930263b080/plot_exporter_recipes_oe_cond.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_oe_cond.ipynb</span></code></a></p>

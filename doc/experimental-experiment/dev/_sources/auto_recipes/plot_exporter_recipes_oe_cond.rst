@@ -105,7 +105,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([-0.3520], grad_fn=<MulBackward0>)
+    tensor([1.4821], grad_fn=<MulBackward0>)
 
 
 
@@ -189,10 +189,10 @@ But the model is not exactly the same as the initial model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250130+cu126"
+       producer_version: "2.7.0.dev20250131+cu126"
     >
     main_graph (float[3] input_1) => (float[1] mul) 
-       <float[2] "model.mlp.0.bias" =  {-0.0467932,0.418181}, float[2,3] "model.mlp.0.weight" =  {-0.172034,0.307799,-0.436813,-0.205383,-0.309195,0.227569}, float[1] "model.mlp.1.bias" =  {0.126597}, float[1,2] "model.mlp.1.weight" =  {-0.4192,-0.283751}, float[2] linear, float[1] linear_1, float scalar_tensor_default>
+       <float[2] "model.mlp.0.bias" =  {0.232382,0.244881}, float[2,3] "model.mlp.0.weight" =  {-0.574301,0.373175,0.415458,0.317575,0.370257,-0.316719}, float[1] "model.mlp.1.bias" =  {0.0553073}, float[1,2] "model.mlp.1.weight" =  {0.70186,-0.326448}, float[2] linear, float[1] linear_1, float scalar_tensor_default>
     {
        [node_Transpose_0] val_0 = Transpose <perm: ints = [1, 0]> ("model.mlp.0.weight")
        [node_MatMul_1] val_1 = MatMul (input_1, val_0)
@@ -344,10 +344,10 @@ Let's export again.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250130+cu126"
+       producer_version: "2.7.0.dev20250131+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2,3] "mlp.0.weight" =  {-0.172034,0.307799,-0.436813,-0.205383,-0.309195,0.227569}, float[2] "mlp.0.bias" =  {-0.0467932,0.418181}, float[1,2] "mlp.1.weight" =  {-0.4192,-0.283751}, float[1] "mlp.1.bias" =  {0.126597}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2,3] "mlp.0.weight" =  {-0.574301,0.373175,0.415458,0.317575,0.370257,-0.316719}, float[2] "mlp.0.bias" =  {0.232382,0.244881}, float[1,2] "mlp.1.weight" =  {0.70186,-0.326448}, float[1] "mlp.1.bias" =  {0.0553073}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
     {
        [node_Transpose_0] val_0 = Transpose <perm: ints = [1, 0]> ("mlp.0.weight")
        [node_MatMul_1] val_1 = MatMul (x, val_0)
@@ -437,15 +437,15 @@ Let's optimize to see a small model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250130+cu126"
+       producer_version: "2.7.0.dev20250131+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2] "mlp.0.bias" =  {-0.0467932,0.418181}, float[1] "mlp.1.bias" =  {0.126597}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {0.232382,0.244881}, float[1] "mlp.1.bias" =  {0.0553073}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_11] val_0 = Constant <value: tensor = float[3,2] val_0 {-0.172034,-0.205383,0.307799,-0.309195,-0.436813,0.227569}> ()
+       [node_Constant_11] val_0 = Constant <value: tensor = float[3,2] val_0 {-0.574301,0.317575,0.373175,0.370257,0.415458,-0.316719}> ()
        [node_MatMul_1] val_1 = MatMul (x, val_0)
        [node_Add_2] linear = Add (val_1, "mlp.0.bias")
-       [node_Constant_12] val_2 = Constant <value: tensor = float[2,1] val_2 {-0.4192,-0.283751}> ()
+       [node_Constant_12] val_2 = Constant <value: tensor = float[2,1] val_2 {0.70186,-0.326448}> ()
        [node_MatMul_4] val_3 = MatMul (linear, val_2)
        [node_Add_5] linear_1 = Add (val_3, "mlp.1.bias")
        [node_ReduceSum_6] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (linear_1)
@@ -467,7 +467,7 @@ Let's optimize to see a small model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.658 seconds)
+   **Total running time of the script:** (0 minutes 2.815 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_cond.py:

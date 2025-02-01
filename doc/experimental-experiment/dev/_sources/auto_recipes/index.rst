@@ -149,6 +149,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.ops.higher_order.scan.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_scan_pdist_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_scan_pdist.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export a model with a loop (scan)</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes need to be specified to get a model able to cope with different dimensions. Input rank are expected to be the same but the dimension may change. The user has the ability to set them up or to call a function able to infer them from two sets of inputs having different values for the dynamic dimensions.">
 
 .. only:: html
@@ -401,6 +418,7 @@ Some of them are exposed in the examples. Others may be found at
    /auto_recipes/plot_exporter_exporter_draft_mode
    /auto_recipes/plot_exporter_exporter_reportibility
    /auto_recipes/plot_exporter_exporter_with_dynamic_cache
+   /auto_recipes/plot_exporter_exporter_scan_pdist
    /auto_recipes/plot_exporter_exporter_infer_ds
    /auto_recipes/plot_exporter_recipes_oe_lr
    /auto_recipes/plot_exporter_coverage

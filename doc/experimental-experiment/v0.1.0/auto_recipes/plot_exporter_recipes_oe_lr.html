@@ -480,6 +480,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_scan_pdist.html">Export a model with a loop (scan)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_infer_ds.html">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
@@ -612,7 +613,8 @@ to download the full example code.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;coefficients: </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clr</span><span class="o">.</span><span class="n">coef_</span></a></a></a><span class="si">}</span><span class="s2">, </span><span class="si">{</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">clr</span><span class="o">.</span><span class="n">intercept_</span></a></a></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>coefficients: [-0.08388278 -0.50965063  0.2820691  42.43689595 66.50990347], 0.20090823503113686
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>coefficients: [ 1.52427816e+01 -2.54252527e-01 -3.82964908e-01  8.20315174e+01
+  5.67765398e-02], -0.08683603222894343
 </pre></div>
 </div>
 </section>
@@ -624,7 +626,7 @@ to download the full example code.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;LinearRegression: l2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">l2</span></a></a></a><span class="si">}</span><span class="s2">, r2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">r2</span></a></a></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>LinearRegression: l2=93.60797361489499, r2=0.9866626008847753
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>LinearRegression: l2=103.35968339727624, r2=0.9866212174736183
 </pre></div>
 </div>
 </section>
@@ -638,23 +640,23 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>-- Epoch 1
-Norm: 67.59, NNZs: 5, Bias: 0.323704, T: 750, Avg. loss: 698.593261
+Norm: 70.01, NNZs: 5, Bias: -0.596756, T: 750, Avg. loss: 762.940298
 Total training time: 0.00 seconds.
 -- Epoch 2
-Norm: 75.91, NNZs: 5, Bias: 0.127644, T: 1500, Avg. loss: 73.267114
+Norm: 79.68, NNZs: 5, Bias: -0.372727, T: 1500, Avg. loss: 75.006016
 Total training time: 0.00 seconds.
 -- Epoch 3
-Norm: 78.01, NNZs: 5, Bias: 0.195916, T: 2250, Avg. loss: 52.232637
+Norm: 82.11, NNZs: 5, Bias: -0.302945, T: 2250, Avg. loss: 45.922539
 Total training time: 0.00 seconds.
 -- Epoch 4
-Norm: 78.65, NNZs: 5, Bias: 0.299843, T: 3000, Avg. loss: 50.568890
+Norm: 82.98, NNZs: 5, Bias: -0.086139, T: 3000, Avg. loss: 43.265952
 Total training time: 0.00 seconds.
 -- Epoch 5
-Norm: 78.78, NNZs: 5, Bias: 0.270008, T: 3750, Avg. loss: 50.406284
+Norm: 83.28, NNZs: 5, Bias: -0.133008, T: 3750, Avg. loss: 42.890983
 Total training time: 0.00 seconds.
 /home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/linear_model/_stochastic_gradient.py:1608: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
   warnings.warn(
-coefficients: [-0.11009218 -0.37132882  0.33349049 42.4017931  66.39844773], [0.27000797]
+coefficients: [15.32148304 -0.29461492 -0.41068574 81.85480767  0.12316004], [-0.13300797]
 </pre></div>
 </div>
 <p>Evaluation</p>
@@ -664,7 +666,7 @@ coefficients: [-0.11009218 -0.37132882  0.33349049 42.4017931  66.39844773], [0.
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SGDRegressor: sl2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sl2</span></a></a></a><span class="si">}</span><span class="s2">, sr2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sr2</span></a></a></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SGDRegressor: sl2=93.58935101333631, sr2=0.9866652542599095
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SGDRegressor: sl2=103.54971212325994, sr2=0.9865966203297887
 </pre></div>
 </div>
 </section>
@@ -718,11 +720,11 @@ coefficients: [-0.11009218 -0.37132882  0.33349049 42.4017931  66.39844773], [0.
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;iteration </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a></a></a><span class="si">}</span><span class="s2">, loss=</span><span class="si">{</span><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loss</span></a></a></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>iteration 0, loss=1564228.75
-iteration 1, loss=140841.25
-iteration 2, loss=78969.671875
-iteration 3, loss=76079.5390625
-iteration 4, loss=75936.7890625
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>iteration 0, loss=1716694.25
+iteration 1, loss=150246.78125
+iteration 2, loss=68995.21875
+iteration 3, loss=64695.87890625
+iteration 4, loss=64509.41796875
 </pre></div>
 </div>
 <p>Let’s check the error</p>
@@ -732,7 +734,7 @@ iteration 4, loss=75936.7890625
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TorchLinearRegression: tl2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tl2</span></a></a></a><span class="si">}</span><span class="s2">, tr2=</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tr2</span></a></a></a><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TorchLinearRegression: tl2=93.82869149420479, tr2=0.9866311526829338
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TorchLinearRegression: tl2=104.26683223947525, tr2=0.9865037969603202
 </pre></div>
 </div>
 <p>And the coefficients.</p>
@@ -743,9 +745,10 @@ iteration 4, loss=75936.7890625
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>coefficients:
 Parameter containing:
-tensor([[-0.0717, -0.6702,  0.3797, 42.5030, 66.4415]], requires_grad=True)
+tensor([[ 1.5391e+01, -3.3788e-01, -1.4247e-01,  8.2086e+01, -1.5974e-02]],
+       requires_grad=True)
 Parameter containing:
-tensor([0.2274], requires_grad=True)
+tensor([-0.1146], requires_grad=True)
 </pre></div>
 </div>
 </section>
@@ -756,7 +759,11 @@ tensor([0.2274], requires_grad=True)
 <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.ONNXProgram.model_proto" title="torch.onnx.ONNXProgram.model_proto" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-property"><a href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.ONNXProgram.model_proto" title="torch.onnx.ONNXProgram.model_proto" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-property"><a href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.ONNXProgram.model_proto" title="torch.onnx.ONNXProgram.model_proto" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-property"><span class="n">ep</span><span class="o">.</span><span class="n">model_proto</span></a></a></a>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`...
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/github/onnxscript/onnxscript/converter.py:823: FutureWarning: &#39;onnxscript.values.Op.param_schemas&#39; is deprecated in version 0.1 and will be removed in the future. Please use &#39;.op_signature&#39; instead.
+  param_schemas = callee.param_schemas()
+/home/xadupre/github/onnxscript/onnxscript/converter.py:823: FutureWarning: &#39;onnxscript.values.OnnxFunction.param_schemas&#39; is deprecated in version 0.1 and will be removed in the future. Please use &#39;.op_signature&#39; instead.
+  param_schemas = callee.param_schemas()
+[torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`...
 [torch.onnx] Obtain model graph for `TorchLinearRegression([...]` with `torch.export.export(..., strict=False)`... ✅
 [torch.onnx] Run decomposition...
 [torch.onnx] Run decomposition... ✅
@@ -770,8 +777,8 @@ tensor([0.2274], requires_grad=True)
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">res</span></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[array([[-86.40444 ],
-       [ 24.778608]], dtype=float32)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[array([[ 126.04387],
+       [-101.80242]], dtype=float32)]
 </pre></div>
 </div>
 <p>And the model.</p>
@@ -816,7 +823,7 @@ opset: domain=&#39;pkg.onnxscript.torch_lib.common&#39; version=1
 opset: domain=&#39;&#39; version=18
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 5]
 init: name=&#39;linear.weight&#39; type=float32 shape=(1, 5)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.2273648], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.11463732], dtype=float32)
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
 output: name=&#39;linear&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 1]
 </pre></div>
@@ -845,12 +852,12 @@ opset: domain=&#39;pkg.onnxscript.torch_lib.common&#39; version=1
 opset: domain=&#39;&#39; version=18
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 5]
 init: name=&#39;linear.weight&#39; type=float32 shape=(1, 5)
-init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([0.2273648], dtype=float32)
+init: name=&#39;linear.bias&#39; type=float32 shape=(1,) -- array([-0.11463732], dtype=float32)
 Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -&gt; linear
 output: name=&#39;linear&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s0&#39;, 1]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.249 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.282 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-oe-lr-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/de62e418c296941ab4429d83bdb60222/plot_exporter_recipes_oe_lr.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_oe_lr.ipynb</span></code></a></p>

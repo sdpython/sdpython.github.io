@@ -280,10 +280,22 @@ Let's print the report.
  .. code-block:: none
 
     
-    ##############################################################################################
-    Congratuations: No issues are found during export, and it was able to soundly produce a graph.
-    You can now change back to torch.export.export()
-    ##############################################################################################
+    ###################################################################################################
+    WARNING: 1 issue(s) found during export, and it was not able to soundly produce a graph.
+    Please follow the instructions to fix the errors.
+    ###################################################################################################
+
+    1. Data dependent error.
+        When exporting, we were unable to evaluate the value of `Eq(u0, 1)`.
+        This was encountered 2 times.
+        This occurred at the following stacktrace: 
+            File /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py, lineno 386, in _longrope_frequency_update:
+            `if seq_len > original_max_position_embeddings:`
+        As a result, it was specialized to a constant (e.g. `0` in the 1st occurrence), and asserts were inserted into the graph.
+
+        Please add `torch._check(...)` to the original code to assert this data-dependent assumption.
+        Please refer to https://docs.google.com/document/d/1kZ_BbB3JnoLbUZleDT6635dHs88ZVYId8jT-yTFgf3A/edit#heading=h.boi2xurpqa0o for more details.
+
     
 
 
@@ -292,7 +304,7 @@ Let's print the report.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.673 seconds)
+   **Total running time of the script:** (0 minutes 16.031 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_draft_mode.py:

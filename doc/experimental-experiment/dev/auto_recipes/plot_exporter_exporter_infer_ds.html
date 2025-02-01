@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Linear Regression and export to ONNX" href="plot_exporter_recipes_oe_lr.html" /><link rel="prev" title="Export a model using a custom type as input" href="plot_exporter_exporter_with_dynamic_cache.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Linear Regression and export to ONNX" href="plot_exporter_recipes_oe_lr.html" /><link rel="prev" title="Export a model with a loop (scan)" href="plot_exporter_exporter_scan_pdist.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Infer dynamic shapes before exporting - experimental-experiment 0.1.0 documentation</title>
@@ -480,6 +480,7 @@
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_draft_mode.html">Export Phi-3.5-mini-instruct with draft_export</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_reportibility.html">Export Phi-3.5-mini-instruct with report_exportability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_with_dynamic_cache.html">Export a model using a custom type as input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_exporter_exporter_scan_pdist.html">Export a model with a loop (scan)</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Infer dynamic shapes before exporting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_recipes_oe_lr.html">Linear Regression and export to ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="plot_exporter_coverage.html">Measures the exporter success on many test cases</a></li>
@@ -642,38 +643,38 @@ to finally guess the dynamic shapes.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; __main__: Model
   DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;},), {})
-  &gt; ((CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895],),{})
-  &gt; ((CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416],),{})
+  &gt; ((CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961],),{})
+  &gt; ((CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467],),{})
     &gt;&gt;&gt; ma: MA
       DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-      &gt; ((CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895],CT1s5x6[-5.93992805480957,0.9989712238311768:A-0.5209599755704403]),{})
-      &gt; ((CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416],CT1s6x6[-4.5521721839904785,0.9687278270721436:A-0.6981551880016923]),{})
-      &lt; (CT1s5x6[-7.574302673339844,2.24814510345459:A-0.3088074654340744],)
-      &lt; (CT1s6x6[-5.908476829528809,2.2454233169555664:A-0.5516045551954044],)
+      &gt; ((CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961],CT1s5x6[-9.222688674926758,0.9821268320083618:A-1.2027503304183482]),{})
+      &gt; ((CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467],CT1s6x6[-7.7897138595581055,0.9999046325683594:A-0.9311982405423704]),{})
+      &lt; (CT1s5x6[-11.41998291015625,2.2458949089050293:A-1.2918502300977708],)
+      &lt; (CT1s6x6[-9.754459381103516,2.249997138977051:A-0.8914510194574379],)
     &lt;&lt;&lt;
     &gt;&gt;&gt; masmm: MASMM
       DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-      &gt; ((CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895],CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895],CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895]),{})
-      &gt; ((CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416],CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416],CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416]),{})
+      &gt; ((CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961],CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961],CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961]),{})
+      &gt; ((CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467],CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467],CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467]),{})
         &gt;&gt;&gt; ma: MA
           DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-          &gt; ((CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895],CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895]),{})
-          &gt; ((CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416],CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416]),{})
-          &lt; (CT1s5x6[-3.2687487602233887,3.1680567264556885:A0.4243050051232179],)
-          &lt; (CT1s6x6[-2.7126095294952393,4.620961666107178:A0.2931012755466832],)
+          &gt; ((CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961],CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961]),{})
+          &gt; ((CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467],CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467]),{})
+          &lt; (CT1s5x6[-4.394587993621826,4.648158073425293:A-0.17819972212115923],)
+          &lt; (CT1s6x6[-3.929490327835083,3.823425769805908:A0.07949446545292933],)
         &lt;&lt;&lt;
         &gt;&gt;&gt; mm: MM
           DS=(({0: &lt;_DimHint.DYNAMIC: 3&gt;}, {0: &lt;_DimHint.DYNAMIC: 3&gt;}), {})
-          &gt; ((CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895],CT1s5x6[-1.6343743801116943,1.5840283632278442:A0.21215250256160895]),{})
-          &gt; ((CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416],CT1s6x6[-1.3563047647476196,2.310480833053589:A0.1465506377733416]),{})
-          &lt; (CT1s5x6[0.0033631178084760904,2.6711795330047607:A0.945264990759703],)
-          &lt; (CT1s6x6[0.00032021309016272426,5.338321685791016:A0.9912564563096061],)
+          &gt; ((CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961],CT1s5x6[-2.197293996810913,2.3240790367126465:A-0.08909986106057961]),{})
+          &gt; ((CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467],CT1s6x6[-1.9647451639175415,1.911712884902954:A0.03974723272646467]),{})
+          &lt; (CT1s5x6[0.0015355657087638974,5.40134334564209:A1.0245506003382616],)
+          &lt; (CT1s6x6[2.4228418624261394e-05,3.8602235317230225:A1.010692699594175],)
         &lt;&lt;&lt;
-      &lt; (CT1s5x6[-5.93992805480957,0.9989712238311768:A-0.5209599755704403],)
-      &lt; (CT1s6x6[-4.5521721839904785,0.9687278270721436:A-0.6981551880016923],)
+      &lt; (CT1s5x6[-9.222688674926758,0.9821268320083618:A-1.2027503304183482],)
+      &lt; (CT1s6x6[-7.7897138595581055,0.9999046325683594:A-0.9311982405423704],)
     &lt;&lt;&lt;
-  &lt; (CT1s5x6[-7.574302673339844,2.24814510345459:A-0.3088074654340744],)
-  &lt; (CT1s6x6[-5.908476829528809,2.2454233169555664:A-0.5516045551954044],)
+  &lt; (CT1s5x6[-11.41998291015625,2.2458949089050293:A-1.2918502300977708],)
+  &lt; (CT1s6x6[-9.754459381103516,2.249997138977051:A-0.8914510194574379],)
 &lt;&lt;&lt;
 </pre></div>
 </div>
@@ -733,7 +734,7 @@ output:: output_0                                                               
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_exporter_infer_ds_001.png" srcset="../_images/sphx_glr_plot_exporter_exporter_infer_ds_001.png" alt="plot exporter exporter infer ds" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.148 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_exporter_infer_ds_001.png" srcset="../_images/sphx_glr_plot_exporter_exporter_infer_ds_001.png" alt="plot exporter exporter infer ds" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.379 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-exporter-infer-ds-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ce3df57b0eebdb6f74d52452ca37088a/plot_exporter_exporter_infer_ds.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_exporter_infer_ds.ipynb</span></code></a></p>
@@ -749,12 +750,12 @@ output:: output_0                                                               
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="torch.export.export often breaks on big models because there are control flows or instructions breaking the propagation of dynamic shapes (see ...). The function usually gives an indication where the model implementation can be fixed but in case, that is not possible, we can try to export the model piece by piece: every module is converted separately from its submodule. A model can be exported even if one of its submodules cannot."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_phi35_piece_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_exporter_phi35_piece.html#sphx-glr-auto-recipes-plot-exporter-exporter-phi35-piece-py"><span class="std std-ref">Export Phi-3.5-mini-instruct piece by piece</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export Phi-3.5-mini-instruct piece by piece</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_dynamic_shapes_auto_thumb.png" />
-<p><a class="reference internal" href="plot_exporter_exporter_dynamic_shapes_auto.html#sphx-glr-auto-recipes-plot-exporter-exporter-dynamic-shapes-auto-py"><span class="std std-ref">Use DYNAMIC or AUTO when dynamic shapes has constraints</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when dynamic shapes has constraints</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="We will a class used in many model: transformers.cache_utils.DynamicCache."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_with_dynamic_cache_thumb.png" />
 <p><a class="reference internal" href="plot_exporter_exporter_with_dynamic_cache.html#sphx-glr-auto-recipes-plot-exporter-exporter-with-dynamic-cache-py"><span class="std std-ref">Export a model using a custom type as input</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export a model using a custom type as input</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_exporter_exporter_dynamic_shapes_auto_thumb.png" />
+<p><a class="reference internal" href="plot_exporter_exporter_dynamic_shapes_auto.html#sphx-glr-auto-recipes-plot-exporter-exporter-dynamic-shapes-auto-py"><span class="std std-ref">Use DYNAMIC or AUTO when dynamic shapes has constraints</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when dynamic shapes has constraints</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
@@ -773,14 +774,14 @@ output:: output_0                                                               
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="plot_exporter_exporter_with_dynamic_cache.html">
+          <a class="prev-page" href="plot_exporter_exporter_scan_pdist.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Export a model using a custom type as input</div>
+                <div class="title">Export a model with a loop (scan)</div>
                 
               </div>
             </a>
