@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.010** total execution time for 16 files **from all galleries**:
+**00:01.029** total execution time for 16 files **from all galleries**:
 
 .. container::
 
@@ -32,13 +32,16 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_prog_plot_burrows_wheeler.py` (``examples/prog/plot_burrows_wheeler.py``)
-     - 00:00.010
+   * - :ref:`sphx_glr_auto_examples_prog_plot_matador.py` (``examples/prog/plot_matador.py``)
+     - 00:01.029
      - 0.0
    * - :ref:`sphx_glr_auto_examples_ml_plot_correlations.py` (``examples/ml/plot_correlations.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_ml_plot_roc.py` (``examples/ml/plot_roc.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_burrows_wheeler.py` (``examples/prog/plot_burrows_wheeler.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_einstein_riddle.py` (``examples/prog/plot_einstein_riddle.py``)
@@ -54,9 +57,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_lambda_function.py` (``examples/prog/plot_lambda_function.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_matador.py` (``examples/prog/plot_matador.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_numpy_tricks.py` (``examples/prog/plot_numpy_tricks.py``)

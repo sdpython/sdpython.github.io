@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_prog_plot_matador.py:
 
 
+.. _l-exp-mathador:
+
 ===============================
 Mathador, énigme à 4 opérations
 ===============================
@@ -34,7 +36,7 @@ C'est plus simple avec un programme, non ?
 
 J'ai fait ça très vite. Il y a sans doute mieux.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-83
+.. GENERATED FROM PYTHON SOURCE LINES 21-84
 
 
 
@@ -360,7 +362,7 @@ J'ai fait ça très vite. Il y a sans doute mieux.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.677 seconds)
+   **Total running time of the script:** (0 minutes 1.029 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_matador.py:
