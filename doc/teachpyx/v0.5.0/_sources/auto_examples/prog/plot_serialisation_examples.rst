@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_prog_plot_serialisation_examples.py:
 
 
+.. _l-example-serialization:
+
 =============
 Sérialisation
 =============
@@ -33,7 +35,7 @@ notemmant via les :epkg:`API REST`.
 Ecriture (json)
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-38
+.. GENERATED FROM PYTHON SOURCE LINES 20-40
 
 .. code-block:: Python
 
@@ -64,7 +66,7 @@ Ecriture (json)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-47
+.. GENERATED FROM PYTHON SOURCE LINES 42-49
 
 .. code-block:: Python
 
@@ -88,12 +90,12 @@ Ecriture (json)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 Lecture (json)
 ++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-57
+.. GENERATED FROM PYTHON SOURCE LINES 52-59
 
 .. code-block:: Python
 
@@ -117,14 +119,14 @@ Lecture (json)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-62
+.. GENERATED FROM PYTHON SOURCE LINES 60-64
 
 Limite
 ++++++
 
 Les matrices :epkg:`numpy` ne sont pas sérialisables facilement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-73
+.. GENERATED FROM PYTHON SOURCE LINES 64-75
 
 .. code-block:: Python
 
@@ -152,11 +154,11 @@ Les matrices :epkg:`numpy` ne sont pas sérialisables facilement.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-75
+.. GENERATED FROM PYTHON SOURCE LINES 76-77
 
 Les classes ne sont pas sérialisables non plus facilement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-90
+.. GENERATED FROM PYTHON SOURCE LINES 77-92
 
 .. code-block:: Python
 
@@ -188,13 +190,13 @@ Les classes ne sont pas sérialisables non plus facilement.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-94
+.. GENERATED FROM PYTHON SOURCE LINES 93-96
 
 Pour ce faire, il faut indiquer au module :mod:`json`
 comment convertir la classe en un ensemble de listes et dictionnaires et
 la classe :class:`json.JSONEncoder`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-107
+.. GENERATED FROM PYTHON SOURCE LINES 96-109
 
 .. code-block:: Python
 
@@ -224,11 +226,11 @@ la classe :class:`json.JSONEncoder`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-109
+.. GENERATED FROM PYTHON SOURCE LINES 110-111
 
 Et la relecture avec la classe :class:`json.JSONDecoder`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-125
+.. GENERATED FROM PYTHON SOURCE LINES 111-127
 
 .. code-block:: Python
 
@@ -257,11 +259,11 @@ Et la relecture avec la classe :class:`json.JSONDecoder`.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f1656d86380>
+    <__main__.A object at 0x7f465f2e53a0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-132
+.. GENERATED FROM PYTHON SOURCE LINES 128-134
 
 Sérialisation rapide
 ++++++++++++++++++++
@@ -270,7 +272,7 @@ Le module :mod:`json` est la librairie standard de Python mais comme
 la sérialisation au format *JSON* est un besoin très fréquent,
 il existe des alternative plus rapide comme :epkg:`ujson`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-145
+.. GENERATED FROM PYTHON SOURCE LINES 134-147
 
 .. code-block:: Python
 
@@ -294,7 +296,7 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-152
+.. GENERATED FROM PYTHON SOURCE LINES 149-154
 
 .. code-block:: Python
 
@@ -312,11 +314,11 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.001755029000378272
+    0.0009625339989725035
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-159
+.. GENERATED FROM PYTHON SOURCE LINES 156-161
 
 .. code-block:: Python
 
@@ -334,16 +336,16 @@ il existe des alternative plus rapide comme :epkg:`ujson`.
  .. code-block:: none
 
 
-    0.00018962499962071888
+    0.0001681200010352768
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-162
+.. GENERATED FROM PYTHON SOURCE LINES 162-164
 
 Ces deux lignes mesures l'écriture au format JSON
 mais il faut aussi mesurer la lecture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-170
+.. GENERATED FROM PYTHON SOURCE LINES 164-172
 
 .. code-block:: Python
 
@@ -364,11 +366,11 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.0005293539998092456
+    0.0004192510023131035
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-176
+.. GENERATED FROM PYTHON SOURCE LINES 174-178
 
 .. code-block:: Python
 
@@ -385,15 +387,15 @@ mais il faut aussi mesurer la lecture.
  .. code-block:: none
 
 
-    0.00021988000025885412
+    0.00041215600140276365
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-178
+.. GENERATED FROM PYTHON SOURCE LINES 179-180
 
 On enlève le temps passé dans la creation du buffer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-183
+.. GENERATED FROM PYTHON SOURCE LINES 180-185
 
 .. code-block:: Python
 
@@ -411,11 +413,11 @@ On enlève le temps passé dans la creation du buffer.
  .. code-block:: none
 
 
-    2.3614999918208923e-05
+    3.754600038519129e-05
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-193
+.. GENERATED FROM PYTHON SOURCE LINES 186-195
 
 Pickle
 ======
@@ -427,7 +429,7 @@ voire parfois par d'autres versions de *Python*.
 Ecriture (pickle)
 +++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-206
+.. GENERATED FROM PYTHON SOURCE LINES 195-208
 
 .. code-block:: Python
 
@@ -451,7 +453,7 @@ Ecriture (pickle)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-216
+.. GENERATED FROM PYTHON SOURCE LINES 210-218
 
 .. code-block:: Python
 
@@ -476,12 +478,12 @@ Ecriture (pickle)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-219
+.. GENERATED FROM PYTHON SOURCE LINES 219-221
 
 Lecture (pickle)
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 219-226
+.. GENERATED FROM PYTHON SOURCE LINES 221-228
 
 .. code-block:: Python
 
@@ -505,7 +507,7 @@ Lecture (pickle)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 227-233
+.. GENERATED FROM PYTHON SOURCE LINES 229-235
 
 Les classes
 +++++++++++
@@ -514,7 +516,7 @@ A l'inverse du format *JSON*, les classes sont sérialisables avec
 :mod:`pickle` parce que le langage utilise un format très proche
 de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
 
-.. GENERATED FROM PYTHON SOURCE LINES 233-242
+.. GENERATED FROM PYTHON SOURCE LINES 235-244
 
 .. code-block:: Python
 
@@ -540,7 +542,7 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 244-250
+.. GENERATED FROM PYTHON SOURCE LINES 246-252
 
 .. code-block:: Python
 
@@ -559,11 +561,11 @@ de ce qu'il a en mémoire. Il n'a pas besoin de conversion supplémentaire.
  .. code-block:: none
 
 
-    <__main__.A object at 0x7f165832e7a0>
+    <__main__.A object at 0x7f465ef218e0>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 251-256
+.. GENERATED FROM PYTHON SOURCE LINES 253-258
 
 Réduire la taille
 +++++++++++++++++
@@ -571,7 +573,7 @@ Réduire la taille
 Certaines informations sont duppliquées et il est préférable de ne pas
 les sérialiser deux fois surtout si elles sont voluminueuses.
 
-.. GENERATED FROM PYTHON SOURCE LINES 256-264
+.. GENERATED FROM PYTHON SOURCE LINES 258-266
 
 .. code-block:: Python
 
@@ -590,7 +592,7 @@ les sérialiser deux fois surtout si elles sont voluminueuses.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 266-274
+.. GENERATED FROM PYTHON SOURCE LINES 268-276
 
 .. code-block:: Python
 
@@ -615,11 +617,11 @@ les sérialiser deux fois surtout si elles sont voluminueuses.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 275-276
+.. GENERATED FROM PYTHON SOURCE LINES 277-278
 
 Evitons maintenant de stocker deux fois le même attribut.
 
-.. GENERATED FROM PYTHON SOURCE LINES 276-294
+.. GENERATED FROM PYTHON SOURCE LINES 278-296
 
 .. code-block:: Python
 
@@ -654,11 +656,11 @@ Evitons maintenant de stocker deux fois le même attribut.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 295-296
+.. GENERATED FROM PYTHON SOURCE LINES 297-298
 
 C'est plus court mais il faut inclure maintenant la relecture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 296-316
+.. GENERATED FROM PYTHON SOURCE LINES 298-318
 
 .. code-block:: Python
 
@@ -691,11 +693,11 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    <__main__.B object at 0x7f165832d8d0>
+    <__main__.B object at 0x7f465fa8c290>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 318-322
+.. GENERATED FROM PYTHON SOURCE LINES 320-324
 
 .. code-block:: Python
 
@@ -716,7 +718,7 @@ C'est plus court mais il faut inclure maintenant la relecture.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 324-329
+.. GENERATED FROM PYTHON SOURCE LINES 326-331
 
 .. code-block:: Python
 
@@ -734,11 +736,11 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.0002514369998607435
+    0.00035472099989419803
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 331-335
+.. GENERATED FROM PYTHON SOURCE LINES 333-337
 
 .. code-block:: Python
 
@@ -755,18 +757,18 @@ C'est plus court mais il faut inclure maintenant la relecture.
  .. code-block:: none
 
 
-    0.00022162899949762505
+    0.0002619639999466017
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 336-340
+.. GENERATED FROM PYTHON SOURCE LINES 338-342
 
 La sérialisation binaire est habituellement plus rapide dans les langages
 bas niveau comme C++. La même comparaison pour un langage haut niveau
 tel que Python n'est pas toujours prévisible.
 Il est possible d'accélérer un peu les choses.
 
-.. GENERATED FROM PYTHON SOURCE LINES 340-349
+.. GENERATED FROM PYTHON SOURCE LINES 342-351
 
 .. code-block:: Python
 
@@ -788,11 +790,11 @@ Il est possible d'accélérer un peu les choses.
  .. code-block:: none
 
 
-    0.0003348099999129772
+    0.000309618997562211
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 350-359
+.. GENERATED FROM PYTHON SOURCE LINES 352-361
 
 Cas des fonctions
 =================
@@ -804,7 +806,7 @@ La sérialisation binaire fonctionne même avec les fonctions.
 Binaire
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 359-373
+.. GENERATED FROM PYTHON SOURCE LINES 361-375
 
 .. code-block:: Python
 
@@ -835,7 +837,7 @@ Binaire
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 375-381
+.. GENERATED FROM PYTHON SOURCE LINES 377-383
 
 .. code-block:: Python
 
@@ -854,11 +856,11 @@ Binaire
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f16570f01f0>}
+    {'x': 5, 'f': <function myfunc at 0x7f465ee93740>}
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 383-387
+.. GENERATED FROM PYTHON SOURCE LINES 385-389
 
 .. code-block:: Python
 
@@ -879,13 +881,13 @@ Binaire
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 388-391
+.. GENERATED FROM PYTHON SOURCE LINES 390-393
 
 La sérialisation ne conserve pas le code de la fonction, juste son nom.
 Cela veut dire que si elle n'est pas disponible lorsqu'elle est appelée,
 il sera impossible de s'en servir.
 
-.. GENERATED FROM PYTHON SOURCE LINES 391-402
+.. GENERATED FROM PYTHON SOURCE LINES 393-404
 
 .. code-block:: Python
 
@@ -913,12 +915,12 @@ il sera impossible de s'en servir.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 403-405
+.. GENERATED FROM PYTHON SOURCE LINES 405-407
 
 Il est possible de contourner l'obstacle en utilisant le module
 :epkg:`cloudpickle` qui stocke le code de la fonction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 405-419
+.. GENERATED FROM PYTHON SOURCE LINES 407-421
 
 .. code-block:: Python
 
@@ -945,11 +947,11 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    b'\x80\x05\x95\xe3\x01\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02KCC\x08|\x00d\x01\x17\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cO/home/xadupre/github/teachpyx/_doc/examples/prog/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94M\x97\x01C\x02\x08\x01\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94h\x03\x8c\x12_function_setstate\x94\x93\x94h\x19}\x94}\x94(h\x16h\x0f\x8c\x0c__qualname__\x94h\x0f\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x17\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
+    b'\x80\x05\x95\n\x02\x00\x00\x00\x00\x00\x00}\x94(\x8c\x01x\x94K\x05\x8c\x01f\x94\x8c\x17cloudpickle.cloudpickle\x94\x8c\x0e_make_function\x94\x93\x94(h\x03\x8c\r_builtin_type\x94\x93\x94\x8c\x08CodeType\x94\x85\x94R\x94(K\x01K\x00K\x00K\x01K\x02K\x03C\x0c\x97\x00|\x00d\x01z\x00\x00\x00S\x00\x94NK\x01\x86\x94)h\x01\x85\x94\x8cO/home/xadupre/github/teachpyx/_doc/examples/prog/plot_serialisation_examples.py\x94\x8c\x06myfunc\x94\x8c\x06myfunc\x94M\x99\x01C\x0b\x80\x00\xd8\x0b\x0c\x88q\x895\x80L\x94C\x00\x94))t\x94R\x94}\x94(\x8c\x0b__package__\x94\x8c\x00\x94\x8c\x08__name__\x94\x8c\x08__main__\x94uNNNt\x94R\x94h\x03\x8c\x12_function_setstate\x94\x93\x94h\x1b}\x94}\x94(h\x18\x8c\x06myfunc\x94\x8c\x0c__qualname__\x94\x8c\x06myfunc\x94\x8c\x0f__annotations__\x94}\x94\x8c\x0e__kwdefaults__\x94N\x8c\x0c__defaults__\x94N\x8c\n__module__\x94h\x19\x8c\x07__doc__\x94N\x8c\x0b__closure__\x94N\x8c\x17_cloudpickle_submodules\x94]\x94\x8c\x0b__globals__\x94}\x94u\x86\x94\x86R0u.'
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 421-429
+.. GENERATED FROM PYTHON SOURCE LINES 423-431
 
 .. code-block:: Python
 
@@ -970,11 +972,11 @@ Il est possible de contourner l'obstacle en utilisant le module
  .. code-block:: none
 
 
-    {'x': 5, 'f': <function myfunc at 0x7f16570f0670>}
+    {'x': 5, 'f': <function myfunc at 0x7f467c465a80>}
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 431-435
+.. GENERATED FROM PYTHON SOURCE LINES 433-437
 
 .. code-block:: Python
 
@@ -995,7 +997,7 @@ Il est possible de contourner l'obstacle en utilisant le module
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 436-441
+.. GENERATED FROM PYTHON SOURCE LINES 438-443
 
 Fonction et JSON
 ++++++++++++++++
@@ -1003,7 +1005,7 @@ Fonction et JSON
 La sérialisation d'une fonction au format JSON ne
 fonctionne pas avec le module standard.
 
-.. GENERATED FROM PYTHON SOURCE LINES 441-450
+.. GENERATED FROM PYTHON SOURCE LINES 443-452
 
 .. code-block:: Python
 
@@ -1029,12 +1031,12 @@ fonctionne pas avec le module standard.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 451-453
+.. GENERATED FROM PYTHON SOURCE LINES 453-455
 
 La sérialisation avec :epkg:`ujson` ne fonctionne pas non plus
 même si elle ne produit pas toujours d'erreur.
 
-.. GENERATED FROM PYTHON SOURCE LINES 453-463
+.. GENERATED FROM PYTHON SOURCE LINES 455-465
 
 .. code-block:: Python
 
@@ -1056,13 +1058,13 @@ même si elle ne produit pas toujours d'erreur.
 
  .. code-block:: none
 
-    <function myfunc at 0x7f16570f04c0> is not JSON serializable
+    <function myfunc at 0x7f465ee92e80> is not JSON serializable
 
     ''
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 464-469
+.. GENERATED FROM PYTHON SOURCE LINES 466-471
 
 Cas des itérateurs
 ==================
@@ -1070,7 +1072,7 @@ Cas des itérateurs
 Les itérateurs fonctionnent avec la sérialisation binaire mais ceci
 implique de stocker l'ensemble que l'itérateur parcourt.
 
-.. GENERATED FROM PYTHON SOURCE LINES 469-481
+.. GENERATED FROM PYTHON SOURCE LINES 471-483
 
 .. code-block:: Python
 
@@ -1099,7 +1101,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 483-490
+.. GENERATED FROM PYTHON SOURCE LINES 485-492
 
 .. code-block:: Python
 
@@ -1119,11 +1121,11 @@ implique de stocker l'ensemble que l'itérateur parcourt.
  .. code-block:: none
 
 
-    {'x': 5, 'it': <list_iterator object at 0x7f165832ce50>}
+    {'x': 5, 'it': <list_iterator object at 0x7f465fa8c880>}
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 492-496
+.. GENERATED FROM PYTHON SOURCE LINES 494-498
 
 .. code-block:: Python
 
@@ -1144,7 +1146,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 498-502
+.. GENERATED FROM PYTHON SOURCE LINES 500-504
 
 .. code-block:: Python
 
@@ -1165,7 +1167,7 @@ implique de stocker l'ensemble que l'itérateur parcourt.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 503-509
+.. GENERATED FROM PYTHON SOURCE LINES 505-511
 
 Cas des générateurs
 ===================
@@ -1174,7 +1176,7 @@ Ils ne peuvent être sérialisés car le langage n'a pas accès à l'ensemble
 des éléments que le générateur parcourt. Il n'y a aucun moyen de
 sérialiser un générateur mais on peut sérialiser la fonction qui crée le générateur.
 
-.. GENERATED FROM PYTHON SOURCE LINES 509-524
+.. GENERATED FROM PYTHON SOURCE LINES 511-526
 
 .. code-block:: Python
 
@@ -1209,7 +1211,7 @@ sérialiser un générateur mais on peut sérialiser la fonction qui crée le g�
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.021 seconds)
+   **Total running time of the script:** (0 minutes 0.041 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_serialisation_examples.py:

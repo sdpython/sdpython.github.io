@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.029** total execution time for 14 files **from auto_examples/prog**:
+**00:00.041** total execution time for 14 files **from auto_examples/prog**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_prog_plot_matador.py` (``plot_matador.py``)
-     - 00:01.029
+   * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_examples.py` (``plot_serialisation_examples.py``)
+     - 00:00.041
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_burrows_wheeler.py` (``plot_burrows_wheeler.py``)
      - 00:00.000
@@ -53,6 +53,9 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_prog_plot_lambda_function.py` (``plot_lambda_function.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_examples_prog_plot_matador.py` (``plot_matador.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_numpy_tricks.py` (``plot_numpy_tricks.py``)
      - 00:00.000
      - 0.0
@@ -60,9 +63,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_partie_dame.py` (``plot_partie_dame.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_examples.py` (``plot_serialisation_examples.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_protobuf.py` (``plot_serialisation_protobuf.py``)

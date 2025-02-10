@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_examples_prog_plot_pandas_groupby.py:
 
 
+.. _l-example-plot-groupby:
+
 =================
 Pandas et groupby
 =================
@@ -29,7 +31,7 @@ depuis les dernières versions.
 groupby et valeur manquantes
 ============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-24
+.. GENERATED FROM PYTHON SOURCE LINES 16-26
 
 .. code-block:: Python
 
@@ -101,7 +103,7 @@ groupby et valeur manquantes
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-30
+.. GENERATED FROM PYTHON SOURCE LINES 28-32
 
 .. code-block:: Python
 
@@ -158,12 +160,12 @@ groupby et valeur manquantes
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-33
+.. GENERATED FROM PYTHON SOURCE LINES 33-35
 
 Les valeurs manquantes ont disparu et c'est le comportement attendu
 Il est possible de corriger le tir avec l'argument `dropna`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-36
+.. GENERATED FROM PYTHON SOURCE LINES 35-38
 
 .. code-block:: Python
 
@@ -226,7 +228,7 @@ Il est possible de corriger le tir avec l'argument `dropna`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.026 seconds)
+   **Total running time of the script:** (0 minutes 0.803 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_pandas_groupby.py:
