@@ -685,6 +685,25 @@
 <li><p>créer son propre estimateur</p></li>
 <li><p>tests unitaires</p></li>
 </ul>
+<p>Pour cette séance, on souhaite construire un estimateur qui estime
+une régression linéaire à coefficients positifs, une autre avec
+des coefficients uniquement négatifs puis pour finir une dernière
+régression linéaire qui considère les deux premières comme features.</p>
+<p>Une régression linéaire minimise l’erreur
+<img class="math" src="../../_images/math/9f4a4d37620335d6b468e911a3d3e2cdbb546a8b.svg" alt="\sum_i \left\Vert X_i\theta - y_i \right\Vert^2"/>.
+Le gradient est <img class="math" src="../../_images/math/797779a2beee6d99da06e50dc223d3324d285d4b.svg" alt="\sum_i X_i'\left( X_i\theta - y_i \right)"/>.</p>
+<p>Comme le modèle souhaité est équivalent à une optimisation sous contrainte,
+on propose de le résoudre comme ceci :</p>
+<ul class="simple">
+<li><p>On applique une itération de l’algorithme de la descente de gradient :
+<img class="math" src="../../_images/math/1c5901f3af4b2f8f2f342863956f513128b68a45.svg" alt="\theta_{t+1} = \theta_t - \epsilon_t \sum_i X_i'\left( X_i\theta - y_i \right)"/>.</p></li>
+<li><p>On ne garde que les coefficients positifs : <img class="math" src="../../_images/math/844b46ea096226205c17efba5094f6c7f350b462.svg" alt="\theta_{t+1} = \max(0, \theta_t)"/>.</p></li>
+<li><p>On retourne à l’étape 1 ou on s’arrête si l’algorithme a convergé.</p></li>
+</ul>
+<p>On appliquera cela au jeu de données <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="(disponible dans scikit-learn v1.6)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.datasets.load_diabetes()</span></code></a> ou
+<a class="reference external" href="https://archive.ics.uci.edu/datasets?search=wine">Wine Quality</a>
+on comparera à une simple régression linéaire, les coefficients sont-ils
+équivalents ? Comment comparer les modèles ?</p>
 </section>
 <section id="seance-4-21-2">
 <h2>Séance 4 (21/2)<a class="headerlink" href="#seance-4-21-2" title="Lien vers cette rubrique">¶</a></h2>
