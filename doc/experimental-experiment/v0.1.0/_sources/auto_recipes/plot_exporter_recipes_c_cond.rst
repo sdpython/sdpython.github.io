@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.7273]], grad_fn=<MulBackward0>)
+    tensor([[-0.7766]], grad_fn=<MulBackward0>)
 
 
 
@@ -139,7 +139,7 @@ As expected, it does not export.
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 42, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1760, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
         return forward_call(*args, **kwargs)
       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 27, in forward
         if x.sum():
@@ -178,7 +178,7 @@ The exporter fails with the same eror as it expects torch.export.export to work.
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 42, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1760, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
         return forward_call(*args, **kwargs)
       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py", line 27, in forward
         if x.sum():
@@ -301,9 +301,9 @@ Let's export again.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.23029079, -0.5132837 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.00193783, 0.67081165], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.00765766], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.42619753,  0.14323725], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.1824264 , 0.20393367], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.39891502], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
     Reshape(mlp.1.weight, init7_s2_-1_1) -> _onx_transpose_p_mlp_1_weight0
       Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
@@ -366,9 +366,9 @@ We can also inline the local function.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='mlp.0.weight' type=float32 shape=(2, 3)                   -- DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.23029079, -0.5132837 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.00193783, 0.67081165], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.00765766], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.42619753,  0.14323725], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.weight' type=float32 shape=(1, 2) -- array([0.1824264 , 0.20393367], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.weight)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.39891502], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, mlp.0.weight, mlp.0.bias, transB=1) -> linear
     Reshape(mlp.1.weight, init7_s2_-1_1) -> _onx_transpose_p_mlp_1_weight0
       Reshape(_onx_transpose_p_mlp_1_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_mlp_1_weight0
@@ -415,7 +415,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.061 seconds)
+   **Total running time of the script:** (0 minutes 1.228 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:

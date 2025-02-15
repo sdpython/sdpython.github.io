@@ -59,8 +59,8 @@ Model with unpredictable names for dynamic shapes
  .. code-block:: none
 
 
-    tensor([[-1.4056, -1.3240, -0.5327,  1.7165,  0.3170,  2.3521, -0.5517, -1.7379],
-            [ 2.0277,  0.4392,  0.1686,  2.5376, -0.2782,  0.4608, -1.4493,  1.8486]])
+    tensor([[ 1.7332,  2.5631,  3.2852, -1.5264,  0.3001,  0.5521, -0.3925, -0.0207],
+            [-0.9006, -0.4954,  0.3012, -2.6659,  0.8444,  2.6513,  1.4366, -0.0708]])
 
 
 
@@ -115,6 +115,7 @@ Let's convert it into ONNX.
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
     [torch.onnx] Translate the graph into ONNX... ✅
+    Applied 1 of general pattern rewrite rules.
      input: EXTERNAL[s0,s1] x
      input: EXTERNAL[s0,s3] y
      input: EXTERNAL[s0,s5] z
@@ -163,10 +164,13 @@ by the name this dimension should have.
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
     [torch.onnx] Translate the graph into ONNX... ✅
-     input: EXTERNAL[s0,s1] x
-     input: EXTERNAL[s0,s3] y
-     input: EXTERNAL[s0,s5] z
-    output: EXTERNAL[s0,s1 + s3] add_11
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:253: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+      warnings.warn(
+    Applied 1 of general pattern rewrite rules.
+     input: EXTERNAL[batch,dx] x
+     input: EXTERNAL[batch,dy] y
+     input: EXTERNAL[batch,dx+dy] z
+    output: EXTERNAL[batch,dx + dy] add_11
 
 
 
@@ -200,13 +204,17 @@ A model with an unknown output shape
  .. code-block:: none
 
 
-    tensor([[0, 0],
-            [0, 1],
-            [1, 0],
+    tensor([[1, 0],
             [2, 0],
+            [2, 1],
             [4, 0],
-            [6, 0],
+            [5, 1],
             [6, 1],
+            [7, 0],
+            [7, 1],
+            [8, 0],
+            [8, 1],
+            [9, 0],
             [9, 1]])
 
 
@@ -285,7 +293,7 @@ Let's export it into ONNX.
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
     [torch.onnx] Translate the graph into ONNX... ✅
-     input: INT64[s0,s1] x
+     input: INT64[batch,dx] x
     output: INT64[u0,2] nonzero
 
 
@@ -341,7 +349,7 @@ the output dynamic shapes are given as a tuple.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.669 seconds)
+   **Total running time of the script:** (0 minutes 3.220 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_named_ds_auto.py:

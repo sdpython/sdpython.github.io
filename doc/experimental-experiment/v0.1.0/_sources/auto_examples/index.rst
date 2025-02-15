@@ -281,6 +281,23 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="When sklearn-onnx is missing a converter, torch can be used to write it. We use sklearn.impute.KNNImputer as an example. The first step is to rewrite the scikit-learn model with torch functions. The code is then refactored and split into submodules to be able to bypass some pieces torch.export.export cannot process.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_torch_sklearn_201_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">201: Use torch to export a scikit-learn model into ONNX</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The script compares the two exporters implemented in pytorch for a part of llama model. The model are compared after all optimizations were made with and onnxruntime.">
 
 .. only:: html
@@ -337,6 +354,7 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
    /auto_examples/plot_torch_dort_201
    /auto_examples/plot_torch_aot_201
    /auto_examples/plot_torch_export_201
+   /auto_examples/plot_torch_sklearn_201
    /auto_examples/plot_llama_diff_export_301
    /auto_examples/plot_llama_diff_dort_301
 

@@ -165,15 +165,15 @@ Optimization
 
  .. code-block:: none
 
-    [GraphBuilder-CGE.optimize] start with 3 nodes
-    [GraphBuilder-CGE.optimize] #patterns=1
-    [GraphBuilderPatternOptimization-CGE.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0]
-    [GraphBuilderPatternOptimization-CGE.optimize] iteration 0: 3 nodes, priority=0
-    [GraphBuilderPatternOptimization-CGE.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
-    [GraphBuilderPatternOptimization-CGE.optimize] iteration 1: 1 nodes, priority=0
-    [GraphBuilderPatternOptimization-CGE.optimize] stops current_priority_index=1, priorities=[0]
-    [GraphBuilderPatternOptimization-CGE.optimize] done after 2 iterations with 1 nodes in 0.002
-    [GraphBuilder-CGE.optimize] done with 1 nodes in 0.002
+    [GraphBuilder-EUY.optimize] start with 3 nodes
+    [GraphBuilder-EUY.optimize] #patterns=1
+    [GraphBuilderPatternOptimization-EUY.optimize] start with 3 nodes, 0 initializers, 1 patterns, priorities=[0]
+    [GraphBuilderPatternOptimization-EUY.optimize] iteration 0: 3 nodes, priority=0
+    [GraphBuilderPatternOptimization-EUY.optimize] applies 1 matches, [0]=MatchResult: MulMulSigmoidPattern replaces ['Sigmoid', 'Mul', 'Mul'] - time=0.001 | max_time=MulMulSigmoidPattern:0.001
+    [GraphBuilderPatternOptimization-EUY.optimize] iteration 1: 1 nodes, priority=0
+    [GraphBuilderPatternOptimization-EUY.optimize] stops current_priority_index=1, priorities=[0]
+    [GraphBuilderPatternOptimization-EUY.optimize] done after 2 iterations with 1 nodes in 0.002
+    [GraphBuilder-EUY.optimize] done with 1 nodes in 0.003
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cuda' version=1
     input: name='X' type=dtype('float32') shape=[1, 'b', 'c']
@@ -287,7 +287,7 @@ shapes are identical.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.210 seconds)
+   **Total running time of the script:** (0 minutes 0.265 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_rewrite_101.py:

@@ -114,7 +114,7 @@ Then we could make it a different one.
 .. code-block:: Python
 
 
-    dz = torch.export.Dim("dz")
+    dz = torch.export.Dim("dz") * 2
     try:
         ep = torch.export.export(
             model,
@@ -138,10 +138,8 @@ Then we could make it a different one.
 
  .. code-block:: none
 
-    unable to use Dim('dz') because <class 'torch._dynamo.exc.UserError'>, Constraints violated (batch, dz)! For more information, run with TORCH_LOGS="+dynamic".
+    unable to use Dim('dz') because <class 'torch._dynamo.exc.UserError'>, Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
       - Not all values of batch = L['x'].size()[0] in the specified range satisfy the generated guard L['x'].size()[0] != 9223372036854775807.
-      - Not all values of dz = L['z'].size()[1] in the specified range satisfy the generated guard L['z'].size()[1] != 9223372036854775807.
-      - Not all values of dz = L['z'].size()[1] in the specified range satisfy the generated guard ((1 + L['z'].size()[1]) // 2) != 1.
 
 
 
@@ -269,7 +267,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.912 seconds)
+   **Total running time of the script:** (0 minutes 1.038 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_dynamic_shapes_auto.py:

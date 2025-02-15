@@ -178,13 +178,13 @@ set up when the export starts.
  .. code-block:: none
 
 
-    CausalLMOutputWithPast(loss=None, logits=tensor([[[-0.0527,  2.1904, -0.7771,  ..., -0.1380,  1.5488, -1.0399],
-             [-0.0605, -0.3221, -0.2274,  ...,  1.0397, -2.5695, -1.0675],
-             [ 0.2903,  1.5978, -0.5193,  ...,  0.6445, -0.5092, -0.3258]],
+    CausalLMOutputWithPast(loss=None, logits=tensor([[[ 0.7979,  0.3673,  1.7276,  ...,  1.0755, -0.5409,  1.7213],
+             [ 0.0160, -1.5066,  2.6774,  ..., -0.3734, -1.6701,  0.8857],
+             [-0.1865, -0.7282,  1.2860,  ...,  1.8946,  0.0776,  0.3918]],
 
-            [[ 2.2036,  2.2190,  0.2870,  ...,  0.1952, -1.1020, -0.8126],
-             [-1.4998,  1.7958,  1.1381,  ...,  0.6665,  0.6016,  1.5307],
-             [-0.3105, -0.6205,  1.0866,  ...,  2.4962,  1.6240, -0.7642]]],
+            [[-0.5348,  0.1761,  1.3224,  ..., -0.0308,  0.6626, -0.8239],
+             [ 1.2772, -0.2547,  0.2357,  ...,  0.4670, -0.8453,  0.2779],
+             [-0.7813, -1.1209,  1.7710,  ..., -0.2175, -1.8416,  0.2227]]],
            grad_fn=<ViewBackward0>), past_key_values=DynamicCache(), hidden_states=None, attentions=None)
 
 
@@ -220,6 +220,10 @@ Let's export with :func:`torch.onnx.export`.
 
  .. code-block:: none
 
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:823: FutureWarning: 'onnxscript.values.Op.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
+      param_schemas = callee.param_schemas()
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:823: FutureWarning: 'onnxscript.values.OnnxFunction.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
+      param_schemas = callee.param_schemas()
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`...
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export(..., strict=False)`... ❌
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with `torch.export.export`...
@@ -227,10 +231,27 @@ Let's export with :func:`torch.onnx.export`.
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with Torch Script...
     /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/cache_utils.py:460: TracerWarning: Using len to get tensor shape might cause the trace to be incorrect. Recommended usage would be tensor.shape[0]. Passing a tensor of different shape might lead to errors or silently give incorrect results.
       or len(self.key_cache[layer_idx]) == 0  # the layer has no cache
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py:700: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi/modeling_phi.py:703: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
       if sequence_length != 1:
     /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/cache_utils.py:444: TracerWarning: Using len to get tensor shape might cause the trace to be incorrect. Recommended usage would be tensor.shape[0]. Passing a tensor of different shape might lead to errors or silently give incorrect results.
       len(self.key_cache[layer_idx]) == 0
+
+
+
+
+    def forward(self, arg0_1: "f32[51200]", arg1_1: "f32[51200, 2560]", arg2_1: "f32[51200, 2560]", arg3_1: "f32[2560]", arg4_1: "f32[2560]", arg5_1: "f32[2560]", arg6_1: "f32[2560]", arg7_1: "f32[2560]", arg8_1: "f32[2560, 2560]", arg9_1: "f32[2560]", arg10_1: "f32[2560, 2560]", arg11_1: "f32[2560]", arg12_1: "f32[2560, 2560]", arg13_1: "f32[2560]", arg14_1: "f32[2560, 2560]", arg15_1: "f32[10240]", arg16_1: "f32[10240, 2560]", arg17_1: "f32[2560]", arg18_1: "f32[2560, 10240]", arg19_1: "f32[2560]", arg20_1: "f32[2560]", arg21_1: "f32[2560]", arg22_1: "f32[2560, 2560]", arg23_1: "f32[2560]", arg24_1: "f32[2560, 2560]", arg25_1: "f32[2560]", arg26_1: "f32[2560, 2560]", arg27_1: "f32[2560]", arg28_1: "f32[2560, 2560]", arg29_1: "f32[10240]", arg30_1: "f32[10240, 2560]", arg31_1: "f32[2560]", arg32_1: "f32[2560, 10240]", arg33_1: "f64[]", arg34_1: "f64[]", arg35_1: "f64[]", arg36_1: "i64[]", arg37_1: "f64[]", arg38_1: "f32[16]", arg39_1: "i64[s0, s1]", arg40_1: "i64[s2, s3]", arg41_1: "f32[s4, s5, s6, s7]", arg42_1: "f32[s8, s9, s10, s11]", arg43_1: "f32[s12, s13, s14, s15]", arg44_1: "f32[s16, s17, s18, s19]"):
+        # No stacktrace found for following nodes
+        embedding: "f32[s0, s1, 2560]" = torch.ops.aten.embedding.default(arg2_1, arg39_1);  arg2_1 = None
+        sym_size: "Sym(s6)" = torch.ops.aten.sym_size.int(arg41_1, 2);  sym_size = None
+        sym_size_int: "Sym(s6)" = torch.ops.aten.sym_size.int(arg41_1, 2);  arg41_1 = None
+        scalar_tensor: "i64[]" = torch.ops.aten.scalar_tensor.default(sym_size_int, dtype = torch.int64)
+        sym_size_1: "Sym(s1)" = torch.ops.aten.sym_size.int(embedding, 1);  embedding = sym_size_1 = None
+        sym_size_int_1: "Sym(s1)" = torch.ops.aten.sym_size.int(arg39_1, 1);  arg39_1 = None
+        scalar_tensor_1: "i64[]" = torch.ops.aten.scalar_tensor.default(sym_size_int_1, dtype = torch.int64);  sym_size_int_1 = None
+        add: "i64[]" = torch.ops.aten.add.Tensor(scalar_tensor, scalar_tensor_1);  scalar_tensor = scalar_tensor_1 = None
+        item: "Sym(u0)" = torch.ops.aten.item.default(add);  add = None
+        arange = torch.ops.aten.arange.start(sym_size_int, item, device = device(type='cpu'), pin_memory = False);  sym_size_int = item = arange = None
+    
     [torch.onnx] Obtain model graph for `PhiForCausalLM([...]` with Torch Script... ❌
     export failed due to Failed to export the model with torch.export. This is step 1/3 of exporting the model to ONNX. Next steps:
     - Modify the model code for `torch.export.export` to succeed. Refer to https://pytorch.org/docs/stable/generated/exportdb/index.html for more information.
@@ -239,8 +260,15 @@ Let's export with :func:`torch.onnx.export`.
 
     ## Exception summary
 
-    <class 'torch._dynamo.exc.UserError'>: Cannot associate shape [[{0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}, {0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}], [{0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}, {0: <class '__main__.batch'>, 2: <class '__main__.cache_length'>}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
-    For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#dynamic-shapes-validation
+    <class 'torch._dynamo.exc.UserError'>: Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
+      - Not all values of batch = L['args'][1]['input_ids'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
+      - Not all values of batch = L['args'][1]['attention_mask'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
+      - Not all values of batch = L['args'][1]['past_key_values']['key_cache'][0].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
+      - Not all values of batch = L['args'][1]['past_key_values']['key_cache'][1].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
+      - Not all values of batch = L['args'][1]['past_key_values']['value_cache'][0].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
+      - Not all values of batch = L['args'][1]['past_key_values']['value_cache'][1].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
+    Suggested fixes:
+      batch = 2
 
     (Refer to the full stack trace above for more information.)
 
@@ -287,12 +315,9 @@ serialization functions as shown in example
  .. code-block:: none
 
     [bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
-    [bypass_export_some_errors] register MambaCache
-    [bypass_export_some_errors] register DynamicCache
-    [bypass_export_some_errors] register patched_DynamicCache
     [bypass_export_some_errors] patch sympy
     [bypass_export_some_errors] patch pytorch
-    [bypass_export_some_errors] catch produce_guards_and_solve_constraints
+    [bypass_export_some_errors] modifies shape constraints
     [bypass_export_some_errors] patch transformers
     [bypass_export_some_errors] replace DynamicCache
     inputs before dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80,T1s2x32x30x80], value_cache=#2[T1s2x32x30x80,T1s2x32x30x80]))
@@ -306,12 +331,9 @@ serialization functions as shown in example
     Applied 31 of general pattern rewrite rules.
     [bypass_export_some_errors] restored sympy functions
     [bypass_export_some_errors] restored pytorch functions
-    [bypass_export_some_errors] restored produce_guards_and_solve_constraints
+    [bypass_export_some_errors] restored shape constraints
     [bypass_export_some_errors] restored transformer
     [bypass_export_some_errors] restored DynamicCache
-    [bypass_export_some_errors] unregistered MambaCache
-    [bypass_export_some_errors] unregistered DynamicCache
-    [bypass_export_some_errors] unregistered patched_DynamicCache
 
 
 
@@ -780,7 +802,7 @@ Visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 18.031 seconds)
+   **Total running time of the script:** (0 minutes 24.413 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_phi2.py:

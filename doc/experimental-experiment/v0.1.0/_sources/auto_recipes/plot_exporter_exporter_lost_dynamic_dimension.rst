@@ -233,7 +233,10 @@ But the exported program does not.
 
  .. code-block:: none
 
-    Expected input at *args[1].shape[0] to be equal to 2, but got 3
+    tensor([[1, 2, 3],
+            [2, 3, 4],
+            [3, 4, 5],
+            [2, 3, 4]])
 
 
 
@@ -401,7 +404,7 @@ It finally works.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.957 seconds)
+   **Total running time of the script:** (0 minutes 0.186 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_lost_dynamic_dimension.py:

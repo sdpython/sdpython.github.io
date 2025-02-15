@@ -91,8 +91,7 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [ 1.52427816e+01 -2.54252527e-01 -3.82964908e-01  8.20315174e+01
-      5.67765398e-02], -0.08683603222894343
+    coefficients: [54.71668674 -0.69106611  0.38543929 -0.41235158 51.81035561], 0.26255562385228726
 
 
 
@@ -120,7 +119,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=103.35968339727624, r2=0.9866212174736183
+    LinearRegression: l2=91.84279545877556, r2=0.9843716282304464
 
 
 
@@ -151,23 +150,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 70.01, NNZs: 5, Bias: -0.596756, T: 750, Avg. loss: 762.940298
+    Norm: 63.49, NNZs: 5, Bias: 0.491913, T: 750, Avg. loss: 613.818693
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 79.68, NNZs: 5, Bias: -0.372727, T: 1500, Avg. loss: 75.006016
+    Norm: 71.87, NNZs: 5, Bias: 0.385489, T: 1500, Avg. loss: 75.098090
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 82.11, NNZs: 5, Bias: -0.302945, T: 2250, Avg. loss: 45.922539
+    Norm: 74.06, NNZs: 5, Bias: 0.432932, T: 2250, Avg. loss: 52.338135
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 82.98, NNZs: 5, Bias: -0.086139, T: 3000, Avg. loss: 43.265952
+    Norm: 74.93, NNZs: 5, Bias: 0.238982, T: 3000, Avg. loss: 50.086589
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 83.28, NNZs: 5, Bias: -0.133008, T: 3750, Avg. loss: 42.890983
+    Norm: 75.28, NNZs: 5, Bias: 0.297224, T: 3750, Avg. loss: 49.691118
     Total training time: 0.00 seconds.
     /home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/linear_model/_stochastic_gradient.py:1608: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [15.32148304 -0.29461492 -0.41068574 81.85480767  0.12316004], [-0.13300797]
+    coefficients: [54.6073198  -0.68918523  0.3951037  -0.17981909 51.80928025], [0.29722431]
 
 
 
@@ -195,7 +194,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=103.54971212325994, sr2=0.9865966203297887
+    SGDRegressor: sl2=91.6582928419564, sr2=0.9844030240026864
 
 
 
@@ -266,11 +265,11 @@ Linrar Regression with pytorch
 
  .. code-block:: none
 
-    iteration 0, loss=1716694.25
-    iteration 1, loss=150246.78125
-    iteration 2, loss=68995.21875
-    iteration 3, loss=64695.87890625
-    iteration 4, loss=64509.41796875
+    iteration 0, loss=1432482.875
+    iteration 1, loss=147046.625
+    iteration 2, loss=78746.578125
+    iteration 3, loss=74954.1484375
+    iteration 4, loss=74755.9765625
 
 
 
@@ -297,7 +296,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=104.26683223947525, tr2=0.9865037969603202
+    TorchLinearRegression: tl2=92.71648654069564, tr2=0.9842229571346705
 
 
 
@@ -326,10 +325,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[ 1.5391e+01, -3.3788e-01, -1.4247e-01,  8.2086e+01, -1.5974e-02]],
-           requires_grad=True)
+    tensor([[55.1917, -0.8006,  0.5471, -0.3315, 51.3658]], requires_grad=True)
     Parameter containing:
-    tensor([-0.1146], requires_grad=True)
+    tensor([0.1978], requires_grad=True)
 
 
 
@@ -392,8 +390,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[ 126.04387],
-           [-101.80242]], dtype=float32)]
+    [array([[-44.3172 ],
+           [121.82564]], dtype=float32)]
 
 
 
@@ -495,7 +493,7 @@ follow the convention described there.
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['s0', 5]
     init: name='linear.weight' type=float32 shape=(1, 5)
-    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.11463732], dtype=float32)
+    init: name='linear.bias' type=float32 shape=(1,) -- array([0.19783159], dtype=float32)
     Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -> linear
     output: name='linear' type=dtype('float32') shape=['s0', 1]
 
@@ -540,7 +538,7 @@ or ``torch.export.Dim.AUTO``.
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['s0', 5]
     init: name='linear.weight' type=float32 shape=(1, 5)
-    init: name='linear.bias' type=float32 shape=(1,) -- array([-0.11463732], dtype=float32)
+    init: name='linear.bias' type=float32 shape=(1,) -- array([0.19783159], dtype=float32)
     Gemm(x, linear.weight, linear.bias, beta=1.00, transB=1, alpha=1.00, transA=0) -> linear
     output: name='linear' type=dtype('float32') shape=['s0', 1]
 
@@ -550,7 +548,7 @@ or ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.282 seconds)
+   **Total running time of the script:** (0 minutes 8.854 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_lr.py:

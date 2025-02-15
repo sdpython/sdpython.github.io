@@ -60,8 +60,8 @@ Model with unpredictable names for dynamic shapes
  .. code-block:: none
 
 
-    tensor([[ 1.9698,  1.8367,  0.5590,  3.3390, -1.1166,  0.2100, -3.4309, -0.7227],
-            [-0.5223,  0.3746, -0.8368,  2.2754, -0.7859,  0.7766, -1.3078,  0.4274]])
+    tensor([[ 0.6733, -1.4223,  1.3222,  1.0038,  1.7007, -1.6315,  1.1124,  2.6534],
+            [ 0.1644, -0.9957, -0.0325,  1.6376,  1.2567,  0.7279,  0.9898, -2.3211]])
 
 
 
@@ -112,10 +112,10 @@ Let's convert it into ONNX.
 
  .. code-block:: none
 
-     input: FLOAT[s0,s1] x
-     input: FLOAT[s2,s3] y
-     input: FLOAT[s4,s5] z
-    output: FLOAT[s0,s1+s3] output_0
+     input: EXTERNAL[s0,s1] x
+     input: EXTERNAL[s2,s3] y
+     input: EXTERNAL[s4,s5] z
+    output: EXTERNAL[s0,s1+s3] output_0
 
 
 
@@ -156,10 +156,10 @@ by the name this dimension should have.
 
  .. code-block:: none
 
-     input: FLOAT[batch,dx] x
-     input: FLOAT[batch,dy] y
-     input: FLOAT[batch,dx+dy] z
-    output: FLOAT[batch,dx+dy] output_0
+     input: EXTERNAL[batch,dx] x
+     input: EXTERNAL[batch,dy] y
+     input: EXTERNAL[batch,dx+dy] z
+    output: EXTERNAL[batch,dx+dy] output_0
 
 
 
@@ -193,16 +193,16 @@ A model with an unknown output shape
  .. code-block:: none
 
 
-    tensor([[1, 0],
+    tensor([[0, 0],
+            [1, 1],
+            [2, 1],
             [3, 0],
             [4, 1],
-            [5, 1],
+            [5, 0],
             [6, 0],
-            [6, 1],
-            [7, 0],
-            [7, 1],
-            [8, 0],
-            [8, 1]])
+            [8, 1],
+            [9, 0],
+            [9, 1]])
 
 
 
@@ -322,7 +322,7 @@ the output dynamic shapes are given as a tuple.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.187 seconds)
+   **Total running time of the script:** (0 minutes 0.344 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py:

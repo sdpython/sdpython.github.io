@@ -91,7 +91,7 @@ Some helpers
     from experimental_experiment.torch_models.llama_helper import get_llama_model
     from experimental_experiment.torch_models.dump_helper import reorder_functions_in_proto
 
-    has_cuda = has_cuda and torch.cuda.is_available()
+    has_cuda = has_cuda and torch.cuda.device_count() > 0
     logging.disable(logging.ERROR)
     provider = "cuda" if has_cuda else "cpu"
 
@@ -327,7 +327,7 @@ Verification
  .. code-block:: none
 
     Using models optimized by onnxruntime
-    Error with the eager model and onnxruntime: 0.003633856773376465, 0.0036339163780212402
+    Error with the eager model and onnxruntime: 0.00330527126789093, 0.00330527126789093
 
 
 
@@ -372,7 +372,7 @@ Verification with the reference evaluator
 
  .. code-block:: none
 
-    Error with the eager model and the reference evaluator: 3.933906555175781e-06, 3.5762786865234375e-06
+    Error with the eager model and the reference evaluator: 3.0994415283203125e-06, 3.516674041748047e-06
 
 
 
@@ -431,18 +431,18 @@ Comparison and execution
     [compare_onnx_execution] compute edit distance
     [compare_onnx_execution] got 112 pairs
     [compare_onnx_execution] done
-    001 = | INITIA float32  2:4000x512           SLLF                 model.embed_tokens.weight        | INITIA float32  2:4000x512           SLLF                 model.embed_tokens.weight       
+    001 = | INITIA float32  2:4000x512           WFSF                 model.embed_tokens.weight        | INITIA float32  2:4000x512           WFSF                 model.embed_tokens.weight       
     002 + |                                                                                            | INITIA float32  4:2x1x1024x1024      ????                 expand_1                         
     003 + |                                                                                            | INITIA float32  4:1x1024x1x64        CJYF                 unsqueeze_10                     
     004 - | INITIA float32  1:512                YYYY                 model.layers.0.input_layernorm.w |                                                                                           
-    005 - | INITIA float32  2:512x512            UVEH                 onnx::MatMul_381                 |                                                                                           
-    006 - | INITIA float32  2:512x512            EZAT                 onnx::MatMul_397                 |                                                                                           
-    007 - | INITIA float32  2:512x512            WPAA                 onnx::MatMul_398                 |                                                                                           
-    008 = | INITIA float32  2:512x512            BDJA                 onnx::MatMul_423                 | INITIA float32  2:512x512            BDJA                 val_321                         
-    009 - | INITIA float32  2:512x2000           KKKH                 onnx::MatMul_424                 |                                                                                           
-    010 = | INITIA float32  2:512x2000           NEXI                 onnx::MatMul_425                 | INITIA float32  2:512x2000           NEXI                 val_327                         
-    011 + |                                                                                            | INITIA float32  2:512x512            UVEH                 val_239                          
-    012 - | INITIA float32  2:2000x512           OXOY                 onnx::MatMul_426                 |                                                                                           
+    005 - | INITIA float32  2:512x512            HUOE                 onnx::MatMul_381                 |                                                                                           
+    006 - | INITIA float32  2:512x512            YABW                 onnx::MatMul_397                 |                                                                                           
+    007 - | INITIA float32  2:512x512            BXHZ                 onnx::MatMul_398                 |                                                                                           
+    008 = | INITIA float32  2:512x512            AZGY                 onnx::MatMul_423                 | INITIA float32  2:512x512            AZGY                 val_321                         
+    009 - | INITIA float32  2:512x2000           JWYN                 onnx::MatMul_424                 |                                                                                           
+    010 = | INITIA float32  2:512x2000           UVSU                 onnx::MatMul_425                 | INITIA float32  2:512x2000           UVSU                 val_327                         
+    011 + |                                                                                            | INITIA float32  2:512x512            HUOE                 val_239                          
+    012 - | INITIA float32  2:2000x512           YVOS                 onnx::MatMul_426                 |                                                                                           
     013 - | INITIA int64    5:2x1x1024x1024x4    AQYO                 /model/Concat_output_0           |                                                                                           
     014 ~ | INITIA int64    1:4                  CBKK                 /model/Concat_1_output_0         | INITIA float32                       AAAA                 val_237                         
     015 - | INITIA float32  4:1x1024x1x64        GSEC                 /model/layers.0/self_attn/Unsque |                                                                                           
@@ -453,14 +453,14 @@ Comparison and execution
     020 - | INITIA float32  4:2x1x1024x1024      ????                 /model/Slice_2_output_0          |                                                                                           
     021 - | INITIA float32  4:1x1024x1x64        CJYF                 /model/layers.0/self_attn/Unsque |                                                                                           
     022 ~ | INITIA int64    1:4                  CKZM                 /model/layers.0/self_attn/Consta | INITIA int64    1:2                  GGAA                 splits_token_10                 
-    023 + |                                                                                            | INITIA float32  2:2000x512           OXOY                 val_328                          
+    023 + |                                                                                            | INITIA float32  2:2000x512           YVOS                 val_328                          
     024 ~ | INITIA int64    1:2                  GGAA                 splits_token_12                  | INITIA float32                       ?AAA                 val_5                           
-    025 + |                                                                                            | INITIA float32  2:512x2000           KKKH                 val_325                          
+    025 + |                                                                                            | INITIA float32  2:512x2000           JWYN                 val_325                          
     026 ~ | INITIA int64    1:1                  AAAA                 /model/layers.0/self_attn/Consta | INITIA int64                         BAAA                 dim_0_10                        
-    027 + |                                                                                            | INITIA float32  2:512x512            EZAT                 val_242                          
+    027 + |                                                                                            | INITIA float32  2:512x512            YABW                 val_242                          
     028 + |                                                                                            | INITIA float32  4:1024x1x2x1024      ????                 val_180                          
     029 ~ | INITIA int64    1:1                  BAAA                 /model/layers.0/self_attn/Consta | INITIA int64    1:3                  CKZA                 val_320                         
-    030 + |                                                                                            | INITIA float32  2:512x512            WPAA                 val_244                          
+    030 + |                                                                                            | INITIA float32  2:512x512            BXHZ                 val_244                          
     031 ~ | INITIA int64    1:1                  KAAA                 /model/layers.0/self_attn/Consta | INITIA int64                         CAAA                 val_20                          
     032 + |                                                                                            | INITIA int64    2:1024x1             KAQG                 val_178                          
     033 ~ | INITIA int64    1:1                  DAAA                 const_transpose_optimizer_token_ | INITIA int64    1:2                  GGAA                 splits                          
@@ -470,38 +470,38 @@ Comparison and execution
     037 = | INITIA float32  4:1x1x1024x64        GSEC                 Transpose_token_4_out0           | INITIA float32  4:1x1x1024x64        GSEC                 Transpose_token_4_out0          
     038 + |                                                                                            | INITIA float32  4:1x1024x1x64        GSEC                 unsqueeze_11                     
     039 ~ | INITIA int64    1:3                  CKZA                 /model/layers.0/self_attn/Consta | INITIA int64                         CAAA                 val_20_token_11                 
-    040 = | INPUT  int64    2:2x1024             NRTC                 input                            | INPUT  int64    2:2x1024             NRTC                 input_ids                       
+    040 = | INPUT  int64    2:2x1024             NUZC                 input                            | INPUT  int64    2:2x1024             NUZC                 input_ids                       
     041 = | INPUT  float32  2:2x1024             BACA                 attention_mask.1                 | INPUT  float32  2:2x1024             BACA                 attention_mask                  
-    042 = | RESULT float32  3:2x1024x512         AZHB Gather          /model/embed_tokens/Gather_outpu | RESULT float32  3:2x1024x512         AZHB Gather          embedding                       
-    043 ~ | RESULT float32  3:2x1024x512         VIWC SimplifiedLayer /model/layers.0/input_layernorm/ | RESULT float32  3:2x1024x512         BAAA Pow             pow_1                           
+    042 = | RESULT float32  3:2x1024x512         LSTN Gather          /model/embed_tokens/Gather_outpu | RESULT float32  3:2x1024x512         LSTN Gather          embedding                       
+    043 ~ | RESULT float32  3:2x1024x512         FGKB SimplifiedLayer /model/layers.0/input_layernorm/ | RESULT float32  3:2x1024x512         ABAA Pow             pow_1                           
     044 + |                                                                                            | RESULT float32  3:2x1024x1           AAAA ReduceMean      mean                             
     045 + |                                                                                            | RESULT float32  3:2x1024x1           AAAA Add             add_1                            
     046 + |                                                                                            | RESULT float32  3:2x1024x1           KKKK Sqrt            val_238                          
-    047 ~ | RESULT float32  3:2x1024x1           KHOK SimplifiedLayer saved_inv_std_var                | RESULT float32  3:2x1024x1           KHOK Reciprocal      rsqrt                           
-    048 + |                                                                                            | RESULT float32  3:2x1024x512         VIWC Mul             mul_3                            
-    049 + |                                                                                            | RESULT float32  3:2x1024x512         VIWC Mul             mul_4                            
-    050 = | RESULT float32  3:2x1024x512         WHXY MatMul          /model/layers.0/self_attn/k_proj | RESULT float32  3:2x1024x512         WHXY MatMul          linear_1                        
-    051 = | RESULT float32  4:2x1024x8x64        WHXY Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  4:2x1024x8x64        WHXY Reshape         view_2                          
-    052 = | RESULT float32  4:2x1024x8x32        AXFZ Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x1024x8x32        AXFZ Split           node_Slice_363                  
-    053 = | RESULT float32  4:2x1024x8x32        WJSZ Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x1024x8x32        WJSZ Split           node_Slice_374                  
-    054 = | RESULT float32  4:2x1024x8x32        ERIB Neg             /model/layers.0/self_attn/Neg_1  | RESULT float32  4:2x1024x8x32        ERIB Neg             node_Neg_375                    
-    055 = | RESULT float32  4:2x1024x8x64        EOMZ Concat          /model/layers.0/self_attn/Concat | RESULT float32  4:2x1024x8x64        EOMZ Concat          node_Concat_376                 
-    056 = | RESULT float32  4:2x1024x8x64        BROD Mul             /model/layers.0/self_attn/Mul_3  | RESULT float32  4:2x1024x8x64        BROD Mul             node_Mul_377                    
-    057 = | RESULT float32  4:2x1024x8x64        DBDM Mul             /model/layers.0/self_attn/Mul_2  | RESULT float32  4:2x1024x8x64        DBDM Mul             node_Mul_352                    
-    058 = | RESULT float32  4:2x1024x8x64        FRQO Add             /model/layers.0/self_attn/Add_1  | RESULT float32  4:2x1024x8x64        FRQO Add             node_Add_378                    
-    059 = | RESULT float32  4:2x8x64x1024        FQEA Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x8x64x1024        FQEA Transpose       transpose_4                     
-    060 = | RESULT float32  3:2x1024x512         JVAK MatMul          /model/layers.0/self_attn/q_proj | RESULT float32  3:2x1024x512         JVAK MatMul          linear                          
-    061 = | RESULT float32  4:2x1024x8x64        JVAK Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  4:2x1024x8x64        JVAK Reshape         view_1                          
-    062 = | RESULT float32  4:2x1024x8x64        BRVU Mul             /model/layers.0/self_attn/Mul    | RESULT float32  4:2x1024x8x64        BRVU Mul             node_Mul_324                    
-    063 = | RESULT float32  4:2x8x1024x64        DQOA Transpose       /model/layers.0/self_attn/Mul_ou | RESULT float32  4:2x8x1024x64        DQOA Transpose       mul_5                           
-    064 = | RESULT float32  4:2x8x1024x64        GZVP Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x8x1024x64        GZVP Transpose       transpose_1                     
-    065 = | RESULT float32  4:2x8x1024x32        UOEJ Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x8x1024x32        UOEJ Split           slice_24                        
-    066 = | RESULT float32  4:2x8x1024x32        NKRH Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x8x1024x32        NKRH Split           slice_25                        
-    067 = | RESULT float32  4:2x8x1024x32        NQJT Neg             /model/layers.0/self_attn/Neg_ou | RESULT float32  4:2x8x1024x32        NQJT Neg             neg                             
-    068 = | RESULT float32  4:2x8x1024x64        GDNC Concat          /model/layers.0/self_attn/Concat | RESULT float32  4:2x8x1024x64        GDNC Concat          cat_1                           
-    069 = | RESULT float32  4:2x8x1024x64        MDCF Mul             /model/layers.0/self_attn/Mul_1_ | RESULT float32  4:2x8x1024x64        MDCF Mul             mul_6                           
-    070 = | RESULT float32  4:2x8x1024x64        PSQF Add             /model/layers.0/self_attn/Add_ou | RESULT float32  4:2x8x1024x64        PSQF Add             add_2                           
-    071 = | RESULT float32  4:2x8x1024x1024      SNXV FusedMatMul     /model/layers.0/self_attn/Mul_4_ | RESULT float32  4:2x8x1024x1024      SNXV FusedMatMul     mul_9                           
+    047 ~ | RESULT float32  3:2x1024x1           LVSZ SimplifiedLayer saved_inv_std_var                | RESULT float32  3:2x1024x1           LVSZ Reciprocal      rsqrt                           
+    048 + |                                                                                            | RESULT float32  3:2x1024x512         FGKB Mul             mul_3                            
+    049 + |                                                                                            | RESULT float32  3:2x1024x512         FGKB Mul             mul_4                            
+    050 = | RESULT float32  3:2x1024x512         PEXC MatMul          /model/layers.0/self_attn/k_proj | RESULT float32  3:2x1024x512         PEXC MatMul          linear_1                        
+    051 = | RESULT float32  4:2x1024x8x64        PEXC Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  4:2x1024x8x64        PEXC Reshape         view_2                          
+    052 = | RESULT float32  4:2x1024x8x32        HTLG Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x1024x8x32        HTLG Split           node_Slice_363                  
+    053 = | RESULT float32  4:2x1024x8x32        ILLW Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x1024x8x32        ILLW Split           node_Slice_374                  
+    054 = | RESULT float32  4:2x1024x8x32        SPPE Neg             /model/layers.0/self_attn/Neg_1  | RESULT float32  4:2x1024x8x32        SPPE Neg             node_Neg_375                    
+    055 = | RESULT float32  4:2x1024x8x64        ZIAK Concat          /model/layers.0/self_attn/Concat | RESULT float32  4:2x1024x8x64        ZIAK Concat          node_Concat_376                 
+    056 = | RESULT float32  4:2x1024x8x64        TEUR Mul             /model/layers.0/self_attn/Mul_3  | RESULT float32  4:2x1024x8x64        TEUR Mul             node_Mul_377                    
+    057 = | RESULT float32  4:2x1024x8x64        MQHR Mul             /model/layers.0/self_attn/Mul_2  | RESULT float32  4:2x1024x8x64        MQHR Mul             node_Mul_352                    
+    058 = | RESULT float32  4:2x1024x8x64        GTBH Add             /model/layers.0/self_attn/Add_1  | RESULT float32  4:2x1024x8x64        GTBH Add             node_Add_378                    
+    059 = | RESULT float32  4:2x8x64x1024        NMTR Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x8x64x1024        NMTR Transpose       transpose_4                     
+    060 = | RESULT float32  3:2x1024x512         GFHI MatMul          /model/layers.0/self_attn/q_proj | RESULT float32  3:2x1024x512         GFHI MatMul          linear                          
+    061 = | RESULT float32  4:2x1024x8x64        GFHI Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  4:2x1024x8x64        GFHI Reshape         view_1                          
+    062 = | RESULT float32  4:2x1024x8x64        RUMP Mul             /model/layers.0/self_attn/Mul    | RESULT float32  4:2x1024x8x64        RUMP Mul             node_Mul_324                    
+    063 = | RESULT float32  4:2x8x1024x64        XMRL Transpose       /model/layers.0/self_attn/Mul_ou | RESULT float32  4:2x8x1024x64        XMRL Transpose       mul_5                           
+    064 = | RESULT float32  4:2x8x1024x64        STND Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x8x1024x64        STND Transpose       transpose_1                     
+    065 = | RESULT float32  4:2x8x1024x32        TFVN Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x8x1024x32        TFVN Split           slice_24                        
+    066 = | RESULT float32  4:2x8x1024x32        ZOSQ Split           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x8x1024x32        ZOSQ Split           slice_25                        
+    067 = | RESULT float32  4:2x8x1024x32        BMIK Neg             /model/layers.0/self_attn/Neg_ou | RESULT float32  4:2x8x1024x32        BMIK Neg             neg                             
+    068 = | RESULT float32  4:2x8x1024x64        VSCX Concat          /model/layers.0/self_attn/Concat | RESULT float32  4:2x8x1024x64        VSCX Concat          cat_1                           
+    069 = | RESULT float32  4:2x8x1024x64        CXIF Mul             /model/layers.0/self_attn/Mul_1_ | RESULT float32  4:2x8x1024x64        CXIF Mul             mul_6                           
+    070 = | RESULT float32  4:2x8x1024x64        ZIYR Add             /model/layers.0/self_attn/Add_ou | RESULT float32  4:2x8x1024x64        ZIYR Add             add_2                           
+    071 = | RESULT float32  4:2x8x1024x1024      NEIM FusedMatMul     /model/layers.0/self_attn/Mul_4_ | RESULT float32  4:2x8x1024x1024      NEIM FusedMatMul     mul_9                           
     072 = | RESULT float32  3:2x1x1024           BACA Unsqueeze       /model/Unsqueeze_2_output_0      | RESULT float32  3:2x1x1024           BACA Unsqueeze       unsqueeze_5                     
     073 = | RESULT float32  4:2x1x1x1024         BACA Unsqueeze       /model/Unsqueeze_3_output_0      | RESULT float32  4:2x1x1x1024         BACA Unsqueeze       unsqueeze_6                     
     074 = | RESULT float32  4:2x1x1024x1024      ???? Add             /model/Add_output_0              | RESULT float32  4:2x1x1024x1024      ???? Add             add                             
@@ -513,36 +513,36 @@ Comparison and execution
     080 - | RESULT float32  4:2x1x1024x1024      ???? ScatterND       /model/ScatterND_output_0        |                                                                                           
     081 ~ | RESULT float32  4:2x1x1024x1024      ???? Slice           /model/layers.0/self_attn/Slice_ | RESULT float32  4:2x1x1024x1024      ???? Transpose       slice_scatter_1                 
     082 = | RESULT float32  4:2x8x1024x1024      ???? Add             /model/layers.0/self_attn/Add_2_ | RESULT float32  4:2x8x1024x1024      ???? Add             add_4                           
-    083 = | RESULT float32  4:2x8x1024x1024      OOOO Softmax         /model/layers.0/self_attn/Softma | RESULT float32  4:2x8x1024x1024      OOOO Softmax         val_318                         
-    084 = | RESULT float32  3:2x1024x512         RHEG MatMul          /model/layers.0/self_attn/v_proj | RESULT float32  3:2x1024x512         RHEG MatMul          linear_2                        
-    085 = | RESULT float32  4:2x1024x8x64        RHEG Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  4:2x1024x8x64        RHEG Reshape         view_3                          
-    086 = | RESULT float32  4:2x8x1024x64        TGKA Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x8x1024x64        TGKA Transpose       transpose_3                     
-    087 = | RESULT float32  4:2x8x1024x64        QVGL MatMul          /model/layers.0/self_attn/MatMul | RESULT float32  4:2x8x1024x64        QVGL MatMul          matmul_2                        
-    088 = | RESULT float32  4:2x1024x8x64        FFKJ Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x1024x8x64        FFKJ Transpose       transpose_5                     
-    089 = | RESULT float32  3:2x1024x512         FFKJ Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  3:2x1024x512         FFKJ Reshape         view_4                          
-    090 = | RESULT float32  3:2x1024x512         GGRQ MatMul          /model/layers.0/self_attn/o_proj | RESULT float32  3:2x1024x512         GGRQ MatMul          linear_3                        
-    091 = | RESULT float32  3:2x1024x512         GFYR Add             /model/layers.0/Add_output_0     | RESULT float32  3:2x1024x512         GFYR Add             add_5                           
-    092 ~ | RESULT float32  3:2x1024x512         UPRU SimplifiedLayer /model/layers.0/post_attention_l | RESULT float32  3:2x1024x512         KGQI Pow             pow_2                           
-    093 + |                                                                                            | RESULT float32  3:2x1024x1           ZZKK ReduceMean      mean_1                           
-    094 + |                                                                                            | RESULT float32  3:2x1024x1           ZZKK Add             add_6                            
-    095 + |                                                                                            | RESULT float32  3:2x1024x1           KKWW Sqrt            val_324                          
-    096 ~ | RESULT float32  3:2x1024x1           WWAB SimplifiedLayer saved_inv_std_var_token_10       | RESULT float32  3:2x1024x1           WWAB Reciprocal      rsqrt_1                         
-    097 + |                                                                                            | RESULT float32  3:2x1024x512         UPRU Mul             mul_10                           
-    098 + |                                                                                            | RESULT float32  3:2x1024x512         UPRU Mul             mul_11                           
-    099 = | RESULT float32  3:2x1024x2000        KDZL MatMul          /model/layers.0/mlp/gate_proj/Ma | RESULT float32  3:2x1024x2000        KDZL MatMul          linear_4                        
-    100 = | RESULT float32  3:2x1024x2000        DVNN QuickGelu       /model/layers.0/mlp/act_fn/Mul_o | RESULT float32  3:2x1024x2000        DVNN QuickGelu       silu                            
-    101 = | RESULT float32  3:2x1024x2000        EYOH MatMul          /model/layers.0/mlp/up_proj/MatM | RESULT float32  3:2x1024x2000        EYOH MatMul          linear_5                        
-    102 = | RESULT float32  3:2x1024x2000        EHJS Mul             /model/layers.0/mlp/Mul_output_0 | RESULT float32  3:2x1024x2000        EHJS Mul             mul_12                          
-    103 = | RESULT float32  3:2x1024x512         ODHE MatMul          /model/layers.0/mlp/down_proj/Ma | RESULT float32  3:2x1024x512         ODHE MatMul          linear_6                        
-    104 = | RESULT float32  3:2x1024x512         UIGW Add             /model/layers.0/Add_1_output_0   | RESULT float32  3:2x1024x512         UIGW Add             add_7                           
-    105 ~ | RESULT float32  3:2x1024x512         ZZZT SimplifiedLayer 347                              | RESULT float32  3:2x1024x512         ZSCC Pow             pow_3                           
-    106 + |                                                                                            | RESULT float32  3:2x1024x1           CCOO ReduceMean      mean_2                           
-    107 + |                                                                                            | RESULT float32  3:2x1024x1           CCOO Add             add_8                            
-    108 + |                                                                                            | RESULT float32  3:2x1024x1           RRII Sqrt            val_331                          
-    109 ~ | RESULT float32  3:2x1024x1           ZZED SimplifiedLayer saved_inv_std_var_token_11       | RESULT float32  3:2x1024x1           ZZED Reciprocal      rsqrt_2                         
-    110 + |                                                                                            | RESULT float32  3:2x1024x512         ZZZT Mul             mul_13                           
-    111 + |                                                                                            | RESULT float32  3:2x1024x512         ZZZT Mul             mul_14                           
-    112 = | OUTPUT float32  3:2x1024x512         ZZZT                 347                              | OUTPUT float32  3:2x1024x512         ZZZT                 mul_14                          
+    083 = | RESULT float32  4:2x8x1024x1024      OOON Softmax         /model/layers.0/self_attn/Softma | RESULT float32  4:2x8x1024x1024      OOON Softmax         val_318                         
+    084 = | RESULT float32  3:2x1024x512         LJKD MatMul          /model/layers.0/self_attn/v_proj | RESULT float32  3:2x1024x512         LJKD MatMul          linear_2                        
+    085 = | RESULT float32  4:2x1024x8x64        LJKD Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  4:2x1024x8x64        LJKD Reshape         view_3                          
+    086 = | RESULT float32  4:2x8x1024x64        NIJF Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x8x1024x64        NIJF Transpose       transpose_3                     
+    087 = | RESULT float32  4:2x8x1024x64        PQLS MatMul          /model/layers.0/self_attn/MatMul | RESULT float32  4:2x8x1024x64        PQLS MatMul          matmul_2                        
+    088 = | RESULT float32  4:2x1024x8x64        PPVG Transpose       /model/layers.0/self_attn/Transp | RESULT float32  4:2x1024x8x64        PPVG Transpose       transpose_5                     
+    089 = | RESULT float32  3:2x1024x512         PPVG Reshape         /model/layers.0/self_attn/Reshap | RESULT float32  3:2x1024x512         PPVG Reshape         view_4                          
+    090 = | RESULT float32  3:2x1024x512         FFCQ MatMul          /model/layers.0/self_attn/o_proj | RESULT float32  3:2x1024x512         FFCQ MatMul          linear_3                        
+    091 = | RESULT float32  3:2x1024x512         QXUD Add             /model/layers.0/Add_output_0     | RESULT float32  3:2x1024x512         QXUD Add             add_5                           
+    092 ~ | RESULT float32  3:2x1024x512         NTCA SimplifiedLayer /model/layers.0/post_attention_l | RESULT float32  3:2x1024x512         TQKA Pow             pow_2                           
+    093 + |                                                                                            | RESULT float32  3:2x1024x1           YYKK ReduceMean      mean_1                           
+    094 + |                                                                                            | RESULT float32  3:2x1024x1           YYKK Add             add_6                            
+    095 + |                                                                                            | RESULT float32  3:2x1024x1           HHVU Sqrt            val_324                          
+    096 ~ | RESULT float32  3:2x1024x1           OOBM SimplifiedLayer saved_inv_std_var_token_10       | RESULT float32  3:2x1024x1           OOBM Reciprocal      rsqrt_1                         
+    097 + |                                                                                            | RESULT float32  3:2x1024x512         NTCA Mul             mul_10                           
+    098 + |                                                                                            | RESULT float32  3:2x1024x512         NTCA Mul             mul_11                           
+    099 = | RESULT float32  3:2x1024x2000        EHYE MatMul          /model/layers.0/mlp/gate_proj/Ma | RESULT float32  3:2x1024x2000        EHYE MatMul          linear_4                        
+    100 = | RESULT float32  3:2x1024x2000        JNTL QuickGelu       /model/layers.0/mlp/act_fn/Mul_o | RESULT float32  3:2x1024x2000        JNTL QuickGelu       silu                            
+    101 = | RESULT float32  3:2x1024x2000        YVQD MatMul          /model/layers.0/mlp/up_proj/MatM | RESULT float32  3:2x1024x2000        YVQD MatMul          linear_5                        
+    102 = | RESULT float32  3:2x1024x2000        BJDR Mul             /model/layers.0/mlp/Mul_output_0 | RESULT float32  3:2x1024x2000        BJDR Mul             mul_12                          
+    103 = | RESULT float32  3:2x1024x512         OJMD MatMul          /model/layers.0/mlp/down_proj/Ma | RESULT float32  3:2x1024x512         OJMD MatMul          linear_6                        
+    104 = | RESULT float32  3:2x1024x512         DGHG Add             /model/layers.0/Add_1_output_0   | RESULT float32  3:2x1024x512         DGHG Add             add_7                           
+    105 ~ | RESULT float32  3:2x1024x512         BOMY SimplifiedLayer 347                              | RESULT float32  3:2x1024x512         NJNL Pow             pow_3                           
+    106 + |                                                                                            | RESULT float32  3:2x1024x1           BBPP ReduceMean      mean_2                           
+    107 + |                                                                                            | RESULT float32  3:2x1024x1           BBPP Add             add_8                            
+    108 + |                                                                                            | RESULT float32  3:2x1024x1           OOKK Sqrt            val_331                          
+    109 ~ | RESULT float32  3:2x1024x1           BBDI SimplifiedLayer saved_inv_std_var_token_11       | RESULT float32  3:2x1024x1           BBDI Reciprocal      rsqrt_2                         
+    110 + |                                                                                            | RESULT float32  3:2x1024x512         BOMY Mul             mul_13                           
+    111 + |                                                                                            | RESULT float32  3:2x1024x512         BOMY Mul             mul_14                           
+    112 = | OUTPUT float32  3:2x1024x512         BOMY                 347                              | OUTPUT float32  3:2x1024x512         BOMY                 mul_14                          
 
 
 
@@ -554,7 +554,7 @@ See :ref:`l-long-outputs-llama-diff-export` for a better view.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 43.814 seconds)
+   **Total running time of the script:** (0 minutes 54.755 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_llama_diff_export_301.py:

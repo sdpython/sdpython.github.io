@@ -79,7 +79,7 @@ Some helpers
     from experimental_experiment.torch_models.training_helper import make_aot_ort
     from tqdm import tqdm
 
-    has_cuda = has_cuda and torch.cuda.is_available()
+    has_cuda = has_cuda and torch.cuda.device_count() > 0
     logging.disable(logging.ERROR)
 
 
@@ -88,7 +88,7 @@ Some helpers
         obs["processor"] = platform.processor()
         obs["cores"] = multiprocessing.cpu_count()
         try:
-            obs["cuda"] = 1 if torch.cuda.is_available() else 0
+            obs["cuda"] = 1 if torch.cuda.device_count() > 0 else 0
             obs["cuda_count"] = torch.cuda.device_count()
             obs["cuda_name"] = torch.cuda.get_device_name()
             obs["cuda_capa"] = torch.cuda.get_device_capability()
@@ -530,12 +530,12 @@ The result.
 
  .. code-block:: none
 
-              peak         mean    n        begin          end    gpu0_peak    gpu0_mean  gpu0_n   gpu0_begin     gpu0_end         export     p
-    0  5405.855469  5404.182977   19  5403.871094  5405.855469  1489.617188  1489.617188      19  1489.617188  1489.617188    torch_eager   cpu
-    1  6403.777344  5882.055720  352  5403.906250  6403.777344  1691.617188  1578.776278     352  1489.617188  1691.617188    torch_eager  cuda
-    2  6406.839844  6404.576742   48  6404.296875  6406.839844  1691.617188  1691.617188      48  1691.617188  1691.617188  torch_default   cpu
-    3  6410.394531  6405.058401   81  6404.847656  6410.394531  1691.617188  1691.617188      81  1691.617188  1691.617188     torch_dort   cpu
-    4  6415.433594  6412.743231  116  6412.464844  6415.433594  1699.617188  1691.824084     116  1691.617188  1699.617188     torch_dort  cuda
+              peak         mean    n        begin          end   gpu0_peak   gpu0_mean  gpu0_n  gpu0_begin    gpu0_end         export     p
+    0  1625.191406  1623.914258   20  1623.210938  1625.191406  535.617188  535.617188      20  535.617188  535.617188    torch_eager   cpu
+    1  1722.074219  1648.712054   49  1621.183594  1722.074219  535.617188  535.617188      49  535.617188  535.617188    torch_eager  cuda
+    2  1727.671875  1725.367053   58  1724.757812  1727.671875  535.617188  535.617188      58  535.617188  535.617188  torch_default   cpu
+    3  1730.277344  1727.735665  112  1727.671875  1730.277344  535.617188  535.617188     112  535.617188  535.617188     torch_dort   cpu
+    4  1780.621094  1732.271099  152  1728.304688  1780.621094  543.617188  536.932977     152  535.617188  543.617188     torch_dort  cuda
 
 
 
@@ -623,14 +623,14 @@ dort first iteration speed
  .. code-block:: none
 
     run dort cpu torch_eager: 1
-    done: 0.11833382799977699
+    done: 0.061221789000228455
     run dort cuda torch_eager: 1
-    done: 0.06919086100015193
+    done: 0.08717411099951278
     run dort cpu torch_default: 1
-    done: 0.448070639999969
+    done: 0.7109125839997432
     skip dort cuda torch_default: 1
     run dort cpu torch_dort: 1
-    done: 0.7285433679999187
+    done: 0.9112194059998728
     skip dort cuda torch_dort: 1
 
 
@@ -670,10 +670,10 @@ The result.
  .. code-block:: none
 
               export      time       min       max     first      last  std     p
-    0    torch_eager  0.118334  0.118334  0.118334  0.118334  0.118334  0.0   cpu
-    1    torch_eager  0.069191  0.069191  0.069191  0.069191  0.069191  0.0  cuda
-    2  torch_default  0.448071  0.448071  0.448071  0.448071  0.448071  0.0   cpu
-    3     torch_dort  0.728543  0.728543  0.728543  0.728543  0.728543  0.0   cpu
+    0    torch_eager  0.061222  0.061222  0.061222  0.061222  0.061222  0.0   cpu
+    1    torch_eager  0.087174  0.087174  0.087174  0.087174  0.087174  0.0  cuda
+    2  torch_default  0.710913  0.710913  0.710913  0.710913  0.710913  0.0   cpu
+    3     torch_dort  0.911219  0.911219  0.911219  0.911219  0.911219  0.0   cpu
 
 
 
@@ -792,14 +792,14 @@ Benchmark exported models with ORT
  .. code-block:: none
 
       0%|          | 0/6 [00:00<?, ?it/s]number of experiments: 6
-    0.0015014324942538894 eager CPU:   0%|          | 0/6 [00:00<?, ?it/s]    0.0015014324942538894 eager CPU:  17%|█▋        | 1/6 [00:02<00:12,  2.47s/it]    0.0014708353580295177 eager CUDA:  17%|█▋        | 1/6 [00:03<00:12,  2.47s/it]    0.0014708353580295177 eager CUDA:  33%|███▎      | 2/6 [00:04<00:09,  2.38s/it]    0.0013272162291665761 default CPU:  33%|███▎      | 2/6 [00:06<00:09,  2.38s/it]    0.0013272162291665761 default CPU:  50%|█████     | 3/6 [00:07<00:07,  2.56s/it]    0.00045154205262956806 default CUDA:  50%|█████     | 3/6 [00:12<00:07,  2.56s/it]    0.00045154205262956806 default CUDA:  67%|██████▋   | 4/6 [00:13<00:07,  3.96s/it]    0.0006712578176103427 dort CPU:  67%|██████▋   | 4/6 [00:15<00:07,  3.96s/it]         0.0006712578176103427 dort CPU:  83%|████████▎ | 5/6 [00:16<00:03,  3.60s/it]    0.0020834406491303525 dort CUDA:  83%|████████▎ | 5/6 [00:18<00:03,  3.60s/it]    0.0020834406491303525 dort CUDA: 100%|██████████| 6/6 [00:19<00:00,  3.45s/it]    0.0020834406491303525 dort CUDA: 100%|██████████| 6/6 [00:19<00:00,  3.30s/it]
+    0.003072431313704132 eager CPU:   0%|          | 0/6 [00:00<?, ?it/s]    0.003072431313704132 eager CPU:  17%|█▋        | 1/6 [00:02<00:11,  2.20s/it]    0.0007839491542784215 eager CUDA:  17%|█▋        | 1/6 [00:02<00:11,  2.20s/it]    0.0007839491542784215 eager CUDA:  33%|███▎      | 2/6 [00:04<00:08,  2.02s/it]    0.02322134633323003 default CPU:  33%|███▎      | 2/6 [00:05<00:08,  2.02s/it]     0.02322134633323003 default CPU:  50%|█████     | 3/6 [00:06<00:07,  2.42s/it]    0.0007147062171055184 default CUDA:  50%|█████     | 3/6 [00:13<00:07,  2.42s/it]    0.0007147062171055184 default CUDA:  67%|██████▋   | 4/6 [00:14<00:09,  4.59s/it]    0.0010182768778681296 dort CPU:  67%|██████▋   | 4/6 [00:16<00:09,  4.59s/it]        0.0010182768778681296 dort CPU:  83%|████████▎ | 5/6 [00:17<00:04,  4.03s/it]    0.0012504478888926607 dort CUDA:  83%|████████▎ | 5/6 [00:19<00:04,  4.03s/it]    0.0012504478888926607 dort CUDA: 100%|██████████| 6/6 [00:21<00:00,  3.76s/it]    0.0012504478888926607 dort CUDA: 100%|██████████| 6/6 [00:21<00:00,  3.53s/it]
           name compute   export   average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time
-    0    eager     CPU    eager  0.001501   0.000059  0.001407  0.001713       1    87.0  0.130625            64     0.003877
-    1    eager    CUDA    eager  0.001471   0.000490  0.001114  0.004204       1    81.0  0.119138            64     0.003173
-    2  default     CPU  default  0.001327   0.000143  0.001014  0.001526       1    96.0  0.127413            64     0.002026
-    3  default    CUDA  default  0.000452   0.000052  0.000359  0.000589       1   228.0  0.102952            64     0.001218
-    4     dort     CPU     dort  0.000671   0.000056  0.000599  0.001106       1   159.0  0.106730            64     0.003044
-    5     dort    CUDA     dort  0.002083   0.000698  0.001553  0.005592       1    57.0  0.118756            64     0.003829
+    0    eager     CPU    eager  0.003072   0.001466  0.001455  0.005237       1    51.0  0.156694            64     0.003151
+    1    eager    CUDA    eager  0.000784   0.000100  0.000682  0.000892       1   175.0  0.137191            64     0.001366
+    2  default     CPU  default  0.023221   0.010695  0.008224  0.037393       1     6.0  0.139328            64     0.003639
+    3  default    CUDA  default  0.000715   0.000257  0.000459  0.001733       1   152.0  0.108635            64     0.002136
+    4     dort     CPU     dort  0.001018   0.000071  0.000767  0.001430       1   131.0  0.133394            64     0.001701
+    5     dort    CUDA     dort  0.001250   0.000297  0.001061  0.002966       1    81.0  0.101286            64     0.002375
 
 
 
@@ -863,9 +863,9 @@ Other view
 
     compute       CPU      CUDA
     export                     
-    default  0.001327  0.000452
-    dort     0.000671  0.002083
-    eager    0.001501  0.001471
+    default  0.023221  0.000715
+    dort     0.001018  0.001250
+    eager    0.003072  0.000784
 
     array([<Axes: title={'center': 'CPU'}, ylabel='export'>,
            <Axes: title={'center': 'CUDA'}, ylabel='export'>], dtype=object)
@@ -967,7 +967,7 @@ Memory Running Time (ORT)
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (1 minutes 7.840 seconds)
+   **Total running time of the script:** (1 minutes 11.561 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_dort_201.py:

@@ -319,6 +319,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a frequent task which does not play well with dynamic shapes. Let&#x27;s see how to avoid using torch.cond.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_dynpad_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_dynpad.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">to_onnx and padding one dimension to a mulitple of a constant</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Big models are hard to read once converted into onnx. Let&#x27;s see how to improve their readibility. The code is inspired from LLM from scratch with Pytorch.">
 
 .. only:: html
@@ -387,6 +404,23 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a frequent task which does not play well with dynamic shapes. Let&#x27;s see how to avoid using torch.cond.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_dynpad_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_dynpad.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">torch.onnx.export and padding one dimension to a mulitple of a constant</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Example given in l-plot-exporter-dynamic_shapes can only be exported with dynamic shapes using torch.export.Dim.AUTO. As a result, the exported onnx models have dynamic dimensions with unpredictable names.">
 
 .. only:: html
@@ -428,10 +462,12 @@ Some of them are exposed in the examples. Others may be found at
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
    /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
+   /auto_recipes/plot_exporter_recipes_c_dynpad
    /auto_recipes/plot_exporter_recipes_c_modules
    /auto_recipes/plot_exporter_recipes_c_named_ds_auto
    /auto_recipes/plot_exporter_recipes_oe_phi2
    /auto_recipes/plot_exporter_recipes_oe_cond
+   /auto_recipes/plot_exporter_recipes_oe_dynpad
    /auto_recipes/plot_exporter_recipes_oe_named_ds_auto
 
 

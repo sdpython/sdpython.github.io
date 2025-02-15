@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:06.187** total execution time for 37 files **from all galleries**:
+**00:18.881** total execution time for 40 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py` (``recipes/plot_exporter_recipes_c_named_ds_auto.py``)
-     - 00:06.187
+   * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``examples/plot_torch_sklearn_201.py``)
+     - 00:18.881
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
      - 00:00.000
@@ -122,7 +122,13 @@ Computation times
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py` (``recipes/plot_exporter_recipes_c_custom_ops_inplace.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_dynpad.py` (``recipes/plot_exporter_recipes_c_dynpad.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_modules.py` (``recipes/plot_exporter_recipes_c_modules.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py` (``recipes/plot_exporter_recipes_c_named_ds_auto.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``recipes/plot_exporter_recipes_c_phi2.py``)
@@ -132,6 +138,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py` (``recipes/plot_exporter_recipes_oe_cond.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_dynpad.py` (``recipes/plot_exporter_recipes_oe_dynpad.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py` (``recipes/plot_exporter_recipes_oe_lr.py``)

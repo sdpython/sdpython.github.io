@@ -105,7 +105,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([1.4821], grad_fn=<MulBackward0>)
+    tensor([1.3845], grad_fn=<MulBackward0>)
 
 
 
@@ -136,7 +136,7 @@ As expected, it does not export.
     from user code:
        File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 39, in forward
         out = self.mlp(x)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1760, in _call_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
         return forward_call(*args, **kwargs)
       File "/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py", line 24, in forward
         if x.sum():
@@ -170,6 +170,20 @@ But the model is not exactly the same as the initial model.
  .. code-block:: none
 
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export(..., strict=False)`...
+
+
+
+
+    def forward(self, arg0_1: "f32[2, 3]", arg1_1: "f32[2]", arg2_1: "f32[1, 2]", arg3_1: "f32[1]", arg4_1: "f32[3]"):
+         # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+        linear: "f32[2]" = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
+        linear_1: "f32[1]" = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
+    
+         # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:24 in forward, code: if x.sum():
+        sum_1: "f32[]" = torch.ops.aten.sum.default(linear_1);  linear_1 = None
+        ne: "b8[]" = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
+        item: "Sym(Eq(u0, 1))" = torch.ops.aten.item.default(ne);  ne = item = None
+    
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export(..., strict=False)`... ❌
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export`...
     [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export`... ❌
@@ -180,7 +194,7 @@ But the model is not exactly the same as the initial model.
     [torch.onnx] Run decomposition...
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:81: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       getattr_node = gm.graph.get_attr(lifted_node)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1790: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1794: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what 'get_attr' Nodes typically target
       warnings.warn(
     [torch.onnx] Run decomposition... ✅
     [torch.onnx] Translate the graph into ONNX...
@@ -189,40 +203,19 @@ But the model is not exactly the same as the initial model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250131+cu126"
+       producer_version: "2.7.0.dev20250214+cu126"
     >
     main_graph (float[3] input_1) => (float[1] mul) 
-       <float[2] "model.mlp.0.bias" =  {0.232382,0.244881}, float[2,3] "model.mlp.0.weight" =  {-0.574301,0.373175,0.415458,0.317575,0.370257,-0.316719}, float[1] "model.mlp.1.bias" =  {0.0553073}, float[1,2] "model.mlp.1.weight" =  {0.70186,-0.326448}, float[2] linear, float[1] linear_1, float scalar_tensor_default>
+       <float[2] "model.mlp.0.bias" =  {0.255097,-0.390911}, float[1] "model.mlp.1.bias" =  {0.567823}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float convert_element_type_default>
     {
-       [node_Transpose_0] val_0 = Transpose <perm: ints = [1, 0]> ("model.mlp.0.weight")
+       [node_Constant_8] val_0 = Constant <value: tensor = float[3,2] val_0 {0.346779,0.273761,0.311015,-0.344733,0.497203,0.516696}> ()
        [node_MatMul_1] val_1 = MatMul (input_1, val_0)
        [node_Add_2] linear = Add (val_1, "model.mlp.0.bias")
-       [node_Transpose_3] val_2 = Transpose <perm: ints = [1, 0]> ("model.mlp.1.weight")
+       [node_Constant_9] val_2 = Constant <value: tensor = float[2,1] val_2 {-0.653214,0.462875}> ()
        [node_MatMul_4] val_3 = MatMul (linear, val_2)
        [node_Add_5] linear_1 = Add (val_3, "model.mlp.1.bias")
-       [node_Constant_6] val_4 = Constant <value: tensor = int64 {2}> ()
-       [node_Cast_7] scalar_tensor_default = Cast <to: int = 1> (val_4)
-       [node_Mul_8] mul = Mul (linear_1, scalar_tensor_default)
-    }
-    <
-      domain: "pkg.onnxscript.torch_lib.common",
-      opset_import: ["" : 18]
-    >
-    Rank (input) => (return_val)
-    {
-       [n0] tmp = Shape (input)
-       [n1] return_val = Size (tmp)
-    }
-    <
-      domain: "pkg.onnxscript.torch_lib.common",
-      opset_import: ["" : 18]
-    >
-    IsScalar (input) => (return_val)
-    {
-       [n0] tmp = Shape (input)
-       [n1] tmp_0 = Size (tmp)
-       [n2] tmp_1 = Constant <value_int: int = 0> ()
-       [n3] return_val = Equal (tmp_0, tmp_1)
+       [node_Constant_10] convert_element_type_default = Constant <value: tensor = float convert_element_type_default {2}> ()
+       [node_Mul_7] mul = Mul (linear_1, convert_element_type_default)
     }
 
 
@@ -344,64 +337,28 @@ Let's export again.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250131+cu126"
+       producer_version: "2.7.0.dev20250214+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2,3] "mlp.0.weight" =  {-0.574301,0.373175,0.415458,0.317575,0.370257,-0.316719}, float[2] "mlp.0.bias" =  {0.232382,0.244881}, float[1,2] "mlp.1.weight" =  {0.70186,-0.326448}, float[1] "mlp.1.bias" =  {0.0553073}, float[2] linear, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {0.255097,-0.390911}, float[1] "mlp.1.bias" =  {0.567823}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Transpose_0] val_0 = Transpose <perm: ints = [1, 0]> ("mlp.0.weight")
+       [node_Constant_11] val_0 = Constant <value: tensor = float[3,2] val_0 {0.346779,0.273761,0.311015,-0.344733,0.497203,0.516696}> ()
        [node_MatMul_1] val_1 = MatMul (x, val_0)
        [node_Add_2] linear = Add (val_1, "mlp.0.bias")
-       [node_Transpose_3] val_2 = Transpose <perm: ints = [1, 0]> ("mlp.1.weight")
+       [node_Constant_12] val_2 = Constant <value: tensor = float[2,1] val_2 {-0.653214,0.462875}> ()
        [node_MatMul_4] val_3 = MatMul (linear, val_2)
        [node_Add_5] linear_1 = Add (val_3, "mlp.1.bias")
        [node_ReduceSum_6] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (linear_1)
-       [node_Constant_7] val_4 = Constant <value: tensor = int64 {0}> ()
-       [node_Cast_8] scalar_tensor_default = Cast <to: int = 1> (val_4)
+       [node_Constant_13] scalar_tensor_default = Constant <value: tensor = float scalar_tensor_default {0}> ()
        [node_Greater_9] gt = Greater (sum_1, scalar_tensor_default)
-       [node_If_10] getitem = If (gt) <then_branch: graph = true_graph_0 () => ( mul_true_graph_0) {
-          [node_true_graph_0_0] mul_true_graph_0 = pkg.torch.__subgraph__.true_graph_0 (linear_1)
-       }, else_branch: graph = false_graph_0 () => ( neg_false_graph_0) {
-          [node_false_graph_0_0] neg_false_graph_0 = pkg.torch.__subgraph__.false_graph_0 (linear_1)
+       [node_If_10] getitem = If (gt) <then_branch: graph = true_graph_0 () => (float[1] mul_true_graph_0) 
+          <float scalar_tensor_default_2>
+    {
+          [node_Constant_1] scalar_tensor_default_2 = Constant <value: tensor = float scalar_tensor_default_2 {2}> ()
+          [node_Mul_2] mul_true_graph_0 = Mul (linear_1, scalar_tensor_default_2)
+       }, else_branch: graph = false_graph_0 () => (float[1] neg_false_graph_0) {
+          [node_Neg_0] neg_false_graph_0 = Neg (linear_1)
        }>
-    }
-    <
-      domain: "pkg.torch.__subgraph__",
-      opset_import: ["" : 18]
-    >
-    false_graph_0 (linear_1) => (neg)
-    {
-       [node_Neg_0] neg = Neg (linear_1)
-    }
-    <
-      domain: "pkg.torch.__subgraph__",
-      opset_import: ["" : 18]
-    >
-    true_graph_0 (linear_1) => (mul)
-    {
-       [node_Constant_0] val_0 = Constant <value: tensor = int64 {2}> ()
-       [node_Cast_1] scalar_tensor_default = Cast <to: int = 1> (val_0)
-       [node_Mul_2] mul = Mul (linear_1, scalar_tensor_default)
-    }
-    <
-      domain: "pkg.onnxscript.torch_lib.common",
-      opset_import: ["" : 18]
-    >
-    Rank (input) => (return_val)
-    {
-       [n0] tmp = Shape (input)
-       [n1] return_val = Size (tmp)
-    }
-    <
-      domain: "pkg.onnxscript.torch_lib.common",
-      opset_import: ["" : 18]
-    >
-    IsScalar (input) => (return_val)
-    {
-       [n0] tmp = Shape (input)
-       [n1] tmp_0 = Size (tmp)
-       [n2] tmp_1 = Constant <value_int: int = 0> ()
-       [n3] return_val = Equal (tmp_0, tmp_1)
     }
 
 
@@ -437,15 +394,15 @@ Let's optimize to see a small model.
        ir_version: 10,
        opset_import: ["pkg.onnxscript.torch_lib.common" : 1, "" : 18, "pkg.torch.__subgraph__" : 1],
        producer_name: "pytorch",
-       producer_version: "2.7.0.dev20250131+cu126"
+       producer_version: "2.7.0.dev20250214+cu126"
     >
     main_graph (float[3] x) => (float[1] getitem) 
-       <float[2] "mlp.0.bias" =  {0.232382,0.244881}, float[1] "mlp.1.bias" =  {0.0553073}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
+       <float[2] "mlp.0.bias" =  {0.255097,-0.390911}, float[1] "mlp.1.bias" =  {0.567823}, float[3,2] val_0, float[2] val_1, float[2] linear, float[2,1] val_2, float[1] val_3, float[1] linear_1, float sum_1, float scalar_tensor_default, bool gt>
     {
-       [node_Constant_11] val_0 = Constant <value: tensor = float[3,2] val_0 {-0.574301,0.317575,0.373175,0.370257,0.415458,-0.316719}> ()
+       [node_Constant_11] val_0 = Constant <value: tensor = float[3,2] val_0 {0.346779,0.273761,0.311015,-0.344733,0.497203,0.516696}> ()
        [node_MatMul_1] val_1 = MatMul (x, val_0)
        [node_Add_2] linear = Add (val_1, "mlp.0.bias")
-       [node_Constant_12] val_2 = Constant <value: tensor = float[2,1] val_2 {0.70186,-0.326448}> ()
+       [node_Constant_12] val_2 = Constant <value: tensor = float[2,1] val_2 {-0.653214,0.462875}> ()
        [node_MatMul_4] val_3 = MatMul (linear, val_2)
        [node_Add_5] linear_1 = Add (val_3, "mlp.1.bias")
        [node_ReduceSum_6] sum_1 = ReduceSum <noop_with_empty_axes: int = 0, keepdims: int = 0> (linear_1)
@@ -467,7 +424,7 @@ Let's optimize to see a small model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.815 seconds)
+   **Total running time of the script:** (0 minutes 3.564 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_oe_cond.py:

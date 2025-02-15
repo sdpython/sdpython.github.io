@@ -92,7 +92,8 @@ scikit-learn: the simple regression
 
  .. code-block:: none
 
-    coefficients: [74.16465946 -0.44107369 44.27047833  0.16755338  0.10133521], 0.6708272554327994
+    coefficients: [ 1.49148391e-01  9.55477138e+01  4.27602676e+01 -5.16603994e-01
+     -9.13095100e-02], 0.15098552078709382
 
 
 
@@ -120,7 +121,7 @@ Evaluation
 
  .. code-block:: none
 
-    LinearRegression: l2=102.33954547894375, r2=0.983451987269864
+    LinearRegression: l2=101.08471574277934, r2=0.9895516762682767
 
 
 
@@ -151,24 +152,23 @@ SGD = Stochastic Gradient Descent
  .. code-block:: none
 
     -- Epoch 1
-    Norm: 71.12, NNZs: 5, Bias: 3.182334, T: 750, Avg. loss: 829.141123
+    Norm: 89.74, NNZs: 5, Bias: -3.207615, T: 750, Avg. loss: 1192.340618
     Total training time: 0.00 seconds.
     -- Epoch 2
-    Norm: 81.64, NNZs: 5, Bias: 2.005790, T: 1500, Avg. loss: 92.276417
+    Norm: 100.77, NNZs: 5, Bias: -1.122405, T: 1500, Avg. loss: 93.318303
     Total training time: 0.00 seconds.
     -- Epoch 3
-    Norm: 84.56, NNZs: 5, Bias: 1.321670, T: 2250, Avg. loss: 55.235325
+    Norm: 103.38, NNZs: 5, Bias: -0.307030, T: 2250, Avg. loss: 55.821301
     Total training time: 0.00 seconds.
     -- Epoch 4
-    Norm: 85.65, NNZs: 5, Bias: 0.853352, T: 3000, Avg. loss: 51.027233
+    Norm: 104.26, NNZs: 5, Bias: -0.081255, T: 3000, Avg. loss: 52.718419
     Total training time: 0.00 seconds.
     -- Epoch 5
-    Norm: 86.04, NNZs: 5, Bias: 0.761108, T: 3750, Avg. loss: 50.346646
+    Norm: 104.47, NNZs: 5, Bias: 0.059221, T: 3750, Avg. loss: 52.405686
     Total training time: 0.00 seconds.
     /home/xadupre/vv/this312/lib/python3.12/site-packages/sklearn/linear_model/_stochastic_gradient.py:1608: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
       warnings.warn(
-    coefficients: [ 7.38946495e+01 -1.84254767e-01  4.40784851e+01  4.15347314e-02
-      1.22675161e-01], [0.76110751]
+    coefficients: [ 0.21819782 95.36249001 42.64578842 -0.53980981 -0.14550926], [0.05922084]
 
 
 
@@ -196,7 +196,7 @@ Evaluation
 
  .. code-block:: none
 
-    SGDRegressor: sl2=102.5078598227552, sr2=0.9834247713203401
+    SGDRegressor: sl2=101.49390416781107, sr2=0.9895093817126598
 
 
 
@@ -267,11 +267,11 @@ Linrar Regression with pytorch
 
  .. code-block:: none
 
-    iteration 0, loss=1835107.625
-    iteration 1, loss=181558.125
-    iteration 2, loss=82464.3359375
-    iteration 3, loss=75953.6015625
-    iteration 4, loss=75527.6328125
+    iteration 0, loss=2720875.5
+    iteration 1, loss=196841.9375
+    iteration 2, loss=85080.1953125
+    iteration 3, loss=79213.7109375
+    iteration 4, loss=78801.4453125
 
 
 
@@ -298,7 +298,7 @@ Let's check the error
 
  .. code-block:: none
 
-    TorchLinearRegression: tl2=103.04473707888901, tr2=0.9833379597986801
+    TorchLinearRegression: tl2=101.36537040894598, tr2=0.9895226672258376
 
 
 
@@ -327,10 +327,9 @@ And the coefficients.
 
     coefficients:
     Parameter containing:
-    tensor([[ 7.4100e+01, -6.8170e-02,  4.4400e+01,  3.8318e-01, -1.3100e-02]],
-           requires_grad=True)
+    tensor([[ 0.1599, 95.0990, 43.1321, -0.3775,  0.2863]], requires_grad=True)
     Parameter containing:
-    tensor([0.6907], requires_grad=True)
+    tensor([0.2348], requires_grad=True)
 
 
 
@@ -377,8 +376,8 @@ Let's check it is work.
 
  .. code-block:: none
 
-    [array([[-138.24709 ],
-           [  35.493153]], dtype=float32)]
+    [array([[-117.064224],
+           [  46.55126 ]], dtype=float32)]
 
 
 
@@ -446,7 +445,7 @@ That's usually what users need.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='linear.weight' type=float32 shape=(1, 5)                  -- DynamoInterpret.placeholder.1/P(linear.weight)
-    init: name='linear.bias' type=float32 shape=(1,) -- array([0.6906688], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+    init: name='linear.bias' type=float32 shape=(1,) -- array([0.23478925], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
     Reshape(linear.weight, init7_s2_-1_1) -> _onx_transpose_p_linear_weight0
       Reshape(_onx_transpose_p_linear_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_linear_weight0
         Gemm(x, GemmTransposePattern--_onx_transpose_p_linear_weight0, linear.bias, transB=1) -> output_0
@@ -486,7 +485,7 @@ or ``torch.export.Dim.AUTO``.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape
     init: name='linear.weight' type=float32 shape=(1, 5)                  -- DynamoInterpret.placeholder.1/P(linear.weight)
-    init: name='linear.bias' type=float32 shape=(1,) -- array([0.6906688], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
+    init: name='linear.bias' type=float32 shape=(1,) -- array([0.23478925], dtype=float32)-- DynamoInterpret.placeholder.1/P(linear.bias)
     Reshape(linear.weight, init7_s2_-1_1) -> _onx_transpose_p_linear_weight0
       Reshape(_onx_transpose_p_linear_weight0, init7_s2_1_-1) -> GemmTransposePattern--_onx_transpose_p_linear_weight0
         Gemm(x, GemmTransposePattern--_onx_transpose_p_linear_weight0, linear.bias, transB=1) -> output_0
@@ -498,7 +497,7 @@ or ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.432 seconds)
+   **Total running time of the script:** (0 minutes 2.279 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_linreg_101.py:
