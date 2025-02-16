@@ -474,7 +474,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi.html">Classification multi-classe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi_stacking.html">Classification multi-classe et stacking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/artificiel_multiclass.html">Classification multi-classe et jeu mal balancé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/custom_estimator.html">Un nouvel estimateur basé sur scikit-learn</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/timeseries_ssa.html">Single Spectrum Analysis (SSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_cat.html">Prétraitement des catégories ou des dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_image.html">Prétraitement d’une image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_son.html">Prétraitement du son</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_texte.html">Prétraitement du texte</a></li>
 </ul>
 </li>
 </ul>
@@ -559,6 +564,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../api/practice/index.html">teachpyx.practice</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of teachpyx.practice</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/practice/ml_skl.html">teachpyx.practice.ml_skl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
@@ -830,11 +836,11 @@ Tout d’abord les expressions régulières.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<p>distance initiale 4.105456979580885
+<p>distance initiale 2.7704984571360995
 – optimisation gourmande…
-– optimisation gourmande: 2.325444759480803</p>
+– optimisation gourmande: 1.9361656661433113</p>
 <p>– optimisation plus rapide mais approchée…
-– optimisation plus rapide mais approchée 2.3254447594808036</p>
+– optimisation plus rapide mais approchée 1.9383238119801809</p>
 <img alt="../../_images/tsp_simple.png" src="../../_images/tsp_simple.png" />
 </section>
 <section id="seance-7">
@@ -963,39 +969,39 @@ Tout d’abord les expressions régulières.</p>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    première itération
-    [[0 0 0 0 0 0 0 0 0 0 1 0 1 0 1 0 0 1 0 0]
-     [0 0 1 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0]
-     [0 0 1 0 0 0 1 1 0 1 0 0 0 0 0 0 0 1 1 0]
-     [0 1 0 0 0 0 1 1 0 0 1 0 1 0 0 1 0 1 0 0]
-     [0 1 1 0 0 0 0 1 0 0 1 1 1 0 0 0 0 1 0 1]
-     [0 1 0 0 0 0 1 1 0 1 0 1 1 0 1 0 1 1 0 1]
-     [1 1 1 0 0 0 0 1 1 0 1 0 0 1 1 0 1 1 1 0]
-     [0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 0 0 1 1 0]
-     [1 1 0 0 0 1 1 0 0 0 1 0 1 0 0 0 0 0 0 0]
-     [1 0 0 1 0 0 1 0 0 1 1 1 1 0 1 0 0 0 0 0]
-     [1 0 0 0 0 1 0 0 0 0 0 1 1 0 0 0 0 1 1 1]
-     [1 0 0 0 0 1 1 0 1 0 0 0 0 1 1 0 1 1 1 0]
-     [1 0 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 1]
-     [0 0 1 1 0 1 0 0 0 0 0 1 0 0 1 0 0 1 0 0]
-     [0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 1 0 1]
-     [0 0 0 0 0 1 0 1 1 1 1 1 0 1 0 1 0 1 1 0]
-     [0 1 0 0 0 0 0 1 1 1 1 1 0 1 0 0 0 0 1 0]
-     [0 0 1 1 0 0 1 0 1 1 1 0 1 1 0 0 0 0 0 1]
-     [0 0 0 1 0 1 0 0 1 0 0 1 0 0 0 0 0 0 0 0]
-     [0 0 0 0 0 0 1 0 0 0 1 1 0 1 1 0 1 0 1 1]]
+    [[0 0 1 0 0 0 0 0 0 0 1 1 1 0 1 1 0 0 0 0]
+     [0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 1 0 0 0]
+     [0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 1 1 1 0]
+     [0 1 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 1 0]
+     [1 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 1 1 0 0]
+     [1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1]
+     [0 0 0 0 0 1 0 0 1 1 1 0 0 0 0 0 1 0 0 1]
+     [1 1 1 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 0 1]
+     [0 0 0 0 1 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0]
+     [1 1 1 0 0 1 0 1 0 0 0 1 0 1 1 0 1 0 0 1]
+     [0 0 0 0 1 1 1 1 0 0 1 0 1 0 1 1 0 0 0 1]
+     [1 1 0 0 0 1 0 0 1 1 0 0 0 1 0 0 0 0 0 1]
+     [0 0 0 0 0 0 0 0 0 0 1 0 0 1 1 1 0 0 0 0]
+     [0 1 0 0 0 0 0 0 0 0 0 1 1 1 1 0 1 0 0 1]
+     [1 1 0 1 0 0 1 1 0 1 1 0 1 1 1 1 0 1 0 1]
+     [1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 1 0 0]
+     [1 0 1 0 0 1 1 0 0 0 0 0 0 0 1 0 1 1 0 1]
+     [0 0 0 0 0 0 1 1 0 1 0 1 0 1 0 0 1 0 1 0]
+     [1 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0 1 1 1 0]
+     [1 1 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0]]
     et le jeu
     
   0%|          | 0/5 [00:00&lt;?, ?it/s]
-100%|##########| 5/5 [00:00&lt;00:00, 9804.36it/s]
-    [[0 0 0 0 0 0 0 0 0 0]
-     [0 0 0 0 0 0 0 0 1 1]
-     [0 0 0 1 0 0 0 0 0 1]
+100%|##########| 5/5 [00:00&lt;00:00, 10527.87it/s]
+    [[0 0 1 1 0 0 0 0 0 0]
+     [0 0 1 1 0 0 0 0 0 0]
+     [0 0 0 1 0 0 0 0 0 0]
+     [0 0 1 1 1 0 0 0 0 0]
      [0 0 1 0 1 0 0 0 0 0]
+     [0 0 1 0 0 0 0 0 0 0]
+     [0 0 0 1 0 0 0 0 0 0]
      [0 0 0 0 1 1 0 0 0 0]
-     [0 0 0 0 0 0 0 0 0 0]
-     [0 0 0 0 0 0 0 0 0 0]
-     [0 0 0 0 0 0 0 0 0 0]
-     [0 0 0 0 0 0 0 0 0 0]
+     [0 0 0 0 0 1 0 0 0 0]
      [0 0 0 0 0 0 0 0 0 0]]
 </pre></div>
 </div>

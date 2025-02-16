@@ -474,7 +474,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi.html">Classification multi-classe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi_stacking.html">Classification multi-classe et stacking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/artificiel_multiclass.html">Classification multi-classe et jeu mal balancé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/custom_estimator.html">Un nouvel estimateur basé sur scikit-learn</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/timeseries_ssa.html">Single Spectrum Analysis (SSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_cat.html">Prétraitement des catégories ou des dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_image.html">Prétraitement d’une image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_son.html">Prétraitement du son</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_texte.html">Prétraitement du texte</a></li>
 </ul>
 </li>
 </ul>
@@ -559,6 +564,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../api/practice/index.html">teachpyx.practice</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of teachpyx.practice</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/practice/ml_skl.html">teachpyx.practice.ml_skl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
@@ -639,7 +645,7 @@ pour protéger tous les objets qu’il manipule contre des accès concurrentiels
 temps avec celui que cela prendrait en parallèle.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">timeit</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><span class="n">ThreadPoolExecutor</span></a>
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><span class="n">ThreadPoolExecutor</span></a></a>
 
 
 <span class="k">def</span> <span class="nf">create_list</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -649,7 +655,7 @@ temps avec celui que cela prendrait en parallèle.</p>
     <span class="k">return</span> <span class="n">res</span>
 
 
-<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a><span class="p">(</span><span class="s2">&quot;create_list(100000)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a></a><span class="p">(</span><span class="s2">&quot;create_list(100000)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.5237360110004374
@@ -658,12 +664,12 @@ temps avec celui que cela prendrait en parallèle.</p>
 <p>En parallèle avec le module <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html">concurrent.futures</a>
 et deux appels à la même fonction.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run2</span><span class="p">(</span><span class="n">nb</span><span class="p">):</span>
-    <span class="k">with</span> <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><span class="n">ThreadPoolExecutor</span></a><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+    <span class="k">with</span> <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><span class="n">ThreadPoolExecutor</span></a></a><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">_res</span> <span class="ow">in</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">create_list</span><span class="p">,</span> <span class="p">[</span><span class="n">nb</span><span class="p">,</span> <span class="n">nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
             <span class="k">pass</span>
 
 
-<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a><span class="p">(</span><span class="s2">&quot;run2(100000)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a></a><span class="p">(</span><span class="s2">&quot;run2(100000)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1.4210679520001577
@@ -680,23 +686,23 @@ liste et le <em>GIL</em> impose que ces mises à jour aient lieu une après l’
 <p>Au lieu de mettre à jour une liste, on va lancer un thread
 qui ne fait rien qu’attendre. Donc le <em>GIL</em> n’est pas impliqué.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">attendre</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mf">0.009</span><span class="p">):</span>
-    <a href="https://docs.python.org/3/library/time.html#time.sleep" title="time.sleep" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">sleep</span></a><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/time.html#time.sleep" title="time.sleep" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/time.html#time.sleep" title="time.sleep" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">sleep</span></a></a><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span>
 
 
-<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a><span class="p">(</span><span class="s2">&quot;attendre()&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a></a><span class="p">(</span><span class="s2">&quot;attendre()&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.917306548999477
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run3</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-    <span class="k">with</span> <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><span class="n">ThreadPoolExecutor</span></a><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+    <span class="k">with</span> <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="concurrent.futures.ThreadPoolExecutor" class="sphx-glr-backref-module-concurrent-futures sphx-glr-backref-type-py-class"><span class="n">ThreadPoolExecutor</span></a></a><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">_res</span> <span class="ow">in</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">attendre</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">]):</span>
             <span class="k">pass</span>
 
 
-<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a><span class="p">(</span><span class="s2">&quot;run3(0.009)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/timeit.html#timeit.timeit" title="timeit.timeit" class="sphx-glr-backref-module-timeit sphx-glr-backref-type-py-function"><span class="n">timeit</span><span class="o">.</span><span class="n">timeit</span></a></a><span class="p">(</span><span class="s2">&quot;run3(0.009)&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="o">=</span><span class="nb">globals</span><span class="p">(),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1.1038838470003611

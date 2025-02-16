@@ -474,7 +474,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi.html">Classification multi-classe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi_stacking.html">Classification multi-classe et stacking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/artificiel_multiclass.html">Classification multi-classe et jeu mal balancé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/custom_estimator.html">Un nouvel estimateur basé sur scikit-learn</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/timeseries_ssa.html">Single Spectrum Analysis (SSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_cat.html">Prétraitement des catégories ou des dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_image.html">Prétraitement d’une image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_son.html">Prétraitement du son</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_texte.html">Prétraitement du texte</a></li>
 </ul>
 </li>
 </ul>
@@ -559,6 +564,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../api/practice/index.html">teachpyx.practice</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of teachpyx.practice</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/practice/ml_skl.html">teachpyx.practice.ml_skl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
@@ -724,8 +730,8 @@ En résumé, il faut retenir les éléments suivants :</p>
     <span class="n">thread</span>  <span class="mi">3</span>
     <span class="n">programme</span>  <span class="mi">3</span>
     <span class="n">thread</span>  <span class="mi">4</span>
-    <span class="n">thread</span>  <span class="mi">5</span>
     <span class="n">programme</span>  <span class="mi">4</span>
+    <span class="n">thread</span>  <span class="mi">5</span>
     <span class="n">thread</span>  <span class="mi">6</span>
     <span class="n">programme</span>  <span class="mi">5</span>
     <span class="n">thread</span>  <span class="mi">7</span>
@@ -791,8 +797,8 @@ par rapport au programme précédent sont commentées.</p>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">6</span>
     <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">6</span>
     <span class="n">programme</span>  <span class="mi">6</span>
-    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">7</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">7</span>
+    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">7</span>
     <span class="n">programme</span>  <span class="mi">7</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">8</span>
     <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">8</span>
@@ -1321,14 +1327,27 @@ qui essaye de découvrir le nombre que l’autre joueur a tiré au hasard.
 A chaque essai, un joueur envoie un message de type <code class="docutils literal notranslate"><span class="pre">(&quot;essai&quot;,</span> <span class="pre">n)</span></code>
 à l’autre joueur pour dire qu’il joue le nombre <code class="docutils literal notranslate"><span class="pre">n</span></code>. Ce joueur lui répond
 avec des messages de type <code class="docutils literal notranslate"><span class="pre">(&quot;dessous&quot;,</span> <span class="pre">n)</span></code>, <code class="docutils literal notranslate"><span class="pre">(&quot;dessus&quot;,</span> <span class="pre">n)</span></code>, <code class="docutils literal notranslate"><span class="pre">(&quot;gagne&quot;,</span> <span class="pre">n)</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">6</span> <span class="p">)</span>
-    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">2</span> <span class="p">)</span>
-    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">2</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
-    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">0</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
-    <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai perdu après  0  essais</span>
-    <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;arrête</span>
-    <span class="n">A</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai gagné en  2  essais, solution  2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">10</span> <span class="p">)</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">5</span> <span class="p">)</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">7</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">4</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">8</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">1</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">2</span>  <span class="n">écart</span>  <span class="mi">6</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">3</span>  <span class="n">écart</span>  <span class="mi">6</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">7</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">3</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">6</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">6</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">5</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">6</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">6</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">9</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">7</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">5</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">6</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">10</span>  <span class="n">écart</span>  <span class="mi">1</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">9</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai perdu après  11  essais</span>
     <span class="n">A</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;arrête</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai gagné en  4  essais, solution  10</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;arrête</span>
 </pre></div>
 </div>
 <p>Les affichages se chevauchent parfois, il faudrait pour éviter cela synchroniser
@@ -1451,17 +1470,17 @@ des résultats indéchiffrables.</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">start</span> <span class="mi">112272535095293</span> <span class="o">*</span>
     <span class="n">start</span> <span class="mi">112582705942171</span> <span class="o">*</span>
-    <span class="n">end</span> <span class="mi">112582705942171</span> <span class="c1">#</span>
-    <span class="n">start</span> <span class="mi">112272535095293</span> <span class="o">*</span>
     <span class="n">end</span> <span class="mi">112272535095293</span> <span class="c1">#</span>
-    <span class="n">start</span> <span class="mi">115280095190773</span> <span class="o">*</span>
+    <span class="n">start</span> <span class="mi">112272535095293</span> <span class="o">*</span>
     <span class="mi">112272535095293</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="n">end</span> <span class="mi">112582705942171</span> <span class="c1">#</span>
+    <span class="n">start</span> <span class="mi">115280095190773</span> <span class="o">*</span>
     <span class="mi">112582705942171</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
     <span class="n">end</span> <span class="mi">112272535095293</span> <span class="c1">#</span>
     <span class="n">start</span> <span class="mi">115797848077099</span> <span class="o">*</span>
+    <span class="mi">112272535095293</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
     <span class="n">end</span> <span class="mi">115280095190773</span> <span class="c1">#</span>
     <span class="n">start</span> <span class="mi">1099726899285419</span> <span class="o">*</span>
-    <span class="mi">112272535095293</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
     <span class="mi">115280095190773</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
     <span class="n">end</span> <span class="mi">115797848077099</span> <span class="c1">#</span>
     <span class="mi">115797848077099</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
@@ -1558,20 +1577,20 @@ L’exemple suivant construit un <em>logger</em> par thread</p>
     <span class="mi">115797848077099</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
     <span class="mi">1099726899285419</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">False</span>
     <span class="o">-----</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="mi">721</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">164</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">170</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">631</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">637</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115797848077099</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">944</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115797848077099</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span><span class="p">,</span><span class="mi">234</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span><span class="p">,</span><span class="mi">852</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span><span class="p">,</span><span class="mi">858</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">420</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">420</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115797848077099</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">773</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115797848077099</span><span class="o">*</span>
     
     <span class="o">-----</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="mi">745</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112582705942171</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">194</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112582705942171</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">194</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115280095190773</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">666</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115280095190773</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">672</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">1099726899285419</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">10</span> <span class="mi">20</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mi">31</span><span class="p">,</span><span class="mi">805</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end2</span> <span class="mi">1099726899285419</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span><span class="p">,</span><span class="mi">240</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112582705942171</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span><span class="p">,</span><span class="mi">858</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112582705942171</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span><span class="p">,</span><span class="mi">869</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115280095190773</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">452</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115280095190773</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">458</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">1099726899285419</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">16</span> <span class="mi">23</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">619</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end2</span> <span class="mi">1099726899285419</span><span class="o">*</span>
 </pre></div>
 </div>
 </section>
@@ -1633,7 +1652,7 @@ et elle est récursive.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">611.7441825647755</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">294.0077833884382</span>
 </pre></div>
 </div>
 <p>Il faut voir l’objet <em>executor</em> comme un objet qui empile les fonctions

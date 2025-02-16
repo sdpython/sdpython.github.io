@@ -290,7 +290,9 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-03-01-route2025.html">2025-03-01 : feuille de route 2025</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-04-01-route2025.html">2025-04-01 : feuille de route 2025 - avril</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-03-01-route2025.html">2025-03-01 : feuille de route 2025 - mars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-01-31-local_llm.html">2025-01-31 : local LLM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024/2024-11-31-route2024.html">2024-11-31 : rappel feuille de route 2024</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024/2024-09-04-ensae.html">2024-09-04 : ENSAE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024/2024-03-01-route2024.html">2024-03-01 : feuille de route 2024</a></li>
@@ -471,7 +473,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi.html">Classification multi-classe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/winesc_multi_stacking.html">Classification multi-classe et stacking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/artificiel_multiclass.html">Classification multi-classe et jeu mal balancé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/custom_estimator.html">Un nouvel estimateur basé sur scikit-learn</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../practice/ml/timeseries_ssa.html">Single Spectrum Analysis (SSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_cat.html">Prétraitement des catégories ou des dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_image.html">Prétraitement d’une image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_son.html">Prétraitement du son</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../practice/ml/pretraitement_texte.html">Prétraitement du texte</a></li>
 </ul>
 </li>
 </ul>
@@ -556,6 +563,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../api/practice/index.html">teachpyx.practice</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of teachpyx.practice</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/practice/ml_skl.html">teachpyx.practice.ml_skl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
@@ -801,9 +809,13 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">string</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string</span><span class="si">!r}</span><span class="s2"> does not end with </span><span class="si">{</span><span class="n">suffix</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
+<div class="viewcode-block" id="ExtTestCase.assertExists">
+<a class="viewcode-back" href="../../api/ext_test_case.html#teachpyx.ext_test_case.ExtTestCase.assertExists">[docs]</a>
     <span class="k">def</span> <span class="nf">assertExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="s2">&quot;Checks a filename exists.&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File or folder </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not exists.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File or folder </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not exists.&quot;</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">assertEqualArray</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
