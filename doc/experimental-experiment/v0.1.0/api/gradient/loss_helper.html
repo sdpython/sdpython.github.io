@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title=".reference" href="../reference/index.html" /><link rel="prev" title=".gradient.grad_helper" href="grad_helper.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.0 and Furo 2024.08.06 -->
         <title>.gradient.loss_helper - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
@@ -216,7 +216,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tutorial/errors.html">Weird Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/errors.html">Unexpected Errors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/docker.html">Start from a docker</a></li>
 </ul>
 </li>
@@ -257,6 +257,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_scatter_elements.html">.reference.ops.op_scatter_elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_scatternd_of_shape.html">.reference.ops.op_scatternd_of_shape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_simplified_layer_normalization.html">.reference.ops.op_simplified_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_skip_layer_normalization.html">.reference.ops.op_skip_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_slice.html">.reference.ops.op_slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_transpose_cast.html">.reference.ops.op_transpose_cast</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../reference/ops/op_tri_matrix.html">.reference.ops.op_tri_matrix</a></li>
@@ -336,6 +337,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../xbuilder/graph_builder_opset.html">.xbuilder.graph_builder_opset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xbuilder/model_container.html">.xbuilder.model_container</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xbuilder/optimization_options.html">.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xbuilder/reverse_graph_builder.html">.xbuilder.reverse_graph_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xbuilder/shape_type_compute.html">.xbuilder.shape_type_compute</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xbuilder/type_inference.html">.xbuilder.type_inference</a></li>
 </ul>
@@ -401,6 +403,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/graph_builder_optim.html">.xoptim.graph_builder_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/order_optim.html">.xoptim.order_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xoptim/patterns_api.html">.xoptim.patterns_api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xoptim/unfused.html">.xoptim.unfused</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../torch_dynamo/index.html">.torch_dynamo</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of .torch_dynamo</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -631,11 +634,11 @@ columns, the sum on every line is 1.</p>
 </li>
 </ul>
 <p>Next example shows the loss with L1 and L2 loss.</p>
-<div class="graphviz"><img src="../../_images/graphviz-f00491dd869838e4c239a7f3a4e92690f5547ac6.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-2eeabc01c2bdf53639719e32441b5c0176de393a.png" alt="digraph{
+  ranksep=0.25;
   size=7;
   nodesep=0.05;
   orientation=portrait;
-  ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
   label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
@@ -644,8 +647,8 @@ columns, the sum on every line is 1.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474724 ]\n [ 1.4250946]\n [34.210377 ]\n [61.476...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000038]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474815 ]\n [ 1.4251404]\n [34.210346 ]\n [61.477...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.1]&quot; fontsize=10];
   l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.9]&quot; fontsize=10];
   shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
@@ -714,11 +717,11 @@ columns, the sum on every line is 1.</p>
 }" class="graphviz" /></div>
 <p>Next example shows how to add a L2 loss with L1 and L2 penalties
 on the coefficients.</p>
-<div class="graphviz"><img src="../../_images/graphviz-a98eceaca465215828ac69816404ac52c7864a67.png" alt="digraph{
+<div class="graphviz"><img src="../../_images/graphviz-b8153877993605d7ebfd8faf9c3594cf48cd0213.png" alt="digraph{
+  ranksep=0.25;
   size=7;
   nodesep=0.05;
   orientation=portrait;
-  ranksep=0.25;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
   label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
@@ -727,7 +730,7 @@ on the coefficients.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47475  ]\n [ 1.4251146]\n [34.210445 ]\n [61.476...&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.474754 ]\n [ 1.4250984]\n [34.21038  ]\n [61.476...&quot; fontsize=10];
   intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000038]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_coef [shape=box label=&quot;l1_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];

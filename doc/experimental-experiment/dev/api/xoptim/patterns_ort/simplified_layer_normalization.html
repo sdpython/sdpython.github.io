@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title=".xoptim.patterns_fix" href="../patterns_fix/index.html" /><link rel="prev" title=".xoptim.patterns_ort.llm_optim" href="llm_optim.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.0 and Furo 2024.08.06 -->
         <title>.xoptim.patterns_ort.simplified_layer_normalization - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
@@ -216,7 +216,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/errors.html">Weird Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial/errors.html">Unexpected Errors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tutorial/docker.html">Start from a docker</a></li>
 </ul>
 </li>
@@ -257,6 +257,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_scatter_elements.html">.reference.ops.op_scatter_elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_scatternd_of_shape.html">.reference.ops.op_scatternd_of_shape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_simplified_layer_normalization.html">.reference.ops.op_simplified_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_skip_layer_normalization.html">.reference.ops.op_skip_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_slice.html">.reference.ops.op_slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_transpose_cast.html">.reference.ops.op_transpose_cast</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../reference/ops/op_tri_matrix.html">.reference.ops.op_tri_matrix</a></li>
@@ -336,6 +337,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../xbuilder/graph_builder_opset.html">.xbuilder.graph_builder_opset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xbuilder/model_container.html">.xbuilder.model_container</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xbuilder/optimization_options.html">.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xbuilder/reverse_graph_builder.html">.xbuilder.reverse_graph_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xbuilder/shape_type_compute.html">.xbuilder.shape_type_compute</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xbuilder/type_inference.html">.xbuilder.type_inference</a></li>
 </ul>
@@ -401,6 +403,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../graph_builder_optim.html">.xoptim.graph_builder_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../order_optim.html">.xoptim.order_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../patterns_api.html">.xoptim.patterns_api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unfused.html">.xoptim.unfused</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../torch_dynamo/index.html">.torch_dynamo</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of .torch_dynamo</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -584,7 +587,7 @@
 <span id="xoptim-patterns-ort-simplified-layer-normalization"></span><h1>.xoptim.patterns_ort.simplified_layer_normalization<a class="headerlink" href="#module-experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">SimplifiedLayerNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SimplifiedLayerNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">SimplifiedLayerNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SimplifiedLayerNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Transpose, Matmul into FusedMatMul.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern.apply">
@@ -610,6 +613,66 @@ If a received node must be kept, it must be added to the list of returned node.<
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern.match">
 <span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SimplifiedLayerNormalizationPattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern.match" title="Link to this definition">¶</a></dt>
+<dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – is a <a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>,
+it holds all the existing nodes, is able to return any information
+about type, shape, the node before, the node after another one.</p></li>
+<li><p><strong>node</strong> – the matching must determine if some nodes around this one
+are part of set of nodes this pattern optmizer can rewrite.
+From there, the function explores wherever it needs,
+checking any condition it needs.</p></li>
+<li><p><strong>matched</strong> – usually unused, it returns of nodes already matching
+a pattern</p></li>
+</ul>
+</dd>
+</dl>
+<p>The method must not modify the graph.
+The method returns None if no match is found or an instance
+of class <a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.MatchResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResult</span></code></a>. It must contain:</p>
+<ul class="simple">
+<li><p>a list of nodes involved in the rewriting. It does not mean all
+of them will be removed but all of them are needed to do the rewriting
+and must not be impacted by other pattern optimizer.</p></li>
+<li><p>A function doing the rewriting (usually method <em>apply</em> of the pattern class).</p></li>
+<li><p>An existing node where the rewritten nodes can be inserted.
+Knowing it makes it faster to rewriter. If not specified, the optimizer
+will automatically determine the position of the new nodes.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.</span></span><span class="sig-name descname"><span class="pre">SkipLayerNormalizationPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SkipLayerNormalizationPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern" title="Link to this definition">¶</a></dt>
+<dd><p>Replaces the sequence Add + LayerNormalization into SkipLayerNormalization.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SkipLayerNormalizationPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern.apply" title="Link to this definition">¶</a></dt>
+<dd><p>The method does the rewriting. It assumes it can happen.
+It takes a list of nodes impacted by the rewriting assumes no other
+pattern optimizer will be modify them. It receives the list of nodes
+returned by method <em>apply</em>. Since it is a list of argument, method
+<em>match</em> can include None values. The method returns the new nodes.
+The optimizer considers that any node given to this function is removed
+from the graph, and any node returned by it are added.
+If a received node must be kept, it must be added to the list of returned node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodes</strong> – nodes returned by method <em>match</em>, there are then removed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nodes to add to graph.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.18.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns_ort/simplified_layer_normalization.html#SkipLayerNormalizationPattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern.match" title="Link to this definition">¶</a></dt>
 <dd><p>Determines nodes around <em>node</em> which can be rewritten.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -703,6 +766,11 @@ will automatically determine the position of the new nodes.</p></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern"><code class="docutils literal notranslate"><span class="pre">SimplifiedLayerNormalizationPattern</span></code></a><ul>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern.apply"><code class="docutils literal notranslate"><span class="pre">SimplifiedLayerNormalizationPattern.apply()</span></code></a></li>
 <li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SimplifiedLayerNormalizationPattern.match"><code class="docutils literal notranslate"><span class="pre">SimplifiedLayerNormalizationPattern.match()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern"><code class="docutils literal notranslate"><span class="pre">SkipLayerNormalizationPattern</span></code></a><ul>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern.apply"><code class="docutils literal notranslate"><span class="pre">SkipLayerNormalizationPattern.apply()</span></code></a></li>
+<li><a class="reference internal" href="#experimental_experiment.xoptim.patterns_ort.simplified_layer_normalization.SkipLayerNormalizationPattern.match"><code class="docutils literal notranslate"><span class="pre">SkipLayerNormalizationPattern.match()</span></code></a></li>
 </ul>
 </li>
 </ul>

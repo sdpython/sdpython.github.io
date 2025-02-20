@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:18.881** total execution time for 40 files **from all galleries**:
+**00:28.330** total execution time for 40 files **from all galleries**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``examples/plot_torch_sklearn_201.py``)
-     - 00:18.881
+     - 00:28.330
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
      - 00:00.000

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Custom Exporter" href="exporter.html" /><link rel="prev" title="experimental-experiment: fuzzy work" href="../index.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.0 and Furo 2024.08.06 -->
         <title>Design - experimental-experiment 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
@@ -216,7 +216,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorial/index.html">Tutorial</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorial</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../tutorial/errors.html">Weird Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/errors.html">Unexpected Errors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/docker.html">Start from a docker</a></li>
 </ul>
 </li>
@@ -257,6 +257,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_scatter_elements.html">.reference.ops.op_scatter_elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_scatternd_of_shape.html">.reference.ops.op_scatternd_of_shape</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_simplified_layer_normalization.html">.reference.ops.op_simplified_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_skip_layer_normalization.html">.reference.ops.op_skip_layer_normalization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_slice.html">.reference.ops.op_slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_transpose_cast.html">.reference.ops.op_transpose_cast</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/ops/op_tri_matrix.html">.reference.ops.op_tri_matrix</a></li>
@@ -336,6 +337,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/graph_builder_opset.html">.xbuilder.graph_builder_opset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/model_container.html">.xbuilder.model_container</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/optimization_options.html">.xbuilder.optimization_options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/reverse_graph_builder.html">.xbuilder.reverse_graph_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/shape_type_compute.html">.xbuilder.shape_type_compute</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xbuilder/type_inference.html">.xbuilder.type_inference</a></li>
 </ul>
@@ -401,6 +403,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/xoptim/graph_builder_optim.html">.xoptim.graph_builder_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xoptim/order_optim.html">.xoptim.order_optim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/xoptim/patterns_api.html">.xoptim.patterns_api</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/xoptim/unfused.html">.xoptim.unfused</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch_dynamo/index.html">.torch_dynamo</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of .torch_dynamo</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -582,9 +585,9 @@
         <article role="main" id="furo-main-content">
           <section id="design">
 <span id="l-design"></span><h1>Design<a class="headerlink" href="#design" title="Link to this heading">¶</a></h1>
-<p>This module was started to experiment around function <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.7.0a0+gita9ae334 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
+<p>This module was started to experiment around function <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.7.0a0+git959d79f ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
 and see what kind of issues occur when leveraging that function to convert
-a <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmain (2.7.0a0+gita9ae334 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> into <a class="reference external" href="https://onnx.ai/">ONNX</a>.
+a <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch vmain (2.7.0a0+git959d79f ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> into <a class="reference external" href="https://onnx.ai/">ONNX</a>.
 The design is organized around the following main pieces:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilder</span></code></a>:
@@ -594,11 +597,11 @@ It supports shape inference and constant computation with
 numpy arrays or torch tensors.</p></li>
 <li><p><a class="reference internal" href="../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter" title="experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DynamoInterpreter</span></code></a>:
 walks through a torch model and converts every piece into ONNX nodes,
-the first step is to get an <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.7.0a0+gita9ae334 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a>, then convert every of its nodes
+the first step is to get an <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.7.0a0+git959d79f ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a>, then convert every of its nodes
 into ONNX operators.</p></li>
 <li><p><a class="reference internal" href="../api/torch_interpreter/_aten_functions.html#module-experimental_experiment.torch_interpreter._aten_functions" title="experimental_experiment.torch_interpreter._aten_functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">_aten_functions</span></code></a> and
 <a class="reference internal" href="../api/torch_interpreter/_aten_methods.html#module-experimental_experiment.torch_interpreter._aten_methods" title="experimental_experiment.torch_interpreter._aten_methods"><code class="xref py py-mod docutils literal notranslate"><span class="pre">_aten_methods</span></code></a>:
-a collection of functions converting every node from <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.7.0a0+gita9ae334 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> instance
+a collection of functions converting every node from <a class="reference external" href="https://pytorch.org/docs/main/fx.html#torch.fx.Graph" title="(in PyTorch vmain (2.7.0a0+git959d79f ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.fx.Graph</span></code></a> instance
 into ONNX operators. There is one function per node type.</p></li>
 <li><p><a class="reference internal" href="../api/xoptim/index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphBuilderPatternOptimization</span></code></a>:
 once the model is converted, this class looks for sequence of ONNX nodes which can

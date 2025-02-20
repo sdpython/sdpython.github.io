@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Recherche" href="../../search.html" /><link rel="next" title="Notebooks écrits durant les séances" href="../years/index.html" /><link rel="prev" title="Prétraitement du son" href="pretraitement_son.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+    <!-- Generated with Sphinx 8.2.0 and Furo 2024.08.06 -->
         <title>Prétraitement du texte - Documentation teachpyx 0.5.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
@@ -636,25 +636,25 @@
 <section id="Bog-of-Words">
 <h2>Bog of Words<a class="headerlink" href="#Bog-of-Words" title="Lien vers cette rubrique">¶</a></h2>
 <p>C’est le début de tout. La première étape consiste à découper un texte en token (caractères, mots, …). Le plus souvent, c’est en mot. Chaque mot reçoit un identifiant. Une phrase est transformée en une liste d’entiers.</p>
-<p>L’approche la plus simple consiste ensuite un vecteur binaire pour chaque mot <img class="math" src="../../_images/math/9e29b760a3164a1d4ae7f16a5dcc4db609cf0953.svg" alt="(v_1, ..., v_i, ..., v_n)"/>. <img class="math" src="../../_images/math/c6bda150e9681ecbd11a4bf90626e5d7c2199bc4.svg" alt="n"/> est le nombre de mots reconnus par le modèle. <img class="math" src="../../_images/math/91e93649709dbad8311ab0862723ab464a3ff2b7.svg" alt="v_i in \{ 0, 1 \}"/>, il vaut 1 si i est égale à son numéro, 0 sinon. Chaque vecteur ne contient qu’un seul un.</p>
+<p>L’approche la plus simple consiste ensuite un vecteur binaire pour chaque mot <img class="math" src="../../_images/math/9e29b760a3164a1d4ae7f16a5dcc4db609cf0953.svg" alt="(v_1, ..., v_i, ..., v_n)"/>. <img class="math" src="../../_images/math/c6bda150e9681ecbd11a4bf90626e5d7c2199bc4.svg" alt="n"/> est le nombre de mots reconnus par le modèle. <img class="math" src="../../_images/math/c247e6e153f3edced581b4d7a66cbefc5b51c3f9.svg" alt="v_i \in \{ 0, 1 \}"/>, il vaut 1 si i est égale à son numéro, 0 sinon. Chaque vecteur ne contient qu’un seul un.</p>
 <p>On fait ensuite la somme pour obtenir un seul vecteur par phrase, quelle que soit la longueur de la phrase : <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">CountVectorizer</a></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from sklearn.feature_extraction.text import CountVectorizer
 
-<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;J&#39;adore le machine learning et l&#39;intelligence artificielle.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Les réseaux de neurones sont puissants pour la vision par ordinateur.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Scikit-learn est une super bibliothèque pour le ML.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Transformer est un modèle de deep learning très utilisé.&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+corpus = [
+    &quot;J&#39;adore le machine learning et l&#39;intelligence artificielle.&quot;,
+    &quot;Les réseaux de neurones sont puissants pour la vision par ordinateur.&quot;,
+    &quot;Scikit-learn est une super bibliothèque pour le ML.&quot;,
+    &quot;Transformer est un modèle de deep learning très utilisé.&quot;,
+]
 
-<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+vectorizer = CountVectorizer(max_features=10)
+X = vectorizer.fit_transform(corpus)
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape de la matrice TF-IDF :&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+print(&quot;Shape de la matrice TF-IDF :&quot;, X.shape)
 </pre></div>
 </div>
 </div>
@@ -670,7 +670,7 @@ Shape de la matrice TF-IDF : (4, 10)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>X.todense()
 </pre></div>
 </div>
 </div>
@@ -692,20 +692,20 @@ matrix([[1, 0, 0, 0, 0, 1, 1, 1, 1, 0],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from sklearn.feature_extraction.text import TfidfVectorizer
 
-<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;J&#39;adore le machine learning et l&#39;intelligence artificielle.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Les réseaux de neurones sont puissants pour la vision par ordinateur.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Scikit-learn est une super bibliothèque pour le ML.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Transformer est un modèle de deep learning très utilisé.&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+corpus = [
+    &quot;J&#39;adore le machine learning et l&#39;intelligence artificielle.&quot;,
+    &quot;Les réseaux de neurones sont puissants pour la vision par ordinateur.&quot;,
+    &quot;Scikit-learn est une super bibliothèque pour le ML.&quot;,
+    &quot;Transformer est un modèle de deep learning très utilisé.&quot;,
+]
 
-<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+vectorizer = TfidfVectorizer(max_features=10)
+X = vectorizer.fit_transform(corpus)
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape de la matrice TF-IDF :&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">X</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+print(&quot;Shape de la matrice TF-IDF :&quot;, X.shape)
+X.todense()
 </pre></div>
 </div>
 </div>
@@ -737,7 +737,7 @@ matrix([[0.48546061, 0.        , 0.        , 0.        , 0.        ,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>vectorizer.get_feature_names_out()
 </pre></div>
 </div>
 </div>
@@ -759,20 +759,20 @@ array([&#39;artificielle&#39;, &#39;bibliothèque&#39;, &#39;de&#39;, &#39;deep&
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from sklearn.feature_extraction.text import TfidfVectorizer
 
-<span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;J&#39;adore le machine learning et l&#39;intelligence artificielle.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Les réseaux de neurones sont puissants pour la vision par ordinateur.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Scikit-learn est une super bibliothèque pour le ML.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Transformer est un modèle de deep learning très utilisé.&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+corpus = [
+    &quot;J&#39;adore le machine learning et l&#39;intelligence artificielle.&quot;,
+    &quot;Les réseaux de neurones sont puissants pour la vision par ordinateur.&quot;,
+    &quot;Scikit-learn est une super bibliothèque pour le ML.&quot;,
+    &quot;Transformer est un modèle de deep learning très utilisé.&quot;,
+]
 
-<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+vectorizer = TfidfVectorizer(max_features=10, ngram_range=(1, 2))
+X = vectorizer.fit_transform(corpus)
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape de la matrice TF-IDF :&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">X</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+print(&quot;Shape de la matrice TF-IDF :&quot;, X.shape)
+X.todense()
 </pre></div>
 </div>
 </div>
@@ -804,7 +804,7 @@ matrix([[0.66767854, 0.        , 0.        , 0.        , 0.        ,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>vectorizer.get_feature_names_out()
 </pre></div>
 </div>
 </div>
@@ -829,14 +829,14 @@ a aussi <a class="reference external" href="https://spacy.io/">spacy</a>, <a cla
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModel</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import torch
+import numpy as np
+from transformers import AutoTokenizer, AutoModel
 
-<span class="c1"># Charger le tokenizer et le modèle</span>
-<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;google/bert_uncased_L-2_H-128_A-2&quot;</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
+# Charger le tokenizer et le modèle
+MODEL_NAME = &quot;google/bert_uncased_L-2_H-128_A-2&quot;
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModel.from_pretrained(MODEL_NAME)
 </pre></div>
 </div>
 </div>
@@ -862,17 +862,17 @@ a aussi <a class="reference external" href="https://spacy.io/">spacy</a>, <a cla
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convertir un texte en embedding.&quot;&quot;&quot;</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">tokens</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>  <span class="c1"># Prendre le CLS token</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def get_embedding(text):
+    &quot;&quot;&quot;Convertir un texte en embedding.&quot;&quot;&quot;
+    tokens = tokenizer(text, return_tensors=&quot;pt&quot;, padding=True, truncation=True)
+    with torch.no_grad():
+        output = model(**tokens)
+    return output.last_hidden_state[:, 0, :].numpy()  # Prendre le CLS token
 
 
-<span class="c1"># Appliquer à notre dataset</span>
-<span class="n">X_bert</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">get_embedding</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape des embeddings BERT :&quot;</span><span class="p">,</span> <span class="n">X_bert</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (5, 768)</span>
+# Appliquer à notre dataset
+X_bert = np.vstack([get_embedding(t) for t in corpus])
+print(&quot;Shape des embeddings BERT :&quot;, X_bert.shape)  # (5, 768)
 </pre></div>
 </div>
 </div>
@@ -896,7 +896,7 @@ Shape des embeddings BERT : (4, 128)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_bert</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>X_bert
 </pre></div>
 </div>
 </div>
@@ -1084,7 +1084,7 @@ array([[-1.01954079e+00,  1.09865868e+00, -3.24030900e+00,
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

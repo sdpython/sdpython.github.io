@@ -39,7 +39,7 @@ See :func:`sklearn.metrics.nan_euclidean`.
 Module
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-98
+.. GENERATED FROM PYTHON SOURCE LINES 23-101
 
 .. code-block:: Python
 
@@ -49,6 +49,8 @@ Module
     import logging
     import math
     import numbers
+    import subprocess
+    import sys
     import warnings
     from typing import Any, Dict, List, Optional
     import numpy as np
@@ -69,6 +71,7 @@ Module
         trace_execution_piece_by_piece,
         CustomOpStrategy,
     )
+    from experimental_experiment.xbuilder.reverse_graph_builder import to_graph_builder_code
 
 
     class NanEuclidean(torch.nn.Module):
@@ -125,23 +128,23 @@ Module
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-101
+.. GENERATED FROM PYTHON SOURCE LINES 102-104
 
 Validation
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-115
+.. GENERATED FROM PYTHON SOURCE LINES 104-118
 
 .. code-block:: Python
 
 
     model = NanEuclidean()
-    X = torch.randn((5, 2))
-    Y = torch.randn((5, 2))
+    X = torch.randn((5, 3))
+    Y = torch.randn((5, 3))
     for i in range(5):
-        X[i, i % 2] = torch.nan
+        X[i, i % X.shape[1]] = torch.nan
     for i in range(4):
-        Y[i + 1, i % 2] = torch.nan
+        Y[i + 1, i % X.shape[1]] = torch.nan
 
     d1 = sklearn.metrics.nan_euclidean_distances(X.numpy(), Y.numpy())
     d2 = model(X, Y)
@@ -156,12 +159,12 @@ Validation
 
  .. code-block:: none
 
-    discrepancies: {'abs': 2.384185791015625e-07, 'rel': 2.0627543198679525e-07, 'sum': 4.172325134277344e-07, 'n': 25.0, 'dnan': 0.0}
+    discrepancies: {'abs': 3.5762786865234375e-07, 'rel': 3.6682554007973707e-07, 'sum': 1.2516975402832031e-06, 'n': 25.0, 'dnan': 0.0}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-122
+.. GENERATED FROM PYTHON SOURCE LINES 119-125
 
 torch implementation of KNNImputer
 ==================================
@@ -170,7 +173,7 @@ See :class:`sklearn.impute.KNNImputer`.
 The code is split into several :class:`torch.nn.Module`
 and refactored to avoid control flow.
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-392
+.. GENERATED FROM PYTHON SOURCE LINES 125-397
 
 .. code-block:: Python
 
@@ -218,7 +221,9 @@ and refactored to avoid control flow.
 
         def forward(self, dist_pot_donors, n_neighbors):
             donors_idx = self._topk(dist_pot_donors, n_neighbors)
-            donors_dist = dist_pot_donors[torch.arange(donors_idx.shape[0])[:, None], donors_idx]
+            indices = torch.arange(donors_idx.shape[0])
+            indices_extended = indices[:, None]
+            donors_dist = dist_pot_donors[indices_extended, donors_idx]
             return donors_idx, donors_dist
 
 
@@ -378,7 +383,7 @@ and refactored to avoid control flow.
             # results of fitting
             self.indicator_ = knn_imputer.indicator_
             # The training results.
-            # self._fit_X = torch.from_numpy(knn_imputer._fit_X)
+            # self._fit_X = torch.from_numpy(knn_imputer._fit_X.astype(np.float32))
             # self._mask_fit_X = torch.from_numpy(knn_imputer._mask_fit_X)
             # self._valid_mask = torch.from_numpy(knn_imputer._valid_mask)
 
@@ -451,26 +456,26 @@ and refactored to avoid control flow.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 393-397
+.. GENERATED FROM PYTHON SOURCE LINES 398-402
 
 Validation
 ++++++++++
 
 We need to do that with different sizes of training set.
 
-.. GENERATED FROM PYTHON SOURCE LINES 397-439
+.. GENERATED FROM PYTHON SOURCE LINES 402-444
 
 .. code-block:: Python
 
 
 
     def validate(size, sizey):
-        X = torch.randn((size, 2))
-        Y = torch.randn((sizey, 2))
-        for i in range(5):
-            X[i, i % 2] = torch.nan
-        for i in range(4):
-            Y[i + 1, i % 2] = torch.nan
+        X = torch.randn((size, 3))
+        Y = torch.randn((sizey, 3))
+        for i in range(X.shape[0]):
+            X[i, i % X.shape[1]] = torch.nan
+        for i in range(Y.shape[0] - 1):
+            Y[i + 1, i % X.shape[1]] = torch.nan
 
         knn_imputer = sklearn.impute.KNNImputer(n_neighbors=3)
         knn_imputer.fit(X)
@@ -481,7 +486,7 @@ We need to do that with different sizes of training set.
         p2 = model.transform(
             torch.from_numpy(knn_imputer._mask_fit_X),
             torch.from_numpy(knn_imputer._valid_mask),
-            torch.from_numpy(knn_imputer._fit_X),
+            torch.from_numpy(knn_imputer._fit_X.astype(np.float32)),
             Y,
         )
         d = max_diff(p1, p2)
@@ -492,7 +497,7 @@ We need to do that with different sizes of training set.
         p2 = model.transform(
             torch.from_numpy(knn_imputer._mask_fit_X),
             torch.from_numpy(knn_imputer._valid_mask),
-            torch.from_numpy(knn_imputer._fit_X),
+            torch.from_numpy(knn_imputer._fit_X.astype(np.float32)),
             Y[1:2],
         )
         d = max_diff(p1, p2)
@@ -512,15 +517,15 @@ We need to do that with different sizes of training set.
 
  .. code-block:: none
 
-    knn discrepancies for size=5: {'abs': 4.967053740534411e-09, 'rel': 3.8580606309014394e-08, 'sum': 9.934107481068821e-09, 'n': 20.0, 'dnan': 0.0}
-    knn discrepancies for size=5: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 2.0, 'dnan': 0.0}
-    knn discrepancies for size=50: {'abs': 1.986821485111534e-08, 'rel': 2.3018476420929695e-08, 'sum': 6.705522526129215e-08, 'n': 80.0, 'dnan': 0.0}
-    knn discrepancies for size=50: {'abs': 1.986821485111534e-08, 'rel': 1.8620979822721472e-08, 'sum': 1.986821485111534e-08, 'n': 2.0, 'dnan': 0.0}
+    knn discrepancies for size=5: {'abs': 4.9670537349832955e-08, 'rel': 7.19586488481793e-08, 'sum': 2.1109978366740112e-07, 'n': 30.0, 'dnan': 0.0}
+    knn discrepancies for size=5: {'abs': 4.967053726656623e-09, 'rel': 5.51025829087513e-08, 'sum': 4.967053726656623e-09, 'n': 3.0, 'dnan': 0.0}
+    knn discrepancies for size=50: {'abs': 8.443991350581825e-08, 'rel': 1.3839483930697088e-06, 'sum': 6.253249014517457e-07, 'n': 120.0, 'dnan': 0.0}
+    knn discrepancies for size=50: {'abs': 4.967053712778835e-09, 'rel': 1.1432221388294392e-08, 'sum': 4.967053712778835e-09, 'n': 3.0, 'dnan': 0.0}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 440-452
+.. GENERATED FROM PYTHON SOURCE LINES 445-457
 
 Export to ONNX
 ==============
@@ -535,7 +540,7 @@ This is automatically done by function :func:`trace_execution_piece_by_piece`.
 First step, we create two sets of inputs. A function will use this
 to infer the dynamic shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 452-474
+.. GENERATED FROM PYTHON SOURCE LINES 457-479
 
 .. code-block:: Python
 
@@ -545,7 +550,7 @@ to infer the dynamic shapes.
             (
                 torch.from_numpy(knn50._mask_fit_X),
                 torch.from_numpy(knn50._valid_mask),
-                torch.from_numpy(knn50._fit_X),
+                torch.from_numpy(knn50._fit_X.astype(np.float32)),
                 Y40,
             ),
             {},
@@ -554,7 +559,7 @@ to infer the dynamic shapes.
             (
                 torch.from_numpy(knn5._mask_fit_X),
                 torch.from_numpy(knn5._valid_mask),
-                torch.from_numpy(knn5._fit_X),
+                torch.from_numpy(knn5._fit_X.astype(np.float32)),
                 Y10,
             ),
             {},
@@ -568,13 +573,13 @@ to infer the dynamic shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 475-478
+.. GENERATED FROM PYTHON SOURCE LINES 480-483
 
 Then we trace the execution to capture every input and output of every submodule.
 The model implementation was refactored to introduce many tiny one and get
 a fine-grained evaluation of the exportability.
 
-.. GENERATED FROM PYTHON SOURCE LINES 478-483
+.. GENERATED FROM PYTHON SOURCE LINES 483-488
 
 .. code-block:: Python
 
@@ -605,16 +610,22 @@ a fine-grained evaluation of the exportability.
     ......_donors_idx         SubDonorsIdx      <OK-2i>
     ........_topk             SubTopKIndices    <OK-2i>
     ......_make_new_neights   MakeNewWeights    <OK-2i>
+    ..columns[2]              ColProcessor      <OK-2i>
+    ...._calc_impute          CalcImpute        <OK-2i>
+    ......_weights            SubWeightMatrix   <OK-2i>
+    ......_donors_idx         SubDonorsIdx      <OK-2i>
+    ........_topk             SubTopKIndices    <OK-2i>
+    ......_make_new_neights   MakeNewWeights    <OK-2i>
     .._make_dict_idx_map      MakeDictIdxMap    <OK-2i>
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 484-485
+.. GENERATED FROM PYTHON SOURCE LINES 489-490
 
 The dynamic shapes for the whole model:
 
-.. GENERATED FROM PYTHON SOURCE LINES 485-488
+.. GENERATED FROM PYTHON SOURCE LINES 490-493
 
 .. code-block:: Python
 
@@ -635,12 +646,12 @@ The dynamic shapes for the whole model:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 489-491
+.. GENERATED FROM PYTHON SOURCE LINES 494-496
 
 The method ``try_export`` cannot infer all links between input shapes and output shapes
 for every submodule. The following function fills this gap.
 
-.. GENERATED FROM PYTHON SOURCE LINES 491-531
+.. GENERATED FROM PYTHON SOURCE LINES 496-536
 
 .. code-block:: Python
 
@@ -691,14 +702,14 @@ for every submodule. The following function fills this gap.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 532-536
+.. GENERATED FROM PYTHON SOURCE LINES 537-541
 
 Then we we try to export piece by piece.
 We capture the standard output to avoid being overwhelmed
 and we use function :func:`bypass_export_some_errors` to skip some
 errors with shape checking made by :mod:`torch`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 536-555
+.. GENERATED FROM PYTHON SOURCE LINES 541-560
 
 .. code-block:: Python
 
@@ -743,12 +754,18 @@ errors with shape checking made by :mod:`torch`.
     ......_donors_idx         SubDonorsIdx      OK_CHILDC -- ExportedProgram
     ........_topk             SubTopKIndices    OK -- ExportedProgram
     ......_make_new_neights   MakeNewWeights    OK -- ExportedProgram
+    ..columns[2]              ColProcessor      OK_CHILDC -- ExportedProgram
+    ...._calc_impute          CalcImpute        OK_CHILDC -- ExportedProgram
+    ......_weights            SubWeightMatrix   OK -- ExportedProgram
+    ......_donors_idx         SubDonorsIdx      OK_CHILDC -- ExportedProgram
+    ........_topk             SubTopKIndices    OK -- ExportedProgram
+    ......_make_new_neights   MakeNewWeights    OK -- ExportedProgram
     .._make_dict_idx_map      MakeDictIdxMap    OK -- ExportedProgram
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 556-561
+.. GENERATED FROM PYTHON SOURCE LINES 561-566
 
 ``OK`` means the module is exportable. ``OK_CHILDC`` means the module
 can be exported after its submodules are replaced by custom ops.
@@ -756,14 +773,14 @@ It works except for the topk function. ``FAIL`` means
 the submodule cannot be exported at all but that
 module is simple enough and its ONNX conversion can be provided.
 
-.. GENERATED FROM PYTHON SOURCE LINES 563-567
+.. GENERATED FROM PYTHON SOURCE LINES 568-572
 
 Final step
 ++++++++++
 
 We first start by running the decompositions on every exported program.
 
-.. GENERATED FROM PYTHON SOURCE LINES 567-578
+.. GENERATED FROM PYTHON SOURCE LINES 572-583
 
 .. code-block:: Python
 
@@ -800,17 +817,23 @@ We first start by running the decompositions on every exported program.
     [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
     [run_decompositions] ........ M:_topk-SubTopKIndices
     [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
+    [run_decompositions] .. M:columns[2]-ColProcessor
+    [run_decompositions] .... M:_calc_impute-CalcImpute
+    [run_decompositions] ...... M:_weights-SubWeightMatrix
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
+    [run_decompositions] ........ M:_topk-SubTopKIndices
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
     [run_decompositions] .. M:_make_dict_idx_map-MakeDictIdxMap
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 579-581
+.. GENERATED FROM PYTHON SOURCE LINES 584-586
 
 Let's export everything. Every submodule is exported as a local function
 except topk for which we must provide an ONNX conversion.
 
-.. GENERATED FROM PYTHON SOURCE LINES 581-598
+.. GENERATED FROM PYTHON SOURCE LINES 586-603
 
 .. code-block:: Python
 
@@ -838,11 +861,11 @@ except topk for which we must provide an ONNX conversion.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 599-600
+.. GENERATED FROM PYTHON SOURCE LINES 604-605
 
 Let's check it is working somehow.
 
-.. GENERATED FROM PYTHON SOURCE LINES 600-605
+.. GENERATED FROM PYTHON SOURCE LINES 605-610
 
 .. code-block:: Python
 
@@ -867,11 +890,11 @@ Let's check it is working somehow.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 606-607
+.. GENERATED FROM PYTHON SOURCE LINES 611-612
 
 And with nan values
 
-.. GENERATED FROM PYTHON SOURCE LINES 607-612
+.. GENERATED FROM PYTHON SOURCE LINES 612-617
 
 .. code-block:: Python
 
@@ -896,12 +919,12 @@ And with nan values
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 613-615
+.. GENERATED FROM PYTHON SOURCE LINES 618-620
 
 That works. Then the dispatcher maps the custom ops calling topk to
 the previous converter functions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 615-627
+.. GENERATED FROM PYTHON SOURCE LINES 620-635
 
 .. code-block:: Python
 
@@ -914,6 +937,9 @@ the previous converter functions.
             (
                 "diag_lib::C_TorchKNNImputer_columns_1___calc_impute__donors_idx__topk"
             ): onnx_topk_indices,
+            (
+                "diag_lib::C_TorchKNNImputer_columns_2___calc_impute__donors_idx__topk"
+            ): onnx_topk_indices,
         }
     )
 
@@ -924,13 +950,13 @@ the previous converter functions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 628-631
+.. GENERATED FROM PYTHON SOURCE LINES 636-639
 
 Let's run the conversion. We also check the conversion into ONNX
 is accurate. It is doable because every intermediate results
 were previously traced.
 
-.. GENERATED FROM PYTHON SOURCE LINES 631-638
+.. GENERATED FROM PYTHON SOURCE LINES 639-646
 
 .. code-block:: Python
 
@@ -956,19 +982,19 @@ were previously traced.
     [to_onnx_local] .. M:dist-NanEuclidean - export done
     [to_onnx_local] .. M:dist-NanEuclidean - run validation
     [onnx_run_disc] .. M:dist-NanEuclidean run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s4x2,T11s50x2),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s4x2[nan,nan:AnanN4nans],T11s50x2[nan,nan:AnanN5nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s4x50[nan,nan:AnanN10nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s4x50[0.02562400884926319,6.643804550170898:A1.8692522174923827N10nans]
-    [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0
-    [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s4x2,T11s5x2),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s4x2[nan,nan:AnanN4nans],T11s5x2[nan,nan:AnanN5nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s4x5[nan,nan:AnanN10nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s4x5[0.27489498257637024,4.837934494018555:A2.1912896662950514N10nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s39x3,T1s50x3),{})
+    [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s39x3[nan,nan:AnanN39nans],T1s50x3[nan,nan:AnanN50nans]),{})
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s39x50[0.0,7.2824811935424805:A1.8377802284098923],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s39x50[0.0,7.2824811935424805:A1.8377802284098923]
+    [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=1.1920928955078125e-07, rel=1.6473396365634812e-07, n=1950.0
+    [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s9x3,T1s5x3),{})
+    [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s9x3[nan,nan:AnanN9nans],T1s5x3[nan,nan:AnanN5nans]),{})
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s9x5[0.09500374644994736,3.8267805576324463:A1.5887750710050266],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s9x5[0.09500374644994736,3.8267805576324463:A1.5887750710050266]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0
     [onnx_run_disc] .. M:dist-NanEuclidean validation done
     [to_onnx_local] .. M:dist-NanEuclidean - done
-    [to_onnx_local] .. M:dist-NanEuclidean - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] .. M:dist-NanEuclidean - discrepancies: abs=1.1920928955078125e-07, rel=1.6473396365634812e-07, n=1950.0
     [to_onnx_local] .. M:dist-NanEuclidean - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local]  M:__main__-TorchKNNImputer - export child 'C_TorchKNNImputer_columns_0_'
     [to_onnx_local] .. M:columns[0]-ColProcessor - to_onnx_local 
@@ -980,20 +1006,20 @@ were previously traced.
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - export done
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - run validation
     [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s2x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s2x3[0.02562400884926319,0.5225339531898499:A0.19498917118956646],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s2x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s2x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s13x3,),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s13x3[0.0034741819836199284,0.7608199715614319:A0.19466710786741132],),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s13x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s13x3[1.0,1.0:A1.0]
     [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x2,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x2[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x2[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x2[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s3x3,),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s3x3[0.09500374644994736,2.4111530780792236:A1.0760215661591954],),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s3x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s3x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0
     [onnx_run_disc] ...... M:_weights-SubWeightMatrix validation done
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - done
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_0___calc_impute__donors_idx'
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - to_onnx_local 
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - skip child 'C_TorchKNNImputer_columns_0___calc_impute__donors_idx__topk'
@@ -1001,15 +1027,15 @@ were previously traced.
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - export done
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - run validation
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s2x47,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s2x47[nan,nan:AnanN4nans],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s2x3[8,25:A17.833333333333332],T1s2x3[0.02562400884926319,0.5225339531898499:A0.19498917118956646])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s2x3[8,25:A17.833333333333332],A1s2x3[0.02562400884926319,0.5225339531898499:A0.19498917118956646])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s13x33,T7s1),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s13x33[0.0034741819836199284,7.2824811935424805:A2.11763072869087],T7s1[3,3:A3.0]),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s13x3[0,32:A15.461538461538462],T1s13x3[0.0034741819836199284,0.7608199715614319:A0.19466710786741132])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s13x3[0,32:A15.461538461538462],A1s13x3[0.0034741819836199284,0.7608199715614319:A0.19466710786741132])
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x2,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x2[empty],T7s1[2,2:A2.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x2[empty],T1s0x2[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x2[empty],A1s0x2[empty])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s3x3,T7s1),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s3x3[0.09500374644994736,2.4111530780792236:A1.0760215661591954],T7s1[3,3:A3.0]),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s3x3[0,2:A1.0],T1s3x3[0.09500374644994736,2.4111530780792236:A1.0760215661591954])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s3x3[0,2:A1.0],A1s3x3[0.09500374644994736,2.4111530780792236:A1.0760215661591954])
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx validation done
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - done
@@ -1021,51 +1047,51 @@ were previously traced.
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - export done
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - run validation
     [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s2x3,T11s2x3,T1s2x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s2x3[1,1:A1.0],T11s2x3[-2.6722490787506104,2.6974563598632812:A0.22883254289627075],T1s2x3[1.0,1.0:A1.0]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T11s2x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A11s2x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s13x3,T1s13x3,T1s13x3),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s13x3[1,1:A1.0],T1s13x3[-2.007523775100708,1.0431764125823975:A0.14300867303823814],T1s13x3[1.0,1.0:A1.0]),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s13x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s13x3[1.0,1.0:A1.0]
     [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x2,T11s0x2,T1s0x2),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x2[empty],T11s0x2[empty],T1s0x2[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T11s0x2[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A11s0x2[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s3x3,T1s3x3,T1s3x3),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s3x3[1,1:A1.0],T1s3x3[-0.23907729983329773,0.6998200416564941:A0.08914194007714589],T1s3x3[1.0,1.0:A1.0]),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s3x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s3x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0
     [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights validation done
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - done
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .... M:_calc_impute-CalcImpute - export starts C_TorchKNNImputer_columns_0___calc_impute
     [to_onnx_local] .... M:_calc_impute-CalcImpute - export done
     [to_onnx_local] .... M:_calc_impute-CalcImpute - run validation
     [onnx_run_disc] .... M:_calc_impute-CalcImpute run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s2x47,T7s1,T11s47,T9s47),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s2x47[nan,nan:AnanN4nans],T7s1[3,3:A3.0],T11s47[-2.6722490787506104,2.6974563598632812:A0.15366982125696985],T9s47[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s2[-1.065980076789856,1.5236451625823975:A0.22883254289627075],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s2[-1.065980076789856,1.5236451625823975:A0.22883254289627075]
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s13x33,T7s1,T1s33,T9s33),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s13x33[0.0034741819836199284,7.2824811935424805:A2.11763072869087],T7s1[3,3:A3.0],T1s33[-2.007523775100708,1.3960309028625488:A-0.05787473287659161],T9s33[False,False:A0.0]),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s13[-1.218541145324707,0.7209269404411316:A0.14300868067836675],)
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s13[-1.218541145324707,0.7209269404411316:A0.14300868067836675]
     [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x2,T7s1,T11s2,T9s2),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x2[empty],T7s1[2,2:A2.0],T11s2[-0.6274242401123047,2.5991315841674805:A0.9858536720275879],T9s2[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s3x3,T7s1,T1s3,T9s3),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s3x3[0.09500374644994736,2.4111530780792236:A1.0760215661591954],T7s1[3,3:A3.0],T1s3[-0.23907729983329773,0.6998200416564941:A0.08914194007714589],T9s3[False,False:A0.0]),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s3[0.08914193511009216,0.08914194256067276:A0.08914193759361903],)
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s3[0.08914193511009216,0.08914194256067276:A0.08914193759361903]
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0
     [onnx_run_disc] .... M:_calc_impute-CalcImpute validation done
     [to_onnx_local] .... M:_calc_impute-CalcImpute - done
     [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .. M:columns[0]-ColProcessor - export starts C_TorchKNNImputer_columns_0_
     [to_onnx_local] .. M:columns[0]-ColProcessor - export done
     [to_onnx_local] .. M:columns[0]-ColProcessor - run validation
     [onnx_run_disc] .. M:columns[0]-ColProcessor run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .. M:columns[0]-ColProcessor run with ((T1s40x2,T1s4x50,T9s50x2,T9s50x2,T7s40,T9s40x2,T7s4,T11s50x2),{})
-    [onnx_run_disc] .. M:columns[0]-ColProcessor flattened into ((T1s40x2[nan,nan:AnanN4nans],T1s4x50[nan,nan:AnanN10nans],T9s50x2[False,True:A0.95],T9s50x2[False,True:A0.05],T7s40[0,3:A0.15],T9s40x2[False,True:A0.05],T7s4[1,4:A2.5],T11s50x2[nan,nan:AnanN5nans]),{})
-    [onnx_run_disc] .. M:columns[0]-ColProcessor expecting (T1s40x2[nan,nan:AnanN2nans],)
-    [onnx_run_disc] .. M:columns[0]-ColProcessor computing A1s40x2[-2.2343990802764893,2.7258105278015137:A-0.10593246023293035N2nans]
+    [onnx_run_disc] .. M:columns[0]-ColProcessor run with ((T1s40x3,T1s39x50,T9s50x3,T9s50x3,T7s40,T9s40x3,T7s39,T1s50x3),{})
+    [onnx_run_disc] .. M:columns[0]-ColProcessor flattened into ((T1s40x3[nan,nan:AnanN39nans],T1s39x50[0.0,7.2824811935424805:A1.8377802284098923],T9s50x3[False,True:A0.6666666666666666],T9s50x3[False,True:A0.3333333333333333],T7s40[0,38:A18.525],T9s40x3[False,True:A0.325],T7s39[1,39:A20.0],T1s50x3[nan,nan:AnanN50nans]),{})
+    [onnx_run_disc] .. M:columns[0]-ColProcessor expecting (T1s40x3[nan,nan:AnanN26nans],)
+    [onnx_run_disc] .. M:columns[0]-ColProcessor computing A1s40x3[-2.1380727291107178,2.0042295455932617:A0.13827447410229535N26nans]
     [onnx_run_disc] .. M:columns[0]-ColProcessor diff=abs=0.0, rel=0.0
-    [onnx_run_disc] .. M:columns[0]-ColProcessor run with ((T1s10x2,T1s4x5,T9s5x2,T9s5x2,T7s10,T9s10x2,T7s4,T11s5x2),{})
-    [onnx_run_disc] .. M:columns[0]-ColProcessor flattened into ((T1s10x2[nan,nan:AnanN4nans],T1s4x5[nan,nan:AnanN10nans],T9s5x2[False,True:A0.5],T9s5x2[False,True:A0.5],T7s10[0,3:A0.6],T9s10x2[False,True:A0.2],T7s4[1,4:A2.5],T11s5x2[nan,nan:AnanN5nans]),{})
-    [onnx_run_disc] .. M:columns[0]-ColProcessor expecting (T1s10x2[nan,nan:AnanN2nans],)
-    [onnx_run_disc] .. M:columns[0]-ColProcessor computing A1s10x2[-2.5295796394348145,3.1395082473754883:A0.46641130508699763N2nans]
+    [onnx_run_disc] .. M:columns[0]-ColProcessor run with ((T1s10x3,T1s9x5,T9s5x3,T9s5x3,T7s10,T9s10x3,T7s9,T1s5x3),{})
+    [onnx_run_disc] .. M:columns[0]-ColProcessor flattened into ((T1s10x3[nan,nan:AnanN9nans],T1s9x5[0.09500374644994736,3.8267805576324463:A1.5887750710050266],T9s5x3[False,True:A0.6666666666666666],T9s5x3[False,True:A0.3333333333333333],T7s10[0,8:A3.6],T9s10x3[False,True:A0.3],T7s9[1,9:A5.0],T1s5x3[nan,nan:AnanN5nans]),{})
+    [onnx_run_disc] .. M:columns[0]-ColProcessor expecting (T1s10x3[nan,nan:AnanN6nans],)
+    [onnx_run_disc] .. M:columns[0]-ColProcessor computing A1s10x3[-1.7891925573349,1.574755311012268:A-0.17525794686904797N6nans]
     [onnx_run_disc] .. M:columns[0]-ColProcessor diff=abs=0.0, rel=0.0
     [onnx_run_disc] .. M:columns[0]-ColProcessor validation done
     [to_onnx_local] .. M:columns[0]-ColProcessor - done
@@ -1081,20 +1107,20 @@ were previously traced.
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - export done
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - run validation
     [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s2x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s2x3[0.07385001331567764,1.1403498649597168:A0.518671645472447],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s2x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s2x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s13x3,),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s13x3[0.0,0.517655074596405:A0.1518638702407957],),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s13x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s13x3[1.0,1.0:A1.0]
     [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s3x3,),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s3x3[0.45845308899879456,3.553849458694458:A1.7997660272651248],),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s3x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s3x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0
     [onnx_run_disc] ...... M:_weights-SubWeightMatrix validation done
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - done
     [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_1___calc_impute__donors_idx'
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - to_onnx_local 
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - skip child 'C_TorchKNNImputer_columns_1___calc_impute__donors_idx__topk'
@@ -1102,15 +1128,15 @@ were previously traced.
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - export done
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - run validation
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s2x48,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s2x48[nan,nan:AnanN6nans],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s2x3[3,42:A18.666666666666668],T1s2x3[0.07385001331567764,1.1403498649597168:A0.518671645472447])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s2x3[3,42:A18.666666666666668],A1s2x3[0.07385001331567764,1.1403498649597168:A0.518671645472447])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s13x33,T7s1),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s13x33[0.0,4.881202697753906:A1.4885504368984626],T7s1[3,3:A3.0]),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s13x3[0,32:A16.307692307692307],T1s13x3[0.0,0.517655074596405:A0.1518638702407957])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s13x3[0,32:A16.307692307692307],A1s13x3[0.0,0.517655074596405:A0.1518638702407957])
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x3,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x3[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s3x3,T7s1),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s3x3[0.45845308899879456,3.553849458694458:A1.7997660272651248],T7s1[3,3:A3.0]),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s3x3[0,2:A1.0],T1s3x3[0.45845308899879456,3.553849458694458:A1.7997660272651248])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s3x3[0,2:A1.0],A1s3x3[0.45845308899879456,3.553849458694458:A1.7997660272651248])
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
     [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx validation done
     [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - done
@@ -1122,71 +1148,172 @@ were previously traced.
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - export done
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - run validation
     [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s2x3,T11s2x3,T1s2x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s2x3[1,1:A1.0],T11s2x3[-1.5542010068893433,1.4427423477172852:A-0.13992430393894514],T1s2x3[1.0,1.0:A1.0]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T11s2x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A11s2x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s13x3,T1s13x3,T1s13x3),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s13x3[1,1:A1.0],T1s13x3[-2.566506862640381,1.711279273033142:A-0.29607587460524],T1s13x3[1.0,1.0:A1.0]),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s13x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s13x3[1.0,1.0:A1.0]
     [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T11s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T11s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T11s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A11s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s3x3,T1s3x3,T1s3x3),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s3x3[1,1:A1.0],T1s3x3[-0.6482380032539368,0.11889532208442688:A-0.27510600288709003],T1s3x3[1.0,1.0:A1.0]),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s3x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s3x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0
     [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights validation done
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - done
     [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .... M:_calc_impute-CalcImpute - export starts C_TorchKNNImputer_columns_1___calc_impute
     [to_onnx_local] .... M:_calc_impute-CalcImpute - export done
     [to_onnx_local] .... M:_calc_impute-CalcImpute - run validation
     [onnx_run_disc] .... M:_calc_impute-CalcImpute run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s2x48,T7s1,T11s48,T9s48),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s2x48[nan,nan:AnanN6nans],T7s1[3,3:A3.0],T11s48[-2.0484697818756104,1.8861173391342163:A-0.06413272099598544],T9s48[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s2[-1.0340979099273682,0.7542492747306824:A-0.1399243175983429],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s2[-1.0340979099273682,0.7542492747306824:A-0.1399243175983429]
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s13x33,T7s1,T1s33,T9s33),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s13x33[0.0,4.881202697753906:A1.4885504368984626],T7s1[3,3:A3.0],T1s33[-2.566506862640381,1.711279273033142:A-0.2490902982200637],T9s33[False,False:A0.0]),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s13[-1.4306796789169312,0.8291943669319153:A-0.2960758785215708],)
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s13[-1.4306796789169312,0.8291943669319153:A-0.2960758785215708]
     [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x3,T7s1,T11s3,T9s3),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x3[empty],T7s1[3,3:A3.0],T11s3[-1.1547163724899292,1.8039337396621704:A-0.12774483362833658],T9s3[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s3x3,T7s1,T1s3,T9s3),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s3x3[0.45845308899879456,3.553849458694458:A1.7997660272651248],T7s1[3,3:A3.0],T1s3[-0.6482380032539368,0.11889532208442688:A-0.27510600288709003],T9s3[False,False:A0.0]),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s3[-0.2751059830188751,-0.2751059830188751:A-0.2751059830188751],)
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s3[-0.2751059830188751,-0.2751059830188751:A-0.2751059830188751]
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0
     [onnx_run_disc] .... M:_calc_impute-CalcImpute validation done
     [to_onnx_local] .... M:_calc_impute-CalcImpute - done
     [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .. M:columns[1]-ColProcessor - export starts C_TorchKNNImputer_columns_1_
     [to_onnx_local] .. M:columns[1]-ColProcessor - export done
     [to_onnx_local] .. M:columns[1]-ColProcessor - run validation
     [onnx_run_disc] .. M:columns[1]-ColProcessor run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .. M:columns[1]-ColProcessor run with ((T1s40x2,T1s4x50,T9s50x2,T9s50x2,T7s40,T9s40x2,T7s4,T11s50x2),{})
-    [onnx_run_disc] .. M:columns[1]-ColProcessor flattened into ((T1s40x2[nan,nan:AnanN2nans],T1s4x50[nan,nan:AnanN10nans],T9s50x2[False,True:A0.95],T9s50x2[False,True:A0.05],T7s40[0,3:A0.15],T9s40x2[False,True:A0.05],T7s4[1,4:A2.5],T11s50x2[nan,nan:AnanN5nans]),{})
-    [onnx_run_disc] .. M:columns[1]-ColProcessor expecting (T1s40x2[-2.2343990802764893,2.7258105278015137:A-0.10678225666706567],)
-    [onnx_run_disc] .. M:columns[1]-ColProcessor computing A1s40x2[-2.2343990802764893,2.7258105278015137:A-0.10678225666706567]
+    [onnx_run_disc] .. M:columns[1]-ColProcessor run with ((T1s40x3,T1s39x50,T9s50x3,T9s50x3,T7s40,T9s40x3,T7s39,T1s50x3),{})
+    [onnx_run_disc] .. M:columns[1]-ColProcessor flattened into ((T1s40x3[nan,nan:AnanN26nans],T1s39x50[0.0,7.2824811935424805:A1.8377802284098923],T9s50x3[False,True:A0.6666666666666666],T9s50x3[False,True:A0.3333333333333333],T7s40[0,38:A18.525],T9s40x3[False,True:A0.325],T7s39[1,39:A20.0],T1s50x3[nan,nan:AnanN50nans]),{})
+    [onnx_run_disc] .. M:columns[1]-ColProcessor expecting (T1s40x3[nan,nan:AnanN13nans],)
+    [onnx_run_disc] .. M:columns[1]-ColProcessor computing A1s40x3[-2.1380727291107178,2.0042295455932617:A0.08550293593304058N13nans]
     [onnx_run_disc] .. M:columns[1]-ColProcessor diff=abs=0.0, rel=0.0
-    [onnx_run_disc] .. M:columns[1]-ColProcessor run with ((T1s10x2,T1s4x5,T9s5x2,T9s5x2,T7s10,T9s10x2,T7s4,T11s5x2),{})
-    [onnx_run_disc] .. M:columns[1]-ColProcessor flattened into ((T1s10x2[nan,nan:AnanN2nans],T1s4x5[nan,nan:AnanN10nans],T9s5x2[False,True:A0.5],T9s5x2[False,True:A0.5],T7s10[0,3:A0.6],T9s10x2[False,True:A0.2],T7s4[1,4:A2.5],T11s5x2[nan,nan:AnanN5nans]),{})
-    [onnx_run_disc] .. M:columns[1]-ColProcessor expecting (T1s10x2[-2.5295796394348145,3.1395082473754883:A0.40699569071875885],)
-    [onnx_run_disc] .. M:columns[1]-ColProcessor computing A1s10x2[-2.5295796394348145,3.1395082473754883:A0.40699569071875885]
+    [onnx_run_disc] .. M:columns[1]-ColProcessor run with ((T1s10x3,T1s9x5,T9s5x3,T9s5x3,T7s10,T9s10x3,T7s9,T1s5x3),{})
+    [onnx_run_disc] .. M:columns[1]-ColProcessor flattened into ((T1s10x3[nan,nan:AnanN6nans],T1s9x5[0.09500374644994736,3.8267805576324463:A1.5887750710050266],T9s5x3[False,True:A0.6666666666666666],T9s5x3[False,True:A0.3333333333333333],T7s10[0,8:A3.6],T9s10x3[False,True:A0.3],T7s9[1,9:A5.0],T1s5x3[nan,nan:AnanN5nans]),{})
+    [onnx_run_disc] .. M:columns[1]-ColProcessor expecting (T1s10x3[nan,nan:AnanN3nans],)
+    [onnx_run_disc] .. M:columns[1]-ColProcessor computing A1s10x3[-1.7891925573349,1.574755311012268:A-0.18635217310791766N3nans]
     [onnx_run_disc] .. M:columns[1]-ColProcessor diff=abs=0.0, rel=0.0
     [onnx_run_disc] .. M:columns[1]-ColProcessor validation done
     [to_onnx_local] .. M:columns[1]-ColProcessor - done
     [to_onnx_local] .. M:columns[1]-ColProcessor - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local] .. M:columns[1]-ColProcessor - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local]  M:__main__-TorchKNNImputer - export child 'C_TorchKNNImputer_columns_2_'
+    [to_onnx_local] .. M:columns[2]-ColProcessor - to_onnx_local 
+    [to_onnx_local] .. M:columns[2]-ColProcessor - export child 'C_TorchKNNImputer_columns_2___calc_impute'
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - to_onnx_local 
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_2___calc_impute__weights'
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - to_onnx_local 
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - export starts C_TorchKNNImputer_columns_2___calc_impute__weights
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - export done
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - run validation
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with cls=ExtendedReferenceEvaluator on ModelProto
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s13x3,),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s13x3[0.010814079083502293,0.712139368057251:A0.14357379623330557],),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s13x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s13x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s3x3,),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s3x3[0.20659707486629486,2.521623373031616:A1.0408858706553776],),{})
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s3x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s3x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0
+    [onnx_run_disc] ...... M:_weights-SubWeightMatrix validation done
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - done
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_2___calc_impute__donors_idx'
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - to_onnx_local 
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - skip child 'C_TorchKNNImputer_columns_2___calc_impute__donors_idx__topk'
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - export starts C_TorchKNNImputer_columns_2___calc_impute__donors_idx
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - export done
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - run validation
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with cls=ExtendedReferenceEvaluator on ModelProto
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s13x34,T7s1),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s13x34[0.010814079083502293,6.25282621383667:A1.7082514530258481],T7s1[3,3:A3.0]),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s13x3[3,33:A18.307692307692307],T1s13x3[0.010814079083502293,0.712139368057251:A0.14357379623330557])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s13x3[3,33:A18.307692307692307],A1s13x3[0.010814079083502293,0.712139368057251:A0.14357379623330557])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s3x4,T7s1),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s3x4[0.20659707486629486,3.8267805576324463:A1.4856921521325905],T7s1[3,3:A3.0]),{})
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s3x3[0,3:A1.6666666666666667],T1s3x3[0.20659707486629486,2.521623373031616:A1.0408858706553776])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s3x3[0,3:A1.6666666666666667],A1s3x3[0.20659707486629486,2.521623373031616:A1.0408858706553776])
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
+    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx validation done
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - done
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
+    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_2___calc_impute__make_new_neights'
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - to_onnx_local 
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - export starts C_TorchKNNImputer_columns_2___calc_impute__make_new_neights
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - export done
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - run validation
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with cls=ExtendedReferenceEvaluator on ModelProto
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s13x3,T1s13x3,T1s13x3),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s13x3[1,1:A1.0],T1s13x3[-1.549962043762207,1.7188340425491333:A0.17702177052314466],T1s13x3[1.0,1.0:A1.0]),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s13x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s13x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s3x3,T1s3x3,T1s3x3),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s3x3[1,1:A1.0],T1s3x3[-0.16543790698051453,1.9116493463516235:A0.8224290013313293],T1s3x3[1.0,1.0:A1.0]),{})
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s3x3[1.0,1.0:A1.0],)
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s3x3[1.0,1.0:A1.0]
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0
+    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights validation done
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - done
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - export starts C_TorchKNNImputer_columns_2___calc_impute
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - export done
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - run validation
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with cls=ExtendedReferenceEvaluator on ModelProto
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s13x34,T7s1,T1s34,T9s34),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s13x34[0.010814079083502293,6.25282621383667:A1.7082514530258481],T7s1[3,3:A3.0],T1s34[-1.549962043762207,1.7188340425491333:A0.0003711616839556133],T9s34[False,False:A0.0]),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s13[-0.679095447063446,0.8443452715873718:A0.17702177276190084],)
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s13[-0.679095447063446,0.8443452715873718:A0.17702177276190084]
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s3x4,T7s1,T1s4,T9s4),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s3x4[0.20659707486629486,3.8267805576324463:A1.4856921521325905],T7s1[3,3:A3.0],T1s4[-0.16543790698051453,1.9116493463516235:A0.7329221442341805],T9s4[False,False:A0.0]),{})
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s3[0.7174558043479919,1.032375454902649:A0.8224290211995443],)
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s3[0.7174558043479919,1.032375454902649:A0.8224290211995443]
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0
+    [onnx_run_disc] .... M:_calc_impute-CalcImpute validation done
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - done
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] .. M:columns[2]-ColProcessor - export starts C_TorchKNNImputer_columns_2_
+    [to_onnx_local] .. M:columns[2]-ColProcessor - export done
+    [to_onnx_local] .. M:columns[2]-ColProcessor - run validation
+    [onnx_run_disc] .. M:columns[2]-ColProcessor run with cls=ExtendedReferenceEvaluator on ModelProto
+    [onnx_run_disc] .. M:columns[2]-ColProcessor run with ((T1s40x3,T1s39x50,T9s50x3,T9s50x3,T7s40,T9s40x3,T7s39,T1s50x3),{})
+    [onnx_run_disc] .. M:columns[2]-ColProcessor flattened into ((T1s40x3[nan,nan:AnanN13nans],T1s39x50[0.0,7.2824811935424805:A1.8377802284098923],T9s50x3[False,True:A0.6666666666666666],T9s50x3[False,True:A0.3333333333333333],T7s40[0,38:A18.525],T9s40x3[False,True:A0.325],T7s39[1,39:A20.0],T1s50x3[nan,nan:AnanN50nans]),{})
+    [onnx_run_disc] .. M:columns[2]-ColProcessor expecting (T1s40x3[-2.1380727291107178,2.0042295455932617:A0.09541747658950044],)
+    [onnx_run_disc] .. M:columns[2]-ColProcessor computing A1s40x3[-2.1380727291107178,2.0042295455932617:A0.09541747658950044]
+    [onnx_run_disc] .. M:columns[2]-ColProcessor diff=abs=0.0, rel=0.0
+    [onnx_run_disc] .. M:columns[2]-ColProcessor run with ((T1s10x3,T1s9x5,T9s5x3,T9s5x3,T7s10,T9s10x3,T7s9,T1s5x3),{})
+    [onnx_run_disc] .. M:columns[2]-ColProcessor flattened into ((T1s10x3[nan,nan:AnanN3nans],T1s9x5[0.09500374644994736,3.8267805576324463:A1.5887750710050266],T9s5x3[False,True:A0.6666666666666666],T9s5x3[False,True:A0.3333333333333333],T7s10[0,8:A3.6],T9s10x3[False,True:A0.3],T7s9[1,9:A5.0],T1s5x3[nan,nan:AnanN5nans]),{})
+    [onnx_run_disc] .. M:columns[2]-ColProcessor expecting (T1s10x3[-1.7891925573349,1.574755311012268:A-0.08547405367717147],)
+    [onnx_run_disc] .. M:columns[2]-ColProcessor computing A1s10x3[-1.7891925573349,1.574755311012268:A-0.08547405367717147]
+    [onnx_run_disc] .. M:columns[2]-ColProcessor diff=abs=0.0, rel=0.0
+    [onnx_run_disc] .. M:columns[2]-ColProcessor validation done
+    [to_onnx_local] .. M:columns[2]-ColProcessor - done
+    [to_onnx_local] .. M:columns[2]-ColProcessor - discrepancies: abs=0.0, rel=0.0
+    [to_onnx_local] .. M:columns[2]-ColProcessor - discrepancies: abs=0.0, rel=0.0
     [to_onnx_local]  M:__main__-TorchKNNImputer - export child 'C_TorchKNNImputer__make_dict_idx_map'
     [to_onnx_local] .. M:_make_dict_idx_map-MakeDictIdxMap - to_onnx_local 
     [to_onnx_local] .. M:_make_dict_idx_map-MakeDictIdxMap - export starts C_TorchKNNImputer__make_dict_idx_map
     [to_onnx_local] .. M:_make_dict_idx_map-MakeDictIdxMap - export done
     [to_onnx_local] .. M:_make_dict_idx_map-MakeDictIdxMap - run validation
     [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap run with ((T1s40x2,T7s4),{})
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap flattened into ((T1s40x2[nan,nan:AnanN4nans],T7s4[1,4:A2.5]),{})
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap expecting (T7s40[0,3:A0.15],)
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap computing A7s40[0,3:A0.15]
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap run with ((T1s40x3,T7s39),{})
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap flattened into ((T1s40x3[nan,nan:AnanN39nans],T7s39[1,39:A20.0]),{})
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap expecting (T7s40[0,38:A18.525],)
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap computing A7s40[0,38:A18.525]
     [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap diff=abs=0.0, rel=0.0
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap run with ((T1s10x2,T7s4),{})
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap flattened into ((T1s10x2[nan,nan:AnanN4nans],T7s4[1,4:A2.5]),{})
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap expecting (T7s10[0,3:A0.6],)
-    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap computing A7s10[0,3:A0.6]
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap run with ((T1s10x3,T7s9),{})
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap flattened into ((T1s10x3[nan,nan:AnanN9nans],T7s9[1,9:A5.0]),{})
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap expecting (T7s10[0,8:A3.6],)
+    [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap computing A7s10[0,8:A3.6]
     [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap diff=abs=0.0, rel=0.0
     [onnx_run_disc] .. M:_make_dict_idx_map-MakeDictIdxMap validation done
     [to_onnx_local] .. M:_make_dict_idx_map-MakeDictIdxMap - done
@@ -1196,15 +1323,15 @@ were previously traced.
     [to_onnx_local]  M:__main__-TorchKNNImputer - export done
     [to_onnx_local]  M:__main__-TorchKNNImputer - run validation
     [onnx_run_disc]  M:__main__-TorchKNNImputer run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc]  M:__main__-TorchKNNImputer run with ((T9s50x2,T9s2,T11s50x2,T1s40x2),{})
-    [onnx_run_disc]  M:__main__-TorchKNNImputer flattened into ((T9s50x2[False,True:A0.05],T9s2[True,True:A1.0],T11s50x2[nan,nan:AnanN5nans],T1s40x2[nan,nan:AnanN4nans]),{})
-    [onnx_run_disc]  M:__main__-TorchKNNImputer expecting (T1s40x2[-2.2343990802764893,2.7258105278015137:A-0.10678225666706567],)
-    [onnx_run_disc]  M:__main__-TorchKNNImputer computing A1s40x2[-2.2343990802764893,2.7258105278015137:A-0.10678225666706567]
+    [onnx_run_disc]  M:__main__-TorchKNNImputer run with ((T9s50x3,T9s3,T1s50x3,T1s40x3),{})
+    [onnx_run_disc]  M:__main__-TorchKNNImputer flattened into ((T9s50x3[False,True:A0.3333333333333333],T9s3[True,True:A1.0],T1s50x3[nan,nan:AnanN50nans],T1s40x3[nan,nan:AnanN39nans]),{})
+    [onnx_run_disc]  M:__main__-TorchKNNImputer expecting (T1s40x3[-2.1380727291107178,2.0042295455932617:A0.09541747658950044],)
+    [onnx_run_disc]  M:__main__-TorchKNNImputer computing A1s40x3[-2.1380727291107178,2.0042295455932617:A0.09541747658950044]
     [onnx_run_disc]  M:__main__-TorchKNNImputer diff=abs=0.0, rel=0.0
-    [onnx_run_disc]  M:__main__-TorchKNNImputer run with ((T9s5x2,T9s2,T11s5x2,T1s10x2),{})
-    [onnx_run_disc]  M:__main__-TorchKNNImputer flattened into ((T9s5x2[False,True:A0.5],T9s2[True,True:A1.0],T11s5x2[nan,nan:AnanN5nans],T1s10x2[nan,nan:AnanN4nans]),{})
-    [onnx_run_disc]  M:__main__-TorchKNNImputer expecting (T1s10x2[-2.5295796394348145,3.1395082473754883:A0.40699569071875885],)
-    [onnx_run_disc]  M:__main__-TorchKNNImputer computing A1s10x2[-2.5295796394348145,3.1395082473754883:A0.40699569071875885]
+    [onnx_run_disc]  M:__main__-TorchKNNImputer run with ((T9s5x3,T9s3,T1s5x3,T1s10x3),{})
+    [onnx_run_disc]  M:__main__-TorchKNNImputer flattened into ((T9s5x3[False,True:A0.3333333333333333],T9s3[True,True:A1.0],T1s5x3[nan,nan:AnanN5nans],T1s10x3[nan,nan:AnanN9nans]),{})
+    [onnx_run_disc]  M:__main__-TorchKNNImputer expecting (T1s10x3[-1.7891925573349,1.574755311012268:A-0.08547405367717147],)
+    [onnx_run_disc]  M:__main__-TorchKNNImputer computing A1s10x3[-1.7891925573349,1.574755311012268:A-0.08547405367717147]
     [onnx_run_disc]  M:__main__-TorchKNNImputer diff=abs=0.0, rel=0.0
     [onnx_run_disc]  M:__main__-TorchKNNImputer validation done
     [to_onnx_local]  M:__main__-TorchKNNImputer - done
@@ -1214,11 +1341,11 @@ were previously traced.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 639-640
+.. GENERATED FROM PYTHON SOURCE LINES 647-648
 
 Let's save it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 640-642
+.. GENERATED FROM PYTHON SOURCE LINES 648-650
 
 .. code-block:: Python
 
@@ -1231,11 +1358,11 @@ Let's save it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 643-644
+.. GENERATED FROM PYTHON SOURCE LINES 651-652
 
 We can also print it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 644-647
+.. GENERATED FROM PYTHON SOURCE LINES 652-655
 
 .. code-block:: Python
 
@@ -1252,10 +1379,10 @@ We can also print it.
 
     opset: domain='' version=18
     opset: domain='local_domain' version=1
-    input: name='_mask_fit_x' type=dtype('bool') shape=['s0', 2]
-    input: name='_valid_mask' type=dtype('bool') shape=[2]
-    input: name='_fit_x' type=dtype('float64') shape=['s1', 2]
-    input: name='x' type=dtype('float32') shape=['s2', 2]
+    input: name='_mask_fit_x' type=dtype('bool') shape=['u5', 3]
+    input: name='_valid_mask' type=dtype('bool') shape=[3]
+    input: name='_fit_x' type=dtype('float32') shape=['s1', 3]
+    input: name='x' type=dtype('float32') shape=['u5', 3]
     init: name='init7_s1_1' type=int64 shape=(1,) -- array([1])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
     init: name='init7_s1_-1' type=int64 shape=(1,) -- array([-1])         -- Opset.make_node.1/Shape##Opset.make_node.1/Shape
     IsNaN(x) -> isnan
@@ -1272,21 +1399,23 @@ We can also print it.
       diag_lib_C_TorchKNNImputer_dist_default[local_domain](index_1, _fit_x) -> c_torch_knnimputer_dist
       diag_lib_C_TorchKNNImputer_columns_0__default[local_domain](x, c_torch_knnimputer_dist, logical_not, _mask_fit_x, c_torch_knnimputer__make_dict_idx_map, isnan, nonzero_numpy#0, _fit_x) -> c_torch_knnimputer_columns_0_
       diag_lib_C_TorchKNNImputer_columns_1__default[local_domain](c_torch_knnimputer_columns_0_, c_torch_knnimputer_dist, logical_not, _mask_fit_x, c_torch_knnimputer__make_dict_idx_map, isnan, nonzero_numpy#0, _fit_x) -> c_torch_knnimputer_columns_1_
-        Compress(c_torch_knnimputer_columns_1_, _valid_mask, axis=1) -> output_0
-    output: name='output_0' type=dtype('float32') shape=['s2', 'u4']
+      diag_lib_C_TorchKNNImputer_columns_2__default[local_domain](c_torch_knnimputer_columns_1_, c_torch_knnimputer_dist, logical_not, _mask_fit_x, c_torch_knnimputer__make_dict_idx_map, isnan, nonzero_numpy#0, _fit_x) -> c_torch_knnimputer_columns_2_
+        Compress(c_torch_knnimputer_columns_2_, _valid_mask, axis=1) -> output_0
+    output: name='output_0' type=dtype('float32') shape=['u5', 'u4']
     ----- function name=diag_lib_C_TorchKNNImputer__make_dict_idx_map_default domain=local_domain
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
     opset: domain='' version=18
     input: 'x'
     input: 'row_missing_idx'
     Constant(value=0) -> init7_s_0
-    Constant(value=4) -> init7_s_4
     Constant(value=1) -> init7_s_1
-      Range(init7_s_0, init7_s_4, init7_s_1) -> arange
     Constant(value=[-1]) -> init7_s1_-1
       Unsqueeze(row_missing_idx, init7_s1_-1) -> _onx_unsqueeze_row_missing_idx0
     Shape(x, end=1, start=0) -> _shape_x0
       ConstantOfShape(_shape_x0, value=[0]) -> zeros
+    Shape(row_missing_idx, end=1, start=0) -> _shape_row_missing_idx0
+      Squeeze(_shape_row_missing_idx0) -> sym_size_int_4
+      Range(init7_s_0, sym_size_int_4, init7_s_1) -> arange
         ScatterND(zeros, _onx_unsqueeze_row_missing_idx0, arange) -> output_0
     output: name='output_0' type=? shape=?
     ----- function name=diag_lib_C_TorchKNNImputer_dist_default domain=local_domain
@@ -1294,13 +1423,8 @@ We can also print it.
     opset: domain='' version=18
     input: 'x'
     input: 'y'
-    Cast(y, to=1) -> _to_copy
-      IsNaN(_to_copy) -> isnan_1
-        Cast(isnan_1, to=1) -> _to_copy_1
     Constant(value=0.0) -> c_lifted_tensor_0
     Constant(value=0.0) -> c_lifted_tensor_1
-      Where(isnan_1, c_lifted_tensor_1, _to_copy) -> index_put_1
-        Mul(index_put_1, index_put_1) -> mul_11
     Constant(value=nan) -> c_lifted_tensor_2
     Constant(value=[1.0]) -> c_lifted_tensor_3
     Constant(value=-2.0) -> init1_s_
@@ -1311,31 +1435,35 @@ We can also print it.
       Reshape(init1_s_2, init7_s1_1) -> _reshape_init1_s_20
     Constant(value=0.0) -> init1_s_3
       Reshape(init1_s_3, init7_s1_1) -> _reshape_init1_s_30
-    Constant(value=2.0) -> init1_s_4
+    Constant(value=3.0) -> init1_s_4
       Reshape(init1_s_4, init7_s1_1) -> _reshape_init1_s_40
     Constant(value=[1, -1]) -> init7_s2_1_-1
     IsNaN(x) -> isnan
       Cast(isnan, to=1) -> _to_copy_2
-        Gemm(_to_copy_2, mul_11, transA=0, transB=1) -> matmul_2
+        Sub(_reshape_init1_s_20, _to_copy_2) -> rsub
+    IsNaN(y) -> isnan_1
+      Where(isnan_1, c_lifted_tensor_1, y) -> index_put_1
+        Mul(index_put_1, index_put_1) -> mul_21
+        Gemm(_to_copy_2, mul_21, transA=0, transB=1) -> matmul_2
       Where(isnan, c_lifted_tensor_0, x) -> index_put
-        Mul(index_put, index_put) -> mul_10
-      ReduceSum(mul_10, init7_s1_1, keepdims=1) -> sum_1
+        Mul(index_put, index_put) -> mul_18
+      ReduceSum(mul_18, init7_s1_1, keepdims=1) -> sum_1
     Mul(index_put, _reshape_init1_s_0) -> _onx_mul_index_put0
       Gemm(_onx_mul_index_put0, index_put_1, transA=0, transB=1) -> matmul
-        Add(matmul, sum_1) -> add_26
-      ReduceSum(mul_11, init7_s1_1, keepdims=1) -> sum_2
+        Add(matmul, sum_1) -> add_50
+      ReduceSum(mul_21, init7_s1_1, keepdims=1) -> sum_2
       Reshape(sum_2, init7_s2_1_-1) -> permute_2
-        Add(add_26, permute_2) -> add_35
-    Gemm(mul_10, _to_copy_1, transA=0, transB=1) -> matmul_1
-      Sub(add_35, matmul_1) -> sub_18
-        Sub(sub_18, matmul_2) -> sub_24
-      Clip(sub_24, init1_s1_) -> clip
-    Sub(_reshape_init1_s_20, _to_copy_2) -> rsub
+        Add(add_50, permute_2) -> add_59
+      Cast(isnan_1, to=1) -> _to_copy_1
+        Gemm(mul_18, _to_copy_1, transA=0, transB=1) -> matmul_1
+          Sub(add_59, matmul_1) -> sub_32
+          Sub(sub_32, matmul_2) -> sub_43
+      Clip(sub_43, init1_s1_) -> clip
     Not(isnan_1) -> bitwise_not
       Cast(bitwise_not, to=1) -> _to_copy_4
-      Gemm(rsub, _to_copy_4, transA=0, transB=1) -> matmul_3
-        Equal(matmul_3, _reshape_init1_s_30) -> eq_33
-      Where(eq_33, c_lifted_tensor_2, clip) -> index_put_2
+        Gemm(rsub, _to_copy_4, transA=0, transB=1) -> matmul_3
+        Equal(matmul_3, _reshape_init1_s_30) -> eq_61
+      Where(eq_61, c_lifted_tensor_2, clip) -> index_put_2
     Max(c_lifted_tensor_3, matmul_3) -> maximum
       Div(index_put_2, maximum) -> div
         Mul(div, _reshape_init1_s_40) -> _onx_mul_div0
@@ -1374,9 +1502,8 @@ We can also print it.
     input: 'donors_mask'
     input: 'donors'
     input: 'weight_matrix'
-    Cast(donors_mask, to=11) -> _to_copy
-    Cast(weight_matrix, to=11) -> _to_copy_1
-      Mul(_to_copy, _to_copy_1) -> output_0
+    Cast(donors_mask, to=1) -> _to_copy
+      Mul(_to_copy, weight_matrix) -> output_0
     output: name='output_0' type=? shape=?
     ----- function name=diag_lib_C_TorchKNNImputer_columns_0___calc_impute_default domain=local_domain
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -1390,8 +1517,8 @@ We can also print it.
     Constant(value=[1.0]) -> c_lifted_tensor_1
     Constant(value=[-1]) -> init7_s1_-1
       Reshape(fit_x_col, init7_s1_-1) -> _reshape_fit_x_col0
-    Constant(value=0.0) -> init11_s_
-      Reshape(init11_s_, c_lifted_tensor_0) -> _reshape_init11_s_0
+    Constant(value=0.0) -> init1_s_
+      Reshape(init1_s_, c_lifted_tensor_0) -> _reshape_init1_s_0
     diag_lib_C_TorchKNNImputer_columns_0___calc_impute__donors_idx_default[local_domain](dist_pot_donors, n_neighbors) -> c_torch_knnimputer_columns_0___calc_impute__donors_idx#0, c_torch_knnimputer_columns_0___calc_impute__donors_idx#1
       diag_lib_C_TorchKNNImputer_columns_0___calc_impute__weights_default[local_domain](c_torch_knnimputer_columns_0___calc_impute__donors_idx#1) -> c_torch_knnimputer_columns_0___calc_impute__weights
     Gather(_reshape_fit_x_col0, c_torch_knnimputer_columns_0___calc_impute__donors_idx#0) -> take
@@ -1401,13 +1528,12 @@ We can also print it.
       Sub(c_lifted_tensor_0, _to_copy) -> sub_12
       diag_lib_C_TorchKNNImputer_columns_0___calc_impute__make_new_neights_default[local_domain](sub_12, take, c_torch_knnimputer_columns_0___calc_impute__weights) -> c_torch_knnimputer_columns_0___calc_impute__make_new_neights
       ReduceSum(c_torch_knnimputer_columns_0___calc_impute__make_new_neights, c_lifted_tensor_0, keepdims=1) -> sum_1
-        Equal(sum_1, _reshape_init11_s_0) -> eq_17
+        Equal(sum_1, _reshape_init1_s_0) -> eq_17
       Where(eq_17, c_lifted_tensor_1, sum_1) -> where
     Mul(take, c_torch_knnimputer_columns_0___calc_impute__make_new_neights) -> mul_17
       ReduceSum(mul_17, c_lifted_tensor_0, keepdims=1) -> sum_2
         Div(sum_2, where) -> div
-      Squeeze(div, c_lifted_tensor_0) -> _onx_squeeze_div0
-        Cast(_onx_squeeze_div0, to=1) -> output_0
+      Squeeze(div, c_lifted_tensor_0) -> output_0
     output: name='output_0' type=? shape=?
     ----- function name=diag_lib_C_TorchKNNImputer_columns_0__default domain=local_domain
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -1434,20 +1560,20 @@ We can also print it.
         Gather(row_missing_idx, nonzero_numpy_1#0, axis=0) -> index_1
           Gather(dist_idx_map, index_1, axis=0) -> index_2
             Gather(dist_chunk, index_2, axis=0) -> index_3
-    Constant(value=1.0) -> init11_s_
-      Reshape(init11_s_, c_lifted_tensor_2) -> _reshape_init11_s_0
-    Constant(value=0.0) -> init1_s_
+    Constant(value=1.0) -> init1_s_
+      Reshape(init1_s_, c_lifted_tensor_2) -> _reshape_init1_s_0
+    Constant(value=0.0) -> init1_s_2
     Constant(value=[0]) -> init7_s1_0
     Constant(value=1) -> init7_s_1
     Gather(non_missing_fix_x, init7_s_0, axis=1) -> select_1
       NonZero(select_1) -> _onx_nonzero_select_10
       Reshape(_onx_nonzero_select_10, init7_s1_-1) -> nonzero_numpy#0
         Shape(nonzero_numpy#0, end=1, start=0) -> _shape_getitem_20
-          Squeeze(_shape_getitem_20) -> sym_size_int_20
-      Less(c_lifted_tensor_1, sym_size_int_20) -> lt
-      Where(lt, c_lifted_tensor_1, sym_size_int_20) -> where_1
-      LessOrEqual(where_1, init7_s_0) -> le_3
-      Where(le_3, c_lifted_tensor_2, where_1) -> where_2
+          Squeeze(_shape_getitem_20) -> sym_size_int_23
+      Less(c_lifted_tensor_1, sym_size_int_23) -> lt
+      Where(lt, c_lifted_tensor_1, sym_size_int_23) -> where_1
+      LessOrEqual(where_1, init7_s_0) -> le
+      Where(le, c_lifted_tensor_2, where_1) -> where_2
     Gather(index_3, nonzero_numpy#0, axis=1) -> _onx_gather_index_30
       IsNaN(_onx_gather_index_30) -> isnan
         Cast(isnan, to=6) -> _onx_cast_isnan0
@@ -1457,17 +1583,15 @@ We can also print it.
       Unsqueeze(index_5, init7_s1_-1) -> _onx_unsqueeze_index_50
     Gather(mask_fit_x, init7_s_0, axis=1) -> select_2
       Not(select_2) -> bitwise_not
-        Cast(bitwise_not, to=11) -> _to_copy
-          Cast(_to_copy, to=1) -> _to_copy_1
-            ReduceSum(_to_copy_1, keepdims=0) -> sum_1
-      Greater(sum_1, init1_s_) -> gt
+        Cast(bitwise_not, to=1) -> _to_copy
+          ReduceSum(_to_copy, keepdims=0) -> sum_1
+      Greater(sum_1, init1_s_2) -> gt
       Where(gt, sum_1, c_lifted_tensor_0) -> where
-    Equal(_to_copy, _reshape_init11_s_0) -> eq_23
+    Equal(_to_copy, _reshape_init1_s_0) -> eq_26
     Gather(_fit_x, init7_s_0, axis=1) -> select_3
-      Compress(select_3, eq_23, axis=0) -> index_6
+      Compress(select_3, eq_26, axis=0) -> index_6
         ReduceSum(index_6, keepdims=0) -> sum_2
-          Cast(sum_2, to=1) -> _to_copy_2
-      Reshape(_to_copy_2, c_lifted_tensor_2) -> _reshape__to_copy_20
+      Reshape(sum_2, c_lifted_tensor_2) -> _reshape__to_copy_20
         Div(_reshape__to_copy_20, where) -> div
       Squeeze(div, init7_s1_0) -> view_1
     Gather(x, init7_s_0, axis=1) -> select_4
@@ -1529,9 +1653,8 @@ We can also print it.
     input: 'donors_mask'
     input: 'donors'
     input: 'weight_matrix'
-    Cast(donors_mask, to=11) -> _to_copy
-    Cast(weight_matrix, to=11) -> _to_copy_1
-      Mul(_to_copy, _to_copy_1) -> output_0
+    Cast(donors_mask, to=1) -> _to_copy
+      Mul(_to_copy, weight_matrix) -> output_0
     output: name='output_0' type=? shape=?
     ----- function name=diag_lib_C_TorchKNNImputer_columns_1___calc_impute_default domain=local_domain
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -1545,8 +1668,8 @@ We can also print it.
     Constant(value=[1.0]) -> c_lifted_tensor_1
     Constant(value=[-1]) -> init7_s1_-1
       Reshape(fit_x_col, init7_s1_-1) -> _reshape_fit_x_col0
-    Constant(value=0.0) -> init11_s_
-      Reshape(init11_s_, c_lifted_tensor_0) -> _reshape_init11_s_0
+    Constant(value=0.0) -> init1_s_
+      Reshape(init1_s_, c_lifted_tensor_0) -> _reshape_init1_s_0
     diag_lib_C_TorchKNNImputer_columns_1___calc_impute__donors_idx_default[local_domain](dist_pot_donors, n_neighbors) -> c_torch_knnimputer_columns_1___calc_impute__donors_idx#0, c_torch_knnimputer_columns_1___calc_impute__donors_idx#1
       diag_lib_C_TorchKNNImputer_columns_1___calc_impute__weights_default[local_domain](c_torch_knnimputer_columns_1___calc_impute__donors_idx#1) -> c_torch_knnimputer_columns_1___calc_impute__weights
     Gather(_reshape_fit_x_col0, c_torch_knnimputer_columns_1___calc_impute__donors_idx#0) -> take
@@ -1556,13 +1679,12 @@ We can also print it.
       Sub(c_lifted_tensor_0, _to_copy) -> sub_12
       diag_lib_C_TorchKNNImputer_columns_1___calc_impute__make_new_neights_default[local_domain](sub_12, take, c_torch_knnimputer_columns_1___calc_impute__weights) -> c_torch_knnimputer_columns_1___calc_impute__make_new_neights
       ReduceSum(c_torch_knnimputer_columns_1___calc_impute__make_new_neights, c_lifted_tensor_0, keepdims=1) -> sum_1
-        Equal(sum_1, _reshape_init11_s_0) -> eq_17
+        Equal(sum_1, _reshape_init1_s_0) -> eq_17
       Where(eq_17, c_lifted_tensor_1, sum_1) -> where
     Mul(take, c_torch_knnimputer_columns_1___calc_impute__make_new_neights) -> mul_17
       ReduceSum(mul_17, c_lifted_tensor_0, keepdims=1) -> sum_2
         Div(sum_2, where) -> div
-      Squeeze(div, c_lifted_tensor_0) -> _onx_squeeze_div0
-        Cast(_onx_squeeze_div0, to=1) -> output_0
+      Squeeze(div, c_lifted_tensor_0) -> output_0
     output: name='output_0' type=? shape=?
     ----- function name=diag_lib_C_TorchKNNImputer_columns_1__default domain=local_domain
     ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
@@ -1590,19 +1712,19 @@ We can also print it.
           Gather(dist_idx_map, index_1, axis=0) -> index_2
             Gather(dist_chunk, index_2, axis=0) -> index_3
     Constant(value=0) -> init7_s_0
-    Constant(value=1.0) -> init11_s_
-      Reshape(init11_s_, c_lifted_tensor_2) -> _reshape_init11_s_0
-    Constant(value=0.0) -> init1_s_
+    Constant(value=1.0) -> init1_s_
+      Reshape(init1_s_, c_lifted_tensor_2) -> _reshape_init1_s_0
+    Constant(value=0.0) -> init1_s_2
     Constant(value=[0]) -> init7_s1_0
     Gather(non_missing_fix_x, init7_s_1, axis=1) -> select_1
       NonZero(select_1) -> _onx_nonzero_select_10
       Reshape(_onx_nonzero_select_10, init7_s1_-1) -> nonzero_numpy#0
         Shape(nonzero_numpy#0, end=1, start=0) -> _shape_getitem_20
-          Squeeze(_shape_getitem_20) -> sym_size_int_20
-      Less(c_lifted_tensor_1, sym_size_int_20) -> lt
-      Where(lt, c_lifted_tensor_1, sym_size_int_20) -> where_1
-      LessOrEqual(where_1, init7_s_0) -> le_3
-      Where(le_3, c_lifted_tensor_2, where_1) -> where_2
+          Squeeze(_shape_getitem_20) -> sym_size_int_23
+      Less(c_lifted_tensor_1, sym_size_int_23) -> lt
+      Where(lt, c_lifted_tensor_1, sym_size_int_23) -> where_1
+      LessOrEqual(where_1, init7_s_0) -> le
+      Where(le, c_lifted_tensor_2, where_1) -> where_2
     Gather(index_3, nonzero_numpy#0, axis=1) -> _onx_gather_index_30
       IsNaN(_onx_gather_index_30) -> isnan
         Cast(isnan, to=6) -> _onx_cast_isnan0
@@ -1612,17 +1734,15 @@ We can also print it.
       Unsqueeze(index_5, init7_s1_-1) -> _onx_unsqueeze_index_50
     Gather(mask_fit_x, init7_s_1, axis=1) -> select_2
       Not(select_2) -> bitwise_not
-        Cast(bitwise_not, to=11) -> _to_copy
-          Cast(_to_copy, to=1) -> _to_copy_1
-            ReduceSum(_to_copy_1, keepdims=0) -> sum_1
-      Greater(sum_1, init1_s_) -> gt
+        Cast(bitwise_not, to=1) -> _to_copy
+          ReduceSum(_to_copy, keepdims=0) -> sum_1
+      Greater(sum_1, init1_s_2) -> gt
       Where(gt, sum_1, c_lifted_tensor_0) -> where
-    Equal(_to_copy, _reshape_init11_s_0) -> eq_23
+    Equal(_to_copy, _reshape_init1_s_0) -> eq_26
     Gather(_fit_x, init7_s_1, axis=1) -> select_3
-      Compress(select_3, eq_23, axis=0) -> index_6
+      Compress(select_3, eq_26, axis=0) -> index_6
         ReduceSum(index_6, keepdims=0) -> sum_2
-          Cast(sum_2, to=1) -> _to_copy_2
-      Reshape(_to_copy_2, c_lifted_tensor_2) -> _reshape__to_copy_20
+      Reshape(sum_2, c_lifted_tensor_2) -> _reshape__to_copy_20
         Div(_reshape__to_copy_20, where) -> div
       Squeeze(div, init7_s1_0) -> view_1
     Gather(x, init7_s_1, axis=1) -> select_4
@@ -1651,40 +1771,193 @@ We can also print it.
       Expand(c_lifted_tensor_2, _shape_unsqueeze_index_put_100) -> _onx_expand_c_lifted_tensor_202
         ScatterElements(select_scatter, _onx_expand_c_lifted_tensor_202, _onx_unsqueeze_index_put_10, axis=1, reduction=b'none') -> output_0
     output: name='output_0' type=? shape=?
+    ----- function name=diag_lib_C_TorchKNNImputer_columns_2___calc_impute__donors_idx_default domain=local_domain
+    ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+    opset: domain='' version=18
+    input: 'dist_pot_donors'
+    input: 'n_neighbors'
+    Constant(value=0) -> init7_s_0
+    Constant(value=[1]) -> init7_s1_1
+    Constant(value=1) -> init7_s_1
+    Shape(dist_pot_donors, end=1, start=0) -> _shape_dist_pot_donors0
+      Squeeze(_shape_dist_pot_donors0) -> sym_size_int_4
+      Range(init7_s_0, sym_size_int_4, init7_s_1) -> arange
+      Unsqueeze(arange, init7_s1_1) -> unsqueeze
+        GatherND(dist_pot_donors, unsqueeze, batch_dims=0) -> _onx_gathernd_dist_pot_donors0
+    TopK(dist_pot_donors, n_neighbors, largest=0, sorted=1) -> unused_topk_values, output_0
+      GatherElements(_onx_gathernd_dist_pot_donors0, output_0, axis=1) -> output_1
+    output: name='output_0' type=? shape=?
+    output: name='output_1' type=? shape=?
+    ----- function name=diag_lib_C_TorchKNNImputer_columns_2___calc_impute__weights_default domain=local_domain
+    ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+    opset: domain='' version=18
+    input: 'donors_dist'
+    Constant(value=0.0) -> c_lifted_tensor_0
+    Shape(donors_dist) -> _shape_donors_dist0
+      ConstantOfShape(_shape_donors_dist0, value=[1.0]) -> ones_like
+    IsNaN(donors_dist) -> isnan
+      Where(isnan, c_lifted_tensor_0, ones_like) -> output_0
+    output: name='output_0' type=? shape=?
+    ----- function name=diag_lib_C_TorchKNNImputer_columns_2___calc_impute__make_new_neights_default domain=local_domain
+    ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+    opset: domain='' version=18
+    input: 'donors_mask'
+    input: 'donors'
+    input: 'weight_matrix'
+    Cast(donors_mask, to=1) -> _to_copy
+      Mul(_to_copy, weight_matrix) -> output_0
+    output: name='output_0' type=? shape=?
+    ----- function name=diag_lib_C_TorchKNNImputer_columns_2___calc_impute_default domain=local_domain
+    ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+    opset: domain='' version=18
+    opset: domain='local_domain' version=1
+    input: 'dist_pot_donors'
+    input: 'n_neighbors'
+    input: 'fit_x_col'
+    input: 'mask_fit_x_col'
+    Constant(value=[1]) -> c_lifted_tensor_0
+    Constant(value=[1.0]) -> c_lifted_tensor_1
+    Constant(value=[-1]) -> init7_s1_-1
+      Reshape(fit_x_col, init7_s1_-1) -> _reshape_fit_x_col0
+    Constant(value=0.0) -> init1_s_
+      Reshape(init1_s_, c_lifted_tensor_0) -> _reshape_init1_s_0
+    diag_lib_C_TorchKNNImputer_columns_2___calc_impute__donors_idx_default[local_domain](dist_pot_donors, n_neighbors) -> c_torch_knnimputer_columns_2___calc_impute__donors_idx#0, c_torch_knnimputer_columns_2___calc_impute__donors_idx#1
+      diag_lib_C_TorchKNNImputer_columns_2___calc_impute__weights_default[local_domain](c_torch_knnimputer_columns_2___calc_impute__donors_idx#1) -> c_torch_knnimputer_columns_2___calc_impute__weights
+    Gather(_reshape_fit_x_col0, c_torch_knnimputer_columns_2___calc_impute__donors_idx#0) -> take
+    Reshape(mask_fit_x_col, init7_s1_-1) -> _reshape_mask_fit_x_col0
+      Gather(_reshape_mask_fit_x_col0, c_torch_knnimputer_columns_2___calc_impute__donors_idx#0) -> take_1
+        Cast(take_1, to=7) -> _to_copy
+      Sub(c_lifted_tensor_0, _to_copy) -> sub_12
+      diag_lib_C_TorchKNNImputer_columns_2___calc_impute__make_new_neights_default[local_domain](sub_12, take, c_torch_knnimputer_columns_2___calc_impute__weights) -> c_torch_knnimputer_columns_2___calc_impute__make_new_neights
+      ReduceSum(c_torch_knnimputer_columns_2___calc_impute__make_new_neights, c_lifted_tensor_0, keepdims=1) -> sum_1
+        Equal(sum_1, _reshape_init1_s_0) -> eq_17
+      Where(eq_17, c_lifted_tensor_1, sum_1) -> where
+    Mul(take, c_torch_knnimputer_columns_2___calc_impute__make_new_neights) -> mul_17
+      ReduceSum(mul_17, c_lifted_tensor_0, keepdims=1) -> sum_2
+        Div(sum_2, where) -> div
+      Squeeze(div, c_lifted_tensor_0) -> output_0
+    output: name='output_0' type=? shape=?
+    ----- function name=diag_lib_C_TorchKNNImputer_columns_2__default domain=local_domain
+    ----- doc_string: -- function_options=FunctionOptions(export_as_function=...
+    opset: domain='' version=18
+    opset: domain='local_domain' version=1
+    input: 'x'
+    input: 'dist_chunk'
+    input: 'non_missing_fix_x'
+    input: 'mask_fit_x'
+    input: 'dist_idx_map'
+    input: 'mask'
+    input: 'row_missing_idx'
+    input: '_fit_x'
+    Constant(value=[1.0]) -> c_lifted_tensor_0
+    Constant(value=3) -> c_lifted_tensor_1
+    Constant(value=[1]) -> c_lifted_tensor_2
+    Constant(value=2) -> init7_s_2
+      Gather(mask, init7_s_2, axis=1) -> select
+        Gather(select, row_missing_idx, axis=0) -> index
+    Constant(value=[-1]) -> init7_s1_-1
+      Reshape(index, init7_s1_-1) -> view
+        NonZero(view) -> _onx_nonzero_view0
+      Reshape(_onx_nonzero_view0, init7_s1_-1) -> nonzero_numpy_1#0
+        Gather(row_missing_idx, nonzero_numpy_1#0, axis=0) -> index_1
+          Gather(dist_idx_map, index_1, axis=0) -> index_2
+            Gather(dist_chunk, index_2, axis=0) -> index_3
+    Constant(value=0) -> init7_s_0
+    Constant(value=1.0) -> init1_s_
+      Reshape(init1_s_, c_lifted_tensor_2) -> _reshape_init1_s_0
+    Constant(value=0.0) -> init1_s_2
+    Constant(value=[0]) -> init7_s1_0
+    Constant(value=1) -> init7_s_1
+    Constant(value=[2]) -> init7_s1_2
+    Gather(non_missing_fix_x, init7_s_2, axis=1) -> select_1
+      NonZero(select_1) -> _onx_nonzero_select_10
+      Reshape(_onx_nonzero_select_10, init7_s1_-1) -> nonzero_numpy#0
+        Shape(nonzero_numpy#0, end=1, start=0) -> _shape_getitem_20
+          Squeeze(_shape_getitem_20) -> sym_size_int_23
+      Less(c_lifted_tensor_1, sym_size_int_23) -> lt
+      Where(lt, c_lifted_tensor_1, sym_size_int_23) -> where_1
+      LessOrEqual(where_1, init7_s_0) -> le
+      Where(le, c_lifted_tensor_2, where_1) -> where_2
+    Gather(index_3, nonzero_numpy#0, axis=1) -> _onx_gather_index_30
+      IsNaN(_onx_gather_index_30) -> isnan
+        Cast(isnan, to=6) -> _onx_cast_isnan0
+      ReduceMin(_onx_cast_isnan0, c_lifted_tensor_2, keepdims=0) -> _onx_reducemin_cast_isnan00
+        Cast(_onx_reducemin_cast_isnan00, to=9) -> all_1
+          Compress(index_1, all_1, axis=0) -> index_5
+      Unsqueeze(index_5, init7_s1_-1) -> _onx_unsqueeze_index_50
+    Gather(mask_fit_x, init7_s_2, axis=1) -> select_2
+      Not(select_2) -> bitwise_not
+        Cast(bitwise_not, to=1) -> _to_copy
+          ReduceSum(_to_copy, keepdims=0) -> sum_1
+      Greater(sum_1, init1_s_2) -> gt
+      Where(gt, sum_1, c_lifted_tensor_0) -> where
+    Equal(_to_copy, _reshape_init1_s_0) -> eq_26
+    Gather(_fit_x, init7_s_2, axis=1) -> select_3
+      Compress(select_3, eq_26, axis=0) -> index_6
+        ReduceSum(index_6, keepdims=0) -> sum_2
+      Reshape(sum_2, c_lifted_tensor_2) -> _reshape__to_copy_20
+        Div(_reshape__to_copy_20, where) -> div
+      Squeeze(div, init7_s1_0) -> view_1
+    Gather(x, init7_s_2, axis=1) -> select_4
+    Shape(index_5) -> _shape_index_502
+      Expand(view_1, _shape_index_502) -> _onx_expand_view_10
+      ScatterND(select_4, _onx_unsqueeze_index_50, _onx_expand_view_10) -> index_put
+      Unsqueeze(index_put, init7_s_1) -> _onx_unsqueeze_index_put0
+        Shape(_onx_unsqueeze_index_put0) -> _shape_unsqueeze_index_put00
+      Expand(init7_s1_2, _shape_unsqueeze_index_put00) -> _onx_expand_init7_s1_20
+        ScatterElements(x, _onx_expand_init7_s1_20, _onx_unsqueeze_index_put0, axis=1, reduction=b'none') -> select_scatter
+      Gather(select_scatter, init7_s_2, axis=1) -> select_9
+    Not(all_1) -> bitwise_not_1
+      Compress(index_1, bitwise_not_1, axis=0) -> index_7
+        Gather(dist_idx_map, index_7, axis=0) -> index_8
+          Gather(dist_chunk, index_8, axis=0) -> index_9
+        Gather(index_9, nonzero_numpy#0, axis=1) -> _onx_gather_index_90
+      Gather(_fit_x, init7_s_2, axis=1) -> select_6
+        Gather(select_6, nonzero_numpy#0, axis=0) -> index_11
+      Gather(mask_fit_x, init7_s_2, axis=1) -> select_7
+        Gather(select_7, nonzero_numpy#0, axis=0) -> index_12
+        diag_lib_C_TorchKNNImputer_columns_2___calc_impute_default[local_domain](_onx_gather_index_90, where_2, index_11, index_12) -> c_torch_knnimputer_columns_2___calc_impute
+      Unsqueeze(index_7, init7_s1_-1) -> _onx_unsqueeze_index_70
+        ScatterND(select_9, _onx_unsqueeze_index_70, c_torch_knnimputer_columns_2___calc_impute) -> index_put_1
+      Unsqueeze(index_put_1, init7_s_1) -> _onx_unsqueeze_index_put_10
+        Shape(_onx_unsqueeze_index_put_10) -> _shape_unsqueeze_index_put_100
+      Expand(init7_s1_2, _shape_unsqueeze_index_put_100) -> _onx_expand_init7_s1_202
+        ScatterElements(select_scatter, _onx_expand_init7_s1_202, _onx_unsqueeze_index_put_10, axis=1, reduction=b'none') -> output_0
+    output: name='output_0' type=? shape=?
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 648-650
+.. GENERATED FROM PYTHON SOURCE LINES 656-658
 
 Validation
 ==========
 
-.. GENERATED FROM PYTHON SOURCE LINES 650-734
+.. GENERATED FROM PYTHON SOURCE LINES 658-744
 
 .. code-block:: Python
 
 
 
     def validate_onnx(size, sizey, onx, verbose: int = 1, use_ort: bool = False):
-        X = torch.randn((size, 2))
-        Y = torch.randn((sizey, 2))
-        for i in range(5):
-            X[i, i % 2] = torch.nan
-        for i in range(4):
-            Y[i + 1, i % 2] = torch.nan
+        X = torch.randn((size, 3))
+        Y = torch.randn((sizey, 3))
+        for i in range(X.shape[0]):
+            X[i, i % X.shape[1]] = torch.nan
+        for i in range(Y.shape[0] - 1):
+            Y[i + 1, i % X.shape[1]] = torch.nan
 
         knn_imputer = sklearn.impute.KNNImputer(n_neighbors=3)
         knn_imputer.fit(X)
 
         model = TorchKNNImputer(knn_imputer)
 
-        p1 = knn_imputer.transform(Y)
+        expected = p1 = knn_imputer.transform(Y)
 
         model_inputs = (
             torch.from_numpy(knn_imputer._mask_fit_X),
             torch.from_numpy(knn_imputer._valid_mask),
-            torch.from_numpy(knn_imputer._fit_X),
+            torch.from_numpy(knn_imputer._fit_X.astype(np.float32)),
             Y,
         )
         p2 = model.transform(*model_inputs)
@@ -1694,7 +1967,7 @@ Validation
             print(f"Torch Discrepancies for size={size} and sizey={sizey}, d={d}")
 
         input_names = [i.name for i in onx.graph.input]
-        feeds = dict(zip(input_names, [t.numpy() for t in model_inputs]))
+        feeds = feeds0 = dict(zip(input_names, [t.numpy() for t in model_inputs]))
 
         if verbose:
             print("python: loading the model...")
@@ -1728,7 +2001,7 @@ Validation
         model_inputs = (
             torch.from_numpy(knn_imputer._mask_fit_X),
             torch.from_numpy(knn_imputer._valid_mask),
-            torch.from_numpy(knn_imputer._fit_X),
+            torch.from_numpy(knn_imputer._fit_X.astype(np.float32)),
             Y[1:2],
         )
         p1 = knn_imputer.transform(Y[1:2])
@@ -1737,17 +2010,19 @@ Validation
         assert d["abs"] < 1e-5, f"Discrepancies for size={size} and sizey={sizey}, d={d}"
         feeds = dict(zip(input_names, [t.numpy() for t in model_inputs]))
         if verbose:
-            print("onnxruntime: running the model...")
+            print("ReferenceEvaluator: running the model...")
         got = sess.run(None, feeds)
         d = max_diff(p1, got[0])
         assert d["abs"] < 1e-5, f"ONNX Discrepancies for size={size} and sizey={sizey}, d={d}"
         if verbose:
             print("done")
+        return feeds0, expected
 
 
     # This does not work yet.
-    validate_onnx(5, 10, onx)
+    feeds, expected = validate_onnx(5, 10, onx)
     validate_onnx(50, 40, onx)
+
 
 
 
@@ -1756,26 +2031,999 @@ Validation
 
  .. code-block:: none
 
-    Torch Discrepancies for size=5 and sizey=10, d={'abs': 2.9802322387695312e-08, 'rel': 4.6411738120561695e-08, 'sum': 7.947285962650597e-08, 'n': 20.0, 'dnan': 0.0}
+    Torch Discrepancies for size=5 and sizey=10, d={'abs': 4.718701041017681e-08, 'rel': 8.281167202612987e-08, 'sum': 2.110997834592343e-07, 'n': 30.0, 'dnan': 0.0}
     python: loading the model...
     python: running the model...
-    ONNX Discrepancies for size=5 and sizey=10, d={'abs': 2.9802322387695312e-08, 'rel': 4.6411738120561695e-08, 'sum': 7.947285962650597e-08, 'n': 20.0, 'dnan': 0.0}
-    onnxruntime: running the model...
+    ONNX Discrepancies for size=5 and sizey=10, d={'abs': 4.718701041017681e-08, 'rel': 8.281167202612987e-08, 'sum': 2.110997834592343e-07, 'n': 30.0, 'dnan': 0.0}
+    ReferenceEvaluator: running the model...
     done
-    Torch Discrepancies for size=50 and sizey=40, d={'abs': 1.9868214962137642e-08, 'rel': 2.5721566741681128e-08, 'sum': 3.725290298461914e-08, 'n': 80.0, 'dnan': 0.0}
+    Torch Discrepancies for size=50 and sizey=40, d={'abs': 7.450580596923828e-08, 'rel': 1.7253271810458264e-07, 'sum': 7.400910062606292e-07, 'n': 120.0, 'dnan': 0.0}
     python: loading the model...
     python: running the model...
-    ONNX Discrepancies for size=50 and sizey=40, d={'abs': 1.9868214962137642e-08, 'rel': 2.5721566741681128e-08, 'sum': 3.725290298461914e-08, 'n': 80.0, 'dnan': 0.0}
-    onnxruntime: running the model...
+    ONNX Discrepancies for size=50 and sizey=40, d={'abs': 7.450580596923828e-08, 'rel': 1.7253271810458264e-07, 'sum': 7.400910062606292e-07, 'n': 120.0, 'dnan': 0.0}
+    ReferenceEvaluator: running the model...
     done
 
+    ({'_mask_fit_x': array([[ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False]]), '_valid_mask': array([ True,  True,  True]), '_fit_x': array([[        nan, -1.7226764 ,  0.7461281 ],
+           [ 0.04998504,         nan,  1.2725394 ],
+           [-1.0834333 , -1.4792528 ,         nan],
+           [        nan,  0.36413974, -0.6727574 ],
+           [ 0.65211004,         nan,  0.084     ],
+           [ 0.46969694, -0.36550403,         nan],
+           [        nan, -0.926442  ,  1.61912   ],
+           [ 0.01529183,         nan,  1.3217149 ],
+           [ 0.8615154 , -0.1538215 ,         nan],
+           [        nan,  1.6509427 , -0.80586624],
+           [ 0.2834314 ,         nan,  0.5134699 ],
+           [-0.77101666,  0.15764616,         nan],
+           [        nan,  0.82813174,  0.4253937 ],
+           [ 0.4995863 ,         nan, -1.6946098 ],
+           [ 1.3357681 ,  0.42162687,         nan],
+           [        nan, -0.96498954,  0.5395887 ],
+           [ 0.34371305,         nan, -1.1777022 ],
+           [-1.8157042 , -0.68027425,         nan],
+           [        nan,  1.5369673 , -3.304711  ],
+           [-1.1833484 ,         nan,  0.09286581],
+           [-0.77732563,  0.37090024,         nan],
+           [        nan, -0.14638814,  0.31428492],
+           [-0.40942547,         nan,  0.63834816],
+           [-0.24680121,  0.2695871 ,         nan],
+           [        nan,  0.48950607,  0.6524223 ],
+           [ 0.5030349 ,         nan, -0.08526698],
+           [-0.08102754,  0.4080912 ,         nan],
+           [        nan,  0.3865235 ,  0.3231657 ],
+           [ 1.5980973 ,         nan, -0.64550406],
+           [ 0.46636218, -0.25847575,         nan],
+           [        nan,  0.6620169 , -0.5832607 ],
+           [ 0.6067286 ,         nan, -0.38538906],
+           [-0.7107081 , -0.19541559,         nan],
+           [        nan,  0.6553923 ,  0.8962693 ],
+           [ 0.7163759 ,         nan,  0.34734237],
+           [ 1.4182295 , -1.6953776 ,         nan],
+           [        nan, -0.29749328,  1.7967238 ],
+           [-0.5600666 ,         nan,  0.16235238],
+           [ 1.5671849 , -2.1329587 ,         nan],
+           [        nan, -0.45227432,  0.10342338],
+           [-0.8232483 ,         nan, -1.1588709 ],
+           [ 1.1631118 , -0.13952817,         nan],
+           [        nan, -1.3422968 , -0.37250853],
+           [-0.04719762,         nan,  0.22240469],
+           [ 0.6911936 , -1.4066994 ,         nan],
+           [        nan,  0.299844  ,  0.26539713],
+           [ 1.1517361 ,         nan, -0.37388027],
+           [ 0.2657223 , -1.7822217 ,         nan],
+           [        nan,  0.8043345 ,  0.7394755 ],
+           [-0.09052805,         nan, -0.44826847]], dtype=float32), 'x': array([[-0.65691096, -0.11532746,  1.0030955 ],
+           [        nan, -0.27691117,  0.61319596],
+           [ 0.02160102,         nan, -1.5308012 ],
+           [ 0.37974733,  0.9635883 ,         nan],
+           [        nan, -0.20329167, -0.2402673 ],
+           [ 0.53514177,         nan,  0.02651513],
+           [-1.9759867 , -0.01354858,         nan],
+           [        nan,  0.7706653 ,  1.3164204 ],
+           [-0.41474396,         nan,  0.74257547],
+           [-0.5312553 ,  0.5545614 ,         nan],
+           [        nan,  0.629509  , -0.54787576],
+           [-0.679601  ,         nan,  1.9683905 ],
+           [-0.1571359 , -0.08951437,         nan],
+           [        nan, -0.3452043 , -1.0371585 ],
+           [ 0.38179472,         nan, -1.171715  ],
+           [ 1.2127538 , -1.4636395 ,         nan],
+           [        nan, -1.2969925 ,  0.49829674],
+           [-0.76637423,         nan,  0.5142717 ],
+           [ 1.0716082 ,  0.1363314 ,         nan],
+           [        nan, -1.4655706 ,  0.8043373 ],
+           [ 0.44230548,         nan, -1.335917  ],
+           [ 1.9426929 , -1.2389691 ,         nan],
+           [        nan, -0.91083515, -0.40051085],
+           [-0.563631  ,         nan, -0.56804323],
+           [-0.7498004 , -0.5766294 ,         nan],
+           [        nan, -2.2241294 , -0.81299764],
+           [ 2.16805   ,         nan,  0.6804772 ],
+           [ 2.2018094 ,  1.5621759 ,         nan],
+           [        nan,  0.03057512, -1.5995468 ],
+           [ 0.11138286,         nan, -0.99431187],
+           [ 0.37860525, -0.35777074,         nan],
+           [        nan,  1.6457576 ,  0.6727732 ],
+           [ 0.45023677,         nan, -0.7116904 ],
+           [-1.3271512 , -0.9190327 ,         nan],
+           [        nan,  0.33662418, -0.19840077],
+           [-1.7477769 ,         nan,  1.4377764 ],
+           [ 2.1767182 ,  0.6680642 ,         nan],
+           [        nan,  0.55985326,  0.35286215],
+           [ 0.9480514 ,         nan, -0.3030605 ],
+           [ 0.9090194 , -0.44267854,         nan]], dtype=float32)}, array([[-6.56910956e-01, -1.15327463e-01,  1.00309551e+00],
+           [-2.17923790e-01, -2.76911169e-01,  6.13195956e-01],
+           [ 2.16010176e-02, -3.68181129e-01, -1.53080118e+00],
+           [ 3.79747331e-01,  9.63588297e-01, -7.86280692e-01],
+           [ 2.05723166e-01, -2.03291669e-01, -2.40267307e-01],
+           [ 5.35141766e-01, -3.58751367e-01,  2.65151337e-02],
+           [-1.97598672e+00, -1.35485791e-02,  7.92135298e-01],
+           [ 4.67014991e-01,  7.70665288e-01,  1.31642044e+00],
+           [-4.14743960e-01, -1.42945270e-01,  7.42575467e-01],
+           [-5.31255305e-01,  5.54561377e-01,  5.70348005e-01],
+           [ 7.04765963e-01,  6.29508972e-01, -5.47875762e-01],
+           [-6.79601014e-01,  1.11043607e-01,  1.96839046e+00],
+           [-1.57135904e-01, -8.95143673e-02,  2.94737120e-02],
+           [ 3.76035968e-02, -3.45204294e-01, -1.03715849e+00],
+           [ 3.81794721e-01, -8.02067151e-01, -1.17171502e+00],
+           [ 1.21275377e+00, -1.46363950e+00, -8.69035721e-05],
+           [ 1.88399841e-01, -1.29699254e+00,  4.98296738e-01],
+           [-7.66374230e-01, -1.45481045e-01,  5.14271677e-01],
+           [ 1.07160819e+00,  1.36331394e-01, -2.60413508e-01],
+           [-2.67221719e-01, -1.46557057e+00,  8.04337323e-01],
+           [ 4.42305475e-01, -8.02067151e-01, -1.33591700e+00],
+           [ 1.94269288e+00, -1.23896909e+00,  5.95400055e-01],
+           [ 5.55978902e-01, -9.10835147e-01, -4.00510848e-01],
+           [-5.63630998e-01,  2.76913693e-01, -5.68043232e-01],
+           [-7.49800384e-01, -5.76629400e-01, -2.97698391e-01],
+           [ 7.80677974e-01, -2.22412944e+00, -8.12997639e-01],
+           [ 2.16805005e+00, -1.42945270e-01,  6.80477202e-01],
+           [ 2.20180941e+00,  1.56217587e+00, -1.58536047e+00],
+           [ 2.97227154e-01,  3.05751227e-02, -1.59954679e+00],
+           [ 1.11382857e-01,  9.22707319e-02, -9.94311869e-01],
+           [ 3.78605247e-01, -3.57770741e-01,  2.40815011e-01],
+           [ 1.96793944e-01,  1.64575756e+00,  6.72773182e-01],
+           [ 4.50236768e-01, -8.66133471e-02, -7.11690426e-01],
+           [-1.32715118e+00, -9.19032693e-01,  7.50524834e-01],
+           [-3.68384793e-01,  3.36624175e-01, -1.98400766e-01],
+           [-1.74777687e+00, -6.34736518e-01,  1.43777645e+00],
+           [ 2.17671824e+00,  6.68064177e-01,  3.50828032e-01],
+           [ 6.68315457e-01,  5.59853256e-01,  3.52862149e-01],
+           [ 9.48051393e-01, -5.45215502e-01, -3.03060502e-01],
+           [ 9.09019411e-01, -4.42678541e-01,  7.49163198e-01]]))
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 745-752
+
+ModelProto to python Code
++++++++++++++++++++++++++
+
+We finally call function :func:`to_graph_builder_code
+<experimental_experiment.xbuilder.reverse_graph_builder.to_graph_builder_code>`
+to convert the onnx model into pseudo code if that helps moving that code
+to a converter library (:epkg:`sklearn-onnx`).
+
+.. GENERATED FROM PYTHON SOURCE LINES 752-777
+
+.. code-block:: Python
+
+
+    code = to_graph_builder_code(onx)
+    addition = (
+        f"""
+
+    feeds = {feeds!r}
+    expected = {expected!r}
+    ref = ExtendedReferenceEvaluator(model)
+    got = ref.run(None, feeds)
+    print("disrepancies:", max_diff(expected, got[0]))
+    """.replace(
+            "nan", "np.nan"
+        )
+        .replace("array", "np.array")
+        .replace("float32", "np.float32")
+    )
+    code = f"""
+    from experimental_experiment.reference import ExtendedReferenceEvaluator
+    from experimental_experiment.helpers import max_diff
+    {code}
+    {addition}
+    """
+    print(code)
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    from experimental_experiment.reference import ExtendedReferenceEvaluator
+    from experimental_experiment.helpers import max_diff
+    import numpy as np
+    from onnx import TensorProto
+    from onnx.numpy_helper import from_array
+    from experimental_experiment.xbuilder import GraphBuilder, FunctionOptions
+
+
+
+    def experiment(
+        op: "GraphBuilder",
+        _mask_fit_x: "BOOL[u5, 3]",
+        _valid_mask: "BOOL[3]",
+        _fit_x: "FLOAT[s1, 3]",
+        x: "FLOAT[u5, 3]",
+    ):
+        init7_s1_1 = np.array([1], dtype=np.int64)
+        init7_s1__1 = np.array([-1], dtype=np.int64)
+        isnan = op.IsNaN(x, outputs=['isnan'])
+        _onx_compress_isnan0 = op.Compress(isnan, _valid_mask, axis=1, outputs=['_onx_compress_isnan0'])
+        _onx_cast_index0 = op.Cast(_onx_compress_isnan0, to=6, outputs=['_onx_cast_index0'])
+        _onx_reducemax_cast_index00 = op.ReduceMaxAnyOpset(_onx_cast_index0, init7_s1_1, keepdims=0, outputs=['_onx_reducemax_cast_index00'])
+        any_1 = op.Cast(_onx_reducemax_cast_index00, to=9, outputs=['any_1'])
+        view = op.Reshape(any_1, init7_s1__1, outputs=['view'])
+        _onx_nonzero_view0 = op.NonZero(view, outputs=['_onx_nonzero_view0'])
+        nonzero_numpy__0 = op.Reshape(_onx_nonzero_view0, init7_s1__1, outputs=['nonzero_numpy__0'])
+        logical_not = op.Not(_mask_fit_x, outputs=['logical_not'])
+        c_torch_knnimputer__make_dict_idx_map = op.diag_lib_C_TorchKNNImputer__make_dict_idx_map_default(x, nonzero_numpy__0, domain='local_domain', outputs=['c_torch_knnimputer__make_dict_idx_map'])
+        index_1 = op.Gather(x, nonzero_numpy__0, axis=0, outputs=['index_1'])
+        c_torch_knnimputer_dist = op.diag_lib_C_TorchKNNImputer_dist_default(index_1, _fit_x, domain='local_domain', outputs=['c_torch_knnimputer_dist'])
+        c_torch_knnimputer_columns_0_ = op.diag_lib_C_TorchKNNImputer_columns_0__default(x, c_torch_knnimputer_dist, logical_not, _mask_fit_x, c_torch_knnimputer__make_dict_idx_map, isnan, nonzero_numpy__0, _fit_x, domain='local_domain', outputs=['c_torch_knnimputer_columns_0_'])
+        c_torch_knnimputer_columns_1_ = op.diag_lib_C_TorchKNNImputer_columns_1__default(c_torch_knnimputer_columns_0_, c_torch_knnimputer_dist, logical_not, _mask_fit_x, c_torch_knnimputer__make_dict_idx_map, isnan, nonzero_numpy__0, _fit_x, domain='local_domain', outputs=['c_torch_knnimputer_columns_1_'])
+        c_torch_knnimputer_columns_2_ = op.diag_lib_C_TorchKNNImputer_columns_2__default(c_torch_knnimputer_columns_1_, c_torch_knnimputer_dist, logical_not, _mask_fit_x, c_torch_knnimputer__make_dict_idx_map, isnan, nonzero_numpy__0, _fit_x, domain='local_domain', outputs=['c_torch_knnimputer_columns_2_'])
+        output_0 = op.Compress(c_torch_knnimputer_columns_2_, _valid_mask, axis=1, outputs=['output_0'])
+        op.Identity(output_0, outputs=["output_0"])
+        return output_0
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer__make_dict_idx_map_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        x = gr.make_tensor_input('x')
+        row_missing_idx = gr.make_tensor_input('row_missing_idx')
+        op = gr.op
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        _shape_x0 = op.Shape(x, end=1, start=0, outputs=['_shape_x0'])
+        _shape_row_missing_idx0 = op.Shape(row_missing_idx, end=1, start=0, outputs=['_shape_row_missing_idx0'])
+        sym_size_int_4 = op.SqueezeAnyOpset(_shape_row_missing_idx0, outputs=['sym_size_int_4'])
+        zeros = op.ConstantOfShape(_shape_x0, value=from_array(np.array([0], dtype=np.int64), name='value'), outputs=['zeros'])
+        arange = op.Range(init7_s_0, sym_size_int_4, init7_s_1, outputs=['arange'])
+        _onx_unsqueeze_row_missing_idx0 = op.UnsqueezeAnyOpset(row_missing_idx, init7_s1__1, outputs=['_onx_unsqueeze_row_missing_idx0'])
+        output_0 = op.ScatterND(zeros, _onx_unsqueeze_row_missing_idx0, arange, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer__make_dict_idx_map_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_dist_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        x = gr.make_tensor_input('x')
+        y = gr.make_tensor_input('y')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['c_lifted_tensor_1'])
+        c_lifted_tensor_2 = op.Constant(value=from_array(np.array(np.nan, dtype=np.float32), name='value'), outputs=['c_lifted_tensor_2'])
+        c_lifted_tensor_3 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_3'])
+        init1_s_ = op.Constant(value=from_array(np.array(-2.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        init7_s1_1 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['init7_s1_1'])
+        init1_s1_ = op.Constant(value=from_array(np.array([0.0], dtype=np.float32), name='value'), outputs=['init1_s1_'])
+        init1_s_2 = op.Constant(value=from_array(np.array(1.0, dtype=np.float32), name='value'), outputs=['init1_s_2'])
+        init1_s_3 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_3'])
+        init1_s_4 = op.Constant(value=from_array(np.array(3.0, dtype=np.float32), name='value'), outputs=['init1_s_4'])
+        init7_s2_1__1 = op.Constant(value=from_array(np.array([1, -1], dtype=np.int64), name='value'), outputs=['init7_s2_1__1'])
+        isnan = op.IsNaN(x, outputs=['isnan'])
+        _to_copy_2 = op.Cast(isnan, to=1, outputs=['_to_copy_2'])
+        isnan_1 = op.IsNaN(y, outputs=['isnan_1'])
+        index_put = op.Where(isnan, c_lifted_tensor_0, x, outputs=['index_put'])
+        index_put_1 = op.Where(isnan_1, c_lifted_tensor_1, y, outputs=['index_put_1'])
+        mul_18 = op.Mul(index_put, index_put, outputs=['mul_18'])
+        mul_21 = op.Mul(index_put_1, index_put_1, outputs=['mul_21'])
+        matmul_2 = op.Gemm(_to_copy_2, mul_21, transA=0, transB=1, outputs=['matmul_2'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, init7_s1_1, outputs=['_reshape_init1_s_0'])
+        _onx_mul_index_put0 = op.Mul(index_put, _reshape_init1_s_0, outputs=['_onx_mul_index_put0'])
+        matmul = op.Gemm(_onx_mul_index_put0, index_put_1, transA=0, transB=1, outputs=['matmul'])
+        sum_1 = op.ReduceSumAnyOpset(mul_18, init7_s1_1, keepdims=1, outputs=['sum_1'])
+        add_50 = op.Add(matmul, sum_1, outputs=['add_50'])
+        sum_2 = op.ReduceSumAnyOpset(mul_21, init7_s1_1, keepdims=1, outputs=['sum_2'])
+        permute_2 = op.Reshape(sum_2, init7_s2_1__1, outputs=['permute_2'])
+        add_59 = op.Add(add_50, permute_2, outputs=['add_59'])
+        _to_copy_1 = op.Cast(isnan_1, to=1, outputs=['_to_copy_1'])
+        matmul_1 = op.Gemm(mul_18, _to_copy_1, transA=0, transB=1, outputs=['matmul_1'])
+        sub_32 = op.Sub(add_59, matmul_1, outputs=['sub_32'])
+        sub_43 = op.Sub(sub_32, matmul_2, outputs=['sub_43'])
+        clip = op.Clip(sub_43, init1_s1_, outputs=['clip'])
+        _reshape_init1_s_20 = op.Reshape(init1_s_2, init7_s1_1, outputs=['_reshape_init1_s_20'])
+        rsub = op.Sub(_reshape_init1_s_20, _to_copy_2, outputs=['rsub'])
+        bitwise_not = op.Not(isnan_1, outputs=['bitwise_not'])
+        _to_copy_4 = op.Cast(bitwise_not, to=1, outputs=['_to_copy_4'])
+        matmul_3 = op.Gemm(rsub, _to_copy_4, transA=0, transB=1, outputs=['matmul_3'])
+        _reshape_init1_s_30 = op.Reshape(init1_s_3, init7_s1_1, outputs=['_reshape_init1_s_30'])
+        eq_61 = op.Equal(matmul_3, _reshape_init1_s_30, outputs=['eq_61'])
+        index_put_2 = op.Where(eq_61, c_lifted_tensor_2, clip, outputs=['index_put_2'])
+        maximum = op.Max(c_lifted_tensor_3, matmul_3, outputs=['maximum'])
+        div = op.Div(index_put_2, maximum, outputs=['div'])
+        _reshape_init1_s_40 = op.Reshape(init1_s_4, init7_s1_1, outputs=['_reshape_init1_s_40'])
+        _onx_mul_div0 = op.Mul(div, _reshape_init1_s_40, outputs=['_onx_mul_div0'])
+        output_0 = op.Sqrt(_onx_mul_div0, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_dist_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute__donors_idx_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        dist_pot_donors = gr.make_tensor_input('dist_pot_donors')
+        n_neighbors = gr.make_tensor_input('n_neighbors')
+        op = gr.op
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init7_s1_1 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['init7_s1_1'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        _shape_dist_pot_donors0 = op.Shape(dist_pot_donors, end=1, start=0, outputs=['_shape_dist_pot_donors0'])
+        sym_size_int_4 = op.SqueezeAnyOpset(_shape_dist_pot_donors0, outputs=['sym_size_int_4'])
+        unused_topk_values, output_0 = op.TopK(dist_pot_donors, n_neighbors, largest=0, sorted=1, outputs=['unused_topk_values', 'output_0'])
+        arange = op.Range(init7_s_0, sym_size_int_4, init7_s_1, outputs=['arange'])
+        unsqueeze = op.UnsqueezeAnyOpset(arange, init7_s1_1, outputs=['unsqueeze'])
+        _onx_gathernd_dist_pot_donors0 = op.GatherND(dist_pot_donors, unsqueeze, batch_dims=0, outputs=['_onx_gathernd_dist_pot_donors0'])
+        output_1 = op.GatherElements(_onx_gathernd_dist_pot_donors0, output_0, axis=1, outputs=['output_1'])
+        gr.make_tensor_output(output_0)
+        gr.make_tensor_output(output_1)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_0___calc_impute__donors_idx_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute__weights_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        donors_dist = gr.make_tensor_input('donors_dist')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        _shape_donors_dist0 = op.Shape(donors_dist, outputs=['_shape_donors_dist0'])
+        ones_like = op.ConstantOfShape(_shape_donors_dist0, value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['ones_like'])
+        isnan = op.IsNaN(donors_dist, outputs=['isnan'])
+        output_0 = op.Where(isnan, c_lifted_tensor_0, ones_like, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_0___calc_impute__weights_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute__make_new_neights_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        donors_mask = gr.make_tensor_input('donors_mask')
+        donors = gr.make_tensor_input('donors')
+        weight_matrix = gr.make_tensor_input('weight_matrix')
+        op = gr.op
+        _to_copy = op.Cast(donors_mask, to=1, outputs=['_to_copy'])
+        output_0 = op.Mul(_to_copy, weight_matrix, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_0___calc_impute__make_new_neights_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18, 'local_domain': 1}, as_function=True)
+        dist_pot_donors = gr.make_tensor_input('dist_pot_donors')
+        n_neighbors = gr.make_tensor_input('n_neighbors')
+        fit_x_col = gr.make_tensor_input('fit_x_col')
+        mask_fit_x_col = gr.make_tensor_input('mask_fit_x_col')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_1'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        init1_s_ = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        c_torch_knnimputer_columns_0___calc_impute__donors_idx__0, c_torch_knnimputer_columns_0___calc_impute__donors_idx__1 = op.diag_lib_C_TorchKNNImputer_columns_0___calc_impute__donors_idx_default(dist_pot_donors, n_neighbors, domain='local_domain', outputs=['c_torch_knnimputer_columns_0___calc_impute__donors_idx__0', 'c_torch_knnimputer_columns_0___calc_impute__donors_idx__1'])
+        c_torch_knnimputer_columns_0___calc_impute__weights = op.diag_lib_C_TorchKNNImputer_columns_0___calc_impute__weights_default(c_torch_knnimputer_columns_0___calc_impute__donors_idx__1, domain='local_domain', outputs=['c_torch_knnimputer_columns_0___calc_impute__weights'])
+        _reshape_fit_x_col0 = op.Reshape(fit_x_col, init7_s1__1, outputs=['_reshape_fit_x_col0'])
+        take = op.Gather(_reshape_fit_x_col0, c_torch_knnimputer_columns_0___calc_impute__donors_idx__0, outputs=['take'])
+        _reshape_mask_fit_x_col0 = op.Reshape(mask_fit_x_col, init7_s1__1, outputs=['_reshape_mask_fit_x_col0'])
+        take_1 = op.Gather(_reshape_mask_fit_x_col0, c_torch_knnimputer_columns_0___calc_impute__donors_idx__0, outputs=['take_1'])
+        _to_copy = op.Cast(take_1, to=7, outputs=['_to_copy'])
+        sub_12 = op.Sub(c_lifted_tensor_0, _to_copy, outputs=['sub_12'])
+        c_torch_knnimputer_columns_0___calc_impute__make_new_neights = op.diag_lib_C_TorchKNNImputer_columns_0___calc_impute__make_new_neights_default(sub_12, take, c_torch_knnimputer_columns_0___calc_impute__weights, domain='local_domain', outputs=['c_torch_knnimputer_columns_0___calc_impute__make_new_neights'])
+        sum_1 = op.ReduceSumAnyOpset(c_torch_knnimputer_columns_0___calc_impute__make_new_neights, c_lifted_tensor_0, keepdims=1, outputs=['sum_1'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, c_lifted_tensor_0, outputs=['_reshape_init1_s_0'])
+        eq_17 = op.Equal(sum_1, _reshape_init1_s_0, outputs=['eq_17'])
+        where = op.Where(eq_17, c_lifted_tensor_1, sum_1, outputs=['where'])
+        mul_17 = op.Mul(take, c_torch_knnimputer_columns_0___calc_impute__make_new_neights, outputs=['mul_17'])
+        sum_2 = op.ReduceSumAnyOpset(mul_17, c_lifted_tensor_0, keepdims=1, outputs=['sum_2'])
+        div = op.Div(sum_2, where, outputs=['div'])
+        output_0 = op.SqueezeAnyOpset(div, c_lifted_tensor_0, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_0___calc_impute_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_0__default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18, 'local_domain': 1}, as_function=True)
+        x = gr.make_tensor_input('x')
+        dist_chunk = gr.make_tensor_input('dist_chunk')
+        non_missing_fix_x = gr.make_tensor_input('non_missing_fix_x')
+        mask_fit_x = gr.make_tensor_input('mask_fit_x')
+        dist_idx_map = gr.make_tensor_input('dist_idx_map')
+        mask = gr.make_tensor_input('mask')
+        row_missing_idx = gr.make_tensor_input('row_missing_idx')
+        _fit_x = gr.make_tensor_input('_fit_x')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array(3, dtype=np.int64), name='value'), outputs=['c_lifted_tensor_1'])
+        c_lifted_tensor_2 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['c_lifted_tensor_2'])
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        init1_s_ = op.Constant(value=from_array(np.array(1.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        init1_s_2 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_2'])
+        init7_s1_0 = op.Constant(value=from_array(np.array([0], dtype=np.int64), name='value'), outputs=['init7_s1_0'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        select = op.Gather(mask, init7_s_0, axis=1, outputs=['select'])
+        index = op.Gather(select, row_missing_idx, axis=0, outputs=['index'])
+        select_1 = op.Gather(non_missing_fix_x, init7_s_0, axis=1, outputs=['select_1'])
+        _onx_nonzero_select_10 = op.NonZero(select_1, outputs=['_onx_nonzero_select_10'])
+        nonzero_numpy__0 = op.Reshape(_onx_nonzero_select_10, init7_s1__1, outputs=['nonzero_numpy__0'])
+        _shape_getitem_20 = op.Shape(nonzero_numpy__0, end=1, start=0, outputs=['_shape_getitem_20'])
+        sym_size_int_23 = op.SqueezeAnyOpset(_shape_getitem_20, outputs=['sym_size_int_23'])
+        view = op.Reshape(index, init7_s1__1, outputs=['view'])
+        _onx_nonzero_view0 = op.NonZero(view, outputs=['_onx_nonzero_view0'])
+        nonzero_numpy_1__0 = op.Reshape(_onx_nonzero_view0, init7_s1__1, outputs=['nonzero_numpy_1__0'])
+        index_1 = op.Gather(row_missing_idx, nonzero_numpy_1__0, axis=0, outputs=['index_1'])
+        index_2 = op.Gather(dist_idx_map, index_1, axis=0, outputs=['index_2'])
+        index_3 = op.Gather(dist_chunk, index_2, axis=0, outputs=['index_3'])
+        _onx_gather_index_30 = op.Gather(index_3, nonzero_numpy__0, axis=1, outputs=['_onx_gather_index_30'])
+        isnan = op.IsNaN(_onx_gather_index_30, outputs=['isnan'])
+        _onx_cast_isnan0 = op.Cast(isnan, to=6, outputs=['_onx_cast_isnan0'])
+        _onx_reducemin_cast_isnan00 = op.ReduceMinAnyOpset(_onx_cast_isnan0, c_lifted_tensor_2, keepdims=0, outputs=['_onx_reducemin_cast_isnan00'])
+        all_1 = op.Cast(_onx_reducemin_cast_isnan00, to=9, outputs=['all_1'])
+        index_5 = op.Compress(index_1, all_1, axis=0, outputs=['index_5'])
+        select_2 = op.Gather(mask_fit_x, init7_s_0, axis=1, outputs=['select_2'])
+        bitwise_not = op.Not(select_2, outputs=['bitwise_not'])
+        _to_copy = op.Cast(bitwise_not, to=1, outputs=['_to_copy'])
+        sum_1 = op.ReduceSumAnyOpset(_to_copy, keepdims=0, outputs=['sum_1'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, c_lifted_tensor_2, outputs=['_reshape_init1_s_0'])
+        eq_26 = op.Equal(_to_copy, _reshape_init1_s_0, outputs=['eq_26'])
+        select_3 = op.Gather(_fit_x, init7_s_0, axis=1, outputs=['select_3'])
+        index_6 = op.Compress(select_3, eq_26, axis=0, outputs=['index_6'])
+        sum_2 = op.ReduceSumAnyOpset(index_6, keepdims=0, outputs=['sum_2'])
+        gt = op.Greater(sum_1, init1_s_2, outputs=['gt'])
+        where = op.Where(gt, sum_1, c_lifted_tensor_0, outputs=['where'])
+        _reshape__to_copy_20 = op.Reshape(sum_2, c_lifted_tensor_2, outputs=['_reshape__to_copy_20'])
+        div = op.Div(_reshape__to_copy_20, where, outputs=['div'])
+        select_4 = op.Gather(x, init7_s_0, axis=1, outputs=['select_4'])
+        view_1 = op.SqueezeAnyOpset(div, init7_s1_0, outputs=['view_1'])
+        _onx_unsqueeze_index_50 = op.UnsqueezeAnyOpset(index_5, init7_s1__1, outputs=['_onx_unsqueeze_index_50'])
+        _shape_index_502 = op.Shape(index_5, outputs=['_shape_index_502'])
+        _onx_expand_view_10 = op.Expand(view_1, _shape_index_502, outputs=['_onx_expand_view_10'])
+        index_put = op.ScatterND(select_4, _onx_unsqueeze_index_50, _onx_expand_view_10, outputs=['index_put'])
+        _onx_unsqueeze_index_put0 = op.UnsqueezeAnyOpset(index_put, init7_s_1, outputs=['_onx_unsqueeze_index_put0'])
+        _shape_unsqueeze_index_put00 = op.Shape(_onx_unsqueeze_index_put0, outputs=['_shape_unsqueeze_index_put00'])
+        _onx_expand_init7_s1_00 = op.Expand(init7_s1_0, _shape_unsqueeze_index_put00, outputs=['_onx_expand_init7_s1_00'])
+        select_scatter = op.ScatterElements(x, _onx_expand_init7_s1_00, _onx_unsqueeze_index_put0, axis=1, reduction='none', outputs=['select_scatter'])
+        bitwise_not_1 = op.Not(all_1, outputs=['bitwise_not_1'])
+        index_7 = op.Compress(index_1, bitwise_not_1, axis=0, outputs=['index_7'])
+        index_8 = op.Gather(dist_idx_map, index_7, axis=0, outputs=['index_8'])
+        index_9 = op.Gather(dist_chunk, index_8, axis=0, outputs=['index_9'])
+        _onx_gather_index_90 = op.Gather(index_9, nonzero_numpy__0, axis=1, outputs=['_onx_gather_index_90'])
+        lt = op.Less(c_lifted_tensor_1, sym_size_int_23, outputs=['lt'])
+        where_1 = op.Where(lt, c_lifted_tensor_1, sym_size_int_23, outputs=['where_1'])
+        le = op.LessOrEqual(where_1, init7_s_0, outputs=['le'])
+        where_2 = op.Where(le, c_lifted_tensor_2, where_1, outputs=['where_2'])
+        select_6 = op.Gather(_fit_x, init7_s_0, axis=1, outputs=['select_6'])
+        index_11 = op.Gather(select_6, nonzero_numpy__0, axis=0, outputs=['index_11'])
+        select_7 = op.Gather(mask_fit_x, init7_s_0, axis=1, outputs=['select_7'])
+        index_12 = op.Gather(select_7, nonzero_numpy__0, axis=0, outputs=['index_12'])
+        c_torch_knnimputer_columns_0___calc_impute = op.diag_lib_C_TorchKNNImputer_columns_0___calc_impute_default(_onx_gather_index_90, where_2, index_11, index_12, domain='local_domain', outputs=['c_torch_knnimputer_columns_0___calc_impute'])
+        select_9 = op.Gather(select_scatter, init7_s_0, axis=1, outputs=['select_9'])
+        _onx_unsqueeze_index_70 = op.UnsqueezeAnyOpset(index_7, init7_s1__1, outputs=['_onx_unsqueeze_index_70'])
+        index_put_1 = op.ScatterND(select_9, _onx_unsqueeze_index_70, c_torch_knnimputer_columns_0___calc_impute, outputs=['index_put_1'])
+        _onx_unsqueeze_index_put_10 = op.UnsqueezeAnyOpset(index_put_1, init7_s_1, outputs=['_onx_unsqueeze_index_put_10'])
+        _shape_unsqueeze_index_put_100 = op.Shape(_onx_unsqueeze_index_put_10, outputs=['_shape_unsqueeze_index_put_100'])
+        _onx_expand_init7_s1_002 = op.Expand(init7_s1_0, _shape_unsqueeze_index_put_100, outputs=['_onx_expand_init7_s1_002'])
+        output_0 = op.ScatterElements(select_scatter, _onx_expand_init7_s1_002, _onx_unsqueeze_index_put_10, axis=1, reduction='none', outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_0__default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute__donors_idx_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        dist_pot_donors = gr.make_tensor_input('dist_pot_donors')
+        n_neighbors = gr.make_tensor_input('n_neighbors')
+        op = gr.op
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init7_s1_1 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['init7_s1_1'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        _shape_dist_pot_donors0 = op.Shape(dist_pot_donors, end=1, start=0, outputs=['_shape_dist_pot_donors0'])
+        sym_size_int_4 = op.SqueezeAnyOpset(_shape_dist_pot_donors0, outputs=['sym_size_int_4'])
+        unused_topk_values, output_0 = op.TopK(dist_pot_donors, n_neighbors, largest=0, sorted=1, outputs=['unused_topk_values', 'output_0'])
+        arange = op.Range(init7_s_0, sym_size_int_4, init7_s_1, outputs=['arange'])
+        unsqueeze = op.UnsqueezeAnyOpset(arange, init7_s1_1, outputs=['unsqueeze'])
+        _onx_gathernd_dist_pot_donors0 = op.GatherND(dist_pot_donors, unsqueeze, batch_dims=0, outputs=['_onx_gathernd_dist_pot_donors0'])
+        output_1 = op.GatherElements(_onx_gathernd_dist_pot_donors0, output_0, axis=1, outputs=['output_1'])
+        gr.make_tensor_output(output_0)
+        gr.make_tensor_output(output_1)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_1___calc_impute__donors_idx_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute__weights_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        donors_dist = gr.make_tensor_input('donors_dist')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        _shape_donors_dist0 = op.Shape(donors_dist, outputs=['_shape_donors_dist0'])
+        ones_like = op.ConstantOfShape(_shape_donors_dist0, value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['ones_like'])
+        isnan = op.IsNaN(donors_dist, outputs=['isnan'])
+        output_0 = op.Where(isnan, c_lifted_tensor_0, ones_like, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_1___calc_impute__weights_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute__make_new_neights_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        donors_mask = gr.make_tensor_input('donors_mask')
+        donors = gr.make_tensor_input('donors')
+        weight_matrix = gr.make_tensor_input('weight_matrix')
+        op = gr.op
+        _to_copy = op.Cast(donors_mask, to=1, outputs=['_to_copy'])
+        output_0 = op.Mul(_to_copy, weight_matrix, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_1___calc_impute__make_new_neights_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18, 'local_domain': 1}, as_function=True)
+        dist_pot_donors = gr.make_tensor_input('dist_pot_donors')
+        n_neighbors = gr.make_tensor_input('n_neighbors')
+        fit_x_col = gr.make_tensor_input('fit_x_col')
+        mask_fit_x_col = gr.make_tensor_input('mask_fit_x_col')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_1'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        init1_s_ = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        c_torch_knnimputer_columns_1___calc_impute__donors_idx__0, c_torch_knnimputer_columns_1___calc_impute__donors_idx__1 = op.diag_lib_C_TorchKNNImputer_columns_1___calc_impute__donors_idx_default(dist_pot_donors, n_neighbors, domain='local_domain', outputs=['c_torch_knnimputer_columns_1___calc_impute__donors_idx__0', 'c_torch_knnimputer_columns_1___calc_impute__donors_idx__1'])
+        c_torch_knnimputer_columns_1___calc_impute__weights = op.diag_lib_C_TorchKNNImputer_columns_1___calc_impute__weights_default(c_torch_knnimputer_columns_1___calc_impute__donors_idx__1, domain='local_domain', outputs=['c_torch_knnimputer_columns_1___calc_impute__weights'])
+        _reshape_fit_x_col0 = op.Reshape(fit_x_col, init7_s1__1, outputs=['_reshape_fit_x_col0'])
+        take = op.Gather(_reshape_fit_x_col0, c_torch_knnimputer_columns_1___calc_impute__donors_idx__0, outputs=['take'])
+        _reshape_mask_fit_x_col0 = op.Reshape(mask_fit_x_col, init7_s1__1, outputs=['_reshape_mask_fit_x_col0'])
+        take_1 = op.Gather(_reshape_mask_fit_x_col0, c_torch_knnimputer_columns_1___calc_impute__donors_idx__0, outputs=['take_1'])
+        _to_copy = op.Cast(take_1, to=7, outputs=['_to_copy'])
+        sub_12 = op.Sub(c_lifted_tensor_0, _to_copy, outputs=['sub_12'])
+        c_torch_knnimputer_columns_1___calc_impute__make_new_neights = op.diag_lib_C_TorchKNNImputer_columns_1___calc_impute__make_new_neights_default(sub_12, take, c_torch_knnimputer_columns_1___calc_impute__weights, domain='local_domain', outputs=['c_torch_knnimputer_columns_1___calc_impute__make_new_neights'])
+        sum_1 = op.ReduceSumAnyOpset(c_torch_knnimputer_columns_1___calc_impute__make_new_neights, c_lifted_tensor_0, keepdims=1, outputs=['sum_1'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, c_lifted_tensor_0, outputs=['_reshape_init1_s_0'])
+        eq_17 = op.Equal(sum_1, _reshape_init1_s_0, outputs=['eq_17'])
+        where = op.Where(eq_17, c_lifted_tensor_1, sum_1, outputs=['where'])
+        mul_17 = op.Mul(take, c_torch_knnimputer_columns_1___calc_impute__make_new_neights, outputs=['mul_17'])
+        sum_2 = op.ReduceSumAnyOpset(mul_17, c_lifted_tensor_0, keepdims=1, outputs=['sum_2'])
+        div = op.Div(sum_2, where, outputs=['div'])
+        output_0 = op.SqueezeAnyOpset(div, c_lifted_tensor_0, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_1___calc_impute_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_1__default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18, 'local_domain': 1}, as_function=True)
+        x = gr.make_tensor_input('x')
+        dist_chunk = gr.make_tensor_input('dist_chunk')
+        non_missing_fix_x = gr.make_tensor_input('non_missing_fix_x')
+        mask_fit_x = gr.make_tensor_input('mask_fit_x')
+        dist_idx_map = gr.make_tensor_input('dist_idx_map')
+        mask = gr.make_tensor_input('mask')
+        row_missing_idx = gr.make_tensor_input('row_missing_idx')
+        _fit_x = gr.make_tensor_input('_fit_x')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array(3, dtype=np.int64), name='value'), outputs=['c_lifted_tensor_1'])
+        c_lifted_tensor_2 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['c_lifted_tensor_2'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init1_s_ = op.Constant(value=from_array(np.array(1.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        init1_s_2 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_2'])
+        init7_s1_0 = op.Constant(value=from_array(np.array([0], dtype=np.int64), name='value'), outputs=['init7_s1_0'])
+        select = op.Gather(mask, init7_s_1, axis=1, outputs=['select'])
+        index = op.Gather(select, row_missing_idx, axis=0, outputs=['index'])
+        select_1 = op.Gather(non_missing_fix_x, init7_s_1, axis=1, outputs=['select_1'])
+        _onx_nonzero_select_10 = op.NonZero(select_1, outputs=['_onx_nonzero_select_10'])
+        nonzero_numpy__0 = op.Reshape(_onx_nonzero_select_10, init7_s1__1, outputs=['nonzero_numpy__0'])
+        _shape_getitem_20 = op.Shape(nonzero_numpy__0, end=1, start=0, outputs=['_shape_getitem_20'])
+        sym_size_int_23 = op.SqueezeAnyOpset(_shape_getitem_20, outputs=['sym_size_int_23'])
+        view = op.Reshape(index, init7_s1__1, outputs=['view'])
+        _onx_nonzero_view0 = op.NonZero(view, outputs=['_onx_nonzero_view0'])
+        nonzero_numpy_1__0 = op.Reshape(_onx_nonzero_view0, init7_s1__1, outputs=['nonzero_numpy_1__0'])
+        index_1 = op.Gather(row_missing_idx, nonzero_numpy_1__0, axis=0, outputs=['index_1'])
+        index_2 = op.Gather(dist_idx_map, index_1, axis=0, outputs=['index_2'])
+        index_3 = op.Gather(dist_chunk, index_2, axis=0, outputs=['index_3'])
+        _onx_gather_index_30 = op.Gather(index_3, nonzero_numpy__0, axis=1, outputs=['_onx_gather_index_30'])
+        isnan = op.IsNaN(_onx_gather_index_30, outputs=['isnan'])
+        _onx_cast_isnan0 = op.Cast(isnan, to=6, outputs=['_onx_cast_isnan0'])
+        _onx_reducemin_cast_isnan00 = op.ReduceMinAnyOpset(_onx_cast_isnan0, c_lifted_tensor_2, keepdims=0, outputs=['_onx_reducemin_cast_isnan00'])
+        all_1 = op.Cast(_onx_reducemin_cast_isnan00, to=9, outputs=['all_1'])
+        index_5 = op.Compress(index_1, all_1, axis=0, outputs=['index_5'])
+        select_2 = op.Gather(mask_fit_x, init7_s_1, axis=1, outputs=['select_2'])
+        bitwise_not = op.Not(select_2, outputs=['bitwise_not'])
+        _to_copy = op.Cast(bitwise_not, to=1, outputs=['_to_copy'])
+        sum_1 = op.ReduceSumAnyOpset(_to_copy, keepdims=0, outputs=['sum_1'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, c_lifted_tensor_2, outputs=['_reshape_init1_s_0'])
+        eq_26 = op.Equal(_to_copy, _reshape_init1_s_0, outputs=['eq_26'])
+        select_3 = op.Gather(_fit_x, init7_s_1, axis=1, outputs=['select_3'])
+        index_6 = op.Compress(select_3, eq_26, axis=0, outputs=['index_6'])
+        sum_2 = op.ReduceSumAnyOpset(index_6, keepdims=0, outputs=['sum_2'])
+        gt = op.Greater(sum_1, init1_s_2, outputs=['gt'])
+        where = op.Where(gt, sum_1, c_lifted_tensor_0, outputs=['where'])
+        _reshape__to_copy_20 = op.Reshape(sum_2, c_lifted_tensor_2, outputs=['_reshape__to_copy_20'])
+        div = op.Div(_reshape__to_copy_20, where, outputs=['div'])
+        select_4 = op.Gather(x, init7_s_1, axis=1, outputs=['select_4'])
+        view_1 = op.SqueezeAnyOpset(div, init7_s1_0, outputs=['view_1'])
+        _onx_unsqueeze_index_50 = op.UnsqueezeAnyOpset(index_5, init7_s1__1, outputs=['_onx_unsqueeze_index_50'])
+        _shape_index_502 = op.Shape(index_5, outputs=['_shape_index_502'])
+        _onx_expand_view_10 = op.Expand(view_1, _shape_index_502, outputs=['_onx_expand_view_10'])
+        index_put = op.ScatterND(select_4, _onx_unsqueeze_index_50, _onx_expand_view_10, outputs=['index_put'])
+        _onx_unsqueeze_index_put0 = op.UnsqueezeAnyOpset(index_put, init7_s_1, outputs=['_onx_unsqueeze_index_put0'])
+        _shape_unsqueeze_index_put00 = op.Shape(_onx_unsqueeze_index_put0, outputs=['_shape_unsqueeze_index_put00'])
+        _onx_expand_c_lifted_tensor_20 = op.Expand(c_lifted_tensor_2, _shape_unsqueeze_index_put00, outputs=['_onx_expand_c_lifted_tensor_20'])
+        select_scatter = op.ScatterElements(x, _onx_expand_c_lifted_tensor_20, _onx_unsqueeze_index_put0, axis=1, reduction='none', outputs=['select_scatter'])
+        bitwise_not_1 = op.Not(all_1, outputs=['bitwise_not_1'])
+        index_7 = op.Compress(index_1, bitwise_not_1, axis=0, outputs=['index_7'])
+        index_8 = op.Gather(dist_idx_map, index_7, axis=0, outputs=['index_8'])
+        index_9 = op.Gather(dist_chunk, index_8, axis=0, outputs=['index_9'])
+        _onx_gather_index_90 = op.Gather(index_9, nonzero_numpy__0, axis=1, outputs=['_onx_gather_index_90'])
+        lt = op.Less(c_lifted_tensor_1, sym_size_int_23, outputs=['lt'])
+        where_1 = op.Where(lt, c_lifted_tensor_1, sym_size_int_23, outputs=['where_1'])
+        le = op.LessOrEqual(where_1, init7_s_0, outputs=['le'])
+        where_2 = op.Where(le, c_lifted_tensor_2, where_1, outputs=['where_2'])
+        select_6 = op.Gather(_fit_x, init7_s_1, axis=1, outputs=['select_6'])
+        index_11 = op.Gather(select_6, nonzero_numpy__0, axis=0, outputs=['index_11'])
+        select_7 = op.Gather(mask_fit_x, init7_s_1, axis=1, outputs=['select_7'])
+        index_12 = op.Gather(select_7, nonzero_numpy__0, axis=0, outputs=['index_12'])
+        c_torch_knnimputer_columns_1___calc_impute = op.diag_lib_C_TorchKNNImputer_columns_1___calc_impute_default(_onx_gather_index_90, where_2, index_11, index_12, domain='local_domain', outputs=['c_torch_knnimputer_columns_1___calc_impute'])
+        select_9 = op.Gather(select_scatter, init7_s_1, axis=1, outputs=['select_9'])
+        _onx_unsqueeze_index_70 = op.UnsqueezeAnyOpset(index_7, init7_s1__1, outputs=['_onx_unsqueeze_index_70'])
+        index_put_1 = op.ScatterND(select_9, _onx_unsqueeze_index_70, c_torch_knnimputer_columns_1___calc_impute, outputs=['index_put_1'])
+        _onx_unsqueeze_index_put_10 = op.UnsqueezeAnyOpset(index_put_1, init7_s_1, outputs=['_onx_unsqueeze_index_put_10'])
+        _shape_unsqueeze_index_put_100 = op.Shape(_onx_unsqueeze_index_put_10, outputs=['_shape_unsqueeze_index_put_100'])
+        _onx_expand_c_lifted_tensor_202 = op.Expand(c_lifted_tensor_2, _shape_unsqueeze_index_put_100, outputs=['_onx_expand_c_lifted_tensor_202'])
+        output_0 = op.ScatterElements(select_scatter, _onx_expand_c_lifted_tensor_202, _onx_unsqueeze_index_put_10, axis=1, reduction='none', outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_1__default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute__donors_idx_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        dist_pot_donors = gr.make_tensor_input('dist_pot_donors')
+        n_neighbors = gr.make_tensor_input('n_neighbors')
+        op = gr.op
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init7_s1_1 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['init7_s1_1'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        _shape_dist_pot_donors0 = op.Shape(dist_pot_donors, end=1, start=0, outputs=['_shape_dist_pot_donors0'])
+        sym_size_int_4 = op.SqueezeAnyOpset(_shape_dist_pot_donors0, outputs=['sym_size_int_4'])
+        unused_topk_values, output_0 = op.TopK(dist_pot_donors, n_neighbors, largest=0, sorted=1, outputs=['unused_topk_values', 'output_0'])
+        arange = op.Range(init7_s_0, sym_size_int_4, init7_s_1, outputs=['arange'])
+        unsqueeze = op.UnsqueezeAnyOpset(arange, init7_s1_1, outputs=['unsqueeze'])
+        _onx_gathernd_dist_pot_donors0 = op.GatherND(dist_pot_donors, unsqueeze, batch_dims=0, outputs=['_onx_gathernd_dist_pot_donors0'])
+        output_1 = op.GatherElements(_onx_gathernd_dist_pot_donors0, output_0, axis=1, outputs=['output_1'])
+        gr.make_tensor_output(output_0)
+        gr.make_tensor_output(output_1)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_2___calc_impute__donors_idx_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute__weights_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        donors_dist = gr.make_tensor_input('donors_dist')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        _shape_donors_dist0 = op.Shape(donors_dist, outputs=['_shape_donors_dist0'])
+        ones_like = op.ConstantOfShape(_shape_donors_dist0, value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['ones_like'])
+        isnan = op.IsNaN(donors_dist, outputs=['isnan'])
+        output_0 = op.Where(isnan, c_lifted_tensor_0, ones_like, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_2___calc_impute__weights_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute__make_new_neights_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18}, as_function=True)
+        donors_mask = gr.make_tensor_input('donors_mask')
+        donors = gr.make_tensor_input('donors')
+        weight_matrix = gr.make_tensor_input('weight_matrix')
+        op = gr.op
+        _to_copy = op.Cast(donors_mask, to=1, outputs=['_to_copy'])
+        output_0 = op.Mul(_to_copy, weight_matrix, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_2___calc_impute__make_new_neights_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute_default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18, 'local_domain': 1}, as_function=True)
+        dist_pot_donors = gr.make_tensor_input('dist_pot_donors')
+        n_neighbors = gr.make_tensor_input('n_neighbors')
+        fit_x_col = gr.make_tensor_input('fit_x_col')
+        mask_fit_x_col = gr.make_tensor_input('mask_fit_x_col')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_1'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        init1_s_ = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        c_torch_knnimputer_columns_2___calc_impute__donors_idx__0, c_torch_knnimputer_columns_2___calc_impute__donors_idx__1 = op.diag_lib_C_TorchKNNImputer_columns_2___calc_impute__donors_idx_default(dist_pot_donors, n_neighbors, domain='local_domain', outputs=['c_torch_knnimputer_columns_2___calc_impute__donors_idx__0', 'c_torch_knnimputer_columns_2___calc_impute__donors_idx__1'])
+        c_torch_knnimputer_columns_2___calc_impute__weights = op.diag_lib_C_TorchKNNImputer_columns_2___calc_impute__weights_default(c_torch_knnimputer_columns_2___calc_impute__donors_idx__1, domain='local_domain', outputs=['c_torch_knnimputer_columns_2___calc_impute__weights'])
+        _reshape_fit_x_col0 = op.Reshape(fit_x_col, init7_s1__1, outputs=['_reshape_fit_x_col0'])
+        take = op.Gather(_reshape_fit_x_col0, c_torch_knnimputer_columns_2___calc_impute__donors_idx__0, outputs=['take'])
+        _reshape_mask_fit_x_col0 = op.Reshape(mask_fit_x_col, init7_s1__1, outputs=['_reshape_mask_fit_x_col0'])
+        take_1 = op.Gather(_reshape_mask_fit_x_col0, c_torch_knnimputer_columns_2___calc_impute__donors_idx__0, outputs=['take_1'])
+        _to_copy = op.Cast(take_1, to=7, outputs=['_to_copy'])
+        sub_12 = op.Sub(c_lifted_tensor_0, _to_copy, outputs=['sub_12'])
+        c_torch_knnimputer_columns_2___calc_impute__make_new_neights = op.diag_lib_C_TorchKNNImputer_columns_2___calc_impute__make_new_neights_default(sub_12, take, c_torch_knnimputer_columns_2___calc_impute__weights, domain='local_domain', outputs=['c_torch_knnimputer_columns_2___calc_impute__make_new_neights'])
+        sum_1 = op.ReduceSumAnyOpset(c_torch_knnimputer_columns_2___calc_impute__make_new_neights, c_lifted_tensor_0, keepdims=1, outputs=['sum_1'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, c_lifted_tensor_0, outputs=['_reshape_init1_s_0'])
+        eq_17 = op.Equal(sum_1, _reshape_init1_s_0, outputs=['eq_17'])
+        where = op.Where(eq_17, c_lifted_tensor_1, sum_1, outputs=['where'])
+        mul_17 = op.Mul(take, c_torch_knnimputer_columns_2___calc_impute__make_new_neights, outputs=['mul_17'])
+        sum_2 = op.ReduceSumAnyOpset(mul_17, c_lifted_tensor_0, keepdims=1, outputs=['sum_2'])
+        div = op.Div(sum_2, where, outputs=['div'])
+        output_0 = op.SqueezeAnyOpset(div, c_lifted_tensor_0, outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_2___calc_impute_default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_local_domain_diag_lib_C_TorchKNNImputer_columns_2__default(g: "GraphBuilder"):
+        gr = GraphBuilder({'': 18, 'local_domain': 1}, as_function=True)
+        x = gr.make_tensor_input('x')
+        dist_chunk = gr.make_tensor_input('dist_chunk')
+        non_missing_fix_x = gr.make_tensor_input('non_missing_fix_x')
+        mask_fit_x = gr.make_tensor_input('mask_fit_x')
+        dist_idx_map = gr.make_tensor_input('dist_idx_map')
+        mask = gr.make_tensor_input('mask')
+        row_missing_idx = gr.make_tensor_input('row_missing_idx')
+        _fit_x = gr.make_tensor_input('_fit_x')
+        op = gr.op
+        c_lifted_tensor_0 = op.Constant(value=from_array(np.array([1.0], dtype=np.float32), name='value'), outputs=['c_lifted_tensor_0'])
+        c_lifted_tensor_1 = op.Constant(value=from_array(np.array(3, dtype=np.int64), name='value'), outputs=['c_lifted_tensor_1'])
+        c_lifted_tensor_2 = op.Constant(value=from_array(np.array([1], dtype=np.int64), name='value'), outputs=['c_lifted_tensor_2'])
+        init7_s_2 = op.Constant(value=from_array(np.array(2, dtype=np.int64), name='value'), outputs=['init7_s_2'])
+        init7_s1__1 = op.Constant(value=from_array(np.array([-1], dtype=np.int64), name='value'), outputs=['init7_s1__1'])
+        init7_s_0 = op.Constant(value=from_array(np.array(0, dtype=np.int64), name='value'), outputs=['init7_s_0'])
+        init1_s_ = op.Constant(value=from_array(np.array(1.0, dtype=np.float32), name='value'), outputs=['init1_s_'])
+        init1_s_2 = op.Constant(value=from_array(np.array(0.0, dtype=np.float32), name='value'), outputs=['init1_s_2'])
+        init7_s1_0 = op.Constant(value=from_array(np.array([0], dtype=np.int64), name='value'), outputs=['init7_s1_0'])
+        init7_s_1 = op.Constant(value=from_array(np.array(1, dtype=np.int64), name='value'), outputs=['init7_s_1'])
+        init7_s1_2 = op.Constant(value=from_array(np.array([2], dtype=np.int64), name='value'), outputs=['init7_s1_2'])
+        select = op.Gather(mask, init7_s_2, axis=1, outputs=['select'])
+        index = op.Gather(select, row_missing_idx, axis=0, outputs=['index'])
+        select_1 = op.Gather(non_missing_fix_x, init7_s_2, axis=1, outputs=['select_1'])
+        _onx_nonzero_select_10 = op.NonZero(select_1, outputs=['_onx_nonzero_select_10'])
+        nonzero_numpy__0 = op.Reshape(_onx_nonzero_select_10, init7_s1__1, outputs=['nonzero_numpy__0'])
+        _shape_getitem_20 = op.Shape(nonzero_numpy__0, end=1, start=0, outputs=['_shape_getitem_20'])
+        sym_size_int_23 = op.SqueezeAnyOpset(_shape_getitem_20, outputs=['sym_size_int_23'])
+        view = op.Reshape(index, init7_s1__1, outputs=['view'])
+        _onx_nonzero_view0 = op.NonZero(view, outputs=['_onx_nonzero_view0'])
+        nonzero_numpy_1__0 = op.Reshape(_onx_nonzero_view0, init7_s1__1, outputs=['nonzero_numpy_1__0'])
+        index_1 = op.Gather(row_missing_idx, nonzero_numpy_1__0, axis=0, outputs=['index_1'])
+        index_2 = op.Gather(dist_idx_map, index_1, axis=0, outputs=['index_2'])
+        index_3 = op.Gather(dist_chunk, index_2, axis=0, outputs=['index_3'])
+        _onx_gather_index_30 = op.Gather(index_3, nonzero_numpy__0, axis=1, outputs=['_onx_gather_index_30'])
+        isnan = op.IsNaN(_onx_gather_index_30, outputs=['isnan'])
+        _onx_cast_isnan0 = op.Cast(isnan, to=6, outputs=['_onx_cast_isnan0'])
+        _onx_reducemin_cast_isnan00 = op.ReduceMinAnyOpset(_onx_cast_isnan0, c_lifted_tensor_2, keepdims=0, outputs=['_onx_reducemin_cast_isnan00'])
+        all_1 = op.Cast(_onx_reducemin_cast_isnan00, to=9, outputs=['all_1'])
+        index_5 = op.Compress(index_1, all_1, axis=0, outputs=['index_5'])
+        select_2 = op.Gather(mask_fit_x, init7_s_2, axis=1, outputs=['select_2'])
+        bitwise_not = op.Not(select_2, outputs=['bitwise_not'])
+        _to_copy = op.Cast(bitwise_not, to=1, outputs=['_to_copy'])
+        sum_1 = op.ReduceSumAnyOpset(_to_copy, keepdims=0, outputs=['sum_1'])
+        _reshape_init1_s_0 = op.Reshape(init1_s_, c_lifted_tensor_2, outputs=['_reshape_init1_s_0'])
+        eq_26 = op.Equal(_to_copy, _reshape_init1_s_0, outputs=['eq_26'])
+        select_3 = op.Gather(_fit_x, init7_s_2, axis=1, outputs=['select_3'])
+        index_6 = op.Compress(select_3, eq_26, axis=0, outputs=['index_6'])
+        sum_2 = op.ReduceSumAnyOpset(index_6, keepdims=0, outputs=['sum_2'])
+        gt = op.Greater(sum_1, init1_s_2, outputs=['gt'])
+        where = op.Where(gt, sum_1, c_lifted_tensor_0, outputs=['where'])
+        _reshape__to_copy_20 = op.Reshape(sum_2, c_lifted_tensor_2, outputs=['_reshape__to_copy_20'])
+        div = op.Div(_reshape__to_copy_20, where, outputs=['div'])
+        select_4 = op.Gather(x, init7_s_2, axis=1, outputs=['select_4'])
+        view_1 = op.SqueezeAnyOpset(div, init7_s1_0, outputs=['view_1'])
+        _onx_unsqueeze_index_50 = op.UnsqueezeAnyOpset(index_5, init7_s1__1, outputs=['_onx_unsqueeze_index_50'])
+        _shape_index_502 = op.Shape(index_5, outputs=['_shape_index_502'])
+        _onx_expand_view_10 = op.Expand(view_1, _shape_index_502, outputs=['_onx_expand_view_10'])
+        index_put = op.ScatterND(select_4, _onx_unsqueeze_index_50, _onx_expand_view_10, outputs=['index_put'])
+        _onx_unsqueeze_index_put0 = op.UnsqueezeAnyOpset(index_put, init7_s_1, outputs=['_onx_unsqueeze_index_put0'])
+        _shape_unsqueeze_index_put00 = op.Shape(_onx_unsqueeze_index_put0, outputs=['_shape_unsqueeze_index_put00'])
+        _onx_expand_init7_s1_20 = op.Expand(init7_s1_2, _shape_unsqueeze_index_put00, outputs=['_onx_expand_init7_s1_20'])
+        select_scatter = op.ScatterElements(x, _onx_expand_init7_s1_20, _onx_unsqueeze_index_put0, axis=1, reduction='none', outputs=['select_scatter'])
+        bitwise_not_1 = op.Not(all_1, outputs=['bitwise_not_1'])
+        index_7 = op.Compress(index_1, bitwise_not_1, axis=0, outputs=['index_7'])
+        index_8 = op.Gather(dist_idx_map, index_7, axis=0, outputs=['index_8'])
+        index_9 = op.Gather(dist_chunk, index_8, axis=0, outputs=['index_9'])
+        _onx_gather_index_90 = op.Gather(index_9, nonzero_numpy__0, axis=1, outputs=['_onx_gather_index_90'])
+        lt = op.Less(c_lifted_tensor_1, sym_size_int_23, outputs=['lt'])
+        where_1 = op.Where(lt, c_lifted_tensor_1, sym_size_int_23, outputs=['where_1'])
+        le = op.LessOrEqual(where_1, init7_s_0, outputs=['le'])
+        where_2 = op.Where(le, c_lifted_tensor_2, where_1, outputs=['where_2'])
+        select_6 = op.Gather(_fit_x, init7_s_2, axis=1, outputs=['select_6'])
+        index_11 = op.Gather(select_6, nonzero_numpy__0, axis=0, outputs=['index_11'])
+        select_7 = op.Gather(mask_fit_x, init7_s_2, axis=1, outputs=['select_7'])
+        index_12 = op.Gather(select_7, nonzero_numpy__0, axis=0, outputs=['index_12'])
+        c_torch_knnimputer_columns_2___calc_impute = op.diag_lib_C_TorchKNNImputer_columns_2___calc_impute_default(_onx_gather_index_90, where_2, index_11, index_12, domain='local_domain', outputs=['c_torch_knnimputer_columns_2___calc_impute'])
+        select_9 = op.Gather(select_scatter, init7_s_2, axis=1, outputs=['select_9'])
+        _onx_unsqueeze_index_70 = op.UnsqueezeAnyOpset(index_7, init7_s1__1, outputs=['_onx_unsqueeze_index_70'])
+        index_put_1 = op.ScatterND(select_9, _onx_unsqueeze_index_70, c_torch_knnimputer_columns_2___calc_impute, outputs=['index_put_1'])
+        _onx_unsqueeze_index_put_10 = op.UnsqueezeAnyOpset(index_put_1, init7_s_1, outputs=['_onx_unsqueeze_index_put_10'])
+        _shape_unsqueeze_index_put_100 = op.Shape(_onx_unsqueeze_index_put_10, outputs=['_shape_unsqueeze_index_put_100'])
+        _onx_expand_init7_s1_202 = op.Expand(init7_s1_2, _shape_unsqueeze_index_put_100, outputs=['_onx_expand_init7_s1_202'])
+        output_0 = op.ScatterElements(select_scatter, _onx_expand_init7_s1_202, _onx_unsqueeze_index_put_10, axis=1, reduction='none', outputs=['output_0'])
+        gr.make_tensor_output(output_0)
+        opts = FunctionOptions(        name='diag_lib_C_TorchKNNImputer_columns_2__default',        domain='local_domain',        move_initializer_to_constant=True,    )
+        g.make_local_function(gr, opts, optimize=False)
+        return gr
+
+
+    def make_my_model() -> "ModelProto":
+        g = GraphBuilder({'': 18, 'local_domain': 1}, ir_version=8)
+        g.make_tensor_input("_mask_fit_x", TensorProto.BOOL, ('u5', 3))
+        g.make_tensor_input("_valid_mask", TensorProto.BOOL, (3,))
+        g.make_tensor_input("_fit_x", TensorProto.FLOAT, ('s1', 3))
+        g.make_tensor_input("x", TensorProto.FLOAT, ('u5', 3))
+        experiment(g.op, "_mask_fit_x", "_valid_mask", "_fit_x", "x")
+        g.make_tensor_output("output_0", TensorProto.FLOAT, ('u5', 'u4'), is_dimension=False, indexed=False)
+        make_local_domain_diag_lib_C_TorchKNNImputer__make_dict_idx_map_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_dist_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute__donors_idx_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute__weights_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute__make_new_neights_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_0___calc_impute_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_0__default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute__donors_idx_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute__weights_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute__make_new_neights_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_1___calc_impute_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_1__default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute__donors_idx_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute__weights_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute__make_new_neights_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_2___calc_impute_default(g)
+        make_local_domain_diag_lib_C_TorchKNNImputer_columns_2__default(g)
+        model = g.to_onnx()
+        return model
+
+
+    model = make_my_model()
+
+
+    feeds = {'_mask_fit_x': np.array([[ True, False, False],
+           [False,  True, False],
+           [False, False,  True],
+           [ True, False, False],
+           [False,  True, False]]), '_valid_mask': np.array([ True,  True,  True]), '_fit_x': np.array([[        np.nan,  0.9263077 ,  0.6800124 ],
+           [ 1.0336283 ,         np.nan,  0.2715131 ],
+           [ 1.2861245 , -0.23084506,         np.nan],
+           [        np.nan, -1.2762109 ,  0.13117996],
+           [ 0.11648158,         np.nan,  0.26544973]], dtype=np.float32), 'x': np.array([[ 1.0872185 , -1.261754  ,  0.24822578],
+           [        np.nan,  0.4458086 , -1.2708728 ],
+           [ 1.6580596 ,         np.nan, -0.05212234],
+           [-0.70086735,  0.0613765 ,         np.nan],
+           [        np.nan, -0.09855065,  0.3675445 ],
+           [ 0.2365437 ,         np.nan,  0.02086466],
+           [ 0.62819767, -2.050317  ,         np.nan],
+           [        np.nan, -2.4170523 ,  0.20669042],
+           [-0.1912608 ,         np.nan,  0.47285587],
+           [ 0.41487983, -0.817751  ,         np.nan]], dtype=np.float32)}
+    expected = np.array([[ 1.08721852, -1.26175404,  0.24822578],
+           [ 0.81207813,  0.44580859, -1.27087283],
+           [ 1.6580596 , -0.19358276, -0.05212234],
+           [-0.70086735,  0.0613765 ,  0.3588807 ],
+           [ 0.81207813, -0.09855065,  0.3675445 ],
+           [ 0.2365437 , -0.19358276,  0.02086466],
+           [ 0.62819767, -2.05031705,  0.22271427],
+           [ 0.81207813, -2.41705227,  0.20669042],
+           [-0.1912608 , -0.19358276,  0.47285587],
+           [ 0.41487983, -0.81775099,  0.22271427]])
+    ref = ExtendedReferenceEvaluator(model)
+    got = ref.run(None, feeds)
+    print("disrepancies:", max_diff(expected, got[0]))
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 778-779
+
+Let's finally check it produces the same results.
+
+.. GENERATED FROM PYTHON SOURCE LINES 779-782
+
+.. code-block:: Python
+
+    with open("_plot_torch_sklearn_201_knnpy.py", "w") as f:
+        f.write(code)
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 783-784
+
+Let's run it...
+
+.. GENERATED FROM PYTHON SOURCE LINES 784-785
+
+.. code-block:: Python
+
+    subprocess.run([sys.executable, "_plot_torch_sklearn_201_knnpy.py"])
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    CompletedProcess(args=['/home/xadupre/vv/this312/bin/python', '_plot_torch_sklearn_201_knnpy.py'], returncode=0)
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 18.881 seconds)
+   **Total running time of the script:** (0 minutes 28.330 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_sklearn_201.py:

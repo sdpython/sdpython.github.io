@@ -146,6 +146,8 @@ Let's defined the dynamic shapes and checks it exports.
 
  .. code-block:: none
 
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+      torch._C._set_onednn_allow_tf32(_allow_tf32)
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, s1, s2]"):
@@ -199,6 +201,10 @@ We can also inline the local function.
 
  .. code-block:: none
 
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+      torch._C._set_onednn_allow_tf32(_allow_tf32)
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+      torch._C._set_onednn_allow_tf32(_allow_tf32)
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['batch', 'seq_len', 'num_frames']
     init: name='init7_s_3' type=int64 shape=() -- array([3])              -- shape_type_compute._cast_inputs.1(add)
@@ -291,7 +297,7 @@ And visually.
 .. code-block:: Python
 
 
-    plot_dot(onx)
+    plot_dot(onx, figsize=(10, 12))
 
 
 
@@ -307,7 +313,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.585 seconds)
+   **Total running time of the script:** (0 minutes 1.209 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_dynpad.py:
