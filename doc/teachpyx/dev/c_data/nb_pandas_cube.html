@@ -1,0 +1,3614 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="Mesures de vitesse sur les dataframes" href="nb_dataframe_matrix_speed.html" /><link rel="prev" title="Manipulation de données avec pandas (exercices)" href="nb_pandas.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Cube de données et pandas - Documentation teachpyx 0.5.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Documentation teachpyx 0.5.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.5.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../py/index.html">Le langage Python</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Le langage Python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_lang/index.html">Variables et fonctions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Variables et fonctions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_classes/index.html">Classes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Classes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_exception/index.html">Exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_module/index.html">Entrées, Sorties, Modules</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Entrées, Sorties, Modules</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../py/c_module/serialization.html">Sérialisation</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Sérialisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_regex/index.html">Expressions régulières</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Expressions régulières</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_parallelisation/index.html">Parallélisation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Parallélisation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../py/c_gui/index.html">Interfaces graphiques</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Interfaces graphiques</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Matrices et DataFrames</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Matrices et DataFrames</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="matrices.html">Calcul matriciel</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Calcul matriciel</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_numpy.html">Calcul matriciel avec numpy (exercices)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="numpy_broadcast.html">Numpy et tableau de contingence</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="dataframes.html">Dataframes</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Dataframes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_pandas.html">Manipulation de données avec pandas (exercices)</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Cube de données et pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nb_dataframe_matrix_speed.html">Mesures de vitesse sur les dataframes</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="graphes.html">Graphes</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Graphes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="enedis_cartes.html">Tracer une carte en Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_ml/index.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_ml/rappel.html">Quelques rappels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_ml/regclass.html">Classification et régression</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_resume/index.html">Précis</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Précis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../c_resume/cheat_sheet.html">Cheat Sheets</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Cheat Sheets</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/git.html">Cheat Sheet on Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/linux.html">Cheat Sheet on Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../c_resume/jenkins.html">Cheat Sheet on Jenkins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2025/2025-04-01-route2025.html">2025-04-01 : feuille de route 2025 - avril</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2025/2025-03-01-route2025.html">2025-03-01 : feuille de route 2025 - mars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2025/2025-01-31-local_llm.html">2025-01-31 : local LLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2024/2024-11-31-route2024.html">2024-11-31 : rappel feuille de route 2024</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2024/2024-09-04-ensae.html">2024-09-04 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2024/2024-03-01-route2024.html">2024-03-01 : feuille de route 2024</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2024/2024-01-18-wsl.html">2024-01-18 : WSL - nettoyage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2023/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022/2022-11-31-route2022.html">2022-11-31 : rappel feuille de route 2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2022/2022-01-01-assurance.html">2022 - Assurance auto</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_python.html">Exercices sur le langage python</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Exercices sur le langage python</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_hash.html">Répartition, table de hashage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classes_metro.html">Un bref aperçu des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classes_2048.html">2048 et les classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_de.html">Jeu de dé, rotation sur un circuit (classes)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_permutation.html">Classe Permutation et décomposition en transitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_tree.html">Une classe pour représenter un arbre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_iterateur.html">Itérateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/classe_user_p.html">Classe, Héritage, calcule d’une distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/dame_prise.html">Exercices autour des dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_example.html">Exemple de profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profile_gini.html">Profiling la fonction Gini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/profiling_conv.html">Profiling, application à la convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_regex.html">Expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_json_xml.html">JSON - XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/exercice_serialisation_json.html">Sérialisation avec JSON, XML, pickle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/tests_unitaires.html">Tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/py-base/scrapping.html">Web-Scraping - pokemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/premiers_pas.html">Premiers pas en Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/trie.html">Arbre et Trie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-base/trie_correction.html">Arbre et Trie (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_algo.html">Algorithmes</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Algorithmes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_suffix.html">Jeux de dictionnaires, plus grand suffixe commun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_editdist.html">Distance entre deux mots de même longueur et tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_ordonnancement.html">Problème d’ordonnancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_tsp.html">TSP - Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/tsp_simplifie.html">Plus court chemin passant par tous les noeuds d’un graphe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/tsp_aparte.html">Aparté sur le voyageur de commerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_compose_connexe.html">Graphe et Composantes connexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_random_graph.html">Graphes aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid_simple.html">Modèle épidémiologique (SIRD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/plus_court_chemin.html">Programmation dynamique et plus court chemin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/decorrelation.html">Décorrélation de variables aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/knn_high_dimension_correction.html">Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/plus_court_chemin_correction.html">Programmation dynamique et plus court chemin (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/decorrelation_correction.html">Décorrélation de variables aléatoires - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/tds-algo/graph_spectral_clustering_correction.html">Spectral Clustering - correction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_exam.html">Séances minutées</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Séances minutées</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/exams.html">Exercices minutés</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of Exercices minutés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023-2024.html">1A - Enoncé 8 novembre 2023-2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2023-2024_rattrapage.html">1A - Enoncé 2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/td_note_2024.html">1A - Enoncé 6 novembre 2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/enonce_ml_2017.html">Evaluation Python / Machine Learning année 2017 - énoncé</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/exams/enonce_ml_2017_correction.html">Evaluation Python / Machine Learning année 2017 - solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_data.html">Numpy / Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of Numpy / Pandas</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/index_ml.html">Machine Learning</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of Machine Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/ml_features_model.html">Features ou modèle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/wines_acp.html">ACP - projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_knn_split.html">Base d’apprentissage et de test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_knn_split_strat.html">Découpage stratifié apprentissage / test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_knn_cross_val.html">Validation croisée (cross-validation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_knn_hyper.html">Sélection des hyper-paramètres</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/ml_a_tree_overfitting.html">Tree, hyperparamètres, overfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/gradient_boosting.html">Gradient Boosting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/ridge_lasso.html">Régression Ridge, Lasso et nouvel estimateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_reg.html">Prédiction de la note des vins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_reg_poly.html">Régression polynômiale et pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_knn.html">Plus proches voisins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesr_knn_eval.html">Plus proches voisins - évaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_color.html">Régression logistique et courbe ROC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_color_line.html">Régression logistique en 2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_color_linear.html">Plusieurs modèles, données disjointes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_color_roc.html">Classifications et courbes ROC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_multi.html">Classification multi-classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/winesc_multi_stacking.html">Classification multi-classe et stacking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/artificiel_multiclass.html">Classification multi-classe et jeu mal balancé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/custom_estimator.html">Un nouvel estimateur basé sur scikit-learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/timeseries_ssa.html">Single Spectrum Analysis (SSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/pretraitement_cat.html">Prétraitement des catégories ou des dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/pretraitement_image.html">Prétraitement d’une image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/pretraitement_son.html">Prétraitement du son</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../practice/ml/pretraitement_texte.html">Prétraitement du texte</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../practice/years/index.html">Notebooks écrits durant les séances</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of Notebooks écrits durant les séances</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../practice/years/2023/index.html">2023</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of 2023</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/editdist.html">Distance d’édition (4 octobre)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/pivot_gauss.html">Pivot de Gauss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/prefix_search.html">Recherche de préfixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2023/bareme_note_optimisation.html">Optimiser la note moyenne</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../c_expose/index.html">Exposés</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Exposés</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/finance/finance_autostrat.html">Stratégie automatique de trading en finance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/tsp/tsp_kohonen.html">Circuit hamiltonien et Kohonen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c_expose/tsp/tsp_kruskal.html">Circuit hamiltonien et Kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../i_index.html">En diagonal</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of En diagonal</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/index.html">Gallerie d’exemples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/index.html#gallerie-d-exemples-sur-le-machine-learning">Gallerie d’exemples sur le machine learning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html#gallerie-d-exemples-sur-la-programmation">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../auto_examples/ml/index.html">Gallerie d’exemples sur le machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur le machine learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../auto_examples/prog/index.html">Gallerie d’exemples sur la programmation</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Gallerie d’exemples sur la programmation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/index.html">teachpyx</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of teachpyx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/examples/index.html">teachpyx.examples</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of teachpyx.examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/examples/classiques.html">teachpyx.examples.classiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/examples/construction_classique.html">teachpyx.examples.construction_classique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/examples/numpysex.html">teachpyx.examples.numpysex</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/video/index.html">teachpyx.video</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle navigation of teachpyx.video</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/video/tsp_kohonen_pygame.html">teachpyx.video.tsp_kohonen_pygame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/video/tsp_kruskal_pygame.html">teachpyx.video.tsp_kruskal_pygame</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/tools/index.html">teachpyx.tools</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle navigation of teachpyx.tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../api/tools/display/index.html">teachpyx.tools.display</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" role="switch" type="checkbox"/><label for="toctree-checkbox-35"><div class="visually-hidden">Toggle navigation of teachpyx.tools.display</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../api/tools/display/pygame_helper.html">teachpyx.tools.display.pygame_helper</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../api/tools/display/video_helper.html">teachpyx.tools.display.video_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../api/tools/blockdiag_helper.html">teachpyx.tools.blockdiag_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/tools/data_helper.html">teachpyx.tools.data_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/tools/graphviz_helper.html">teachpyx.tools.graphviz_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/tools/helpers.html">teachpyx.tools.helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/tools/profiling.html">teachpyx.tools.profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/faq/index.html">teachpyx.faq</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" role="switch" type="checkbox"/><label for="toctree-checkbox-36"><div class="visually-hidden">Toggle navigation of teachpyx.faq</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/faq/faq_exception.html">teachpyx.faq.faq_exception</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/faq/faq_geo.html">teachpyx.faq.faq_geo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/faq/faq_numpy.html">teachpyx.faq.faq_numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/faq/faq_python.html">teachpyx.faq.faq_python</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/practice/index.html">teachpyx.practice</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of teachpyx.practice</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/practice/ml_skl.html">teachpyx.practice.ml_skl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/practice/tsp_kruskal.html">teachpyx.practice.tsp_kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../api/datasets/index.html">teachpyx.datasets</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of teachpyx.datasets</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api/datasets/data/index.html">teachpyx.datasets.data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/datasets/data_helper.html">teachpyx.datasets.data_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/datasets/documentation.html">teachpyx.datasets.documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/datasets/enedis.html">teachpyx.datasets.enedis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/datasets/gpd_helper.html">teachpyx.datasets.gpd_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/datasets/wines.html">teachpyx.datasets.wines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api/ext_test_case.html">teachpyx.ext_test_case</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i_faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/c_data/nb_pandas_cube.ipynb" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="Cube-de-données-et-pandas">
+<h1>Cube de données et pandas<a class="headerlink" href="#Cube-de-données-et-pandas" title="Lien vers cette rubrique">¶</a></h1>
+<p><a class="reference external" href="https://pandas.pydata.org/">pandas</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<section id="Un-cube">
+<h2>Un cube<a class="headerlink" href="#Un-cube" title="Lien vers cette rubrique">¶</a></h2>
+<p>Les données sont disposées sous forme de table, il y a N colonnes de coordonnées et une colonne numérique. Avec <code class="docutils literal notranslate"><span class="pre">N=4</span></code>, cela équivaut à une fonction <img class="math" src="../_images/math/b2c497f84fc5f9c96f244c7377cfc769e822434d.svg" alt="f(x_1,x_2,x_3,x_4)=y"/>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C1</td>
+      <td>D1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C1</td>
+      <td>D2</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C2</td>
+      <td>D1</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C2</td>
+      <td>D2</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C1</td>
+      <td>D1</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C1</td>
+      <td>D2</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C2</td>
+      <td>D1</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C2</td>
+      <td>D2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>A2</td>
+      <td>B2</td>
+      <td>C2</td>
+      <td>D2</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Pivot">
+<h2>Pivot<a class="headerlink" href="#Pivot" title="Lien vers cette rubrique">¶</a></h2>
+<p>Le pivot consiste à choisir des colonnes pour les indices des lignes, et d’autres pour les colonnes. Le pivot fonctionne si chaque valeur numérique peut être identifiée de manière unique.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>X3</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">A1</th>
+      <th>B1</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>A2</th>
+      <th>B2</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X2</th>
+      <th colspan="4" halign="left">B1</th>
+      <th colspan="4" halign="left">B2</th>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A1</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>A2</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Index-et-MultiIndex">
+<h2>Index et MultiIndex<a class="headerlink" href="#Index-et-MultiIndex" title="Lien vers cette rubrique">¶</a></h2>
+<p>A quoi correspondent les index ?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+<span class="n">piv</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MultiIndex([(&#39;B1&#39;, &#39;C1&#39;, &#39;D1&#39;),
+            (&#39;B1&#39;, &#39;C1&#39;, &#39;D2&#39;),
+            (&#39;B1&#39;, &#39;C2&#39;, &#39;D1&#39;),
+            (&#39;B1&#39;, &#39;C2&#39;, &#39;D2&#39;),
+            (&#39;B2&#39;, &#39;C1&#39;, &#39;D1&#39;),
+            (&#39;B2&#39;, &#39;C1&#39;, &#39;D2&#39;),
+            (&#39;B2&#39;, &#39;C2&#39;, &#39;D1&#39;),
+            (&#39;B2&#39;, &#39;C2&#39;, &#39;D2&#39;)],
+           names=[&#39;X2&#39;, &#39;X3&#39;, &#39;X4&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;A1&#39;, &#39;A2&#39;], dtype=&#39;object&#39;, name=&#39;X1&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+<span class="n">piv</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MultiIndex([(&#39;C1&#39;, &#39;D1&#39;),
+            (&#39;C1&#39;, &#39;D2&#39;),
+            (&#39;C2&#39;, &#39;D1&#39;),
+            (&#39;C2&#39;, &#39;D2&#39;)],
+           names=[&#39;X3&#39;, &#39;X4&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MultiIndex([(&#39;A1&#39;, &#39;B1&#39;),
+            (&#39;A1&#39;, &#39;B2&#39;),
+            (&#39;A2&#39;, &#39;B2&#39;)],
+           names=[&#39;X1&#39;, &#39;X2&#39;])
+</pre></div></div>
+</div>
+<p>Les <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.html">Index</a> indexent les valeurs et sont équivalents à des colonnes, les <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html">MultiIndex</a> indexent les valeurs et sont équivalents à plusieurs colonnes. On récupère le nom des colonnes avec la propriété <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.names.html#pandas.MultiIndex.names">names</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+FrozenList([&#39;X3&#39;, &#39;X4&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+FrozenList([&#39;X1&#39;, &#39;X2&#39;])
+</pre></div></div>
+</div>
+<p>On récupère le nombre de colonnes avec <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.nlevels.html#pandas.MultiIndex.nlevels">nlevels</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">nlevels</span><span class="p">,</span> <span class="n">piv</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">nlevels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(2, 2)
+</pre></div></div>
+</div>
+<p>Ou encore <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.nlevels.html#pandas.MultiIndex.levels">levels</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">piv</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(FrozenList([[&#39;C1&#39;, &#39;C2&#39;], [&#39;D1&#39;, &#39;D2&#39;]]),
+ FrozenList([[&#39;A1&#39;, &#39;A2&#39;], [&#39;B1&#39;, &#39;B2&#39;]]))
+</pre></div></div>
+</div>
+<p>On veut accéder à un élément.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;A1&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X3</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B1</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>2.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;B1&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+X3  X4
+C1  D1    3.0
+    D2    4.0
+C2  D1    5.0
+    D2    6.0
+Name: (A1, B1), dtype: float64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="p">[</span><span class="s2">&quot;C1&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">A1</th>
+      <th>B1</th>
+      <td>3.0</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>A2</th>
+      <th>B2</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="p">[</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="s2">&quot;D1&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+X1  X2
+A1  B1    3.0
+    B2    7.0
+A2  B2    NaN
+Name: (C1, D1), dtype: float64
+</pre></div></div>
+</div>
+</section>
+<section id="Passer-de-l'un-à-l'autre">
+<h2>Passer de l’un à l’autre<a class="headerlink" href="#Passer-de-l'un-à-l'autre" title="Lien vers cette rubrique">¶</a></h2>
+<p>Peut-on retrouver les données originales à partir du pivot?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>X3</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">A1</th>
+      <th>B1</th>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>A2</th>
+      <th>B2</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ce qui ne marche pas <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html">reset_index</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X3</th>
+      <th>X1</th>
+      <th>X2</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th></th>
+      <th></th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A2</td>
+      <td>B2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ce qui marche…</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html">stack</a> : fait passer une coordonnée des colonnes aux lignes</p></li>
+<li><p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.unstack.html">unstack</a> : fait passer une coordonnée des lignes aux colonnes</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">future_stack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4" valign="top">A1</th>
+      <th rowspan="2" valign="top">B1</th>
+      <th>C1</th>
+      <td>3.0</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>C2</th>
+      <td>5.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">B2</th>
+      <th>C1</th>
+      <td>7.0</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>C2</th>
+      <td>9.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">A2</th>
+      <th rowspan="2" valign="top">B2</th>
+      <th>C1</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>C2</th>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">future_stack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+X1  X2  X3  X4
+A1  B1  C1  D1    3.0
+            D2    4.0
+        C2  D1    5.0
+            D2    6.0
+    B2  C1  D1    7.0
+            D2    8.0
+        C2  D1    9.0
+            D2    2.0
+A2  B2  C1  D1    NaN
+            D2    NaN
+        C2  D1    NaN
+            D2    1.0
+dtype: float64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="s2">&quot;X4&quot;</span><span class="p">,</span> <span class="n">future_stack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>X3</th>
+      <th>C1</th>
+      <th>C2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X4</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4" valign="top">A1</th>
+      <th rowspan="2" valign="top">B1</th>
+      <th>D1</th>
+      <td>3.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>4.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">B2</th>
+      <th>D1</th>
+      <td>7.0</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>8.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">A2</th>
+      <th rowspan="2" valign="top">B2</th>
+      <th>D1</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">piv</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="s2">&quot;X1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X3</th>
+      <th colspan="4" halign="left">C1</th>
+      <th colspan="4" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th colspan="2" halign="left">D1</th>
+      <th colspan="2" halign="left">D2</th>
+      <th colspan="2" halign="left">D1</th>
+      <th colspan="2" halign="left">D2</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A1</th>
+      <th>A2</th>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B1</th>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>NaN</td>
+      <td>6.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7.0</td>
+      <td>NaN</td>
+      <td>8.0</td>
+      <td>NaN</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>On peut changer l’ordre des index.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">view</span> <span class="o">=</span> <span class="n">piv</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="s2">&quot;X1&quot;</span><span class="p">)</span>
+<span class="n">new_index</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">reorder_levels</span><span class="p">([</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">])</span>
+<span class="n">new_index</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MultiIndex([(&#39;A1&#39;, &#39;C1&#39;, &#39;D1&#39;),
+            (&#39;A2&#39;, &#39;C1&#39;, &#39;D1&#39;),
+            (&#39;A1&#39;, &#39;C1&#39;, &#39;D2&#39;),
+            (&#39;A2&#39;, &#39;C1&#39;, &#39;D2&#39;),
+            (&#39;A1&#39;, &#39;C2&#39;, &#39;D1&#39;),
+            (&#39;A2&#39;, &#39;C2&#39;, &#39;D1&#39;),
+            (&#39;A1&#39;, &#39;C2&#39;, &#39;D2&#39;),
+            (&#39;A2&#39;, &#39;C2&#39;, &#39;D2&#39;)],
+           names=[&#39;X1&#39;, &#39;X3&#39;, &#39;X4&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">view</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">new_index</span>
+<span class="n">view</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X1</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A1</th>
+      <th>A2</th>
+    </tr>
+    <tr>
+      <th>X3</th>
+      <th>C1</th>
+      <th>C1</th>
+      <th>C1</th>
+      <th>C1</th>
+      <th>C2</th>
+      <th>C2</th>
+      <th>C2</th>
+      <th>C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B1</th>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>NaN</td>
+      <td>6.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7.0</td>
+      <td>NaN</td>
+      <td>8.0</td>
+      <td>NaN</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Un-pivot-aggrégé">
+<h2>Un pivot aggrégé<a class="headerlink" href="#Un-pivot-aggrégé" title="Lien vers cette rubrique">¶</a></h2>
+<p>La fonction pivot suppose que la transformation conserve chaque valeur sans les aggréger ce qui permet de restaurer les données sous leurs forme initiale. Mais ce n’est pas toujours ce qu’on souhaite faire.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C1</td>
+      <td>D1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C1</td>
+      <td>D2</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C2</td>
+      <td>D1</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A1</td>
+      <td>B1</td>
+      <td>C2</td>
+      <td>D2</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C1</td>
+      <td>D1</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C1</td>
+      <td>D2</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C2</td>
+      <td>D1</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>A1</td>
+      <td>B2</td>
+      <td>C2</td>
+      <td>D2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>A2</td>
+      <td>B2</td>
+      <td>C2</td>
+      <td>D2</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X2&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Le pivot ne conserve pas les données.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Le pivot ne conserve pas les données.
+Index contains duplicate entries, cannot reshape
+</pre></div></div>
+</div>
+<p>On utlise alors <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.pivot_table.html">pivot_table</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X2&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X3</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X2&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>X3</th>
+      <th colspan="2" halign="left">C1</th>
+      <th colspan="2" halign="left">C2</th>
+    </tr>
+    <tr>
+      <th>X4</th>
+      <th>D1</th>
+      <th>D2</th>
+      <th>D1</th>
+      <th>D2</th>
+    </tr>
+    <tr>
+      <th>X2</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B1</th>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>B2</th>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="XArray">
+<h2>XArray<a class="headerlink" href="#XArray" title="Lien vers cette rubrique">¶</a></h2>
+<p>Le package <a class="reference external" href="https://docs.xarray.dev/en/stable/index.html">XArray</a> représente des cubes de données de façon plus efficace mais parfois moins intuitive.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">cube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;X1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">]))</span>
+<span class="n">cube</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1f1f1f;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 192B
+Dimensions:  (X1: 2, X2: 2, X3: 2, X4: 2)
+Coordinates:
+  * X1       (X1) object 16B &#x27;A1&#x27; &#x27;A2&#x27;
+  * X2       (X2) object 16B &#x27;B1&#x27; &#x27;B2&#x27;
+  * X3       (X3) object 16B &#x27;C1&#x27; &#x27;C2&#x27;
+  * X4       (X4) object 16B &#x27;D1&#x27; &#x27;D2&#x27;
+Data variables:
+    Y        (X1, X2, X3, X4) float64 128B 3.0 4.0 5.0 6.0 ... nan nan nan 1.0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-7b69a124-0024-4700-b534-d08f738f4f63' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-7b69a124-0024-4700-b534-d08f738f4f63' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>X1</span>: 2</li><li><span class='xr-has-index'>X2</span>: 2</li><li><span class='xr-has-index'>X3</span>: 2</li><li><span class='xr-has-index'>X4</span>: 2</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-39febba1-cd35-4c9b-82c8-911849a14b71' class='xr-section-summary-in' type='checkbox'  checked><label for='section-39febba1-cd35-4c9b-82c8-911849a14b71' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X1</span></div><div class='xr-var-dims'>(X1)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;A1&#x27; &#x27;A2&#x27;</div><input id='attrs-c045f136-fa98-4a44-90d0-dada520f9e21' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c045f136-fa98-4a44-90d0-dada520f9e21' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c4657ea3-1298-4c90-9465-0740a1b468b6' class='xr-var-data-in' type='checkbox'><label for='data-c4657ea3-1298-4c90-9465-0740a1b468b6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;A1&#x27;, &#x27;A2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X2</span></div><div class='xr-var-dims'>(X2)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;B1&#x27; &#x27;B2&#x27;</div><input id='attrs-8922e367-3a95-49cb-a888-b4b8c0ae61c0' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8922e367-3a95-49cb-a888-b4b8c0ae61c0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dbe98d7f-ad89-4482-ae1e-fa126e623bbd' class='xr-var-data-in' type='checkbox'><label for='data-dbe98d7f-ad89-4482-ae1e-fa126e623bbd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;B1&#x27;, &#x27;B2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X3</span></div><div class='xr-var-dims'>(X3)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;C1&#x27; &#x27;C2&#x27;</div><input id='attrs-3d466257-aaf3-4afb-bf6e-ff9065804315' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-3d466257-aaf3-4afb-bf6e-ff9065804315' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-01efd02d-d9f6-4bc5-9c6f-30a3a7565b03' class='xr-var-data-in' type='checkbox'><label for='data-01efd02d-d9f6-4bc5-9c6f-30a3a7565b03' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;C1&#x27;, &#x27;C2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X4</span></div><div class='xr-var-dims'>(X4)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;D1&#x27; &#x27;D2&#x27;</div><input id='attrs-eb69a6f3-caa1-4ef3-a9b4-4f171870c70d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-eb69a6f3-caa1-4ef3-a9b4-4f171870c70d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bf5576d7-971a-425f-9866-d65766416156' class='xr-var-data-in' type='checkbox'><label for='data-bf5576d7-971a-425f-9866-d65766416156' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;D1&#x27;, &#x27;D2&#x27;], dtype=object)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-d098a25b-50de-4c70-a89a-503495571b58' class='xr-section-summary-in' type='checkbox'  checked><label for='section-d098a25b-50de-4c70-a89a-503495571b58' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>Y</span></div><div class='xr-var-dims'>(X1, X2, X3, X4)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>3.0 4.0 5.0 6.0 ... nan nan nan 1.0</div><input id='attrs-c5811283-aa18-43e4-be85-946e4ea6a27a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c5811283-aa18-43e4-be85-946e4ea6a27a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-98375a8d-dbee-42a2-bddd-fed7dff77917' class='xr-var-data-in' type='checkbox'><label for='data-98375a8d-dbee-42a2-bddd-fed7dff77917' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[ 3.,  4.],
+         [ 5.,  6.]],
+
+        [[ 7.,  8.],
+         [ 9.,  2.]]],
+
+
+       [[[nan, nan],
+         [nan, nan]],
+
+        [[nan, nan],
+         [nan,  1.]]]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-64c3e149-64dd-4df2-9c72-f9af3d67bb21' class='xr-section-summary-in' type='checkbox'  ><label for='section-64c3e149-64dd-4df2-9c72-f9af3d67bb21' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>X1</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-3881890b-1aea-402f-af80-559b01b579f2' class='xr-index-data-in' type='checkbox'/><label for='index-3881890b-1aea-402f-af80-559b01b579f2' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;A1&#x27;, &#x27;A2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X1&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X2</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-aea61e45-650a-44fb-b89f-6c9585ec7204' class='xr-index-data-in' type='checkbox'/><label for='index-aea61e45-650a-44fb-b89f-6c9585ec7204' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;B1&#x27;, &#x27;B2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X2&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X3</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-603fd9d1-5d4a-4b65-ae39-7940d6f91067' class='xr-index-data-in' type='checkbox'/><label for='index-603fd9d1-5d4a-4b65-ae39-7940d6f91067' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;C1&#x27;, &#x27;C2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X3&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X4</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-8ae45242-e385-4692-935b-f80e8de84983' class='xr-index-data-in' type='checkbox'/><label for='index-8ae45242-e385-4692-935b-f80e8de84983' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;D1&#x27;, &#x27;D2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X4&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-54b0e2c6-a036-4489-8d60-dc43b1cf0f4e' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-54b0e2c6-a036-4489-8d60-dc43b1cf0f4e' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div>
+</div>
+<p>Modifier une valeur existante.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span><span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s2">&quot;X1&quot;</span><span class="p">:</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;X2&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">:</span> <span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="s2">&quot;X4&quot;</span><span class="p">:</span> <span class="s2">&quot;D1&quot;</span><span class="p">}]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">cube</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1f1f1f;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 192B
+Dimensions:  (X1: 2, X2: 2, X3: 2, X4: 2)
+Coordinates:
+  * X1       (X1) object 16B &#x27;A1&#x27; &#x27;A2&#x27;
+  * X2       (X2) object 16B &#x27;B1&#x27; &#x27;B2&#x27;
+  * X3       (X3) object 16B &#x27;C1&#x27; &#x27;C2&#x27;
+  * X4       (X4) object 16B &#x27;D1&#x27; &#x27;D2&#x27;
+Data variables:
+    Y        (X1, X2, X3, X4) float64 128B 3.0 4.0 5.0 6.0 ... nan nan nan 1.0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-cc371cff-60f0-4cfe-a094-978d46b62650' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-cc371cff-60f0-4cfe-a094-978d46b62650' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>X1</span>: 2</li><li><span class='xr-has-index'>X2</span>: 2</li><li><span class='xr-has-index'>X3</span>: 2</li><li><span class='xr-has-index'>X4</span>: 2</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-24d14a27-e8f5-4f30-a5aa-108208575b92' class='xr-section-summary-in' type='checkbox'  checked><label for='section-24d14a27-e8f5-4f30-a5aa-108208575b92' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X1</span></div><div class='xr-var-dims'>(X1)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;A1&#x27; &#x27;A2&#x27;</div><input id='attrs-1c949d47-9880-495d-9de7-5ec9b5c3b014' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1c949d47-9880-495d-9de7-5ec9b5c3b014' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-de70013b-bcee-4de7-bb23-b19506710e8d' class='xr-var-data-in' type='checkbox'><label for='data-de70013b-bcee-4de7-bb23-b19506710e8d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;A1&#x27;, &#x27;A2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X2</span></div><div class='xr-var-dims'>(X2)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;B1&#x27; &#x27;B2&#x27;</div><input id='attrs-8f7aa74a-5c71-445e-a354-ac4acbb6f5ee' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-8f7aa74a-5c71-445e-a354-ac4acbb6f5ee' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ad119a2f-9d4c-4be5-8f90-933037630148' class='xr-var-data-in' type='checkbox'><label for='data-ad119a2f-9d4c-4be5-8f90-933037630148' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;B1&#x27;, &#x27;B2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X3</span></div><div class='xr-var-dims'>(X3)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;C1&#x27; &#x27;C2&#x27;</div><input id='attrs-b2f9426a-a202-4c34-a40b-cc2a8bb9a345' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b2f9426a-a202-4c34-a40b-cc2a8bb9a345' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4d4fe1d1-e0f1-43fa-b47a-8f0162fc17d0' class='xr-var-data-in' type='checkbox'><label for='data-4d4fe1d1-e0f1-43fa-b47a-8f0162fc17d0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;C1&#x27;, &#x27;C2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X4</span></div><div class='xr-var-dims'>(X4)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;D1&#x27; &#x27;D2&#x27;</div><input id='attrs-a95e7bb0-5b0c-47ac-a235-52309bb285dd' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a95e7bb0-5b0c-47ac-a235-52309bb285dd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-bf0a2792-60f6-4e89-a0bc-f4800ae35a05' class='xr-var-data-in' type='checkbox'><label for='data-bf0a2792-60f6-4e89-a0bc-f4800ae35a05' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;D1&#x27;, &#x27;D2&#x27;], dtype=object)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-dcf00f4a-05e9-4d64-b4cf-84471d778639' class='xr-section-summary-in' type='checkbox'  checked><label for='section-dcf00f4a-05e9-4d64-b4cf-84471d778639' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>Y</span></div><div class='xr-var-dims'>(X1, X2, X3, X4)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>3.0 4.0 5.0 6.0 ... nan nan nan 1.0</div><input id='attrs-845eb377-ca0b-416d-ad6d-f2683961f358' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-845eb377-ca0b-416d-ad6d-f2683961f358' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-688a8daa-93af-4e29-862a-0c3429189db8' class='xr-var-data-in' type='checkbox'><label for='data-688a8daa-93af-4e29-862a-0c3429189db8' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[[  3.,   4.],
+         [  5.,   6.]],
+
+        [[  7.,   8.],
+         [100.,   2.]]],
+
+
+       [[[ nan,  nan],
+         [ nan,  nan]],
+
+        [[ nan,  nan],
+         [ nan,   1.]]]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-e86c966c-f486-483e-8fe5-2bd0f95de2ab' class='xr-section-summary-in' type='checkbox'  ><label for='section-e86c966c-f486-483e-8fe5-2bd0f95de2ab' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>X1</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-281cffbe-47cd-4ebd-a83b-d65056f0aca3' class='xr-index-data-in' type='checkbox'/><label for='index-281cffbe-47cd-4ebd-a83b-d65056f0aca3' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;A1&#x27;, &#x27;A2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X1&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X2</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-a18b71b7-3ec0-4bf2-826f-3e464ca5f6b8' class='xr-index-data-in' type='checkbox'/><label for='index-a18b71b7-3ec0-4bf2-826f-3e464ca5f6b8' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;B1&#x27;, &#x27;B2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X2&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X3</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-835e215f-6f31-41ee-8d5a-48b25574fc46' class='xr-index-data-in' type='checkbox'/><label for='index-835e215f-6f31-41ee-8d5a-48b25574fc46' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;C1&#x27;, &#x27;C2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X3&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X4</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-679b61f7-3900-48a2-b9b6-db6bb0cadc3f' class='xr-index-data-in' type='checkbox'/><label for='index-679b61f7-3900-48a2-b9b6-db6bb0cadc3f' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;D1&#x27;, &#x27;D2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X4&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-aa04ec41-a0af-47d9-85d0-7e16f6c828be' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-aa04ec41-a0af-47d9-85d0-7e16f6c828be' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;X2&quot;</span><span class="p">,</span> <span class="s2">&quot;X3&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1f1f1f;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 64B
+Dimensions:  (X1: 2, X4: 2)
+Coordinates:
+  * X1       (X1) object 16B &#x27;A1&#x27; &#x27;A2&#x27;
+  * X4       (X4) object 16B &#x27;D1&#x27; &#x27;D2&#x27;
+Data variables:
+    Y        (X1, X4) float64 32B 28.75 5.0 nan 1.0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-dd7156df-c073-4498-a733-d1e42adfceee' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-dd7156df-c073-4498-a733-d1e42adfceee' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>X1</span>: 2</li><li><span class='xr-has-index'>X4</span>: 2</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-8a7118f8-eafa-473a-a4b3-5c7b5f923e91' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8a7118f8-eafa-473a-a4b3-5c7b5f923e91' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X1</span></div><div class='xr-var-dims'>(X1)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;A1&#x27; &#x27;A2&#x27;</div><input id='attrs-7bf6acdf-ad12-475c-87a4-4308d01faff9' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7bf6acdf-ad12-475c-87a4-4308d01faff9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9f334924-150c-42d7-9ccf-cbf0e6a157fe' class='xr-var-data-in' type='checkbox'><label for='data-9f334924-150c-42d7-9ccf-cbf0e6a157fe' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;A1&#x27;, &#x27;A2&#x27;], dtype=object)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>X4</span></div><div class='xr-var-dims'>(X4)</div><div class='xr-var-dtype'>object</div><div class='xr-var-preview xr-preview'>&#x27;D1&#x27; &#x27;D2&#x27;</div><input id='attrs-70e008dc-4099-4dc2-967c-d953a53c1d81' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-70e008dc-4099-4dc2-967c-d953a53c1d81' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4a8770e7-4848-45e3-93f3-fe478d6fea1c' class='xr-var-data-in' type='checkbox'><label for='data-4a8770e7-4848-45e3-93f3-fe478d6fea1c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;D1&#x27;, &#x27;D2&#x27;], dtype=object)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-f68bdf46-f9eb-440c-8816-1fdb0040e19a' class='xr-section-summary-in' type='checkbox'  checked><label for='section-f68bdf46-f9eb-440c-8816-1fdb0040e19a' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>Y</span></div><div class='xr-var-dims'>(X1, X4)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>28.75 5.0 nan 1.0</div><input id='attrs-862254a2-51b5-4f1f-b4d8-0b4018e2241a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-862254a2-51b5-4f1f-b4d8-0b4018e2241a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-090d5ab5-40af-4a13-92c7-bc8d36b4e635' class='xr-var-data-in' type='checkbox'><label for='data-090d5ab5-40af-4a13-92c7-bc8d36b4e635' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[28.75,  5.  ],
+       [  nan,  1.  ]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-c0b6a30e-9f24-456f-8368-111485be222b' class='xr-section-summary-in' type='checkbox'  ><label for='section-c0b6a30e-9f24-456f-8368-111485be222b' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>X1</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-55f2c3fd-7671-4b17-b4f2-90b1b309c14d' class='xr-index-data-in' type='checkbox'/><label for='index-55f2c3fd-7671-4b17-b4f2-90b1b309c14d' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;A1&#x27;, &#x27;A2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X1&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>X4</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-a5ebd02e-b956-44d9-bc31-ea86c4a878c7' class='xr-index-data-in' type='checkbox'/><label for='index-a5ebd02e-b956-44d9-bc31-ea86c4a878c7' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;D1&#x27;, &#x27;D2&#x27;], dtype=&#x27;object&#x27;, name=&#x27;X4&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-dfaa7e16-3919-42c8-8aff-1bb2ac26ce9e' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-dfaa7e16-3919-42c8-8aff-1bb2ac26ce9e' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cube</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Y</th>
+    </tr>
+    <tr>
+      <th>X1</th>
+      <th>X2</th>
+      <th>X3</th>
+      <th>X4</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="8" valign="top">A1</th>
+      <th rowspan="4" valign="top">B1</th>
+      <th rowspan="2" valign="top">C1</th>
+      <th>D1</th>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">C2</th>
+      <th>D1</th>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">B2</th>
+      <th rowspan="2" valign="top">C1</th>
+      <th>D1</th>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">C2</th>
+      <th>D1</th>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th rowspan="8" valign="top">A2</th>
+      <th rowspan="4" valign="top">B1</th>
+      <th rowspan="2" valign="top">C1</th>
+      <th>D1</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">C2</th>
+      <th>D1</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">B2</th>
+      <th rowspan="2" valign="top">C1</th>
+      <th>D1</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">C2</th>
+      <th>D1</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>D2</th>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<p><a class="reference external" href="https://github.com/sdpython/teachpyx/tree/main/_doc/c_data/nb_pandas_cube.ipynb">Notebook on github</a></p>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="nb_dataframe_matrix_speed.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Mesures de vitesse sur les dataframes</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="nb_pandas.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Manipulation de données avec pandas (exercices)</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2024, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Cube de données et pandas</a><ul>
+<li><a class="reference internal" href="#Un-cube">Un cube</a></li>
+<li><a class="reference internal" href="#Pivot">Pivot</a></li>
+<li><a class="reference internal" href="#Index-et-MultiIndex">Index et MultiIndex</a></li>
+<li><a class="reference internal" href="#Passer-de-l'un-à-l'autre">Passer de l’un à l’autre</a></li>
+<li><a class="reference internal" href="#Un-pivot-aggrégé">Un pivot aggrégé</a></li>
+<li><a class="reference internal" href="#XArray">XArray</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=0886690b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
