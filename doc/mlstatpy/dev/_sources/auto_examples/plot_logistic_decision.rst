@@ -30,16 +30,13 @@ du moins qui aboutisse à deux sous-ensemble dans lesquels
 une classe est majoritaire. Mais certains cas, c'est une
 chose compliquée.
 
-.. contents::
-    :local:
-
 Un cas simple et un cas compliqué
 +++++++++++++++++++++++++++++++++
 
 Il faut choisir un seuil sur l'axe des abscisses qui
 permette de classer le jeu de données.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-61
+.. GENERATED FROM PYTHON SOURCE LINES 20-58
 
 .. code-block:: Python
 
@@ -99,7 +96,7 @@ permette de classer le jeu de données.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-73
+.. GENERATED FROM PYTHON SOURCE LINES 59-70
 
 Seuil de décision
 -----------------
@@ -113,7 +110,7 @@ s'appuie sur la :ref:`log-vraisemblance <l-lr-log-likelihood>`
 du jeu de données. On regarde l'évolution de ces critères
 en fonction des différents seuils possibles.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-121
+.. GENERATED FROM PYTHON SOURCE LINES 70-118
 
 .. code-block:: Python
 
@@ -174,20 +171,20 @@ en fonction des différents seuils possibles.
  .. code-block:: none
 
               X    y   p1        p2      Gini      Gain        lr     LL-10
-    0 -0.996031  0.0  0.0  0.678679  0.436148  0.905813  0.000047  0.703439
-    1 -0.993016  0.0  0.0  0.679359  0.435661  0.905077  0.000049  0.703985
-    2 -0.992906  0.0  0.0  0.680040  0.435171  0.904338  0.000049  0.704005
-    3 -0.991561  0.0  0.0  0.680723  0.434678  0.903594  0.000049  0.704251
-    4 -0.988418  0.0  0.0  0.681407  0.434183  0.902845  0.000051  0.704833
+    0 -0.994394  0.0  0.0  0.673674  0.439675  0.911129  0.000048  0.694135
+    1 -0.987137  0.0  0.0  0.674349  0.439205  0.910421  0.000052  0.695268
+    2 -0.980519  0.0  0.0  0.675025  0.438732  0.909710  0.000055  0.696337
+    3 -0.980345  0.0  0.0  0.675703  0.438257  0.908993  0.000055  0.696366
+    4 -0.973464  0.0  0.0  0.676382  0.437779  0.908273  0.000059  0.697515
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-123
+.. GENERATED FROM PYTHON SOURCE LINES 119-120
 
 Et visuellement...
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-143
+.. GENERATED FROM PYTHON SOURCE LINES 120-140
 
 .. code-block:: Python
 
@@ -229,7 +226,7 @@ Et visuellement...
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-154
+.. GENERATED FROM PYTHON SOURCE LINES 141-151
 
 Le premier exemple est le cas simple et tous les
 indicateurs trouvent bien la fontière entre les deux classes
@@ -245,7 +242,7 @@ constante. C'est donc inutile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.457 seconds)
+   **Total running time of the script:** (0 minutes 2.176 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_logistic_decision.py:

@@ -589,6 +589,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-modindex.html">Index du module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search.html">Page de recherche</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -642,30 +645,30 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import os
 
-<span class="n">audio_path</span> <span class="o">=</span> <span class="s2">&quot;images/output.wav&quot;</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">audio_path</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">sounddevice</span> <span class="k">as</span> <span class="nn">sd</span>
-    <span class="kn">from</span> <span class="nn">scipy.io.wavfile</span> <span class="kn">import</span> <span class="n">write</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+audio_path = &quot;images/output.wav&quot;
+if not os.path.exists(audio_path):
+    import sounddevice as sd
+    from scipy.io.wavfile import write
+    import numpy as np
 
-    <span class="c1"># Paramètres d&#39;enregistrement</span>
-    <span class="n">samplerate</span> <span class="o">=</span> <span class="mi">16000</span>  <span class="c1"># 16kHz (standard pour ML et ASR)</span>
-    <span class="n">duration</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># Durée de l&#39;enregistrement en secondes</span>
+    # Paramètres d&#39;enregistrement
+    samplerate = 16000  # 16kHz (standard pour ML et ASR)
+    duration = 5  # Durée de l&#39;enregistrement en secondes
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🎤 Enregistrement en cours...&quot;</span><span class="p">)</span>
-    <span class="n">audio</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">rec</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">samplerate</span> <span class="o">*</span> <span class="n">duration</span><span class="p">),</span> <span class="n">samplerate</span><span class="o">=</span><span class="n">samplerate</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span>
-    <span class="p">)</span>
-    <span class="n">sd</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>  <span class="c1"># Attendre la fin de l&#39;enregistrement</span>
+    print(&quot;🎤 Enregistrement en cours...&quot;)
+    audio = sd.rec(
+        int(samplerate * duration), samplerate=samplerate, channels=1, dtype=np.int16
+    )
+    sd.wait()  # Attendre la fin de l&#39;enregistrement
 
-    <span class="c1"># Sauvegarder en fichier .wav</span>
+    # Sauvegarder en fichier .wav
 
-    <span class="n">write</span><span class="p">(</span><span class="n">audio_path</span><span class="p">,</span> <span class="n">samplerate</span><span class="p">,</span> <span class="n">audio</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done already&quot;</span><span class="p">)</span>
+    write(audio_path, samplerate, audio)
+    print(&quot;done&quot;)
+else:
+    print(&quot;done already&quot;)
 </pre></div>
 </div>
 </div>
@@ -685,19 +688,19 @@ done already
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">librosa</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import librosa
+import numpy as np
 
-<span class="c1"># Charger un fichier audio</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;chargement du fichier: </span><span class="si">{</span><span class="n">audio_path</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-    <span class="n">audio_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">)</span>  <span class="c1"># sr=None garde le taux d&#39;échantillonnage original</span>
+# Charger un fichier audio
+print(f&quot;chargement du fichier: {audio_path!r}&quot;)
+y, sr = librosa.load(
+    audio_path, sr=None
+)  # sr=None garde le taux d&#39;échantillonnage original
 
-<span class="c1"># Extraction des caractéristiques audio (MFCCs)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;features: </span><span class="si">{</span><span class="n">audio_path</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">mfccs</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">mfcc</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_mfcc</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-<span class="n">mfccs</span><span class="o">.</span><span class="n">shape</span>
+# Extraction des caractéristiques audio (MFCCs)
+print(f&quot;features: {audio_path!r}&quot;)
+mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
+mfccs.shape
 </pre></div>
 </div>
 </div>
@@ -723,8 +726,8 @@ features: &#39;images/output.wav&#39;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mfccs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mfccs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">mfccs</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mfccs = np.mean(mfccs, axis=1)
+mfccs.shape
 </pre></div>
 </div>
 </div>
@@ -741,30 +744,30 @@ features: &#39;images/output.wav&#39;
 <section id="Prétraitement-avancé-ou-transfer-learning">
 <h2>Prétraitement avancé ou transfer learning<a class="headerlink" href="#Prétraitement-avancé-ou-transfer-learning" title="Lien vers cette rubrique">¶</a></h2>
 <p>Cette méthode s’apparente à une <a class="reference external" href="https://en.wikipedia.org/wiki/Transfer_learning">transfer learning</a>. Quand on dispose de peu de données, il est difficile d’apprendre un modèle performant sur des données complexes type image ou son. En revanche, on peut utiliser la sortie d’un modèle appris sur des grandes quantité de données et les utiliser comme feature. On parle d” <em>embedding</em>.</p>
-<p>Le package <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a> offre plein de modèle de traitement de son, reconnaissance de la parole et autres traitements, il faut choisir un modèle qui s’approche de la tâche à réaliser par la suite. L’exemple suivant considère un petit modèle <a class="reference external" href="https://huggingface.co/OthmaneJ/distil-wav2vec2">distil-wav2vec2</a> et transcrit le son en mots. Ce n’est pas le plus performant car c’est un petit modèle. On peut utiliser comme features la sortie du
+<p>Le package <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a> offre plein de modèle de traitement de son, reconnaissance de la parole et autres traitements, il faut choisir un modèle qui s’approche de la tâche à réaliser par la suite. L’exemple suivant considère un petit modèle <a class="reference external" href="https://huggingface.co/openai/whisper-tiny">openai/whisper-tiny</a> et transcrit le son en mots. Ce n’est pas le plus performant car c’est un petit modèle. On peut utiliser comme features la sortie du
 préprocesseur, celle du modèle… Tout dépend de ce qui suit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">librosa</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">WhisperProcessor</span><span class="p">,</span> <span class="n">WhisperForConditionalGeneration</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import torch
+import librosa
+from transformers import WhisperProcessor, WhisperForConditionalGeneration
 
-<span class="c1"># Charger le modèle et le processeur</span>
-<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;openai/whisper-tiny&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;téléchargement du preprocesseur </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">processor</span> <span class="o">=</span> <span class="n">WhisperProcessor</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;téléchargement du modèle </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">WhisperForConditionalGeneration</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;chargement du fichier audio </span><span class="si">{</span><span class="n">audio_path</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-    <span class="n">audio_path</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="mi">16000</span>
-<span class="p">)</span>  <span class="c1"># wav2vec2 attend un échantillonnage de 16kHz</span>
+# Charger le modèle et le processeur
+model_name = &quot;openai/whisper-tiny&quot;
+print(f&quot;téléchargement du preprocesseur {model_name!r}&quot;)
+processor = WhisperProcessor.from_pretrained(model_name)
+print(f&quot;téléchargement du modèle {model_name!r}&quot;)
+model = WhisperForConditionalGeneration.from_pretrained(model_name)
+print(f&quot;chargement du fichier audio {audio_path!r}&quot;)
+y, sr = librosa.load(
+    audio_path, sr=16000
+)  # wav2vec2 attend un échantillonnage de 16kHz
 
-<span class="c1"># Transformer en tenseur</span>
-<span class="n">input_features</span> <span class="o">=</span> <span class="n">processor</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">input_features</span>
-<span class="n">input_features</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">input_features</span><span class="o">.</span><span class="n">dtype</span>
+# Transformer en tenseur
+input_features = processor(y, sampling_rate=16000, return_tensors=&quot;pt&quot;).input_features
+input_features.shape, input_features.dtype
 </pre></div>
 </div>
 </div>
@@ -791,8 +794,8 @@ chargement du fichier audio &#39;images/output.wav&#39;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predicted_ids</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">input_features</span><span class="p">)</span>
-<span class="n">predicted_ids</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">predicted_ids</span><span class="o">.</span><span class="n">dtype</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>predicted_ids = model.generate(input_features)
+predicted_ids.shape, predicted_ids.dtype
 </pre></div>
 </div>
 </div>
@@ -809,9 +812,9 @@ chargement du fichier audio &#39;images/output.wav&#39;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Décoder le texte</span>
-<span class="n">transcription</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">batch_decode</span><span class="p">(</span><span class="n">predicted_ids</span><span class="p">,</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Texte reconnu :&quot;</span><span class="p">,</span> <span class="n">transcription</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span># Décoder le texte
+transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
+print(&quot;Texte reconnu :&quot;, transcription)
 </pre></div>
 </div>
 </div>
@@ -828,11 +831,11 @@ Texte reconnu :  création l&#39;infiche-roix avec p&#39;ton.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_features</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span>
-    <span class="n">input_features</span><span class="o">=</span><span class="n">input_features</span><span class="p">,</span>
-    <span class="n">decoder_input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">50258</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">new_features</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_features</span><span class="o">.</span><span class="n">logits</span><span class="o">.</span><span class="n">dtype</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>new_features = model(
+    input_features=input_features,
+    decoder_input_ids=torch.tensor([[50258]], dtype=torch.int64),
+)
+new_features.logits.shape, new_features.logits.dtype
 </pre></div>
 </div>
 </div>
@@ -849,7 +852,7 @@ Texte reconnu :  création l&#39;infiche-roix avec p&#39;ton.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

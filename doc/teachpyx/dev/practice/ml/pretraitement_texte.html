@@ -589,6 +589,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../i_ex.html">Syntaxes et définitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../i_faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-modindex.html">Index du module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../search.html">Page de recherche</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
@@ -636,8 +639,8 @@
           <section id="Prétraitement-du-texte">
 <h1>Prétraitement du texte<a class="headerlink" href="#Prétraitement-du-texte" title="Lien vers cette rubrique">¶</a></h1>
 <p>Le texte libre n’est jamais simple. A chaque environnement son langage. On n’écrit pas sur un réseau social comme dans un dictionnaire. Comment convertir cela en numérique ? That is the question.</p>
-<section id="Bog-of-Words">
-<h2>Bog of Words<a class="headerlink" href="#Bog-of-Words" title="Lien vers cette rubrique">¶</a></h2>
+<section id="Bag-of-Words">
+<h2>Bag of Words<a class="headerlink" href="#Bag-of-Words" title="Lien vers cette rubrique">¶</a></h2>
 <p>C’est le début de tout. La première étape consiste à découper un texte en token (caractères, mots, …). Le plus souvent, c’est en mot. Chaque mot reçoit un identifiant. Une phrase est transformée en une liste d’entiers.</p>
 <p>L’approche la plus simple consiste ensuite un vecteur binaire pour chaque mot <img class="math" src="../../_images/math/9e29b760a3164a1d4ae7f16a5dcc4db609cf0953.svg" alt="(v_1, ..., v_i, ..., v_n)"/>. <img class="math" src="../../_images/math/c6bda150e9681ecbd11a4bf90626e5d7c2199bc4.svg" alt="n"/> est le nombre de mots reconnus par le modèle. <img class="math" src="../../_images/math/c247e6e153f3edced581b4d7a66cbefc5b51c3f9.svg" alt="v_i \in \{ 0, 1 \}"/>, il vaut 1 si i est égale à son numéro, 0 sinon. Chaque vecteur ne contient qu’un seul un.</p>
 <p>On fait ensuite la somme pour obtenir un seul vecteur par phrase, quelle que soit la longueur de la phrase : <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">CountVectorizer</a></p>
@@ -827,7 +830,7 @@ array([&#39;artificielle&#39;, &#39;bibliothèque&#39;, &#39;bibliothèque pour&
 <h2>Deep Learning<a class="headerlink" href="#Deep-Learning" title="Lien vers cette rubrique">¶</a></h2>
 <p>Au final, il s’agit de compresser des phrases dans un espace vectoriel numérique. Plus on a de texte, plus on peut apprendre des compressions efficaces. Le deep learning, la puissance de calcul vient à la rescousse. Une approche populaire est <a class="reference external" href="https://towardsdatascience.com/word2vec-with-pytorch-implementing-original-paper-2cd7040120b0/">word2vec</a>. Un autre package <a class="reference external" href="https://textblob.readthedocs.io/en/dev/">textblob</a> propose d’enrichir les phrases en taggant les mots (nom, verbe, …). Il y
 a aussi <a class="reference external" href="https://spacy.io/">spacy</a>, <a class="reference external" href="https://www.nltk.org/">NLTK</a>.</p>
-<p>Le plus efficace est sans doute d’utiliser un modèle de deep learning entraîné à faire une tâche proche du problème de prédiction à résoudre.</p>
+<p>Le plus efficace est sans doute d’utiliser un modèle de deep learning entraîné à faire une tâche proche du problème de prédiction à résoudre. L’exemple suivant s’appuie sur le modèle <a class="reference external" href="https://huggingface.co/google/bert_uncased_L-2_H-128_A-2">google/bert_uncased_L-2_H-128_A-2)</a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
@@ -1152,7 +1155,7 @@ array([[-1.01954079e+00,  1.09865868e+00, -3.24030900e+00,
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Prétraitement du texte</a><ul>
-<li><a class="reference internal" href="#Bog-of-Words">Bog of Words</a></li>
+<li><a class="reference internal" href="#Bag-of-Words">Bag of Words</a></li>
 <li><a class="reference internal" href="#n-grammes">n-grammes</a></li>
 <li><a class="reference internal" href="#Deep-Learning">Deep Learning</a></li>
 </ul>
