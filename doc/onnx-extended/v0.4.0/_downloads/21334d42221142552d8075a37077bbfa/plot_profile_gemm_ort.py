@@ -435,14 +435,14 @@ if data:
         logx=True,
     )
 
-    for i, name in enumerate(["fence_before", "fence_after"]):
+    for i, name in enumerate(["kernel_time"]):
         pivi = pivot_table(
             df[(df["it==0"] == 0) & (df["event_name"] == name)],
             index=["xdim"],
             columns=["xdtype", "xdomain", "args_op_name"],
             values="dur",
         )
-        if pivi.T.shape[0]:
+        if pivi.shape[0]:
             pivi.T.plot(
                 ax=ax[i, 1],
                 title=f"{name}",

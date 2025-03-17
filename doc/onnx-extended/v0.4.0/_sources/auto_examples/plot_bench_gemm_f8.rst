@@ -27,7 +27,7 @@ This benchmark looks into various combinations allowed by functions
 :epkg:`cublasLtMatmul`. The tested configurations are available at
 :epkg:`cuda_gemm.cu`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-74
+.. GENERATED FROM PYTHON SOURCE LINES 11-73
 
 .. code-block:: Python
 
@@ -65,8 +65,7 @@ This benchmark looks into various combinations allowed by functions
             # No float 8.
             dtests, ddims = (
                 "0,1,2,3,4,15",
-                "16,32,64,128,256,512,1024,2048,4096,8192,"
-                "128x768x768,128x3072x768,128x768x3072",
+                "16,32,64,128,128x128x128,128x512x128,128x512x512",
             )
         else:
             dtests, ddims = (
@@ -101,12 +100,12 @@ This benchmark looks into various combinations allowed by functions
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-77
+.. GENERATED FROM PYTHON SOURCE LINES 74-76
 
 Device
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-86
+.. GENERATED FROM PYTHON SOURCE LINES 76-85
 
 .. code-block:: Python
 
@@ -127,17 +126,28 @@ Device
 
  .. code-block:: none
 
-    CUDA is not available
+    {'clockRate': 2010000,
+     'computeMode': 0,
+     'concurrentKernels': 1,
+     'isMultiGpuBoard': 0,
+     'major': 8,
+     'maxThreadsPerBlock': 1024,
+     'minor': 9,
+     'multiProcessorCount': 24,
+     'name': 'NVIDIA GeForce RTX 4060 Laptop GPU',
+     'sharedMemPerBlock': 49152,
+     'totalConstMem': 65536,
+     'totalGlobalMem': 8585281536}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-89
+.. GENERATED FROM PYTHON SOURCE LINES 86-88
 
 Benchmark
 +++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-175
+.. GENERATED FROM PYTHON SOURCE LINES 88-178
 
 .. code-block:: Python
 
@@ -193,7 +203,11 @@ Benchmark
             gemm_args = [m, n, k, lda, ldb, ldd]
 
         # warmup
-        gemm_benchmark_test(test, N, *gemm_args)
+        try:
+            gemm_benchmark_test(test, N, *gemm_args)
+        except RuntimeError:
+            # Not working.
+            continue
 
         # benchmark
         res = gemm_benchmark_test(test, N, *gemm_args)
@@ -235,10 +249,36 @@ Benchmark
 
  .. code-block:: none
 
-    0it [00:00, ?it/s]    0it [00:00, ?it/s]
-    Empty DataFrame
-    Columns: []
-    Index: []
+      0%|          | 0/42 [00:00<?, ?it/s]    type=0 dim=16:   0%|          | 0/42 [00:00<?, ?it/s]    type=0 dim=16:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=0 dim=32:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=0 dim=64:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=0 dim=128:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=0 dim=(128, 128, 128):   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=0 dim=(128, 512, 128):   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=0 dim=(128, 512, 512):   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=1 dim=16:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]                 type=1 dim=32:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=1 dim=64:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=1 dim=128:   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=1 dim=(128, 128, 128):   2%|▏         | 1/42 [00:01<01:17,  1.88s/it]    type=1 dim=(128, 128, 128):  29%|██▊       | 12/42 [00:01<00:03,  8.23it/s]    type=1 dim=(128, 512, 128):  29%|██▊       | 12/42 [00:01<00:03,  8.23it/s]    type=1 dim=(128, 512, 512):  29%|██▊       | 12/42 [00:01<00:03,  8.23it/s]    type=2 dim=16:  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]                 type=2 dim=32:  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]    type=2 dim=64:  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]    type=2 dim=128:  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]    type=2 dim=(128, 128, 128):  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]    type=2 dim=(128, 512, 128):  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]    type=2 dim=(128, 512, 512):  29%|██▊       | 12/42 [00:02<00:03,  8.23it/s]    type=2 dim=(128, 512, 512):  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=3 dim=16:  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]                 type=3 dim=32:  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=3 dim=64:  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=3 dim=128:  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=3 dim=(128, 128, 128):  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=3 dim=(128, 512, 128):  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=3 dim=(128, 512, 512):  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]    type=4 dim=16:  50%|█████     | 21/42 [00:02<00:01, 15.24it/s]                 type=4 dim=16:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=4 dim=32:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=4 dim=64:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=4 dim=128:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=4 dim=(128, 128, 128):  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=4 dim=(128, 512, 128):  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=4 dim=(128, 512, 512):  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=16:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]                type=15 dim=32:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=64:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=128:  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=(128, 128, 128):  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=(128, 512, 128):  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=(128, 512, 512):  69%|██████▉   | 29/42 [00:02<00:00, 19.87it/s]    type=15 dim=(128, 512, 512): 100%|██████████| 42/42 [00:02<00:00, 17.44it/s]
+                                    0                1                2                3                4
+    t-total                  0.000052         0.000047         0.000044         0.000042         0.000043
+    t-clean                       0.0              0.0              0.0              0.0              0.0
+    t-gemm_in                0.000009          0.00001          0.00001         0.000007         0.000008
+    t-setup                  0.000002         0.000001         0.000001         0.000002         0.000002
+    t-stream_create               0.0              0.0              0.0              0.0              0.0
+    N                              80               80               80               40               40
+    epiloque                      1.0              1.0              1.0              1.0              1.0
+    ldd                            16               32               64              128              128
+    t-workspace_free         0.000002         0.000002         0.000002         0.000002         0.000002
+    algo                         11.0              1.0              1.0              1.0              1.0
+    t-gemm_sync              0.000045         0.000042         0.000039         0.000037         0.000036
+    t-stream_destroy         0.000001         0.000001         0.000001         0.000001         0.000001
+    workspace_size          1048576.0        1048576.0        1048576.0        1048576.0        1048576.0
+    m                              16               32               64              128              128
+    k                              16               32               64              128              128
+    n                              16               32               64              128              128
+    compute_type                  C68              C68              C68              C68              C68
+    lda                            16               32               64              128              128
+    type_a                        F32              F32              F32              F32              F32
+    ldb                            16               32               64              128              128
+    t-gemm                   0.000011         0.000012         0.000012         0.000009          0.00001
+    type_b                        F32              F32              F32              F32              F32
+    t-workspace_new          0.000002         0.000002         0.000002         0.000002         0.000002
+    type_d                        F32              F32              F32              F32              F32
+    test                            0                0                0                0                0
+    ~dim                         16.0             32.0             64.0            128.0            128.0
+    mnk                      16x16x16         32x32x32         64x64x64      128x128x128      128x128x128
+    name              F32xF32->F32C68  F32xF32->F32C68  F32xF32->F32C68  F32xF32->F32C68  F32xF32->F32C68
 
 
 .. raw:: html
@@ -262,9 +302,238 @@ Benchmark
       <thead>
         <tr style="text-align: right;">
           <th></th>
+          <th>0</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <th>t-total</th>
+          <td>0.000052</td>
+          <td>0.000047</td>
+          <td>0.000044</td>
+          <td>0.000042</td>
+          <td>0.000043</td>
+        </tr>
+        <tr>
+          <th>t-clean</th>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+        </tr>
+        <tr>
+          <th>t-gemm_in</th>
+          <td>0.000009</td>
+          <td>0.00001</td>
+          <td>0.00001</td>
+          <td>0.000007</td>
+          <td>0.000008</td>
+        </tr>
+        <tr>
+          <th>t-setup</th>
+          <td>0.000002</td>
+          <td>0.000001</td>
+          <td>0.000001</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+        </tr>
+        <tr>
+          <th>t-stream_create</th>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+        </tr>
+        <tr>
+          <th>N</th>
+          <td>80</td>
+          <td>80</td>
+          <td>80</td>
+          <td>40</td>
+          <td>40</td>
+        </tr>
+        <tr>
+          <th>epiloque</th>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <th>ldd</th>
+          <td>16</td>
+          <td>32</td>
+          <td>64</td>
+          <td>128</td>
+          <td>128</td>
+        </tr>
+        <tr>
+          <th>t-workspace_free</th>
+          <td>0.000002</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+        </tr>
+        <tr>
+          <th>algo</th>
+          <td>11.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <th>t-gemm_sync</th>
+          <td>0.000045</td>
+          <td>0.000042</td>
+          <td>0.000039</td>
+          <td>0.000037</td>
+          <td>0.000036</td>
+        </tr>
+        <tr>
+          <th>t-stream_destroy</th>
+          <td>0.000001</td>
+          <td>0.000001</td>
+          <td>0.000001</td>
+          <td>0.000001</td>
+          <td>0.000001</td>
+        </tr>
+        <tr>
+          <th>workspace_size</th>
+          <td>1048576.0</td>
+          <td>1048576.0</td>
+          <td>1048576.0</td>
+          <td>1048576.0</td>
+          <td>1048576.0</td>
+        </tr>
+        <tr>
+          <th>m</th>
+          <td>16</td>
+          <td>32</td>
+          <td>64</td>
+          <td>128</td>
+          <td>128</td>
+        </tr>
+        <tr>
+          <th>k</th>
+          <td>16</td>
+          <td>32</td>
+          <td>64</td>
+          <td>128</td>
+          <td>128</td>
+        </tr>
+        <tr>
+          <th>n</th>
+          <td>16</td>
+          <td>32</td>
+          <td>64</td>
+          <td>128</td>
+          <td>128</td>
+        </tr>
+        <tr>
+          <th>compute_type</th>
+          <td>C68</td>
+          <td>C68</td>
+          <td>C68</td>
+          <td>C68</td>
+          <td>C68</td>
+        </tr>
+        <tr>
+          <th>lda</th>
+          <td>16</td>
+          <td>32</td>
+          <td>64</td>
+          <td>128</td>
+          <td>128</td>
+        </tr>
+        <tr>
+          <th>type_a</th>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+        </tr>
+        <tr>
+          <th>ldb</th>
+          <td>16</td>
+          <td>32</td>
+          <td>64</td>
+          <td>128</td>
+          <td>128</td>
+        </tr>
+        <tr>
+          <th>t-gemm</th>
+          <td>0.000011</td>
+          <td>0.000012</td>
+          <td>0.000012</td>
+          <td>0.000009</td>
+          <td>0.00001</td>
+        </tr>
+        <tr>
+          <th>type_b</th>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+        </tr>
+        <tr>
+          <th>t-workspace_new</th>
+          <td>0.000002</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+          <td>0.000002</td>
+        </tr>
+        <tr>
+          <th>type_d</th>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+          <td>F32</td>
+        </tr>
+        <tr>
+          <th>test</th>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <th>~dim</th>
+          <td>16.0</td>
+          <td>32.0</td>
+          <td>64.0</td>
+          <td>128.0</td>
+          <td>128.0</td>
+        </tr>
+        <tr>
+          <th>mnk</th>
+          <td>16x16x16</td>
+          <td>32x32x32</td>
+          <td>64x64x64</td>
+          <td>128x128x128</td>
+          <td>128x128x128</td>
+        </tr>
+        <tr>
+          <th>name</th>
+          <td>F32xF32-&gt;F32C68</td>
+          <td>F32xF32-&gt;F32C68</td>
+          <td>F32xF32-&gt;F32C68</td>
+          <td>F32xF32-&gt;F32C68</td>
+          <td>F32xF32-&gt;F32C68</td>
+        </tr>
       </tbody>
     </table>
     </div>
@@ -272,12 +541,12 @@ Benchmark
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-178
+.. GENERATED FROM PYTHON SOURCE LINES 179-181
 
 Test definition
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-185
+.. GENERATED FROM PYTHON SOURCE LINES 181-188
 
 .. code-block:: Python
 
@@ -292,15 +561,25 @@ Test definition
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+                     name  test type_a type_b type_d compute_type
+    0  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68
+    1     F32xF32->F32C68     0    F32    F32    F32          C68
+    2     F32xF32->F32C75     2    F32    F32    F32          C75
+    3     F32xF32->F32C77     1    F32    F32    F32          C77
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 186-188
+
+.. GENERATED FROM PYTHON SOURCE LINES 189-191
 
 Total time and only gemm
 ++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 188-193
+.. GENERATED FROM PYTHON SOURCE LINES 191-196
 
 .. code-block:: Python
 
@@ -313,15 +592,49 @@ Total time and only gemm
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+                      name  test type_a type_b type_d compute_type   ~dim          mnk   t-total  t-gemm_sync
+    0      F32xF32->F32C68     0    F32    F32    F32          C68   16.0     16x16x16  0.000052     0.000045
+    1      F32xF32->F32C68     0    F32    F32    F32          C68   32.0     32x32x32  0.000047     0.000042
+    2      F32xF32->F32C68     0    F32    F32    F32          C68   64.0     64x64x64  0.000044     0.000039
+    3      F32xF32->F32C68     0    F32    F32    F32          C68  128.0  128x128x128  0.000042     0.000037
+    4      F32xF32->F32C68     0    F32    F32    F32          C68  128.0  128x128x128  0.000043     0.000036
+    5      F32xF32->F32C68     0    F32    F32    F32          C68  256.0  128x512x128  0.000044     0.000038
+    6      F32xF32->F32C68     0    F32    F32    F32          C68  512.0  128x512x512  0.000577     0.000080
+    7      F32xF32->F32C77     1    F32    F32    F32          C77   16.0     16x16x16  0.000044     0.000038
+    8      F32xF32->F32C77     1    F32    F32    F32          C77   32.0     32x32x32  0.000045     0.000039
+    9      F32xF32->F32C77     1    F32    F32    F32          C77   64.0     64x64x64  0.000044     0.000038
+    10     F32xF32->F32C77     1    F32    F32    F32          C77  128.0  128x128x128  0.000042     0.000036
+    11     F32xF32->F32C77     1    F32    F32    F32          C77  128.0  128x128x128  0.000050     0.000045
+    12     F32xF32->F32C77     1    F32    F32    F32          C77  256.0  128x512x128  0.000068     0.000057
+    13     F32xF32->F32C77     1    F32    F32    F32          C77  512.0  128x512x512  0.000691     0.000101
+    14     F32xF32->F32C75     2    F32    F32    F32          C75   16.0     16x16x16  0.000046     0.000039
+    15     F32xF32->F32C75     2    F32    F32    F32          C75   32.0     32x32x32  0.000110     0.000095
+    16     F32xF32->F32C75     2    F32    F32    F32          C75   64.0     64x64x64  0.000055     0.000047
+    17     F32xF32->F32C75     2    F32    F32    F32          C75  128.0  128x128x128  0.000049     0.000042
+    18     F32xF32->F32C75     2    F32    F32    F32          C75  128.0  128x128x128  0.000045     0.000039
+    19     F32xF32->F32C75     2    F32    F32    F32          C75  256.0  128x512x128  0.000060     0.000053
+    20     F32xF32->F32C75     2    F32    F32    F32          C75  512.0  128x512x512  0.000631     0.000111
+    21  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68   16.0     16x16x16  0.000038     0.000033
+    22  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68   32.0     32x32x32  0.000041     0.000035
+    23  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68   64.0     64x64x64  0.000038     0.000033
+    24  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68  128.0  128x128x128  0.000053     0.000044
+    25  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68  128.0  128x128x128  0.000042     0.000036
+    26  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68  256.0  128x512x128  0.000046     0.000040
+    27  BF16xBF16->BF16C68     4   BF16   BF16   BF16          C68  512.0  128x512x512  0.000054     0.000045
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 194-196
+
+.. GENERATED FROM PYTHON SOURCE LINES 197-199
 
 Smaller sets
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 196-210
+.. GENERATED FROM PYTHON SOURCE LINES 199-213
 
 .. code-block:: Python
 
@@ -343,15 +656,40 @@ Smaller sets
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    t-gemm_sync
+    name               BF16xBF16->BF16C68  F32xF32->F32C77
+    ~dim  mnk                                             
+    16.0  16x16x16               0.000033         0.000038
+    32.0  32x32x32               0.000035         0.000039
+    64.0  64x64x64               0.000033         0.000038
+    128.0 128x128x128            0.000040         0.000041
+    256.0 128x512x128            0.000040         0.000057
+    512.0 128x512x512            0.000045         0.000101
+
+    t-total
+    name               BF16xBF16->BF16C68  F32xF32->F32C77
+    ~dim  mnk                                             
+    16.0  16x16x16               0.000038         0.000044
+    32.0  32x32x32               0.000041         0.000045
+    64.0  64x64x64               0.000038         0.000044
+    128.0 128x128x128            0.000048         0.000046
+    256.0 128x512x128            0.000046         0.000068
+    512.0 128x512x512            0.000054         0.000691
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-213
+
+.. GENERATED FROM PYTHON SOURCE LINES 214-216
 
 Plots
 +++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 213-231
+.. GENERATED FROM PYTHON SOURCE LINES 216-234
 
 .. code-block:: Python
 
@@ -376,6 +714,23 @@ Plots
 
 
 
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image-sg:: /auto_examples/images/sphx_glr_plot_bench_gemm_f8_001.png
+         :alt: MatMul performances
+         :srcset: /auto_examples/images/sphx_glr_plot_bench_gemm_f8_001.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /auto_examples/images/sphx_glr_plot_bench_gemm_f8_002.png
+         :alt: Gemm performance lower is better, Gemm performance lower is better
+         :srcset: /auto_examples/images/sphx_glr_plot_bench_gemm_f8_002.png
+         :class: sphx-glr-multi-img
+
 
 
 
@@ -383,7 +738,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.078 seconds)
+   **Total running time of the script:** (0 minutes 5.987 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_gemm_f8.py:

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:39.993** total execution time for 18 files **from all galleries**:
+**00:26.938** total execution time for 18 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``examples/plot_bench_gemm_ort.py``)
-     - 00:39.993
+   * - :ref:`sphx_glr_auto_examples_plot_profile_gemm_ort.py` (``examples/plot_profile_gemm_ort.py``)
+     - 00:26.938
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``examples/plot_bench_cpu.py``)
      - 00:00.000
@@ -42,6 +42,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_f8.py` (``examples/plot_bench_gemm_f8.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_bench_gemm_ort.py` (``examples/plot_bench_gemm_ort.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_sparse_access.py` (``examples/plot_bench_sparse_access.py``)
@@ -81,8 +84,5 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_sparse.py` (``examples/plot_op_tree_ensemble_sparse.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_profile_gemm_ort.py` (``examples/plot_profile_gemm_ort.py``)
      - 00:00.000
      - 0.0
