@@ -13,14 +13,31 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="We focus on the model Tiny-LLM. To avoid downloading any weigths, we write a function creating a random model based on the same architecture.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_tiny_llm_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export LLM with dynamic shapes</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_exporter_exporter_dynamic_shapes_auto_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_with_dynamic_shapes_auto_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_exporter_exporter_dynamic_shapes_auto.py`
+  :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_shapes_auto.py`
 
 .. raw:: html
 
@@ -38,7 +55,8 @@ Examples Gallery
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_exporter_exporter_dynamic_shapes_auto
+   /auto_examples/plot_export_tiny_llm
+   /auto_examples/plot_export_with_dynamic_shapes_auto
 
 
 .. only:: html

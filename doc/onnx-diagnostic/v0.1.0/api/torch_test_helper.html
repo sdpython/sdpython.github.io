@@ -9,7 +9,7 @@
         <title>onnx_diagnostic.torch_test_helper - onnx-diagnostic 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -210,6 +210,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API of onnx_diagnostic</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API of onnx_diagnostic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="torch_export_patches/index.html">onnx_diagnostic.torch_export_patches</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="torch_models/index.html">onnx_diagnostic.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="args.html">onnx_diagnostic.args</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cache_helpers.html">onnx_diagnostic.cache_helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
@@ -219,9 +224,10 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">onnx_diagnostic.torch_test_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../galleries.html">Galleries of Examples and Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Galleries of Examples and Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_exporter_exporter_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../galleries.html">Galleries of Examples and Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Galleries of Examples and Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_export_tiny_llm.html">Export LLM with dynamic shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
@@ -336,9 +342,9 @@ an error happened</p></li>
         <span class="p">(</span><span class="n">norm_1</span><span class="p">):</span> <span class="n">LayerNorm</span><span class="p">((</span><span class="mi">16</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">(</span><span class="n">norm_2</span><span class="p">):</span> <span class="n">LayerNorm</span><span class="p">((</span><span class="mi">16</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
       <span class="p">)</span>
-    <span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="p">([[</span>  <span class="mi">57</span><span class="p">,</span>   <span class="mi">67</span><span class="p">,</span>  <span class="mi">162</span><span class="p">,</span>  <span class="mi">268</span><span class="p">,</span>  <span class="mi">678</span><span class="p">,</span>    <span class="mi">9</span><span class="p">,</span>  <span class="mi">653</span><span class="p">,</span> <span class="mi">1023</span><span class="p">,</span>  <span class="mi">846</span><span class="p">,</span>  <span class="mi">917</span><span class="p">,</span>  <span class="mi">282</span><span class="p">,</span>  <span class="mi">192</span><span class="p">,</span>
-              <span class="mi">723</span><span class="p">,</span>  <span class="mi">427</span><span class="p">,</span>  <span class="mi">533</span><span class="p">,</span>  <span class="mi">507</span><span class="p">,</span>  <span class="mi">193</span><span class="p">,</span>  <span class="mi">849</span><span class="p">,</span>  <span class="mi">654</span><span class="p">,</span>  <span class="mi">482</span><span class="p">,</span>  <span class="mi">408</span><span class="p">,</span>  <span class="mi">274</span><span class="p">,</span>   <span class="mi">39</span><span class="p">,</span>   <span class="mi">72</span><span class="p">,</span>
-              <span class="mi">346</span><span class="p">,</span>  <span class="mi">959</span><span class="p">,</span>  <span class="mi">688</span><span class="p">,</span>  <span class="mi">916</span><span class="p">,</span>  <span class="mi">205</span><span class="p">,</span>  <span class="mi">606</span><span class="p">]]),))</span>
+    <span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="p">([[</span>  <span class="mi">24</span><span class="p">,</span>  <span class="mi">643</span><span class="p">,</span>  <span class="mi">729</span><span class="p">,</span>  <span class="mi">993</span><span class="p">,</span>  <span class="mi">507</span><span class="p">,</span> <span class="mi">1013</span><span class="p">,</span>  <span class="mi">980</span><span class="p">,</span>  <span class="mi">233</span><span class="p">,</span>  <span class="mi">107</span><span class="p">,</span>  <span class="mi">991</span><span class="p">,</span>  <span class="mi">643</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span>
+              <span class="mi">659</span><span class="p">,</span>   <span class="mi">60</span><span class="p">,</span>  <span class="mi">856</span><span class="p">,</span>  <span class="mi">884</span><span class="p">,</span>  <span class="mi">701</span><span class="p">,</span>  <span class="mi">598</span><span class="p">,</span>  <span class="mi">610</span><span class="p">,</span>  <span class="mi">427</span><span class="p">,</span> <span class="mi">1013</span><span class="p">,</span>  <span class="mi">972</span><span class="p">,</span> <span class="mi">1023</span><span class="p">,</span>  <span class="mi">447</span><span class="p">,</span>
+               <span class="mi">74</span><span class="p">,</span>  <span class="mi">753</span><span class="p">,</span>  <span class="mi">493</span><span class="p">,</span>  <span class="mi">651</span><span class="p">,</span>   <span class="mi">37</span><span class="p">,</span>  <span class="mi">463</span><span class="p">]]),))</span>
 </pre></div>
 </div>
 </dd></dl>

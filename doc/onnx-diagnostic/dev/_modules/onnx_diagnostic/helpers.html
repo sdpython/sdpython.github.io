@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.helpers - onnx-diagnostic 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -209,6 +209,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API of onnx_diagnostic</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API of onnx_diagnostic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/torch_export_patches/index.html">onnx_diagnostic.torch_export_patches</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/torch_models/index.html">onnx_diagnostic.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/args.html">onnx_diagnostic.args</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/cache_helpers.html">onnx_diagnostic.cache_helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
@@ -218,9 +223,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/torch_test_helper.html">onnx_diagnostic.torch_test_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../galleries.html">Galleries of Examples and Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Galleries of Examples and Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_exporter_exporter_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../galleries.html">Galleries of Examples and Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Galleries of Examples and Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_export_tiny_llm.html">Export LLM with dynamic shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
@@ -273,6 +279,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.typing</span> <span class="k">as</span> <span class="nn">npt</span>
+<span class="kn">import</span> <span class="nn">onnx</span>
 <span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AttributeProto</span><span class="p">,</span>
     <span class="n">FunctionProto</span><span class="p">,</span>
@@ -312,11 +319,21 @@
             <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT16</span><span class="p">,</span>
         <span class="p">}:</span>
             <span class="k">return</span> <span class="mi">2</span>
-        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">}:</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span><span class="p">,</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span><span class="p">,</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">,</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FN</span><span class="p">,</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FNUZ</span><span class="p">,</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2</span><span class="p">,</span>
+            <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2FNUZ</span><span class="p">,</span>
+        <span class="p">}:</span>
             <span class="k">return</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX128</span><span class="p">}:</span>
             <span class="k">return</span> <span class="mi">16</span>
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to return the element size for type </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unable to return the element size for type </span><span class="si">{</span><span class="n">onnx_dtype_name</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">8</span>
@@ -324,6 +341,12 @@
         <span class="k">return</span> <span class="mi">4</span>
     <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float16</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">4</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">8</span>
     <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span> <span class="ow">or</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="s2">&quot;uint64&quot;</span><span class="p">):</span>
@@ -353,6 +376,10 @@
             <span class="k">return</span> <span class="mi">4</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">torch</span><span class="o">.</span><span class="n">uint16</span><span class="p">}:</span>
             <span class="k">return</span> <span class="mi">2</span>
+    <span class="kn">import</span> <span class="nn">ml_dtypes</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">ml_dtypes</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span>
     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected dtype=</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
@@ -815,7 +842,7 @@
     <span class="k">assert</span> <span class="n">onx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;onx cannot be None&quot;</span>
 
     <span class="k">if</span> <span class="n">shape_inference</span><span class="p">:</span>
-        <span class="n">onx</span> <span class="o">=</span> <span class="n">onx</span><span class="o">.</span><span class="n">shape_inference</span><span class="o">.</span><span class="n">infer_shapes</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
+        <span class="n">onx</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">shape_inference</span><span class="o">.</span><span class="n">infer_shapes</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">onx</span><span class="o">.</span><span class="n">name</span>
@@ -1087,7 +1114,9 @@
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">complex64</span>
     <span class="k">if</span> <span class="n">itype</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX128</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">complex128</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to convert onnx type </span><span class="si">{</span><span class="n">itype</span><span class="si">}</span><span class="s2"> to torch.type.&quot;</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Unable to convert onnx type </span><span class="si">{</span><span class="n">onnx_dtype_name</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span><span class="si">}</span><span class="s2"> to torch.type.&quot;</span>
+    <span class="p">)</span></div>
 
 
 
@@ -1114,10 +1143,22 @@
         <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
     <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span>
+    <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span>
+    <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT32</span>
     <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span>
     <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
+    <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT16</span>
+    <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT16</span>
+    <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span>
+    <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span>
     <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymFloat</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
     <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">:</span>
@@ -1172,6 +1213,34 @@
                 <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2</span>
             <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">ml_dtypes</span><span class="o">.</span><span class="n">float8_e5m2fnuz</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2FNUZ</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT16</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT16</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT16</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT32</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX64</span>
+    <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX128</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to convert type </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 

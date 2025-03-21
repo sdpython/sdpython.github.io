@@ -9,7 +9,7 @@
         <title>onnx_diagnostic.helpers - onnx-diagnostic 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -210,6 +210,11 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API of onnx_diagnostic</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API of onnx_diagnostic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="torch_export_patches/index.html">onnx_diagnostic.torch_export_patches</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="torch_models/index.html">onnx_diagnostic.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="args.html">onnx_diagnostic.args</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cache_helpers.html">onnx_diagnostic.cache_helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
@@ -219,9 +224,10 @@
 <li class="toctree-l2"><a class="reference internal" href="torch_test_helper.html">onnx_diagnostic.torch_test_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../galleries.html">Galleries of Examples and Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Galleries of Examples and Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_exporter_exporter_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../galleries.html">Galleries of Examples and Recipes</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Galleries of Examples and Recipes</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_export_tiny_llm.html">Export LLM with dynamic shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
@@ -583,7 +589,7 @@ if the given value is different from</p>
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">(</span><span class="n">T10s3x4</span><span class="p">,</span><span class="c1">#2[T10s5x6,T10s5x6x7])</span>
-    <span class="p">(</span><span class="n">T10s3x4</span><span class="p">[</span><span class="mf">0.02197265625</span><span class="p">,</span><span class="mf">0.85791015625</span><span class="p">:</span><span class="n">A0</span><span class="mf">.4944661458333333</span><span class="p">],</span><span class="c1">#2[T10s5x6[0.00048828125,0.86181640625:A0.427392578125],T10s5x6x7[0.0,0.99658203125:A0.5273670014880952]])</span>
+    <span class="p">(</span><span class="n">T10s3x4</span><span class="p">[</span><span class="mf">0.0595703125</span><span class="p">,</span><span class="mf">0.9208984375</span><span class="p">:</span><span class="n">A0</span><span class="mf">.5419514973958334</span><span class="p">],</span><span class="c1">#2[T10s5x6[0.07275390625,0.9755859375:A0.5636393229166666],T10s5x6x7[0.0029296875,0.99951171875:A0.502529761904762]])</span>
 </pre></div>
 </div>
 </dd></dl>
