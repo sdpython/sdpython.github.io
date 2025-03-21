@@ -67,11 +67,10 @@ model.forward = keep_model_forward
 # The model creation
 # ++++++++++++++++++
 #
-# Let's create an untrained model.
-
-
-# %%
-# Let's get the model, inputs and dynamic shapes.
+# Let's create an untrained model using the config file provided
+# `config.json <https://huggingface.co/arnir0/Tiny-LLM/blob/main/config.json>`_
+# to create an untrained model: :func:`onnx_diagnostic.torch_models.llms.get_tiny_llm`.
+# Then let's use it.
 
 experiment = get_tiny_llm()
 untrained_model, inputs, dynamic_shapes = (

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:13.060** total execution time for 2 files **from auto_examples**:
+**00:12.891** total execution time for 2 files **from auto_examples**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``plot_export_tiny_llm.py``)
-     - 00:13.060
+     - 00:12.891
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_shapes_auto.py` (``plot_export_with_dynamic_shapes_auto.py``)
      - 00:00.000
