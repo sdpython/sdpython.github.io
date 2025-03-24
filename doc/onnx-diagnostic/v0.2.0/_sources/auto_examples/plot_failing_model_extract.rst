@@ -62,7 +62,7 @@ into a non-existing type.
                 oh.make_node("Cast", ["C"], ["X999"], to=999, name="failing"),
                 oh.make_node("CastLike", ["X999", "Y"], ["Z"], name="n4"),
             ],
-            "nd",
+            "-nd-",
             [
                 oh.make_tensor_value_info("X", TFLOAT, ["a", "b", "c"]),
                 oh.make_tensor_value_info("Y", TFLOAT, ["a", "b", "c"]),
@@ -235,7 +235,7 @@ for this node or shape inference failed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.550 seconds)
+   **Total running time of the script:** (0 minutes 1.835 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_model_extract.py:

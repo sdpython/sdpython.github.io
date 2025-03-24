@@ -64,23 +64,6 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-failing-reference-evaluator demonstrated how to run a python runtime on a model but it may very slow sometimes and it could show some discrepancies if the only provider is not CPU. Let&#x27;s use onnx_diagnostic.reference.OnnxruntimeEvaluator. It splits the model into node and runs them independantly until it succeeds or fails. This class converts every node into model based on the types discovered during the execution. It relies on onnx_diagnostic.ort_session.InferenceSessionForTorch or onnx_diagnostic.ort_session.InferenceSessionForNumpy for the execution. This example uses torch tensor and bfloat16.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_failing_onnxruntime_evaluator_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_failing_onnxruntime_evaluator.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Running OnnxruntimeEvaluator on a failing model</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Let&#x27;s assume onnxruntime crashes without telling why or where. The first thing is do is to locate where. For that, we run a python runtime which is going to run until it fails.">
 
 .. only:: html
@@ -92,13 +75,30 @@ Examples Gallery
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Running ReferenceEvaluator on a failing model</div>
+      <div class="sphx-glr-thumbnail-title">Intermediate results with (ONNX) ReferenceEvaluator</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dyanmic shapes needs to be specified when a LLM is exported withtorch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-failing-reference-evaluator demonstrated how to run a python runtime on a model but it may very slow sometimes and it could show some discrepancies if the only provider is not CPU. Let&#x27;s use onnx_diagnostic.reference.OnnxruntimeEvaluator. It splits the model into node and runs them independently until it succeeds or fails. This class converts every node into model based on the types discovered during the execution. It relies on onnx_diagnostic.ort_session.InferenceSessionForTorch or onnx_diagnostic.ort_session.InferenceSessionForNumpy for the execution. This example uses torch tensor and bfloat16.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_failing_onnxruntime_evaluator_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_failing_onnxruntime_evaluator.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Intermediate results with onnxruntime</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported withtorch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward.">
 
 .. only:: html
 
@@ -115,7 +115,7 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work.">
 
 .. only:: html
 
@@ -143,8 +143,8 @@ Examples Gallery
    /auto_examples/plot_export_cond
    /auto_examples/plot_export_with_dynamic_cache
    /auto_examples/plot_failing_model_extract
-   /auto_examples/plot_failing_onnxruntime_evaluator
    /auto_examples/plot_failing_reference_evaluator
+   /auto_examples/plot_failing_onnxruntime_evaluator
    /auto_examples/plot_export_tiny_llm
    /auto_examples/plot_export_with_dynamic_shapes_auto
 

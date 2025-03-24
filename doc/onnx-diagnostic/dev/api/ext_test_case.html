@@ -9,13 +9,14 @@
         <title>onnx_diagnostic.ext_test_case - onnx-diagnostic 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a7360d90" />
     
     
 
@@ -271,8 +272,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_onnxruntime_evaluator.html">Running OnnxruntimeEvaluator on a failing model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_reference_evaluator.html">Running ReferenceEvaluator on a failing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
@@ -578,7 +579,7 @@ before running the unit test.</p>
 real measurement</p></li>
 <li><p><strong>div_by_number</strong> – divide by the number of executions</p></li>
 <li><p><strong>max_time</strong> – execute the statement until the total goes
-beyond this time (approximatively), <em>repeat</em> is ignored,
+beyond this time (approximately), <em>repeat</em> is ignored,
 <em>div_by_number</em> must be set to True</p></li>
 </ul>
 </dd>
@@ -596,15 +597,15 @@ beyond this time (approximatively), <em>repeat</em> is ignored,
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">6.256400229176505e-08</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">5.623001197818666e-08</span><span class="p">),</span>
      <span class="s1">&#39;context_size&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
-     <span class="s1">&#39;deviation&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">2.6202393122129566e-08</span><span class="p">),</span>
-     <span class="s1">&#39;max_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">1.409400283591822e-07</span><span class="p">),</span>
-     <span class="s1">&#39;min_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">5.226000212132931e-08</span><span class="p">),</span>
+     <span class="s1">&#39;deviation&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">2.3052185683134576e-08</span><span class="p">),</span>
+     <span class="s1">&#39;max_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">9.854004019871354e-08</span><span class="p">),</span>
+     <span class="s1">&#39;min_exec&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">4.026005626656115e-08</span><span class="p">),</span>
      <span class="s1">&#39;number&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
      <span class="s1">&#39;repeat&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-     <span class="s1">&#39;ttime&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">6.256400229176505e-07</span><span class="p">),</span>
-     <span class="s1">&#39;warmup_time&#39;</span><span class="p">:</span> <span class="mf">0.001979887998459162</span><span class="p">}</span>
+     <span class="s1">&#39;ttime&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="mf">5.623001197818666e-07</span><span class="p">),</span>
+     <span class="s1">&#39;warmup_time&#39;</span><span class="p">:</span> <span class="mf">0.0015227340009005275</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>See <a class="reference external" href="https://docs.python.org/3/library/timeit.html?timeit.Timer.repeat">Timer.repeat</a>
@@ -628,7 +629,7 @@ The function returns a duration corresponding to
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>msg</strong> – to overwrite the message</p></li>
 <li><p><strong>version</strong> – minimum version</p></li>
-<li><p><strong>memory</strong> – minimun number of Gb to run the test</p></li>
+<li><p><strong>memory</strong> – minimum number of Gb to run the test</p></li>
 </ul>
 </dd>
 </dl>
@@ -754,7 +755,7 @@ The function returns a duration corresponding to
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">25738</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">871</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">25742</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">872</span><span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -785,12 +786,12 @@ The function returns a duration corresponding to
 </div>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">18200</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">548</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ort_session.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6017</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_test_helper.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">25738</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">871</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ext_test_case.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5661</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">213</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;onnx_tools.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6018</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_test_helper.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">25742</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">872</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ext_test_case.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5664</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">213</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;onnx_tools.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">1784</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cache_helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2878</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">115</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;args.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">40450</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1476</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">40451</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1476</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">136</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">751</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
@@ -921,7 +922,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_export_patches/__init__.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">14028</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">14021</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">360</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_export_patches/onnx_export_errors.py&#39;</span><span class="p">},</span>
@@ -956,17 +957,17 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">548</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ort_session.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6017</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">6018</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_test_helper.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">25738</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">25742</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">871</span><span class="p">,</span>
+      <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">872</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ext_test_case.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5661</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">5664</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">213</span><span class="p">,</span>
@@ -977,7 +978,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cache_helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">2878</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">115</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;args.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">40450</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1476</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">40451</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">1476</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;helpers.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">136</span><span class="p">,</span> <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span> <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;__init__.py&#39;</span><span class="p">},</span>
      <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">751</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;reference&#39;</span><span class="p">,</span>
@@ -1159,7 +1160,7 @@ The function returns a duration corresponding to
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
       <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_export_patches/__init__.py&#39;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">14028</span><span class="p">,</span>
+     <span class="p">{</span><span class="s1">&#39;chars&#39;</span><span class="p">:</span> <span class="mi">14021</span><span class="p">,</span>
       <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;torch_export_patches&#39;</span><span class="p">,</span>
       <span class="s1">&#39;ext&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
       <span class="s1">&#39;lines&#39;</span><span class="p">:</span> <span class="mi">360</span><span class="p">,</span>

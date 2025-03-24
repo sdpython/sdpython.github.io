@@ -20,14 +20,14 @@
 
 .. _l-plot-failing-onnxruntime-evaluator:
 
-Running OnnxruntimeEvaluator on a failing model
-===============================================
+Intermediate results with onnxruntime
+=====================================
 
 Example :ref:`l-plot-failing-reference-evaluator` demonstrated
 how to run a python runtime on a model but it may very slow sometimes
 and it could show some discrepancies if the only provider is not CPU.
 Let's use :class:`OnnxruntimeEvaluator <onnx_diagnostic.reference.OnnxruntimeEvaluator>`.
-It splits the model into node and runs them independantly until it succeeds
+It splits the model into node and runs them independently until it succeeds
 or fails. This class converts every node into model based on the types
 discovered during the execution. It relies on :class:`InferenceSessionForTorch
 <onnx_diagnostic.ort_session.InferenceSessionForTorch>` or
@@ -66,7 +66,7 @@ into a non-existing type.
                 oh.make_node("Cast", ["C"], ["X999"], to=999, name="failing"),
                 oh.make_node("CastLike", ["X999", "Y"], ["Z"], name="n4"),
             ],
-            "nd",
+            "-nd-",
             [
                 oh.make_tensor_value_info("X", TBFLOAT16, ["a", "b", "c"]),
                 oh.make_tensor_value_info("Y", TBFLOAT16, ["a", "b", "c"]),
@@ -147,8 +147,8 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
  .. code-block:: none
 
      +C one: bfloat16:(1,):[1.0]
-     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.71484375,0.76953125,0.84375,0.515625,0.24609375,0.55078125,0.28515625,0.875,0.24609375,0.6875...
-     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.375,0.8046875,0.6953125,0.19140625,0.25,0.8671875,0.1640625,0.68359375,0.2890625,0.671875...
+     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.08203125,0.3203125,0.2890625,0.5,0.375,0.51171875,0.0546875,0.6953125,0.98046875,0.44921875...
+     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.6796875,0.375,0.12109375,0.33984375,0.34375,0.7890625,0.94140625,0.2109375,0.05078125,0.47265625...
     Mul(X, Y) -> xy
     ERROR <class 'onnxruntime.capi.onnxruntime_pybind11_state.NotImplemented'> [ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Mul(14) node with name 'n0'
 
@@ -184,14 +184,14 @@ See :epkg:`onnxruntime kernels`.
  .. code-block:: none
 
      +C one: bfloat16:(1,):[1.0]
-     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.30859375,0.8828125,0.375,0.80078125,0.62109375,0.94921875,0.07421875,0.29296875,0.26171875,0.23046875...
-     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.234375,0.71484375,0.609375,0.46484375,0.28515625,0.81640625,0.84765625,0.62109375,0.55859375,0.78125...
+     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.34375,0.23046875,0.65625,0.33203125,0.546875,0.83984375,0.859375,0.5859375,0.87109375,0.734375...
+     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.7421875,0.546875,0.83203125,0.19140625,0.51953125,0.62890625,0.6640625,0.28125,0.58984375,0.95703125...
     Mul(X, Y) -> xy
-     + xy: D-1:torch.bfloat16:torch.Size([3, 4]):0.072265625,0.6328125,0.228515625,0.373046875,0.1767578125,0.7734375,0.06298828125,0.181640625,0.146484375,0.1796875...
+     + xy: D-1:torch.bfloat16:torch.Size([3, 4]):0.255859375,0.1259765625,0.546875,0.0634765625,0.283203125,0.52734375,0.5703125,0.1650390625,0.515625,0.703125...
     Sigmoid(xy) -> sy
-     + sy: D-1:torch.bfloat16:torch.Size([3, 4]):0.51953125,0.65234375,0.5546875,0.59375,0.54296875,0.68359375,0.515625,0.546875,0.5390625,0.54296875...
+     + sy: D-1:torch.bfloat16:torch.Size([3, 4]):0.5625,0.53125,0.6328125,0.515625,0.5703125,0.62890625,0.640625,0.54296875,0.62890625,0.671875...
     Add(sy, one) -> C
-     + C: bfloat16:(3, 4):1.515625,1.65625,1.5546875,1.59375,1.546875,1.6875,1.515625,1.546875,1.5390625,1.546875...
+     + C: bfloat16:(3, 4):1.5625,1.53125,1.6328125,1.515625,1.5703125,1.625,1.640625,1.546875,1.625,1.671875...
     Cast(C) -> X999
     ERROR <class 'RuntimeError'> Unable to infer a session with inputs
     #1[A16r2]
@@ -208,7 +208,7 @@ See :epkg:`onnxruntime kernels`.
 
 We can see it run until it reaches `Cast` and stops.
 The error message is not always obvious to interpret.
-It gets improved everytime from time to time.
+It gets improved every time from time to time.
 This runtime is useful when it fails for a numerical reason.
 It is possible to insert prints in the python code to print
 more information or debug if needed.
@@ -216,7 +216,7 @@ more information or debug if needed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.074 seconds)
+   **Total running time of the script:** (0 minutes 8.219 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_onnxruntime_evaluator.py:

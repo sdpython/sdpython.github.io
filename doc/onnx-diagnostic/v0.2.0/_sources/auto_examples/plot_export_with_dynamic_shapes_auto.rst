@@ -23,7 +23,7 @@
 Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints
 ====================================================================
 
-Settings the dynamic shapes is not always easy.
+Setting the dynamic shapes is not always easy.
 Here are a few tricks to make it work.
 
 dx + dy not allowed?
@@ -274,7 +274,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.389 seconds)
+   **Total running time of the script:** (0 minutes 0.570 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_with_dynamic_shapes_auto.py:

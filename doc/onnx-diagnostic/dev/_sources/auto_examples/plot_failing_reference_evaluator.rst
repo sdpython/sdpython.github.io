@@ -20,8 +20,8 @@
 
 .. _l-plot-failing-reference-evaluator:
 
-Running ReferenceEvaluator on a failing model
-=============================================
+Intermediate results with (ONNX) ReferenceEvaluator
+===================================================
 
 Let's assume :epkg:`onnxruntime` crashes without telling why or where.
 The first thing is do is to locate where. For that, we run a python runtime
@@ -56,7 +56,7 @@ into a non-existing type.
                 oh.make_node("Cast", ["C"], ["X999"], to=999, name="failing"),
                 oh.make_node("CastLike", ["X999", "Y"], ["Z"], name="n4"),
             ],
-            "nd",
+            "-nd-",
             [
                 oh.make_tensor_value_info("X", TFLOAT, ["a", "b", "c"]),
                 oh.make_tensor_value_info("Y", TFLOAT, ["a", "b", "c"]),
@@ -136,14 +136,14 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
  .. code-block:: none
 
      +C one: float32:(1,):[1.0]
-     +I X: float32:(3, 4):0.26755693554878235,0.46771103143692017,0.4914068281650543,0.9291408658027649,0.8162393569946289...
-     +I Y: float32:(3, 4):0.27676820755004883,0.2010004222393036,0.06289035826921463,0.8532056212425232,0.5996442437171936...
+     +I X: float32:(3, 4):0.45591384172439575,0.9250385165214539,0.5968579053878784,0.8804599046707153,0.47444263100624084...
+     +I Y: float32:(3, 4):0.7402591109275818,0.07107110321521759,0.05020175874233246,0.6850621700286865,0.8460367321968079...
     Mul(X, Y) -> xy
-     + xy: float32:(3, 4):0.07405125349760056,0.0940101146697998,0.030904751271009445,0.792748212814331,0.4894532263278961...
+     + xy: float32:(3, 4):0.3374943733215332,0.06574350595474243,0.029963316395878792,0.6031697988510132,0.40139588713645935...
     Sigmoid(xy) -> sy
-     + sy: float32:(3, 4):0.5185043811798096,0.5234852433204651,0.5077255964279175,0.6884211301803589,0.619977593421936...
+     + sy: float32:(3, 4):0.5835817456245422,0.5164299607276917,0.5074902772903442,0.6463811993598938,0.5990229845046997...
     Add(sy, one) -> C
-     + C: float32:(3, 4):1.5185043811798096,1.5234851837158203,1.5077255964279175,1.6884211301803589,1.619977593421936...
+     + C: float32:(3, 4):1.5835816860198975,1.5164299011230469,1.5074902772903442,1.646381139755249,1.5990229845046997...
     Cast(C) -> X999
     ERROR <class 'KeyError'> 999
 
@@ -154,7 +154,7 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
 
 We can see it run until it reaches `Cast` and stops.
 The error message is not always obvious to interpret.
-It gets improved everytime from time to time.
+It gets improved every time from time to time.
 This runtime is useful when it fails for a numerical reason.
 It is possible to insert prints in the python code to print
 more information or debug if needed.
@@ -162,7 +162,7 @@ more information or debug if needed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.011 seconds)
+   **Total running time of the script:** (0 minutes 0.225 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_reference_evaluator.py:

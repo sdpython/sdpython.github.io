@@ -9,13 +9,14 @@
         <title>onnx_diagnostic.torch_test_helper - onnx-diagnostic 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a7360d90" />
     
     
 
@@ -271,8 +272,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_onnxruntime_evaluator.html">Running OnnxruntimeEvaluator on a failing model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_reference_evaluator.html">Running ReferenceEvaluator on a failing model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
@@ -387,9 +388,9 @@ an error happened</p></li>
         <span class="p">(</span><span class="n">norm_1</span><span class="p">):</span> <span class="n">LayerNorm</span><span class="p">((</span><span class="mi">16</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="p">(</span><span class="n">norm_2</span><span class="p">):</span> <span class="n">LayerNorm</span><span class="p">((</span><span class="mi">16</span><span class="p">,),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
       <span class="p">)</span>
-    <span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="p">([[</span> <span class="mi">677</span><span class="p">,</span>  <span class="mi">435</span><span class="p">,</span>  <span class="mi">477</span><span class="p">,</span>  <span class="mi">590</span><span class="p">,</span>  <span class="mi">768</span><span class="p">,</span>  <span class="mi">710</span><span class="p">,</span>  <span class="mi">254</span><span class="p">,</span>  <span class="mi">501</span><span class="p">,</span>  <span class="mi">390</span><span class="p">,</span>  <span class="mi">311</span><span class="p">,</span>  <span class="mi">201</span><span class="p">,</span>  <span class="mi">273</span><span class="p">,</span>
-              <span class="mi">380</span><span class="p">,</span>  <span class="mi">887</span><span class="p">,</span>  <span class="mi">205</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span>  <span class="mi">582</span><span class="p">,</span>  <span class="mi">742</span><span class="p">,</span>  <span class="mi">336</span><span class="p">,</span>  <span class="mi">776</span><span class="p">,</span>  <span class="mi">854</span><span class="p">,</span>  <span class="mi">875</span><span class="p">,</span>  <span class="mi">435</span><span class="p">,</span>  <span class="mi">852</span><span class="p">,</span>
-              <span class="mi">710</span><span class="p">,</span>  <span class="mi">732</span><span class="p">,</span>  <span class="mi">196</span><span class="p">,</span>  <span class="mi">538</span><span class="p">,</span>  <span class="mi">198</span><span class="p">,</span>  <span class="mi">437</span><span class="p">]]),))</span>
+    <span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="p">([[</span> <span class="mi">967</span><span class="p">,</span> <span class="mi">1023</span><span class="p">,</span>  <span class="mi">285</span><span class="p">,</span>  <span class="mi">788</span><span class="p">,</span> <span class="mi">1004</span><span class="p">,</span>  <span class="mi">601</span><span class="p">,</span>  <span class="mi">485</span><span class="p">,</span>  <span class="mi">420</span><span class="p">,</span>  <span class="mi">797</span><span class="p">,</span>  <span class="mi">113</span><span class="p">,</span>  <span class="mi">290</span><span class="p">,</span>  <span class="mi">675</span><span class="p">,</span>
+              <span class="mi">902</span><span class="p">,</span>  <span class="mi">346</span><span class="p">,</span>  <span class="mi">898</span><span class="p">,</span>  <span class="mi">415</span><span class="p">,</span>  <span class="mi">618</span><span class="p">,</span>  <span class="mi">718</span><span class="p">,</span>   <span class="mi">13</span><span class="p">,</span> <span class="mi">1011</span><span class="p">,</span>  <span class="mi">537</span><span class="p">,</span>  <span class="mi">368</span><span class="p">,</span>   <span class="mi">64</span><span class="p">,</span>  <span class="mi">508</span><span class="p">,</span>
+              <span class="mi">138</span><span class="p">,</span>  <span class="mi">998</span><span class="p">,</span>  <span class="mi">322</span><span class="p">,</span>   <span class="mi">28</span><span class="p">,</span>  <span class="mi">188</span><span class="p">,</span>   <span class="mi">39</span><span class="p">]]),))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -397,7 +398,7 @@ an error happened</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_test_helper.to_numpy">
 <span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_test_helper.</span></span><span class="sig-name descname"><span class="pre">to_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="(in PyTorch vmain (2.8.0a0+gitde3aca3 ))"><span class="pre">Tensor</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/onnx_diagnostic/torch_test_helper.html#to_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_test_helper.to_numpy" title="Link to this definition">¶</a></dt>
-<dd><p>Convets a torch tensor to numy.</p>
+<dd><p>Converts a torch tensor to numy.</p>
 </dd></dl>
 
 </section>
