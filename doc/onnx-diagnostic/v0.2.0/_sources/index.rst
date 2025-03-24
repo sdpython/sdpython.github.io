@@ -8,17 +8,9 @@ onnx-diagnostic: investigate onnx models
 .. image:: https://badge.fury.io/py/onnx-diagnostic.svg
     :target: http://badge.fury.io/py/onnx-diagnostic
 
-.. image:: http://img.shields.io/github/issues/sdpython/onnx-diagnostic.png
-    :alt: GitHub Issues
-    :target: https://github.com/sdpython/onnx-diagnostic/issues
-
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :alt: MIT License
     :target: https://opensource.org/license/MIT/
-
-.. image:: https://img.shields.io/github/repo-size/sdpython/onnx-diagnostic
-    :target: https://github.com/sdpython/onnx-diagnostic/
-    :alt: size
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
@@ -26,7 +18,8 @@ onnx-diagnostic: investigate onnx models
 .. image:: https://codecov.io/gh/sdpython/onnx-diagnostic/branch/main/graph/badge.svg?token=Wb9ZGDta8J 
     :target: https://codecov.io/gh/sdpython/onnx-diagnostic
 
-**onnx-diagnostic** is mostly to experiment ideas.
+**onnx-diagnostic** helps investgating onnx models, exporting models into onnx.
+It implements tools used to understand issues.
 
 Source are `sdpython/onnx-diagnostic
 <https://github.com/sdpython/onnx-diagnostic>`_.
@@ -45,8 +38,17 @@ Source are `sdpython/onnx-diagnostic
     CHANGELOGS
     license
 
+**Enlightening Examples**
 
-**Some usefuls tools**
+* :ref:`l-plot-export-cond`
+* :ref:`l-plot-sxport-with-dynamio-shapes-auto`
+* :ref:`l-plot-export-with-dynamic-shape`
+* :ref:`l-plot-tiny-llm-export`
+* :ref:`l-plot-failing-reference-evaluator`
+* :ref:`l-plot-failing-onnxruntime-evaluator`
+* :ref:`l-plot-failing-model-extract`
+
+**Some Usefuls Tools**
 
 .. code-block:: python
 
@@ -135,7 +137,6 @@ Size of the package:
     gr = df[["dir", "ext", "lines", "chars"]].groupby(["ext", "dir"]).sum()
     print(gr)
 
-Older versions
-++++++++++++++
+**Older versions**
 
 * `0.1.0 <../v0.1.0/index.html>`_

@@ -7,6 +7,8 @@ API of onnx_diagnostic
     :maxdepth: 1
     :caption: submodules
 
+    export/index
+    reference/index
     torch_export_patches/index
     torch_models/index
 

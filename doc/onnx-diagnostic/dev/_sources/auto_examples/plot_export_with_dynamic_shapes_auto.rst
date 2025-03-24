@@ -18,8 +18,10 @@
 .. _sphx_glr_auto_examples_plot_export_with_dynamic_shapes_auto.py:
 
 
-Use DYNAMIC or AUTO when dynamic shapes has constraints
-=======================================================
+.. _l-plot-sxport-with-dynamio-shapes-auto:
+
+Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints
+====================================================================
 
 Settings the dynamic shapes is not always easy.
 Here are a few tricks to make it work.
@@ -27,7 +29,7 @@ Here are a few tricks to make it work.
 dx + dy not allowed?
 ++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-29
+.. GENERATED FROM PYTHON SOURCE LINES 13-31
 
 .. code-block:: Python
 
@@ -72,12 +74,12 @@ dx + dy not allowed?
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-32
+.. GENERATED FROM PYTHON SOURCE LINES 32-34
 
 Everything is fine so far. With dynamic shapes now.
 dx + dy is not allowed...
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-43
+.. GENERATED FROM PYTHON SOURCE LINES 34-45
 
 .. code-block:: Python
 
@@ -105,11 +107,11 @@ dx + dy is not allowed...
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-45
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 Then we could make it a different one.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-62
+.. GENERATED FROM PYTHON SOURCE LINES 47-64
 
 .. code-block:: Python
 
@@ -146,13 +148,13 @@ Then we could make it a different one.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
+.. GENERATED FROM PYTHON SOURCE LINES 65-68
 
 That works. We could also use
 ``torch.export.Dim.DYNAMIC`` or ``torch.export.Dim.AUTO``
 for the dimension we cannot set.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-80
+.. GENERATED FROM PYTHON SOURCE LINES 68-82
 
 .. code-block:: Python
 
@@ -188,7 +190,7 @@ for the dimension we cannot set.
                 sym_size_int_4: "Sym(s3)" = torch.ops.aten.sym_size.int(y, 1)
                 sym_size_int_5: "Sym(s5)" = torch.ops.aten.sym_size.int(z, 1)
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:17 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:19 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
                 cat: "f32[s0, s1 + s3]" = torch.ops.aten.cat.default([x, y], 1);  x = y = None
             
                  # 
@@ -198,7 +200,7 @@ for the dimension we cannot set.
                 eq_2: "Sym(Eq(s1 + s3, ((s5 + 1)//2)))" = add_1 == floordiv;  add_1 = floordiv = None
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(eq_2, "Runtime assertion failed for expression Eq(s1 + s3, ((s5 + 1)//2)) on node 'eq_2'");  eq_2 = _assert_scalar_default = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:17 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:19 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
                 slice_1: "f32[s0, s5]" = torch.ops.aten.slice.Tensor(z, 0, 0, 9223372036854775807);  z = None
                 slice_2: "f32[s0, ((s5 + 1)//2)]" = torch.ops.aten.slice.Tensor(slice_1, 1, 0, 9223372036854775807, 2);  slice_1 = None
                 add: "f32[s0, s1 + s3]" = torch.ops.aten.add.Tensor(cat, slice_2);  cat = slice_2 = None
@@ -211,11 +213,11 @@ for the dimension we cannot set.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-82
+.. GENERATED FROM PYTHON SOURCE LINES 83-84
 
 The same result can be obtained with ``torch.export.Dim.AUTO``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-91
+.. GENERATED FROM PYTHON SOURCE LINES 84-93
 
 .. code-block:: Python
 
@@ -246,7 +248,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
                 sym_size_int_4: "Sym(s3)" = torch.ops.aten.sym_size.int(y, 1)
                 sym_size_int_5: "Sym(s5)" = torch.ops.aten.sym_size.int(z, 1)
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:17 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:19 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
                 cat: "f32[s0, s1 + s3]" = torch.ops.aten.cat.default([x, y], 1);  x = y = None
             
                  # 
@@ -256,7 +258,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
                 eq_2: "Sym(Eq(s1 + s3, ((s5 + 1)//2)))" = add_1 == floordiv;  add_1 = floordiv = None
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(eq_2, "Runtime assertion failed for expression Eq(s1 + s3, ((s5 + 1)//2)) on node 'eq_2'");  eq_2 = _assert_scalar_default = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:17 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_with_dynamic_shapes_auto.py:19 in forward, code: return torch.cat((x, y), axis=1) + z[:, ::2]
                 slice_1: "f32[s0, s5]" = torch.ops.aten.slice.Tensor(z, 0, 0, 9223372036854775807);  z = None
                 slice_2: "f32[s0, ((s5 + 1)//2)]" = torch.ops.aten.slice.Tensor(slice_1, 1, 0, 9223372036854775807, 2);  slice_1 = None
                 add: "f32[s0, s1 + s3]" = torch.ops.aten.add.Tensor(cat, slice_2);  cat = slice_2 = None
@@ -272,7 +274,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.391 seconds)
+   **Total running time of the script:** (0 minutes 0.389 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_with_dynamic_shapes_auto.py:

@@ -20,27 +20,37 @@
 
 .. _l-plot-tiny-llm-export:
 
-Export LLM with dynamic shapes
-==============================
+Steel method forward to guess the dynamic shapes
+================================================
+
+Inputs are always dynamic with LLMs that is why dyanmic shapes
+needs to be specified when a LLM is exported with:func:`torch.export.export`.
+Most of the examples on :epkg:`HuggingFace` use method
+:meth:`transformers.GenerationMixin.generate` but we only want to
+export the model and its method ``forward``.
+
+That example shows to guess the inputs of this method even though the model
+is executed through meth ``generate``.
 
 We focus on the model
 `Tiny-LLM <https://huggingface.co/arnir0/Tiny-LLM>`_.
 To avoid downloading any weigths, we write a function creating a
 random model based on the same architecture.
 
-Guess the cache dimension
-+++++++++++++++++++++++++
+Steel the forward method
+++++++++++++++++++++++++
 
 The first step is to guess the dummy inputs.
 Let's use the true model for that.
 We use the dummy example from the model page.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-31
+.. GENERATED FROM PYTHON SOURCE LINES 28-41
 
 .. code-block:: Python
 
 
     import copy
+    import pprint
     import torch
     import transformers
     from onnx_diagnostic.helpers import string_type
@@ -58,11 +68,11 @@ We use the dummy example from the model page.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-33
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
 We rewrite the forward method to print the cache dimension.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-50
+.. GENERATED FROM PYTHON SOURCE LINES 43-60
 
 .. code-block:: Python
 
@@ -90,11 +100,11 @@ We rewrite the forward method to print the cache dimension.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 61-62
 
 Let's run the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-62
+.. GENERATED FROM PYTHON SOURCE LINES 62-72
 
 .. code-block:: Python
 
@@ -121,99 +131,99 @@ Let's run the model.
     The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
     <- ((),dict(cache_position:T7s8[0,7:A3.5],past_key_values:DynamicCache(key_cache=#0[], value_cache=#0[]),input_ids:T7s1x8[1,29901:A6305.375],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
     -> ((),dict(cache_position:T7s8[0,7:A3.5],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]),input_ids:T7s1x8[1,29901:A6305.375],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.490959167480469,6.226877689361572:A-0.11562127664324685]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.49568021297454834:A0.002961578160045098]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.490959167480469,6.226877689361572:A-0.11562127664324685]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.49568021297454834:A0.002961578160045098]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-6.345109939575195,6.226877689361572:A-0.12877330660254907]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.49568021297454834:A0.0024205679499421724]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-6.345109939575195,6.226877689361572:A-0.12877330660254907]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.49568021297454834:A0.0024205679499421724]]),input_ids:T7s1x1[29929,29929:A29929.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-6.345109939575195,6.226877689361572:A-0.11338088414259166]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.5233919620513916:A-1.3892254986730581e-05]]),input_ids:T7s1x1[29929,29929:A29929.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-6.345109939575195,6.226877689361572:A-0.11338088414259166]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.5233919620513916:A-1.3892254986730581e-05]]),input_ids:T7s1x1[29953,29953:A29953.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-6.345109939575195,6.7667083740234375:A-0.09300506301012017]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.5233919620513916:A-0.0009711937148924537]]),input_ids:T7s1x1[29953,29953:A29953.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-6.345109939575195,6.7667083740234375:A-0.09300506301012017]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.5233919620513916:A-0.0009711937148924537]]),input_ids:T7s1x1[29947,29947:A29947.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-6.345109939575195,6.7667083740234375:A-0.075821114352808]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.5233919620513916:A-0.00236893355415118]]),input_ids:T7s1x1[29947,29947:A29947.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-6.345109939575195,6.7667083740234375:A-0.075821114352808]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.5233919620513916:A-0.00236893355415118]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-6.345109939575195,6.7667083740234375:A-0.08316568377345643]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.7704185843467712:A-0.0001804815610414932]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-6.345109939575195,6.7667083740234375:A-0.08316568377345643]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.7704185843467712:A-0.0001804815610414932]]),input_ids:T7s1x1[29902,29902:A29902.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-6.345109939575195,6.7667083740234375:A-0.08045165908560092]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.7704185843467712:A-0.0004915926185983861]]),input_ids:T7s1x1[29902,29902:A29902.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-6.345109939575195,6.7667083740234375:A-0.08045165908560092]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.7704185843467712:A-0.0004915926185983861]]),input_ids:T7s1x1[5360,5360:A5360.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-6.345109939575195,6.7667083740234375:A-0.07896346188097898]], value_cache=#1[T1s1x1x16x96[-0.6787744760513306,0.7704185843467712:A9.06362407230669e-05]]),input_ids:T7s1x1[5360,5360:A5360.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-6.345109939575195,6.7667083740234375:A-0.07896346188097898]], value_cache=#1[T1s1x1x16x96[-0.6787744760513306,0.7704185843467712:A9.06362407230669e-05]]),input_ids:T7s1x1[278,278:A278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-6.345109939575195,6.7667083740234375:A-0.08378478526855378]], value_cache=#1[T1s1x1x17x96[-0.6787744760513306,0.7704185843467712:A0.0008889865854126031]]),input_ids:T7s1x1[278,278:A278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-6.345109939575195,6.7667083740234375:A-0.08378478526855378]], value_cache=#1[T1s1x1x17x96[-0.6787744760513306,0.7704185843467712:A0.0008889865854126031]]),input_ids:T7s1x1[5360,5360:A5360.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-6.345109939575195,6.7667083740234375:A-0.08184435198813002]], value_cache=#1[T1s1x1x18x96[-0.6787744760513306,0.7704185843467712:A0.0013298245045866173]]),input_ids:T7s1x1[5360,5360:A5360.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-6.345109939575195,6.7667083740234375:A-0.08184435198813002]], value_cache=#1[T1s1x1x18x96[-0.6787744760513306,0.7704185843467712:A0.0013298245045866173]]),input_ids:T7s1x1[310,310:A310.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-6.345109939575195,6.7667083740234375:A-0.07996023281776345]], value_cache=#1[T1s1x1x19x96[-0.6787744760513306,0.7704185843467712:A0.001637115953479607]]),input_ids:T7s1x1[310,310:A310.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-6.345109939575195,6.7667083740234375:A-0.07996023281776345]], value_cache=#1[T1s1x1x19x96[-0.6787744760513306,0.7704185843467712:A0.001637115953479607]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-6.345109939575195,6.7667083740234375:A-0.08472729970302074]], value_cache=#1[T1s1x1x20x96[-0.6787744760513306,0.7704185843467712:A0.0008023251899961299]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-6.345109939575195,6.7667083740234375:A-0.08472729970302074]], value_cache=#1[T1s1x1x20x96[-0.6787744760513306,0.7704185843467712:A0.0008023251899961299]]),input_ids:T7s1x1[29889,29889:A29889.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-6.345109939575195,7.048938274383545:A-0.08415856094270277]], value_cache=#1[T1s1x1x21x96[-0.6787744760513306,0.7704185843467712:A0.0013150153750281052]]),input_ids:T7s1x1[29889,29889:A29889.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-6.345109939575195,7.048938274383545:A-0.08415856094270277]], value_cache=#1[T1s1x1x21x96[-0.6787744760513306,0.7704185843467712:A0.0013150153750281052]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-6.345109939575195,7.048938274383545:A-0.08584532006986564]], value_cache=#1[T1s1x1x22x96[-0.6787744760513306,0.7704185843467712:A0.0015963734198397685]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-6.345109939575195,7.048938274383545:A-0.08584532006986564]], value_cache=#1[T1s1x1x22x96[-0.6787744760513306,0.7704185843467712:A0.0015963734198397685]]),input_ids:T7s1x1[1304,1304:A1304.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-6.345109939575195,7.048938274383545:A-0.08527282545185079]], value_cache=#1[T1s1x1x23x96[-0.6787744760513306,0.7704185843467712:A0.0012713876856822394]]),input_ids:T7s1x1[1304,1304:A1304.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-6.345109939575195,7.048938274383545:A-0.08527282545185079]], value_cache=#1[T1s1x1x23x96[-0.6787744760513306,0.7704185843467712:A0.0012713876856822394]]),input_ids:T7s1x1[304,304:A304.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-6.734043598175049,7.048938274383545:A-0.08585365425637469]], value_cache=#1[T1s1x1x24x96[-0.6787744760513306,0.7704185843467712:A0.0019265906460267008]]),input_ids:T7s1x1[304,304:A304.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-6.734043598175049,7.048938274383545:A-0.08585365425637469]], value_cache=#1[T1s1x1x24x96[-0.6787744760513306,0.7704185843467712:A0.0019265906460267008]]),input_ids:T7s1x1[437,437:A437.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-6.734043598175049,7.048938274383545:A-0.08387364163272044]], value_cache=#1[T1s1x1x25x96[-0.6787744760513306,0.7704185843467712:A0.0012079651408748759]]),input_ids:T7s1x1[437,437:A437.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-6.734043598175049,7.048938274383545:A-0.08387364163272044]], value_cache=#1[T1s1x1x25x96[-0.6787744760513306,0.7704185843467712:A0.0012079651408748759]]),input_ids:T7s1x1[1554,1554:A1554.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-6.734043598175049,7.048938274383545:A-0.08552633181417872]], value_cache=#1[T1s1x1x26x96[-0.6787744760513306,0.7704185843467712:A0.0011500642214263607]]),input_ids:T7s1x1[1554,1554:A1554.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-6.734043598175049,7.048938274383545:A-0.08552633181417872]], value_cache=#1[T1s1x1x26x96[-0.6787744760513306,0.7704185843467712:A0.0011500642214263607]]),input_ids:T7s1x1[1683,1683:A1683.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-6.734043598175049,7.048938274383545:A-0.08234722241643423]], value_cache=#1[T1s1x1x27x96[-0.6787744760513306,0.7704185843467712:A0.0013432014150252436]]),input_ids:T7s1x1[1683,1683:A1683.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-6.734043598175049,7.048938274383545:A-0.08234722241643423]], value_cache=#1[T1s1x1x27x96[-0.6787744760513306,0.7704185843467712:A0.0013432014150252436]]),input_ids:T7s1x1[29889,29889:A29889.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-6.734043598175049,7.061781883239746:A-0.07669403570907023]], value_cache=#1[T1s1x1x28x96[-0.6787744760513306,0.7704185843467712:A0.001708402045762471]]),input_ids:T7s1x1[29889,29889:A29889.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-6.734043598175049,7.061781883239746:A-0.07669403570907023]], value_cache=#1[T1s1x1x28x96[-0.6787744760513306,0.7704185843467712:A0.001708402045762471]]),input_ids:T7s1x1[1932,1932:A1932.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-6.734043598175049,7.061781883239746:A-0.07010887448732633]], value_cache=#1[T1s1x1x29x96[-0.6787744760513306,0.7704185843467712:A0.0023065490855755677]]),input_ids:T7s1x1[1932,1932:A1932.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-6.734043598175049,7.061781883239746:A-0.07010887448732633]], value_cache=#1[T1s1x1x29x96[-0.6787744760513306,0.7704185843467712:A0.0023065490855755677]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-6.734043598175049,7.061781883239746:A-0.07094968488975913]], value_cache=#1[T1s1x1x30x96[-0.6787744760513306,0.7704185843467712:A0.0017277074721833844]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-6.734043598175049,7.061781883239746:A-0.07094968488975913]], value_cache=#1[T1s1x1x30x96[-0.6787744760513306,0.7704185843467712:A0.0017277074721833844]]),input_ids:T7s1x1[338,338:A338.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-6.734043598175049,7.061781883239746:A-0.06670289673830442]], value_cache=#1[T1s1x1x31x96[-0.6787744760513306,0.7704185843467712:A0.0017822340786923271]]),input_ids:T7s1x1[338,338:A338.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-6.734043598175049,7.061781883239746:A-0.06670289673830442]], value_cache=#1[T1s1x1x31x96[-0.6787744760513306,0.7704185843467712:A0.0017822340786923271]]),input_ids:T7s1x1[2289,2289:A2289.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-6.734043598175049,7.061781883239746:A-0.06806907213266793]], value_cache=#1[T1s1x1x32x96[-0.6787744760513306,0.7704185843467712:A0.001733004265545901]]),input_ids:T7s1x1[2289,2289:A2289.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-6.734043598175049,7.061781883239746:A-0.06806907213266793]], value_cache=#1[T1s1x1x32x96[-0.6787744760513306,0.7704185843467712:A0.001733004265545901]]),input_ids:T7s1x1[1565,1565:A1565.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-6.734043598175049,7.061781883239746:A-0.0657393819670651]], value_cache=#1[T1s1x1x33x96[-0.6787744760513306,0.7704185843467712:A0.0015247532173770647]]),input_ids:T7s1x1[1565,1565:A1565.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-6.734043598175049,7.061781883239746:A-0.0657393819670651]], value_cache=#1[T1s1x1x33x96[-0.6787744760513306,0.7704185843467712:A0.0015247532173770647]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-6.734043598175049,7.061781883239746:A-0.06357729625493698]], value_cache=#1[T1s1x1x34x96[-0.6787744760513306,0.7704185843467712:A0.0017006396627743479]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-6.734043598175049,7.061781883239746:A-0.06357729625493698]], value_cache=#1[T1s1x1x34x96[-0.6787744760513306,0.7704185843467712:A0.0017006396627743479]]),input_ids:T7s1x1[437,437:A437.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-6.734043598175049,7.061781883239746:A-0.06110201920199047]], value_cache=#1[T1s1x1x35x96[-0.6787744760513306,0.7704185843467712:A0.0011937914729016831]]),input_ids:T7s1x1[437,437:A437.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-6.734043598175049,7.061781883239746:A-0.06110201920199047]], value_cache=#1[T1s1x1x35x96[-0.6787744760513306,0.7704185843467712:A0.0011937914729016831]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-6.734043598175049,7.061781883239746:A-0.06038198172026804]], value_cache=#1[T1s1x1x36x96[-0.6787744760513306,0.7704185843467712:A0.0013690998309012113]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-6.734043598175049,7.061781883239746:A-0.06038198172026804]], value_cache=#1[T1s1x1x36x96[-0.6787744760513306,0.7704185843467712:A0.0013690998309012113]]),input_ids:T7s1x1[1284,1284:A1284.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-6.734043598175049,7.061781883239746:A-0.05738916933920779]], value_cache=#1[T1s1x1x37x96[-0.6787744760513306,0.7704185843467712:A0.001049609146062918]]),input_ids:T7s1x1[1284,1284:A1284.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-6.734043598175049,7.061781883239746:A-0.05738916933920779]], value_cache=#1[T1s1x1x37x96[-0.6787744760513306,0.7704185843467712:A0.001049609146062918]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-6.734043598175049,7.061781883239746:A-0.05775714389557451]], value_cache=#1[T1s1x1x38x96[-0.6787744760513306,0.7704185843467712:A0.000625706291793106]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-6.734043598175049,7.061781883239746:A-0.05775714389557451]], value_cache=#1[T1s1x1x38x96[-0.6787744760513306,0.7704185843467712:A0.000625706291793106]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-6.734043598175049,7.061781883239746:A-0.05868555415798209]], value_cache=#1[T1s1x1x39x96[-0.6787744760513306,0.7704185843467712:A0.0009648531362060574]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-6.734043598175049,7.061781883239746:A-0.05868555415798209]], value_cache=#1[T1s1x1x39x96[-0.6787744760513306,0.7704185843467712:A0.0009648531362060574]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-6.734043598175049,7.061781883239746:A-0.05737805250910242]], value_cache=#1[T1s1x1x40x96[-0.6787744760513306,0.7704185843467712:A0.0011283541168230235]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-6.734043598175049,7.061781883239746:A-0.05737805250910242]], value_cache=#1[T1s1x1x40x96[-0.6787744760513306,0.7704185843467712:A0.0011283541168230235]]),input_ids:T7s1x1[1074,1074:A1074.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-6.734043598175049,7.061781883239746:A-0.05613319930365301]], value_cache=#1[T1s1x1x41x96[-0.6787744760513306,0.7704185843467712:A0.0009579268334445208]]),input_ids:T7s1x1[1074,1074:A1074.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-6.734043598175049,7.061781883239746:A-0.05613319930365301]], value_cache=#1[T1s1x1x41x96[-0.6787744760513306,0.7704185843467712:A0.0009579268334445208]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-6.734043598175049,7.061781883239746:A-0.05595327130668877]], value_cache=#1[T1s1x1x42x96[-0.6787744760513306,0.7704185843467712:A0.0005765785917865576]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-6.734043598175049,7.061781883239746:A-0.05595327130668877]], value_cache=#1[T1s1x1x42x96[-0.6787744760513306,0.7704185843467712:A0.0005765785917865576]]),input_ids:T7s1x1[297,297:A297.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-6.734043598175049,7.707466125488281:A-0.05201710895991089]], value_cache=#1[T1s1x1x43x96[-0.6787744760513306,0.7704185843467712:A0.000771534256650492]]),input_ids:T7s1x1[297,297:A297.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-6.734043598175049,7.707466125488281:A-0.05201710895991089]], value_cache=#1[T1s1x1x43x96[-0.6787744760513306,0.7704185843467712:A0.000771534256650492]]),input_ids:T7s1x1[590,590:A590.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-6.734043598175049,7.707466125488281:A-0.05014997201024843]], value_cache=#1[T1s1x1x44x96[-0.6787744760513306,0.7704185843467712:A0.0009684361798015358]]),input_ids:T7s1x1[590,590:A590.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-6.734043598175049,7.707466125488281:A-0.05014997201024843]], value_cache=#1[T1s1x1x44x96[-0.6787744760513306,0.7704185843467712:A0.0009684361798015358]]),input_ids:T7s1x1[2834,2834:A2834.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-6.734043598175049,7.707466125488281:A-0.04875919556542175]], value_cache=#1[T1s1x1x45x96[-0.6787744760513306,0.7704185843467712:A0.0010031597414699382]]),input_ids:T7s1x1[2834,2834:A2834.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-6.734043598175049,7.707466125488281:A-0.04875919556542175]], value_cache=#1[T1s1x1x45x96[-0.6787744760513306,0.7704185843467712:A0.0010031597414699382]]),input_ids:T7s1x1[408,408:A408.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-6.734043598175049,7.707466125488281:A-0.0464195108615177]], value_cache=#1[T1s1x1x46x96[-0.6787744760513306,0.7704185843467712:A0.0012825364029443638]]),input_ids:T7s1x1[408,408:A408.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-6.734043598175049,7.707466125488281:A-0.0464195108615177]], value_cache=#1[T1s1x1x46x96[-0.6787744760513306,0.7704185843467712:A0.0012825364029443638]]),input_ids:T7s1x1[263,263:A263.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-6.734043598175049,7.707466125488281:A-0.04464653798148134]], value_cache=#1[T1s1x1x47x96[-0.6787744760513306,0.7704185843467712:A0.001609341176371093]]),input_ids:T7s1x1[263,263:A263.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-6.734043598175049,7.707466125488281:A-0.04464653798148134]], value_cache=#1[T1s1x1x47x96[-0.6787744760513306,0.7704185843467712:A0.001609341176371093]]),input_ids:T7s1x1[2278,2278:A2278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-6.734043598175049,7.707466125488281:A-0.04198178324994236]], value_cache=#1[T1s1x1x48x96[-0.6787744760513306,0.7704185843467712:A0.0018238597551234964]]),input_ids:T7s1x1[2278,2278:A2278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-6.734043598175049,7.707466125488281:A-0.04198178324994236]], value_cache=#1[T1s1x1x48x96[-0.6787744760513306,0.7704185843467712:A0.0018238597551234964]]),input_ids:T7s1x1[297,297:A297.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x49x96[-6.734043598175049,7.707466125488281:A-0.03951711275485217]], value_cache=#1[T1s1x1x49x96[-0.6787744760513306,0.7704185843467712:A0.001969488580140073]]),input_ids:T7s1x1[297,297:A297.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    Continue: it rains... 1968
-    I love the love of it. I used to do something else. When it is really true I do I find it, I see it in my life as a child in her
+    <- ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.509540557861328,6.348220348358154:A-0.12195695057461206]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.7704185843467712:A0.009565710057611594]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.509540557861328,6.348220348358154:A-0.12195695057461206]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.7704185843467712:A0.009565710057611594]]),input_ids:T7s1x1[6747,6747:A6747.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-5.509540557861328,6.348220348358154:A-0.1291922040180604]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.7704185843467712:A0.008550581234021592]]),input_ids:T7s1x1[6747,6747:A6747.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-5.509540557861328,6.348220348358154:A-0.1291922040180604]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.7704185843467712:A0.008550581234021592]]),input_ids:T7s1x1[287,287:A287.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-5.509540557861328,6.348220348358154:A-0.11657098315029571]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.7704185843467712:A0.007080503386518874]]),input_ids:T7s1x1[287,287:A287.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-5.509540557861328,6.348220348358154:A-0.11657098315029571]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.7704185843467712:A0.007080503386518874]]),input_ids:T7s1x1[491,491:A491.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-5.509540557861328,7.054282188415527:A-0.12227565298588969]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.7704185843467712:A0.006725537357738176]]),input_ids:T7s1x1[491,491:A491.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-5.509540557861328,7.054282188415527:A-0.12227565298588969]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.7704185843467712:A0.006725537357738176]]),input_ids:T7s1x1[349,349:A349.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-6.851055145263672,7.054282188415527:A-0.11852843995690748]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.7704185843467712:A0.006003098411511951]]),input_ids:T7s1x1[349,349:A349.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-6.851055145263672,7.054282188415527:A-0.11852843995690748]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.7704185843467712:A0.006003098411511951]]),input_ids:T7s1x1[3096,3096:A3096.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-6.851055145263672,7.054282188415527:A-0.11031590003360525]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.7704185843467712:A0.006303568125239118]]),input_ids:T7s1x1[3096,3096:A3096.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-6.851055145263672,7.054282188415527:A-0.11031590003360525]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.7704185843467712:A0.006303568125239118]]),input_ids:T7s1x1[29891,29891:A29891.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-6.851055145263672,7.054282188415527:A-0.09398916198495297]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.7704185843467712:A0.006701142051062764]]),input_ids:T7s1x1[29891,29891:A29891.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-6.851055145263672,7.054282188415527:A-0.09398916198495297]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.7704185843467712:A0.006701142051062764]]),input_ids:T7s1x1[396,396:A396.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-6.851055145263672,7.054282188415527:A-0.09076569902352578]], value_cache=#1[T1s1x1x16x96[-0.6787744760513306,0.7704185843467712:A0.006657607043270748]]),input_ids:T7s1x1[396,396:A396.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-6.851055145263672,7.054282188415527:A-0.09076569902352578]], value_cache=#1[T1s1x1x16x96[-0.6787744760513306,0.7704185843467712:A0.006657607043270748]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-6.856588363647461,7.054282188415527:A-0.09640116643754927]], value_cache=#1[T1s1x1x17x96[-0.6787744760513306,0.7704185843467712:A0.005934894717145154]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-6.856588363647461,7.054282188415527:A-0.09640116643754927]], value_cache=#1[T1s1x1x17x96[-0.6787744760513306,0.7704185843467712:A0.005934894717145154]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-6.856588363647461,7.054282188415527:A-0.09710062370619131]], value_cache=#1[T1s1x1x18x96[-0.6787744760513306,0.7704185843467712:A0.00546914923613797]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-6.856588363647461,7.054282188415527:A-0.09710062370619131]], value_cache=#1[T1s1x1x18x96[-0.6787744760513306,0.7704185843467712:A0.00546914923613797]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-6.856588363647461,7.054282188415527:A-0.09984993431562703]], value_cache=#1[T1s1x1x19x96[-0.6787744760513306,0.7704185843467712:A0.005910374709177982]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-6.856588363647461,7.054282188415527:A-0.09984993431562703]], value_cache=#1[T1s1x1x19x96[-0.6787744760513306,0.7704185843467712:A0.005910374709177982]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-6.856588363647461,7.054282188415527:A-0.10002649661394875]], value_cache=#1[T1s1x1x20x96[-0.6787744760513306,0.7704185843467712:A0.004056466337283382]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-6.856588363647461,7.054282188415527:A-0.10002649661394875]], value_cache=#1[T1s1x1x20x96[-0.6787744760513306,0.7704185843467712:A0.004056466337283382]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-6.856588363647461,7.054282188415527:A-0.09886412748978944]], value_cache=#1[T1s1x1x21x96[-0.6787744760513306,0.7704185843467712:A0.003746704895461118]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-6.856588363647461,7.054282188415527:A-0.09886412748978944]], value_cache=#1[T1s1x1x21x96[-0.6787744760513306,0.7704185843467712:A0.003746704895461118]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-6.87632942199707,7.054282188415527:A-0.09796646704682754]], value_cache=#1[T1s1x1x22x96[-0.6787744760513306,0.7704185843467712:A0.0021887688855479087]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-6.87632942199707,7.054282188415527:A-0.09796646704682754]], value_cache=#1[T1s1x1x22x96[-0.6787744760513306,0.7704185843467712:A0.0021887688855479087]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-6.87632942199707,7.054282188415527:A-0.09555562121929234]], value_cache=#1[T1s1x1x23x96[-0.6787744760513306,0.7704185843467712:A0.0022533607083974143]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-6.87632942199707,7.054282188415527:A-0.09555562121929234]], value_cache=#1[T1s1x1x23x96[-0.6787744760513306,0.7704185843467712:A0.0022533607083974143]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-6.87632942199707,7.054282188415527:A-0.09259843199889575]], value_cache=#1[T1s1x1x24x96[-0.6787744760513306,0.7704185843467712:A0.0019249497413448404]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-6.87632942199707,7.054282188415527:A-0.09259843199889575]], value_cache=#1[T1s1x1x24x96[-0.6787744760513306,0.7704185843467712:A0.0019249497413448404]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-6.87632942199707,7.215419769287109:A-0.08413211892722756]], value_cache=#1[T1s1x1x25x96[-0.6787744760513306,0.7704185843467712:A0.0006268362587858671]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-6.87632942199707,7.215419769287109:A-0.08413211892722756]], value_cache=#1[T1s1x1x25x96[-0.6787744760513306,0.7704185843467712:A0.0006268362587858671]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-6.87632942199707,7.215419769287109:A-0.08448598975104314]], value_cache=#1[T1s1x1x26x96[-0.6787744760513306,0.7704185843467712:A0.001135513065136342]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-6.87632942199707,7.215419769287109:A-0.08448598975104314]], value_cache=#1[T1s1x1x26x96[-0.6787744760513306,0.7704185843467712:A0.001135513065136342]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-6.87632942199707,7.215419769287109:A-0.08146809435636919]], value_cache=#1[T1s1x1x27x96[-0.6787744760513306,0.7704185843467712:A0.0013714160020159105]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-6.87632942199707,7.215419769287109:A-0.08146809435636919]], value_cache=#1[T1s1x1x27x96[-0.6787744760513306,0.7704185843467712:A0.0013714160020159105]]),input_ids:T7s1x1[29915,29915:A29915.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-6.87632942199707,7.215419769287109:A-0.07702671296642837]], value_cache=#1[T1s1x1x28x96[-1.1154754161834717,0.7704185843467712:A0.00035914886700538773]]),input_ids:T7s1x1[29915,29915:A29915.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-6.87632942199707,7.215419769287109:A-0.07702671296642837]], value_cache=#1[T1s1x1x28x96[-1.1154754161834717,0.7704185843467712:A0.00035914886700538773]]),input_ids:T7s1x1[345,345:A345.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-6.87632942199707,7.215419769287109:A-0.0698925763956621]], value_cache=#1[T1s1x1x29x96[-1.1154754161834717,0.7704185843467712:A-0.0006612924174956349]]),input_ids:T7s1x1[345,345:A345.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-6.87632942199707,7.215419769287109:A-0.0698925763956621]], value_cache=#1[T1s1x1x29x96[-1.1154754161834717,0.7704185843467712:A-0.0006612924174956349]]),input_ids:T7s1x1[1063,1063:A1063.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-6.87632942199707,7.215419769287109:A-0.0674743789478978]], value_cache=#1[T1s1x1x30x96[-1.1154754161834717,0.7704185843467712:A-0.00011869928150897775]]),input_ids:T7s1x1[1063,1063:A1063.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-6.87632942199707,7.215419769287109:A-0.0674743789478978]], value_cache=#1[T1s1x1x30x96[-1.1154754161834717,0.7704185843467712:A-0.00011869928150897775]]),input_ids:T7s1x1[2221,2221:A2221.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-6.87632942199707,7.215419769287109:A-0.06399039726594671]], value_cache=#1[T1s1x1x31x96[-1.1154754161834717,0.7704185843467712:A6.15467214316517e-05]]),input_ids:T7s1x1[2221,2221:A2221.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-6.87632942199707,7.215419769287109:A-0.06399039726594671]], value_cache=#1[T1s1x1x31x96[-1.1154754161834717,0.7704185843467712:A6.15467214316517e-05]]),input_ids:T7s1x1[304,304:A304.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-6.87632942199707,7.215419769287109:A-0.059316570712743065]], value_cache=#1[T1s1x1x32x96[-1.1154754161834717,0.7704185843467712:A0.0005907564718228286]]),input_ids:T7s1x1[304,304:A304.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-6.87632942199707,7.215419769287109:A-0.059316570712743065]], value_cache=#1[T1s1x1x32x96[-1.1154754161834717,0.7704185843467712:A0.0005907564718228286]]),input_ids:T7s1x1[2649,2649:A2649.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-6.87632942199707,7.215419769287109:A-0.056064350736106106]], value_cache=#1[T1s1x1x33x96[-1.1154754161834717,0.7704185843467712:A0.000947928204832443]]),input_ids:T7s1x1[2649,2649:A2649.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-6.87632942199707,7.215419769287109:A-0.056064350736106106]], value_cache=#1[T1s1x1x33x96[-1.1154754161834717,0.7704185843467712:A0.000947928204832443]]),input_ids:T7s1x1[366,366:A366.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-6.87632942199707,7.215419769287109:A-0.05363621805461698]], value_cache=#1[T1s1x1x34x96[-1.1154754161834717,0.7704185843467712:A0.0016327042984785828]]),input_ids:T7s1x1[366,366:A366.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-6.87632942199707,7.215419769287109:A-0.05363621805461698]], value_cache=#1[T1s1x1x34x96[-1.1154754161834717,0.7704185843467712:A0.0016327042984785828]]),input_ids:T7s1x1[540,540:A540.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-6.87632942199707,7.215419769287109:A-0.05310689785245423]], value_cache=#1[T1s1x1x35x96[-1.1154754161834717,0.7704185843467712:A0.0014304214866353417]]),input_ids:T7s1x1[540,540:A540.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-6.87632942199707,7.215419769287109:A-0.05310689785245423]], value_cache=#1[T1s1x1x35x96[-1.1154754161834717,0.7704185843467712:A0.0014304214866353417]]),input_ids:T7s1x1[287,287:A287.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-6.87632942199707,7.215419769287109:A-0.049877483986636904]], value_cache=#1[T1s1x1x36x96[-1.1154754161834717,0.7704185843467712:A0.0011790132484369071]]),input_ids:T7s1x1[287,287:A287.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-6.87632942199707,7.215419769287109:A-0.049877483986636904]], value_cache=#1[T1s1x1x36x96[-1.1154754161834717,0.7704185843467712:A0.0011790132484369071]]),input_ids:T7s1x1[366,366:A366.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-6.87632942199707,7.215419769287109:A-0.048442085171929876]], value_cache=#1[T1s1x1x37x96[-1.1154754161834717,0.7704185843467712:A0.0018020214143926988]]),input_ids:T7s1x1[366,366:A366.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-6.87632942199707,7.215419769287109:A-0.048442085171929876]], value_cache=#1[T1s1x1x37x96[-1.1154754161834717,0.7704185843467712:A0.0018020214143926988]]),input_ids:T7s1x1[29973,29973:A29973.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-6.87632942199707,7.215419769287109:A-0.04922511604299392]], value_cache=#1[T1s1x1x38x96[-1.1154754161834717,0.7704185843467712:A0.0019501696114187787]]),input_ids:T7s1x1[29973,29973:A29973.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-6.87632942199707,7.215419769287109:A-0.04922511604299392]], value_cache=#1[T1s1x1x38x96[-1.1154754161834717,0.7704185843467712:A0.0019501696114187787]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-6.87632942199707,7.215419769287109:A-0.047919763969131855]], value_cache=#1[T1s1x1x39x96[-1.1154754161834717,0.7704185843467712:A0.0020925983998666227]]),input_ids:T7s1x1[306,306:A306.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-6.87632942199707,7.215419769287109:A-0.047919763969131855]], value_cache=#1[T1s1x1x39x96[-1.1154754161834717,0.7704185843467712:A0.0020925983998666227]]),input_ids:T7s1x1[29915,29915:A29915.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-6.87632942199707,7.215419769287109:A-0.04649645951828158]], value_cache=#1[T1s1x1x40x96[-1.1154754161834717,0.7704185843467712:A0.001365981845412989]]),input_ids:T7s1x1[29915,29915:A29915.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-6.87632942199707,7.215419769287109:A-0.04649645951828158]], value_cache=#1[T1s1x1x40x96[-1.1154754161834717,0.7704185843467712:A0.001365981845412989]]),input_ids:T7s1x1[345,345:A345.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-6.87632942199707,7.215419769287109:A-0.04379889534982617]], value_cache=#1[T1s1x1x41x96[-1.1154754161834717,0.7704185843467712:A0.0006196494008047633]]),input_ids:T7s1x1[345,345:A345.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-6.87632942199707,7.215419769287109:A-0.04379889534982617]], value_cache=#1[T1s1x1x41x96[-1.1154754161834717,0.7704185843467712:A0.0006196494008047633]]),input_ids:T7s1x1[2309,2309:A2309.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-6.87632942199707,7.215419769287109:A-0.0433482598742442]], value_cache=#1[T1s1x1x42x96[-1.1154754161834717,0.7704185843467712:A0.0004900553060596149]]),input_ids:T7s1x1[2309,2309:A2309.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-6.87632942199707,7.215419769287109:A-0.0433482598742442]], value_cache=#1[T1s1x1x42x96[-1.1154754161834717,0.7704185843467712:A0.0004900553060596149]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-6.87632942199707,7.215419769287109:A-0.04368069432025515]], value_cache=#1[T1s1x1x43x96[-1.1154754161834717,0.7704185843467712:A0.00012845636135613695]]),input_ids:T7s1x1[372,372:A372.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-6.87632942199707,7.215419769287109:A-0.04368069432025515]], value_cache=#1[T1s1x1x43x96[-1.1154754161834717,0.7704185843467712:A0.00012845636135613695]]),input_ids:T7s1x1[411,411:A411.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-6.87632942199707,7.7245097160339355:A-0.039803629888879324]], value_cache=#1[T1s1x1x44x96[-1.1154754161834717,0.7704185843467712:A-4.385958563737156e-05]]),input_ids:T7s1x1[411,411:A411.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-6.87632942199707,7.7245097160339355:A-0.039803629888879324]], value_cache=#1[T1s1x1x44x96[-1.1154754161834717,0.7704185843467712:A-4.385958563737156e-05]]),input_ids:T7s1x1[278,278:A278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-6.87632942199707,7.7245097160339355:A-0.036826873609997736]], value_cache=#1[T1s1x1x45x96[-1.1154754161834717,0.7704185843467712:A0.0002607282296089074]]),input_ids:T7s1x1[278,278:A278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-6.87632942199707,7.7245097160339355:A-0.036826873609997736]], value_cache=#1[T1s1x1x45x96[-1.1154754161834717,0.7704185843467712:A0.0002607282296089074]]),input_ids:T7s1x1[1371,1371:A1371.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-6.87632942199707,7.7245097160339355:A-0.03728975667212765]], value_cache=#1[T1s1x1x46x96[-1.1154754161834717,0.7704185843467712:A0.0006645843983192933]]),input_ids:T7s1x1[1371,1371:A1371.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-6.87632942199707,7.7245097160339355:A-0.03728975667212765]], value_cache=#1[T1s1x1x46x96[-1.1154754161834717,0.7704185843467712:A0.0006645843983192933]]),input_ids:T7s1x1[310,310:A310.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-6.87632942199707,7.7245097160339355:A-0.03672366797665926]], value_cache=#1[T1s1x1x47x96[-1.1154754161834717,0.7704185843467712:A0.0008029626458774663]]),input_ids:T7s1x1[310,310:A310.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-6.87632942199707,7.7245097160339355:A-0.03672366797665926]], value_cache=#1[T1s1x1x47x96[-1.1154754161834717,0.7704185843467712:A0.0008029626458774663]]),input_ids:T7s1x1[278,278:A278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-6.87632942199707,7.7245097160339355:A-0.0363600925739623]], value_cache=#1[T1s1x1x48x96[-1.1154754161834717,0.7704185843467712:A0.001070871592847627]]),input_ids:T7s1x1[278,278:A278.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    <- ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-6.87632942199707,7.7245097160339355:A-0.0363600925739623]], value_cache=#1[T1s1x1x48x96[-1.1154754161834717,0.7704185843467712:A0.001070871592847627]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x49x96[-6.87632942199707,7.7245097160339355:A-0.02995730647911792]], value_cache=#1[T1s1x1x49x96[-1.1154754161834717,0.7704185843467712:A0.0004129396679177973]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    Continue: it rains...
+    Posted by Puffy #21, 10-20, I've been able to tell you heed you? I've done it with the help of the 1
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-64
+.. GENERATED FROM PYTHON SOURCE LINES 73-74
 
 Let's restore the forward as it was.
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-66
+.. GENERATED FROM PYTHON SOURCE LINES 74-76
 
 .. code-block:: Python
 
@@ -226,17 +236,22 @@ Let's restore the forward as it was.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-74
+.. GENERATED FROM PYTHON SOURCE LINES 77-89
 
-The model creation
-++++++++++++++++++
+Untrained model
++++++++++++++++
+
+This part can skipped if you are only interested in exporting
+the original model. It is useful to create a unit test to ensure
+a specific architecture can be exported despite the many changes
+brought to :epkg:`torch` or :epkg:`transformers`.
 
 Let's create an untrained model using the config file provided
 `config.json <https://huggingface.co/arnir0/Tiny-LLM/blob/main/config.json>`_
 to create an untrained model: :func:`onnx_diagnostic.torch_models.llms.get_tiny_llm`.
 Then let's use it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-82
+.. GENERATED FROM PYTHON SOURCE LINES 89-97
 
 .. code-block:: Python
 
@@ -255,13 +270,13 @@ Then let's use it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-86
+.. GENERATED FROM PYTHON SOURCE LINES 98-101
 
 Before we run it, we make a copy of the inputs as the cache
 get modified by the execution. Then it is no longer valid
 associated with the previous input_ids and mask.
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-89
+.. GENERATED FROM PYTHON SOURCE LINES 101-104
 
 .. code-block:: Python
 
@@ -275,7 +290,7 @@ associated with the previous input_ids and mask.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-96
+.. GENERATED FROM PYTHON SOURCE LINES 105-111
 
 .. code-block:: Python
 
@@ -299,20 +314,16 @@ associated with the previous input_ids and mask.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-98
+.. GENERATED FROM PYTHON SOURCE LINES 112-113
 
 The outputs
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-105
+.. GENERATED FROM PYTHON SOURCE LINES 113-116
 
 .. code-block:: Python
 
 
     print("result type", string_type(expected_output, with_shape=True))
-
-    ep = torch.export.export(
-        untrained_model, (), kwargs=cloned_inputs, dynamic_shapes=dynamic_shapes
-    )
 
 
 
@@ -323,20 +334,18 @@ The outputs
  .. code-block:: none
 
     result type dict(logits:T1s2x3x32000,past_key_values:DynamicCache(key_cache=#1[T1s2x1x33x96], value_cache=#1[T1s2x1x33x96]))
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-110
+.. GENERATED FROM PYTHON SOURCE LINES 117-121
 
 It works.
 
 ExportedProgram
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-124
+.. GENERATED FROM PYTHON SOURCE LINES 121-135
 
 .. code-block:: Python
 
@@ -639,14 +648,85 @@ ExportedProgram
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-129
+.. GENERATED FROM PYTHON SOURCE LINES 136-142
 
 Back to the original model
 ++++++++++++++++++++++++++
 
 Let's use the same dummy inputs but we use the downloaded model.
+Dummy inputs and dynamic shapes are created by function
+:func:`onnx_diagnostic.torch_models.llms.get_tiny_llm`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-139
+.. GENERATED FROM PYTHON SOURCE LINES 142-146
+
+.. code-block:: Python
+
+
+    data = get_tiny_llm()
+    inputs, dynamic_shapes = data["inputs"], data["dynamic_shapes"]
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 147-148
+
+Let's print the inputs.
+
+.. GENERATED FROM PYTHON SOURCE LINES 148-151
+
+.. code-block:: Python
+
+
+    print(string_type(inputs, with_shape=True))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#1[T1s2x1x30x96], value_cache=#1[T1s2x1x30x96]))
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 152-154
+
+.. code-block:: Python
+
+    pprint.pprint(dynamic_shapes)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    {'attention_mask': {0: <class 'onnx_diagnostic.torch_models.llms.batch'>,
+                        1: <_DimHint.DYNAMIC: 3>},
+     'input_ids': {0: <class 'onnx_diagnostic.torch_models.llms.batch'>,
+                   1: <class 'onnx_diagnostic.torch_models.llms.seq_length'>},
+     'past_key_values': [[{0: <class 'onnx_diagnostic.torch_models.llms.batch'>,
+                           2: <class 'onnx_diagnostic.torch_models.llms.cache_length'>}],
+                         [{0: <class 'onnx_diagnostic.torch_models.llms.batch'>,
+                           2: <class 'onnx_diagnostic.torch_models.llms.cache_length'>}]]}
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 155-156
+
+And Let's finally export.
+
+.. GENERATED FROM PYTHON SOURCE LINES 156-166
 
 .. code-block:: Python
 
@@ -948,7 +1028,7 @@ Let's use the same dummy inputs but we use the downloaded model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.891 seconds)
+   **Total running time of the script:** (0 minutes 12.979 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_llm.py:

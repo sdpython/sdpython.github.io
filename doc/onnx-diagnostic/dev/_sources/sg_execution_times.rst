@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:12.891** total execution time for 2 files **from all galleries**:
+**00:12.979** total execution time for 7 files **from all galleries**:
 
 .. container::
 
@@ -33,8 +33,23 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``examples/plot_export_tiny_llm.py``)
-     - 00:12.891
+     - 00:12.979
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``examples/plot_export_cond.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``examples/plot_export_with_dynamic_cache.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_shapes_auto.py` (``examples/plot_export_with_dynamic_shapes_auto.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_model_extract.py` (``examples/plot_failing_model_extract.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_onnxruntime_evaluator.py` (``examples/plot_failing_onnxruntime_evaluator.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_reference_evaluator.py` (``examples/plot_failing_reference_evaluator.py``)
      - 00:00.000
      - 0.0
