@@ -73,13 +73,13 @@ it is difficult to find deep inside a big model.
  .. code-block:: none
 
 
-    tensor([[[0.5350, 0.5595, 0.6094, 0.4693],
-             [0.6226, 0.4419, 0.0754, 0.7453],
-             [0.0485, 0.0238, 0.0704, 0.1099]],
+    tensor([[[0.1896, 0.0919, 0.1302, 0.2041],
+             [0.6827, 0.3633, 0.4235, 0.7472],
+             [0.0214, 0.0209, 0.0168, 0.0108]],
 
-            [[0.1676, 0.0192, 0.0621, 0.1032],
-             [0.2091, 0.2568, 0.1568, 0.6974],
-             [0.0112, 0.0507, 0.3442, 0.3241]]])
+            [[0.4849, 0.3434, 0.4207, 0.4044],
+             [0.1987, 0.2693, 0.3528, 0.3519],
+             [0.5722, 0.1479, 0.4143, 0.1571]]])
 
 
 
@@ -400,12 +400,14 @@ mentioned in previous section.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-109
+.. GENERATED FROM PYTHON SOURCE LINES 107-111
 
 .. code-block:: Python
 
 
-    doc.plot_legend("was inferred\nto be a constant", "torch.export.export", "tomato")
+    doc.plot_legend(
+        "dynamic dimension\nwas inferred\nto be a constant", "torch.export.export", "tomato"
+    )
 
 
 
@@ -421,7 +423,7 @@ mentioned in previous section.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.248 seconds)
+   **Total running time of the script:** (0 minutes 9.888 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_locate_issue.py:

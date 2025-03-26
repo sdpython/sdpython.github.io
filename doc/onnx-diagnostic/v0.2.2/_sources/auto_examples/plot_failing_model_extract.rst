@@ -239,7 +239,7 @@ for this node or shape inference failed.
 .. code-block:: Python
 
 
-    doc.plot_legend("Run until it fails", "onnxruntime.InferenceSession", "lightgrey")
+    doc.plot_legend("run onnx model\nuntil it fails", "onnxruntime.InferenceSession", "lightgrey")
 
 
 
@@ -255,7 +255,7 @@ for this node or shape inference failed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.689 seconds)
+   **Total running time of the script:** (0 minutes 0.440 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_model_extract.py:
