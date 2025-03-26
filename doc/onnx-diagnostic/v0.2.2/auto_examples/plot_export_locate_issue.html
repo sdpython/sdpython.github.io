@@ -364,21 +364,21 @@ it is difficult to find deep inside a big model.</p>
 <span class="n">model</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[[0.0038, 0.0178, 0.0056, 0.0139],
-         [0.2258, 0.0375, 0.1095, 0.0220],
-         [0.1103, 0.0765, 0.0277, 0.0937]],
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[[0.5350, 0.5595, 0.6094, 0.4693],
+         [0.6226, 0.4419, 0.0754, 0.7453],
+         [0.0485, 0.0238, 0.0704, 0.1099]],
 
-        [[0.5340, 0.5571, 0.0601, 0.3892],
-         [0.6080, 0.8355, 0.7953, 0.7771],
-         [0.1123, 0.3639, 0.2718, 0.0666]]])
+        [[0.1676, 0.0192, 0.0621, 0.1032],
+         [0.2091, 0.2568, 0.1568, 0.6974],
+         [0.0112, 0.0507, 0.3442, 0.3241]]])
 </pre></div>
 </div>
 <p>Let’s export.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">DYN</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a> <span class="o">=</span> <span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">},</span> <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">}])</span>
 <span class="k">try</span><span class="p">:</span>
-    <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a><span class="p">)</span>
+    <span class="n">ep</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- ERROR:&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
@@ -386,48 +386,9 @@ it is difficult to find deep inside a big model.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
-[_catch_produce_guards_and_solve_constraints] ERRORproduce_guards_and_solve_constraints failed, use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping
-fake_mode=&lt;torch._subclasses.fake_tensor.FakeTensorMode object at 0x7fcb58699ac0&gt;
-dynamic_shapes=({0: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;), 1: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;)}, [{0: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;), 1: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;)}, {0: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;), 1: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;)}])
-equalities_inputs=EqualityConstraint(warn_only=False, source_pairs=[], derived_equalities=[], phantom_symbols=[], relaxed_sources={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name=&#39;args&#39;, is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=1, index_is_slice=False), prop=&lt;TensorProperty.SIZE: 0&gt;, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name=&#39;args&#39;, is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=0, index_is_slice=False), prop=&lt;TensorProperty.SIZE: 0&gt;, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name=&#39;args&#39;, is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=1, index_is_slice=False), prop=&lt;TensorProperty.SIZE: 0&gt;, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name=&#39;args&#39;, is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=0, index_is_slice=False), prop=&lt;TensorProperty.SIZE: 0&gt;, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name=&#39;args&#39;, is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=0, index_is_slice=False), prop=&lt;TensorProperty.SIZE: 0&gt;, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name=&#39;args&#39;, is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=0, index_is_slice=False), prop=&lt;TensorProperty.SIZE: 0&gt;, idx=0)}, _parents={}, _defs={})
-original_signature=(x: torch.Tensor, ys: list[torch.Tensor])
-_is_torch_jit_trace=False
-exc=Constraints violated (L[&#39;args&#39;][0][0].size()[0])! For more information, run with TORCH_LOGS=&quot;+dynamic&quot;.
+-- ERROR:
+Constraints violated (L[&#39;args&#39;][0][0].size()[0])! For more information, run with TORCH_LOGS=&quot;+dynamic&quot;.
   - Not all values of RelaxedUnspecConstraint(L[&#39;args&#39;][0][0].size()[0]) are valid because L[&#39;args&#39;][0][0].size()[0] was inferred to be a constant (2).
-gm=&lt;lambda&gt;()
-
-
-
-def forward(self, arg0_1, arg1_1, arg2_1):
-    unsqueeze = torch.ops.aten.unsqueeze.default(arg1_1, 0);  arg1_1 = None
-    unsqueeze_1 = torch.ops.aten.unsqueeze.default(arg2_1, 0);  arg2_1 = None
-    cat = torch.ops.aten.cat.default([unsqueeze, unsqueeze_1]);  unsqueeze = unsqueeze_1 = None
-    mul = torch.ops.aten.mul.Tensor(arg0_1, cat);  arg0_1 = cat = None
-    return (mul,)
-
-# To see more debug info, please use `graph_module.print_readable()`
-ExportedProgram:
-    class GraphModule(torch.nn.Module):
-        def forward(self, x: &quot;f32[2, s1, 1]&quot;, ys_0: &quot;f32[s1, s3]&quot;, ys_1: &quot;f32[s1, s3]&quot;):
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py:34 in forward, code: caty = torch.cat([y.unsqueeze(0) for y in ys], axis=0)
-            unsqueeze: &quot;f32[1, s1, s3]&quot; = torch.ops.aten.unsqueeze.default(ys_0, 0);  ys_0 = None
-            unsqueeze_1: &quot;f32[1, s1, s3]&quot; = torch.ops.aten.unsqueeze.default(ys_1, 0);  ys_1 = None
-            cat: &quot;f32[2, s1, s3]&quot; = torch.ops.aten.cat.default([unsqueeze, unsqueeze_1]);  unsqueeze = unsqueeze_1 = None
-
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py:35 in forward, code: z = x * caty
-            mul: &quot;f32[2, s1, s3]&quot; = torch.ops.aten.mul.Tensor(x, cat);  x = cat = None
-            return (mul,)
-
-Graph signature:
-    # inputs
-    x: USER_INPUT
-    ys_0: USER_INPUT
-    ys_1: USER_INPUT
-
-    # outputs
-    mul: USER_OUTPUT
-
-Range constraints: {s1: VR[2, int_oo], s3: VR[2, int_oo]}
 </pre></div>
 </div>
 <p>The error shows:</p>
@@ -471,12 +432,9 @@ mentioned in previous section.</p>
 <span class="c1">#</span>
 <span class="c1">#   File &quot;onnx-diagnostic/_doc/examples/plot_export_locate_issue.py&quot;, line 25, in forward</span>
 <span class="c1">#       z = x * caty</span>
-
-
-<span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;was inferred to be a constant&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.export.export&quot;</span><span class="p">,</span> <span class="s2">&quot;tomato&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_export_locate_issue_001.png" srcset="../_images/sphx_glr_plot_export_locate_issue_001.png" alt="plot export locate issue" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
 [_register_cache_serialization] register MambaCache
 [bypass_export_some_errors] patch sympy
 [bypass_export_some_errors] patch pytorch
@@ -692,7 +650,10 @@ AssertionError: A dynamic dimension becomes static! a=s0, tgt=2, msg=&#39;range_
 [_unregister_cache_serialization] unregistered MambaCache
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.165 seconds)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;was inferred</span><span class="se">\n</span><span class="s2">to be a constant&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.export.export&quot;</span><span class="p">,</span> <span class="s2">&quot;tomato&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_plot_export_locate_issue_001.png" srcset="../_images/sphx_glr_plot_export_locate_issue_001.png" alt="plot export locate issue" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.248 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-export-locate-issue-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/612d036101c6c6a34027904f5b8805e9/plot_export_locate_issue.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_export_locate_issue.ipynb</span></code></a></p>

@@ -73,13 +73,13 @@ it is difficult to find deep inside a big model.
  .. code-block:: none
 
 
-    tensor([[[0.0038, 0.0178, 0.0056, 0.0139],
-             [0.2258, 0.0375, 0.1095, 0.0220],
-             [0.1103, 0.0765, 0.0277, 0.0937]],
+    tensor([[[0.5350, 0.5595, 0.6094, 0.4693],
+             [0.6226, 0.4419, 0.0754, 0.7453],
+             [0.0485, 0.0238, 0.0704, 0.1099]],
 
-            [[0.5340, 0.5571, 0.0601, 0.3892],
-             [0.6080, 0.8355, 0.7953, 0.7771],
-             [0.1123, 0.3639, 0.2718, 0.0666]]])
+            [[0.1676, 0.0192, 0.0621, 0.1032],
+             [0.2091, 0.2568, 0.1568, 0.6974],
+             [0.0112, 0.0507, 0.3442, 0.3241]]])
 
 
 
@@ -111,49 +111,9 @@ Let's export.
 
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
       torch._C._set_onednn_allow_tf32(_allow_tf32)
-    [_catch_produce_guards_and_solve_constraints] ERRORproduce_guards_and_solve_constraints failed, use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping
-    fake_mode=<torch._subclasses.fake_tensor.FakeTensorMode object at 0x7fcb58699ac0>
-    dynamic_shapes=({0: _DimHint(type=<_DimHintType.DYNAMIC: 3>), 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}, [{0: _DimHint(type=<_DimHintType.DYNAMIC: 3>), 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}, {0: _DimHint(type=<_DimHintType.DYNAMIC: 3>), 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}])
-    equalities_inputs=EqualityConstraint(warn_only=False, source_pairs=[], derived_equalities=[], phantom_symbols=[], relaxed_sources={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=1, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=0, index_is_slice=False), index=1, index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)}, _parents={}, _defs={})
-    original_signature=(x: torch.Tensor, ys: list[torch.Tensor])
-    _is_torch_jit_trace=False
-    exc=Constraints violated (L['args'][0][0].size()[0])! For more information, run with TORCH_LOGS="+dynamic".
+    -- ERROR:
+    Constraints violated (L['args'][0][0].size()[0])! For more information, run with TORCH_LOGS="+dynamic".
       - Not all values of RelaxedUnspecConstraint(L['args'][0][0].size()[0]) are valid because L['args'][0][0].size()[0] was inferred to be a constant (2).
-    gm=<lambda>()
-
-
-
-    def forward(self, arg0_1, arg1_1, arg2_1):
-        unsqueeze = torch.ops.aten.unsqueeze.default(arg1_1, 0);  arg1_1 = None
-        unsqueeze_1 = torch.ops.aten.unsqueeze.default(arg2_1, 0);  arg2_1 = None
-        cat = torch.ops.aten.cat.default([unsqueeze, unsqueeze_1]);  unsqueeze = unsqueeze_1 = None
-        mul = torch.ops.aten.mul.Tensor(arg0_1, cat);  arg0_1 = cat = None
-        return (mul,)
-    
-    # To see more debug info, please use `graph_module.print_readable()`
-    ExportedProgram:
-        class GraphModule(torch.nn.Module):
-            def forward(self, x: "f32[2, s1, 1]", ys_0: "f32[s1, s3]", ys_1: "f32[s1, s3]"):
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py:34 in forward, code: caty = torch.cat([y.unsqueeze(0) for y in ys], axis=0)
-                unsqueeze: "f32[1, s1, s3]" = torch.ops.aten.unsqueeze.default(ys_0, 0);  ys_0 = None
-                unsqueeze_1: "f32[1, s1, s3]" = torch.ops.aten.unsqueeze.default(ys_1, 0);  ys_1 = None
-                cat: "f32[2, s1, s3]" = torch.ops.aten.cat.default([unsqueeze, unsqueeze_1]);  unsqueeze = unsqueeze_1 = None
-            
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py:35 in forward, code: z = x * caty
-                mul: "f32[2, s1, s3]" = torch.ops.aten.mul.Tensor(x, cat);  x = cat = None
-                return (mul,)
-            
-    Graph signature: 
-        # inputs
-        x: USER_INPUT
-        ys_0: USER_INPUT
-        ys_1: USER_INPUT
-    
-        # outputs
-        mul: USER_OUTPUT
-    
-    Range constraints: {s1: VR[2, int_oo], s3: VR[2, int_oo]}
-
 
 
 
@@ -191,7 +151,7 @@ We use :func:`bypass_export_some_errors
 to replace torch implementation by a new one raising the exception
 mentioned in previous section.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-108
+.. GENERATED FROM PYTHON SOURCE LINES 87-106
 
 .. code-block:: Python
 
@@ -215,14 +175,7 @@ mentioned in previous section.
     #       z = x * caty
 
 
-    doc.plot_legend("was inferred to be a constant", "torch.export.export", "tomato")
 
-
-
-.. image-sg:: /auto_examples/images/sphx_glr_plot_export_locate_issue_001.png
-   :alt: plot export locate issue
-   :srcset: /auto_examples/images/sphx_glr_plot_export_locate_issue_001.png
-   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -447,10 +400,28 @@ mentioned in previous section.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
+
+.. code-block:: Python
+
+
+    doc.plot_legend("was inferred\nto be a constant", "torch.export.export", "tomato")
+
+
+
+.. image-sg:: /auto_examples/images/sphx_glr_plot_export_locate_issue_001.png
+   :alt: plot export locate issue
+   :srcset: /auto_examples/images/sphx_glr_plot_export_locate_issue_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.165 seconds)
+   **Total running time of the script:** (0 minutes 7.248 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_locate_issue.py:

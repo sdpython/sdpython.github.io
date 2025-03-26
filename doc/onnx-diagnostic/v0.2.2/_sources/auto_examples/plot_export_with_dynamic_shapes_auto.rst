@@ -294,7 +294,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 .. code-block:: Python
 
 
-    doc.plot_legend("dynamic shapes inferred", "torch.export.export", "tomato")
+    doc.plot_legend("dynamic shapes\ninferred", "torch.export.export", "tomato")
 
 
 
@@ -310,7 +310,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.066 seconds)
+   **Total running time of the script:** (0 minutes 0.465 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_with_dynamic_shapes_auto.py:

@@ -148,8 +148,8 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
  .. code-block:: none
 
      +C one: bfloat16:(1,):[1.0]
-     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.375,0.48046875,0.6015625,0.171875,0.37109375,0.71875,0.296875,0.8828125,0.99609375,0.97265625...
-     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.640625,0.98828125,0.72265625,0.80859375,0.44140625,0.96875,0.25390625,0.82421875,0.99609375,0.67578125...
+     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.75,0.43359375,0.5390625,0.28125,0.2265625,0.36328125,0.03515625,0.67578125,0.06640625,0.87109375...
+     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.9453125,0.484375,0.1484375,0.8828125,0.828125,0.828125,0.828125,0.94921875,0.35546875,0.734375...
     Mul(X, Y) -> xy
     ERROR <class 'TypeError'> expected str, bytes or os.PathLike object, not NoneType
 
@@ -185,14 +185,14 @@ See :epkg:`onnxruntime kernels`.
  .. code-block:: none
 
      +C one: bfloat16:(1,):[1.0]
-     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.68359375,0.91796875,0.046875,0.875,0.90625,0.12890625,0.75,0.36328125,0.234375,0.6328125...
-     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.21875,0.41015625,0.140625,0.76953125,0.5625,0.94921875,0.4765625,0.875,0.76953125,0.0390625...
+     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.01171875,0.30859375,0.7734375,0.3828125,0.08984375,0.58203125,0.55859375,0.6953125,0.86328125,0.19140625...
+     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.19921875,0.50390625,0.1015625,0.38671875,0.42578125,0.9765625,0.54296875,0.70703125,0.1796875,0.87109375...
     Mul(X, Y) -> xy
-     + xy: D-1:torch.bfloat16:torch.Size([3, 4]):0.1494140625,0.376953125,0.006591796875,0.671875,0.5078125,0.12255859375,0.357421875,0.318359375,0.1806640625,0.024658203125...
+     + xy: D-1:torch.bfloat16:torch.Size([3, 4]):0.0023345947265625,0.1552734375,0.07861328125,0.1484375,0.038330078125,0.5703125,0.302734375,0.4921875,0.1552734375,0.1669921875...
     Sigmoid(xy) -> sy
-     + sy: D-1:torch.bfloat16:torch.Size([3, 4]):0.5390625,0.59375,0.50390625,0.66015625,0.625,0.53125,0.5859375,0.578125,0.54296875,0.5078125...
+     + sy: D-1:torch.bfloat16:torch.Size([3, 4]):0.5,0.5390625,0.51953125,0.5390625,0.51171875,0.640625,0.578125,0.62109375,0.5390625,0.54296875...
     Add(sy, one) -> C
-     + C: bfloat16:(3, 4):1.5390625,1.59375,1.5,1.65625,1.625,1.53125,1.5859375,1.578125,1.546875,1.5078125...
+     + C: bfloat16:(3, 4):1.5,1.5390625,1.515625,1.5390625,1.515625,1.640625,1.578125,1.625,1.5390625,1.546875...
     Cast(C) -> X999
     ERROR <class 'RuntimeError'> Unable to infer a session with inputs
     #1[A16r2]
@@ -219,7 +219,7 @@ more information or debug if needed.
 .. code-block:: Python
 
 
-    doc.plot_legend("onnxruntime running step by step", "OnnxruntimeEvaluator", "lightgrey")
+    doc.plot_legend("onnxruntime running\nstep by step", "OnnxruntimeEvaluator", "lightgrey")
 
 
 
@@ -235,7 +235,7 @@ more information or debug if needed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.023 seconds)
+   **Total running time of the script:** (0 minutes 6.938 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_onnxruntime_evaluator.py:

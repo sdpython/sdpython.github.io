@@ -137,14 +137,14 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
  .. code-block:: none
 
      +C one: float32:(1,):[1.0]
-     +I X: float32:(3, 4):0.9152011871337891,0.6534231901168823,0.9845390319824219,0.6765990853309631,0.1305820792913437...
-     +I Y: float32:(3, 4):0.5788626670837402,0.09311471879482269,0.42585673928260803,0.029442302882671356,0.0895100012421608...
+     +I X: float32:(3, 4):0.47112393379211426,0.6567246317863464,0.5304625034332275,0.4142853617668152,0.17197850346565247...
+     +I Y: float32:(3, 4):0.9015657901763916,0.5769331455230713,0.6068458557128906,0.5157960653305054,0.5341485738754272...
     Mul(X, Y) -> xy
-     + xy: float32:(3, 4):0.5297757983207703,0.06084331497550011,0.4192725718021393,0.01992063596844673,0.01168840192258358...
+     + xy: float32:(3, 4):0.4247492253780365,0.3788861930370331,0.32190898060798645,0.2136867642402649,0.09186207503080368...
     Sigmoid(xy) -> sy
-     + sy: float32:(3, 4):0.6294308304786682,0.5152061581611633,0.603309154510498,0.5049799680709839,0.5029220581054688...
+     + sy: float32:(3, 4):0.6046191453933716,0.5936044454574585,0.579789400100708,0.5532193183898926,0.5229493975639343...
     Add(sy, one) -> C
-     + C: float32:(3, 4):1.6294307708740234,1.5152060985565186,1.603309154510498,1.5049799680709839,1.5029220581054688...
+     + C: float32:(3, 4):1.6046191453933716,1.5936044454574585,1.579789400100708,1.5532193183898926,1.522949457168579...
     Cast(C) -> X999
     ERROR <class 'KeyError'> 999
 
@@ -165,7 +165,7 @@ more information or debug if needed.
 .. code-block:: Python
 
 
-    doc.plot_legend("Python Runtime for ONNX", "ExtendedReferenceEvalutor", "lightgrey")
+    doc.plot_legend("Python Runtime\nfor ONNX", "ExtendedReferenceEvalutor", "lightgrey")
 
 
 
@@ -181,7 +181,7 @@ more information or debug if needed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.067 seconds)
+   **Total running time of the script:** (0 minutes 0.126 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_reference_evaluator.py:
