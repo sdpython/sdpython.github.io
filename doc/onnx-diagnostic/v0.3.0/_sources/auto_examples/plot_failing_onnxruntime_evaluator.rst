@@ -30,9 +30,9 @@ Let's use :class:`OnnxruntimeEvaluator <onnx_diagnostic.reference.OnnxruntimeEva
 It splits the model into node and runs them independently until it succeeds
 or fails. This class converts every node into model based on the types
 discovered during the execution. It relies on :class:`InferenceSessionForTorch
-<onnx_diagnostic.ort_session.InferenceSessionForTorch>` or
+<onnx_diagnostic.helpers.ort_session.InferenceSessionForTorch>` or
 :class:`InferenceSessionForNumpy
-<onnx_diagnostic.ort_session.InferenceSessionForNumpy>`
+<onnx_diagnostic.helpers.ort_session.InferenceSessionForNumpy>`
 for the execution. This example uses torch tensor and
 bfloat16.
 
@@ -53,7 +53,7 @@ into a non-existing type.
     import onnxruntime
     from onnx_diagnostic import doc
     from onnx_diagnostic.ext_test_case import has_cuda
-    from onnx_diagnostic.helpers import from_array_extended
+    from onnx_diagnostic.helpers.onnx_helper import from_array_extended
     from onnx_diagnostic.reference import OnnxruntimeEvaluator
 
     TBFLOAT16 = onnx.TensorProto.BFLOAT16
@@ -148,10 +148,10 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
  .. code-block:: none
 
      +C one: bfloat16:(1,):[1.0]
-     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.65234375,0.75,0.3125,0.28515625,0.7421875,0.0234375,0.1015625,0.98046875,0.76171875,0.4140625...
-     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.01171875,0.234375,0.3359375,0.8671875,0.34375,0.046875,0.58203125,0.18359375,0.6640625,0.83984375...
+     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.9609375,0.765625,0.2265625,0.75390625,0.85546875,0.33203125,0.90625,0.51953125,0.1875,0.41796875...
+     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.33984375,0.71875,0.6796875,0.0234375,0.23828125,0.44921875,0.2578125,0.20703125,0.44921875,0.33203125...
     Mul(X, Y) -> xy
-    ERROR <class 'TypeError'> expected str, bytes or os.PathLike object, not NoneType
+    ERROR <class 'onnxruntime.capi.onnxruntime_pybind11_state.NotImplemented'> [ONNXRuntimeError] : 9 : NOT_IMPLEMENTED : Could not find an implementation for Mul(14) node with name 'n0'
 
 
 
@@ -185,14 +185,14 @@ See :epkg:`onnxruntime kernels`.
  .. code-block:: none
 
      +C one: bfloat16:(1,):[1.0]
-     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.8671875,0.34765625,0.3046875,0.58203125,0.27734375,0.37109375,0.21484375,0.98046875,0.91015625,0.984375...
-     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.23828125,0.84765625,0.6171875,0.51171875,0.64453125,0.390625,0.03125,0.08203125,0.5546875,0.01953125...
+     +I X: D-1:torch.bfloat16:torch.Size([3, 4]):0.52734375,0.19921875,0.91796875,0.109375,0.69140625,0.9921875,0.30859375,0.0390625,0.18359375,0.28515625...
+     +I Y: D-1:torch.bfloat16:torch.Size([3, 4]):0.6328125,0.70703125,0.6171875,0.1953125,0.13671875,0.68359375,0.8359375,0.421875,0.35546875,0.125...
     Mul(X, Y) -> xy
-     + xy: D-1:torch.bfloat16:torch.Size([3, 4]):0.20703125,0.294921875,0.1884765625,0.296875,0.1787109375,0.14453125,0.0067138671875,0.08056640625,0.50390625,0.019287109375...
+     + xy: D-1:torch.bfloat16:torch.Size([3, 4]):0.333984375,0.140625,0.56640625,0.0213623046875,0.0947265625,0.6796875,0.2578125,0.0164794921875,0.0654296875,0.03564453125...
     Sigmoid(xy) -> sy
-     + sy: D-1:torch.bfloat16:torch.Size([3, 4]):0.55078125,0.5703125,0.546875,0.57421875,0.54296875,0.53515625,0.50390625,0.51953125,0.62109375,0.50390625...
+     + sy: D-1:torch.bfloat16:torch.Size([3, 4]):0.58203125,0.53515625,0.640625,0.50390625,0.5234375,0.6640625,0.5625,0.50390625,0.515625,0.5078125...
     Add(sy, one) -> C
-     + C: bfloat16:(3, 4):1.546875,1.5703125,1.546875,1.578125,1.546875,1.53125,1.5,1.515625,1.625,1.5...
+     + C: bfloat16:(3, 4):1.578125,1.53125,1.640625,1.5,1.5234375,1.6640625,1.5625,1.5,1.515625,1.5078125...
     Cast(C) -> X999
     ERROR <class 'RuntimeError'> Unable to infer a session with inputs
     #1[A16r2]
@@ -235,7 +235,7 @@ more information or debug if needed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.216 seconds)
+   **Total running time of the script:** (0 minutes 7.580 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_onnxruntime_evaluator.py:

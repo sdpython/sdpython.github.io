@@ -49,8 +49,8 @@ into a non-existing type.
     import onnx.helper as oh
     import onnxruntime
     from onnx_diagnostic import doc
-    from onnx_diagnostic.helpers import from_array_extended
-    from onnx_diagnostic.ort_session import investigate_onnxruntime_issue
+    from onnx_diagnostic.helpers.onnx_helper import from_array_extended
+    from onnx_diagnostic.helpers.ort_session import investigate_onnxruntime_issue
 
     TFLOAT = onnx.TensorProto.FLOAT
 
@@ -156,7 +156,7 @@ Looping over the nodes
 
     [investigate_onnxruntime_issue] found 5 nodes and 2 inputs
     [investigate_onnxruntime_issue] run shape inference
-    [investigate_onnxruntime_issue] cls=<class 'onnx_diagnostic.ort_session.InferenceSessionForNumpy'>
+    [investigate_onnxruntime_issue] cls=<class 'onnx_diagnostic.helpers.ort_session.InferenceSessionForNumpy'>
     [investigate_onnxruntime_issue] + node 0: Mul(X, Y) -> xy
     [investigate_onnxruntime_issue] + node 1: Sigmoid(xy) -> sy
     [investigate_onnxruntime_issue] + node 2: Add(sy, one) -> C
@@ -255,7 +255,7 @@ for this node or shape inference failed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.440 seconds)
+   **Total running time of the script:** (0 minutes 1.629 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_model_extract.py:

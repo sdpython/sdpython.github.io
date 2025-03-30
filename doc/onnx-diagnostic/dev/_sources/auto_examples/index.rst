@@ -115,7 +115,7 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-failing-reference-evaluator demonstrated how to run a python runtime on a model but it may very slow sometimes and it could show some discrepancies if the only provider is not CPU. Let&#x27;s use onnx_diagnostic.reference.OnnxruntimeEvaluator. It splits the model into node and runs them independently until it succeeds or fails. This class converts every node into model based on the types discovered during the execution. It relies on onnx_diagnostic.ort_session.InferenceSessionForTorch or onnx_diagnostic.ort_session.InferenceSessionForNumpy for the execution. This example uses torch tensor and bfloat16.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-failing-reference-evaluator demonstrated how to run a python runtime on a model but it may very slow sometimes and it could show some discrepancies if the only provider is not CPU. Let&#x27;s use onnx_diagnostic.reference.OnnxruntimeEvaluator. It splits the model into node and runs them independently until it succeeds or fails. This class converts every node into model based on the types discovered during the execution. It relies on onnx_diagnostic.helpers.ort_session.InferenceSessionForTorch or onnx_diagnostic.helpers.ort_session.InferenceSessionForNumpy for the execution. This example uses torch tensor and bfloat16.">
 
 .. only:: html
 
@@ -144,6 +144,40 @@ Examples Gallery
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Checking the exporter on a whole model takes time as it is usually big but we can create a smaller version with the same architecture. Then fix export issues on such a small model is faster.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_hub_codellama_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Test the export on untrained models</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="microsoft/phi-2 is not a big models but still quite big when it comes to write unittest. Function onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs can be used to create a reduced untrained version of a model coming from HuggingFace. It downloads the configuration from the website but creates a dummy model with 1 or 2 hidden layers in order to reduce the size and get a fast execution. The goal is usually to test the export or to compare performance. The relevance does not matter.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_tiny_phi2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Untrained microsoft/phi-2</div>
     </div>
 
 
@@ -182,6 +216,8 @@ Examples Gallery
    /auto_examples/plot_failing_reference_evaluator
    /auto_examples/plot_failing_onnxruntime_evaluator
    /auto_examples/plot_export_tiny_llm
+   /auto_examples/plot_export_hub_codellama
+   /auto_examples/plot_export_tiny_phi2
    /auto_examples/plot_export_with_dynamic_shapes_auto
 
 

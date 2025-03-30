@@ -90,7 +90,7 @@ with replaces the part causing these issues.
     import torch
     import transformers
     from onnx_diagnostic import doc
-    from onnx_diagnostic.cache_helpers import is_cache_dynamic_registered
+    from onnx_diagnostic.helpers.cache_helper import is_cache_dynamic_registered
     from onnx_diagnostic.helpers import string_type
     from onnx_diagnostic.torch_export_patches import bypass_export_some_errors
     from onnx_diagnostic.torch_models.llms import get_tiny_llm
@@ -228,11 +228,11 @@ should take care of it. Then we export.
 
     [bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
     [_register_cache_serialization] register MambaCache
-    [_register_cache_serialization] <class 'transformers.cache_utils.DynamicCache'> already registered
+    [_register_cache_serialization] DynamicCache is unregistered first.
+    [_register_cache_serialization] register DynamicCache
     [bypass_export_some_errors] patch sympy
     [bypass_export_some_errors] patch pytorch
     [bypass_export_some_errors] modifies shape constraints
-    [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
     [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
     [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
     [bypass_export_some_errors] done patching
@@ -250,13 +250,13 @@ should take care of it. Then we export.
                  # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
                 embedding: "f32[s0, s1, 192]" = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:561 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
                 add: "Sym(s1 + s7)" = sym_size_int_23 + sym_size_int_22
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:560 in forward, code: cache_position = torch.arange(
                 arange: "i64[s1]" = torch.ops.aten.arange.start(sym_size_int_23, add, device = device(type='cpu'), pin_memory = False);  sym_size_int_23 = None
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:567 in forward, code: causal_mask = self._update_causal_mask(
                 full: "f32[s1, s1 + s7]" = torch.ops.aten.full.default([sym_size_int_22, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type='cpu'), pin_memory = False)
                 triu: "f32[s1, s1 + s7]" = torch.ops.aten.triu.default(full, 1);  full = None
                 arange_1: "i64[s1 + s7]" = torch.ops.aten.arange.default(add, device = device(type='cpu'), pin_memory = False)
@@ -439,7 +439,7 @@ should take care of it. Then we export.
                 to_13: "f32[s0, s1, 192]" = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
                 mul_12: "f32[s0, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:866 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
                 slice_32: "f32[s0, s1, 192]" = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
                 slice_33: "f32[s0, s1, 192]" = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
                 slice_34: "f32[s0, s1, 192]" = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
@@ -535,11 +535,10 @@ should take care of it. Then we export.
     [bypass_export_some_errors] restored sympy functions
     [bypass_export_some_errors] restored pytorch functions
     [bypass_export_some_errors] restored shape constraints
-    [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
     [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
     [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
     [_unregister_cache_serialization] unregistered MambaCache
-    [_unregister_cache_serialization] skip unregister DynamicCache
+    [_unregister_cache_serialization] unregistered DynamicCache
 
 
 
@@ -581,11 +580,10 @@ With the original model
 
     [bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
     [_register_cache_serialization] register MambaCache
-    [_register_cache_serialization] <class 'transformers.cache_utils.DynamicCache'> already registered
+    [_register_cache_serialization] register DynamicCache
     [bypass_export_some_errors] patch sympy
     [bypass_export_some_errors] patch pytorch
     [bypass_export_some_errors] modifies shape constraints
-    [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
     [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
     [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
     [bypass_export_some_errors] done patching
@@ -603,13 +601,13 @@ With the original model
                  # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
                 embedding: "f32[s0, s1, 192]" = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:561 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
                 add: "Sym(s1 + s7)" = sym_size_int_23 + sym_size_int_22
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:560 in forward, code: cache_position = torch.arange(
                 arange: "i64[s1]" = torch.ops.aten.arange.start(sym_size_int_23, add, device = device(type='cpu'), pin_memory = False);  sym_size_int_23 = None
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:567 in forward, code: causal_mask = self._update_causal_mask(
                 full: "f32[s1, s1 + s7]" = torch.ops.aten.full.default([sym_size_int_22, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type='cpu'), pin_memory = False)
                 triu: "f32[s1, s1 + s7]" = torch.ops.aten.triu.default(full, 1);  full = None
                 arange_1: "i64[s1 + s7]" = torch.ops.aten.arange.default(add, device = device(type='cpu'), pin_memory = False)
@@ -792,7 +790,7 @@ With the original model
                 to_13: "f32[s0, s1, 192]" = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
                 mul_12: "f32[s0, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
             
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:866 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
                 slice_32: "f32[s0, s1, 192]" = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
                 slice_33: "f32[s0, s1, 192]" = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
                 slice_34: "f32[s0, s1, 192]" = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
@@ -888,11 +886,10 @@ With the original model
     [bypass_export_some_errors] restored sympy functions
     [bypass_export_some_errors] restored pytorch functions
     [bypass_export_some_errors] restored shape constraints
-    [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
     [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
     [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
     [_unregister_cache_serialization] unregistered MambaCache
-    [_unregister_cache_serialization] skip unregister DynamicCache
+    [_unregister_cache_serialization] unregistered DynamicCache
 
 
 
@@ -917,7 +914,7 @@ With the original model
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 13.667 seconds)
+   **Total running time of the script:** (0 minutes 12.619 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_llm_patched.py:

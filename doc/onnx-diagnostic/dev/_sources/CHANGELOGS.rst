@@ -1,6 +1,21 @@
 Change Logs
 ===========
 
+0.3.0
++++++
+
+* :pr:`26`: creates a folder ``helpers`` to gather all the functions
+  used in many places
+* :pr:`25`: improve patches for DynamicCache
+  (issue with register_pytree_flatten_spec being deprecated)
+* :pr:`24`: dummy inputs for ``text2text-generation``, add new function
+  ``convert_dynamic_axes_into_dynamic_shapes`` to convert dynamic axes
+  into dynamic shapes, add support for ``T5ForConditionalGeneration``
+* :pr:`23`: dummy inputs for ``image-classification``
+* :pr:`22`: api to create untrained model copying the architecture
+  of the trained models and dummy inputs for them,
+  support for ``text-generation``
+
 0.2.1
 +++++
 

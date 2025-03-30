@@ -43,7 +43,7 @@ The first step is to guess the dummy inputs.
 Let's use the true model for that.
 We use the dummy example from the model page.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-41
+.. GENERATED FROM PYTHON SOURCE LINES 27-42
 
 .. code-block:: Python
 
@@ -54,6 +54,7 @@ We use the dummy example from the model page.
     import transformers
     from onnx_diagnostic import doc
     from onnx_diagnostic.helpers import string_type
+    from onnx_diagnostic.helpers.torch_test_helper import steel_forward
     from onnx_diagnostic.torch_models.llms import get_tiny_llm
 
 
@@ -68,11 +69,11 @@ We use the dummy example from the model page.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-43
+.. GENERATED FROM PYTHON SOURCE LINES 43-44
 
 We rewrite the forward method to print the cache dimension.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-61
+.. GENERATED FROM PYTHON SOURCE LINES 44-62
 
 .. code-block:: Python
 
@@ -85,7 +86,7 @@ We rewrite the forward method to print the cache dimension.
             print("<-", string_type((args, kwargs), with_shape=True, with_min_max=True))
         res = _f(*args, **kwargs)
         if not hasattr(torch.compiler, "is_exporting") or not torch.compiler.is_exporting():
-            print("->", string_type((args, kwargs), with_shape=True, with_min_max=True))
+            print("->", string_type(res, with_shape=True, with_min_max=True))
         return res
 
 
@@ -101,11 +102,11 @@ We rewrite the forward method to print the cache dimension.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-63
+.. GENERATED FROM PYTHON SOURCE LINES 63-64
 
 Let's run the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-74
+.. GENERATED FROM PYTHON SOURCE LINES 64-75
 
 .. code-block:: Python
 
@@ -129,102 +130,102 @@ Let's run the model.
  .. code-block:: none
 
     <- ((),dict(cache_position:T7s8[0,7:A3.5],past_key_values:DynamicCache(key_cache=#0[], value_cache=#0[]),input_ids:T7s1x8[1,29901:A6305.375],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s8[0,7:A3.5],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]),input_ids:T7s1x8[1,29901:A6305.375],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]),input_ids:T7s1x1[2866,2866:A2866.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.490959167480469,6.226877689361572:A-0.1302779765439347]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.49568021297454834:A0.007744434695858352]]),input_ids:T7s1x1[2866,2866:A2866.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.490959167480469,6.226877689361572:A-0.1302779765439347]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.49568021297454834:A0.007744434695858352]]),input_ids:T7s1x1[14150,14150:A14150.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-5.490959167480469,6.226877689361572:A-0.1353976684111937]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.49568021297454834:A0.008736979494627425]]),input_ids:T7s1x1[14150,14150:A14150.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-5.490959167480469,6.226877689361572:A-0.1353976684111937]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.49568021297454834:A0.008736979494627425]]),input_ids:T7s1x1[29901,29901:A29901.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-5.490959167480469,6.226877689361572:A-0.13255116131426115]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.49568021297454834:A0.00936430984139599]]),input_ids:T7s1x1[29901,29901:A29901.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-5.490959167480469,6.226877689361572:A-0.13255116131426115]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.49568021297454834:A0.00936430984139599]]),input_ids:T7s1x1[376,376:A376.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-5.490959167480469,6.226877689361572:A-0.13914445805565062]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.49568021297454834:A0.008873572075761635]]),input_ids:T7s1x1[376,376:A376.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-5.490959167480469,6.226877689361572:A-0.13914445805565062]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.49568021297454834:A0.008873572075761635]]),input_ids:T7s1x1[29950,29950:A29950.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-5.490959167480469,6.226877689361572:A-0.13673046461815083]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.5425682663917542:A0.010780835775583397]]),input_ids:T7s1x1[29950,29950:A29950.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-5.490959167480469,6.226877689361572:A-0.13673046461815083]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.5425682663917542:A0.010780835775583397]]),input_ids:T7s1x1[14862,14862:A14862.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-5.490959167480469,6.226877689361572:A-0.12388719374082159]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.5425682663917542:A0.010417736793626665]]),input_ids:T7s1x1[14862,14862:A14862.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-5.490959167480469,6.226877689361572:A-0.12388719374082159]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.5425682663917542:A0.010417736793626665]]),input_ids:T7s1x1[2315,2315:A2315.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-5.490959167480469,6.226877689361572:A-0.12511144336984015]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.5425682663917542:A0.011039833631275541]]),input_ids:T7s1x1[2315,2315:A2315.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-5.490959167480469,6.226877689361572:A-0.12511144336984015]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.5425682663917542:A0.011039833631275541]]),input_ids:T7s1x1[29908,29908:A29908.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-5.490959167480469,6.226877689361572:A-0.12284989520314109]], value_cache=#1[T1s1x1x16x96[-0.7138619422912598,0.5425682663917542:A0.008898955222842156]]),input_ids:T7s1x1[29908,29908:A29908.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-5.490959167480469,6.226877689361572:A-0.12284989520314109]], value_cache=#1[T1s1x1x16x96[-0.7138619422912598,0.5425682663917542:A0.008898955222842156]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-5.512387752532959,6.2381367683410645:A-0.12616840650476732]], value_cache=#1[T1s1x1x17x96[-0.7138619422912598,0.7704185843467712:A0.010038392818521114]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-5.512387752532959,6.2381367683410645:A-0.12616840650476732]], value_cache=#1[T1s1x1x17x96[-0.7138619422912598,0.7704185843467712:A0.010038392818521114]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-5.512387752532959,6.2381367683410645:A-0.12682744355502276]], value_cache=#1[T1s1x1x18x96[-0.7138619422912598,0.7704185843467712:A0.00968483659588586]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-5.512387752532959,6.2381367683410645:A-0.12682744355502276]], value_cache=#1[T1s1x1x18x96[-0.7138619422912598,0.7704185843467712:A0.00968483659588586]]),input_ids:T7s1x1[399,399:A399.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-5.512387752532959,6.2381367683410645:A-0.12944289310517457]], value_cache=#1[T1s1x1x19x96[-0.7138619422912598,0.7704185843467712:A0.010704015864073307]]),input_ids:T7s1x1[399,399:A399.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-5.512387752532959,6.2381367683410645:A-0.12944289310517457]], value_cache=#1[T1s1x1x19x96[-0.7138619422912598,0.7704185843467712:A0.010704015864073307]]),input_ids:T7s1x1[3818,3818:A3818.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-5.593508720397949,6.2381367683410645:A-0.13245198710519618]], value_cache=#1[T1s1x1x20x96[-0.7138619422912598,0.7704185843467712:A0.01015137928909553]]),input_ids:T7s1x1[3818,3818:A3818.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-5.593508720397949,6.2381367683410645:A-0.13245198710519618]], value_cache=#1[T1s1x1x20x96[-0.7138619422912598,0.7704185843467712:A0.01015137928909553]]),input_ids:T7s1x1[448,448:A448.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-5.593508720397949,6.2381367683410645:A-0.12951888602719197]], value_cache=#1[T1s1x1x21x96[-0.7138619422912598,0.7704185843467712:A0.009622136013986742]]),input_ids:T7s1x1[448,448:A448.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-5.593508720397949,6.2381367683410645:A-0.12951888602719197]], value_cache=#1[T1s1x1x21x96[-0.7138619422912598,0.7704185843467712:A0.009622136013986742]]),input_ids:T7s1x1[2610,2610:A2610.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-5.593508720397949,6.2381367683410645:A-0.12822337919434093]], value_cache=#1[T1s1x1x22x96[-0.7138619422912598,0.7704185843467712:A0.010040390612513158]]),input_ids:T7s1x1[2610,2610:A2610.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-5.593508720397949,6.2381367683410645:A-0.12822337919434093]], value_cache=#1[T1s1x1x22x96[-0.7138619422912598,0.7704185843467712:A0.010040390612513158]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-5.593508720397949,6.2381367683410645:A-0.12247807414673119]], value_cache=#1[T1s1x1x23x96[-0.7138619422912598,0.7704185843467712:A0.00824873046724241]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-5.593508720397949,6.2381367683410645:A-0.12247807414673119]], value_cache=#1[T1s1x1x23x96[-0.7138619422912598,0.7704185843467712:A0.00824873046724241]]),input_ids:T7s1x1[29941,29941:A29941.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-5.593508720397949,6.2381367683410645:A-0.11994256105284269]], value_cache=#1[T1s1x1x24x96[-0.7138619422912598,0.7704185843467712:A0.007798466778840268]]),input_ids:T7s1x1[29941,29941:A29941.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-5.593508720397949,6.2381367683410645:A-0.11994256105284269]], value_cache=#1[T1s1x1x24x96[-0.7138619422912598,0.7704185843467712:A0.007798466778840268]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-5.593508720397949,6.2381367683410645:A-0.12126598637604426]], value_cache=#1[T1s1x1x25x96[-0.7138619422912598,0.7704185843467712:A0.008040625436642586]]),input_ids:T7s1x1[29892,29892:A29892.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-5.593508720397949,6.2381367683410645:A-0.12126598637604426]], value_cache=#1[T1s1x1x25x96[-0.7138619422912598,0.7704185843467712:A0.008040625436642586]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-5.593508720397949,6.2381367683410645:A-0.11710295425510618]], value_cache=#1[T1s1x1x26x96[-0.7138619422912598,0.7704185843467712:A0.006532609353359639]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-5.593508720397949,6.2381367683410645:A-0.11710295425510618]], value_cache=#1[T1s1x1x26x96[-0.7138619422912598,0.7704185843467712:A0.006532609353359639]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-5.593508720397949,6.2381367683410645:A-0.11225387053239917]], value_cache=#1[T1s1x1x27x96[-0.7138619422912598,0.7704185843467712:A0.006082197803203194]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-5.593508720397949,6.2381367683410645:A-0.11225387053239917]], value_cache=#1[T1s1x1x27x96[-0.7138619422912598,0.7704185843467712:A0.006082197803203194]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-7.410092830657959,6.2381367683410645:A-0.11019201705784369]], value_cache=#1[T1s1x1x28x96[-0.7138619422912598,0.7704185843467712:A0.004774694762994884]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-7.410092830657959,6.2381367683410645:A-0.11019201705784369]], value_cache=#1[T1s1x1x28x96[-0.7138619422912598,0.7704185843467712:A0.004774694762994884]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-7.410092830657959,6.2381367683410645:A-0.11571104853893543]], value_cache=#1[T1s1x1x29x96[-0.7138619422912598,0.7704185843467712:A0.004525618255961124]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-7.410092830657959,6.2381367683410645:A-0.11571104853893543]], value_cache=#1[T1s1x1x29x96[-0.7138619422912598,0.7704185843467712:A0.004525618255961124]]),input_ids:T7s1x1[29941,29941:A29941.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-7.410092830657959,6.2381367683410645:A-0.11738818362787748]], value_cache=#1[T1s1x1x30x96[-0.7138619422912598,0.7704185843467712:A0.004289511045615453]]),input_ids:T7s1x1[29941,29941:A29941.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-7.410092830657959,6.2381367683410645:A-0.11738818362787748]], value_cache=#1[T1s1x1x30x96[-0.7138619422912598,0.7704185843467712:A0.004289511045615453]]),input_ids:T7s1x1[313,313:A313.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-7.410092830657959,6.2381367683410645:A-0.1100221884094466]], value_cache=#1[T1s1x1x31x96[-0.7138619422912598,0.7704185843467712:A0.004457910748227224]]),input_ids:T7s1x1[313,313:A313.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-7.410092830657959,6.2381367683410645:A-0.1100221884094466]], value_cache=#1[T1s1x1x31x96[-0.7138619422912598,0.7704185843467712:A0.004457910748227224]]),input_ids:T7s1x1[29929,29929:A29929.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-7.410092830657959,6.2381367683410645:A-0.10667244791189508]], value_cache=#1[T1s1x1x32x96[-0.7138619422912598,0.7704185843467712:A0.0035573980903365054]]),input_ids:T7s1x1[29929,29929:A29929.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-7.410092830657959,6.2381367683410645:A-0.10667244791189508]], value_cache=#1[T1s1x1x32x96[-0.7138619422912598,0.7704185843467712:A0.0035573980903365054]]),input_ids:T7s1x1[29953,29953:A29953.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-7.410092830657959,6.302102565765381:A-0.10508890038765843]], value_cache=#1[T1s1x1x33x96[-0.7138619422912598,0.7704185843467712:A0.0031010675489973566]]),input_ids:T7s1x1[29953,29953:A29953.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-7.410092830657959,6.302102565765381:A-0.10508890038765843]], value_cache=#1[T1s1x1x33x96[-0.7138619422912598,0.7704185843467712:A0.0031010675489973566]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-7.410092830657959,6.302102565765381:A-0.10468896654845808]], value_cache=#1[T1s1x1x34x96[-0.7138619422912598,0.7704185843467712:A0.0021119806410083318]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-7.410092830657959,6.302102565765381:A-0.10468896654845808]], value_cache=#1[T1s1x1x34x96[-0.7138619422912598,0.7704185843467712:A0.0021119806410083318]]),input_ids:T7s1x1[29897,29897:A29897.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-7.410092830657959,6.302102565765381:A-0.10084608024567604]], value_cache=#1[T1s1x1x35x96[-0.7138619422912598,0.7704185843467712:A0.0024378747088511384]]),input_ids:T7s1x1[29897,29897:A29897.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-7.410092830657959,6.302102565765381:A-0.10084608024567604]], value_cache=#1[T1s1x1x35x96[-0.7138619422912598,0.7704185843467712:A0.0024378747088511384]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-7.410092830657959,6.302102565765381:A-0.09704670914069774]], value_cache=#1[T1s1x1x36x96[-0.7138619422912598,0.7704185843467712:A0.0031554169210881743]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-7.410092830657959,6.302102565765381:A-0.09704670914069774]], value_cache=#1[T1s1x1x36x96[-0.7138619422912598,0.7704185843467712:A0.0031554169210881743]]),input_ids:T7s1x1[29898,29898:A29898.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-7.410092830657959,6.302102565765381:A-0.09484987583431297]], value_cache=#1[T1s1x1x37x96[-0.7138619422912598,0.7704185843467712:A0.003577400527979285]]),input_ids:T7s1x1[29898,29898:A29898.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-7.410092830657959,6.302102565765381:A-0.09484987583431297]], value_cache=#1[T1s1x1x37x96[-0.7138619422912598,0.7704185843467712:A0.003577400527979285]]),input_ids:T7s1x1[29945,29945:A29945.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-7.410092830657959,6.302102565765381:A-0.09188892188662098]], value_cache=#1[T1s1x1x38x96[-0.7138619422912598,0.7704185843467712:A0.003159630619333448]]),input_ids:T7s1x1[29945,29945:A29945.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-7.410092830657959,6.302102565765381:A-0.09188892188662098]], value_cache=#1[T1s1x1x38x96[-0.7138619422912598,0.7704185843467712:A0.003159630619333448]]),input_ids:T7s1x1[29929,29929:A29929.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-7.410092830657959,6.837088108062744:A-0.08817377268185846]], value_cache=#1[T1s1x1x39x96[-0.7138619422912598,0.7704185843467712:A0.0024540376725742377]]),input_ids:T7s1x1[29929,29929:A29929.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-7.410092830657959,6.837088108062744:A-0.08817377268185846]], value_cache=#1[T1s1x1x39x96[-0.7138619422912598,0.7704185843467712:A0.0024540376725742377]]),input_ids:T7s1x1[29897,29897:A29897.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-7.410092830657959,6.837088108062744:A-0.08545581662847326]], value_cache=#1[T1s1x1x40x96[-0.7138619422912598,0.7704185843467712:A0.0027306435561475456]]),input_ids:T7s1x1[29897,29897:A29897.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-7.410092830657959,6.837088108062744:A-0.08545581662847326]], value_cache=#1[T1s1x1x40x96[-0.7138619422912598,0.7704185843467712:A0.0027306435561475456]]),input_ids:T7s1x1[376,376:A376.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-7.410092830657959,6.837088108062744:A-0.08291846986351194]], value_cache=#1[T1s1x1x41x96[-0.7138619422912598,0.7704185843467712:A0.0027488097292606233]]),input_ids:T7s1x1[376,376:A376.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-7.410092830657959,6.837088108062744:A-0.08291846986351194]], value_cache=#1[T1s1x1x41x96[-0.7138619422912598,0.7704185843467712:A0.0027488097292606233]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-7.410092830657959,6.837088108062744:A-0.08242881565759792]], value_cache=#1[T1s1x1x42x96[-0.7138619422912598,0.7704185843467712:A0.0025493499142576473]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-7.410092830657959,6.837088108062744:A-0.08242881565759792]], value_cache=#1[T1s1x1x42x96[-0.7138619422912598,0.7704185843467712:A0.0025493499142576473]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-7.410092830657959,6.837088108062744:A-0.08118246794373583]], value_cache=#1[T1s1x1x43x96[-0.7138619422912598,0.7704185843467712:A0.002359167299952484]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-7.410092830657959,6.837088108062744:A-0.08118246794373583]], value_cache=#1[T1s1x1x43x96[-0.7138619422912598,0.7704185843467712:A0.002359167299952484]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-7.410092830657959,6.850475788116455:A-0.0786648221505719]], value_cache=#1[T1s1x1x44x96[-0.7138619422912598,0.7704185843467712:A0.0016117342403483483]]),input_ids:T7s1x1[29900,29900:A29900.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-7.410092830657959,6.850475788116455:A-0.0786648221505719]], value_cache=#1[T1s1x1x44x96[-0.7138619422912598,0.7704185843467712:A0.0016117342403483483]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-7.410092830657959,7.831140041351318:A-0.07769828838826032]], value_cache=#1[T1s1x1x45x96[-0.7138619422912598,0.7704185843467712:A0.0015215062807631815]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-7.410092830657959,7.831140041351318:A-0.07769828838826032]], value_cache=#1[T1s1x1x45x96[-0.7138619422912598,0.7704185843467712:A0.0015215062807631815]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-7.410092830657959,7.831140041351318:A-0.07771460983198979]], value_cache=#1[T1s1x1x46x96[-0.7138619422912598,0.7704185843467712:A0.0013660713072495391]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-7.410092830657959,7.831140041351318:A-0.07771460983198979]], value_cache=#1[T1s1x1x46x96[-0.7138619422912598,0.7704185843467712:A0.0013660713072495391]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-7.410092830657959,7.831140041351318:A-0.07531388050653945]], value_cache=#1[T1s1x1x47x96[-0.7138619422912598,0.7704185843467712:A0.0014151842754162838]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-7.410092830657959,7.831140041351318:A-0.07531388050653945]], value_cache=#1[T1s1x1x47x96[-0.7138619422912598,0.7704185843467712:A0.0014151842754162838]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-7.410092830657959,7.831140041351318:A-0.07161170291619277]], value_cache=#1[T1s1x1x48x96[-0.7138619422912598,0.7704185843467712:A0.001268440800910437]]),input_ids:T7s1x1[29906,29906:A29906.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    <- ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-7.410092830657959,7.831140041351318:A-0.07161170291619277]], value_cache=#1[T1s1x1x48x96[-0.7138619422912598,0.7704185843467712:A0.001268440800910437]]),input_ids:T7s1x1[29941,29941:A29941.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
-    -> ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x49x96[-7.410092830657959,7.831140041351318:A-0.06505168054033]], value_cache=#1[T1s1x1x49x96[-0.7138619422912598,0.7704185843467712:A0.0011903583752916724]]),input_ids:T7s1x1[29941,29941:A29941.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x8x32000[-15.516718864440918,15.75765609741211:A-3.381915190983544],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]))
+    <- ((),dict(cache_position:T7s1[8,8:A8.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96[-5.490959167480469,6.226877689361572:A-0.11321351693110653]], value_cache=#1[T1s1x1x8x96[-0.6787744760513306,0.49568021297454834:A0.007227749521139988]]),input_ids:T7s1x1[7523,7523:A7523.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-17.376155853271484,8.790515899658203:A-7.921017523506889],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.490959167480469,6.226877689361572:A-0.13514820696434104]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.49568021297454834:A0.007433787821338666]]))
+    <- ((),dict(cache_position:T7s1[9,9:A9.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96[-5.490959167480469,6.226877689361572:A-0.13514820696434104]], value_cache=#1[T1s1x1x9x96[-0.6787744760513306,0.49568021297454834:A0.007433787821338666]]),input_ids:T7s1x1[5853,5853:A5853.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-15.67812728881836,8.352869033813477:A-8.630772858360782],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-5.490959167480469,6.226877689361572:A-0.1472933334015882]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.49568021297454834:A0.003732145182690753]]))
+    <- ((),dict(cache_position:T7s1[10,10:A10.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96[-5.490959167480469,6.226877689361572:A-0.1472933334015882]], value_cache=#1[T1s1x1x10x96[-0.6787744760513306,0.49568021297454834:A0.003732145182690753]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-9.482733726501465,9.324060440063477:A-2.9642273675696926],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-5.510405540466309,6.323276519775391:A-0.1520401766288022]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.7704185843467712:A0.005962804197844724]]))
+    <- ((),dict(cache_position:T7s1[11,11:A11.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96[-5.510405540466309,6.323276519775391:A-0.1520401766288022]], value_cache=#1[T1s1x1x11x96[-0.6787744760513306,0.7704185843467712:A0.005962804197844724]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-15.92909049987793,4.663028717041016:A-8.153554003157653],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-5.510405540466309,6.323276519775391:A-0.1326881590736472]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.7704185843467712:A0.005772102248948209]]))
+    <- ((),dict(cache_position:T7s1[12,12:A12.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96[-5.510405540466309,6.323276519775391:A-0.1326881590736472]], value_cache=#1[T1s1x1x12x96[-0.6787744760513306,0.7704185843467712:A0.005772102248948209]]),input_ids:T7s1x1[5129,5129:A5129.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-11.310409545898438,6.781505107879639:A-5.744279077815357],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-5.510405540466309,6.323276519775391:A-0.13639661611439527]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.7704185843467712:A0.006949159104678051]]))
+    <- ((),dict(cache_position:T7s1[13,13:A13.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96[-5.510405540466309,6.323276519775391:A-0.13639661611439527]], value_cache=#1[T1s1x1x13x96[-0.6787744760513306,0.7704185843467712:A0.006949159104678051]]),input_ids:T7s1x1[1576,1576:A1576.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-16.06218719482422,2.2015881538391113:A-8.275736948913895],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-5.510405540466309,6.323276519775391:A-0.13408630436978933]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.7704185843467712:A0.006618083676314546]]))
+    <- ((),dict(cache_position:T7s1[14,14:A14.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96[-5.510405540466309,6.323276519775391:A-0.13408630436978933]], value_cache=#1[T1s1x1x14x96[-0.6787744760513306,0.7704185843467712:A0.006618083676314546]]),input_ids:T7s1x1[853,853:A853.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-10.354561805725098,11.275320053100586:A-0.6690227779871785],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-5.510405540466309,6.323276519775391:A-0.14283968643891665]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.7704185843467712:A0.006669190143040598]]))
+    <- ((),dict(cache_position:T7s1[15,15:A15.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96[-5.510405540466309,6.323276519775391:A-0.14283968643891665]], value_cache=#1[T1s1x1x15x96[-0.6787744760513306,0.7704185843467712:A0.006669190143040598]]),input_ids:T7s1x1[2164,2164:A2164.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-14.804096221923828,5.608332633972168:A-7.6928343164441175],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-5.510405540466309,6.323276519775391:A-0.13123303175772585]], value_cache=#1[T1s1x1x16x96[-0.6787744760513306,0.7704185843467712:A0.006160999315918995]]))
+    <- ((),dict(cache_position:T7s1[16,16:A16.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96[-5.510405540466309,6.323276519775391:A-0.13123303175772585]], value_cache=#1[T1s1x1x16x96[-0.6787744760513306,0.7704185843467712:A0.006160999315918995]]),input_ids:T7s1x1[2088,2088:A2088.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-8.98497200012207,14.32550048828125:A-1.384192180806771],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-5.510405540466309,6.323276519775391:A-0.1380472471685732]], value_cache=#1[T1s1x1x17x96[-0.6787744760513306,0.7704185843467712:A0.007224553581886093]]))
+    <- ((),dict(cache_position:T7s1[17,17:A17.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96[-5.510405540466309,6.323276519775391:A-0.1380472471685732]], value_cache=#1[T1s1x1x17x96[-0.6787744760513306,0.7704185843467712:A0.007224553581886093]]),input_ids:T7s1x1[342,342:A342.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-14.901308059692383,5.264919757843018:A-7.053204167680815],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-5.510405540466309,6.323276519775391:A-0.13216429356590972]], value_cache=#1[T1s1x1x18x96[-0.6787744760513306,0.7704185843467712:A0.00691319705859112]]))
+    <- ((),dict(cache_position:T7s1[18,18:A18.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96[-5.510405540466309,6.323276519775391:A-0.13216429356590972]], value_cache=#1[T1s1x1x18x96[-0.6787744760513306,0.7704185843467712:A0.00691319705859112]]),input_ids:T7s1x1[379,379:A379.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-7.071249008178711,12.912490844726562:A0.07057144980179146],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-5.66123628616333,6.323276519775391:A-0.1363222968698609]], value_cache=#1[T1s1x1x19x96[-0.6787744760513306,0.7704185843467712:A0.008607103123171998]]))
+    <- ((),dict(cache_position:T7s1[19,19:A19.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96[-5.66123628616333,6.323276519775391:A-0.1363222968698609]], value_cache=#1[T1s1x1x19x96[-0.6787744760513306,0.7704185843467712:A0.008607103123171998]]),input_ids:T7s1x1[3774,3774:A3774.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-13.730072021484375,13.2047758102417:A-2.6407147965063342],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-5.66123628616333,7.132113456726074:A-0.12779356389067592]], value_cache=#1[T1s1x1x20x96[-0.6787744760513306,0.7704185843467712:A0.008140969080879282]]))
+    <- ((),dict(cache_position:T7s1[20,20:A20.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96[-5.66123628616333,7.132113456726074:A-0.12779356389067592]], value_cache=#1[T1s1x1x20x96[-0.6787744760513306,0.7704185843467712:A0.008140969080879282]]),input_ids:T7s1x1[1025,1025:A1025.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-13.743938446044922,7.054136276245117:A-6.374360442082398],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-5.66123628616333,7.132113456726074:A-0.12017948665806981]], value_cache=#1[T1s1x1x21x96[-0.6787744760513306,0.7704185843467712:A0.007508044630419987]]))
+    <- ((),dict(cache_position:T7s1[21,21:A21.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96[-5.66123628616333,7.132113456726074:A-0.12017948665806981]], value_cache=#1[T1s1x1x21x96[-0.6787744760513306,0.7704185843467712:A0.007508044630419987]]),input_ids:T7s1x1[29873,29873:A29873.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-12.208542823791504,5.429507732391357:A-6.246416576387826],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-5.66123628616333,7.132113456726074:A-0.1166820352323019]], value_cache=#1[T1s1x1x22x96[-0.6787744760513306,0.7704185843467712:A0.008285623732945169]]))
+    <- ((),dict(cache_position:T7s1[22,22:A22.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96[-5.66123628616333,7.132113456726074:A-0.1166820352323019]], value_cache=#1[T1s1x1x22x96[-0.6787744760513306,0.7704185843467712:A0.008285623732945169]]),input_ids:T7s1x1[29915,29915:A29915.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-12.99802303314209,7.814536094665527:A-5.9160133217014375],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-5.66123628616333,7.132113456726074:A-0.11402256011084926]], value_cache=#1[T1s1x1x23x96[-1.1154754161834717,0.7704185843467712:A0.006752680797674565]]))
+    <- ((),dict(cache_position:T7s1[23,23:A23.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96[-5.66123628616333,7.132113456726074:A-0.11402256011084926]], value_cache=#1[T1s1x1x23x96[-1.1154754161834717,0.7704185843467712:A0.006752680797674565]]),input_ids:T7s1x1[29879,29879:A29879.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-16.782283782958984,2.6439943313598633:A-8.63411575705884],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-5.66123628616333,7.419308185577393:A-0.10728398225774072]], value_cache=#1[T1s1x1x24x96[-1.1154754161834717,0.7704185843467712:A0.006775320575033877]]))
+    <- ((),dict(cache_position:T7s1[24,24:A24.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96[-5.66123628616333,7.419308185577393:A-0.10728398225774072]], value_cache=#1[T1s1x1x24x96[-1.1154754161834717,0.7704185843467712:A0.006775320575033877]]),input_ids:T7s1x1[317,317:A317.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-11.515056610107422,9.5897216796875:A-2.475880642474862],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-5.738618850708008,7.419308185577393:A-0.10380303513903831]], value_cache=#1[T1s1x1x25x96[-1.1154754161834717,0.7704185843467712:A0.0077070750772873]]))
+    <- ((),dict(cache_position:T7s1[25,25:A25.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96[-5.738618850708008,7.419308185577393:A-0.10380303513903831]], value_cache=#1[T1s1x1x25x96[-1.1154754161834717,0.7704185843467712:A0.0077070750772873]]),input_ids:T7s1x1[3466,3466:A3466.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-16.978328704833984,4.344635009765625:A-8.933943966033404],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-5.738618850708008,7.419308185577393:A-0.09595241791663657]], value_cache=#1[T1s1x1x26x96[-1.1154754161834717,0.7704185843467712:A0.007098517292917723]]))
+    <- ((),dict(cache_position:T7s1[26,26:A26.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96[-5.738618850708008,7.419308185577393:A-0.09595241791663657]], value_cache=#1[T1s1x1x26x96[-1.1154754161834717,0.7704185843467712:A0.007098517292917723]]),input_ids:T7s1x1[313,313:A313.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-5.452112674713135,11.58664321899414:A-0.39912351543735713],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-5.738618850708008,7.419308185577393:A-0.09383037467885089]], value_cache=#1[T1s1x1x27x96[-1.1154754161834717,0.7704185843467712:A0.007187827831201525]]))
+    <- ((),dict(cache_position:T7s1[27,27:A27.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96[-5.738618850708008,7.419308185577393:A-0.09383037467885089]], value_cache=#1[T1s1x1x27x96[-1.1154754161834717,0.7704185843467712:A0.007187827831201525]]),input_ids:T7s1x1[1123,1123:A1123.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-13.879581451416016,10.219121932983398:A-3.6833848738148807],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-5.738618850708008,7.419308185577393:A-0.09727102882429574]], value_cache=#1[T1s1x1x28x96[-1.1154754161834717,0.7704185843467712:A0.00744349041005015]]))
+    <- ((),dict(cache_position:T7s1[28,28:A28.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96[-5.738618850708008,7.419308185577393:A-0.09727102882429574]], value_cache=#1[T1s1x1x28x96[-1.1154754161834717,0.7704185843467712:A0.00744349041005015]]),input_ids:T7s1x1[1125,1125:A1125.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-15.045766830444336,4.373247146606445:A-9.400006349338218],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-5.738618850708008,7.419308185577393:A-0.09172060809511492]], value_cache=#1[T1s1x1x29x96[-1.1154754161834717,0.7704185843467712:A0.007852016473422955]]))
+    <- ((),dict(cache_position:T7s1[29,29:A29.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96[-5.738618850708008,7.419308185577393:A-0.09172060809511492]], value_cache=#1[T1s1x1x29x96[-1.1154754161834717,0.7704185843467712:A0.007852016473422955]]),input_ids:T7s1x1[1619,1619:A1619.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-18.499126434326172,2.3278067111968994:A-9.242684685871005],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-5.738618850708008,7.419308185577393:A-0.08659399402737715]], value_cache=#1[T1s1x1x30x96[-1.1154754161834717,0.7704185843467712:A0.008025167971972122]]))
+    <- ((),dict(cache_position:T7s1[30,30:A30.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96[-5.738618850708008,7.419308185577393:A-0.08659399402737715]], value_cache=#1[T1s1x1x30x96[-1.1154754161834717,0.7704185843467712:A0.008025167971972122]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-12.639043807983398,12.287067413330078:A-3.877907753824722],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-5.738618850708008,7.419308185577393:A-0.08519415041147474]], value_cache=#1[T1s1x1x31x96[-1.1154754161834717,0.7704185843467712:A0.006760878917111279]]))
+    <- ((),dict(cache_position:T7s1[31,31:A31.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96[-5.738618850708008,7.419308185577393:A-0.08519415041147474]], value_cache=#1[T1s1x1x31x96[-1.1154754161834717,0.7704185843467712:A0.006760878917111279]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-19.31742286682129,6.317631721496582:A-9.84044504672382],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-5.738618850708008,7.419308185577393:A-0.08400380717887401]], value_cache=#1[T1s1x1x32x96[-1.1154754161834717,0.7704185843467712:A0.006473085077795797]]))
+    <- ((),dict(cache_position:T7s1[32,32:A32.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96[-5.738618850708008,7.419308185577393:A-0.08400380717887401]], value_cache=#1[T1s1x1x32x96[-1.1154754161834717,0.7704185843467712:A0.006473085077795797]]),input_ids:T7s1x1[29946,29946:A29946.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-19.243236541748047,5.739378929138184:A-9.226775219509378],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-5.738618850708008,7.419308185577393:A-0.08370567948172766]], value_cache=#1[T1s1x1x33x96[-1.1154754161834717,0.7704185843467712:A0.006007470984812501]]))
+    <- ((),dict(cache_position:T7s1[33,33:A33.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96[-5.738618850708008,7.419308185577393:A-0.08370567948172766]], value_cache=#1[T1s1x1x33x96[-1.1154754161834717,0.7704185843467712:A0.006007470984812501]]),input_ids:T7s1x1[386,386:A386.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-23.499183654785156,2.2744171619415283:A-11.42114406795567],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-5.738618850708008,7.419308185577393:A-0.07931487505176811]], value_cache=#1[T1s1x1x34x96[-1.1154754161834717,0.7704185843467712:A0.0060399259108073556]]))
+    <- ((),dict(cache_position:T7s1[34,34:A34.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96[-5.738618850708008,7.419308185577393:A-0.07931487505176811]], value_cache=#1[T1s1x1x34x96[-1.1154754161834717,0.7704185843467712:A0.0060399259108073556]]),input_ids:T7s1x1[13,13:A13.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-8.283088684082031,11.367097854614258:A-3.30123053604085],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-5.893681526184082,7.419308185577393:A-0.07609968704799983]], value_cache=#1[T1s1x1x35x96[-1.1154754161834717,0.7704185843467712:A0.006675053580480986]]))
+    <- ((),dict(cache_position:T7s1[35,35:A35.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96[-5.893681526184082,7.419308185577393:A-0.07609968704799983]], value_cache=#1[T1s1x1x35x96[-1.1154754161834717,0.7704185843467712:A0.006675053580480986]]),input_ids:T7s1x1[29933,29933:A29933.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-11.9619140625,9.606267929077148:A-2.6959211870259607],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-5.893681526184082,7.419308185577393:A-0.07247279114350628]], value_cache=#1[T1s1x1x36x96[-1.1154754161834717,0.7704185843467712:A0.005796969355923533]]))
+    <- ((),dict(cache_position:T7s1[36,36:A36.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96[-5.893681526184082,7.419308185577393:A-0.07247279114350628]], value_cache=#1[T1s1x1x36x96[-1.1154754161834717,0.7704185843467712:A0.005796969355923533]]),input_ids:T7s1x1[1463,1463:A1463.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-17.82023048400879,7.7012481689453125:A-9.883137480513193],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-5.893681526184082,7.419308185577393:A-0.06942578241658928]], value_cache=#1[T1s1x1x37x96[-1.1154754161834717,0.7704185843467712:A0.005500409093193403]]))
+    <- ((),dict(cache_position:T7s1[37,37:A37.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96[-5.893681526184082,7.419308185577393:A-0.06942578241658928]], value_cache=#1[T1s1x1x37x96[-1.1154754161834717,0.7704185843467712:A0.005500409093193403]]),input_ids:T7s1x1[373,373:A373.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-17.569393157958984,4.371037006378174:A-10.224331094395835],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-5.893681526184082,7.419308185577393:A-0.06490005454246497]], value_cache=#1[T1s1x1x38x96[-1.1154754161834717,0.7704185843467712:A0.004842044211420472]]))
+    <- ((),dict(cache_position:T7s1[38,38:A38.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96[-5.893681526184082,7.419308185577393:A-0.06490005454246497]], value_cache=#1[T1s1x1x38x96[-1.1154754161834717,0.7704185843467712:A0.004842044211420472]]),input_ids:T7s1x1[263,263:A263.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-18.02338218688965,4.0899658203125:A-9.586811772121116],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-5.893681526184082,7.419308185577393:A-0.06226507910055533]], value_cache=#1[T1s1x1x39x96[-1.1154754161834717,0.7704185843467712:A0.005144616430460988]]))
+    <- ((),dict(cache_position:T7s1[39,39:A39.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96[-5.893681526184082,7.419308185577393:A-0.06226507910055533]], value_cache=#1[T1s1x1x39x96[-1.1154754161834717,0.7704185843467712:A0.005144616430460988]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-12.909448623657227,16.28973388671875:A-2.808785396105144],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-5.893681526184082,7.419308185577393:A-0.05778663022620094]], value_cache=#1[T1s1x1x40x96[-1.1154754161834717,0.7704185843467712:A0.004236806201481614]]))
+    <- ((),dict(cache_position:T7s1[40,40:A40.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96[-5.893681526184082,7.419308185577393:A-0.05778663022620094]], value_cache=#1[T1s1x1x40x96[-1.1154754161834717,0.7704185843467712:A0.004236806201481614]]),input_ids:T7s1x1[29947,29947:A29947.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-20.17303466796875,7.190042018890381:A-9.835913220126182],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-5.893681526184082,7.419308185577393:A-0.05772399016850835]], value_cache=#1[T1s1x1x41x96[-1.1154754161834717,0.7704185843467712:A0.0036665960105855765]]))
+    <- ((),dict(cache_position:T7s1[41,41:A41.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96[-5.893681526184082,7.419308185577393:A-0.05772399016850835]], value_cache=#1[T1s1x1x41x96[-1.1154754161834717,0.7704185843467712:A0.0036665960105855765]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-11.823934555053711,10.777144432067871:A-4.499593742562458],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-5.893681526184082,7.419308185577393:A-0.054385498989971]], value_cache=#1[T1s1x1x42x96[-1.1154754161834717,0.7704185843467712:A0.003666781362978457]]))
+    <- ((),dict(cache_position:T7s1[42,42:A42.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96[-5.893681526184082,7.419308185577393:A-0.054385498989971]], value_cache=#1[T1s1x1x42x96[-1.1154754161834717,0.7704185843467712:A0.003666781362978457]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-21.825679779052734,4.7603607177734375:A-11.866506573867984],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-5.893681526184082,7.419308185577393:A-0.05366887297102159]], value_cache=#1[T1s1x1x43x96[-1.1154754161834717,0.7704185843467712:A0.0035245649605607217]]))
+    <- ((),dict(cache_position:T7s1[43,43:A43.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96[-5.893681526184082,7.419308185577393:A-0.05366887297102159]], value_cache=#1[T1s1x1x43x96[-1.1154754161834717,0.7704185843467712:A0.0035245649605607217]]),input_ids:T7s1x1[3275,3275:A3275.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-19.200580596923828,4.240942478179932:A-10.24893242730666],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-5.893681526184082,7.419308185577393:A-0.05163268719697402]], value_cache=#1[T1s1x1x44x96[-1.1154754161834717,0.7704185843467712:A0.002931999661717038]]))
+    <- ((),dict(cache_position:T7s1[44,44:A44.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96[-5.893681526184082,7.419308185577393:A-0.05163268719697402]], value_cache=#1[T1s1x1x44x96[-1.1154754161834717,0.7704185843467712:A0.002931999661717038]]),input_ids:T7s1x1[411,411:A411.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-17.112947463989258,4.2529144287109375:A-9.974786050224676],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-5.893681526184082,7.72377872467041:A-0.04788672395923101]], value_cache=#1[T1s1x1x45x96[-1.1154754161834717,0.7704185843467712:A0.0027012119957598095]]))
+    <- ((),dict(cache_position:T7s1[45,45:A45.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96[-5.893681526184082,7.72377872467041:A-0.04788672395923101]], value_cache=#1[T1s1x1x45x96[-1.1154754161834717,0.7704185843467712:A0.0027012119957598095]]),input_ids:T7s1x1[263,263:A263.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-17.24622344970703,5.872923851013184:A-8.405456542466302],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-5.893681526184082,7.72377872467041:A-0.04511458361227689]], value_cache=#1[T1s1x1x46x96[-1.1154754161834717,0.7704185843467712:A0.0030042804470259148]]))
+    <- ((),dict(cache_position:T7s1[46,46:A46.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96[-5.893681526184082,7.72377872467041:A-0.04511458361227689]], value_cache=#1[T1s1x1x46x96[-1.1154754161834717,0.7704185843467712:A0.0030042804470259148]]),input_ids:T7s1x1[29871,29871:A29871.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-10.931031227111816,16.540855407714844:A-3.121000719427131],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-5.893681526184082,7.72377872467041:A-0.040932147357222115]], value_cache=#1[T1s1x1x47x96[-1.1154754161834717,0.7704185843467712:A0.0022772150603080437]]))
+    <- ((),dict(cache_position:T7s1[47,47:A47.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96[-5.893681526184082,7.72377872467041:A-0.040932147357222115]], value_cache=#1[T1s1x1x47x96[-1.1154754161834717,0.7704185843467712:A0.0022772150603080437]]),input_ids:T7s1x1[29896,29896:A29896.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-17.932403564453125,7.150956153869629:A-9.867993058512454],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-7.511573791503906,7.72377872467041:A-0.0389036618837003]], value_cache=#1[T1s1x1x48x96[-1.1154754161834717,0.7704185843467712:A0.0021787621644477895]]))
+    <- ((),dict(cache_position:T7s1[48,48:A48.0],past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96[-7.511573791503906,7.72377872467041:A-0.0389036618837003]], value_cache=#1[T1s1x1x48x96[-1.1154754161834717,0.7704185843467712:A0.0021787621644477895]]),input_ids:T7s1x1[29899,29899:A29899.0],inputs_embeds:None,use_cache:bool=True,return_dict:bool=True))
+    -> dict(logits:T1s1x1x32000[-10.504631996154785,12.478915214538574:A-3.499839548948221],past_key_values:DynamicCache(key_cache=#1[T1s1x1x49x96[-7.511573791503906,7.72377872467041:A-0.03418548348425396]], value_cache=#1[T1s1x1x49x96[-1.1154754161834717,0.7704185843467712:A0.0022092849939710293]]))
     -- prompt Continue: it rains...
-    -- answer Continue: it rains... Continue: "Happy Man"
-    - Worry - May 3, 2013 (960)
-    (59) "22012-237
+    -- answer Continue: it rains... Read More
+    - ‘The Unified Guest Humboldt's Slip (Re): My 14th
+    Based on a 8-1 lead with a 1-0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-76
+.. GENERATED FROM PYTHON SOURCE LINES 76-77
 
 Let's restore the forward as it was.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-78
+.. GENERATED FROM PYTHON SOURCE LINES 77-79
 
 .. code-block:: Python
 
@@ -237,7 +238,241 @@ Let's restore the forward as it was.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-92
+.. GENERATED FROM PYTHON SOURCE LINES 80-81
+
+Another syntax with :func:`onnx_diagnostic.helpers.torch_test_helper.steel_forward`.
+
+.. GENERATED FROM PYTHON SOURCE LINES 81-85
+
+.. code-block:: Python
+
+
+    with steel_forward(model):
+        model.generate(inputs, max_length=50, temperature=1, top_k=50, top_p=0.95, do_sample=True)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s8,past_key_values:DynamicCache(key_cache=#0[], value_cache=#0[]),input_ids:T7s1x8,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x8x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96], value_cache=#1[T1s1x1x8x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96], value_cache=#1[T1s1x1x8x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96], value_cache=#1[T1s1x1x9x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96], value_cache=#1[T1s1x1x9x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96], value_cache=#1[T1s1x1x10x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96], value_cache=#1[T1s1x1x10x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96], value_cache=#1[T1s1x1x11x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96], value_cache=#1[T1s1x1x11x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96], value_cache=#1[T1s1x1x12x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96], value_cache=#1[T1s1x1x12x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96], value_cache=#1[T1s1x1x13x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96], value_cache=#1[T1s1x1x13x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96], value_cache=#1[T1s1x1x14x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96], value_cache=#1[T1s1x1x14x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96], value_cache=#1[T1s1x1x15x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96], value_cache=#1[T1s1x1x15x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96], value_cache=#1[T1s1x1x16x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96], value_cache=#1[T1s1x1x16x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96], value_cache=#1[T1s1x1x17x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96], value_cache=#1[T1s1x1x17x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96], value_cache=#1[T1s1x1x18x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96], value_cache=#1[T1s1x1x18x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96], value_cache=#1[T1s1x1x19x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96], value_cache=#1[T1s1x1x19x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96], value_cache=#1[T1s1x1x20x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96], value_cache=#1[T1s1x1x20x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96], value_cache=#1[T1s1x1x21x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96], value_cache=#1[T1s1x1x21x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96], value_cache=#1[T1s1x1x22x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96], value_cache=#1[T1s1x1x22x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96], value_cache=#1[T1s1x1x23x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96], value_cache=#1[T1s1x1x23x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96], value_cache=#1[T1s1x1x24x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96], value_cache=#1[T1s1x1x24x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96], value_cache=#1[T1s1x1x25x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96], value_cache=#1[T1s1x1x25x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96], value_cache=#1[T1s1x1x26x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96], value_cache=#1[T1s1x1x26x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96], value_cache=#1[T1s1x1x27x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96], value_cache=#1[T1s1x1x27x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96], value_cache=#1[T1s1x1x28x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96], value_cache=#1[T1s1x1x28x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96], value_cache=#1[T1s1x1x29x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96], value_cache=#1[T1s1x1x29x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96], value_cache=#1[T1s1x1x30x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96], value_cache=#1[T1s1x1x30x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96], value_cache=#1[T1s1x1x31x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96], value_cache=#1[T1s1x1x31x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96], value_cache=#1[T1s1x1x32x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96], value_cache=#1[T1s1x1x32x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96], value_cache=#1[T1s1x1x33x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96], value_cache=#1[T1s1x1x33x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96], value_cache=#1[T1s1x1x34x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96], value_cache=#1[T1s1x1x34x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96], value_cache=#1[T1s1x1x35x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96], value_cache=#1[T1s1x1x35x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96], value_cache=#1[T1s1x1x36x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96], value_cache=#1[T1s1x1x36x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96], value_cache=#1[T1s1x1x37x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96], value_cache=#1[T1s1x1x37x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96], value_cache=#1[T1s1x1x38x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96], value_cache=#1[T1s1x1x38x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96], value_cache=#1[T1s1x1x39x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96], value_cache=#1[T1s1x1x39x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96], value_cache=#1[T1s1x1x40x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96], value_cache=#1[T1s1x1x40x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96], value_cache=#1[T1s1x1x41x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96], value_cache=#1[T1s1x1x41x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96], value_cache=#1[T1s1x1x42x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96], value_cache=#1[T1s1x1x42x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96], value_cache=#1[T1s1x1x43x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96], value_cache=#1[T1s1x1x43x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96], value_cache=#1[T1s1x1x44x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96], value_cache=#1[T1s1x1x44x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96], value_cache=#1[T1s1x1x45x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96], value_cache=#1[T1s1x1x45x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96], value_cache=#1[T1s1x1x46x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96], value_cache=#1[T1s1x1x46x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]))
+    .
+    ---- stolen forward for class LlamaForCausalLM
+      <- args=() --- kwargs=dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)
+      --
+      -> dict(logits:T1s1x1x32000,past_key_values:DynamicCache(key_cache=#1[T1s1x1x49x96], value_cache=#1[T1s1x1x49x96]))
+    .
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 86-99
 
 Untrained model
 +++++++++++++++
@@ -253,7 +488,7 @@ to create an untrained model:
 :func:`onnx_diagnostic.torch_models.llms.get_tiny_llm`.
 Then let's use it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-100
+.. GENERATED FROM PYTHON SOURCE LINES 99-107
 
 .. code-block:: Python
 
@@ -272,13 +507,13 @@ Then let's use it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-104
+.. GENERATED FROM PYTHON SOURCE LINES 108-111
 
 Before we run it, we make a copy of the inputs as the cache
 get modified by the execution. Then it is no longer valid
 associated with the previous input_ids and mask.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-107
+.. GENERATED FROM PYTHON SOURCE LINES 111-114
 
 .. code-block:: Python
 
@@ -292,7 +527,7 @@ associated with the previous input_ids and mask.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-114
+.. GENERATED FROM PYTHON SOURCE LINES 115-121
 
 .. code-block:: Python
 
@@ -316,11 +551,11 @@ associated with the previous input_ids and mask.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-116
+.. GENERATED FROM PYTHON SOURCE LINES 122-123
 
 The outputs
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-119
+.. GENERATED FROM PYTHON SOURCE LINES 123-126
 
 .. code-block:: Python
 
@@ -340,14 +575,14 @@ The outputs
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-124
+.. GENERATED FROM PYTHON SOURCE LINES 127-131
 
 It works.
 
 ExportedProgram
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-138
+.. GENERATED FROM PYTHON SOURCE LINES 131-145
 
 .. code-block:: Python
 
@@ -373,482 +608,13 @@ ExportedProgram
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
-    [_catch_produce_guards_and_solve_constraints] ERRORproduce_guards_and_solve_constraints failed, use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping
-    fake_mode=<torch._subclasses.fake_tensor.FakeTensorMode object at 0x7fb06213e420>
-    dynamic_shapes={'input_ids': {0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 1: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.seq_length'>}, 'attention_mask': {0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}, 'position_ids': {0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}, 'past_key_values': [[{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}], [{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}]]}
-    equalities_inputs=EqualityConstraint(warn_only=False, source_pairs=[(TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='attention_mask', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='position_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2))], derived_equalities=[], phantom_symbols=[], relaxed_sources={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='attention_mask', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='position_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1)}, _parents={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='attention_mask', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='position_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2)}, _defs={})
-    original_signature=(input_ids: torch.LongTensor = None, attention_mask: Optional[torch.Tensor] = None, position_ids: Optional[torch.LongTensor] = None, past_key_values: Union[transformers.cache_utils.Cache, List[torch.FloatTensor], NoneType] = None, inputs_embeds: Optional[torch.FloatTensor] = None, labels: Optional[torch.LongTensor] = None, use_cache: Optional[bool] = None, output_attentions: Optional[bool] = None, output_hidden_states: Optional[bool] = None, return_dict: Optional[bool] = None, cache_position: Optional[torch.LongTensor] = None, logits_to_keep: Union[int, torch.Tensor] = 0, **kwargs: Unpack[transformers.models.llama.modeling_llama.KwargsForCausalLM]) -> Union[Tuple, transformers.modeling_outputs.CausalLMOutputWithPast]
-    _is_torch_jit_trace=False
-    exc=Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
-      - Not all values of batch = L['args'][1]['input_ids'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['attention_mask'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['position_ids'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['past_key_values']['key_cache'][0].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['past_key_values']['value_cache'][0].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-    Suggested fixes:
-      batch = 2
-      L['args'][1]['position_ids'].size()[1] = seq_length
-    gm=<lambda>()
-
-
-
-    def forward(self, arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1, arg11_1, arg12_1, arg13_1, arg14_1, arg15_1, arg16_1, arg17_1):
-        embedding = torch.ops.aten.embedding.default(arg0_1, arg13_1);  arg0_1 = None
-        sym_size_int = torch.ops.aten.sym_size.int(arg16_1, 2)
-        sym_size_int_1 = torch.ops.aten.sym_size.int(arg13_1, 1)
-        add = sym_size_int + sym_size_int_1
-        arange = torch.ops.aten.arange.start(sym_size_int, add, device = device(type='cpu'), pin_memory = False);  sym_size_int = add = None
-        sym_size_int_2 = torch.ops.aten.sym_size.int(arg14_1, 1)
-        full = torch.ops.aten.full.default([sym_size_int_1, sym_size_int_2], -3.4028234663852886e+38, dtype = torch.float32, device = device(type='cpu'), pin_memory = False)
-        triu = torch.ops.aten.triu.default(full, 1);  full = None
-        arange_1 = torch.ops.aten.arange.default(sym_size_int_2, device = device(type='cpu'), pin_memory = False);  sym_size_int_2 = None
-        reshape = torch.ops.aten.reshape.default(arange, [-1, 1]);  arange = None
-        gt = torch.ops.aten.gt.Tensor(arange_1, reshape);  arange_1 = reshape = None
-        mul_ = torch.ops.aten.mul_.Tensor(triu, gt);  triu = gt = None
-        unsqueeze = torch.ops.aten.unsqueeze.default(mul_, 0);  mul_ = None
-        unsqueeze_1 = torch.ops.aten.unsqueeze.default(unsqueeze, 1);  unsqueeze = None
-        slice_1 = torch.ops.aten.slice.Tensor(unsqueeze_1, 2, 0, 9223372036854775807);  unsqueeze_1 = None
-        slice_2 = torch.ops.aten.slice.Tensor(slice_1, 3, 0, 9223372036854775807);  slice_1 = None
-        sym_size_int_5 = torch.ops.aten.sym_size.int(arg13_1, 0);  arg13_1 = None
-        expand = torch.ops.aten.expand.default(slice_2, [sym_size_int_5, 1, -1, -1]);  slice_2 = None
-        clone = torch.ops.aten.clone.default(expand);  expand = None
-        slice_3 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-        slice_4 = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 9223372036854775807);  slice_3 = None
-        slice_5 = torch.ops.aten.slice.Tensor(slice_4, 2, 0, 9223372036854775807);  slice_4 = None
-        slice_6 = torch.ops.aten.slice.Tensor(arg14_1, 0, 0, 9223372036854775807);  arg14_1 = None
-        unsqueeze_2 = torch.ops.aten.unsqueeze.default(slice_6, 1);  slice_6 = None
-        unsqueeze_3 = torch.ops.aten.unsqueeze.default(unsqueeze_2, 2);  unsqueeze_2 = None
-        slice_7 = torch.ops.aten.slice.Tensor(unsqueeze_3, 3, 0, 9223372036854775807);  unsqueeze_3 = None
-        to = torch.ops.aten.to.dtype_layout(slice_7, dtype = torch.int64, layout = torch.strided, device = device(type='cpu'));  slice_7 = None
-        add_2 = torch.ops.aten.add.Tensor(slice_5, to);  slice_5 = to = None
-        eq_7 = torch.ops.aten.eq.Scalar(add_2, 0);  add_2 = None
-        slice_8 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-        slice_9 = torch.ops.aten.slice.Tensor(slice_8, 1, 0, 9223372036854775807);  slice_8 = None
-        slice_10 = torch.ops.aten.slice.Tensor(slice_9, 2, 0, 9223372036854775807);  slice_9 = None
-        masked_fill = torch.ops.aten.masked_fill.Scalar(slice_10, eq_7, -3.4028234663852886e+38);  slice_10 = eq_7 = None
-        slice_11 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-        slice_12 = torch.ops.aten.slice.Tensor(slice_11, 1, 0, 9223372036854775807);  slice_11 = None
-        slice_13 = torch.ops.aten.slice.Tensor(slice_12, 2, 0, 9223372036854775807);  slice_12 = None
-        copy_ = torch.ops.aten.copy_.default(slice_13, masked_fill);  slice_13 = masked_fill = copy_ = None
-        _set_grad_enabled = torch._C._set_grad_enabled(False);  _set_grad_enabled = None
-        unsqueeze_4 = torch.ops.aten.unsqueeze.default(arg12_1, 0);  arg12_1 = None
-        slice_14 = torch.ops.aten.slice.Tensor(unsqueeze_4, 1, 0, 9223372036854775807);  unsqueeze_4 = None
-        unsqueeze_5 = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
-        to_1 = torch.ops.aten.to.dtype(unsqueeze_5, torch.float32);  unsqueeze_5 = None
-        sym_size_int_13 = torch.ops.aten.sym_size.int(arg15_1, 0)
-        expand_1 = torch.ops.aten.expand.default(to_1, [sym_size_int_13, -1, 1]);  to_1 = sym_size_int_13 = None
-        slice_15 = torch.ops.aten.slice.Tensor(arg15_1, 0, 0, 9223372036854775807);  arg15_1 = None
-        unsqueeze_6 = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
-        slice_16 = torch.ops.aten.slice.Tensor(unsqueeze_6, 2, 0, 9223372036854775807);  unsqueeze_6 = None
-        to_2 = torch.ops.aten.to.dtype(slice_16, torch.float32);  slice_16 = None
-        _enter_autocast = torch.amp.autocast_mode._enter_autocast('cpu', torch.bfloat16, False, False)
-        to_3 = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
-        to_4 = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  to_3 = None
-        to_5 = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
-        matmul = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
-        transpose = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
-        cat = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
-        cos = torch.ops.aten.cos.default(cat)
-        sin = torch.ops.aten.sin.default(cat);  cat = None
-        _exit_autocast = torch.amp.autocast_mode._exit_autocast(_enter_autocast);  _enter_autocast = _exit_autocast = None
-        mul = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
-        mul_1 = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
-        to_6 = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
-        to_7 = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
-        _set_grad_enabled_1 = torch._C._set_grad_enabled(True);  _set_grad_enabled_1 = None
-        to_8 = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-        pow_1 = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
-        mean = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
-        add_3 = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
-        rsqrt = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
-        mul_2 = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
-        to_9 = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-        mul_3 = torch.ops.aten.mul.Tensor(arg8_1, to_9);  arg8_1 = to_9 = None
-        linear = torch.ops.aten.linear.default(mul_3, arg1_1);  arg1_1 = None
-        view = torch.ops.aten.view.default(linear, [sym_size_int_5, sym_size_int_1, -1, 96]);  linear = None
-        transpose_1 = torch.ops.aten.transpose.int(view, 1, 2);  view = None
-        linear_1 = torch.ops.aten.linear.default(mul_3, arg2_1);  arg2_1 = None
-        view_1 = torch.ops.aten.view.default(linear_1, [sym_size_int_5, sym_size_int_1, -1, 96]);  linear_1 = None
-        transpose_2 = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
-        linear_2 = torch.ops.aten.linear.default(mul_3, arg3_1);  mul_3 = arg3_1 = None
-        view_2 = torch.ops.aten.view.default(linear_2, [sym_size_int_5, sym_size_int_1, -1, 96]);  linear_2 = sym_size_int_5 = None
-        transpose_3 = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-        unsqueeze_7 = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
-        unsqueeze_8 = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
-        mul_4 = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_7)
-        slice_17 = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 48)
-        slice_18 = torch.ops.aten.slice.Tensor(transpose_1, 3, 48, 9223372036854775807);  transpose_1 = None
-        neg = torch.ops.aten.neg.default(slice_18);  slice_18 = None
-        cat_1 = torch.ops.aten.cat.default([neg, slice_17], -1);  neg = slice_17 = None
-        mul_5 = torch.ops.aten.mul.Tensor(cat_1, unsqueeze_8);  cat_1 = None
-        add_4 = torch.ops.aten.add.Tensor(mul_4, mul_5);  mul_4 = mul_5 = None
-        mul_6 = torch.ops.aten.mul.Tensor(transpose_2, unsqueeze_7);  unsqueeze_7 = None
-        slice_19 = torch.ops.aten.slice.Tensor(transpose_2, 3, 0, 48)
-        slice_20 = torch.ops.aten.slice.Tensor(transpose_2, 3, 48, 9223372036854775807);  transpose_2 = None
-        neg_1 = torch.ops.aten.neg.default(slice_20);  slice_20 = None
-        cat_2 = torch.ops.aten.cat.default([neg_1, slice_19], -1);  neg_1 = slice_19 = None
-        mul_7 = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_8);  cat_2 = unsqueeze_8 = None
-        add_5 = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
-        cat_3 = torch.ops.aten.cat.default([arg16_1, add_5], -2);  arg16_1 = add_5 = None
-        cat_4 = torch.ops.aten.cat.default([arg17_1, transpose_3], -2);  arg17_1 = transpose_3 = None
-        slice_21 = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
-        slice_22 = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
-        unsqueeze_9 = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
-        sym_size_int_16 = torch.ops.aten.sym_size.int(cat_3, 2)
-        slice_23 = torch.ops.aten.slice.Tensor(unsqueeze_9, 3, 0, 9223372036854775807);  unsqueeze_9 = None
-        slice_24 = torch.ops.aten.slice.Tensor(slice_23, 4, 0, 9223372036854775807);  slice_23 = None
-        expand_2 = torch.ops.aten.expand.default(slice_24, [2, 1, 2, sym_size_int_16, 96]);  slice_24 = None
-        reshape_1 = torch.ops.aten.reshape.default(expand_2, [2, 2, sym_size_int_16, 96]);  expand_2 = sym_size_int_16 = None
-        slice_25 = torch.ops.aten.slice.Tensor(cat_4, 0, 0, 9223372036854775807)
-        slice_26 = torch.ops.aten.slice.Tensor(slice_25, 1, 0, 9223372036854775807);  slice_25 = None
-        unsqueeze_10 = torch.ops.aten.unsqueeze.default(slice_26, 2);  slice_26 = None
-        sym_size_int_17 = torch.ops.aten.sym_size.int(cat_4, 2)
-        slice_27 = torch.ops.aten.slice.Tensor(unsqueeze_10, 3, 0, 9223372036854775807);  unsqueeze_10 = None
-        slice_28 = torch.ops.aten.slice.Tensor(slice_27, 4, 0, 9223372036854775807);  slice_27 = None
-        expand_3 = torch.ops.aten.expand.default(slice_28, [2, 1, 2, sym_size_int_17, 96]);  slice_28 = None
-        reshape_2 = torch.ops.aten.reshape.default(expand_3, [2, 2, sym_size_int_17, 96]);  expand_3 = sym_size_int_17 = None
-        slice_29 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807);  clone = None
-        slice_30 = torch.ops.aten.slice.Tensor(slice_29, 1, 0, 9223372036854775807);  slice_29 = None
-        slice_31 = torch.ops.aten.slice.Tensor(slice_30, 2, 0, 9223372036854775807);  slice_30 = None
-        contiguous = torch.ops.aten.contiguous.default(add_4);  add_4 = None
-        contiguous_1 = torch.ops.aten.contiguous.default(reshape_1);  reshape_1 = None
-        contiguous_2 = torch.ops.aten.contiguous.default(reshape_2);  reshape_2 = None
-        scaled_dot_product_attention = torch.ops.aten.scaled_dot_product_attention.default(contiguous, contiguous_1, contiguous_2, slice_31, scale = 0.10206207261596575);  contiguous = contiguous_1 = contiguous_2 = slice_31 = None
-        transpose_4 = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-        contiguous_3 = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
-        reshape_3 = torch.ops.aten.reshape.default(contiguous_3, [2, sym_size_int_1, -1]);  contiguous_3 = sym_size_int_1 = None
-        linear_3 = torch.ops.aten.linear.default(reshape_3, arg4_1);  reshape_3 = arg4_1 = None
-        add_7 = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
-        to_10 = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
-        pow_2 = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
-        mean_1 = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
-        add_8 = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
-        rsqrt_1 = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-        mul_8 = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
-        to_11 = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
-        mul_9 = torch.ops.aten.mul.Tensor(arg9_1, to_11);  arg9_1 = to_11 = None
-        linear_4 = torch.ops.aten.linear.default(mul_9, arg5_1);  arg5_1 = None
-        silu = torch.ops.aten.silu.default(linear_4);  linear_4 = None
-        linear_5 = torch.ops.aten.linear.default(mul_9, arg6_1);  mul_9 = arg6_1 = None
-        mul_10 = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
-        linear_6 = torch.ops.aten.linear.default(mul_10, arg7_1);  mul_10 = arg7_1 = None
-        add_9 = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
-        to_12 = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
-        pow_3 = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
-        mean_2 = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
-        add_10 = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
-        rsqrt_2 = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-        mul_11 = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
-        to_13 = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
-        mul_12 = torch.ops.aten.mul.Tensor(arg10_1, to_13);  arg10_1 = to_13 = None
-        slice_32 = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
-        slice_33 = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
-        slice_34 = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
-        linear_7 = torch.ops.aten.linear.default(slice_34, arg11_1);  slice_34 = arg11_1 = None
-        return (linear_7, cat_3, cat_4)
-    
-    # To see more debug info, please use `graph_module.print_readable()`
-    It worked:
-    ExportedProgram:
-        class GraphModule(torch.nn.Module):
-            def forward(self, p_model_embed_tokens_weight: "f32[32000, 192]", p_model_layers_0_self_attn_q_proj_weight: "f32[192, 192]", p_model_layers_0_self_attn_k_proj_weight: "f32[96, 192]", p_model_layers_0_self_attn_v_proj_weight: "f32[96, 192]", p_model_layers_0_self_attn_o_proj_weight: "f32[192, 192]", p_model_layers_0_mlp_gate_proj_weight: "f32[1024, 192]", p_model_layers_0_mlp_up_proj_weight: "f32[1024, 192]", p_model_layers_0_mlp_down_proj_weight: "f32[192, 1024]", p_model_layers_0_input_layernorm_weight: "f32[192]", p_model_layers_0_post_attention_layernorm_weight: "f32[192]", p_model_norm_weight: "f32[192]", p_lm_head_weight: "f32[32000, 192]", b_model_rotary_emb_inv_freq: "f32[48]", input_ids: "i64[2, s1]", attention_mask: "i64[2, s1 + s7]", position_ids: "i64[2, s1]", past_key_values_key_cache_0: "f32[2, 1, s7, 96]", past_key_values_value_cache_0: "f32[2, 1, s7, 96]"):
-                 # 
-                sym_size_int_19: "Sym(s1)" = torch.ops.aten.sym_size.int(input_ids, 1)
-                sym_size_int_20: "Sym(s7)" = torch.ops.aten.sym_size.int(past_key_values_key_cache_0, 2)
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
-                embedding: "f32[2, s1, 192]" = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
-                add: "Sym(s1 + s7)" = sym_size_int_20 + sym_size_int_19
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
-                arange: "i64[s1]" = torch.ops.aten.arange.start(sym_size_int_20, add, device = device(type='cpu'), pin_memory = False);  sym_size_int_20 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
-                full: "f32[s1, s1 + s7]" = torch.ops.aten.full.default([sym_size_int_19, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type='cpu'), pin_memory = False)
-                triu: "f32[s1, s1 + s7]" = torch.ops.aten.triu.default(full, 1);  full = None
-                arange_1: "i64[s1 + s7]" = torch.ops.aten.arange.default(add, device = device(type='cpu'), pin_memory = False)
-                reshape: "i64[s1, 1]" = torch.ops.aten.reshape.default(arange, [-1, 1]);  arange = None
-                gt: "b8[s1, s1 + s7]" = torch.ops.aten.gt.Tensor(arange_1, reshape);  arange_1 = reshape = None
-                mul_: "f32[s1, s1 + s7]" = torch.ops.aten.mul_.Tensor(triu, gt);  triu = gt = None
-                unsqueeze: "f32[1, s1, s1 + s7]" = torch.ops.aten.unsqueeze.default(mul_, 0);  mul_ = None
-                unsqueeze_1: "f32[1, 1, s1, s1 + s7]" = torch.ops.aten.unsqueeze.default(unsqueeze, 1);  unsqueeze = None
-                slice_1: "f32[1, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(unsqueeze_1, 2, 0, 9223372036854775807);  unsqueeze_1 = None
-                slice_2: "f32[1, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_1, 3, 0, 9223372036854775807);  slice_1 = None
-                sym_size_int_5: "Sym(2)" = torch.ops.aten.sym_size.int(input_ids, 0);  input_ids = None
-                expand: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.expand.default(slice_2, [sym_size_int_5, 1, -1, -1]);  slice_2 = None
-                clone: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.clone.default(expand);  expand = None
-                slice_3: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-                slice_4: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 9223372036854775807);  slice_3 = None
-                slice_5: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_4, 2, 0, 9223372036854775807);  slice_4 = None
-                slice_6: "i64[2, s1 + s7]" = torch.ops.aten.slice.Tensor(attention_mask, 0, 0, 9223372036854775807);  attention_mask = None
-                unsqueeze_2: "i64[2, 1, s1 + s7]" = torch.ops.aten.unsqueeze.default(slice_6, 1);  slice_6 = None
-                unsqueeze_3: "i64[2, 1, 1, s1 + s7]" = torch.ops.aten.unsqueeze.default(unsqueeze_2, 2);  unsqueeze_2 = None
-                slice_7: "i64[2, 1, 1, s1 + s7]" = torch.ops.aten.slice.Tensor(unsqueeze_3, 3, 0, 9223372036854775807);  unsqueeze_3 = None
-                to: "i64[2, 1, 1, s1 + s7]" = torch.ops.aten.to.dtype_layout(slice_7, dtype = torch.int64, layout = torch.strided, device = device(type='cpu'));  slice_7 = None
-                add_2: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.add.Tensor(slice_5, to);  slice_5 = to = None
-                eq_7: "b8[2, 1, s1, s1 + s7]" = torch.ops.aten.eq.Scalar(add_2, 0);  add_2 = None
-                slice_8: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-                slice_9: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_8, 1, 0, 9223372036854775807);  slice_8 = None
-                slice_10: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_9, 2, 0, 9223372036854775807);  slice_9 = None
-                masked_fill: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.masked_fill.Scalar(slice_10, eq_7, -3.4028234663852886e+38);  slice_10 = eq_7 = None
-                slice_11: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-                slice_12: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_11, 1, 0, 9223372036854775807);  slice_11 = None
-                slice_13: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_12, 2, 0, 9223372036854775807);  slice_12 = None
-                copy_: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.copy_.default(slice_13, masked_fill);  slice_13 = masked_fill = copy_ = None
-            
-                # No stacktrace found for following nodes
-                submod_3 = self.submod_1
-                wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, b_model_rotary_emb_inv_freq, position_ids);  submod_3 = b_model_rotary_emb_inv_freq = position_ids = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-                to_6: "f32[2, s1, 96]" = wrap_with_set_grad_enabled[0]
-                to_7: "f32[2, s1, 96]" = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-                to_8: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-                pow_1: "f32[2, s1, 192]" = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
-                mean: "f32[2, s1, 1]" = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
-                add_3: "f32[2, s1, 1]" = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
-                rsqrt: "f32[2, s1, 1]" = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
-                mul_2: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-                to_9: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-                mul_3: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_9);  p_model_layers_0_input_layernorm_weight = to_9 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear: "f32[2, s1, 192]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-                view: "f32[2, s1, 2, 96]" = torch.ops.aten.view.default(linear, [sym_size_int_5, sym_size_int_19, -1, 96]);  linear = None
-                transpose_1: "f32[2, 2, s1, 96]" = torch.ops.aten.transpose.int(view, 1, 2);  view = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_1: "f32[2, s1, 96]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-                view_1: "f32[2, s1, 1, 96]" = torch.ops.aten.view.default(linear_1, [sym_size_int_5, sym_size_int_19, -1, 96]);  linear_1 = None
-                transpose_2: "f32[2, 1, s1, 96]" = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_2: "f32[2, s1, 96]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-                view_2: "f32[2, s1, 1, 96]" = torch.ops.aten.view.default(linear_2, [sym_size_int_5, sym_size_int_19, -1, 96]);  linear_2 = sym_size_int_5 = None
-                transpose_3: "f32[2, 1, s1, 96]" = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
-                unsqueeze_7: "f32[2, 1, s1, 96]" = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
-                unsqueeze_8: "f32[2, 1, s1, 96]" = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
-                mul_4: "f32[2, 2, s1, 96]" = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_7)
-                slice_17: "f32[2, 2, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 48)
-                slice_18: "f32[2, 2, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_1, 3, 48, 9223372036854775807);  transpose_1 = None
-                neg: "f32[2, 2, s1, 48]" = torch.ops.aten.neg.default(slice_18);  slice_18 = None
-                cat_1: "f32[2, 2, s1, 96]" = torch.ops.aten.cat.default([neg, slice_17], -1);  neg = slice_17 = None
-                mul_5: "f32[2, 2, s1, 96]" = torch.ops.aten.mul.Tensor(cat_1, unsqueeze_8);  cat_1 = None
-                add_4: "f32[2, 2, s1, 96]" = torch.ops.aten.add.Tensor(mul_4, mul_5);  mul_4 = mul_5 = None
-                mul_6: "f32[2, 1, s1, 96]" = torch.ops.aten.mul.Tensor(transpose_2, unsqueeze_7);  unsqueeze_7 = None
-                slice_19: "f32[2, 1, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_2, 3, 0, 48)
-                slice_20: "f32[2, 1, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_2, 3, 48, 9223372036854775807);  transpose_2 = None
-                neg_1: "f32[2, 1, s1, 48]" = torch.ops.aten.neg.default(slice_20);  slice_20 = None
-                cat_2: "f32[2, 1, s1, 96]" = torch.ops.aten.cat.default([neg_1, slice_19], -1);  neg_1 = slice_19 = None
-                mul_7: "f32[2, 1, s1, 96]" = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_8);  cat_2 = unsqueeze_8 = None
-                add_5: "f32[2, 1, s1, 96]" = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
-                cat_3: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.cat.default([past_key_values_key_cache_0, add_5], -2);  past_key_values_key_cache_0 = add_5 = None
-                cat_4: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.cat.default([past_key_values_value_cache_0, transpose_3], -2);  past_key_values_value_cache_0 = transpose_3 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
-                slice_21: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
-                slice_22: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
-                unsqueeze_9: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
-                slice_23: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(unsqueeze_9, 3, 0, 9223372036854775807);  unsqueeze_9 = None
-                slice_24: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_23, 4, 0, 9223372036854775807);  slice_23 = None
-                expand_2: "f32[2, 1, 2, s1 + s7, 96]" = torch.ops.aten.expand.default(slice_24, [2, 1, 2, add, 96]);  slice_24 = None
-                reshape_1: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.reshape.default(expand_2, [2, 2, add, 96]);  expand_2 = None
-                slice_25: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(cat_4, 0, 0, 9223372036854775807)
-                slice_26: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_25, 1, 0, 9223372036854775807);  slice_25 = None
-                unsqueeze_10: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.unsqueeze.default(slice_26, 2);  slice_26 = None
-                slice_27: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(unsqueeze_10, 3, 0, 9223372036854775807);  unsqueeze_10 = None
-                slice_28: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_27, 4, 0, 9223372036854775807);  slice_27 = None
-                expand_3: "f32[2, 1, 2, s1 + s7, 96]" = torch.ops.aten.expand.default(slice_28, [2, 1, 2, add, 96]);  slice_28 = None
-                reshape_2: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.reshape.default(expand_3, [2, 2, add, 96]);  expand_3 = add = None
-                slice_29: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807);  clone = None
-                slice_30: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_29, 1, 0, 9223372036854775807);  slice_29 = None
-                slice_31: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_30, 2, 0, 9223372036854775807);  slice_30 = None
-                contiguous: "f32[2, 2, s1, 96]" = torch.ops.aten.contiguous.default(add_4);  add_4 = None
-                contiguous_1: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.contiguous.default(reshape_1);  reshape_1 = None
-                contiguous_2: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.contiguous.default(reshape_2);  reshape_2 = None
-                scaled_dot_product_attention: "f32[2, 2, s1, 96]" = torch.ops.aten.scaled_dot_product_attention.default(contiguous, contiguous_1, contiguous_2, slice_31, scale = 0.10206207261596575);  contiguous = contiguous_1 = contiguous_2 = slice_31 = None
-                transpose_4: "f32[2, s1, 2, 96]" = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-                contiguous_3: "f32[2, s1, 2, 96]" = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
-                reshape_3: "f32[2, s1, 192]" = torch.ops.aten.reshape.default(contiguous_3, [2, sym_size_int_19, -1]);  contiguous_3 = sym_size_int_19 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_3: "f32[2, s1, 192]" = torch.ops.aten.linear.default(reshape_3, p_model_layers_0_self_attn_o_proj_weight);  reshape_3 = p_model_layers_0_self_attn_o_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
-                add_7: "f32[2, s1, 192]" = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-                to_10: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-                pow_2: "f32[2, s1, 192]" = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
-                mean_1: "f32[2, s1, 1]" = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
-                add_8: "f32[2, s1, 1]" = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
-                rsqrt_1: "f32[2, s1, 1]" = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-                mul_8: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-                to_11: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
-                mul_9: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_11);  p_model_layers_0_post_attention_layernorm_weight = to_11 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_4: "f32[2, s1, 1024]" = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_proj_weight);  p_model_layers_0_mlp_gate_proj_weight = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/activation.py:432 in forward, code: return F.silu(input, inplace=self.inplace)
-                silu: "f32[2, s1, 1024]" = torch.ops.aten.silu.default(linear_4);  linear_4 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_5: "f32[2, s1, 1024]" = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_up_proj_weight);  mul_9 = p_model_layers_0_mlp_up_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
-                mul_10: "f32[2, s1, 1024]" = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_6: "f32[2, s1, 192]" = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
-                add_9: "f32[2, s1, 192]" = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-                to_12: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-                pow_3: "f32[2, s1, 192]" = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
-                mean_2: "f32[2, s1, 1]" = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
-                add_10: "f32[2, s1, 1]" = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
-                rsqrt_2: "f32[2, s1, 1]" = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-                mul_11: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-                to_13: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
-                mul_12: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
-                slice_32: "f32[2, s1, 192]" = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
-                slice_33: "f32[2, s1, 192]" = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
-                slice_34: "f32[2, s1, 192]" = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_7: "f32[2, s1, 32000]" = torch.ops.aten.linear.default(slice_34, p_lm_head_weight);  slice_34 = p_lm_head_weight = None
-                return (linear_7, cat_3, cat_4)
-            
-            class submod_1(torch.nn.Module):
-                def forward(self, b_model_rotary_emb_inv_freq: "f32[48]", position_ids: "i64[2, s1]"):
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
-                    unsqueeze_4: "f32[1, 48]" = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
-                    slice_14: "f32[1, 48]" = torch.ops.aten.slice.Tensor(unsqueeze_4, 1, 0, 9223372036854775807);  unsqueeze_4 = None
-                    unsqueeze_5: "f32[1, 48, 1]" = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
-                    to_1: "f32[1, 48, 1]" = torch.ops.aten.to.dtype(unsqueeze_5, torch.float32);  unsqueeze_5 = None
-                    sym_size_int_13: "Sym(2)" = torch.ops.aten.sym_size.int(position_ids, 0)
-                    expand_1: "f32[2, 48, 1]" = torch.ops.aten.expand.default(to_1, [sym_size_int_13, -1, 1]);  to_1 = sym_size_int_13 = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
-                    slice_15: "i64[2, s1]" = torch.ops.aten.slice.Tensor(position_ids, 0, 0, 9223372036854775807);  position_ids = None
-                    unsqueeze_6: "i64[2, 1, s1]" = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
-                    slice_16: "i64[2, 1, s1]" = torch.ops.aten.slice.Tensor(unsqueeze_6, 2, 0, 9223372036854775807);  unsqueeze_6 = None
-                    to_2: "f32[2, 1, s1]" = torch.ops.aten.to.dtype(slice_16, torch.float32);  slice_16 = None
-                
-                    # No stacktrace found for following nodes
-                    submod_3 = self.submod_1
-                    wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast('cpu', torch.bfloat16, False, False, submod_3, expand_1, to_2);  submod_3 = expand_1 = to_2 = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
-                    cos: "f32[2, s1, 96]" = wrap_with_autocast[0]
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
-                    sin: "f32[2, s1, 96]" = wrap_with_autocast[1];  wrap_with_autocast = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
-                    mul: "f32[2, s1, 96]" = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
-                    mul_1: "f32[2, s1, 96]" = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-                    to_6: "f32[2, s1, 96]" = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
-                    to_7: "f32[2, s1, 96]" = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
-                    return (to_6, to_7)
-                
-                class submod_1(torch.nn.Module):
-                    def forward(self, expand_1: "f32[2, 48, 1]", to_2: "f32[2, 1, s1]"):
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
-                        to_3: "f32[2, 48, 1]" = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
-                        to_4: "f32[2, 48, 1]" = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  to_3 = None
-                        to_5: "f32[2, 1, s1]" = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
-                        matmul: "f32[2, 48, s1]" = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
-                        transpose: "f32[2, s1, 48]" = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
-                    
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
-                        cat: "f32[2, s1, 96]" = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
-                    
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
-                        cos: "f32[2, s1, 96]" = torch.ops.aten.cos.default(cat)
-                    
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
-                        sin: "f32[2, s1, 96]" = torch.ops.aten.sin.default(cat);  cat = None
-                        return (cos, sin)
-                    
-    Graph signature: 
-        # inputs
-        p_model_embed_tokens_weight: PARAMETER target='model.embed_tokens.weight'
-        p_model_layers_0_self_attn_q_proj_weight: PARAMETER target='model.layers.0.self_attn.q_proj.weight'
-        p_model_layers_0_self_attn_k_proj_weight: PARAMETER target='model.layers.0.self_attn.k_proj.weight'
-        p_model_layers_0_self_attn_v_proj_weight: PARAMETER target='model.layers.0.self_attn.v_proj.weight'
-        p_model_layers_0_self_attn_o_proj_weight: PARAMETER target='model.layers.0.self_attn.o_proj.weight'
-        p_model_layers_0_mlp_gate_proj_weight: PARAMETER target='model.layers.0.mlp.gate_proj.weight'
-        p_model_layers_0_mlp_up_proj_weight: PARAMETER target='model.layers.0.mlp.up_proj.weight'
-        p_model_layers_0_mlp_down_proj_weight: PARAMETER target='model.layers.0.mlp.down_proj.weight'
-        p_model_layers_0_input_layernorm_weight: PARAMETER target='model.layers.0.input_layernorm.weight'
-        p_model_layers_0_post_attention_layernorm_weight: PARAMETER target='model.layers.0.post_attention_layernorm.weight'
-        p_model_norm_weight: PARAMETER target='model.norm.weight'
-        p_lm_head_weight: PARAMETER target='lm_head.weight'
-        b_model_rotary_emb_inv_freq: BUFFER target='model.rotary_emb.inv_freq' persistent=False
-        input_ids: USER_INPUT
-        attention_mask: USER_INPUT
-        position_ids: USER_INPUT
-        past_key_values_key_cache_0: USER_INPUT
-        past_key_values_value_cache_0: USER_INPUT
-    
-        # outputs
-        linear_7: USER_OUTPUT
-        cat_3: USER_OUTPUT
-        cat_4: USER_OUTPUT
-    
-    Range constraints: {s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: VR[1, 4096]}
+    It failed: Cannot associate shape [[{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}], [{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
+    For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#dynamic-shapes-validation
 
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 139-145
+.. GENERATED FROM PYTHON SOURCE LINES 146-152
 
 Back to the original model
 ++++++++++++++++++++++++++
@@ -857,7 +623,7 @@ Let's use the same dummy inputs but we use the downloaded model.
 Dummy inputs and dynamic shapes are created by function
 :func:`onnx_diagnostic.torch_models.llms.get_tiny_llm`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-149
+.. GENERATED FROM PYTHON SOURCE LINES 152-156
 
 .. code-block:: Python
 
@@ -872,11 +638,11 @@ Dummy inputs and dynamic shapes are created by function
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-151
+.. GENERATED FROM PYTHON SOURCE LINES 157-158
 
 Let's print the inputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-154
+.. GENERATED FROM PYTHON SOURCE LINES 158-161
 
 .. code-block:: Python
 
@@ -896,7 +662,7 @@ Let's print the inputs.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-157
+.. GENERATED FROM PYTHON SOURCE LINES 162-164
 
 .. code-block:: Python
 
@@ -924,11 +690,11 @@ Let's print the inputs.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-159
+.. GENERATED FROM PYTHON SOURCE LINES 165-166
 
 And Let's finally export.
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-172
+.. GENERATED FROM PYTHON SOURCE LINES 166-179
 
 .. code-block:: Python
 
@@ -953,487 +719,18 @@ And Let's finally export.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
-    [_catch_produce_guards_and_solve_constraints] ERRORproduce_guards_and_solve_constraints failed, use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping
-    fake_mode=<torch._subclasses.fake_tensor.FakeTensorMode object at 0x7fb06258d7c0>
-    dynamic_shapes={'input_ids': {0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 1: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.seq_length'>}, 'attention_mask': {0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}, 'position_ids': {0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}, 'past_key_values': [[{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}], [{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}]]}
-    equalities_inputs=EqualityConstraint(warn_only=False, source_pairs=[(TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='attention_mask', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='position_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0)), (TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2))], derived_equalities=[], phantom_symbols=[], relaxed_sources={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='attention_mask', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='position_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=1)}, _parents={TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='attention_mask', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='position_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='input_ids', index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=0), TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='value_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2): TensorPropertySource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=GetItemSource(base=LocalSource(local_name='args', is_input=False, dynamism=None, is_derefed_cell_contents=False), index=1, index_is_slice=False), index='past_key_values', index_is_slice=False), index='key_cache', index_is_slice=False), index=0, index_is_slice=False), prop=<TensorProperty.SIZE: 0>, idx=2)}, _defs={})
-    original_signature=(input_ids: torch.LongTensor = None, attention_mask: Optional[torch.Tensor] = None, position_ids: Optional[torch.LongTensor] = None, past_key_values: Union[transformers.cache_utils.Cache, List[torch.FloatTensor], NoneType] = None, inputs_embeds: Optional[torch.FloatTensor] = None, labels: Optional[torch.LongTensor] = None, use_cache: Optional[bool] = None, output_attentions: Optional[bool] = None, output_hidden_states: Optional[bool] = None, return_dict: Optional[bool] = None, cache_position: Optional[torch.LongTensor] = None, logits_to_keep: Union[int, torch.Tensor] = 0, **kwargs: Unpack[transformers.models.llama.modeling_llama.KwargsForCausalLM]) -> Union[Tuple, transformers.modeling_outputs.CausalLMOutputWithPast]
-    _is_torch_jit_trace=False
-    exc=Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
-      - Not all values of batch = L['args'][1]['input_ids'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['attention_mask'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['position_ids'].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['past_key_values']['key_cache'][0].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-      - Not all values of batch = L['args'][1]['past_key_values']['value_cache'][0].size()[0] in the specified range batch <= 1024 are valid because batch was inferred to be a constant (2).
-    Suggested fixes:
-      batch = 2
-      L['args'][1]['position_ids'].size()[1] = seq_length
-    gm=<lambda>()
-
-
-
-    def forward(self, arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1, arg11_1, arg12_1, arg13_1, arg14_1, arg15_1, arg16_1, arg17_1):
-        embedding = torch.ops.aten.embedding.default(arg0_1, arg13_1);  arg0_1 = None
-        sym_size_int = torch.ops.aten.sym_size.int(arg16_1, 2)
-        sym_size_int_1 = torch.ops.aten.sym_size.int(arg13_1, 1)
-        add = sym_size_int + sym_size_int_1
-        arange = torch.ops.aten.arange.start(sym_size_int, add, device = device(type='cpu'), pin_memory = False);  sym_size_int = add = None
-        sym_size_int_2 = torch.ops.aten.sym_size.int(arg14_1, 1)
-        full = torch.ops.aten.full.default([sym_size_int_1, sym_size_int_2], -3.4028234663852886e+38, dtype = torch.float32, device = device(type='cpu'), pin_memory = False)
-        triu = torch.ops.aten.triu.default(full, 1);  full = None
-        arange_1 = torch.ops.aten.arange.default(sym_size_int_2, device = device(type='cpu'), pin_memory = False);  sym_size_int_2 = None
-        reshape = torch.ops.aten.reshape.default(arange, [-1, 1]);  arange = None
-        gt = torch.ops.aten.gt.Tensor(arange_1, reshape);  arange_1 = reshape = None
-        mul_ = torch.ops.aten.mul_.Tensor(triu, gt);  triu = gt = None
-        unsqueeze = torch.ops.aten.unsqueeze.default(mul_, 0);  mul_ = None
-        unsqueeze_1 = torch.ops.aten.unsqueeze.default(unsqueeze, 1);  unsqueeze = None
-        slice_1 = torch.ops.aten.slice.Tensor(unsqueeze_1, 2, 0, 9223372036854775807);  unsqueeze_1 = None
-        slice_2 = torch.ops.aten.slice.Tensor(slice_1, 3, 0, 9223372036854775807);  slice_1 = None
-        sym_size_int_5 = torch.ops.aten.sym_size.int(arg13_1, 0);  arg13_1 = None
-        expand = torch.ops.aten.expand.default(slice_2, [sym_size_int_5, 1, -1, -1]);  slice_2 = None
-        clone = torch.ops.aten.clone.default(expand);  expand = None
-        slice_3 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-        slice_4 = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 9223372036854775807);  slice_3 = None
-        slice_5 = torch.ops.aten.slice.Tensor(slice_4, 2, 0, 9223372036854775807);  slice_4 = None
-        slice_6 = torch.ops.aten.slice.Tensor(arg14_1, 0, 0, 9223372036854775807);  arg14_1 = None
-        unsqueeze_2 = torch.ops.aten.unsqueeze.default(slice_6, 1);  slice_6 = None
-        unsqueeze_3 = torch.ops.aten.unsqueeze.default(unsqueeze_2, 2);  unsqueeze_2 = None
-        slice_7 = torch.ops.aten.slice.Tensor(unsqueeze_3, 3, 0, 9223372036854775807);  unsqueeze_3 = None
-        to = torch.ops.aten.to.dtype_layout(slice_7, dtype = torch.int64, layout = torch.strided, device = device(type='cpu'));  slice_7 = None
-        add_2 = torch.ops.aten.add.Tensor(slice_5, to);  slice_5 = to = None
-        eq_7 = torch.ops.aten.eq.Scalar(add_2, 0);  add_2 = None
-        slice_8 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-        slice_9 = torch.ops.aten.slice.Tensor(slice_8, 1, 0, 9223372036854775807);  slice_8 = None
-        slice_10 = torch.ops.aten.slice.Tensor(slice_9, 2, 0, 9223372036854775807);  slice_9 = None
-        masked_fill = torch.ops.aten.masked_fill.Scalar(slice_10, eq_7, -3.4028234663852886e+38);  slice_10 = eq_7 = None
-        slice_11 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-        slice_12 = torch.ops.aten.slice.Tensor(slice_11, 1, 0, 9223372036854775807);  slice_11 = None
-        slice_13 = torch.ops.aten.slice.Tensor(slice_12, 2, 0, 9223372036854775807);  slice_12 = None
-        copy_ = torch.ops.aten.copy_.default(slice_13, masked_fill);  slice_13 = masked_fill = copy_ = None
-        _set_grad_enabled = torch._C._set_grad_enabled(False);  _set_grad_enabled = None
-        unsqueeze_4 = torch.ops.aten.unsqueeze.default(arg12_1, 0);  arg12_1 = None
-        slice_14 = torch.ops.aten.slice.Tensor(unsqueeze_4, 1, 0, 9223372036854775807);  unsqueeze_4 = None
-        unsqueeze_5 = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
-        to_1 = torch.ops.aten.to.dtype(unsqueeze_5, torch.float32);  unsqueeze_5 = None
-        sym_size_int_13 = torch.ops.aten.sym_size.int(arg15_1, 0)
-        expand_1 = torch.ops.aten.expand.default(to_1, [sym_size_int_13, -1, 1]);  to_1 = sym_size_int_13 = None
-        slice_15 = torch.ops.aten.slice.Tensor(arg15_1, 0, 0, 9223372036854775807);  arg15_1 = None
-        unsqueeze_6 = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
-        slice_16 = torch.ops.aten.slice.Tensor(unsqueeze_6, 2, 0, 9223372036854775807);  unsqueeze_6 = None
-        to_2 = torch.ops.aten.to.dtype(slice_16, torch.float32);  slice_16 = None
-        _enter_autocast = torch.amp.autocast_mode._enter_autocast('cpu', torch.bfloat16, False, False)
-        to_3 = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
-        to_4 = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  to_3 = None
-        to_5 = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
-        matmul = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
-        transpose = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
-        cat = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
-        cos = torch.ops.aten.cos.default(cat)
-        sin = torch.ops.aten.sin.default(cat);  cat = None
-        _exit_autocast = torch.amp.autocast_mode._exit_autocast(_enter_autocast);  _enter_autocast = _exit_autocast = None
-        mul = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
-        mul_1 = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
-        to_6 = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
-        to_7 = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
-        _set_grad_enabled_1 = torch._C._set_grad_enabled(True);  _set_grad_enabled_1 = None
-        to_8 = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-        pow_1 = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
-        mean = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
-        add_3 = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
-        rsqrt = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
-        mul_2 = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
-        to_9 = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-        mul_3 = torch.ops.aten.mul.Tensor(arg8_1, to_9);  arg8_1 = to_9 = None
-        linear = torch.ops.aten.linear.default(mul_3, arg1_1);  arg1_1 = None
-        view = torch.ops.aten.view.default(linear, [sym_size_int_5, sym_size_int_1, -1, 96]);  linear = None
-        transpose_1 = torch.ops.aten.transpose.int(view, 1, 2);  view = None
-        linear_1 = torch.ops.aten.linear.default(mul_3, arg2_1);  arg2_1 = None
-        view_1 = torch.ops.aten.view.default(linear_1, [sym_size_int_5, sym_size_int_1, -1, 96]);  linear_1 = None
-        transpose_2 = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
-        linear_2 = torch.ops.aten.linear.default(mul_3, arg3_1);  mul_3 = arg3_1 = None
-        view_2 = torch.ops.aten.view.default(linear_2, [sym_size_int_5, sym_size_int_1, -1, 96]);  linear_2 = sym_size_int_5 = None
-        transpose_3 = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-        unsqueeze_7 = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
-        unsqueeze_8 = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
-        mul_4 = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_7)
-        slice_17 = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 48)
-        slice_18 = torch.ops.aten.slice.Tensor(transpose_1, 3, 48, 9223372036854775807);  transpose_1 = None
-        neg = torch.ops.aten.neg.default(slice_18);  slice_18 = None
-        cat_1 = torch.ops.aten.cat.default([neg, slice_17], -1);  neg = slice_17 = None
-        mul_5 = torch.ops.aten.mul.Tensor(cat_1, unsqueeze_8);  cat_1 = None
-        add_4 = torch.ops.aten.add.Tensor(mul_4, mul_5);  mul_4 = mul_5 = None
-        mul_6 = torch.ops.aten.mul.Tensor(transpose_2, unsqueeze_7);  unsqueeze_7 = None
-        slice_19 = torch.ops.aten.slice.Tensor(transpose_2, 3, 0, 48)
-        slice_20 = torch.ops.aten.slice.Tensor(transpose_2, 3, 48, 9223372036854775807);  transpose_2 = None
-        neg_1 = torch.ops.aten.neg.default(slice_20);  slice_20 = None
-        cat_2 = torch.ops.aten.cat.default([neg_1, slice_19], -1);  neg_1 = slice_19 = None
-        mul_7 = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_8);  cat_2 = unsqueeze_8 = None
-        add_5 = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
-        cat_3 = torch.ops.aten.cat.default([arg16_1, add_5], -2);  arg16_1 = add_5 = None
-        cat_4 = torch.ops.aten.cat.default([arg17_1, transpose_3], -2);  arg17_1 = transpose_3 = None
-        slice_21 = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
-        slice_22 = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
-        unsqueeze_9 = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
-        sym_size_int_16 = torch.ops.aten.sym_size.int(cat_3, 2)
-        slice_23 = torch.ops.aten.slice.Tensor(unsqueeze_9, 3, 0, 9223372036854775807);  unsqueeze_9 = None
-        slice_24 = torch.ops.aten.slice.Tensor(slice_23, 4, 0, 9223372036854775807);  slice_23 = None
-        expand_2 = torch.ops.aten.expand.default(slice_24, [2, 1, 2, sym_size_int_16, 96]);  slice_24 = None
-        reshape_1 = torch.ops.aten.reshape.default(expand_2, [2, 2, sym_size_int_16, 96]);  expand_2 = sym_size_int_16 = None
-        slice_25 = torch.ops.aten.slice.Tensor(cat_4, 0, 0, 9223372036854775807)
-        slice_26 = torch.ops.aten.slice.Tensor(slice_25, 1, 0, 9223372036854775807);  slice_25 = None
-        unsqueeze_10 = torch.ops.aten.unsqueeze.default(slice_26, 2);  slice_26 = None
-        sym_size_int_17 = torch.ops.aten.sym_size.int(cat_4, 2)
-        slice_27 = torch.ops.aten.slice.Tensor(unsqueeze_10, 3, 0, 9223372036854775807);  unsqueeze_10 = None
-        slice_28 = torch.ops.aten.slice.Tensor(slice_27, 4, 0, 9223372036854775807);  slice_27 = None
-        expand_3 = torch.ops.aten.expand.default(slice_28, [2, 1, 2, sym_size_int_17, 96]);  slice_28 = None
-        reshape_2 = torch.ops.aten.reshape.default(expand_3, [2, 2, sym_size_int_17, 96]);  expand_3 = sym_size_int_17 = None
-        slice_29 = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807);  clone = None
-        slice_30 = torch.ops.aten.slice.Tensor(slice_29, 1, 0, 9223372036854775807);  slice_29 = None
-        slice_31 = torch.ops.aten.slice.Tensor(slice_30, 2, 0, 9223372036854775807);  slice_30 = None
-        contiguous = torch.ops.aten.contiguous.default(add_4);  add_4 = None
-        contiguous_1 = torch.ops.aten.contiguous.default(reshape_1);  reshape_1 = None
-        contiguous_2 = torch.ops.aten.contiguous.default(reshape_2);  reshape_2 = None
-        scaled_dot_product_attention = torch.ops.aten.scaled_dot_product_attention.default(contiguous, contiguous_1, contiguous_2, slice_31, scale = 0.10206207261596575);  contiguous = contiguous_1 = contiguous_2 = slice_31 = None
-        transpose_4 = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-        contiguous_3 = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
-        reshape_3 = torch.ops.aten.reshape.default(contiguous_3, [2, sym_size_int_1, -1]);  contiguous_3 = sym_size_int_1 = None
-        linear_3 = torch.ops.aten.linear.default(reshape_3, arg4_1);  reshape_3 = arg4_1 = None
-        add_7 = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
-        to_10 = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
-        pow_2 = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
-        mean_1 = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
-        add_8 = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
-        rsqrt_1 = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-        mul_8 = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
-        to_11 = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
-        mul_9 = torch.ops.aten.mul.Tensor(arg9_1, to_11);  arg9_1 = to_11 = None
-        linear_4 = torch.ops.aten.linear.default(mul_9, arg5_1);  arg5_1 = None
-        silu = torch.ops.aten.silu.default(linear_4);  linear_4 = None
-        linear_5 = torch.ops.aten.linear.default(mul_9, arg6_1);  mul_9 = arg6_1 = None
-        mul_10 = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
-        linear_6 = torch.ops.aten.linear.default(mul_10, arg7_1);  mul_10 = arg7_1 = None
-        add_9 = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
-        to_12 = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
-        pow_3 = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
-        mean_2 = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
-        add_10 = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
-        rsqrt_2 = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-        mul_11 = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
-        to_13 = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
-        mul_12 = torch.ops.aten.mul.Tensor(arg10_1, to_13);  arg10_1 = to_13 = None
-        slice_32 = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
-        slice_33 = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
-        slice_34 = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
-        linear_7 = torch.ops.aten.linear.default(slice_34, arg11_1);  slice_34 = arg11_1 = None
-        return (linear_7, cat_3, cat_4)
-    
-    # To see more debug info, please use `graph_module.print_readable()`
-    It worked:
-    ExportedProgram:
-        class GraphModule(torch.nn.Module):
-            def forward(self, p_model_embed_tokens_weight: "f32[32000, 192]", p_model_layers_0_self_attn_q_proj_weight: "f32[192, 192]", p_model_layers_0_self_attn_k_proj_weight: "f32[96, 192]", p_model_layers_0_self_attn_v_proj_weight: "f32[96, 192]", p_model_layers_0_self_attn_o_proj_weight: "f32[192, 192]", p_model_layers_0_mlp_gate_proj_weight: "f32[1024, 192]", p_model_layers_0_mlp_up_proj_weight: "f32[1024, 192]", p_model_layers_0_mlp_down_proj_weight: "f32[192, 1024]", p_model_layers_0_input_layernorm_weight: "f32[192]", p_model_layers_0_post_attention_layernorm_weight: "f32[192]", p_model_norm_weight: "f32[192]", p_lm_head_weight: "f32[32000, 192]", b_model_rotary_emb_inv_freq: "f32[48]", input_ids: "i64[2, s1]", attention_mask: "i64[2, s1 + s7]", position_ids: "i64[2, s1]", past_key_values_key_cache_0: "f32[2, 1, s7, 96]", past_key_values_value_cache_0: "f32[2, 1, s7, 96]"):
-                 # 
-                sym_size_int_19: "Sym(s1)" = torch.ops.aten.sym_size.int(input_ids, 1)
-                sym_size_int_20: "Sym(s7)" = torch.ops.aten.sym_size.int(past_key_values_key_cache_0, 2)
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
-                embedding: "f32[2, s1, 192]" = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
-                add: "Sym(s1 + s7)" = sym_size_int_20 + sym_size_int_19
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
-                arange: "i64[s1]" = torch.ops.aten.arange.start(sym_size_int_20, add, device = device(type='cpu'), pin_memory = False);  sym_size_int_20 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
-                full: "f32[s1, s1 + s7]" = torch.ops.aten.full.default([sym_size_int_19, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type='cpu'), pin_memory = False)
-                triu: "f32[s1, s1 + s7]" = torch.ops.aten.triu.default(full, 1);  full = None
-                arange_1: "i64[s1 + s7]" = torch.ops.aten.arange.default(add, device = device(type='cpu'), pin_memory = False)
-                reshape: "i64[s1, 1]" = torch.ops.aten.reshape.default(arange, [-1, 1]);  arange = None
-                gt: "b8[s1, s1 + s7]" = torch.ops.aten.gt.Tensor(arange_1, reshape);  arange_1 = reshape = None
-                mul_: "f32[s1, s1 + s7]" = torch.ops.aten.mul_.Tensor(triu, gt);  triu = gt = None
-                unsqueeze: "f32[1, s1, s1 + s7]" = torch.ops.aten.unsqueeze.default(mul_, 0);  mul_ = None
-                unsqueeze_1: "f32[1, 1, s1, s1 + s7]" = torch.ops.aten.unsqueeze.default(unsqueeze, 1);  unsqueeze = None
-                slice_1: "f32[1, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(unsqueeze_1, 2, 0, 9223372036854775807);  unsqueeze_1 = None
-                slice_2: "f32[1, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_1, 3, 0, 9223372036854775807);  slice_1 = None
-                sym_size_int_5: "Sym(2)" = torch.ops.aten.sym_size.int(input_ids, 0);  input_ids = None
-                expand: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.expand.default(slice_2, [sym_size_int_5, 1, -1, -1]);  slice_2 = None
-                clone: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.clone.default(expand);  expand = None
-                slice_3: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-                slice_4: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 9223372036854775807);  slice_3 = None
-                slice_5: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_4, 2, 0, 9223372036854775807);  slice_4 = None
-                slice_6: "i64[2, s1 + s7]" = torch.ops.aten.slice.Tensor(attention_mask, 0, 0, 9223372036854775807);  attention_mask = None
-                unsqueeze_2: "i64[2, 1, s1 + s7]" = torch.ops.aten.unsqueeze.default(slice_6, 1);  slice_6 = None
-                unsqueeze_3: "i64[2, 1, 1, s1 + s7]" = torch.ops.aten.unsqueeze.default(unsqueeze_2, 2);  unsqueeze_2 = None
-                slice_7: "i64[2, 1, 1, s1 + s7]" = torch.ops.aten.slice.Tensor(unsqueeze_3, 3, 0, 9223372036854775807);  unsqueeze_3 = None
-                to: "i64[2, 1, 1, s1 + s7]" = torch.ops.aten.to.dtype_layout(slice_7, dtype = torch.int64, layout = torch.strided, device = device(type='cpu'));  slice_7 = None
-                add_2: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.add.Tensor(slice_5, to);  slice_5 = to = None
-                eq_7: "b8[2, 1, s1, s1 + s7]" = torch.ops.aten.eq.Scalar(add_2, 0);  add_2 = None
-                slice_8: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-                slice_9: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_8, 1, 0, 9223372036854775807);  slice_8 = None
-                slice_10: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_9, 2, 0, 9223372036854775807);  slice_9 = None
-                masked_fill: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.masked_fill.Scalar(slice_10, eq_7, -3.4028234663852886e+38);  slice_10 = eq_7 = None
-                slice_11: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807)
-                slice_12: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_11, 1, 0, 9223372036854775807);  slice_11 = None
-                slice_13: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_12, 2, 0, 9223372036854775807);  slice_12 = None
-                copy_: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.copy_.default(slice_13, masked_fill);  slice_13 = masked_fill = copy_ = None
-            
-                # No stacktrace found for following nodes
-                submod_3 = self.submod_1
-                wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, b_model_rotary_emb_inv_freq, position_ids);  submod_3 = b_model_rotary_emb_inv_freq = position_ids = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-                to_6: "f32[2, s1, 96]" = wrap_with_set_grad_enabled[0]
-                to_7: "f32[2, s1, 96]" = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-                to_8: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-                pow_1: "f32[2, s1, 192]" = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
-                mean: "f32[2, s1, 1]" = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
-                add_3: "f32[2, s1, 1]" = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
-                rsqrt: "f32[2, s1, 1]" = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
-                mul_2: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-                to_9: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-                mul_3: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_9);  p_model_layers_0_input_layernorm_weight = to_9 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear: "f32[2, s1, 192]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-                view: "f32[2, s1, 2, 96]" = torch.ops.aten.view.default(linear, [sym_size_int_5, sym_size_int_19, -1, 96]);  linear = None
-                transpose_1: "f32[2, 2, s1, 96]" = torch.ops.aten.transpose.int(view, 1, 2);  view = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_1: "f32[2, s1, 96]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-                view_1: "f32[2, s1, 1, 96]" = torch.ops.aten.view.default(linear_1, [sym_size_int_5, sym_size_int_19, -1, 96]);  linear_1 = None
-                transpose_2: "f32[2, 1, s1, 96]" = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_2: "f32[2, s1, 96]" = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
-                view_2: "f32[2, s1, 1, 96]" = torch.ops.aten.view.default(linear_2, [sym_size_int_5, sym_size_int_19, -1, 96]);  linear_2 = sym_size_int_5 = None
-                transpose_3: "f32[2, 1, s1, 96]" = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
-                unsqueeze_7: "f32[2, 1, s1, 96]" = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
-                unsqueeze_8: "f32[2, 1, s1, 96]" = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
-                mul_4: "f32[2, 2, s1, 96]" = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_7)
-                slice_17: "f32[2, 2, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 48)
-                slice_18: "f32[2, 2, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_1, 3, 48, 9223372036854775807);  transpose_1 = None
-                neg: "f32[2, 2, s1, 48]" = torch.ops.aten.neg.default(slice_18);  slice_18 = None
-                cat_1: "f32[2, 2, s1, 96]" = torch.ops.aten.cat.default([neg, slice_17], -1);  neg = slice_17 = None
-                mul_5: "f32[2, 2, s1, 96]" = torch.ops.aten.mul.Tensor(cat_1, unsqueeze_8);  cat_1 = None
-                add_4: "f32[2, 2, s1, 96]" = torch.ops.aten.add.Tensor(mul_4, mul_5);  mul_4 = mul_5 = None
-                mul_6: "f32[2, 1, s1, 96]" = torch.ops.aten.mul.Tensor(transpose_2, unsqueeze_7);  unsqueeze_7 = None
-                slice_19: "f32[2, 1, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_2, 3, 0, 48)
-                slice_20: "f32[2, 1, s1, 48]" = torch.ops.aten.slice.Tensor(transpose_2, 3, 48, 9223372036854775807);  transpose_2 = None
-                neg_1: "f32[2, 1, s1, 48]" = torch.ops.aten.neg.default(slice_20);  slice_20 = None
-                cat_2: "f32[2, 1, s1, 96]" = torch.ops.aten.cat.default([neg_1, slice_19], -1);  neg_1 = slice_19 = None
-                mul_7: "f32[2, 1, s1, 96]" = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_8);  cat_2 = unsqueeze_8 = None
-                add_5: "f32[2, 1, s1, 96]" = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
-                cat_3: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.cat.default([past_key_values_key_cache_0, add_5], -2);  past_key_values_key_cache_0 = add_5 = None
-                cat_4: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.cat.default([past_key_values_value_cache_0, transpose_3], -2);  past_key_values_value_cache_0 = transpose_3 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
-                slice_21: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
-                slice_22: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
-                unsqueeze_9: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
-                slice_23: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(unsqueeze_9, 3, 0, 9223372036854775807);  unsqueeze_9 = None
-                slice_24: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_23, 4, 0, 9223372036854775807);  slice_23 = None
-                expand_2: "f32[2, 1, 2, s1 + s7, 96]" = torch.ops.aten.expand.default(slice_24, [2, 1, 2, add, 96]);  slice_24 = None
-                reshape_1: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.reshape.default(expand_2, [2, 2, add, 96]);  expand_2 = None
-                slice_25: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(cat_4, 0, 0, 9223372036854775807)
-                slice_26: "f32[2, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_25, 1, 0, 9223372036854775807);  slice_25 = None
-                unsqueeze_10: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.unsqueeze.default(slice_26, 2);  slice_26 = None
-                slice_27: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(unsqueeze_10, 3, 0, 9223372036854775807);  unsqueeze_10 = None
-                slice_28: "f32[2, 1, 1, s1 + s7, 96]" = torch.ops.aten.slice.Tensor(slice_27, 4, 0, 9223372036854775807);  slice_27 = None
-                expand_3: "f32[2, 1, 2, s1 + s7, 96]" = torch.ops.aten.expand.default(slice_28, [2, 1, 2, add, 96]);  slice_28 = None
-                reshape_2: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.reshape.default(expand_3, [2, 2, add, 96]);  expand_3 = add = None
-                slice_29: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(clone, 0, 0, 9223372036854775807);  clone = None
-                slice_30: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_29, 1, 0, 9223372036854775807);  slice_29 = None
-                slice_31: "f32[2, 1, s1, s1 + s7]" = torch.ops.aten.slice.Tensor(slice_30, 2, 0, 9223372036854775807);  slice_30 = None
-                contiguous: "f32[2, 2, s1, 96]" = torch.ops.aten.contiguous.default(add_4);  add_4 = None
-                contiguous_1: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.contiguous.default(reshape_1);  reshape_1 = None
-                contiguous_2: "f32[2, 2, s1 + s7, 96]" = torch.ops.aten.contiguous.default(reshape_2);  reshape_2 = None
-                scaled_dot_product_attention: "f32[2, 2, s1, 96]" = torch.ops.aten.scaled_dot_product_attention.default(contiguous, contiguous_1, contiguous_2, slice_31, scale = 0.10206207261596575);  contiguous = contiguous_1 = contiguous_2 = slice_31 = None
-                transpose_4: "f32[2, s1, 2, 96]" = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-                contiguous_3: "f32[2, s1, 2, 96]" = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
-                reshape_3: "f32[2, s1, 192]" = torch.ops.aten.reshape.default(contiguous_3, [2, sym_size_int_19, -1]);  contiguous_3 = sym_size_int_19 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_3: "f32[2, s1, 192]" = torch.ops.aten.linear.default(reshape_3, p_model_layers_0_self_attn_o_proj_weight);  reshape_3 = p_model_layers_0_self_attn_o_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
-                add_7: "f32[2, s1, 192]" = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-                to_10: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-                pow_2: "f32[2, s1, 192]" = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
-                mean_1: "f32[2, s1, 1]" = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
-                add_8: "f32[2, s1, 1]" = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
-                rsqrt_1: "f32[2, s1, 1]" = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-                mul_8: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-                to_11: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
-                mul_9: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_11);  p_model_layers_0_post_attention_layernorm_weight = to_11 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_4: "f32[2, s1, 1024]" = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_proj_weight);  p_model_layers_0_mlp_gate_proj_weight = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/activation.py:432 in forward, code: return F.silu(input, inplace=self.inplace)
-                silu: "f32[2, s1, 1024]" = torch.ops.aten.silu.default(linear_4);  linear_4 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_5: "f32[2, s1, 1024]" = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_up_proj_weight);  mul_9 = p_model_layers_0_mlp_up_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
-                mul_10: "f32[2, s1, 1024]" = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_6: "f32[2, s1, 192]" = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
-                add_9: "f32[2, s1, 192]" = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-                to_12: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-                pow_3: "f32[2, s1, 192]" = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
-                mean_2: "f32[2, s1, 1]" = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
-                add_10: "f32[2, s1, 1]" = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
-                rsqrt_2: "f32[2, s1, 1]" = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-                mul_11: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-                to_13: "f32[2, s1, 192]" = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
-                mul_12: "f32[2, s1, 192]" = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
-            
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
-                slice_32: "f32[2, s1, 192]" = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
-                slice_33: "f32[2, s1, 192]" = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
-                slice_34: "f32[2, s1, 192]" = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
-            
-                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
-                linear_7: "f32[2, s1, 32000]" = torch.ops.aten.linear.default(slice_34, p_lm_head_weight);  slice_34 = p_lm_head_weight = None
-                return (linear_7, cat_3, cat_4)
-            
-            class submod_1(torch.nn.Module):
-                def forward(self, b_model_rotary_emb_inv_freq: "f32[48]", position_ids: "i64[2, s1]"):
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
-                    unsqueeze_4: "f32[1, 48]" = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
-                    slice_14: "f32[1, 48]" = torch.ops.aten.slice.Tensor(unsqueeze_4, 1, 0, 9223372036854775807);  unsqueeze_4 = None
-                    unsqueeze_5: "f32[1, 48, 1]" = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
-                    to_1: "f32[1, 48, 1]" = torch.ops.aten.to.dtype(unsqueeze_5, torch.float32);  unsqueeze_5 = None
-                    sym_size_int_13: "Sym(2)" = torch.ops.aten.sym_size.int(position_ids, 0)
-                    expand_1: "f32[2, 48, 1]" = torch.ops.aten.expand.default(to_1, [sym_size_int_13, -1, 1]);  to_1 = sym_size_int_13 = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
-                    slice_15: "i64[2, s1]" = torch.ops.aten.slice.Tensor(position_ids, 0, 0, 9223372036854775807);  position_ids = None
-                    unsqueeze_6: "i64[2, 1, s1]" = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
-                    slice_16: "i64[2, 1, s1]" = torch.ops.aten.slice.Tensor(unsqueeze_6, 2, 0, 9223372036854775807);  unsqueeze_6 = None
-                    to_2: "f32[2, 1, s1]" = torch.ops.aten.to.dtype(slice_16, torch.float32);  slice_16 = None
-                
-                    # No stacktrace found for following nodes
-                    submod_3 = self.submod_1
-                    wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast('cpu', torch.bfloat16, False, False, submod_3, expand_1, to_2);  submod_3 = expand_1 = to_2 = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
-                    cos: "f32[2, s1, 96]" = wrap_with_autocast[0]
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
-                    sin: "f32[2, s1, 96]" = wrap_with_autocast[1];  wrap_with_autocast = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
-                    mul: "f32[2, s1, 96]" = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
-                    mul_1: "f32[2, s1, 96]" = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
-                
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-                    to_6: "f32[2, s1, 96]" = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
-                    to_7: "f32[2, s1, 96]" = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
-                    return (to_6, to_7)
-                
-                class submod_1(torch.nn.Module):
-                    def forward(self, expand_1: "f32[2, 48, 1]", to_2: "f32[2, 1, s1]"):
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
-                        to_3: "f32[2, 48, 1]" = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
-                        to_4: "f32[2, 48, 1]" = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type='cpu'));  to_3 = None
-                        to_5: "f32[2, 1, s1]" = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
-                        matmul: "f32[2, 48, s1]" = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
-                        transpose: "f32[2, s1, 48]" = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
-                    
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
-                        cat: "f32[2, s1, 96]" = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
-                    
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
-                        cos: "f32[2, s1, 96]" = torch.ops.aten.cos.default(cat)
-                    
-                         # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
-                        sin: "f32[2, s1, 96]" = torch.ops.aten.sin.default(cat);  cat = None
-                        return (cos, sin)
-                    
-    Graph signature: 
-        # inputs
-        p_model_embed_tokens_weight: PARAMETER target='model.embed_tokens.weight'
-        p_model_layers_0_self_attn_q_proj_weight: PARAMETER target='model.layers.0.self_attn.q_proj.weight'
-        p_model_layers_0_self_attn_k_proj_weight: PARAMETER target='model.layers.0.self_attn.k_proj.weight'
-        p_model_layers_0_self_attn_v_proj_weight: PARAMETER target='model.layers.0.self_attn.v_proj.weight'
-        p_model_layers_0_self_attn_o_proj_weight: PARAMETER target='model.layers.0.self_attn.o_proj.weight'
-        p_model_layers_0_mlp_gate_proj_weight: PARAMETER target='model.layers.0.mlp.gate_proj.weight'
-        p_model_layers_0_mlp_up_proj_weight: PARAMETER target='model.layers.0.mlp.up_proj.weight'
-        p_model_layers_0_mlp_down_proj_weight: PARAMETER target='model.layers.0.mlp.down_proj.weight'
-        p_model_layers_0_input_layernorm_weight: PARAMETER target='model.layers.0.input_layernorm.weight'
-        p_model_layers_0_post_attention_layernorm_weight: PARAMETER target='model.layers.0.post_attention_layernorm.weight'
-        p_model_norm_weight: PARAMETER target='model.norm.weight'
-        p_lm_head_weight: PARAMETER target='lm_head.weight'
-        b_model_rotary_emb_inv_freq: BUFFER target='model.rotary_emb.inv_freq' persistent=False
-        input_ids: USER_INPUT
-        attention_mask: USER_INPUT
-        position_ids: USER_INPUT
-        past_key_values_key_cache_0: USER_INPUT
-        past_key_values_value_cache_0: USER_INPUT
-    
-        # outputs
-        linear_7: USER_OUTPUT
-        cat_3: USER_OUTPUT
-        cat_4: USER_OUTPUT
-    
-    Range constraints: {s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: VR[1, 4096]}
+    It failed: Cannot associate shape [[{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}], [{0: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch'>, 2: <class 'onnx_diagnostic.torch_models.untrained.llm_tiny_llm.cache_length'>}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
+    For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#dynamic-shapes-validation
 
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 173-175
+.. GENERATED FROM PYTHON SOURCE LINES 180-182
 
 If you have any error, then look at example
 :ref:`l-plot-tiny-llm-export-patched`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-177
+.. GENERATED FROM PYTHON SOURCE LINES 182-184
 
 .. code-block:: Python
 
@@ -1454,7 +751,7 @@ If you have any error, then look at example
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.687 seconds)
+   **Total running time of the script:** (0 minutes 2.886 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_llm.py:

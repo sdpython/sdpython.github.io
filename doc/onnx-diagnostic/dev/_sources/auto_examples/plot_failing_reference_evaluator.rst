@@ -43,7 +43,7 @@ into a non-existing type.
     import onnx.helper as oh
     import onnxruntime
     from onnx_diagnostic import doc
-    from onnx_diagnostic.helpers import from_array_extended
+    from onnx_diagnostic.helpers.onnx_helper import from_array_extended
     from onnx_diagnostic.reference import ExtendedReferenceEvaluator
 
     TFLOAT = onnx.TensorProto.FLOAT
@@ -137,14 +137,14 @@ with operators outside the standard but defined by :epkg:`onnxruntime`.
  .. code-block:: none
 
      +C one: float32:(1,):[1.0]
-     +I X: float32:(3, 4):0.24373231828212738,0.5669112205505371,0.32045426964759827,0.5243956446647644,0.8838638663291931...
-     +I Y: float32:(3, 4):0.7361484169960022,0.2804253101348877,0.03401044011116028,0.5064371824264526,0.055616240948438644...
+     +I X: float32:(3, 4):0.20402809977531433,0.9137852191925049,0.8619707226753235,0.5603037476539612,0.38157159090042114...
+     +I Y: float32:(3, 4):0.15071871876716614,0.9215355515480042,0.9482867121696472,0.12428570538759232,0.45832890272140503...
     Mul(X, Y) -> xy
-     + xy: float32:(3, 4):0.17942315340042114,0.1589762568473816,0.010898790322244167,0.2655734419822693,0.04915718734264374...
+     + xy: float32:(3, 4):0.030750853940844536,0.8420855402946472,0.8173953890800476,0.06963774561882019,0.17488528788089752...
     Sigmoid(xy) -> sy
-     + sy: float32:(3, 4):0.544735848903656,0.5396605730056763,0.5027246475219727,0.5660058856010437,0.5122868418693542...
+     + sy: float32:(3, 4):0.5076870918273926,0.698904275894165,0.6936831474304199,0.5174024105072021,0.5436102151870728...
     Add(sy, one) -> C
-     + C: float32:(3, 4):1.5447359085083008,1.5396605730056763,1.5027246475219727,1.5660059452056885,1.512286901473999...
+     + C: float32:(3, 4):1.5076870918273926,1.698904275894165,1.69368314743042,1.5174024105072021,1.5436102151870728...
     Cast(C) -> X999
     ERROR <class 'KeyError'> 999
 
@@ -181,7 +181,7 @@ more information or debug if needed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.054 seconds)
+   **Total running time of the script:** (0 minutes 0.075 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_failing_reference_evaluator.py:

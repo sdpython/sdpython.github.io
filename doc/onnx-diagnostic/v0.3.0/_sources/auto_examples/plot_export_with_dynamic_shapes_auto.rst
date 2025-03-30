@@ -60,8 +60,6 @@ dx + dy not allowed?
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     graph():
         %x : [num_users=1] = placeholder[target=x]
         %y : [num_users=1] = placeholder[target=y]
@@ -141,8 +139,6 @@ Then we could make it a different one.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     unable to use Dim('dz') because <class 'torch._dynamo.exc.UserError'>, Constraints violated (batch)! For more information, run with TORCH_LOGS="+dynamic".
       - Not all values of batch = L['args'][0][0].size()[0] in the specified range satisfy the generated guard L['args'][0][0].size()[0] != 9223372036854775807.
 
@@ -181,8 +177,6 @@ for the dimension we cannot set.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, s1]", y: "f32[s0, s3]", z: "f32[s0, s5]"):
@@ -248,8 +242,6 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s0, s1]", y: "f32[s0, s3]", z: "f32[s0, s5]"):
@@ -310,7 +302,7 @@ The same result can be obtained with ``torch.export.Dim.AUTO``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.855 seconds)
+   **Total running time of the script:** (0 minutes 0.378 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_with_dynamic_shapes_auto.py:

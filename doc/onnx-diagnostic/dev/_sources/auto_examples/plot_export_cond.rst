@@ -106,7 +106,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.6845]], grad_fn=<MulBackward0>)
+    tensor([[-0.8528]], grad_fn=<MulBackward0>)
 
 
 
@@ -133,7 +133,8 @@ As expected, it does not export.
 
  .. code-block:: none
 
-
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+      torch._C._set_onednn_allow_tf32(_allow_tf32)
 
 
 
@@ -147,8 +148,19 @@ As expected, it does not export.
         ne: "b8[]" = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
         item: "Sym(Eq(u0, 1))" = torch.ops.aten.item.default(ne);  ne = item = None
     
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
+
+
+
+    def forward(self, arg0_1: "f32[2, 3]", arg1_1: "f32[2]", arg2_1: "f32[1, 2]", arg3_1: "f32[1]", arg4_1: "f32[1, 3]"):
+         # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+        linear: "f32[1, 2]" = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
+        linear_1: "f32[1, 1]" = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
+    
+         # File: /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_cond.py:25 in forward, code: if x.sum():
+        sum_1: "f32[]" = torch.ops.aten.sum.default(linear_1);  linear_1 = None
+        ne: "b8[]" = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
+        item: "Sym(Eq(u0, 1))" = torch.ops.aten.item.default(ne);  ne = item = None
+    
     Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
     Caused by: (_export/non_strict_utils.py:689 in __torch_function__)
@@ -249,7 +261,7 @@ Let's see what the fx graph looks like.
         %gt : [num_users=1] = call_function[target=torch.ops.aten.gt.Scalar](args = (%sum_1, 0), kwargs = {})
         %true_graph_0 : [num_users=1] = get_attr[target=true_graph_0]
         %false_graph_0 : [num_users=1] = get_attr[target=false_graph_0]
-        %cond : [num_users=1] = call_function[target=torch.ops.higher_order.cond](args = (%gt, %true_graph_0, %false_graph_0, [%linear_1]), kwargs = {})
+        %cond : [num_users=1] = call_function[target=torch.ops.higher_order.cond](args = (%gt, %true_graph_0, %false_graph_0, (%linear_1,)), kwargs = {})
         %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%cond, 0), kwargs = {})
         return (getitem,)
 
@@ -277,7 +289,7 @@ Let's see what the fx graph looks like.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.700 seconds)
+   **Total running time of the script:** (0 minutes 0.517 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_cond.py:
