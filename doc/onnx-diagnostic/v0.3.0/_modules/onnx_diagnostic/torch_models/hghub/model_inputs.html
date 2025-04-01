@@ -216,8 +216,10 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/helpers/index.html">onnx_diagnostic.helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.helpers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/args_helper.html">onnx_diagnostic.helpers.args_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/bench_run.html">onnx_diagnostic.helpers.bench_run</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/cache_helper.html">onnx_diagnostic.helpers.cache_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
@@ -272,6 +274,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/test_helper.html">onnx_diagnostic.torch_models.test_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_onnx/index.html">onnx_diagnostic.torch_onnx</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_onnx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,7 +284,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Command Lines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cmds/config.html">-m onnx_diagnostic config … prints the config for a model id</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cmds/validate.html">-m onnx_diagnostic validate … validate a model id</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -435,6 +443,16 @@
             <span class="n">config</span><span class="o">.</span><span class="n">num_decoder_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_decoder_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">):</span>
             <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;image-text-to-text&quot;</span><span class="p">:</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;vision_config&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span>
+        <span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span>
+            <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input generation for task </span><span class="si">{</span><span class="n">task</span><span class="si">!r}</span><span class="s2"> not implemented yet.&quot;</span><span class="p">)</span>
 
@@ -479,69 +497,92 @@
 <div class="viewcode-block" id="random_input_kwargs">
 <a class="viewcode-back" href="../../../../api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.random_input_kwargs">[docs]</a>
 <span class="k">def</span> <span class="nf">random_input_kwargs</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Callable</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inputs kwargs&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inputs kwargs.</span>
+
+<span class="sd">    If the configuration is None, the function selects typical dimensions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fcts</span> <span class="o">=</span> <span class="n">get_get_inputs_function_for_tasks</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">fcts</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unsupported task </span><span class="si">{</span><span class="n">task</span><span class="si">!r}</span><span class="s2">, supported are </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">fcts</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;text-generation&quot;</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span>
-            <span class="n">config</span><span class="p">,</span>
-            <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
-            <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;intermediate_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_hasattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;intermediate_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">sequence_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
             <span class="n">sequence_length2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">head_dim</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
-                <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+            <span class="n">head_dim</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">16</span>
+                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span>
+                    <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+                <span class="p">)</span>
             <span class="p">),</span>
-            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
-            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
-            <span class="n">intermediate_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31999</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
+            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">24</span>
+                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">1024</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="mi">512</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">fct</span> <span class="o">=</span> <span class="n">get_inputs_for_text_generation</span>
     <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;text2text-generation&quot;</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span>
-            <span class="n">config</span><span class="p">,</span>
-            <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
-            <span class="p">(</span><span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span> <span class="s2">&quot;num_layers&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;n_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">),</span>
-            <span class="p">(</span>
-                <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;num_heads&quot;</span><span class="p">,</span>
-                <span class="p">(</span><span class="s2">&quot;decoder_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;encoder_attention_heads&quot;</span><span class="p">),</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_hasattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span> <span class="s2">&quot;num_layers&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;n_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;num_heads&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s2">&quot;decoder_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;encoder_attention_heads&quot;</span><span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">sequence_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
             <span class="n">sequence_length2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">head_dim</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">d_kv</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;d_kv&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span> <span class="s2">&quot;num_layers&quot;</span><span class="p">),</span>
-            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="n">_pick</span><span class="p">(</span>
-                <span class="n">config</span><span class="p">,</span>
-                <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;num_heads&quot;</span><span class="p">,</span>
-                <span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="s2">&quot;encoder_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;decoder_attention_heads&quot;</span><span class="p">),</span>
+            <span class="n">head_dim</span><span class="o">=</span><span class="mi">16</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">d_kv</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;d_kv&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31999</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">8</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span> <span class="s2">&quot;num_layers&quot;</span><span class="p">)</span>
             <span class="p">),</span>
-            <span class="n">encoder_dim</span><span class="o">=</span><span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;n_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">),</span>
+            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">16</span>
+                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span>
+                    <span class="n">config</span><span class="p">,</span>
+                    <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;num_heads&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="s2">&quot;encoder_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;decoder_attention_heads&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">encoder_dim</span><span class="o">=</span><span class="mi">512</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;n_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;d_model&quot;</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">fct</span> <span class="o">=</span> <span class="n">get_inputs_for_text2text_generation</span>  <span class="c1"># type: ignore</span>
     <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;image-classification&quot;</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;image_size&quot;</span><span class="p">,</span> <span class="s2">&quot;num_channels&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;image_size&quot;</span><span class="p">,</span> <span class="s2">&quot;num_channels&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                <span class="n">input_width</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
-                <span class="n">input_height</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
-                <span class="n">input_channels</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
+                <span class="n">input_width</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
+                <span class="n">input_height</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
+                <span class="n">input_channels</span><span class="o">=</span><span class="mi">3</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -551,6 +592,44 @@
                 <span class="n">input_channels</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="n">fct</span> <span class="o">=</span> <span class="n">get_inputs_for_image_classification</span>  <span class="c1"># type: ignore</span>
+    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;image-text-to-text&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_hasattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;intermediate_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;vision_config&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="p">,</span> <span class="s2">&quot;image_size&quot;</span><span class="p">,</span> <span class="s2">&quot;num_channels&quot;</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">sequence_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">sequence_length2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">head_dim</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">16</span>
+                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span>
+                    <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31999</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
+            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">8</span>
+                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">1024</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="mi">512</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
+            <span class="n">num_channels</span><span class="o">=</span><span class="mi">3</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">fct</span> <span class="o">=</span> <span class="n">get_inputs_for_image_text_to_text</span>  <span class="c1"># type: ignore</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input generation for task </span><span class="si">{</span><span class="n">task</span><span class="si">!r}</span><span class="s2"> not implemented yet.&quot;</span><span class="p">)</span>
 
@@ -611,7 +690,7 @@
     <span class="n">archs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">architectures</span>  <span class="c1"># type: ignore</span>
     <span class="k">assert</span> <span class="n">archs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">archs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Unable to determine the architecture for model </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;architectures=</span><span class="si">{</span><span class="n">archs</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;architectures=</span><span class="si">{</span><span class="n">archs</span><span class="si">!r}</span><span class="s2">, conf=</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
     <span class="n">arch</span> <span class="o">=</span> <span class="n">archs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -656,6 +735,7 @@
     <span class="n">res</span><span class="p">[</span><span class="s2">&quot;configuration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span>
     <span class="n">res</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">res</span><span class="p">[</span><span class="s2">&quot;n_weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">res</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
 
     <span class="n">update</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -811,6 +891,95 @@
 
 
 
+<div class="viewcode-block" id="get_inputs_for_image_text_to_text">
+<a class="viewcode-back" href="../../../../api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.get_inputs_for_image_text_to_text">[docs]</a>
+<span class="k">def</span> <span class="nf">get_inputs_for_image_text_to_text</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">dummy_max_token_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_key_value_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_hidden_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">sequence_length2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_images</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">dynamic_rope</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates input for task ``text-generation``.</span>
+
+<span class="sd">    :param model: model to get the missing information</span>
+<span class="sd">    :param config: configuration used to generate the model</span>
+<span class="sd">    :param head_dim: last dimension of the cache</span>
+<span class="sd">    :param dummy_max_token_id: dummy max token id</span>
+<span class="sd">    :param batch_size: batch size</span>
+<span class="sd">    :param sequence_length: sequence length</span>
+<span class="sd">    :param sequence_length2: new sequence length</span>
+<span class="sd">    :param n_images: number of images</span>
+<span class="sd">    :param width: width of the image</span>
+<span class="sd">    :param height: height of the image</span>
+<span class="sd">    :param num_channels: number of channels</span>
+<span class="sd">    :param dynamic_rope: use dynamic rope (see :class:`transformers.LlamaConfig`)</span>
+<span class="sd">    :param kwargs: to overwrite the configuration, example ``num_hidden_layers=1``</span>
+<span class="sd">    :return: dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">seq_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;seq_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+    <span class="n">cache_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;cache_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+
+    <span class="n">shapes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">},</span>
+        <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">,</span>  <span class="c1"># cache_length + seq_length</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;position_ids&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">,</span>  <span class="c1"># cache_length + seq_length</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;past_key_values&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">cache_length</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
+            <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">cache_length</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;pixel_values&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">images</span><span class="p">},</span>
+        <span class="s2">&quot;image_attention_mask&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">images</span><span class="p">},</span>
+    <span class="p">}</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dummy_max_token_id</span><span class="p">,</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+        <span class="p">),</span>
+        <span class="n">attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="n">sequence_length2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+        <span class="p">),</span>
+        <span class="n">position_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="n">sequence_length2</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="n">past_key_values</span><span class="o">=</span><span class="n">make_dynamic_cache</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_key_value_heads</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">),</span>
+                    <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_key_value_heads</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="n">image_attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length2</span><span class="p">,</span> <span class="n">n_images</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+        <span class="p">),</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">n_images</span><span class="p">,</span> <span class="n">num_channels</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">shapes</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="get_inputs_for_text2text_generation">
 <a class="viewcode-back" href="../../../../api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.get_inputs_for_text2text_generation">[docs]</a>
 <span class="k">def</span> <span class="nf">get_inputs_for_text2text_generation</span><span class="p">(</span>
@@ -923,6 +1092,19 @@
         <span class="c1"># encoder_outputs=torch.randn(batch_size, sequence_length2, encoder_dim),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">shapes</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_get_inputs_function_for_tasks">
+<a class="viewcode-back" href="../../../../api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.get_get_inputs_function_for_tasks">[docs]</a>
+<span class="k">def</span> <span class="nf">get_get_inputs_function_for_tasks</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns all the function producing dummy inputs for every task.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;image-classification&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_image_classification</span><span class="p">,</span>
+        <span class="s2">&quot;text-generation&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_text_generation</span><span class="p">,</span>
+        <span class="s2">&quot;text2text-generation&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_text2text_generation</span><span class="p">,</span>
+        <span class="s2">&quot;image-text-to-text&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_image_text_to_text</span><span class="p">,</span>
+    <span class="p">}</span></div>
 
 </pre></div>
         </article>

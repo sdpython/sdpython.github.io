@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.hghub.hub_data - onnx-diagnostic 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -216,8 +216,10 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/helpers/index.html">onnx_diagnostic.helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.helpers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/args_helper.html">onnx_diagnostic.helpers.args_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/bench_run.html">onnx_diagnostic.helpers.bench_run</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/cache_helper.html">onnx_diagnostic.helpers.cache_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
@@ -272,6 +274,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/test_helper.html">onnx_diagnostic.torch_models.test_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_onnx/index.html">onnx_diagnostic.torch_onnx</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_onnx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,7 +284,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Command Lines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cmds/config.html">-m onnx_diagnostic config … prints the config for a model id</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cmds/validate.html">-m onnx_diagnostic validate … validate a model id</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -337,128 +345,131 @@
           <h1>Source code for onnx_diagnostic.torch_models.hghub.hub_data</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="n">__date__</span> <span class="o">=</span> <span class="s2">&quot;2025-03-26&quot;</span>
 
-<span class="n">__data_arch__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">architecture,task</span>
-<span class="s2">ASTModel,feature-extraction</span>
-<span class="s2">AlbertModel,feature-extraction</span>
-<span class="s2">BeitForImageClassification,image-classification</span>
-<span class="s2">BigBirdModel,feature-extraction</span>
-<span class="s2">BlenderbotModel,feature-extraction</span>
-<span class="s2">BloomModel,feature-extraction</span>
-<span class="s2">CLIPModel,zero-shot-image-classification</span>
-<span class="s2">CLIPVisionModel,feature-extraction</span>
-<span class="s2">CamembertModel,feature-extraction</span>
-<span class="s2">CodeGenModel,feature-extraction</span>
-<span class="s2">ConvBertModel,feature-extraction</span>
-<span class="s2">ConvNextForImageClassification,image-classification</span>
-<span class="s2">ConvNextV2Model,image-feature-extraction</span>
-<span class="s2">CvtModel,feature-extraction</span>
-<span class="s2">DPTModel,image-feature-extraction</span>
-<span class="s2">Data2VecAudioModel,feature-extraction</span>
-<span class="s2">Data2VecTextModel,feature-extraction</span>
-<span class="s2">Data2VecVisionModel,image-feature-extraction</span>
-<span class="s2">DebertaModel,feature-extraction</span>
-<span class="s2">DebertaV2Model,feature-extraction</span>
-<span class="s2">DecisionTransformerModel,reinforcement-learning</span>
-<span class="s2">DeiTModel,image-feature-extraction</span>
-<span class="s2">DetrModel,image-feature-extraction</span>
-<span class="s2">Dinov2Model,image-feature-extraction</span>
-<span class="s2">DistilBertModel,feature-extraction</span>
-<span class="s2">DonutSwinModel,feature-extraction</span>
-<span class="s2">ElectraModel,feature-extraction</span>
-<span class="s2">EsmModel,feature-extraction</span>
-<span class="s2">GLPNModel,image-feature-extraction</span>
-<span class="s2">GPTBigCodeModel,feature-extraction</span>
-<span class="s2">GPTJModel,feature-extraction</span>
-<span class="s2">GPTNeoModel,feature-extraction</span>
-<span class="s2">GPTNeoXForCausalLM,text-generation</span>
-<span class="s2">GemmaForCausalLM,text-generation</span>
-<span class="s2">GraniteForCausalLM,text-generation</span>
-<span class="s2">GroupViTModel,feature-extraction</span>
-<span class="s2">HieraForImageClassification,image-classification</span>
-<span class="s2">HubertModel,feature-extraction</span>
-<span class="s2">IBertModel,feature-extraction</span>
-<span class="s2">ImageGPTModel,image-feature-extraction</span>
-<span class="s2">LayoutLMModel,feature-extraction</span>
-<span class="s2">LayoutLMv3Model,feature-extraction</span>
-<span class="s2">LevitModel,image-feature-extraction</span>
-<span class="s2">LiltModel,feature-extraction</span>
-<span class="s2">LlamaForCausalLM,text-generation</span>
-<span class="s2">LongT5Model,feature-extraction</span>
-<span class="s2">LongformerModel,feature-extraction</span>
-<span class="s2">MCTCTModel,feature-extraction</span>
-<span class="s2">MPNetModel,feature-extraction</span>
-<span class="s2">MT5Model,feature-extraction</span>
-<span class="s2">MarianMTModel,text2text-generation</span>
-<span class="s2">MarkupLMModel,feature-extraction</span>
-<span class="s2">MaskFormerForInstanceSegmentation,image-segmentation</span>
-<span class="s2">MegatronBertModel,feature-extraction</span>
-<span class="s2">MgpstrForSceneTextRecognition,feature-extraction</span>
-<span class="s2">MistralForCausalLM,text-generation</span>
-<span class="s2">MobileBertModel,feature-extraction</span>
-<span class="s2">MobileNetV1Model,image-feature-extraction</span>
-<span class="s2">MobileNetV2Model,image-feature-extraction</span>
-<span class="s2">MobileViTForImageClassification,image-classification</span>
-<span class="s2">ModernBertForMaskedLM,fill-mask</span>
-<span class="s2">MoonshineForConditionalGeneration,automatic-speech-recognition</span>
-<span class="s2">MptForCausalLM,text-generation</span>
-<span class="s2">MusicgenForConditionalGeneration,text-to-audio</span>
-<span class="s2">NystromformerModel,feature-extraction</span>
-<span class="s2">OPTModel,feature-extraction</span>
-<span class="s2">Olmo2ForCausalLM,text-generation</span>
-<span class="s2">OlmoForCausalLM,text-generation</span>
-<span class="s2">OwlViTModel,feature-extraction</span>
-<span class="s2">Owlv2Model,feature-extraction</span>
-<span class="s2">PatchTSMixerForPrediction,no-pipeline-tag</span>
-<span class="s2">PatchTSTForPrediction,no-pipeline-tag</span>
-<span class="s2">PegasusModel,feature-extraction</span>
-<span class="s2">Phi3ForCausalLM,text-generation</span>
-<span class="s2">PhiForCausalLM,text-generation</span>
-<span class="s2">Pix2StructForConditionalGeneration,image-to-text</span>
-<span class="s2">PoolFormerModel,image-feature-extraction</span>
-<span class="s2">PvtForImageClassification,image-classification</span>
-<span class="s2">Qwen2ForCausalLM,text-generation</span>
-<span class="s2">RTDetrForObjectDetection,object-detection</span>
-<span class="s2">RegNetModel,image-feature-extraction</span>
-<span class="s2">RemBertModel,feature-extraction</span>
-<span class="s2">ResNetForImageClassification,image-classification</span>
-<span class="s2">RoFormerModel,feature-extraction</span>
-<span class="s2">RobertaModel,feature-extraction</span>
-<span class="s2">RtDetrV2ForObjectDetection,object-detection</span>
-<span class="s2">SEWDModel,feature-extraction</span>
-<span class="s2">SEWModel,feature-extraction</span>
-<span class="s2">SamModel,mask-generation</span>
-<span class="s2">SegformerModel,image-feature-extraction</span>
-<span class="s2">SiglipModel,zero-shot-image-classification</span>
-<span class="s2">SiglipVisionModel,image-feature-extraction</span>
-<span class="s2">Speech2TextModel,feature-extraction</span>
-<span class="s2">SpeechT5ForTextToSpeech,text-to-audio</span>
-<span class="s2">SplinterModel,feature-extraction</span>
-<span class="s2">SqueezeBertModel,feature-extraction</span>
-<span class="s2">Swin2SRModel,image-feature-extraction</span>
-<span class="s2">SwinModel,image-feature-extraction</span>
-<span class="s2">Swinv2Model,image-feature-extraction</span>
-<span class="s2">T5ForConditionalGeneration,text2text-generation</span>
-<span class="s2">TableTransformerModel,image-feature-extraction</span>
-<span class="s2">UniSpeechForSequenceClassification,audio-classification</span>
-<span class="s2">ViTForImageClassification,image-classification</span>
-<span class="s2">ViTMAEModel,image-feature-extraction</span>
-<span class="s2">ViTMSNForImageClassification,image-classification</span>
-<span class="s2">VisionEncoderDecoderModel,document-question-answering</span>
-<span class="s2">VitPoseForPoseEstimation,keypoint-detection</span>
-<span class="s2">VitsModel,text-to-audio</span>
-<span class="s2">Wav2Vec2ConformerForCTC,automatic-speech-recognition</span>
-<span class="s2">Wav2Vec2Model,feature-extraction</span>
-<span class="s2">WhisperForConditionalGeneration,no-pipeline-tag</span>
-<span class="s2">XLMModel,feature-extraction</span>
-<span class="s2">XLMRobertaForCausalLM,text-generation</span>
-<span class="s2">YolosForObjectDetection,object-detection</span>
-<span class="s2">YolosModel,image-feature-extraction</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">__data_arch__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    architecture,task</span>
+<span class="sd">    ASTModel,feature-extraction</span>
+<span class="sd">    AlbertModel,feature-extraction</span>
+<span class="sd">    BeitForImageClassification,image-classification</span>
+<span class="sd">    BigBirdModel,feature-extraction</span>
+<span class="sd">    BlenderbotModel,feature-extraction</span>
+<span class="sd">    BloomModel,feature-extraction</span>
+<span class="sd">    CLIPModel,zero-shot-image-classification</span>
+<span class="sd">    CLIPVisionModel,feature-extraction</span>
+<span class="sd">    CamembertModel,feature-extraction</span>
+<span class="sd">    CodeGenModel,feature-extraction</span>
+<span class="sd">    ConvBertModel,feature-extraction</span>
+<span class="sd">    ConvNextForImageClassification,image-classification</span>
+<span class="sd">    ConvNextV2Model,image-feature-extraction</span>
+<span class="sd">    CvtModel,feature-extraction</span>
+<span class="sd">    DPTModel,image-feature-extraction</span>
+<span class="sd">    Data2VecAudioModel,feature-extraction</span>
+<span class="sd">    Data2VecTextModel,feature-extraction</span>
+<span class="sd">    Data2VecVisionModel,image-feature-extraction</span>
+<span class="sd">    DebertaModel,feature-extraction</span>
+<span class="sd">    DebertaV2Model,feature-extraction</span>
+<span class="sd">    DecisionTransformerModel,reinforcement-learning</span>
+<span class="sd">    DeiTModel,image-feature-extraction</span>
+<span class="sd">    DetrModel,image-feature-extraction</span>
+<span class="sd">    Dinov2Model,image-feature-extraction</span>
+<span class="sd">    DistilBertModel,feature-extraction</span>
+<span class="sd">    DonutSwinModel,feature-extraction</span>
+<span class="sd">    ElectraModel,feature-extraction</span>
+<span class="sd">    EsmModel,feature-extraction</span>
+<span class="sd">    GLPNModel,image-feature-extraction</span>
+<span class="sd">    GPTBigCodeModel,feature-extraction</span>
+<span class="sd">    GPTJModel,feature-extraction</span>
+<span class="sd">    GPTNeoModel,feature-extraction</span>
+<span class="sd">    GPTNeoXForCausalLM,text-generation</span>
+<span class="sd">    GemmaForCausalLM,text-generation</span>
+<span class="sd">    GraniteForCausalLM,text-generation</span>
+<span class="sd">    GroupViTModel,feature-extraction</span>
+<span class="sd">    HieraForImageClassification,image-classification</span>
+<span class="sd">    HubertModel,feature-extraction</span>
+<span class="sd">    IBertModel,feature-extraction</span>
+<span class="sd">    IdeficsForVisionText2Text,image-text-to-text</span>
+<span class="sd">    ImageGPTModel,image-feature-extraction</span>
+<span class="sd">    LayoutLMModel,feature-extraction</span>
+<span class="sd">    LayoutLMv3Model,feature-extraction</span>
+<span class="sd">    LevitModel,image-feature-extraction</span>
+<span class="sd">    LiltModel,feature-extraction</span>
+<span class="sd">    LlamaForCausalLM,text-generation</span>
+<span class="sd">    LongT5Model,feature-extraction</span>
+<span class="sd">    LongformerModel,feature-extraction</span>
+<span class="sd">    MCTCTModel,feature-extraction</span>
+<span class="sd">    MPNetModel,feature-extraction</span>
+<span class="sd">    MT5Model,feature-extraction</span>
+<span class="sd">    MarianMTModel,text2text-generation</span>
+<span class="sd">    MarkupLMModel,feature-extraction</span>
+<span class="sd">    MaskFormerForInstanceSegmentation,image-segmentation</span>
+<span class="sd">    MegatronBertModel,feature-extraction</span>
+<span class="sd">    MgpstrForSceneTextRecognition,feature-extraction</span>
+<span class="sd">    MistralForCausalLM,text-generation</span>
+<span class="sd">    MobileBertModel,feature-extraction</span>
+<span class="sd">    MobileNetV1Model,image-feature-extraction</span>
+<span class="sd">    MobileNetV2Model,image-feature-extraction</span>
+<span class="sd">    MobileViTForImageClassification,image-classification</span>
+<span class="sd">    ModernBertForMaskedLM,fill-mask</span>
+<span class="sd">    MoonshineForConditionalGeneration,automatic-speech-recognition</span>
+<span class="sd">    MptForCausalLM,text-generation</span>
+<span class="sd">    MusicgenForConditionalGeneration,text-to-audio</span>
+<span class="sd">    NystromformerModel,feature-extraction</span>
+<span class="sd">    OPTModel,feature-extraction</span>
+<span class="sd">    Olmo2ForCausalLM,text-generation</span>
+<span class="sd">    OlmoForCausalLM,text-generation</span>
+<span class="sd">    OwlViTModel,feature-extraction</span>
+<span class="sd">    Owlv2Model,feature-extraction</span>
+<span class="sd">    PatchTSMixerForPrediction,no-pipeline-tag</span>
+<span class="sd">    PatchTSTForPrediction,no-pipeline-tag</span>
+<span class="sd">    PegasusModel,feature-extraction</span>
+<span class="sd">    Phi3ForCausalLM,text-generation</span>
+<span class="sd">    PhiForCausalLM,text-generation</span>
+<span class="sd">    Pix2StructForConditionalGeneration,image-to-text</span>
+<span class="sd">    PoolFormerModel,image-feature-extraction</span>
+<span class="sd">    PvtForImageClassification,image-classification</span>
+<span class="sd">    Qwen2ForCausalLM,text-generation</span>
+<span class="sd">    RTDetrForObjectDetection,object-detection</span>
+<span class="sd">    RegNetModel,image-feature-extraction</span>
+<span class="sd">    RemBertModel,feature-extraction</span>
+<span class="sd">    ResNetForImageClassification,image-classification</span>
+<span class="sd">    RoFormerModel,feature-extraction</span>
+<span class="sd">    RobertaModel,feature-extraction</span>
+<span class="sd">    RtDetrV2ForObjectDetection,object-detection</span>
+<span class="sd">    SEWDModel,feature-extraction</span>
+<span class="sd">    SEWModel,feature-extraction</span>
+<span class="sd">    SamModel,mask-generation</span>
+<span class="sd">    SegformerModel,image-feature-extraction</span>
+<span class="sd">    SiglipModel,zero-shot-image-classification</span>
+<span class="sd">    SiglipVisionModel,image-feature-extraction</span>
+<span class="sd">    Speech2TextModel,feature-extraction</span>
+<span class="sd">    SpeechT5ForTextToSpeech,text-to-audio</span>
+<span class="sd">    SplinterModel,feature-extraction</span>
+<span class="sd">    SqueezeBertModel,feature-extraction</span>
+<span class="sd">    Swin2SRModel,image-feature-extraction</span>
+<span class="sd">    SwinModel,image-feature-extraction</span>
+<span class="sd">    Swinv2Model,image-feature-extraction</span>
+<span class="sd">    T5ForConditionalGeneration,text2text-generation</span>
+<span class="sd">    TableTransformerModel,image-feature-extraction</span>
+<span class="sd">    UniSpeechForSequenceClassification,audio-classification</span>
+<span class="sd">    ViTForImageClassification,image-classification</span>
+<span class="sd">    ViTMAEModel,image-feature-extraction</span>
+<span class="sd">    ViTMSNForImageClassification,image-classification</span>
+<span class="sd">    VisionEncoderDecoderModel,document-question-answering</span>
+<span class="sd">    VitPoseForPoseEstimation,keypoint-detection</span>
+<span class="sd">    VitsModel,text-to-audio</span>
+<span class="sd">    Wav2Vec2ConformerForCTC,automatic-speech-recognition</span>
+<span class="sd">    Wav2Vec2Model,feature-extraction</span>
+<span class="sd">    WhisperForConditionalGeneration,no-pipeline-tag</span>
+<span class="sd">    XLMModel,feature-extraction</span>
+<span class="sd">    XLMRobertaForCausalLM,text-generation</span>
+<span class="sd">    YolosForObjectDetection,object-detection</span>
+<span class="sd">    YolosModel,image-feature-extraction&quot;&quot;&quot;</span>
+<span class="p">)</span>
 
 <span class="n">__data_tasks__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;automatic-speech-recognition&quot;</span><span class="p">,</span>
@@ -504,6 +515,7 @@
 <span class="s2">hf-internal-testing/tiny-random-ViTMSNForImageClassification</span>
 <span class="s2">hf-internal-testing/tiny-random-YolosModel</span>
 <span class="s2">hf-internal-testing/tiny-xlm-roberta</span>
+<span class="s2">HuggingFaceM4/tiny-random-idefics</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
 

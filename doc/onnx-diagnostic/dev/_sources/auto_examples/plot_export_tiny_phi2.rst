@@ -67,7 +67,7 @@ Create the dummy model
         data["n_weights"],
     )
 
-    print(f"model {size / 2**10:1.3f} Kb with {n_weights} parameters.")
+    print(f"model {size / 2**20:1.3f} Mb with {n_weights // 1000} mille parameters.")
 
 
 
@@ -76,7 +76,7 @@ Create the dummy model
 
  .. code-block:: none
 
-    model 442706.000 Kb with 113332736 parameters.
+    model 432.330 Mb with 113332 mille parameters.
 
 
 
@@ -179,7 +179,7 @@ With min/max values.
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3[1969,45766:A27388.0],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.230554580688477,4.27038049697876:A-0.0005224846119674183],T1s2x32x30x80[-5.221174240112305,4.71359395980835:A0.0017415747254215666]], value_cache=#2[T1s2x32x30x80[-4.1176252365112305,4.221442699432373:A0.0017524656972227367],T1s2x32x30x80[-4.856338024139404,4.55798864364624:A-0.00016676506416649417]]))
+    dict(input_ids:T7s2x3[4169,41586:A24195.666666666668],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.250247001647949,4.296894073486328:A0.00039666472688185903],T1s2x32x30x80[-4.584534645080566,4.687620162963867:A0.000881607897973394]], value_cache=#2[T1s2x32x30x80[-4.445925712585449,4.611501693725586:A-0.007746423489871968],T1s2x32x30x80[-4.628787517547607,4.660802841186523:A0.0030252687874702624]]))
 
 
 
@@ -240,7 +240,7 @@ We execute the model to produce expected outputs.
 
  .. code-block:: none
 
-    expected: dict(logits:T1s2x3x51200[-2.5738272666931152,2.4410414695739746:A-9.261052324120555e-05],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.230554580688477,4.27038049697876:A-0.0006653542928417564],T1s2x32x33x80[-5.221174240112305,4.71359395980835:A0.00200975184906822]], value_cache=#2[T1s2x32x33x80[-4.1176252365112305,4.221442699432373:A0.001450584873846013],T1s2x32x33x80[-4.856338024139404,4.55798864364624:A0.00036255654383526007]]))
+    expected: dict(logits:T1s2x3x51200[-2.3363828659057617,2.3946869373321533:A0.0014542278057812533],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.250247001647949,4.296894073486328:A0.000191058535003111],T1s2x32x33x80[-4.584534645080566,4.687620162963867:A0.0002568543326058364]], value_cache=#2[T1s2x32x33x80[-4.445925712585449,4.611501693725586:A-0.007276355170857727],T1s2x32x33x80[-4.628787517547607,4.660802841186523:A0.0036349890182309982]]))
 
 
 
@@ -436,7 +436,7 @@ And finally the discrepancies.
 
  .. code-block:: none
 
-    onnx discrepancies: abs=1.7881393432617188e-06, rel=0.0007151628594335056, n=983040.0
+    onnx discrepancies: abs=2.086162567138672e-06, rel=0.0008807701056327913, n=983040.0
 
 
 
@@ -449,7 +449,7 @@ It looks good.
 
 .. code-block:: Python
 
-    doc.plot_legend("untrained smaller\nmicrosoft/phi-2", "torch.onnx.export", "green")
+    doc.plot_legend("untrained smaller\nmicrosoft/phi-2", "torch.onnx.export", "orange")
 
 
 
@@ -465,7 +465,7 @@ It looks good.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.727 seconds)
+   **Total running time of the script:** (0 minutes 23.712 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_phi2.py:
