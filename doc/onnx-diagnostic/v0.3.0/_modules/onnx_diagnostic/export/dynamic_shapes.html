@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.export.dynamic_shapes - onnx-diagnostic 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -306,6 +306,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -417,7 +418,7 @@
 <span class="sd">        ds = mi.guess_dynamic_shapes()</span>
 <span class="sd">        pprint.pprint(ds)</span>
 
-<span class="sd">    **and and kwargs**</span>
+<span class="sd">    **args and kwargs**</span>
 
 <span class="sd">    .. runpython::</span>
 <span class="sd">        :showcode:</span>
@@ -812,7 +813,10 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">[]</span>
             <span class="n">dyn_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shapes</span><span class="p">()</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">CoupleInputsDynamicShapes</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">dyn_shapes</span><span class="p">)</span><span class="o">.</span><span class="n">invalid_paths</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">CoupleInputsDynamicShapes</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">dyn_shapes</span><span class="p">)</span><span class="o">.</span><span class="n">invalid_dimensions_for_export</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
+        <span class="p">]</span></div>
 </div>
 
 
@@ -900,9 +904,9 @@
                 <span class="n">new_ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="n">new_ds</span>
 
-<div class="viewcode-block" id="CoupleInputsDynamicShapes.invalid_paths">
-<a class="viewcode-back" href="../../../api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.CoupleInputsDynamicShapes.invalid_paths">[docs]</a>
-    <span class="k">def</span> <span class="nf">invalid_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoupleInputsDynamicShapes.invalid_dimensions_for_export">
+<a class="viewcode-back" href="../../../api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.CoupleInputsDynamicShapes.invalid_dimensions_for_export">[docs]</a>
+    <span class="k">def</span> <span class="nf">invalid_dimensions_for_export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tells if the inputs are valid based on the dynamic shapes definition.</span>
 <span class="sd">        The method assumes that all custom classes can be serialized.</span>
@@ -910,7 +914,8 @@
 <span class="sd">        calling this method if the inputs contains such classes.</span>
 
 <span class="sd">        The function checks that a dynamic dimension does not receive a value</span>
-<span class="sd">        of 0 or 1. It returns a list of invalid path.</span>
+<span class="sd">        of 0 or 1. It returns the unexpected values in the same structure as</span>
+<span class="sd">        the given dynamic shapes.</span>
 
 <span class="sd">        Example:</span>
 
@@ -926,7 +931,23 @@
 <span class="sd">            ds_batch_seq = {0: &quot;batch&quot;, 1: &quot;seq&quot;}</span>
 <span class="sd">            kwargs = {&quot;A&quot;: T3x4, &quot;B&quot;: (T3x1, T3x1)}</span>
 <span class="sd">            ds = {&quot;A&quot;: ds_batch, &quot;B&quot;: (ds_batch, ds_batch_seq)}</span>
-<span class="sd">            print(CoupleInputsDynamicShapes((), kwargs, ds).invalid_paths())</span>
+<span class="sd">            print(CoupleInputsDynamicShapes((), kwargs, ds).invalid_dimensions_for_export())</span>
+
+<span class="sd">        In case it works, it shows:</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from onnx_diagnostic.export.dynamic_shapes import CoupleInputsDynamicShapes</span>
+
+<span class="sd">            T3x2 = torch.rand((3, 2))</span>
+<span class="sd">            T3x4 = torch.rand((3, 4))</span>
+<span class="sd">            ds_batch = {0: &quot;batch&quot;}</span>
+<span class="sd">            ds_batch_seq = {0: &quot;batch&quot;, 1: &quot;seq&quot;}</span>
+<span class="sd">            kwargs = {&quot;A&quot;: T3x4, &quot;B&quot;: (T3x2, T3x2)}</span>
+<span class="sd">            ds = {&quot;A&quot;: ds_batch, &quot;B&quot;: (ds_batch, ds_batch_seq)}</span>
+<span class="sd">            print(CoupleInputsDynamicShapes((), kwargs, ds).invalid_dimensions_for_export())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_shapes_tensor</span><span class="p">)</span></div>
 
