@@ -106,7 +106,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.8528]], grad_fn=<MulBackward0>)
+    tensor([[-0.9366]], grad_fn=<MulBackward0>)
 
 
 
@@ -289,7 +289,7 @@ Let's see what the fx graph looks like.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.517 seconds)
+   **Total running time of the script:** (0 minutes 0.479 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_cond.py:

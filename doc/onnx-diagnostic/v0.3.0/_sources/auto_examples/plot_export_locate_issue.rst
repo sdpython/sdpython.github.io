@@ -73,13 +73,13 @@ it is difficult to find deep inside a big model.
  .. code-block:: none
 
 
-    tensor([[[0.8976, 0.6263, 0.6848, 0.7944],
-             [0.0745, 0.1040, 0.0168, 0.0408],
-             [0.0587, 0.3104, 0.1343, 0.4373]],
+    tensor([[[0.4883, 0.3488, 0.4046, 0.3680],
+             [0.5297, 0.7074, 0.5088, 0.3168],
+             [0.1401, 0.0808, 0.0417, 0.0664]],
 
-            [[0.0235, 0.0430, 0.1726, 0.0675],
-             [0.0363, 0.0874, 0.4531, 0.4320],
-             [0.0159, 0.0114, 0.0463, 0.1817]]])
+            [[0.3301, 0.0556, 0.3269, 0.3561],
+             [0.1102, 0.0879, 0.1300, 0.1019],
+             [0.4772, 0.2551, 0.4530, 0.0967]]])
 
 
 
@@ -426,7 +426,7 @@ mentioned in previous section.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.129 seconds)
+   **Total running time of the script:** (0 minutes 0.135 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_locate_issue.py:

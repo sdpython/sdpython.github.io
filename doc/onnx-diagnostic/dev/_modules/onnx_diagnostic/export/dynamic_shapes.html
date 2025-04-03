@@ -216,8 +216,10 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/helpers/index.html">onnx_diagnostic.helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.helpers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/args_helper.html">onnx_diagnostic.helpers.args_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/bench_run.html">onnx_diagnostic.helpers.bench_run</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/cache_helper.html">onnx_diagnostic.helpers.cache_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
@@ -272,6 +274,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/test_helper.html">onnx_diagnostic.torch_models.test_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_onnx/index.html">onnx_diagnostic.torch_onnx</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_onnx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,7 +284,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../cmds/index.html">Command Lines</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Command Lines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cmds/config.html">-m onnx_diagnostic config … prints the config for a model id</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cmds/validate.html">-m onnx_diagnostic validate … validate a model id</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -298,7 +306,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -340,6 +347,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
+
+<span class="n">DYNAMIC_SHAPES</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
 
 <div class="viewcode-block" id="ModelInputs">
@@ -560,7 +569,7 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">true_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">true_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns class name or module name.&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
@@ -569,7 +578,7 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Returns a name and class name.&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">true_model_name</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -687,9 +696,7 @@
 
 <div class="viewcode-block" id="ModelInputs.guess_dynamic_shapes">
 <a class="viewcode-back" href="../../../api/export/index.html#onnx_diagnostic.export.dynamic_shapes.ModelInputs.guess_dynamic_shapes">[docs]</a>
-    <span class="k">def</span> <span class="nf">guess_dynamic_shapes</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">guess_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPES</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Guesses the dynamic shapes for that module from two execution.</span>
 <span class="sd">        If there is only one execution, then that would be static dimensions.</span>
@@ -739,7 +746,7 @@
         <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
         <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">DYNAMIC_SHAPES</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses the signatures to move positional arguments (args) to named arguments (kwargs)</span>
 <span class="sd">        with the corresponding dynamic shapes.</span>
@@ -787,6 +794,355 @@
                 <span class="sa">f</span><span class="s2">&quot;forward_ordered_parameter_names=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">forward_ordered_parameter_names</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="n">kw_dyn</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ModelInputs.validate_inputs_for_export">
+<a class="viewcode-back" href="../../../api/export/index.html#onnx_diagnostic.export.dynamic_shapes.ModelInputs.validate_inputs_for_export">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_inputs_for_export</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DYNAMIC_SHAPES</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates the inputs the class contains for the given dynamic shapes.</span>
+<span class="sd">        If not specified, the dynamic_shapes are guessed.</span>
+
+<span class="sd">        :param dynamic_shapes: dynamic shapes to validate</span>
+<span class="sd">        :return: a list of lists, every list contains the path the invalid dimension</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">dyn_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shapes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">CoupleInputsDynamicShapes</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">dyn_shapes</span><span class="p">)</span><span class="o">.</span><span class="n">invalid_paths</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CoupleInputsDynamicShapes">
+<a class="viewcode-back" href="../../../api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.CoupleInputsDynamicShapes">[docs]</a>
+<span class="k">class</span> <span class="nc">CoupleInputsDynamicShapes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pair inputs / dynamic shapes.</span>
+
+<span class="sd">    :param args: positional arguments</span>
+<span class="sd">    :param kwargs: named arguments</span>
+<span class="sd">    :param dynamic_shapes: dynamic shapes</span>
+<span class="sd">    :param args_names: if both args and kwargs are not empty, then</span>
+<span class="sd">        dynamic shapes must be a dictionary, and positional must be added</span>
+<span class="sd">        to the named arguments. Arguments names or a module must be given</span>
+<span class="sd">        in that case.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPES</span><span class="p">,</span>
+        <span class="n">args_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span> <span class="o">=</span> <span class="n">dynamic_shapes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args_names</span> <span class="o">=</span> <span class="n">args_names</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;    args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;    kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;    dynamic_shapes=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;)&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="CoupleInputsDynamicShapes.replace_string_by">
+<a class="viewcode-back" href="../../../api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.CoupleInputsDynamicShapes.replace_string_by">[docs]</a>
+    <span class="k">def</span> <span class="nf">replace_string_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replaces string by the value ``torch.export.Dim.DYNAMIC``</span>
+<span class="sd">        (default) or any other value specified by value.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from onnx_diagnostic.export.dynamic_shapes import CoupleInputsDynamicShapes</span>
+
+<span class="sd">            T3x1 = torch.rand((3, 1))</span>
+<span class="sd">            T3x4 = torch.rand((3, 4))</span>
+<span class="sd">            ds_batch = {0: &quot;batch&quot;}</span>
+<span class="sd">            ds_batch_seq = {0: &quot;batch&quot;, 1: &quot;seq&quot;}</span>
+<span class="sd">            kwargs = {&quot;A&quot;: T3x4, &quot;B&quot;: (T3x1, T3x1)}</span>
+<span class="sd">            ds = {&quot;A&quot;: ds_batch, &quot;B&quot;: (ds_batch, ds_batch_seq)}</span>
+<span class="sd">            print(CoupleInputsDynamicShapes((), kwargs, ds).replace_string_by())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace_string_dim_tensor</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_replace_string_dim_tensor</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected type for inputs </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unexpected types, inputs is a Tensor but ds is </span><span class="si">{</span><span class="n">ds</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;a dictionary is expected to specify a dimension dimension&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span>
+        <span class="n">new_ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">new_ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">new_ds</span>
+
+<div class="viewcode-block" id="CoupleInputsDynamicShapes.invalid_paths">
+<a class="viewcode-back" href="../../../api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.CoupleInputsDynamicShapes.invalid_paths">[docs]</a>
+    <span class="k">def</span> <span class="nf">invalid_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells if the inputs are valid based on the dynamic shapes definition.</span>
+<span class="sd">        The method assumes that all custom classes can be serialized.</span>
+<span class="sd">        If some patches were applied to export, they should enabled while</span>
+<span class="sd">        calling this method if the inputs contains such classes.</span>
+
+<span class="sd">        The function checks that a dynamic dimension does not receive a value</span>
+<span class="sd">        of 0 or 1. It returns a list of invalid path.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from onnx_diagnostic.export.dynamic_shapes import CoupleInputsDynamicShapes</span>
+
+<span class="sd">            T3x1 = torch.rand((3, 1))</span>
+<span class="sd">            T3x4 = torch.rand((3, 4))</span>
+<span class="sd">            ds_batch = {0: &quot;batch&quot;}</span>
+<span class="sd">            ds_batch_seq = {0: &quot;batch&quot;, 1: &quot;seq&quot;}</span>
+<span class="sd">            kwargs = {&quot;A&quot;: T3x4, &quot;B&quot;: (T3x1, T3x1)}</span>
+<span class="sd">            ds = {&quot;A&quot;: ds_batch, &quot;B&quot;: (ds_batch, ds_batch_seq)}</span>
+<span class="sd">            print(CoupleInputsDynamicShapes((), kwargs, ds).invalid_paths())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_shapes_tensor</span><span class="p">)</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_valid_shapes_tensor</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected type for inputs </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unexpected types, inputs is a Tensor but ds is </span><span class="si">{</span><span class="n">ds</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;a dictionary is expected to specify a dimension dimension&quot;</span>
+        <span class="p">)</span>
+        <span class="n">issues</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ds</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="c1"># dynamic then</span>
+                <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">}:</span>
+                    <span class="c1"># export issues for sure</span>
+                    <span class="n">issues</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;d=[</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">]&quot;</span>
+        <span class="k">return</span> <span class="n">issues</span> <span class="k">if</span> <span class="n">issues</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_generic_walker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">processor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generic deserializator walking through inputs and dynamic_shapes all along.</span>
+<span class="sd">        The function returns a result with the same structure as the dynamic shapes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Type mismatch, args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> and &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2"> should have the same type.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Type mismatch, args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> and &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="s2"> should have the same type.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Both positional and named arguments (args and kwargs) are filled. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;dynamic shapes must a dictionary not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_names</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span>
+        <span class="p">):</span>
+            <span class="c1"># No dynamic shapes for the positional arguments.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">):</span>
+                <span class="c1"># No dynamic shapes for the positional arguments.</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">,</span> <span class="p">(</span>
+                <span class="s2">&quot;args and kwargs are filled, then args_names must be specified in &quot;</span>
+                <span class="s2">&quot;the constructor to move positional arguments to named arguments.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> positional arguments &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but only </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> names. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">, args_name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Not yet implemented when args is filled, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;kwargs as well but args_names is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_generic_walker_step</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">processor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">processor</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+            <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span>
+                <span class="n">inputs</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Type mismatch between inputs </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> and ds=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Length mismatch between inputs </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and ds=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;inputs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">, ds=</span><span class="si">{</span><span class="n">ds</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">):</span>
+                    <span class="n">value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span>
+                <span class="n">ds</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Keys mismatch between inputs </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2"> and ds=</span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">dvalue</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">dvalue</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="k">return</span> <span class="n">dvalue</span> <span class="k">if</span> <span class="n">dvalue</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># A custom class.</span>
+        <span class="k">assert</span> <span class="n">inputs</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Class </span><span class="si">{</span><span class="n">inputs</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> was not registered using &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;torch.utils._pytree.register_pytree_node, it is not possible to &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;map this class with the given dynamic shapes.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">flat</span><span class="p">,</span> <span class="n">_spec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_generic_walker_step</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">flat</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">ChangeDimensionProcessor</span><span class="p">:</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">def</span> <span class="nf">_build_new_shape</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">ds</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="n">d</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                        <span class="p">(</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_DerivedDim</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">_Dim</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">):</span>
+                        <span class="n">d</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to handle type </span><span class="si">{</span><span class="n">ds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">ds</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">:</span>
+                        <span class="n">new_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_dim</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_dim</span>
+                    <span class="n">new_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_dim</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_build_new_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)):</span>
+                <span class="n">d0</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">d1</span> <span class="o">=</span> <span class="n">new_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">d0</span> <span class="o">==</span> <span class="n">d1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">alt_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">alt_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">d1</span>
+                <span class="n">new_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                    <span class="nb">tuple</span><span class="p">(</span><span class="n">alt_shape</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span>
+                <span class="p">)</span>
+                <span class="n">mind</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
+                <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+                <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mind</span><span class="p">)</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+                <span class="n">new_tensor</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">d1</span> <span class="o">&gt;</span> <span class="n">mind</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">mind</span><span class="p">):</span>
+                        <span class="n">indices0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+                        <span class="n">indices1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">)]</span>
+                        <span class="n">indices1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mind</span> <span class="o">+</span> <span class="n">k</span>
+                        <span class="n">indices0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span> <span class="o">%</span> <span class="n">mind</span>
+                        <span class="n">new_tensor</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">indices1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">indices0</span><span class="p">)]</span>
+                <span class="n">tensor</span> <span class="o">=</span> <span class="n">new_tensor</span>
+            <span class="k">return</span> <span class="n">tensor</span>
+
+        <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">ds</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected type for inputs </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unexpected types, inputs is a Tensor but ds is </span><span class="si">{</span><span class="n">ds</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;a dictionary is expected to specify a dimension dimension&quot;</span>
+            <span class="p">)</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_new_shape</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_new_tensor</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CoupleInputsDynamicShapes.change_dynamic_dimensions">
+<a class="viewcode-back" href="../../../api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.CoupleInputsDynamicShapes.change_dynamic_dimensions">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_dynamic_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A model exported with dynamic shapes is not necessarily dynamic</span>
+<span class="sd">        just because the user specified dynamic shapes. The algorithm</span>
+<span class="sd">        may discover that a dimension cannot be dynamic and then continues</span>
+<span class="sd">        the export making the assumption it is static. That may lead a wrong</span>
+<span class="sd">        model. This function produces a new set of inputs with different values</span>
+<span class="sd">        for the dimension than the first ones, assuming they were used to export</span>
+<span class="sd">        the model.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. runpython::</span>
+<span class="sd">            :showcode:</span>
+
+<span class="sd">            import torch</span>
+<span class="sd">            from onnx_diagnostic.helpers import string_type</span>
+<span class="sd">            from onnx_diagnostic.export.dynamic_shapes import CoupleInputsDynamicShapes</span>
+
+<span class="sd">            T3x15 = torch.rand((3, 15))</span>
+<span class="sd">            T3x20 = torch.rand((3, 20))</span>
+<span class="sd">            T3x4 = torch.rand((3, 4))</span>
+<span class="sd">            ds_batch = {0: &quot;batch&quot;}</span>
+<span class="sd">            ds_batch_seq = {0: &quot;batch&quot;, 1: &quot;seq&quot;}</span>
+<span class="sd">            kwargs = {&quot;A&quot;: T3x4, &quot;B&quot;: (T3x15, T3x20)}</span>
+<span class="sd">            ds = {&quot;A&quot;: ds_batch, &quot;B&quot;: (ds_batch, ds_batch_seq)}</span>
+<span class="sd">            new_kwargs = CoupleInputsDynamicShapes((), kwargs, ds).change_dynamic_dimensions()</span>
+<span class="sd">            print(&quot;before:&quot;, string_type(kwargs, with_shape=True))</span>
+<span class="sd">            print(&quot;-after:&quot;, string_type(new_kwargs, with_shape=True))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_walker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ChangeDimensionProcessor</span><span class="p">())</span></div>
 </div>
 
 </pre></div>
@@ -801,7 +1157,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023-2024
+                Copyright &#169; 2025
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

@@ -9,7 +9,7 @@
         <title>Export Tiny-LLM with patches - onnx-diagnostic 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -307,7 +307,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -411,32 +410,32 @@ The export may leave <a class="reference external" href="https://pytorch.org/doc
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">transformers</span>
 <span class="kn">from</span> <span class="nn">onnx_diagnostic</span> <span class="kn">import</span> <span class="n">doc</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a></a>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_type</span></a></a></a>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a></a>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_models.llms</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><span class="n">get_tiny_llm</span></a></a></a>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_type</span></a></a>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_models.llms</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><span class="n">get_tiny_llm</span></a></a>
 
 
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a></a> <span class="o">=</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><span class="n">get_tiny_llm</span></a></a></a><span class="p">()</span>
-<span class="n">untrained_model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a></a> <span class="o">=</span> <span class="p">(</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a></a><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a></a><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a></a><span class="p">[</span><span class="s2">&quot;dynamic_shapes&quot;</span><span class="p">],</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a> <span class="o">=</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_models/llms.html#onnx_diagnostic.torch_models.llms.get_tiny_llm" title="onnx_diagnostic.torch_models.llms.get_tiny_llm" class="sphx-glr-backref-module-onnx_diagnostic-torch_models-llms sphx-glr-backref-type-py-function"><span class="n">get_tiny_llm</span></a></a><span class="p">()</span>
+<span class="n">untrained_model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a> <span class="o">=</span> <span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">experiment</span></a></a><span class="p">[</span><span class="s2">&quot;dynamic_shapes&quot;</span><span class="p">],</span>
 <span class="p">)</span>
 
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
 <p>Let’s show this inputs, this was inferred in
 example <a class="reference internal" href="plot_export_tiny_llm.html#l-plot-tiny-llm-export"><span class="std std-ref">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</span></a>.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_type</span></a></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_type</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#1[T1s2x1x30x96], value_cache=#1[T1s2x1x30x96]))
 </pre></div>
 </div>
 <p>And the dynamic shapes</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span></a></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a></a><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="pprint.pprint" class="sphx-glr-backref-module-pprint sphx-glr-backref-type-py-function"><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;attention_mask&#39;: {0: &lt;class &#39;onnx_diagnostic.torch_models.untrained.llm_tiny_llm.batch&#39;&gt;,
@@ -452,9 +451,9 @@ example <a class="reference internal" href="plot_export_tiny_llm.html#l-plot-tin
 </pre></div>
 </div>
 <p>Before exporting, we check <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.cache_utils.DynamicCache</span></code>
-can serialized and deserialized otherwise <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+gitc75dac5 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
+can serialized and deserialized otherwise <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+gitf363fe6 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>
 fails.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- DynamicCache registered: &quot;</span><span class="p">,</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a></a><span class="p">())</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- DynamicCache registered: &quot;</span><span class="p">,</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a><span class="p">())</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>-- DynamicCache registered:  True
@@ -463,17 +462,17 @@ fails.</p>
 <p>If they are not registered, function
 func:<cite>onnx_diagnostic.torch_export_patches.bypass_export_some_errors</cite>
 should take care of it. Then we export.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a></a><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">modificator</span><span class="p">:</span>
-    <span class="k">assert</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a></a><span class="p">()</span>  <span class="c1"># it must be true here</span>
-    <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a></a><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">modificator</span><span class="p">:</span>
+    <span class="k">assert</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a><span class="p">()</span>  <span class="c1"># it must be true here</span>
+    <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span>
         <span class="n">untrained_model</span><span class="p">,</span>
         <span class="p">(),</span>
-        <span class="n">kwargs</span><span class="o">=</span><span class="n">modificator</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a></a><span class="p">),</span>
-        <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a></a><span class="p">,</span>
+        <span class="n">kwargs</span><span class="o">=</span><span class="n">modificator</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a><span class="p">),</span>
+        <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="p">,</span>
         <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># mandatory for torch==2.6</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It worked:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a></a><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
@@ -483,6 +482,7 @@ should take care of it. Then we export.</p>
 [bypass_export_some_errors] patch sympy
 [bypass_export_some_errors] patch pytorch
 [bypass_export_some_errors] modifies shape constraints
+[patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
 [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
 [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
 [bypass_export_some_errors] done patching
@@ -500,13 +500,13 @@ ExportedProgram:
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
             embedding: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:561 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
             add: &quot;Sym(s1 + s7)&quot; = sym_size_int_23 + sym_size_int_22
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:560 in forward, code: cache_position = torch.arange(
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:563 in forward, code: cache_position = torch.arange(
             arange: &quot;i64[s1]&quot; = torch.ops.aten.arange.start(sym_size_int_23, add, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_23 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:567 in forward, code: causal_mask = self._update_causal_mask(
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:570 in forward, code: causal_mask = self._update_causal_mask(
             full: &quot;f32[s1, s1 + s7]&quot; = torch.ops.aten.full.default([sym_size_int_22, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False)
             triu: &quot;f32[s1, s1 + s7]&quot; = torch.ops.aten.triu.default(full, 1);  full = None
             arange_1: &quot;i64[s1 + s7]&quot; = torch.ops.aten.arange.default(add, device = device(type=&#39;cpu&#39;), pin_memory = False)
@@ -542,50 +542,50 @@ ExportedProgram:
             submod_3 = self.submod_1
             wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, b_model_rotary_emb_inv_freq, sym_size_int_21, position_ids);  submod_3 = b_model_rotary_emb_inv_freq = position_ids = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-            to_6: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[0]
-            to_7: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:152 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+            to_5: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[0]
+            to_6: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-            to_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states.to(torch.float32)
+            to_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-            pow_1: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+            pow_1: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_7, 2)
             mean: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:82 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_3: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
             rsqrt: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
-            mul_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
+            mul_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_7, rsqrt);  rsqrt = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-            to_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-            mul_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_9);  p_model_layers_0_input_layernorm_weight = to_9 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:83 in forward, code: return self.weight * hidden_states.to(input_dtype)
+            to_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
+            mul_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_8);  p_model_layers_0_input_layernorm_weight = to_8 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:281 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.view.default(linear, [sym_size_int_21, sym_size_int_22, -1, 96]);  linear = None
             transpose_1: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.transpose.int(view, 1, 2);  view = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_1: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_1: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_1, [sym_size_int_21, sym_size_int_22, -1, 96]);  linear_1 = None
             transpose_2: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_2: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:283 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_2: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_2, [sym_size_int_21, sym_size_int_22, -1, 96]);  linear_2 = None
             transpose_3: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
-            unsqueeze_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
-            unsqueeze_8: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:286 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+            unsqueeze_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_5, 1);  to_5 = None
+            unsqueeze_8: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
             mul_4: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_7)
             slice_17: &quot;f32[s0, 2, s1, 48]&quot; = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 48)
             slice_18: &quot;f32[s0, 2, s1, 48]&quot; = torch.ops.aten.slice.Tensor(transpose_1, 3, 48, 9223372036854775807);  transpose_1 = None
@@ -601,11 +601,11 @@ ExportedProgram:
             mul_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_8);  cat_2 = unsqueeze_8 = None
             add_5: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:291 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
             cat_3: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.cat.default([past_key_values_key_cache_0, add_5], -2);  past_key_values_key_cache_0 = add_5 = None
             cat_4: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.cat.default([past_key_values_value_cache_0, transpose_3], -2);  past_key_values_value_cache_0 = transpose_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:303 in forward, code: attn_output, attn_weights = attention_interface(
             slice_21: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
             slice_22: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
             unsqueeze_9: &quot;f32[s0, 1, 1, s1 + s7, 96]&quot; = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
@@ -630,30 +630,30 @@ ExportedProgram:
             transpose_4: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
             contiguous_3: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:314 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
             reshape_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.reshape.default(contiguous_3, [sym_size_int_21, sym_size_int_22, -1]);  contiguous_3 = sym_size_int_21 = sym_size_int_22 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(reshape_3, p_model_layers_0_self_attn_o_proj_weight);  reshape_3 = p_model_layers_0_self_attn_o_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
-            add_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:358 in forward, code: hidden_states = residual + hidden_states
+            add_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_7, linear_3);  to_7 = linear_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-            to_10: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states.to(torch.float32)
+            to_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-            pow_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+            pow_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_9, 2)
             mean_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:82 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_8: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
             rsqrt_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-            mul_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
+            mul_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_9, rsqrt_1);  rsqrt_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-            to_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
-            mul_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_11);  p_model_layers_0_post_attention_layernorm_weight = to_11 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:83 in forward, code: return self.weight * hidden_states.to(input_dtype)
+            to_10: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
+            mul_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_10);  p_model_layers_0_post_attention_layernorm_weight = to_10 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_4: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_proj_weight);  p_model_layers_0_mlp_gate_proj_weight = None
@@ -664,30 +664,30 @@ ExportedProgram:
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_5: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_up_proj_weight);  mul_9 = p_model_layers_0_mlp_up_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:201 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
             mul_10: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_6: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
-            add_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:364 in forward, code: hidden_states = residual + hidden_states
+            add_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_9, linear_6);  to_9 = linear_6 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-            to_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states.to(torch.float32)
+            to_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-            pow_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+            pow_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_11, 2)
             mean_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:82 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_10: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
             rsqrt_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-            mul_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
+            mul_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_11, rsqrt_2);  to_11 = rsqrt_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-            to_13: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
-            mul_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:83 in forward, code: return self.weight * hidden_states.to(input_dtype)
+            to_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
+            mul_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_12);  p_model_norm_weight = to_12 = None
 
              # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:866 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
             slice_32: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
@@ -700,14 +700,14 @@ ExportedProgram:
 
         class submod_1(torch.nn.Module):
             def forward(self, b_model_rotary_emb_inv_freq: &quot;f32[48]&quot;, sym_size_int_21: &quot;Sym(s0)&quot;, position_ids: &quot;i64[s0, s1]&quot;):
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:135 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
                 unsqueeze_4: &quot;f32[1, 48]&quot; = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
                 slice_14: &quot;f32[1, 48]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_4, 1, 0, 9223372036854775807);  unsqueeze_4 = None
                 unsqueeze_5: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
                 to_1: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype(unsqueeze_5, torch.float32);  unsqueeze_5 = None
                 expand_1: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.expand.default(to_1, [sym_size_int_21, -1, 1]);  to_1 = sym_size_int_21 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:136 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
                 slice_15: &quot;i64[s0, s1]&quot; = torch.ops.aten.slice.Tensor(position_ids, 0, 0, 9223372036854775807);  position_ids = None
                 unsqueeze_6: &quot;i64[s0, 1, s1]&quot; = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
                 slice_16: &quot;i64[s0, 1, s1]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_6, 2, 0, 9223372036854775807);  unsqueeze_6 = None
@@ -717,39 +717,40 @@ ExportedProgram:
                 submod_3 = self.submod_1
                 wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast(&#39;cpu&#39;, torch.bfloat16, False, False, submod_3, expand_1, to_2);  submod_3 = expand_1 = to_2 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = emb.cos()
                 cos: &quot;f32[s0, s1, 96]&quot; = wrap_with_autocast[0]
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = emb.sin()
                 sin: &quot;f32[s0, s1, 96]&quot; = wrap_with_autocast[1];  wrap_with_autocast = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:149 in forward, code: cos = cos * self.attention_scaling
                 mul: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:150 in forward, code: sin = sin * self.attention_scaling
                 mul_1: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-                to_6: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
-                to_7: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
-                return (to_6, to_7)
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:152 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+                to_5: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
+                to_6: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
+                return (to_5, to_6)
 
             class submod_1(torch.nn.Module):
                 def forward(self, expand_1: &quot;f32[s0, 48, 1]&quot;, to_2: &quot;f32[s0, 1, s1]&quot;):
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
-                    to_3: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
-                    to_4: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type=&#39;cpu&#39;));  to_3 = None
-                    to_5: &quot;f32[s0, 1, s1]&quot; = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
-                    matmul: &quot;f32[s0, 48, s1]&quot; = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: inv_freq_expanded.to(device=x.device, dtype=torch.float) @ position_ids_expanded.float()
+                    to_3: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.to.device(expand_1, device(type=&#39;cpu&#39;), torch.float32);  expand_1 = None
+                    to_4: &quot;f32[s0, 1, s1]&quot; = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
+                    matmul: &quot;f32[s0, 48, s1]&quot; = torch.ops.aten.matmul.default(to_3, to_4);  to_3 = to_4 = None
+
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:143 in forward, code: ).transpose(1, 2)
                     transpose: &quot;f32[s0, s1, 48]&quot; = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:144 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
                     cat: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = emb.cos()
                     cos: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.cos.default(cat)
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = emb.sin()
                     sin: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.sin.default(cat);  cat = None
                     return (cos, sin)
 
@@ -785,6 +786,7 @@ Range constraints: {s0: VR[1, 1024], s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: 
 [bypass_export_some_errors] restored sympy functions
 [bypass_export_some_errors] restored pytorch functions
 [bypass_export_some_errors] restored shape constraints
+[unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
 [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
 [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
 [_unregister_cache_serialization] unregistered MambaCache
@@ -794,22 +796,22 @@ Range constraints: {s0: VR[1, 1024], s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: 
 </section>
 <section id="with-the-original-model">
 <h2>With the original model<a class="headerlink" href="#with-the-original-model" title="Link to this heading">¶</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MODEL_NAME</span></a></a></a> <span class="o">=</span> <span class="s2">&quot;arnir0/Tiny-LLM&quot;</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MODEL_NAME</span></a></a></a><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MODEL_NAME</span></a></a></a><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MODEL_NAME</span></a></a> <span class="o">=</span> <span class="s2">&quot;arnir0/Tiny-LLM&quot;</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MODEL_NAME</span></a></a><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">MODEL_NAME</span></a></a><span class="p">)</span>
 
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">)</span>
 
-<span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a></a><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">modificator</span><span class="p">:</span>
-    <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a></a><span class="p">(</span>
+<span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">modificator</span><span class="p">:</span>
+    <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="p">(),</span>
-        <span class="n">kwargs</span><span class="o">=</span><span class="n">modificator</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a></a><span class="p">),</span>
-        <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a></a><span class="p">,</span>
+        <span class="n">kwargs</span><span class="o">=</span><span class="n">modificator</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cloned_inputs</span></a></a><span class="p">),</span>
+        <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="p">,</span>
         <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># mandatory for torch==2.6</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It worked:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a></a><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
@@ -818,6 +820,7 @@ Range constraints: {s0: VR[1, 1024], s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: 
 [bypass_export_some_errors] patch sympy
 [bypass_export_some_errors] patch pytorch
 [bypass_export_some_errors] modifies shape constraints
+[patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
 [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
 [patch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
 [bypass_export_some_errors] done patching
@@ -835,13 +838,13 @@ ExportedProgram:
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
             embedding: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:561 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
             add: &quot;Sym(s1 + s7)&quot; = sym_size_int_23 + sym_size_int_22
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:560 in forward, code: cache_position = torch.arange(
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:563 in forward, code: cache_position = torch.arange(
             arange: &quot;i64[s1]&quot; = torch.ops.aten.arange.start(sym_size_int_23, add, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_23 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:567 in forward, code: causal_mask = self._update_causal_mask(
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:570 in forward, code: causal_mask = self._update_causal_mask(
             full: &quot;f32[s1, s1 + s7]&quot; = torch.ops.aten.full.default([sym_size_int_22, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False)
             triu: &quot;f32[s1, s1 + s7]&quot; = torch.ops.aten.triu.default(full, 1);  full = None
             arange_1: &quot;i64[s1 + s7]&quot; = torch.ops.aten.arange.default(add, device = device(type=&#39;cpu&#39;), pin_memory = False)
@@ -877,50 +880,50 @@ ExportedProgram:
             submod_3 = self.submod_1
             wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, b_model_rotary_emb_inv_freq, sym_size_int_21, position_ids);  submod_3 = b_model_rotary_emb_inv_freq = position_ids = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-            to_6: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[0]
-            to_7: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:152 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+            to_5: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[0]
+            to_6: &quot;f32[s0, s1, 96]&quot; = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-            to_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states.to(torch.float32)
+            to_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-            pow_1: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+            pow_1: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_7, 2)
             mean: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:82 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_3: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
             rsqrt: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
-            mul_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
+            mul_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_7, rsqrt);  rsqrt = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-            to_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
-            mul_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_9);  p_model_layers_0_input_layernorm_weight = to_9 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:83 in forward, code: return self.weight * hidden_states.to(input_dtype)
+            to_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
+            mul_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_8);  p_model_layers_0_input_layernorm_weight = to_8 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:281 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.view.default(linear, [sym_size_int_21, sym_size_int_22, -1, 96]);  linear = None
             transpose_1: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.transpose.int(view, 1, 2);  view = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_1: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_1: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_1, [sym_size_int_21, sym_size_int_22, -1, 96]);  linear_1 = None
             transpose_2: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_2: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:283 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_2: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_2, [sym_size_int_21, sym_size_int_22, -1, 96]);  linear_2 = None
             transpose_3: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
-            unsqueeze_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
-            unsqueeze_8: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:286 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+            unsqueeze_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_5, 1);  to_5 = None
+            unsqueeze_8: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
             mul_4: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_7)
             slice_17: &quot;f32[s0, 2, s1, 48]&quot; = torch.ops.aten.slice.Tensor(transpose_1, 3, 0, 48)
             slice_18: &quot;f32[s0, 2, s1, 48]&quot; = torch.ops.aten.slice.Tensor(transpose_1, 3, 48, 9223372036854775807);  transpose_1 = None
@@ -936,11 +939,11 @@ ExportedProgram:
             mul_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_8);  cat_2 = unsqueeze_8 = None
             add_5: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:291 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
             cat_3: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.cat.default([past_key_values_key_cache_0, add_5], -2);  past_key_values_key_cache_0 = add_5 = None
             cat_4: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.cat.default([past_key_values_value_cache_0, transpose_3], -2);  past_key_values_value_cache_0 = transpose_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:303 in forward, code: attn_output, attn_weights = attention_interface(
             slice_21: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
             slice_22: &quot;f32[s0, 1, s1 + s7, 96]&quot; = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
             unsqueeze_9: &quot;f32[s0, 1, 1, s1 + s7, 96]&quot; = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
@@ -965,30 +968,30 @@ ExportedProgram:
             transpose_4: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
             contiguous_3: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:314 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
             reshape_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.reshape.default(contiguous_3, [sym_size_int_21, sym_size_int_22, -1]);  contiguous_3 = sym_size_int_21 = sym_size_int_22 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(reshape_3, p_model_layers_0_self_attn_o_proj_weight);  reshape_3 = p_model_layers_0_self_attn_o_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
-            add_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:358 in forward, code: hidden_states = residual + hidden_states
+            add_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_7, linear_3);  to_7 = linear_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-            to_10: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states.to(torch.float32)
+            to_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-            pow_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+            pow_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_9, 2)
             mean_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:82 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_8: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
             rsqrt_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
-            mul_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
+            mul_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_9, rsqrt_1);  rsqrt_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-            to_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
-            mul_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_11);  p_model_layers_0_post_attention_layernorm_weight = to_11 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:83 in forward, code: return self.weight * hidden_states.to(input_dtype)
+            to_10: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
+            mul_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_10);  p_model_layers_0_post_attention_layernorm_weight = to_10 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_4: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_proj_weight);  p_model_layers_0_mlp_gate_proj_weight = None
@@ -999,30 +1002,30 @@ ExportedProgram:
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_5: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_up_proj_weight);  mul_9 = p_model_layers_0_mlp_up_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:201 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
             mul_10: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
 
              # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_6: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
-            add_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:364 in forward, code: hidden_states = residual + hidden_states
+            add_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_9, linear_6);  to_9 = linear_6 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
-            to_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states.to(torch.float32)
+            to_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
-            pow_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+            pow_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_11, 2)
             mean_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:82 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_10: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
             rsqrt_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
-            mul_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
+            mul_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_11, rsqrt_2);  to_11 = rsqrt_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
-            to_13: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
-            mul_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
+             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:83 in forward, code: return self.weight * hidden_states.to(input_dtype)
+            to_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
+            mul_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_12);  p_model_norm_weight = to_12 = None
 
              # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:866 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
             slice_32: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
@@ -1035,14 +1038,14 @@ ExportedProgram:
 
         class submod_1(torch.nn.Module):
             def forward(self, b_model_rotary_emb_inv_freq: &quot;f32[48]&quot;, sym_size_int_21: &quot;Sym(s0)&quot;, position_ids: &quot;i64[s0, s1]&quot;):
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:135 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
                 unsqueeze_4: &quot;f32[1, 48]&quot; = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
                 slice_14: &quot;f32[1, 48]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_4, 1, 0, 9223372036854775807);  unsqueeze_4 = None
                 unsqueeze_5: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
                 to_1: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype(unsqueeze_5, torch.float32);  unsqueeze_5 = None
                 expand_1: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.expand.default(to_1, [sym_size_int_21, -1, 1]);  to_1 = sym_size_int_21 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:136 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
                 slice_15: &quot;i64[s0, s1]&quot; = torch.ops.aten.slice.Tensor(position_ids, 0, 0, 9223372036854775807);  position_ids = None
                 unsqueeze_6: &quot;i64[s0, 1, s1]&quot; = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
                 slice_16: &quot;i64[s0, 1, s1]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_6, 2, 0, 9223372036854775807);  unsqueeze_6 = None
@@ -1052,39 +1055,40 @@ ExportedProgram:
                 submod_3 = self.submod_1
                 wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast(&#39;cpu&#39;, torch.bfloat16, False, False, submod_3, expand_1, to_2);  submod_3 = expand_1 = to_2 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = emb.cos()
                 cos: &quot;f32[s0, s1, 96]&quot; = wrap_with_autocast[0]
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = emb.sin()
                 sin: &quot;f32[s0, s1, 96]&quot; = wrap_with_autocast[1];  wrap_with_autocast = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:149 in forward, code: cos = cos * self.attention_scaling
                 mul: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:150 in forward, code: sin = sin * self.attention_scaling
                 mul_1: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
-                to_6: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
-                to_7: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
-                return (to_6, to_7)
+                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:152 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+                to_5: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
+                to_6: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
+                return (to_5, to_6)
 
             class submod_1(torch.nn.Module):
                 def forward(self, expand_1: &quot;f32[s0, 48, 1]&quot;, to_2: &quot;f32[s0, 1, s1]&quot;):
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
-                    to_3: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
-                    to_4: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type=&#39;cpu&#39;));  to_3 = None
-                    to_5: &quot;f32[s0, 1, s1]&quot; = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
-                    matmul: &quot;f32[s0, 48, s1]&quot; = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: inv_freq_expanded.to(device=x.device, dtype=torch.float) @ position_ids_expanded.float()
+                    to_3: &quot;f32[s0, 48, 1]&quot; = torch.ops.aten.to.device(expand_1, device(type=&#39;cpu&#39;), torch.float32);  expand_1 = None
+                    to_4: &quot;f32[s0, 1, s1]&quot; = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
+                    matmul: &quot;f32[s0, 48, s1]&quot; = torch.ops.aten.matmul.default(to_3, to_4);  to_3 = to_4 = None
+
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:143 in forward, code: ).transpose(1, 2)
                     transpose: &quot;f32[s0, s1, 48]&quot; = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:144 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
                     cat: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = emb.cos()
                     cos: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.cos.default(cat)
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = emb.sin()
                     sin: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.sin.default(cat);  cat = None
                     return (cos, sin)
 
@@ -1120,6 +1124,7 @@ Range constraints: {s0: VR[1, 1024], s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: 
 [bypass_export_some_errors] restored sympy functions
 [bypass_export_some_errors] restored pytorch functions
 [bypass_export_some_errors] restored shape constraints
+[unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_AttentionMaskConverter: _make_causal_mask
 [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_DynamicCache: reorder_cache, update, crop, from_batch_splits, get_seq_length
 [unpatch_module] onnx_diagnostic.torch_export_patches.patches.patch_transformers - patched_GenerationMixin: _cache_dependant_input_preparation, _cache_dependant_input_preparation_exporting, prepare_inputs_for_generation
 [_unregister_cache_serialization] unregistered MambaCache
@@ -1129,7 +1134,7 @@ Range constraints: {s0: VR[1, 1024], s1: VR[2, 4096], s1 + s7: VR[4, 8192], s7: 
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;Tiny-LLM patched&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.export.export&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_export_tiny_llm_patched_001.png" srcset="../_images/sphx_glr_plot_export_tiny_llm_patched_001.png" alt="plot export tiny llm patched" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.619 seconds)</p>
+<img src="../_images/sphx_glr_plot_export_tiny_llm_patched_001.png" srcset="../_images/sphx_glr_plot_export_tiny_llm_patched_001.png" alt="plot export tiny llm patched" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.971 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-export-tiny-llm-patched-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/017a6b7f47e326b82633e3d0c9ea46f5/plot_export_tiny_llm_patched.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_export_tiny_llm_patched.ipynb</span></code></a></p>
