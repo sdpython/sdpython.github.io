@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Export Tiny-LLM with patches" href="plot_export_tiny_llm_patched.html" /><link rel="prev" title="-m onnx_diagnostic validate … validate a model id" href="../cmds/validate.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Dynamic Shapes for *args, **kwargs" href="plot_export_with_args_kwargs.html" /><link rel="prev" title="-m onnx_diagnostic validate … validate a model id" href="../cmds/validate.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Examples Gallery - onnx-diagnostic 0.3.0 documentation</title>
@@ -291,6 +291,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -301,12 +302,13 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_hub_codellama.html">Test the export on untrained models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -350,7 +352,10 @@
         <article role="main" id="furo-main-content">
           <section id="examples-gallery">
 <h1>Examples Gallery<a class="headerlink" href="#examples-gallery" title="Link to this heading">¶</a></h1>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Many models from transformers cannot be converted because the implementation uses cache classes. Let&#x27;s see how to get around that. We focus on the model arnir0/Tiny-LLM. To avoid downloading any weights, we write a function creating a random model based on the same architecture. This continues example l-plot-tiny-llm-export."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_patched_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Quick tour of dynamic shapes. We first look at examples playing positional and names parameters to understand how torch.export.export works."><img alt="" src="../_images/sphx_glr_plot_export_with_args_kwargs_thumb.png" />
+<p><a class="reference internal" href="plot_export_with_args_kwargs.html#sphx-glr-auto-examples-plot-export-with-args-kwargs-py"><span class="std std-ref">Dynamic Shapes for *args, **kwargs</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Dynamic Shapes for args, *kwargs</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Many models from transformers cannot be converted because the implementation uses cache classes. Let&#x27;s see how to get around that. We focus on the model arnir0/Tiny-LLM. To avoid downloading any weights, we write a function creating a random model based on the same architecture. This continues example l-plot-tiny-llm-export."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_patched_thumb.png" />
 <p><a class="reference internal" href="plot_export_tiny_llm_patched.html#sphx-glr-auto-examples-plot-export-tiny-llm-patched-py"><span class="std std-ref">Export Tiny-LLM with patches</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export Tiny-LLM with patches</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond."><img alt="" src="../_images/sphx_glr_plot_export_cond_thumb.png" />
@@ -380,8 +385,8 @@
 </div><div class="sphx-glr-thumbcontainer" tooltip="microsoft/phi-2 is not a big models but still quite big when it comes to write unittest. Function onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs can be used to create a reduced untrained version of a model coming from HuggingFace. It downloads the configuration from the website but creates a dummy model with 1 or 2 hidden layers in order to reduce the size and get a fast execution. The goal is usually to test the export or to compare performance. The relevance does not matter."><img alt="" src="../_images/sphx_glr_plot_export_tiny_phi2_thumb.png" />
 <p><a class="reference internal" href="plot_export_tiny_phi2.html#sphx-glr-auto-examples-plot-export-tiny-phi2-py"><span class="std std-ref">Untrained microsoft/phi-2</span></a></p>
   <div class="sphx-glr-thumbnail-title">Untrained microsoft/phi-2</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_export_with_dynamic_shapes_auto_thumb.png" />
-<p><a class="reference internal" href="plot_export_with_dynamic_shapes_auto.html#sphx-glr-auto-examples-plot-export-with-dynamic-shapes-auto-py"><span class="std std-ref">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</span></a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_export_with_auto_thumb.png" />
+<p><a class="reference internal" href="plot_export_with_auto.html#sphx-glr-auto-examples-plot-export-with-auto-py"><span class="std std-ref">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</span></a></p>
   <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
@@ -401,12 +406,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="plot_export_tiny_llm_patched.html">
+          <a class="next-page" href="plot_export_with_args_kwargs.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Export Tiny-LLM with patches</div>
+                <div class="title">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

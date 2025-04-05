@@ -291,6 +291,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -301,12 +302,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_hub_codellama.html">Test the export on untrained models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -399,53 +401,59 @@ to get a smaller model</p></li>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [get_untrained_model_with_inputs] model_id=&#39;arnir0/Tiny-LLM&#39;
-    [get_untrained_model_with_inputs] architecture=&#39;LlamaForCausalLM&#39;
-    [get_untrained_model_with_inputs] cls=&#39;LlamaConfig&#39;
-    [get_untrained_model_with_inputs] task=&#39;text-generation&#39;
-    -- model size: 51955968
-    -- number of parameters: 12988992
-    -- inputs: dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#1[T1s2x1x30x96], value_cache=#1[T1s2x1x30x96]))
-    -- dynamic shapes: {&#39;attention_mask&#39;: {0: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.batch&#39;&gt;,
-                        1: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;)},
-     &#39;input_ids&#39;: {0: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.batch&#39;&gt;,
-                   1: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.seq_length&#39;&gt;},
-     &#39;past_key_values&#39;: [[{0: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.batch&#39;&gt;,
-                           2: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.cache_length&#39;&gt;}],
-                         [{0: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.batch&#39;&gt;,
-                           2: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.cache_length&#39;&gt;}]],
-     &#39;position_ids&#39;: {0: &lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.batch&#39;&gt;,
-                      1: _DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;)}}
-    -- configuration: LlamaConfig {
-      &quot;_attn_implementation_autoset&quot;: true,
-      &quot;architectures&quot;: [
-        &quot;LlamaForCausalLM&quot;
-      ],
-      &quot;attention_bias&quot;: false,
-      &quot;attention_dropout&quot;: 0.0,
-      &quot;bos_token_id&quot;: 1,
-      &quot;eos_token_id&quot;: 2,
-      &quot;head_dim&quot;: 96,
-      &quot;hidden_act&quot;: &quot;silu&quot;,
-      &quot;hidden_size&quot;: 192,
-      &quot;initializer_range&quot;: 0.02,
-      &quot;intermediate_size&quot;: 1024,
-      &quot;max_position_embeddings&quot;: 1024,
-      &quot;mlp_bias&quot;: false,
-      &quot;model_type&quot;: &quot;llama&quot;,
-      &quot;num_attention_heads&quot;: 2,
-      &quot;num_hidden_layers&quot;: 1,
-      &quot;num_key_value_heads&quot;: 1,
-      &quot;pretraining_tp&quot;: 1,
-      &quot;rms_norm_eps&quot;: 1e-05,
-      &quot;rope_scaling&quot;: null,
-      &quot;rope_theta&quot;: 10000.0,
-      &quot;tie_word_embeddings&quot;: false,
-      &quot;torch_dtype&quot;: &quot;float32&quot;,
-      &quot;transformers_version&quot;: &quot;4.51.0.dev0&quot;,
-      &quot;use_cache&quot;: true,
-      &quot;vocab_size&quot;: 32000
-    }
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">model_id</span><span class="o">=</span><span class="s1">&#39;arnir0/Tiny-LLM&#39;</span>
+    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">architecture</span><span class="o">=</span><span class="s1">&#39;LlamaForCausalLM&#39;</span>
+    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="bp">cls</span><span class="o">=</span><span class="s1">&#39;LlamaConfig&#39;</span>
+    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">task</span><span class="o">=</span><span class="s1">&#39;text-generation&#39;</span>
+    <span class="o">--</span> <span class="n">model</span> <span class="n">size</span><span class="p">:</span> <span class="mi">51955968</span>
+    <span class="o">--</span> <span class="n">number</span> <span class="n">of</span> <span class="n">parameters</span><span class="p">:</span> <span class="mi">12988992</span>
+    <span class="o">--</span> <span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">input_ids</span><span class="p">:</span><span class="n">T7s2x3</span><span class="p">,</span><span class="n">attention_mask</span><span class="p">:</span><span class="n">T7s2x33</span><span class="p">,</span><span class="n">position_ids</span><span class="p">:</span><span class="n">T7s2x3</span><span class="p">,</span><span class="n">past_key_values</span><span class="p">:</span><span class="n">DynamicCache</span><span class="p">[</span><span class="n">serialized</span><span class="p">](</span><span class="c1">#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))</span>
+    <span class="o">--</span> <span class="n">dynamic</span> <span class="n">shapes</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>
+                        <span class="mi">1</span><span class="p">:</span> <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                    <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)},</span>
+     <span class="s1">&#39;input_ids&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>
+                   <span class="mi">1</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;seq_length&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)},</span>
+     <span class="s1">&#39;past_key_values&#39;</span><span class="p">:</span> <span class="p">[[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>
+                           <span class="mi">2</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;cache_length&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)}],</span>
+                         <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>
+                           <span class="mi">2</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;cache_length&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)}]],</span>
+     <span class="s1">&#39;position_ids&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>
+                      <span class="mi">1</span><span class="p">:</span> <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                  <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)}}</span>
+    <span class="o">--</span> <span class="n">configuration</span><span class="p">:</span> <span class="n">LlamaConfig</span> <span class="p">{</span>
+      <span class="s2">&quot;_attn_implementation_autoset&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+      <span class="s2">&quot;architectures&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;LlamaForCausalLM&quot;</span>
+      <span class="p">],</span>
+      <span class="s2">&quot;attention_bias&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="s2">&quot;attention_dropout&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+      <span class="s2">&quot;bos_token_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;eos_token_id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s2">&quot;head_dim&quot;</span><span class="p">:</span> <span class="mi">96</span><span class="p">,</span>
+      <span class="s2">&quot;hidden_act&quot;</span><span class="p">:</span> <span class="s2">&quot;silu&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;hidden_size&quot;</span><span class="p">:</span> <span class="mi">192</span><span class="p">,</span>
+      <span class="s2">&quot;initializer_range&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+      <span class="s2">&quot;intermediate_size&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+      <span class="s2">&quot;max_position_embeddings&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+      <span class="s2">&quot;mlp_bias&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;llama&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;pretraining_tp&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;rms_norm_eps&quot;</span><span class="p">:</span> <span class="mf">1e-05</span><span class="p">,</span>
+      <span class="s2">&quot;rope_scaling&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+      <span class="s2">&quot;rope_theta&quot;</span><span class="p">:</span> <span class="mf">10000.0</span><span class="p">,</span>
+      <span class="s2">&quot;tie_word_embeddings&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="s2">&quot;torch_dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;transformers_version&quot;</span><span class="p">:</span> <span class="s2">&quot;4.51.0.dev0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;use_cache&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+      <span class="s2">&quot;vocab_size&quot;</span><span class="p">:</span> <span class="mi">32000</span>
+    <span class="p">}</span>
 </pre></div>
 </div>
 </dd></dl>

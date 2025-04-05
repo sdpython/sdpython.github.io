@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:30.788** total execution time for 11 files **from auto_examples**:
+**00:51.824** total execution time for 12 files **from auto_examples**:
 
 .. container::
 
@@ -32,36 +32,39 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``plot_export_tiny_phi2.py``)
-     - 00:08.316
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_failing_onnxruntime_evaluator.py` (``plot_failing_onnxruntime_evaluator.py``)
-     - 00:08.050
+     - 00:12.018
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``plot_export_with_dynamic_cache.py``)
-     - 00:06.234
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``plot_export_hub_codellama.py``)
-     - 00:03.008
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``plot_export_tiny_llm.py``)
-     - 00:02.491
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_failing_model_extract.py` (``plot_failing_model_extract.py``)
-     - 00:02.081
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_shapes_auto.py` (``plot_export_with_dynamic_shapes_auto.py``)
-     - 00:00.406
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_locate_issue.py` (``plot_export_locate_issue.py``)
-     - 00:00.135
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_failing_reference_evaluator.py` (``plot_failing_reference_evaluator.py``)
-     - 00:00.067
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``plot_export_cond.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``plot_export_tiny_phi2.py``)
+     - 00:11.463
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm_patched.py` (``plot_export_tiny_llm_patched.py``)
-     - 00:00.000
+     - 00:07.626
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_args_kwargs.py` (``plot_export_with_args_kwargs.py``)
+     - 00:07.157
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``plot_export_tiny_llm.py``)
+     - 00:04.838
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``plot_export_hub_codellama.py``)
+     - 00:04.776
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_model_extract.py` (``plot_failing_model_extract.py``)
+     - 00:01.443
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``plot_export_cond.py``)
+     - 00:01.376
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_auto.py` (``plot_export_with_auto.py``)
+     - 00:00.498
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``plot_export_with_dynamic_cache.py``)
+     - 00:00.322
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_locate_issue.py` (``plot_export_locate_issue.py``)
+     - 00:00.218
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_reference_evaluator.py` (``plot_failing_reference_evaluator.py``)
+     - 00:00.088
      - 0.0

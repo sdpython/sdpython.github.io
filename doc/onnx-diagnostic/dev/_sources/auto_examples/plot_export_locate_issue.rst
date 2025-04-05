@@ -73,13 +73,13 @@ it is difficult to find deep inside a big model.
  .. code-block:: none
 
 
-    tensor([[[0.4883, 0.3488, 0.4046, 0.3680],
-             [0.5297, 0.7074, 0.5088, 0.3168],
-             [0.1401, 0.0808, 0.0417, 0.0664]],
+    tensor([[[0.3069, 0.1526, 0.1264, 0.7069],
+             [0.2708, 0.3434, 0.2118, 0.3651],
+             [0.1966, 0.0525, 0.2221, 0.4086]],
 
-            [[0.3301, 0.0556, 0.3269, 0.3561],
-             [0.1102, 0.0879, 0.1300, 0.1019],
-             [0.4772, 0.2551, 0.4530, 0.0967]]])
+            [[0.5288, 0.2299, 0.4799, 0.3636],
+             [0.1105, 0.4226, 0.0867, 0.6067],
+             [0.2164, 0.0036, 0.3982, 0.3880]]])
 
 
 
@@ -109,8 +109,6 @@ Let's export.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     -- ERROR:
     Constraints violated (L['args'][0][0].size()[0])! For more information, run with TORCH_LOGS="+dynamic".
       - Not all values of RelaxedUnspecConstraint(L['args'][0][0].size()[0]) are valid because L['args'][0][0].size()[0] was inferred to be a constant (2).
@@ -156,7 +154,7 @@ mentioned in previous section.
 .. code-block:: Python
 
 
-    with bypass_export_some_errors(stop_if_static=True, verbose=1):
+    with bypass_export_some_errors(stop_if_static=1, verbose=1):
         try:
             torch.export.export(model, inputs, dynamic_shapes=dyn_shapes)
         except (AssertionError, torch._dynamo.exc.TorchRuntimeError) as e:
@@ -184,87 +182,90 @@ mentioned in previous section.
 
     [bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
     [_register_cache_serialization] register MambaCache
-    [_register_cache_serialization] DynamicCache is unregistered first.
-    [_register_cache_serialization] register DynamicCache
+    [bypass_export_some_errors] sympy.__version__='1.13.3'
     [bypass_export_some_errors] patch sympy
+    [bypass_export_some_errors] torch.__version__='2.8.0.dev20250404+cu126'
+    [bypass_export_some_errors] stop_if_static=1
     [bypass_export_some_errors] patch pytorch
     [bypass_export_some_errors] modifies shape constraints
     [bypass_export_some_errors] assert when a dynamic dimension turns static
+    [bypass_export_some_errors] replaces ShapeEnv._set_replacement
     [bypass_export_some_errors] done patching
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     -- It failed as excepted.
-    -- final error is A dynamic dimension becomes static! a=s0, tgt=2, msg='range_refined_to_singleton', tgt_bound=VR[2, 2]
+    -- final error is patched_ShapeEnv: A dynamic dimension becomes static! a=s35, tgt=2, msg='range_refined_to_singleton', tgt_bound=VR[2, 2]
     -- Stack Trace
     Traceback (most recent call last):
       File "/home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py", line 90, in <module>
         torch.export.export(model, inputs, dynamic_shapes=dyn_shapes)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 274, in export
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 275, in export
         return _export(
                ^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1107, in wrapper
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1108, in wrapper
         raise e
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1073, in wrapper
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1074, in wrapper
         ep = fn(*args, **kwargs)
              ^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 122, in wrapper
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2119, in _export
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2127, in _export
         ep = _export_for_training(
              ^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1107, in wrapper
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1108, in wrapper
         raise e
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1073, in wrapper
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1074, in wrapper
         ep = fn(*args, **kwargs)
              ^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 122, in wrapper
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1981, in _export_for_training
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1988, in _export_for_training
         export_artifact = export_func(
                           ^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1924, in _non_strict_export
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1930, in _non_strict_export
         aten_export_artifact = _to_aten_func(  # type: ignore[operator]
                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1711, in _export_to_aten_ir_make_fx
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1717, in _export_to_aten_ir_make_fx
         gm, graph_signature = transform(_make_fx_helper)(
                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1852, in _aot_export_non_strict
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1858, in _aot_export_non_strict
         gm, sig = aot_export(wrapped_mod, args, kwargs=kwargs, **flags)
                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1631, in _make_fx_helper
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1637, in _make_fx_helper
         gm = make_fx(
              ^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2253, in wrapped
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2288, in wrapped
         return make_fx_tracer.trace(f, *args)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2191, in trace
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2226, in trace
         return self._trace_inner(f, *args)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2162, in _trace_inner
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2197, in _trace_inner
         t = dispatch_trace(
             ^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_compile.py", line 51, in inner
         return disable_fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 849, in _fn
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 850, in _fn
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1187, in dispatch_trace
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1221, in dispatch_trace
         graph = tracer.trace(root, concrete_args)  # type: ignore[arg-type]
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1751, in trace
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1785, in trace
         res = super().trace(root, concrete_args)
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 850, in _fn
+        return fn(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 837, in trace
         (self.create_arg(fn(*args)),),
                          ^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1242, in wrapped
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1276, in wrapped
         out = f(*tensors)  # type:ignore[call-arg]
               ^^^^^^^^^^^
       File "<string>", line 1, in <lambda>
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1535, in wrapped_fn
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1541, in wrapped_fn
         return tuple(flat_fn(*args))
                      ^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py", line 184, in flat_fn
@@ -276,7 +277,7 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 812, in module_call_wrapper
         return self.call_module(mod, forward, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1821, in call_module
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1855, in call_module
         return Tracer.call_module(self, m, forward, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 530, in call_module
@@ -291,13 +292,13 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
         return forward_call(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1836, in forward
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1842, in forward
         tree_out = mod(*args, **kwargs)
                    ^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 812, in module_call_wrapper
         return self.call_module(mod, forward, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1821, in call_module
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1855, in call_module
         return Tracer.call_module(self, m, forward, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 530, in call_module
@@ -315,13 +316,13 @@ mentioned in previous section.
       File "/home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py", line 35, in forward
         z = x * caty
             ~~^~~~~~
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1290, in __torch_function__
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1324, in __torch_function__
         return func(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1337, in __torch_function__
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1371, in __torch_function__
         return func(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 689, in __torch_function__
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 754, in __torch_function__
         return func(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 875, in handler
@@ -333,10 +334,10 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py", line 27, in wrapper
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1392, in __torch_dispatch__
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1426, in __torch_dispatch__
         return proxy_call(self, func, self.pre_dispatch, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 927, in proxy_call
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 926, in proxy_call
         out = func(*args, **kwargs)
               ^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 756, in __call__
@@ -345,16 +346,16 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py", line 27, in wrapper
         return fn(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 1295, in __torch_dispatch__
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 1311, in __torch_dispatch__
         return self.dispatch(func, types, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 1915, in dispatch
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 1932, in dispatch
         return self._cached_dispatch_impl(func, types, args, kwargs)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 1407, in _cached_dispatch_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 1423, in _cached_dispatch_impl
         output = self._dispatch_impl(func, types, args, kwargs)
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 2424, in _dispatch_impl
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py", line 2440, in _dispatch_impl
         return maybe_propagate_real_tensors(fast_impl(self, *args, **kwargs))
                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_impls.py", line 921, in fast_binary_impl
@@ -363,7 +364,7 @@ mentioned in previous section.
       File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 102, in patched_infer_size
         b3 = guard_size_oblivious(sizeA == sizeB)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 410, in guard_size_oblivious
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 411, in guard_size_oblivious
         return expr.node.guard_size_oblivious("", 0)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/sym_node.py", line 588, in guard_size_oblivious
@@ -372,25 +373,25 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/sym_node.py", line 510, in evaluate
         return self.shape_env.evaluate_sym_node(self, size_oblivious)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6700, in evaluate_sym_node
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6710, in evaluate_sym_node
         return self.evaluate_expr(
                ^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/recording.py", line 263, in wrapper
         return retlog(fn(*args, **kwargs))
                       ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6716, in evaluate_expr
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6726, in evaluate_expr
         return self._evaluate_expr(
                ^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7031, in _evaluate_expr
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7041, in _evaluate_expr
         self._maybe_guard_rel(g)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6357, in _maybe_guard_rel
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6360, in _maybe_guard_rel
         self._refine_ranges(expr)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7235, in _refine_ranges
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7245, in _refine_ranges
         self._set_replacement(
-      File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 316, in _set_replacement
+      File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 326, in _set_replacement
         assert msg != "range_refined_to_singleton", (
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    AssertionError: A dynamic dimension becomes static! a=s0, tgt=2, msg='range_refined_to_singleton', tgt_bound=VR[2, 2]
+    AssertionError: patched_ShapeEnv: A dynamic dimension becomes static! a=s35, tgt=2, msg='range_refined_to_singleton', tgt_bound=VR[2, 2]
 
     [bypass_export_some_errors] remove patches
     [bypass_export_some_errors] restored sympy functions
@@ -398,7 +399,6 @@ mentioned in previous section.
     [bypass_export_some_errors] restored ShapeEnv._set_replacement
     [bypass_export_some_errors] restored shape constraints
     [_unregister_cache_serialization] unregistered MambaCache
-    [_unregister_cache_serialization] unregistered DynamicCache
 
 
 
@@ -426,7 +426,7 @@ mentioned in previous section.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.135 seconds)
+   **Total running time of the script:** (0 minutes 0.218 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_locate_issue.py:

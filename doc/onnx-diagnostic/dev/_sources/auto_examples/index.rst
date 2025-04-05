@@ -13,6 +13,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Quick tour of dynamic shapes. We first look at examples playing positional and names parameters to understand how torch.export.export works.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_with_args_kwargs_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_with_args_kwargs.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Dynamic Shapes for args, *kwargs</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Many models from transformers cannot be converted because the implementation uses cache classes. Let&#x27;s see how to get around that. We focus on the model arnir0/Tiny-LLM. To avoid downloading any weights, we write a function creating a random model based on the same architecture. This continues example l-plot-tiny-llm-export.">
 
 .. only:: html
@@ -187,10 +204,10 @@ Examples Gallery
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_with_dynamic_shapes_auto_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_with_auto_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_shapes_auto.py`
+  :ref:`sphx_glr_auto_examples_plot_export_with_auto.py`
 
 .. raw:: html
 
@@ -208,6 +225,7 @@ Examples Gallery
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_export_with_args_kwargs
    /auto_examples/plot_export_tiny_llm_patched
    /auto_examples/plot_export_cond
    /auto_examples/plot_export_with_dynamic_cache
@@ -218,7 +236,7 @@ Examples Gallery
    /auto_examples/plot_export_tiny_llm
    /auto_examples/plot_export_hub_codellama
    /auto_examples/plot_export_tiny_phi2
-   /auto_examples/plot_export_with_dynamic_shapes_auto
+   /auto_examples/plot_export_with_auto
 
 
 .. only:: html

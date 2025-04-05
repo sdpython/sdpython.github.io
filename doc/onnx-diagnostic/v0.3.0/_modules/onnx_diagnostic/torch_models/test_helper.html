@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.test_helper - onnx-diagnostic 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -290,6 +290,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -300,7 +301,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_hub_codellama.html">Test the export on untrained models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
@@ -567,6 +568,7 @@
     <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">patch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">stop_if_static</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">dump_folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">drop_inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -588,7 +590,10 @@
 <span class="sd">    :param optimization: optimization to apply to the exported model,</span>
 <span class="sd">        depend on the the exporter</span>
 <span class="sd">    :param quiet: if quiet, catches exception if any issue</span>
-<span class="sd">    :param patch: applies patches before exporting</span>
+<span class="sd">    :param patch: applies patches (``patch_transformers=True``) before exporting,</span>
+<span class="sd">        see :func:`onnx_diagnostic.torch_export_patches.bypass_export_some_errors`</span>
+<span class="sd">    :param stop_if_static: stops if a dynamic dimension becomes static,</span>
+<span class="sd">        see :func:`onnx_diagnostic.torch_export_patches.bypass_export_some_errors`</span>
 <span class="sd">    :param dump_folder: dumps everything in a subfolder of this one</span>
 <span class="sd">    :param drop_inputs: drops this list of inputs (given their names)</span>
 <span class="sd">    :return: two dictionaries, one with some metrics,</span>
@@ -716,7 +721,9 @@
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] applies patches before exporting&quot;</span><span class="p">)</span>
             <span class="k">with</span> <span class="n">bypass_export_some_errors</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-                <span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">stop_if_static</span><span class="o">=</span><span class="n">stop_if_static</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
             <span class="p">)</span> <span class="k">as</span> <span class="n">modificator</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs_export&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">modificator</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
 

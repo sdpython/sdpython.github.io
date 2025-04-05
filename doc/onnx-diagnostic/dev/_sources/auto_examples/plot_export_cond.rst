@@ -105,8 +105,11 @@ Let's check it runs.
 
  .. code-block:: none
 
+    /home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_cond.py:25: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+    Consider using tensor.detach() first. (Triggered internally at /pytorch/aten/src/ATen/native/Scalar.cpp:22.)
+      if x.sum():
 
-    tensor([[-0.9366]], grad_fn=<MulBackward0>)
+    tensor([[0.0506]], grad_fn=<MulBackward0>)
 
 
 
@@ -133,8 +136,6 @@ As expected, it does not export.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
 
 
 
@@ -163,7 +164,7 @@ As expected, it does not export.
     
     Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
-    Caused by: (_export/non_strict_utils.py:689 in __torch_function__)
+    Caused by: (_export/non_strict_utils.py:754 in __torch_function__)
     For more information, run with TORCH_LOGS="dynamic"
     For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"
     If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -247,8 +248,6 @@ Let's see what the fx graph looks like.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-      torch._C._set_onednn_allow_tf32(_allow_tf32)
     graph():
         %p_mlp_0_weight : [num_users=1] = placeholder[target=p_mlp_0_weight]
         %p_mlp_0_bias : [num_users=1] = placeholder[target=p_mlp_0_bias]
@@ -289,7 +288,7 @@ Let's see what the fx graph looks like.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.479 seconds)
+   **Total running time of the script:** (0 minutes 1.376 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_cond.py:

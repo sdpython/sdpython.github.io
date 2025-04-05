@@ -291,6 +291,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
@@ -301,12 +302,13 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_hub_codellama.html">Test the export on untrained models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_export_with_dynamic_shapes_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -372,44 +374,42 @@ it is difficult to find deep inside a big model.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">onnx_diagnostic</span> <span class="kn">import</span> <span class="n">doc</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a></a></a>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a>
 
 
-<span class="k">class</span> <span class="nc">ModelWithIssue</span><span class="p">(</span><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span></a></a></a></a><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span></a></a></a></a><span class="p">,</span> <span class="n">ys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span></a></a></a></a><span class="p">]):</span>
-        <span class="n">caty</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/generated/torch.cat.html#torch.cat" title="torch.cat" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.cat.html#torch.cat" title="torch.cat" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.cat.html#torch.cat" title="torch.cat" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.cat.html#torch.cat" title="torch.cat" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">cat</span></a></a></a></a><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ys</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ModelWithIssue</span><span class="p">(</span><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span></a></a><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span></a></a><span class="p">,</span> <span class="n">ys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span></a></a><span class="p">]):</span>
+        <span class="n">caty</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/generated/torch.cat.html#torch.cat" title="torch.cat" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.cat.html#torch.cat" title="torch.cat" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">cat</span></a></a><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ys</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">caty</span>
         <span class="k">return</span> <span class="n">z</span>
 
 
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a></a> <span class="o">=</span> <span class="p">(</span><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">rand</span></a></a></a></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[</span><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">rand</span></a></a></a></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">rand</span></a></a></a></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
-<span class="n">model</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><span class="n">ModelWithIssue</span></a></a></a></a><span class="p">()</span>
-<span class="n">model</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a> <span class="o">=</span> <span class="p">(</span><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">rand</span></a></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[</span><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">rand</span></a></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/generated/torch.rand.html#torch.rand" title="torch.rand" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">rand</span></a></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+<span class="n">model</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module" title="torch.nn.Module" class="sphx-glr-backref-module-torch-nn sphx-glr-backref-type-py-class"><span class="n">ModelWithIssue</span></a></a><span class="p">()</span>
+<span class="n">model</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[[0.4883, 0.3488, 0.4046, 0.3680],
-         [0.5297, 0.7074, 0.5088, 0.3168],
-         [0.1401, 0.0808, 0.0417, 0.0664]],
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[[0.3069, 0.1526, 0.1264, 0.7069],
+         [0.2708, 0.3434, 0.2118, 0.3651],
+         [0.1966, 0.0525, 0.2221, 0.4086]],
 
-        [[0.3301, 0.0556, 0.3269, 0.3561],
-         [0.1102, 0.0879, 0.1300, 0.1019],
-         [0.4772, 0.2551, 0.4530, 0.0967]]])
+        [[0.5288, 0.2299, 0.4799, 0.3636],
+         [0.1105, 0.4226, 0.0867, 0.6067],
+         [0.2164, 0.0036, 0.3982, 0.3880]]])
 </pre></div>
 </div>
 <p>Let’s export.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">DYN</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a></a></a> <span class="o">=</span> <span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">},</span> <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">}])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a> <span class="o">=</span> <span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">},</span> <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">DYN</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DYN</span><span class="p">}])</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">ep</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a></a></a><span class="p">)</span>
+    <span class="n">ep</span> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- ERROR:&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
--- ERROR:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>-- ERROR:
 Constraints violated (L[&#39;args&#39;][0][0].size()[0])! For more information, run with TORCH_LOGS=&quot;+dynamic&quot;.
   - Not all values of RelaxedUnspecConstraint(L[&#39;args&#39;][0][0].size()[0]) are valid because L[&#39;args&#39;][0][0].size()[0] was inferred to be a constant (2).
 </pre></div>
@@ -438,14 +438,14 @@ by inserting an assert such as the following:</p>
 <p>We use <a class="reference internal" href="../api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">bypass_export_some_errors</span></code></a>
 to replace torch implementation by a new one raising the exception
 mentioned in previous section.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a></a></a><span class="p">(</span><span class="n">stop_if_static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.bypass_export_some_errors" title="onnx_diagnostic.torch_export_patches.bypass_export_some_errors" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">bypass_export_some_errors</span></a></a><span class="p">(</span><span class="n">stop_if_static</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a></a></a><span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="builtins.RuntimeError" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-exception"><a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="builtins.RuntimeError" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-exception"><a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="builtins.RuntimeError" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-exception"><a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="builtins.RuntimeError" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-exception"><span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">TorchRuntimeError</span></a></a></a></a><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dyn_shapes</span></a></a><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="builtins.RuntimeError" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-exception"><a href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="builtins.RuntimeError" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-exception"><span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">TorchRuntimeError</span></a></a><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- It failed as excepted.&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-- final error is </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Stack Trace&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/traceback.html#traceback.format_exc" title="traceback.format_exc" class="sphx-glr-backref-module-traceback sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/traceback.html#traceback.format_exc" title="traceback.format_exc" class="sphx-glr-backref-module-traceback sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/traceback.html#traceback.format_exc" title="traceback.format_exc" class="sphx-glr-backref-module-traceback sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/traceback.html#traceback.format_exc" title="traceback.format_exc" class="sphx-glr-backref-module-traceback sphx-glr-backref-type-py-function"><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span></a></a></a></a><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/traceback.html#traceback.format_exc" title="traceback.format_exc" class="sphx-glr-backref-module-traceback sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/traceback.html#traceback.format_exc" title="traceback.format_exc" class="sphx-glr-backref-module-traceback sphx-glr-backref-type-py-function"><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span></a></a><span class="p">())</span>
 
 <span class="c1"># The stack trace is quite long but the first line referring to this example</span>
 <span class="c1"># is the following one. It points out the line turing a dynamic dimension into</span>
@@ -459,87 +459,90 @@ mentioned in previous section.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
 [_register_cache_serialization] register MambaCache
-[_register_cache_serialization] DynamicCache is unregistered first.
-[_register_cache_serialization] register DynamicCache
+[bypass_export_some_errors] sympy.__version__=&#39;1.13.3&#39;
 [bypass_export_some_errors] patch sympy
+[bypass_export_some_errors] torch.__version__=&#39;2.8.0.dev20250404+cu126&#39;
+[bypass_export_some_errors] stop_if_static=1
 [bypass_export_some_errors] patch pytorch
 [bypass_export_some_errors] modifies shape constraints
 [bypass_export_some_errors] assert when a dynamic dimension turns static
+[bypass_export_some_errors] replaces ShapeEnv._set_replacement
 [bypass_export_some_errors] done patching
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
 -- It failed as excepted.
--- final error is A dynamic dimension becomes static! a=s0, tgt=2, msg=&#39;range_refined_to_singleton&#39;, tgt_bound=VR[2, 2]
+-- final error is patched_ShapeEnv: A dynamic dimension becomes static! a=s35, tgt=2, msg=&#39;range_refined_to_singleton&#39;, tgt_bound=VR[2, 2]
 -- Stack Trace
 Traceback (most recent call last):
   File &quot;/home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py&quot;, line 90, in &lt;module&gt;
     torch.export.export(model, inputs, dynamic_shapes=dyn_shapes)
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py&quot;, line 274, in export
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py&quot;, line 275, in export
     return _export(
            ^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1107, in wrapper
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1108, in wrapper
     raise e
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1073, in wrapper
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1074, in wrapper
     ep = fn(*args, **kwargs)
          ^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py&quot;, line 122, in wrapper
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2119, in _export
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 2127, in _export
     ep = _export_for_training(
          ^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1107, in wrapper
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1108, in wrapper
     raise e
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1073, in wrapper
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1074, in wrapper
     ep = fn(*args, **kwargs)
          ^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py&quot;, line 122, in wrapper
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1981, in _export_for_training
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1988, in _export_for_training
     export_artifact = export_func(
                       ^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1924, in _non_strict_export
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1930, in _non_strict_export
     aten_export_artifact = _to_aten_func(  # type: ignore[operator]
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1711, in _export_to_aten_ir_make_fx
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1717, in _export_to_aten_ir_make_fx
     gm, graph_signature = transform(_make_fx_helper)(
                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1852, in _aot_export_non_strict
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1858, in _aot_export_non_strict
     gm, sig = aot_export(wrapped_mod, args, kwargs=kwargs, **flags)
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1631, in _make_fx_helper
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1637, in _make_fx_helper
     gm = make_fx(
          ^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2253, in wrapped
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2288, in wrapped
     return make_fx_tracer.trace(f, *args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2191, in trace
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2226, in trace
     return self._trace_inner(f, *args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2162, in _trace_inner
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 2197, in _trace_inner
     t = dispatch_trace(
         ^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_compile.py&quot;, line 51, in inner
     return disable_fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py&quot;, line 849, in _fn
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py&quot;, line 850, in _fn
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1187, in dispatch_trace
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1221, in dispatch_trace
     graph = tracer.trace(root, concrete_args)  # type: ignore[arg-type]
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1751, in trace
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1785, in trace
     res = super().trace(root, concrete_args)
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py&quot;, line 850, in _fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 837, in trace
     (self.create_arg(fn(*args)),),
                      ^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1242, in wrapped
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1276, in wrapped
     out = f(*tensors)  # type:ignore[call-arg]
           ^^^^^^^^^^^
   File &quot;&lt;string&gt;&quot;, line 1, in &lt;lambda&gt;
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1535, in wrapped_fn
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1541, in wrapped_fn
     return tuple(flat_fn(*args))
                  ^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py&quot;, line 184, in flat_fn
@@ -551,7 +554,7 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 812, in module_call_wrapper
     return self.call_module(mod, forward, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1821, in call_module
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1855, in call_module
     return Tracer.call_module(self, m, forward, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 530, in call_module
@@ -566,13 +569,13 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py&quot;, line 1762, in _call_impl
     return forward_call(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1836, in forward
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py&quot;, line 1842, in forward
     tree_out = mod(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 812, in module_call_wrapper
     return self.call_module(mod, forward, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1821, in call_module
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1855, in call_module
     return Tracer.call_module(self, m, forward, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py&quot;, line 530, in call_module
@@ -590,13 +593,13 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/github/onnx-diagnostic/_doc/examples/plot_export_locate_issue.py&quot;, line 35, in forward
     z = x * caty
         ~~^~~~~~
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1290, in __torch_function__
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1324, in __torch_function__
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1337, in __torch_function__
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1371, in __torch_function__
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py&quot;, line 689, in __torch_function__
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py&quot;, line 754, in __torch_function__
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py&quot;, line 875, in handler
@@ -608,10 +611,10 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py&quot;, line 27, in wrapper
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1392, in __torch_dispatch__
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 1426, in __torch_dispatch__
     return proxy_call(self, func, self.pre_dispatch, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 927, in proxy_call
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py&quot;, line 926, in proxy_call
     out = func(*args, **kwargs)
           ^^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py&quot;, line 756, in __call__
@@ -620,16 +623,16 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py&quot;, line 27, in wrapper
     return fn(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 1295, in __torch_dispatch__
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 1311, in __torch_dispatch__
     return self.dispatch(func, types, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 1915, in dispatch
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 1932, in dispatch
     return self._cached_dispatch_impl(func, types, args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 1407, in _cached_dispatch_impl
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 1423, in _cached_dispatch_impl
     output = self._dispatch_impl(func, types, args, kwargs)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 2424, in _dispatch_impl
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py&quot;, line 2440, in _dispatch_impl
     return maybe_propagate_real_tensors(fast_impl(self, *args, **kwargs))
                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_impls.py&quot;, line 921, in fast_binary_impl
@@ -638,7 +641,7 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py&quot;, line 102, in patched_infer_size
     b3 = guard_size_oblivious(sizeA == sizeB)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 410, in guard_size_oblivious
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 411, in guard_size_oblivious
     return expr.node.guard_size_oblivious(&quot;&quot;, 0)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/sym_node.py&quot;, line 588, in guard_size_oblivious
@@ -647,25 +650,25 @@ Traceback (most recent call last):
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/sym_node.py&quot;, line 510, in evaluate
     return self.shape_env.evaluate_sym_node(self, size_oblivious)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 6700, in evaluate_sym_node
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 6710, in evaluate_sym_node
     return self.evaluate_expr(
            ^^^^^^^^^^^^^^^^^^^
   File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/recording.py&quot;, line 263, in wrapper
     return retlog(fn(*args, **kwargs))
                   ^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 6716, in evaluate_expr
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 6726, in evaluate_expr
     return self._evaluate_expr(
            ^^^^^^^^^^^^^^^^^^^^
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 7031, in _evaluate_expr
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 7041, in _evaluate_expr
     self._maybe_guard_rel(g)
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 6357, in _maybe_guard_rel
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 6360, in _maybe_guard_rel
     self._refine_ranges(expr)
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 7235, in _refine_ranges
+  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py&quot;, line 7245, in _refine_ranges
     self._set_replacement(
-  File &quot;/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py&quot;, line 316, in _set_replacement
+  File &quot;/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py&quot;, line 326, in _set_replacement
     assert msg != &quot;range_refined_to_singleton&quot;, (
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: A dynamic dimension becomes static! a=s0, tgt=2, msg=&#39;range_refined_to_singleton&#39;, tgt_bound=VR[2, 2]
+AssertionError: patched_ShapeEnv: A dynamic dimension becomes static! a=s35, tgt=2, msg=&#39;range_refined_to_singleton&#39;, tgt_bound=VR[2, 2]
 
 [bypass_export_some_errors] remove patches
 [bypass_export_some_errors] restored sympy functions
@@ -673,7 +676,6 @@ AssertionError: A dynamic dimension becomes static! a=s0, tgt=2, msg=&#39;range_
 [bypass_export_some_errors] restored ShapeEnv._set_replacement
 [bypass_export_some_errors] restored shape constraints
 [_unregister_cache_serialization] unregistered MambaCache
-[_unregister_cache_serialization] unregistered DynamicCache
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span>
@@ -681,7 +683,7 @@ AssertionError: A dynamic dimension becomes static! a=s0, tgt=2, msg=&#39;range_
 <span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_export_locate_issue_001.png" srcset="../_images/sphx_glr_plot_export_locate_issue_001.png" alt="plot export locate issue" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.135 seconds)</p>
+<img src="../_images/sphx_glr_plot_export_locate_issue_001.png" srcset="../_images/sphx_glr_plot_export_locate_issue_001.png" alt="plot export locate issue" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.218 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-export-locate-issue-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/612d036101c6c6a34027904f5b8805e9/plot_export_locate_issue.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_export_locate_issue.ipynb</span></code></a></p>
@@ -700,9 +702,9 @@ AssertionError: A dynamic dimension becomes static! a=s0, tgt=2, msg=&#39;range_
 </div><div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond."><img alt="" src="../_images/sphx_glr_plot_export_cond_thumb.png" />
 <p><a class="reference internal" href="plot_export_cond.html#sphx-glr-auto-examples-plot-export-cond-py"><span class="std std-ref">Export a model with a control flow (If)</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export a model with a control flow (If)</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Let&#x27;s assume onnxruntime crashes without telling why or where. The first thing is do is to locate where. For that, we run a python runtime which is going to run until it fails."><img alt="" src="../_images/sphx_glr_plot_failing_reference_evaluator_thumb.png" />
-<p><a class="reference internal" href="plot_failing_reference_evaluator.html#sphx-glr-auto-examples-plot-failing-reference-evaluator-py"><span class="std std-ref">Intermediate results with (ONNX) ReferenceEvaluator</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Intermediate results with (ONNX) ReferenceEvaluator</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-failing-reference-evaluator demonstrated how to run a python runtime on a model but it may very slow sometimes and it could show some discrepancies if the only provider is not CPU. Let&#x27;s use onnx_diagnostic.reference.OnnxruntimeEvaluator. It splits the model into node and runs them independently until it succeeds or fails. This class converts every node into model based on the types discovered during the execution. It relies on onnx_diagnostic.helpers.ort_session.InferenceSessionForTorch or onnx_diagnostic.helpers.ort_session.InferenceSessionForNumpy for the execution. This example uses torch tensor and bfloat16."><img alt="" src="../_images/sphx_glr_plot_failing_onnxruntime_evaluator_thumb.png" />
+<p><a class="reference internal" href="plot_failing_onnxruntime_evaluator.html#sphx-glr-auto-examples-plot-failing-onnxruntime-evaluator-py"><span class="std std-ref">Intermediate results with onnxruntime</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Intermediate results with onnxruntime</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>

@@ -156,7 +156,7 @@ Inputs:
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80,T1s2x32x30x80], value_cache=#2[T1s2x32x30x80,T1s2x32x30x80]))
+    dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x30x80,T1s2x32x30x80],#2[T1s2x32x30x80,T1s2x32x30x80]]))
 
 
 
@@ -179,7 +179,7 @@ With min/max values.
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3[9948,41593:A20977.833333333332],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.353427886962891,4.079133033752441:A-0.001000594470234232],T1s2x32x30x80[-4.694216251373291,4.510841369628906:A-0.00199617686201447]], value_cache=#2[T1s2x32x30x80[-4.496313095092773,4.530855178833008:A-0.001679585599878016],T1s2x32x30x80[-4.311858654022217,4.202302932739258:A0.00018572324003402586]]))
+    dict(input_ids:T7s2x3[5323,45108:A28376.5],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x30x80[-5.360153675079346,4.791228771209717:A0.001974196634906278],T1s2x32x30x80[-4.051785469055176,4.476999282836914:A0.0011384615436145868]],#2[T1s2x32x30x80[-4.100203037261963,4.356419563293457:A-0.0048976734088543375],T1s2x32x30x80[-4.225372314453125,4.697620868682861:A0.0022808550438176444]]]))
 
 
 
@@ -202,20 +202,26 @@ And the dynamic shapes
 
  .. code-block:: none
 
-    {'attention_mask': {0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                        1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)},
-     'input_ids': {0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                   1: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.seq_length'>},
-     'past_key_values': [[{0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                           2: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.cache_length'>},
-                          {0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                           2: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.cache_length'>}],
-                         [{0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                           2: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.cache_length'>},
-                          {0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                           2: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.cache_length'>}]],
-     'position_ids': {0: <class 'onnx_diagnostic.torch_models.hghub.model_inputs.batch'>,
-                      1: _DimHint(type=<_DimHintType.DYNAMIC: 3>)}}
+    {'attention_mask': {0: Dim('batch', min=1, max=1024),
+                        1: _DimHint(type=<_DimHintType.DYNAMIC: 3>,
+                                    min=None,
+                                    max=None,
+                                    _factory=True)},
+     'input_ids': {0: Dim('batch', min=1, max=1024),
+                   1: Dim('seq_length', min=1, max=4096)},
+     'past_key_values': [[{0: Dim('batch', min=1, max=1024),
+                           2: Dim('cache_length', min=1, max=4096)},
+                          {0: Dim('batch', min=1, max=1024),
+                           2: Dim('cache_length', min=1, max=4096)}],
+                         [{0: Dim('batch', min=1, max=1024),
+                           2: Dim('cache_length', min=1, max=4096)},
+                          {0: Dim('batch', min=1, max=1024),
+                           2: Dim('cache_length', min=1, max=4096)}]],
+     'position_ids': {0: Dim('batch', min=1, max=1024),
+                      1: _DimHint(type=<_DimHintType.DYNAMIC: 3>,
+                                  min=None,
+                                  max=None,
+                                  _factory=True)}}
 
 
 
@@ -240,7 +246,7 @@ We execute the model to produce expected outputs.
 
  .. code-block:: none
 
-    expected: dict(logits:T1s2x3x51200[-2.4327733516693115,2.509613513946533:A-0.0010396538672227962],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.353427886962891,4.079133033752441:A-0.0006376768671709642],T1s2x32x33x80[-4.694216251373291,4.510841369628906:A-0.002851647881853104]], value_cache=#2[T1s2x32x33x80[-4.496313095092773,4.530855178833008:A-0.001469856699475057],T1s2x32x33x80[-4.311858654022217,4.202302932739258:A-0.00047800031121991043]]))
+    expected: dict(logits:T1s2x3x51200[-2.560974359512329,2.454162359237671:A-0.00016775055397033611],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x33x80[-5.360153675079346,4.791228771209717:A0.0021868587653931806],T1s2x32x33x80[-4.051785469055176,4.476999282836914:A0.0017716525465561713]],#2[T1s2x32x33x80[-4.100203037261963,4.356419563293457:A-0.004690552220114579],T1s2x32x33x80[-4.225372314453125,4.697620868682861:A0.0021503875538262046]]]))
 
 
 
@@ -373,7 +379,7 @@ It takes flatten inputs.
 
  .. code-block:: none
 
-    torch inputs: dict(input_ids:T7r2,attention_mask:T7r2,position_ids:T7r2,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
+    torch inputs: dict(input_ids:T7r2,attention_mask:T7r2,position_ids:T7r2,past_key_values:DynamicCache[serialized](#2[#2[T1r4,T1r4],#2[T1r4,T1r4]]))
     onxrt inputs: dict(input_ids:A7r2,attention_mask:A7r2,position_ids:A7r2,past_key_values_key_cache_0:A1r4,past_key_values_key_cache_1:A1r4,past_key_values_value_cache_0:A1r4,past_key_values_value_cache_1:A1r4)
 
 
@@ -436,7 +442,7 @@ And finally the discrepancies.
 
  .. code-block:: none
 
-    onnx discrepancies: abs=2.086162567138672e-06, rel=0.0009677046840562482, n=983040.0
+    onnx discrepancies: abs=2.0265579223632812e-06, rel=0.000741497303386164, n=983040.0
 
 
 
@@ -465,7 +471,7 @@ It looks good.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.316 seconds)
+   **Total running time of the script:** (0 minutes 11.463 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_phi2.py:
