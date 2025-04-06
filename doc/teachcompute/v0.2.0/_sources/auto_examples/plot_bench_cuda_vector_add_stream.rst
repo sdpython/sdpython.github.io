@@ -123,12 +123,12 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:02,  1.32s/it]     67%|██████▋   | 2/3 [00:02<00:01,  1.26s/it]    100%|██████████| 3/3 [00:03<00:00,  1.24s/it]    100%|██████████| 3/3 [00:03<00:00,  1.25s/it]
+      0%|          | 0/3 [00:00<?, ?it/s]     67%|██████▋   | 2/3 [00:00<00:00,  2.89it/s]    100%|██████████| 3/3 [00:01<00:00,  1.50it/s]    100%|██████████| 3/3 [00:01<00:00,  1.66it/s]
     fct              CUDA   CUDA-stream
     dim                                
-    1024     3.541671e-06  3.894597e-06
-    32768    9.024722e-08  1.042279e-07
-    1048576  1.416836e-08  1.515374e-08
+    1024     9.244778e-07  1.500088e-06
+    32768    4.042578e-08  5.798027e-08
+    1048576  5.730957e-09  4.799859e-09
 
 
 
@@ -167,7 +167,7 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/vv/this/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
@@ -182,7 +182,7 @@ CUDA parallelizes everything and takes all the computing power.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.409 seconds)
+   **Total running time of the script:** (0 minutes 2.841 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_add_stream.py:

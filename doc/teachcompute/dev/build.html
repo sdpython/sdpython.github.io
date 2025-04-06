@@ -316,9 +316,9 @@
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_benchmark_dot_cython.html">Compares dot implementations (numpy, cython, c++, sse)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_benchmark_dot_mul.html">Compares matrix multiplication implementations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
 </ul>
@@ -388,13 +388,17 @@ with two instructions:</p>
 <p>By default, <em>cmake</em> builds with CUDA if it is available. It can be disabled:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build_ext</span> <span class="pre">-v</span> <span class="pre">--inplace</span> <span class="pre">--with-cuda=0</span></code>, the legacy way,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">-v</span> <span class="pre">--config-settings=&quot;--with-cuda=0&quot;</span></code>, the new way (not fully working yet),</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">-v</span> <span class="pre">--config-settings=&quot;--with-cuda=0&quot;</span></code>, the new way</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">-v</span> <span class="pre">--global-option</span> <span class="pre">&quot;--with-cuda=0&quot;</span></code>, the deprecated way,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">USE_CUDA=0</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span> <span class="pre">-v</span></code>, when other options do not work.</p></li>
 </ul>
+<p>To build with the current environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">clean</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">settings</span><span class="o">=</span><span class="s2">&quot;--cuda-version=12.6&quot;</span>
+</pre></div>
+</div>
 <p>In case there are multiple versions of CUDA installed, option <cite>cuda-version</cite>
 can be specified:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span> <span class="o">--</span><span class="n">cuda</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">11.8</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">inplace</span> <span class="o">--</span><span class="n">cuda</span><span class="o">-</span><span class="n">version</span><span class="o">=</span><span class="mf">12.6</span>
 </pre></div>
 </div>
 <div class="toctree-wrapper compound">

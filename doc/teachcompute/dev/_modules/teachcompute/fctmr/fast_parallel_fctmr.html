@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Recherche" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>teachcompute.torch_extensions.piecewise_linear - Documentation teachcompute 0.2.0</title>
+        <title>teachcompute.fctmr.fast_parallel_fctmr - Documentation teachcompute 0.2.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -362,95 +362,156 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Code source de teachcompute.torch_extensions.piecewise_linear</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Function</span>
-<span class="kn">from</span> <span class="nn">.piecewise_linear_c</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">piecewise_linear_forward</span><span class="p">,</span>
-    <span class="n">piecewise_linear_backward</span><span class="p">,</span>
-    <span class="n">piecewise_linear_forward_better</span><span class="p">,</span>
-    <span class="n">piecewise_linear_backward_better</span><span class="p">,</span>
-<span class="p">)</span>
+          <h1>Code source de teachcompute.fctmr.fast_parallel_fctmr</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Simple parallelization of *mapper* and *reducer* based on :epkg:`numba`.</span>
+<span class="sd">:epkg:`Python` does not easily allow to parallelize functions</span>
+<span class="sd">as the :epkg:`GIL` blocks most of the tentatives by imposing</span>
+<span class="sd">a single tunnel for all allocations, creation of :epkg:`python`</span>
+<span class="sd">objects. The language implements it but in practice it is not.</span>
+<span class="sd">This file is just a tentative to use :epkg:`numba` to parallelize</span>
+<span class="sd">a mapper but the number of round trip between :epkg:`python`</span>
+<span class="sd">and compiled :epkg:`C` makes it difficult to write something</span>
+<span class="sd">generic.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
 
 
-<div class="viewcode-block" id="PiecewiseLinearFunction">
-<a class="viewcode-back" href="../../../api/torch_extensions.html#teachcompute.torch_extensions.piecewise_linear.PiecewiseLinearFunction">[docs]</a>
-<span class="k">class</span> <span class="nc">PiecewiseLinearFunction</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
+<div class="viewcode-block" id="create_array_numba">
+<a class="viewcode-back" href="../../../api/fctmr.html#teachcompute.fctmr.fast_parallel_fctmr.create_array_numba">[docs]</a>
+<span class="k">def</span> <span class="nf">create_array_numba</span><span class="p">(</span><span class="n">nb</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Implements a function similar to a piecewise linear function.</span>
-<span class="sd">    It multiplies by different coefficient on negative and positive</span>
-<span class="sd">    number. It takes a tensor of shape (N, 1).</span>
+<span class="sd">    Creates an array of size nb knowing its signature.</span>
+
+<span class="sd">    :param nb: integer</span>
+<span class="sd">    :param signature: signature, ex: ``&#39;f8&#39;``</span>
+<span class="sd">    :return: container</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha_neg</span><span class="p">,</span> <span class="n">alpha_pos</span><span class="p">):</span>
-        <span class="n">sign</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-        <span class="n">weight</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">alpha_pos</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">sign</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha_neg</span>
-        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">weight</span>
-        <span class="k">return</span> <span class="n">output</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
-        <span class="n">grad_x</span> <span class="o">=</span> <span class="n">weight</span>
-        <span class="n">grad_alpha_neg</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">grad_output</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">sign</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">grad_alpha_pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">grad_output</span> <span class="o">*</span> <span class="n">sign</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">grad_x</span><span class="p">,</span> <span class="n">grad_alpha_neg</span><span class="p">,</span> <span class="n">grad_alpha_pos</span></div>
+    <span class="k">if</span> <span class="n">sig</span> <span class="o">==</span> <span class="s2">&quot;f8&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Cannot create a container for type &#39;</span><span class="si">{0}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span></div>
 
 
 
-<div class="viewcode-block" id="PiecewiseLinearFunctionC">
-<a class="viewcode-back" href="../../../api/torch_extensions.html#teachcompute.torch_extensions.piecewise_linear.PiecewiseLinearFunctionC">[docs]</a>
-<span class="k">class</span> <span class="nc">PiecewiseLinearFunctionC</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
+<div class="viewcode-block" id="fast_parallel_mapper">
+<a class="viewcode-back" href="../../../api/fctmr.html#teachcompute.fctmr.fast_parallel_fctmr.fast_parallel_mapper">[docs]</a>
+<span class="k">def</span> <span class="nf">fast_parallel_mapper</span><span class="p">(</span>
+    <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">gen</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100000</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">nogil</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">nopython</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">sigin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sigout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Same function as :class:`PiecewiseLinearFunction</span>
-<span class="sd">    &lt;teachcompute.torch_extensions.piecewise_linear.PiecewiseLinearFunction&gt;`</span>
-<span class="sd">    but the implementation of forward and backward functions</span>
-<span class="sd">    are done in C. See :func:`piecewise_linear_forward</span>
-<span class="sd">    &lt;teachcompute.torch_extensions.piecewise_linear_c.piecewise_linear_forward&gt;` and</span>
-<span class="sd">    :func:`piecewise_linear_backward</span>
-<span class="sd">    &lt;teachcompute.torch_extensions.piecewise_linear_c.piecewise_linear_backward&gt;`.</span>
-<span class="sd">    It follows the tutorial :epkg:`Custom C++ and CUDA Extensions`.</span>
+<span class="sd">    Parallelizes a mapper based on :epkg:`numba` and more specifically</span>
+<span class="sd">    `Automatic parallelization with @jit &lt;https://numba.pydata.org/</span>
+<span class="sd">    numba-doc/dev/user/parallel.html&gt;`_.</span>
+<span class="sd">    This page indicates what :epkg:`numba` optimizes when</span>
+<span class="sd">    it parallizes a map.</span>
+
+<span class="sd">    :param fct: function</span>
+<span class="sd">    :param gen: generator</span>
+<span class="sd">    :param chunk_size: chunk size</span>
+<span class="sd">    :param parallel: see</span>
+<span class="sd">        `parallel</span>
+<span class="sd">        &lt;https://numba.pydata.org/numba-doc/latest/user/jit.html?highlight=nopython#parallel&gt;`_</span>
+<span class="sd">    :param nopython: see</span>
+<span class="sd">        `nopython</span>
+<span class="sd">        &lt;https://numba.pydata.org/numba-doc/latest/user/jit.html?highlight=nopython#nopython&gt;`_</span>
+<span class="sd">    :param nogil: see</span>
+<span class="sd">        `nogil</span>
+<span class="sd">        &lt;https://numba.pydata.org/numba-doc/latest/user/jit.html?highlight=nopython#nogil&gt;`_</span>
+<span class="sd">    :param sigin: signature of input type</span>
+<span class="sd">    :param sigout: signature of output type</span>
+<span class="sd">    :return: generator</span>
+
+<span class="sd">    The parallelization can only happen if</span>
+<span class="sd">    the array is known. So the function splits the</span>
+<span class="sd">    array in chunck of size *chunk_size*.</span>
+<span class="sd">    This tentative is not very efficient due to</span>
+<span class="sd">    the genericity of the mapper. :epkg:`python`</span>
+<span class="sd">    is not a good language to do that. See unit test</span>
+<span class="sd">    `test_parallel_fctmr.py</span>
+<span class="sd">    &lt;https://github.com/sdpython/teachcompute/blob/main/_unittests/ut_fctmr/test_fast_parallel_fctmr.py&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sigin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sigout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sig1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">(</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sigout</span><span class="p">,</span> <span class="n">sigin</span><span class="p">)</span>
+        <span class="n">sig2</span> <span class="o">=</span> <span class="s2">&quot;void(i8, </span><span class="si">{0}</span><span class="s2">[:], </span><span class="si">{1}</span><span class="s2">[:])&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sigin</span><span class="p">,</span> <span class="n">sigout</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha_neg</span><span class="p">,</span> <span class="n">alpha_pos</span><span class="p">):</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">piecewise_linear_forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha_neg</span><span class="p">,</span> <span class="n">alpha_pos</span><span class="p">)</span>
-        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="o">*</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-        <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">fct_jit</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span>
+            <span class="n">sig1</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="n">nogil</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">nopython</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)(</span><span class="n">fct</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
-        <span class="n">weight</span><span class="p">,</span> <span class="n">grad_alpha_neg</span><span class="p">,</span> <span class="n">grad_alpha_pos</span> <span class="o">=</span> <span class="n">piecewise_linear_backward</span><span class="p">(</span>
-            <span class="n">grad_output</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">weight</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">weight</span><span class="p">,</span> <span class="n">grad_alpha_neg</span><span class="p">,</span> <span class="n">grad_alpha_pos</span></div>
+        <span class="k">def</span> <span class="nf">loop</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+            <span class="s2">&quot;local function&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">nb</span><span class="p">):</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fct_jit</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
+        <span class="n">loop_jit</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span>
+            <span class="n">sig2</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="n">nogil</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">nopython</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)(</span><span class="n">loop</span><span class="p">)</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">create_array_numba</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">sigin</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">create_array_numba</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">sigout</span><span class="p">)</span>
 
+        <span class="n">done</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">done</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="n">done</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span>
+                <span class="n">done</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loop_jit</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">out</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">done</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="n">loop_jit</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">out</span>
 
-<span class="k">class</span> <span class="nc">PiecewiseLinearFunctionCBetter</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Same function as :class:`PiecewiseLinearFunctionC</span>
-<span class="sd">    &lt;teachcompute.torch_extensions.piecewise_linear.PiecewiseLinearFunctionC&gt;`,</span>
-<span class="sd">    the implementation of forward and backward are is reducing the</span>
-<span class="sd">    memory allocations.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha_neg</span><span class="p">,</span> <span class="n">alpha_pos</span><span class="p">):</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">piecewise_linear_forward_better</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha_neg</span><span class="p">,</span> <span class="n">alpha_pos</span><span class="p">)</span>
-        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="o">*</span><span class="n">outputs</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-        <span class="k">return</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">def</span> <span class="nf">loop</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+            <span class="s2">&quot;local function&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">nb</span><span class="p">):</span>
+                <span class="n">outputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fct_jit</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
-        <span class="n">weight</span><span class="p">,</span> <span class="n">grad_alpha_neg</span><span class="p">,</span> <span class="n">grad_alpha_pos</span> <span class="o">=</span> <span class="n">piecewise_linear_backward_better</span><span class="p">(</span>
-            <span class="n">grad_output</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">weight</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">weight</span><span class="p">,</span> <span class="n">grad_alpha_neg</span><span class="p">,</span> <span class="n">grad_alpha_pos</span>
+        <span class="n">loop_jit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">fct_jit</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">inputs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs</span><span class="p">]</span> <span class="o">*</span> <span class="n">chunk_size</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fct</span><span class="p">(</span><span class="n">obs</span><span class="p">)]</span> <span class="o">*</span> <span class="n">chunk_size</span>
+                <span class="n">loop_jit</span> <span class="o">=</span> <span class="n">njit</span><span class="p">(</span>
+                    <span class="n">nogil</span><span class="o">=</span><span class="n">nogil</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">nopython</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)(</span><span class="n">loop</span><span class="p">)</span>
+                <span class="n">fct_jit</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span>
+                    <span class="n">nogil</span><span class="o">=</span><span class="n">nogil</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="n">nopython</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)(</span><span class="n">fct</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">done</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+                <span class="n">inputs</span><span class="p">[</span><span class="n">done</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span>
+                <span class="n">done</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loop_jit</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">out</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">done</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="n">loop_jit</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">out</span></div>
+
 </pre></div>
         </article>
       </div>

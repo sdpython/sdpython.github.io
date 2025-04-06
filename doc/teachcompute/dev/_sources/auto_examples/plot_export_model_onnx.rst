@@ -34,16 +34,13 @@ It can be seen with :epkg:`Netron` which can be also used through a VS Code Exte
 The model
 =========
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-96
+.. GENERATED FROM PYTHON SOURCE LINES 18-93
 
 .. code-block:: Python
 
 
-    import contextlib
-    import io
     import os
     import random
-    import warnings
 
 
     def ids_tensor(shape, vocab_size, rng=None, name=None):
@@ -130,30 +127,40 @@ The model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-99
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
 
 The conversion to ONNX
 ======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-118
+.. GENERATED FROM PYTHON SOURCE LINES 96-125
 
 .. code-block:: Python
 
 
 
-    def export(model, args, filename):
-        import torch
+    def export(model, args, filename, dynamic_shapes):
+        from experimental_experiment.torch_interpreter import to_onnx, ExportOptions
+        from onnx_diagnostic.torch_export_patches import bypass_export_some_errors
 
-        with contextlib.redirect_stdout(io.StringIO()), warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            torch.onnx.export(
-                model, args, filename, input_names=["input", "mask"], opset_version=17
+        with bypass_export_some_errors(patch_transformers=True):
+            to_onnx(
+                model,
+                args,
+                filename=filename,
+                target_opset=18,
+                dynamic_shapes=dynamic_shapes,
+                export_options=ExportOptions(strict=False),
             )
 
 
     filename = "dump_llama.onnx"
-    print("conversion to ONNX in file {filename!r}")
-    export(model, example_args_collection[0], filename)
+    print(f"conversion to ONNX in file {filename!r}")
+    export(
+        model,
+        example_args_collection[0],
+        filename,
+        dynamic_shapes=({0: "batch", 1: "seq_length"}, {0: "batch", 1: "seq_length"}),
+    )
     print("done.")
     print(f"model size {os.stat(filename).st_size / 2**20} Mb.")
 
@@ -166,14 +173,14 @@ The conversion to ONNX
 
  .. code-block:: none
 
-    conversion to ONNX in file {filename!r}
+    conversion to ONNX in file 'dump_llama.onnx'
     done.
-    model size 278.05313777923584 Mb.
+    model size 270.04535579681396 Mb.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-123
+.. GENERATED FROM PYTHON SOURCE LINES 126-130
 
 This gives the following in :epkg:`Netron`:
 
@@ -183,7 +190,7 @@ This gives the following in :epkg:`Netron`:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.830 seconds)
+   **Total running time of the script:** (0 minutes 6.892 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_model_onnx.py:

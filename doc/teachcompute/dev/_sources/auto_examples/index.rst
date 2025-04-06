@@ -252,23 +252,6 @@ Gallerie d'exemples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This script does not export a full llama model but a shorter one to be able to fast iterate on improvments. See LlamaConfig. The model is then converted into ONNX. It can be seen with Netron which can be also used through a VS Code Extension.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_model_onnx_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Export a LLAMA model into ONNX</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="numpy has a very fast implementation of the dot product. It is difficult to be better and very easy to be slower. This example looks into a couple of slower implementations with cython. The tested functions are the following:">
 
 .. only:: html
@@ -298,6 +281,23 @@ Gallerie d'exemples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Measuring CPU performance with a parallelized vector sum and AVX</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This script does not export a full llama model but a shorter one to be able to fast iterate on improvments. See LlamaConfig. The model is then converted into ONNX. It can be seen with Netron which can be also used through a VS Code Extension.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_model_onnx_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_model_onnx.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export a LLAMA model into ONNX</div>
     </div>
 
 
@@ -359,9 +359,9 @@ Gallerie d'exemples
    /auto_examples/plot_bench_cpu_vector_sum_parallel
    /auto_examples/plot_piecewise_linear
    /auto_examples/plot_bench_cuda_vector_add_stream
-   /auto_examples/plot_export_model_onnx
    /auto_examples/plot_benchmark_dot_cython
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
+   /auto_examples/plot_export_model_onnx
    /auto_examples/plot_benchmark_dot_mul
    /auto_examples/plot_serialisation_examples
 

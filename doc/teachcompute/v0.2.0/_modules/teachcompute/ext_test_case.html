@@ -315,9 +315,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_parallel.html">Measuring CPU performance with a parallelized vector sum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_piecewise_linear.html">Compares implementations for a Piecewise Linear</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cuda_vector_add_stream.html">Measuring CUDA performance with a vector addition with streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_cython.html">Compares dot implementations (numpy, cython, c++, sse)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_bench_cpu_vector_sum_avx_parallel.html">Measuring CPU performance with a parallelized vector sum and AVX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_export_model_onnx.html">Export a LLAMA model into ONNX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_benchmark_dot_mul.html">Compares matrix multiplication implementations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/plot_serialisation_examples.html">Sérialisation</a></li>
 </ul>
@@ -787,6 +787,21 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
 </div>
 
+
+
+<span class="k">def</span> <span class="nf">has_transformers</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is transformers more recent than version?&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
 </pre></div>
         </article>
       </div>

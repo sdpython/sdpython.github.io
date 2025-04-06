@@ -118,16 +118,14 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:03<00:13,  3.33s/it]     40%|████      | 2/5 [00:05<00:08,  2.86s/it]     60%|██████    | 3/5 [00:09<00:06,  3.20s/it]     80%|████████  | 4/5 [00:11<00:02,  2.71s/it]    100%|██████████| 5/5 [00:16<00:00,  3.42s/it]    100%|██████████| 5/5 [00:16<00:00,  3.22s/it]
-    fct        CUDA-vector_sum0  ...         numpy
-    dim                          ...              
-    1024           2.197298e-06  ...  2.158992e-09
-    32768          7.697547e-08  ...  4.263606e-10
-    1048576        3.250116e-09  ...  3.359379e-10
-    33554432       1.124244e-09  ...  4.448769e-10
-    268435456      1.124153e-09  ...  4.430954e-10
-
-    [5 rows x 4 columns]
+      0%|          | 0/5 [00:00<?, ?it/s]     20%|██        | 1/5 [00:02<00:09,  2.25s/it]     40%|████      | 2/5 [00:04<00:06,  2.25s/it]     60%|██████    | 3/5 [00:08<00:05,  2.94s/it]     80%|████████  | 4/5 [00:10<00:02,  2.50s/it]    100%|██████████| 5/5 [00:11<00:00,  2.17s/it]    100%|██████████| 5/5 [00:11<00:00,  2.33s/it]
+    fct        CUDA-vector_sum0  CUDA-vector_sum6  CUDA-vector_sum_atomic         numpy
+    dim                                                                                
+    1024           1.365158e-06      9.004093e-07            2.375314e-06  1.479625e-09
+    32768          3.296388e-08      2.370945e-08            7.437090e-07  2.479011e-10
+    1048576        1.729873e-09      1.742159e-09            3.838543e-07  2.230789e-10
+    33554432       8.665854e-10      8.915624e-10                     NaN  4.250094e-10
+    268435456      7.399174e-10      8.662422e-10                     NaN  4.667346e-10
 
 
 
@@ -165,7 +163,7 @@ Plots
 
  .. code-block:: none
 
-    /home/xadupre/vv/this/lib/python3.10/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/pandas/plotting/_matplotlib/core.py:822: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
       labels = axis.get_majorticklabels() + axis.get_minorticklabels()
 
 
@@ -182,7 +180,7 @@ in moving the data from the CPU memory (Host) to the GPU memory (device).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 18.169 seconds)
+   **Total running time of the script:** (0 minutes 12.994 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_sum.py:
