@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -218,6 +218,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../articles/2025-05-31-route2025.html">2025-05-31: Feuille de route 2024-2025 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../articles/2024-05-31-route2024-gpu.html">2024-05-31: Feuille de route 2023-2024 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../articles/2023-11-31-route2023-spark.html">2023-11-31 : rappel feuille de route 2023</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../articles/2023-05-31-route2023-gpu.html">2023-05-31: Feuille de route 2022-2023 (3A)</a></li>
@@ -379,7 +380,7 @@
 <dt class="sig sig-object py" id="teachcompute.validation.cpu._validation.vector_add">
 <span class="sig-prename descclassname"><span class="pre">teachcompute.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">vector_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(disponible dans NumPy v2.2)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(disponible dans NumPy v2.2)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(disponible dans NumPy v2.2)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float32</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#teachcompute.validation.cpu._validation.vector_add" title="Lien vers cette définition">¶</a></dt>
 <dd><p>Computes the addition of 2 vectors of any dimensions.
-It assumes both vectors have the same dimensions (no broadcast).).</p>
+It assumes both vectors have the same dimensions (no broadcast).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Paramètres<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -498,6 +499,23 @@ and parallelization (see <a class="reference external" href="https://www.intel.c
 </dd></dl>
 
 </section>
+<section id="threads">
+<h3>threads<a class="headerlink" href="#threads" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="teachcompute.validation.cpu._validation.test_sum_no_mutex">
+<span class="sig-prename descclassname"><span class="pre">teachcompute.validation.cpu._validation.</span></span><span class="sig-name descname"><span class="pre">test_sum_no_mutex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.13)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.13)"><span class="pre">float</span></a></span></span><a class="headerlink" href="#teachcompute.validation.cpu._validation.test_sum_no_mutex" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Computes a parallelized sum with no mutex.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N</strong> – number of 1 to sum</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 </section>
 
@@ -565,6 +583,10 @@ and parallelization (see <a class="reference external" href="https://www.intel.c
 <li><a class="reference internal" href="#teachcompute.validation.cpu._validation.vector_sum_array_parallel"><code class="docutils literal notranslate"><span class="pre">vector_sum_array_parallel()</span></code></a></li>
 <li><a class="reference internal" href="#teachcompute.validation.cpu._validation.vector_sum_array_avx"><code class="docutils literal notranslate"><span class="pre">vector_sum_array_avx()</span></code></a></li>
 <li><a class="reference internal" href="#teachcompute.validation.cpu._validation.vector_sum_array_avx_parallel"><code class="docutils literal notranslate"><span class="pre">vector_sum_array_avx_parallel()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#threads">threads</a><ul>
+<li><a class="reference internal" href="#teachcompute.validation.cpu._validation.test_sum_no_mutex"><code class="docutils literal notranslate"><span class="pre">test_sum_no_mutex()</span></code></a></li>
 </ul>
 </li>
 </ul>
