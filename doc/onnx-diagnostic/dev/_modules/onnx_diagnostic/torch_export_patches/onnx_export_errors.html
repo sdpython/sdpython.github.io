@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_export_patches.onnx_export_errors - onnx-diagnostic 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -223,6 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
 </ul>
 </li>
@@ -352,15 +353,10 @@
         <article role="main" id="furo-main-content">
           <h1>Source code for onnx_diagnostic.torch_export_patches.onnx_export_errors</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">.onnx_export_serialization</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">flatten_with_keys_dynamic_cache</span><span class="p">,</span>
-    <span class="n">flatten_dynamic_cache</span><span class="p">,</span>
-    <span class="n">unflatten_dynamic_cache</span><span class="p">,</span>
-    <span class="n">flatten_mamba_cache</span><span class="p">,</span>
-    <span class="n">flatten_with_keys_mamba_cache</span><span class="p">,</span>
-    <span class="n">unflatten_mamba_cache</span><span class="p">,</span>
+    <span class="n">_register_cache_serialization</span><span class="p">,</span>
+    <span class="n">_unregister_cache_serialization</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.patches</span> <span class="kn">import</span> <span class="n">patch_transformers</span> <span class="k">as</span> <span class="n">patch_transformers_list</span>
 
@@ -394,7 +390,7 @@
         <span class="n">original</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_PATCHED_CLASS_</span>
         <span class="n">methods</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_PATCHES_</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[patch_module_or_classes] </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[patch_module_or_classes] </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">keep</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
@@ -427,7 +423,7 @@
     <span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">methods</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">assert</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">set_patch</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;No patch registered for </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s2"> (found </span><span class="si">{</span><span class="n">set_patch</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[unpatch_module_or_classes] </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[unpatch_module_or_classes] </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">methods</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">original</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_PATCHED_CLASS_</span>
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">methods</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -435,156 +431,6 @@
                 <span class="nb">delattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-
-<span class="n">PATCH_OF_PATCHES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">_register_cache_serialization</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-    <span class="c1"># Cache serialization: to be moved into appropriate packages</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">DynamicCache</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">DynamicCache</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">MambaCache</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">MambaCache</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="c1"># MambaCache</span>
-    <span class="n">unregistered_mamba_cache</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">MambaCache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">MambaCache</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[_register_cache_serialization] </span><span class="si">{</span><span class="n">MambaCache</span><span class="si">}</span><span class="s2"> already registered&quot;</span><span class="p">)</span>
-        <span class="c1"># It is already registered because bypass_export_some_errors was called</span>
-        <span class="c1"># within a section already calling bypass_export_some_errors or transformers</span>
-        <span class="c1"># has updated its code to do it.</span>
-        <span class="c1"># No need to register and unregister then.</span>
-        <span class="n">unregistered_mamba_cache</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_register_cache_serialization] register MambaCache&quot;</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">register_pytree_node</span><span class="p">(</span>
-            <span class="n">MambaCache</span><span class="p">,</span>
-            <span class="n">flatten_mamba_cache</span><span class="p">,</span>
-            <span class="n">unflatten_mamba_cache</span><span class="p">,</span>
-            <span class="n">serialized_type_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">MambaCache</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">MambaCache</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">flatten_with_keys_fn</span><span class="o">=</span><span class="n">flatten_with_keys_mamba_cache</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="c1"># DynamicCache serialization is different in transformers and does not</span>
-    <span class="c1"># play way with torch.export.export.</span>
-    <span class="c1"># see test test_export_dynamic_cache_cat with NOBYPASS=1</span>
-    <span class="c1"># :: NOBYBASS=1 python _unittests/ut_torch_export_patches/test_dynamic_class.py -k e_c</span>
-    <span class="c1"># This is caused by this line:</span>
-    <span class="c1"># torch.fx._pytree.register_pytree_flatten_spec(</span>
-    <span class="c1">#           DynamicCache, _flatten_dynamic_cache_for_fx)</span>
-    <span class="c1"># so we remove it anyway</span>
-    <span class="k">if</span> <span class="p">(</span>
-        <span class="n">DynamicCache</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span>
-        <span class="ow">and</span> <span class="ow">not</span> <span class="n">PATCH_OF_PATCHES</span>
-        <span class="c1"># and pv.Version(torch.__version__) &lt; pv.Version(&quot;2.7&quot;)</span>
-        <span class="ow">and</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;4.50&quot;</span><span class="p">)</span>
-    <span class="p">):</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="s2">&quot;[_register_cache_serialization] DynamicCache &quot;</span>
-                <span class="s2">&quot;is unregistered and registered first.&quot;</span>
-            <span class="p">)</span>
-        <span class="n">_unregister</span><span class="p">(</span><span class="n">DynamicCache</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">register_pytree_node</span><span class="p">(</span>
-            <span class="n">DynamicCache</span><span class="p">,</span>
-            <span class="n">flatten_dynamic_cache</span><span class="p">,</span>
-            <span class="n">unflatten_dynamic_cache</span><span class="p">,</span>
-            <span class="n">serialized_type_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DynamicCache</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">DynamicCache</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">flatten_with_keys_fn</span><span class="o">=</span><span class="n">flatten_with_keys_dynamic_cache</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;2.7&quot;</span><span class="p">):</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">register_pytree_flatten_spec</span><span class="p">(</span>
-                <span class="n">DynamicCache</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">value_cache</span><span class="p">]</span>
-            <span class="p">)</span>
-        <span class="c1"># To avoid doing it multiple times.</span>
-        <span class="n">PATCH_OF_PATCHES</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">DynamicCache</span><span class="p">)</span>
-
-    <span class="n">unregistered_dynamic_cache</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">DynamicCache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">DynamicCache</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[_register_cache_serialization] </span><span class="si">{</span><span class="n">DynamicCache</span><span class="si">}</span><span class="s2"> already registered&quot;</span><span class="p">)</span>
-        <span class="n">unregistered_dynamic_cache</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_register_cache_serialization] register DynamicCache&quot;</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">register_pytree_node</span><span class="p">(</span>
-            <span class="n">DynamicCache</span><span class="p">,</span>
-            <span class="n">flatten_dynamic_cache</span><span class="p">,</span>
-            <span class="n">unflatten_dynamic_cache</span><span class="p">,</span>
-            <span class="n">serialized_type_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DynamicCache</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">DynamicCache</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">flatten_with_keys_fn</span><span class="o">=</span><span class="n">flatten_with_keys_dynamic_cache</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;2.7&quot;</span><span class="p">):</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">register_pytree_flatten_spec</span><span class="p">(</span>
-                <span class="n">DynamicCache</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">value_cache</span><span class="p">]</span>
-            <span class="p">)</span>
-
-        <span class="c1"># check</span>
-        <span class="kn">from</span> <span class="nn">..helpers.cache_helper</span> <span class="kn">import</span> <span class="n">make_dynamic_cache</span>
-
-        <span class="n">cache</span> <span class="o">=</span> <span class="n">make_dynamic_cache</span><span class="p">([(</span><span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))])</span>
-        <span class="n">values</span><span class="p">,</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
-        <span class="n">cache2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_unflatten</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
-        <span class="c1"># torch.fx._pytree.tree_flatten(cache)</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">cache2</span><span class="o">.</span><span class="n">key_cache</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">DynamicCache</span><span class="o">=</span><span class="n">unregistered_dynamic_cache</span><span class="p">,</span> <span class="n">MambaCache</span><span class="o">=</span><span class="n">unregistered_mamba_cache</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_unregister</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">optree</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-
-    <span class="c1"># torch.fx._pytree._deregister_pytree_flatten_spec(cls)</span>
-    <span class="k">if</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
-    <span class="k">if</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES_EXACT_MATCH</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES_EXACT_MATCH</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="p">,</span> <span class="s2">&quot;_deregister_pytree_node&quot;</span><span class="p">):</span>
-        <span class="c1"># torch &gt;= 2.7</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">_deregister_pytree_node</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-    <span class="n">optree</span><span class="o">.</span><span class="n">unregister_pytree_node</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-
-        <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="s2">&quot;2.7.0&quot;</span><span class="p">):</span>
-            <span class="k">del</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="bp">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">,</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2"> was not successful unregistered &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;from torch.utils._pytree.SUPPORTED_NODES=&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[_unregister_cache_serialization] unregistered </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_unregister_cache_serialization</span><span class="p">(</span><span class="n">undo</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-
-    <span class="k">if</span> <span class="n">undo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MambaCache&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">MambaCache</span>
-
-        <span class="n">_unregister</span><span class="p">(</span><span class="n">MambaCache</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_unregister_cache_serialization] skip unregister MambaCache&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">undo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DynamicCache&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">DynamicCache</span>
-
-        <span class="n">_unregister</span><span class="p">(</span><span class="n">DynamicCache</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_unregister_cache_serialization] skip unregister DynamicCache&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="register_additional_serialization_functions">
@@ -937,6 +783,9 @@
     <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">args</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">}:</span>
+        <span class="c1"># BaseModelOutput is a dict</span>
         <span class="k">return</span> <span class="n">args</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">replacement_before_exporting</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>

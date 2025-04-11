@@ -73,13 +73,13 @@ it is difficult to find deep inside a big model.
  .. code-block:: none
 
 
-    tensor([[[0.3069, 0.1526, 0.1264, 0.7069],
-             [0.2708, 0.3434, 0.2118, 0.3651],
-             [0.1966, 0.0525, 0.2221, 0.4086]],
+    tensor([[[7.7028e-02, 1.0508e-01, 2.1223e-01, 2.8353e-01],
+             [1.8740e-01, 1.9650e-01, 1.2281e-01, 1.5514e-01],
+             [1.1084e-04, 4.9251e-01, 2.5065e-01, 3.4157e-01]],
 
-            [[0.5288, 0.2299, 0.4799, 0.3636],
-             [0.1105, 0.4226, 0.0867, 0.6067],
-             [0.2164, 0.0036, 0.3982, 0.3880]]])
+            [[2.9099e-01, 5.2423e-02, 1.8576e-03, 2.8045e-01],
+             [4.0061e-01, 9.6031e-02, 1.8228e-01, 5.9469e-01],
+             [3.2144e-01, 6.2331e-02, 1.7033e-01, 1.7725e-01]]])
 
 
 
@@ -181,15 +181,17 @@ mentioned in previous section.
  .. code-block:: none
 
     [bypass_export_some_errors] replace torch.jit.isinstance, torch._dynamo.mark_static_address
-    [_register_cache_serialization] register MambaCache
+    [_register_cache_serialization] register <class 'transformers.cache_utils.EncoderDecoderCache'>
+    [_register_cache_serialization] register <class 'transformers.cache_utils.MambaCache'>
     [bypass_export_some_errors] sympy.__version__='1.13.3'
     [bypass_export_some_errors] patch sympy
-    [bypass_export_some_errors] torch.__version__='2.8.0.dev20250404+cu126'
+    [bypass_export_some_errors] torch.__version__='2.8.0.dev20250409+cu126'
     [bypass_export_some_errors] stop_if_static=1
     [bypass_export_some_errors] patch pytorch
     [bypass_export_some_errors] modifies shape constraints
     [bypass_export_some_errors] assert when a dynamic dimension turns static
     [bypass_export_some_errors] replaces ShapeEnv._set_replacement
+    [bypass_export_some_errors] replaces ShapeEnv._log_guard
     [bypass_export_some_errors] done patching
     -- It failed as excepted.
     -- final error is patched_ShapeEnv: A dynamic dimension becomes static! a=s35, tgt=2, msg='range_refined_to_singleton', tgt_bound=VR[2, 2]
@@ -322,7 +324,7 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1371, in __torch_function__
         return func(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 754, in __torch_function__
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 764, in __torch_function__
         return func(*args, **kwargs)
                ^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 875, in handler
@@ -361,7 +363,7 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_impls.py", line 921, in fast_binary_impl
         final_shape = infer_size(final_shape, shape)
                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 102, in patched_infer_size
+      File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 117, in patched_infer_size
         b3 = guard_size_oblivious(sizeA == sizeB)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 411, in guard_size_oblivious
@@ -373,22 +375,22 @@ mentioned in previous section.
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/sym_node.py", line 510, in evaluate
         return self.shape_env.evaluate_sym_node(self, size_oblivious)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6710, in evaluate_sym_node
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6711, in evaluate_sym_node
         return self.evaluate_expr(
                ^^^^^^^^^^^^^^^^^^^
       File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/recording.py", line 263, in wrapper
         return retlog(fn(*args, **kwargs))
                       ^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6726, in evaluate_expr
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6727, in evaluate_expr
         return self._evaluate_expr(
                ^^^^^^^^^^^^^^^^^^^^
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7041, in _evaluate_expr
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7042, in _evaluate_expr
         self._maybe_guard_rel(g)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6360, in _maybe_guard_rel
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 6361, in _maybe_guard_rel
         self._refine_ranges(expr)
-      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7245, in _refine_ranges
+      File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py", line 7246, in _refine_ranges
         self._set_replacement(
-      File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 326, in _set_replacement
+      File "/home/xadupre/github/onnx-diagnostic/onnx_diagnostic/torch_export_patches/patches/patch_torch.py", line 341, in _set_replacement
         assert msg != "range_refined_to_singleton", (
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     AssertionError: patched_ShapeEnv: A dynamic dimension becomes static! a=s35, tgt=2, msg='range_refined_to_singleton', tgt_bound=VR[2, 2]
@@ -397,8 +399,10 @@ mentioned in previous section.
     [bypass_export_some_errors] restored sympy functions
     [bypass_export_some_errors] restored pytorch functions
     [bypass_export_some_errors] restored ShapeEnv._set_replacement
+    [bypass_export_some_errors] restored ShapeEnv._log_guard
     [bypass_export_some_errors] restored shape constraints
     [_unregister_cache_serialization] unregistered MambaCache
+    [_unregister_cache_serialization] unregistered EncoderDecoderCache
 
 
 
@@ -426,7 +430,7 @@ mentioned in previous section.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.218 seconds)
+   **Total running time of the script:** (0 minutes 0.157 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_locate_issue.py:

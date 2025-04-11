@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.test_helper - onnx-diagnostic 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -223,6 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
 </ul>
 </li>
@@ -356,10 +357,11 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">onnx</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">max_diff</span><span class="p">,</span> <span class="n">string_type</span><span class="p">,</span> <span class="n">string_diff</span>
 <span class="kn">from</span> <span class="nn">..helpers.helper</span> <span class="kn">import</span> <span class="n">flatten_object</span>
-<span class="kn">from</span> <span class="nn">..helpers.ort_session</span> <span class="kn">import</span> <span class="n">make_feeds</span>
+<span class="kn">from</span> <span class="nn">..helpers.rt_helper</span> <span class="kn">import</span> <span class="n">make_feeds</span>
 <span class="kn">from</span> <span class="nn">..helpers.torch_test_helper</span> <span class="kn">import</span> <span class="n">to_any</span><span class="p">,</span> <span class="n">torch_deepcopy</span>
 <span class="kn">from</span> <span class="nn">..torch_export_patches</span> <span class="kn">import</span> <span class="n">bypass_export_some_errors</span>
 <span class="kn">from</span> <span class="nn">.hghub</span> <span class="kn">import</span> <span class="n">get_untrained_model_with_inputs</span>
@@ -379,16 +381,7 @@
 
 
 <span class="k">def</span> <span class="nf">_ds_clean</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,min=None&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,max=None&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,_factory=True&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;class &#39;onnx_diagnostic.torch_models.hghub.model_inputs.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_DimHint(type=&lt;_DimHintType.DYNAMIC: 3&gt;)&quot;</span><span class="p">,</span> <span class="s2">&quot;DYNAMIC&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_DimHint(type=&lt;_DimHintType.AUTO: 3&gt;)&quot;</span><span class="p">,</span> <span class="s2">&quot;AUTO&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">string_type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_inputs_for_task">
@@ -531,25 +524,25 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">transformers</span>
 
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_transformers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_transformers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">transformers</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">onnx</span>
 
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_onnx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">__version__</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_onnx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">onnx</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">onnxscript</span>
 
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_onnxscript&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">onnxscript</span><span class="o">.</span><span class="n">__version__</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_onnxscript&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">onnxscript</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">onnxruntime</span>
 
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_onnxruntime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;version_onnxruntime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">onnxruntime</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="kn">import</span> <span class="nn">onnx_diagnostic</span>
@@ -608,6 +601,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">trained</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;trained=</span><span class="si">{</span><span class="n">trained</span><span class="si">}</span><span class="s2"> not supported yet&quot;</span>
     <span class="n">summary</span> <span class="o">=</span> <span class="n">version_summary</span><span class="p">()</span>
+    <span class="n">folder_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">dump_folder</span><span class="p">:</span>
         <span class="n">folder_name</span> <span class="o">=</span> <span class="n">_make_folder_name</span><span class="p">(</span>
             <span class="n">model_id</span><span class="p">,</span> <span class="n">exporter</span><span class="p">,</span> <span class="n">optimization</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
@@ -619,12 +613,12 @@
         <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;dump_folder_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_name</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] dump into </span><span class="si">{</span><span class="n">folder_name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">folder_name</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] validate model id </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] get dummy inputs...&quot;</span><span class="p">)</span>
         <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;model_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_id</span>
+
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -639,7 +633,7 @@
 
     <span class="k">if</span> <span class="n">drop_inputs</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] drop inputs </span><span class="si">{</span><span class="n">drop_inputs</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] -- drop inputs </span><span class="si">{</span><span class="n">drop_inputs</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] current inputs: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;[validate_model] current dynnamic_shapes: &quot;</span>
@@ -682,6 +676,7 @@
     <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;model_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_id</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] --&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] task=</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;task&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] size=</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="si">}</span><span class="s2"> Mb&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] n_weights=</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;n_weights&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e6</span><span class="si">}</span><span class="s2"> millions parameters&quot;</span><span class="p">)</span>
@@ -689,10 +684,11 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] +INPUT </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;dynamic_shapes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] +SHAPE </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">_ds_clean</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] --&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">do_run</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] run the model...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] -- run the model...&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] inputs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">],</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># We make a copy of the input just in case the model modifies them inplace</span>
         <span class="n">hash_inputs</span> <span class="o">=</span> <span class="n">string_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -721,12 +717,15 @@
 
     <span class="k">if</span> <span class="n">exporter</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[validate_model] export the model with </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;[validate_model] -- export the model with </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">, &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;optimization=</span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">patch</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] applies patches before exporting&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[validate_model] applies patches before exporting &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;stop_if_static=</span><span class="si">{</span><span class="n">stop_if_static</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
             <span class="k">with</span> <span class="n">bypass_export_some_errors</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
                 <span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="n">stop_if_static</span><span class="o">=</span><span class="n">stop_if_static</span><span class="p">,</span>
@@ -799,7 +798,7 @@
         <span class="k">if</span> <span class="s2">&quot;exported_program&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
             <span class="n">ep</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;exported_program&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] dumps exported program in </span><span class="si">{</span><span class="n">dump_folder</span><span class="si">!r}</span><span class="s2">...&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] -- dumps exported program in </span><span class="si">{</span><span class="n">dump_folder</span><span class="si">!r}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">.ep&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ep</span><span class="p">))</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">.graph&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -811,7 +810,10 @@
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] dumps onnx program in </span><span class="si">{</span><span class="n">dump_folder</span><span class="si">!r}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="n">onnx_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_name</span><span class="si">}</span><span class="s2">.onnx&quot;</span><span class="p">)</span>
-            <span class="n">epo</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">onnx_file_name</span><span class="p">,</span> <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epo</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">model_container</span><span class="o">.</span><span class="n">ModelContainer</span><span class="p">):</span>
+                <span class="n">epo</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">onnx_file_name</span><span class="p">,</span> <span class="n">all_tensors_to_one_file</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">epo</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">onnx_file_name</span><span class="p">,</span> <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] done (dump onnx)&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -832,7 +834,7 @@
         <span class="n">summary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">summary_valid</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] done (final)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_model] -- done (final)&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span></div>
 
 
@@ -881,6 +883,16 @@
             <span class="n">optimization</span><span class="o">=</span><span class="n">optimization</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span>
+    <span class="k">if</span> <span class="n">exporter</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;custom-&quot;</span><span class="p">):</span>
+        <span class="c1"># torch export</span>
+        <span class="n">summary</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">call_torch_export_custom</span><span class="p">(</span>
+            <span class="n">exporter</span><span class="o">=</span><span class="n">exporter</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">optimization</span><span class="o">=</span><span class="n">optimization</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;export with </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2"> and optimization=</span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2"> not implemented yet&quot;</span>
     <span class="p">)</span></div>
@@ -915,6 +927,7 @@
         <span class="s2">&quot;export-strict&quot;</span><span class="p">,</span>
         <span class="s2">&quot;export-nostrict&quot;</span><span class="p">,</span>
     <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">optimization</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;No optimization is implemented for exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="s2">&quot;model&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;model is missing from data: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="s2">&quot;inputs_export&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;inputs_export is missing from data: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">summary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1001,6 +1014,111 @@
             <span class="sa">f</span><span class="s2">&quot;before: </span><span class="si">{</span><span class="n">hash_inputs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot; after: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs_export&#39;</span><span class="p">],</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
+    <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="validate_onnx_model">
+<a class="viewcode-back" href="../../../api/torch_models/test_helper.html#onnx_diagnostic.torch_models.test_helper.validate_onnx_model">[docs]</a>
+<span class="k">def</span> <span class="nf">validate_onnx_model</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verifies that an onnx model produces the same</span>
+<span class="sd">    expected outputs.</span>
+
+<span class="sd">    :param data: dictionary with all the necessary inputs, the dictionary must</span>
+<span class="sd">        contains keys ``model`` and ``inputs_export``</span>
+<span class="sd">    :param quiet: catch exception or not</span>
+<span class="sd">    :param verbose: verbosity</span>
+<span class="sd">    :param optimization: optimization to do</span>
+<span class="sd">    :return: two dictionaries, one with some metrics,</span>
+<span class="sd">        another one with whatever the function produces</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">onnxruntime</span>
+
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">flat_inputs</span> <span class="o">=</span> <span class="n">flatten_object</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span> <span class="n">drop_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">flat_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span>
+    <span class="n">providers</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span>
+        <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;CUDAExecutionProvider&quot;</span><span class="p">,</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;onnx_file_name&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_file_name&quot;</span><span class="p">]</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stats</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="s2">&quot;onnx_program&quot;</span> <span class="ow">in</span> <span class="n">data</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;onnx_program is missing from data which has </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_program&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;The model is highger than 2Gb: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">**</span><span class="mi">30</span><span class="si">}</span><span class="s2"> Gb&quot;</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] verify onnx model with providers </span><span class="si">{</span><span class="n">providers</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+            <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span>
+
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_ort_sess&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] done (ort_session)&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make_feeds</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] -- make_feeds...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] inputs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">],</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">feeds</span> <span class="o">=</span> <span class="n">make_feeds</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sess</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()],</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span>
+        <span class="n">use_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">check_flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] ort inputs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">feeds</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_ort_inputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">string_type</span><span class="p">(</span><span class="n">feeds</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] done (make_feeds)&quot;</span><span class="p">)</span>
+
+    <span class="c1"># run ort</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] run session...&quot;</span><span class="p">)</span>
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">got</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_onnx_ort_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+            <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">got</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] done (run)&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] got=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># compute discrepancies</span>
+    <span class="n">disc</span> <span class="o">=</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">],</span> <span class="n">got</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] discrepancies=</span><span class="si">{</span><span class="n">string_diff</span><span class="p">(</span><span class="n">disc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">disc</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">summary</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;disc_onnx_ort_run_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
     <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span></div>
 
 
@@ -1113,102 +1231,174 @@
 
 
 
-<div class="viewcode-block" id="validate_onnx_model">
-<a class="viewcode-back" href="../../../api/torch_models/test_helper.html#onnx_diagnostic.torch_models.test_helper.validate_onnx_model">[docs]</a>
-<span class="k">def</span> <span class="nf">validate_onnx_model</span><span class="p">(</span>
+<div class="viewcode-block" id="call_torch_export_custom">
+<a class="viewcode-back" href="../../../api/torch_models/test_helper.html#onnx_diagnostic.torch_models.test_helper.call_torch_export_custom">[docs]</a>
+<span class="k">def</span> <span class="nf">call_torch_export_custom</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Verifies that an onnx model produces the same</span>
-<span class="sd">    expected outputs.</span>
+<span class="sd">    Exports a model into onnx.</span>
+<span class="sd">    If a patch must be applied, it should be before this functions.</span>
 
 <span class="sd">    :param data: dictionary with all the necessary inputs, the dictionary must</span>
 <span class="sd">        contains keys ``model`` and ``inputs_export``</span>
+<span class="sd">    :param exporter: exporter to call</span>
 <span class="sd">    :param quiet: catch exception or not</span>
 <span class="sd">    :param verbose: verbosity</span>
 <span class="sd">    :param optimization: optimization to do</span>
 <span class="sd">    :return: two dictionaries, one with some metrics,</span>
 <span class="sd">        another one with whatever the function produces</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">onnxruntime</span>
+    <span class="k">assert</span> <span class="n">optimization</span> <span class="ow">in</span> <span class="p">{</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;default+onnxruntime&quot;</span><span class="p">,</span>
+        <span class="kc">None</span><span class="p">,</span>
+    <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;unexpected value for optimization=</span><span class="si">{</span><span class="n">optimization</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="p">{</span>
+        <span class="s2">&quot;custom-strict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-strict-dec&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-strict-all&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-nostrict&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-nostrict-dec&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-nostrict-all&quot;</span><span class="p">,</span>
+    <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;model&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;model is missing from data: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;inputs_export&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;inputs_export is missing from data: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">dynamo</span> <span class="o">=</span> <span class="s2">&quot;nostrict&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exporter</span>
+    <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">split_args_kwargs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs_export&quot;</span><span class="p">])</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dynamic_shapes&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;[call_torch_export_custom] exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;optimization=</span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[call_torch_export_custom] args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[call_torch_export_custom] kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[call_torch_export_custom] dynamic_shapes=</span><span class="si">{</span><span class="n">_ds_clean</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[call_torch_export_custom] export...&quot;</span><span class="p">)</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;export_exporter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exporter</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;export_optimization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimization</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;export_dynamo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dynamo</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;export_args&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;export_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">summary</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">flat_inputs</span> <span class="o">=</span> <span class="n">flatten_object</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span> <span class="n">drop_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">flat_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span>
-    <span class="n">providers</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span>
-        <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;CUDAExecutionProvider&quot;</span><span class="p">,</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+    <span class="kn">from</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">ExportOptions</span>
+    <span class="kn">from</span> <span class="nn">experimental_experiment.xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
+
+    <span class="n">export_options</span> <span class="o">=</span> <span class="n">ExportOptions</span><span class="p">(</span>
+        <span class="n">strict</span><span class="o">=</span><span class="s2">&quot;nostrict&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exporter</span><span class="p">,</span>
+        <span class="n">decomposition_table</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;dec&quot;</span> <span class="k">if</span> <span class="s2">&quot;-dec&quot;</span> <span class="ow">in</span> <span class="n">exporter</span> <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;all&quot;</span> <span class="k">if</span> <span class="s2">&quot;-all&quot;</span> <span class="ow">in</span> <span class="n">exporter</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">),</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;onnx_file_name&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_file_name&quot;</span><span class="p">]</span>
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stats</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="s2">&quot;onnx_program&quot;</span> <span class="ow">in</span> <span class="n">data</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;onnx_program is missing from data which has </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_program&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">model_proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;The model is highger than 2Gb: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">**</span><span class="mi">30</span><span class="si">}</span><span class="s2"> Gb&quot;</span>
-        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] verify onnx model with providers </span><span class="si">{</span><span class="n">providers</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">OptimizationOptions</span><span class="p">(</span><span class="n">patterns</span><span class="o">=</span><span class="n">optimization</span><span class="p">)</span> <span class="k">if</span> <span class="n">optimization</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span>
+            <span class="n">epo</span><span class="p">,</span> <span class="n">opt_stats</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+                <span class="n">args</span><span class="p">,</span>
+                <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span>
+                <span class="n">export_options</span><span class="o">=</span><span class="n">export_options</span><span class="p">,</span>
+                <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+                <span class="n">optimize</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">optimization</span><span class="p">),</span>
+                <span class="n">large_model</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">return_optimize_report</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
-            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;ERR_export_export&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ERR_export_export&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_export_export&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
             <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span>
+        <span class="n">epo</span><span class="p">,</span> <span class="n">opt_stats</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span>
+            <span class="n">export_options</span><span class="o">=</span><span class="n">export_options</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+            <span class="n">optimize</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">optimization</span><span class="p">),</span>
+            <span class="n">large_model</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">return_optimize_report</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_onnx_ort_create&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_ort_sess&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] done (ort_session)&quot;</span><span class="p">)</span>
+    <span class="n">new_stat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s2">&quot;optimization&quot;</span> <span class="ow">in</span> <span class="n">opt_stats</span><span class="p">:</span>
+        <span class="n">added</span><span class="p">,</span> <span class="n">removed</span><span class="p">,</span> <span class="n">time_in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">applied</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">n_applied</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">by_pattern</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">by_pattern_n</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">by_iter</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cst_added</span><span class="p">,</span> <span class="n">cst_removed</span><span class="p">,</span> <span class="n">cst_time_in</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span>
 
-    <span class="c1"># make_feeds</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] make_feeds...&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] inputs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">],</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">feeds</span> <span class="o">=</span> <span class="n">make_feeds</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sess</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span> <span class="n">use_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] ort inputs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">feeds</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;onnx_ort_inputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">string_type</span><span class="p">(</span><span class="n">feeds</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] done (make_feeds)&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">opt_stats</span><span class="p">[</span><span class="s2">&quot;optimization&quot;</span><span class="p">]:</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;constant_folding&quot;</span><span class="p">:</span>
+                <span class="n">cst_added</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">cst_removed</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;removed&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">cst_time_in</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time_in&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pattern</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">by_pattern</span><span class="p">:</span>
+                <span class="n">by_pattern</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">by_pattern_n</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">by_iter</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">time_in</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time_in&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">added</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">removed</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;removed&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">max_iter</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_iter</span><span class="p">,</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">by_pattern</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time_in&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">by_pattern_n</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">+=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;added&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;removed&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">pattern</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;match&quot;</span><span class="p">):</span>
+                <span class="n">by_iter</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">by_iter</span><span class="p">[</span><span class="n">pattern</span><span class="p">],</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;pattern&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;match_&quot;</span><span class="p">):</span>
+                <span class="n">matched</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;apply_&quot;</span><span class="p">):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;op_opt_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">key2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;op_opt_maxiter_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">applied</span><span class="p">:</span>
+                    <span class="n">applied</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">applied</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">applied</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">applied</span><span class="p">[</span><span class="n">key2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">],</span> <span class="n">applied</span><span class="p">[</span><span class="n">key2</span><span class="p">])</span>
+                <span class="n">n_applied</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="c1"># run ort</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] run session...&quot;</span><span class="p">)</span>
-    <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">got</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ERR_onnx_ort_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
-            <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_onnx_ort_run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
-            <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">got</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[validate_onnx_model] done (run)&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] got=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_stat</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">onnx_opt_optimized</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">op_opt_all_time_in</span><span class="o">=</span><span class="n">time_in</span><span class="p">,</span>
+                <span class="n">op_opt_all_added</span><span class="o">=</span><span class="n">added</span><span class="p">,</span>
+                <span class="n">op_opt_all_removed</span><span class="o">=</span><span class="n">removed</span><span class="p">,</span>
+                <span class="n">op_opt_max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
+                <span class="n">op_opt_unique_matched</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">matched</span><span class="p">),</span>
+                <span class="n">op_opt_unique_applied</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">applied</span><span class="p">),</span>
+                <span class="n">op_opt_n_applied</span><span class="o">=</span><span class="n">n_applied</span><span class="p">,</span>
+                <span class="n">time_export_optimization</span><span class="o">=</span><span class="n">time_in</span><span class="p">,</span>
+                <span class="n">op_opt_export_optimization</span><span class="o">=</span><span class="n">time_in</span><span class="p">,</span>
+                <span class="n">op_opt_cst_time_in</span><span class="o">=</span><span class="n">cst_time_in</span><span class="p">,</span>
+                <span class="n">op_opt_cst_added</span><span class="o">=</span><span class="n">cst_added</span><span class="p">,</span>
+                <span class="n">op_opt_cst_removed</span><span class="o">=</span><span class="n">cst_removed</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
-    <span class="c1"># compute discrepancies</span>
-    <span class="n">disc</span> <span class="o">=</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;expected&quot;</span><span class="p">],</span> <span class="n">got</span><span class="p">,</span> <span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;time_export_export&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+    <span class="n">summary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_stat</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">epo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;no onnx export was found&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_onnx_model] discrepancies=</span><span class="si">{</span><span class="n">string_diff</span><span class="p">(</span><span class="n">disc</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">disc</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">summary</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;disc_onnx_ort_run_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[call_torch_export_custom] done (export)&quot;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;onnx_program&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epo</span>
     <span class="k">return</span> <span class="n">summary</span><span class="p">,</span> <span class="n">data</span></div>
 
 </pre></div>

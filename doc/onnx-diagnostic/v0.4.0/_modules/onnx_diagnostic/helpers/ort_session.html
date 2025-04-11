@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.helpers.ort_session - onnx-diagnostic 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -223,6 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
 </ul>
 </li>
@@ -359,8 +360,7 @@
 <span class="kn">from</span> <span class="nn">torch._C</span> <span class="kn">import</span> <span class="n">_from_dlpack</span>
 <span class="kn">import</span> <span class="nn">onnxruntime</span>
 <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
-<span class="kn">from</span> <span class="nn">.cache_helper</span> <span class="kn">import</span> <span class="n">is_cache_dynamic_registered</span>
-<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">size_type</span><span class="p">,</span> <span class="n">string_type</span><span class="p">,</span> <span class="n">flatten_object</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">size_type</span>
 <span class="kn">from</span> <span class="nn">.onnx_helper</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">,</span>
     <span class="n">onnx_dtype_to_np_dtype</span><span class="p">,</span>
@@ -369,46 +369,6 @@
 <span class="p">)</span>
 
 <span class="n">DEVICES</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="p">(</span><span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="o">.</span><span class="n">default_memory</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)}</span>
-
-
-<div class="viewcode-block" id="make_feeds">
-<a class="viewcode-back" href="../../../api/helpers/ort_session.html#onnx_diagnostic.helpers.ort_session.make_feeds">[docs]</a>
-<span class="k">def</span> <span class="nf">make_feeds</span><span class="p">(</span>
-    <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
-    <span class="n">inputs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="n">use_numpy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Serializes the inputs to produce feeds expected</span>
-<span class="sd">    by :class:`onnxruntime.InferenceSession`.</span>
-
-<span class="sd">    :param proto: onnx model or list of names</span>
-<span class="sd">    :param inputs: any kind of inputs</span>
-<span class="sd">    :param use_numpy: if True, converts torch tensors into numpy arrays</span>
-<span class="sd">    :param copy: a copy is made, this should be the case if the inputs is ingested</span>
-<span class="sd">        by ``OrtValue``</span>
-<span class="sd">    :return: feeds dictionary</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">flat</span> <span class="o">=</span> <span class="n">flatten_object</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">drop_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">flat</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_cache_dynamic_registered</span><span class="p">(</span><span class="n">fast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">flat</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">inputs</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="p">),</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Unexpected number of flattened objects, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2"> != &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">inputs</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">use_numpy</span><span class="p">:</span>
-        <span class="n">flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">else</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">flat</span><span class="p">]</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">)</span> <span class="k">else</span> <span class="n">proto</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
-        <span class="n">flat</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">t</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">flat</span><span class="p">]</span>
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">flat</span><span class="p">))</span></div>
-
 
 
 <span class="k">class</span> <span class="nc">_InferenceSession</span><span class="p">:</span>

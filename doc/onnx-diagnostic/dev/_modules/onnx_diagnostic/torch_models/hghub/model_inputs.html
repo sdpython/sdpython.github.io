@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.hghub.model_inputs - onnx-diagnostic 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -223,6 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
 </ul>
 </li>
@@ -461,6 +462,14 @@
             <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
                 <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span>
             <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;automatic-speech-recognition&quot;</span><span class="p">:</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_decoder_layers&quot;</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">num_decoder_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_decoder_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;decoder_layers&quot;</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">decoder_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">decoder_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">):</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input generation for task </span><span class="si">{</span><span class="n">task</span><span class="si">!r}</span><span class="s2"> not implemented yet.&quot;</span><span class="p">)</span>
 
@@ -638,6 +647,35 @@
             <span class="n">num_channels</span><span class="o">=</span><span class="mi">3</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">fct</span> <span class="o">=</span> <span class="n">get_inputs_for_image_text_to_text</span>  <span class="c1"># type: ignore</span>
+    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;automatic-speech-recognition&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_hasattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="s2">&quot;d_model&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;decoder_attention_heads&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;decoder_layers&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;encoder_attention_heads&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;encoder_layers&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;max_source_positions&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">sequence_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31000</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">,</span>
+            <span class="n">max_source_positions</span><span class="o">=</span><span class="mi">1500</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">max_source_positions</span><span class="p">,</span>
+            <span class="n">d_model</span><span class="o">=</span><span class="mi">384</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">d_model</span><span class="p">,</span>
+            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
+            <span class="n">encoder_attention_heads</span><span class="o">=</span><span class="mi">6</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">encoder_attention_heads</span><span class="p">,</span>
+            <span class="n">encoder_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">encoder_layers</span><span class="p">,</span>
+            <span class="n">decoder_attention_heads</span><span class="o">=</span><span class="mi">6</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">decoder_attention_heads</span><span class="p">,</span>
+            <span class="n">decoder_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">decoder_layers</span><span class="p">,</span>
+            <span class="n">head_dim</span><span class="o">=</span><span class="p">(</span>
+                <span class="mi">64</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">d_model</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">encoder_attention_heads</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">fct</span> <span class="o">=</span> <span class="n">get_inputs_for_speech_automatic_recognition</span>  <span class="c1"># type: ignore</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input generation for task </span><span class="si">{</span><span class="n">task</span><span class="si">!r}</span><span class="s2"> not implemented yet.&quot;</span><span class="p">)</span>
 
@@ -656,6 +694,7 @@
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">dynamic_rope</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">same_as_pretrained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">use_preinstalled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets a non initialized model similar to the original model</span>
@@ -672,6 +711,7 @@
 <span class="sd">    :param dynamic_rope: use dynamic rope (see :class:`transformers.LlamaConfig`)</span>
 <span class="sd">    :param same_as_pretrained: if True, do not change the default values</span>
 <span class="sd">        to get a smaller model</span>
+<span class="sd">    :param use_preinstalled: use preinstalled configurations</span>
 <span class="sd">    :return: dictionary with a model, inputs, dynamic shapes, and the configuration</span>
 
 <span class="sd">    Example:</span>
@@ -693,8 +733,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] model_id=</span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_preinstalled</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] use preinstalled </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">get_pretrained_config</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">get_pretrained_config</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">use_preinstalled</span><span class="o">=</span><span class="n">use_preinstalled</span><span class="p">)</span>
     <span class="n">archs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">architectures</span>  <span class="c1"># type: ignore</span>
     <span class="k">assert</span> <span class="n">archs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">archs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Unable to determine the architecture for model </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">, &quot;</span>
@@ -856,6 +898,9 @@
 <span class="sd">    :param kwargs: to overwrite the configuration, example ``num_hidden_layers=1``</span>
 <span class="sd">    :return: dictionary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">head_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim is None, the value cannot be set without a configuration&quot;</span>
+        <span class="n">head_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
     <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
     <span class="n">seq_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;seq_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
     <span class="n">cache_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;cache_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
@@ -1103,15 +1148,135 @@
 
 
 
+<div class="viewcode-block" id="get_inputs_for_speech_automatic_recognition">
+<a class="viewcode-back" href="../../../../api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.get_inputs_for_speech_automatic_recognition">[docs]</a>
+<span class="k">def</span> <span class="nf">get_inputs_for_speech_automatic_recognition</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">dummy_max_token_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">max_source_positions</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">d_model</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">num_hidden_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">encoder_attention_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">encoder_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">decoder_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">head_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates input for task ``text2text-generation``.</span>
+
+<span class="sd">    :param model: model to get the missing information</span>
+<span class="sd">    :param config: configuration used to generate the model</span>
+<span class="sd">    :param batch_size: batch size</span>
+<span class="sd">    :param kwargs: to overwrite the configuration, example ``num_hidden_layers=1``</span>
+<span class="sd">    :return: dictionary</span>
+
+<span class="sd">    Stolen inputs for one model.</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        dict(</span>
+<span class="sd">            cache_position:T7s4,</span>
+<span class="sd">            past_key_values:EncoderDecoderCache(</span>
+<span class="sd">                self_attention_cache=DynamicCache[serialized](#2[#0[],#0[]]),</span>
+<span class="sd">                cross_attention_cache=DynamicCache[serialized](#2[#0[],#0[]])</span>
+<span class="sd">            ),</span>
+<span class="sd">            decoder_input_ids:T7s1x4,</span>
+<span class="sd">            encoder_outputs:BaseModelOutput(last_hidden_state:T1s1x1500x384),</span>
+<span class="sd">            use_cache:bool,return_dict:bool</span>
+<span class="sd">        )</span>
+<span class="sd">        dict(</span>
+<span class="sd">            cache_position:T7s1,</span>
+<span class="sd">            past_key_values:EncoderDecoderCache(</span>
+<span class="sd">                self_attention_cache=DynamicCache[serialized](#2[</span>
+<span class="sd">                    #4[T1s1x6x4x64,T1s1x6x4x64,T1s1x6x4x64,T1s1x6x4x64],</span>
+<span class="sd">                    #4[T1s1x6x4x64,T1s1x6x4x64,T1s1x6x4x64,T1s1x6x4x64]</span>
+<span class="sd">                ]),</span>
+<span class="sd">                cross_attention_cache=DynamicCache[serialized](#2[</span>
+<span class="sd">                    #4[T1s1x6x1500x64,T1s1x6x1500x64,T1s1x6x1500x64,T1s1x6x1500x64],</span>
+<span class="sd">                    #4[T1s1x6x1500x64,T1s1x6x1500x64,T1s1x6x1500x64,T1s1x6x1500x64]</span>
+<span class="sd">                ]),</span>
+<span class="sd">            ),</span>
+<span class="sd">            decoder_input_ids:T7s1x1,</span>
+<span class="sd">            encoder_outputs:BaseModelOutput(last_hidden_state:T1s1x1500x384),</span>
+<span class="sd">            use_cache:bool,return_dict:bool</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">seq_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;seq_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+
+    <span class="n">shapes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;decoder_input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">},</span>
+        <span class="s2">&quot;cache_position&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">},</span>
+        <span class="s2">&quot;encoder_outputs&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}],</span>
+        <span class="s2">&quot;past_key_values&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
+                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
+                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
+            <span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">decoder_input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="n">dummy_max_token_id</span><span class="p">,</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">cache_position</span><span class="o">=</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">encoder_outputs</span><span class="o">=</span><span class="n">transformers</span><span class="o">.</span><span class="n">modeling_outputs</span><span class="o">.</span><span class="n">BaseModelOutput</span><span class="p">(</span>
+            <span class="n">last_hidden_state</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">max_source_positions</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">past_key_values</span><span class="o">=</span><span class="n">make_encoder_decoder_cache</span><span class="p">(</span>
+            <span class="n">make_dynamic_cache</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">encoder_attention_heads</span><span class="p">,</span> <span class="n">encoder_layers</span><span class="p">,</span> <span class="n">head_dim</span>
+                        <span class="p">),</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">encoder_attention_heads</span><span class="p">,</span> <span class="n">encoder_layers</span><span class="p">,</span> <span class="n">head_dim</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">make_dynamic_cache</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">encoder_attention_heads</span><span class="p">,</span> <span class="n">max_source_positions</span><span class="p">,</span> <span class="n">head_dim</span>
+                        <span class="p">),</span>
+                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">encoder_attention_heads</span><span class="p">,</span> <span class="n">max_source_positions</span><span class="p">,</span> <span class="n">head_dim</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="c1"># one these is selected based on the forward method signature</span>
+        <span class="c1"># encoder_last_hidden_state=torch.randn(batch_size, sequence_length2, encoder_dim),</span>
+        <span class="c1"># encoder_outputs=torch.randn(batch_size, sequence_length2, encoder_dim),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">shapes</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="get_get_inputs_function_for_tasks">
 <a class="viewcode-back" href="../../../../api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.get_get_inputs_function_for_tasks">[docs]</a>
 <span class="k">def</span> <span class="nf">get_get_inputs_function_for_tasks</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns all the function producing dummy inputs for every task.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;automatic-speech-recognition&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_speech_automatic_recognition</span><span class="p">,</span>
         <span class="s2">&quot;image-classification&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_image_classification</span><span class="p">,</span>
+        <span class="s2">&quot;image-text-to-text&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_image_text_to_text</span><span class="p">,</span>
         <span class="s2">&quot;text-generation&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_text_generation</span><span class="p">,</span>
         <span class="s2">&quot;text2text-generation&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_text2text_generation</span><span class="p">,</span>
-        <span class="s2">&quot;image-text-to-text&quot;</span><span class="p">:</span> <span class="n">get_inputs_for_image_text_to_text</span><span class="p">,</span>
     <span class="p">}</span></div>
 
 </pre></div>

@@ -276,7 +276,7 @@ when something like that is happening.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.721 seconds)
+   **Total running time of the script:** (0 minutes 0.126 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_python_int.py:

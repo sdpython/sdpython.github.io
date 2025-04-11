@@ -481,7 +481,7 @@ is hidden in a custom operator.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.813 seconds)
+   **Total running time of the script:** (0 minutes 0.261 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_max.py:

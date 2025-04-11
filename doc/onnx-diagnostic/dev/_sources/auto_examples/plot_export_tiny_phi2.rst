@@ -48,7 +48,7 @@ Create the dummy model
     from onnx_diagnostic import doc
     from onnx_diagnostic.helpers import max_diff, string_diff, string_type
     from onnx_diagnostic.helpers.cache_helper import is_cache_dynamic_registered
-    from onnx_diagnostic.helpers.ort_session import make_feeds
+    from onnx_diagnostic.helpers.rt_helper import make_feeds
     from onnx_diagnostic.torch_export_patches import bypass_export_some_errors
     from onnx_diagnostic.torch_models.hghub import (
         get_untrained_model_with_inputs,
@@ -128,7 +128,7 @@ Let's see the configuration.
       "rope_theta": 10000.0,
       "tie_word_embeddings": false,
       "torch_dtype": "float16",
-      "transformers_version": "4.51.0.dev0",
+      "transformers_version": "4.52.0.dev0",
       "use_cache": true,
       "vocab_size": 51200
     }
@@ -179,7 +179,7 @@ With min/max values.
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3[5323,45108:A28376.5],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x30x80[-5.360153675079346,4.791228771209717:A0.001974196634906278],T1s2x32x30x80[-4.051785469055176,4.476999282836914:A0.0011384615436145868]],#2[T1s2x32x30x80[-4.100203037261963,4.356419563293457:A-0.0048976734088543375],T1s2x32x30x80[-4.225372314453125,4.697620868682861:A0.0022808550438176444]]]))
+    dict(input_ids:T7s2x3[1087,48049:A16244.666666666666],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x30x80[-4.489185810089111,4.442478179931641:A-0.003097513569957727],T1s2x32x30x80[-4.671633243560791,4.2682952880859375:A-0.005087840943259953]],#2[T1s2x32x30x80[-4.720743179321289,4.366498947143555:A-0.0011145513167832323],T1s2x32x30x80[-4.295710563659668,4.381348609924316:A-0.0001101726830572088]]]))
 
 
 
@@ -246,7 +246,7 @@ We execute the model to produce expected outputs.
 
  .. code-block:: none
 
-    expected: dict(logits:T1s2x3x51200[-2.560974359512329,2.454162359237671:A-0.00016775055397033611],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x33x80[-5.360153675079346,4.791228771209717:A0.0021868587653931806],T1s2x32x33x80[-4.051785469055176,4.476999282836914:A0.0017716525465561713]],#2[T1s2x32x33x80[-4.100203037261963,4.356419563293457:A-0.004690552220114579],T1s2x32x33x80[-4.225372314453125,4.697620868682861:A0.0021503875538262046]]]))
+    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.896296262741089,2.8011929988861084:A0.0013032040743541984],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x33x80[-4.489185810089111,4.442478179931641:A-0.003073029425958327],T1s2x32x33x80[-4.671633243560791,4.2682952880859375:A-0.004541110962624989]],#2[T1s2x32x33x80[-4.720743179321289,4.366498947143555:A-0.0016756718649513507],T1s2x32x33x80[-4.295710563659668,4.381348609924316:A-5.721585575444309e-05]]]))
 
 
 
@@ -442,7 +442,7 @@ And finally the discrepancies.
 
  .. code-block:: none
 
-    onnx discrepancies: abs=2.0265579223632812e-06, rel=0.000741497303386164, n=983040.0
+    onnx discrepancies: abs=1.9073486328125e-06, rel=0.001058278783352371, n=983040.0
 
 
 
@@ -471,7 +471,7 @@ It looks good.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.463 seconds)
+   **Total running time of the script:** (0 minutes 9.802 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_phi2.py:

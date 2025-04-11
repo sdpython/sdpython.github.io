@@ -208,7 +208,7 @@ It tells what it cannot verify.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.250 seconds)
+   **Total running time of the script:** (0 minutes 0.277 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_nonzero.py:

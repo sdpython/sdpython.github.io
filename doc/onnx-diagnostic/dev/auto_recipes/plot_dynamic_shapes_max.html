@@ -9,7 +9,7 @@
         <title>Cannot export torch.sym_max(x.shape[0], y.shape[0]) - onnx-diagnostic 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -224,6 +224,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
 </ul>
 </li>
@@ -315,7 +316,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -473,8 +473,8 @@ Range constraints: {s35: VR[2, int_oo], s16: VR[2, int_oo], s58: VR[2, int_oo], 
 </section>
 <section id="rewritten-model">
 <h2>Rewritten Model<a class="headerlink" href="#rewritten-model" title="Link to this heading">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">max</span></code> does not get captured, <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.sym_max.html#torch.sym_max" title="(in PyTorch vmain (2.8.0a0+gite9e5682 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.sym_max()</span></code></a> is no better,
-<a class="reference external" href="https://pytorch.org/docs/main/generated/torch.max.html#torch.max" title="(in PyTorch vmain (2.8.0a0+gite9e5682 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.max()</span></code></a> only works on tensors. Nothing really works.
+<p><code class="docutils literal notranslate"><span class="pre">max</span></code> does not get captured, <a class="reference external" href="https://pytorch.org/docs/main/generated/torch.sym_max.html#torch.sym_max" title="(in PyTorch vmain (2.8.0a0+gite945247 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.sym_max()</span></code></a> is no better,
+<a class="reference external" href="https://pytorch.org/docs/main/generated/torch.max.html#torch.max" title="(in PyTorch vmain (2.8.0a0+gite945247 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.max()</span></code></a> only works on tensors. Nothing really works.
 We use a trick to introduce new shape the shape inference algorithm
 cannot know. This requires to hide the failing logic in a custom operator.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_undefined_dimension</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <a href="https://pytorch.org/docs/main/torch.html#torch.SymInt" title="torch.SymInt" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><a href="https://pytorch.org/docs/main/torch.html#torch.SymInt" title="torch.SymInt" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class"><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span></a></a><span class="p">:</span>
@@ -636,7 +636,7 @@ is hidden in a custom operator.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;dynamic shapes</span><span class="se">\n</span><span class="s2">workaround</span><span class="se">\n</span><span class="s2">max(d1, d2)&quot;</span><span class="p">,</span> <span class="s2">&quot;dynamic shapes&quot;</span><span class="p">,</span> <span class="s2">&quot;yellow&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_dynamic_shapes_max_001.png" srcset="../_images/sphx_glr_plot_dynamic_shapes_max_001.png" alt="plot dynamic shapes max" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.813 seconds)</p>
+<img src="../_images/sphx_glr_plot_dynamic_shapes_max_001.png" srcset="../_images/sphx_glr_plot_dynamic_shapes_max_001.png" alt="plot dynamic shapes max" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.261 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-dynamic-shapes-max-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/faa6c5a4635e79eb2391542ce0393432/plot_dynamic_shapes_max.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_dynamic_shapes_max.ipynb</span></code></a></p>
