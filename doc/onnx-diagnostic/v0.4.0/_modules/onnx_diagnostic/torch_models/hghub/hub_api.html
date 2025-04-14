@@ -358,7 +358,23 @@
 <span class="kn">import</span> <span class="nn">transformers</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfApi</span><span class="p">,</span> <span class="n">model_info</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">hub_data_cached_configs</span>
-<span class="kn">from</span> <span class="nn">.hub_data</span> <span class="kn">import</span> <span class="n">__date__</span><span class="p">,</span> <span class="n">__data_tasks__</span><span class="p">,</span> <span class="n">load_architecture_task</span>
+<span class="kn">from</span> <span class="nn">.hub_data</span> <span class="kn">import</span> <span class="n">__date__</span><span class="p">,</span> <span class="n">__data_tasks__</span><span class="p">,</span> <span class="n">load_architecture_task</span><span class="p">,</span> <span class="n">__data_arch_values__</span>
+
+
+<div class="viewcode-block" id="get_architecture_default_values">
+<a class="viewcode-back" href="../../../../api/torch_models/hghub/hub_api.html#onnx_diagnostic.torch_models.hghub.hub_api.get_architecture_default_values">[docs]</a>
+<span class="nd">@functools</span><span class="o">.</span><span class="n">cache</span>
+<span class="k">def</span> <span class="nf">get_architecture_default_values</span><span class="p">(</span><span class="n">architecture</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The configuration may miss information to build the dummy inputs.</span>
+<span class="sd">    This information returns the missing pieces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">architecture</span> <span class="ow">in</span> <span class="n">__data_arch_values__</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;No known default values for </span><span class="si">{</span><span class="n">architecture</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;expecting one architecture in </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">__data_arch_values__</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">__data_arch_values__</span><span class="p">[</span><span class="n">architecture</span><span class="p">]</span></div>
+
 
 
 <span class="nd">@functools</span><span class="o">.</span><span class="n">cache</span>

@@ -9,7 +9,7 @@
         <title>-m onnx_diagnostic validate … validate a model id - onnx-diagnostic 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -316,6 +316,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -365,35 +366,54 @@
 available on <a class="reference external" href="https://huggingface.co/docs/hub/en/index">HuggingFace</a> but not only.
 It creates dummy inputs, runs the models on them,
 exports the model, measures the discrepancies…</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">usage</span><span class="p">:</span> <span class="n">test</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="n">MID</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">TASK</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">EXPORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">opt</span> <span class="n">OPT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="o">|</span> <span class="o">--</span><span class="n">run</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">run</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">q</span> <span class="o">|</span> <span class="o">--</span><span class="n">quiet</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">quiet</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">patch</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">patch</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">stop</span><span class="o">-</span><span class="k">if</span><span class="o">-</span><span class="n">static</span> <span class="n">STOP_IF_STATIC</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">trained</span> <span class="o">|</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">trained</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">DUMP_FOLDER</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">drop</span> <span class="n">DROP</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span> <span class="n">VERBOSE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">dtype</span> <span class="n">DTYPE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">device</span> <span class="n">DEVICE</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    usage: test [-h] [-m MID] [-t TASK] [-e EXPORT] [--opt OPT]
+                [-r | --run | --no-run] [-q | --quiet | --no-quiet]
+                [-p | --patch | --no-patch]
+                [--stop-if-static STOP_IF_STATIC]
+                [--trained | --no-trained] [-o DUMP_FOLDER]
+                [--drop DROP] [--ortfusiontype ORTFUSIONTYPE]
+                [-v VERBOSE] [--dtype DTYPE] [--device DEVICE]
     
-    <span class="n">Prints</span> <span class="n">out</span> <span class="n">dummy</span> <span class="n">inputs</span> <span class="k">for</span> <span class="n">a</span> <span class="n">particular</span> <span class="n">task</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">model</span> <span class="nb">id</span><span class="o">.</span> <span class="n">If</span> <span class="n">both</span> <span class="n">mid</span> <span class="ow">and</span> <span class="n">task</span> <span class="n">are</span> <span class="n">empty</span><span class="p">,</span> <span class="n">the</span> <span class="n">command</span> <span class="n">line</span> <span class="n">displays</span> <span class="n">the</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">supported</span> <span class="n">tasks</span><span class="o">.</span>
+    Prints out dummy inputs for a particular task or a model id. If both
+    mid and task are empty, the command line displays the list of
+    supported tasks.
     
-    <span class="n">options</span><span class="p">:</span>
-      <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
-      <span class="o">-</span><span class="n">m</span> <span class="n">MID</span><span class="p">,</span> <span class="o">--</span><span class="n">mid</span> <span class="n">MID</span>     <span class="n">model</span> <span class="nb">id</span><span class="p">,</span> <span class="n">usually</span> <span class="o">&lt;</span><span class="n">author</span><span class="o">&gt;/&lt;</span><span class="n">name</span><span class="o">&gt;</span>
-      <span class="o">-</span><span class="n">t</span> <span class="n">TASK</span><span class="p">,</span> <span class="o">--</span><span class="n">task</span> <span class="n">TASK</span>  <span class="n">force</span> <span class="n">the</span> <span class="n">task</span> <span class="n">to</span> <span class="n">use</span>
-      <span class="o">-</span><span class="n">e</span> <span class="n">EXPORT</span><span class="p">,</span> <span class="o">--</span><span class="n">export</span> <span class="n">EXPORT</span>
-                            <span class="n">export</span> <span class="n">the</span> <span class="n">model</span> <span class="k">with</span> <span class="n">this</span> <span class="n">exporter</span>
-      <span class="o">--</span><span class="n">opt</span> <span class="n">OPT</span>             <span class="n">optimization</span> <span class="n">to</span> <span class="n">apply</span> <span class="n">after</span> <span class="n">the</span> <span class="n">export</span>
-      <span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="o">--</span><span class="n">run</span><span class="p">,</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">run</span>   <span class="n">runs</span> <span class="n">the</span> <span class="n">model</span> <span class="n">to</span> <span class="n">check</span> <span class="n">it</span> <span class="n">runs</span>
-      <span class="o">-</span><span class="n">q</span><span class="p">,</span> <span class="o">--</span><span class="n">quiet</span><span class="p">,</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">quiet</span>
-                            <span class="n">catches</span> <span class="n">exception</span><span class="p">,</span> <span class="n">report</span> <span class="n">them</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">summary</span>
-      <span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="o">--</span><span class="n">patch</span><span class="p">,</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">patch</span>
-                            <span class="n">applies</span> <span class="n">patches</span> <span class="n">before</span> <span class="n">exporting</span>
-      <span class="o">--</span><span class="n">stop</span><span class="o">-</span><span class="k">if</span><span class="o">-</span><span class="n">static</span> <span class="n">STOP_IF_STATIC</span>
-                            <span class="n">raises</span> <span class="n">an</span> <span class="n">exception</span> <span class="k">if</span> <span class="n">a</span> <span class="n">dynamic</span> <span class="n">dimension</span> <span class="n">becomes</span> <span class="n">static</span>
-      <span class="o">--</span><span class="n">trained</span><span class="p">,</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">trained</span>
-                            <span class="n">validate</span> <span class="n">the</span> <span class="n">trained</span> <span class="n">model</span> <span class="p">(</span><span class="n">requires</span> <span class="n">downloading</span><span class="p">)</span>
-      <span class="o">-</span><span class="n">o</span> <span class="n">DUMP_FOLDER</span><span class="p">,</span> <span class="o">--</span><span class="n">dump</span><span class="o">-</span><span class="n">folder</span> <span class="n">DUMP_FOLDER</span>
-                            <span class="k">if</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">,</span> <span class="n">a</span> <span class="n">folder</span> <span class="ow">is</span> <span class="n">created</span> <span class="n">to</span> <span class="n">dumps</span> <span class="n">statistics</span><span class="p">,</span> <span class="n">exported</span> <span class="n">program</span><span class="p">,</span> <span class="n">onnx</span><span class="o">...</span>
-      <span class="o">--</span><span class="n">drop</span> <span class="n">DROP</span>           <span class="n">drops</span> <span class="n">the</span> <span class="n">following</span> <span class="n">inputs</span> <span class="n">names</span><span class="p">,</span> <span class="n">it</span> <span class="n">should</span> <span class="n">be</span> <span class="n">a</span> <span class="nb">list</span> <span class="k">with</span> <span class="n">comma</span> <span class="n">separated</span> <span class="n">values</span>
-      <span class="o">-</span><span class="n">v</span> <span class="n">VERBOSE</span><span class="p">,</span> <span class="o">--</span><span class="n">verbose</span> <span class="n">VERBOSE</span>
-                            <span class="n">verbosity</span>
-      <span class="o">--</span><span class="n">dtype</span> <span class="n">DTYPE</span>         <span class="n">changes</span> <span class="n">dtype</span> <span class="k">if</span> <span class="n">necessary</span>
-      <span class="o">--</span><span class="n">device</span> <span class="n">DEVICE</span>       <span class="n">changes</span> <span class="n">the</span> <span class="n">device</span> <span class="k">if</span> <span class="n">necessary</span>
+    options:
+      -h, --help            show this help message and exit
+      -m MID, --mid MID     model id, usually &lt;author&gt;/&lt;name&gt;
+      -t TASK, --task TASK  force the task to use
+      -e EXPORT, --export EXPORT
+                            export the model with this exporter
+      --opt OPT             optimization to apply after the export
+      -r, --run, --no-run   runs the model to check it runs
+      -q, --quiet, --no-quiet
+                            catches exception, report them in the
+                            summary
+      -p, --patch, --no-patch
+                            applies patches before exporting
+      --stop-if-static STOP_IF_STATIC
+                            raises an exception if a dynamic dimension
+                            becomes static
+      --trained, --no-trained
+                            validate the trained model (requires
+                            downloading)
+      -o DUMP_FOLDER, --dump-folder DUMP_FOLDER
+                            if not empty, a folder is created to dumps
+                            statistics, exported program, onnx...
+      --drop DROP           drops the following inputs names, it should
+                            be a list with comma separated values
+      --ortfusiontype ORTFUSIONTYPE
+                            applies onnxruntime fusion, this parameter
+                            should contain the model type or multiple
+                            values separated by `|`. `ALL` can be used
+                            to run them all
+      -v VERBOSE, --verbose VERBOSE
+                            verbosity
+      --dtype DTYPE         changes dtype if necessary
+      --device DEVICE       changes the device if necessary
     
-    <span class="n">If</span> <span class="n">the</span> <span class="n">model</span> <span class="nb">id</span> <span class="ow">is</span> <span class="n">specified</span><span class="p">,</span> <span class="n">one</span> <span class="n">untrained</span> <span class="n">version</span> <span class="n">of</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">instantiated</span><span class="o">.</span>
+    If the model id is specified, one untrained version of it is
+    instantiated.
 </pre></div>
 </div>
 </section>
@@ -410,6 +430,7 @@ The tool only supports a subset of them.</p>
     <span class="n">image</span><span class="o">-</span><span class="n">text</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">text</span>
     <span class="n">text</span><span class="o">-</span><span class="n">generation</span>
     <span class="n">text2text</span><span class="o">-</span><span class="n">generation</span>
+    <span class="n">zero</span><span class="o">-</span><span class="n">shot</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">classification</span>
 </pre></div>
 </div>
 </section>
@@ -478,15 +499,28 @@ if this fails.</p>
     <span class="p">:</span><span class="n">model_shapes</span><span class="p">,</span><span class="nb">str</span><span class="p">;</span>
     <span class="p">:</span><span class="n">model_size</span><span class="p">,</span><span class="mi">51955968</span><span class="p">;</span>
     <span class="p">:</span><span class="n">model_task</span><span class="p">,</span><span class="n">text</span><span class="o">-</span><span class="n">generation</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.13197764700089465</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.011594857000090997</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">11</span><span class="n">T18</span><span class="p">:</span><span class="mi">28</span><span class="p">:</span><span class="mi">08</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">version_numpy</span><span class="p">,</span><span class="mf">2.1.0</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.1700609399995301</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.030352435998793226</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="mi">11</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_device</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_do_run</span><span class="p">,</span><span class="kc">True</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_drop_inputs</span><span class="p">,[];</span>
+    <span class="p">:</span><span class="n">version_dtype</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_dump_folder</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_exporter</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_model_id</span><span class="p">,</span><span class="n">arnir0</span><span class="o">/</span><span class="n">Tiny</span><span class="o">-</span><span class="n">LLM</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_numpy</span><span class="p">,</span><span class="mf">2.2.4</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnx</span><span class="p">,</span><span class="mf">1.18.0</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnx_diagnostic</span><span class="p">,</span><span class="mf">0.4.0</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnxruntime</span><span class="p">,</span><span class="mf">1.22.0</span><span class="o">+</span><span class="n">cu126</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnxscript</span><span class="p">,</span><span class="mf">0.3.0</span><span class="o">.</span><span class="n">dev20250301</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_optimization</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_ortfusiontype</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_patch</span><span class="p">,</span><span class="kc">True</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_quiet</span><span class="p">,</span><span class="kc">False</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_stop_if_static</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_torch</span><span class="p">,</span><span class="mf">2.8.0</span><span class="o">.</span><span class="n">dev20250409</span><span class="o">+</span><span class="n">cu126</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_trained</span><span class="p">,</span><span class="kc">False</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_transformers</span><span class="p">,</span><span class="mf">4.52.0</span><span class="o">.</span><span class="n">dev0</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -528,6 +562,9 @@ the same model.</p>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">applies</span> <span class="n">patches</span> <span class="n">before</span> <span class="n">exporting</span> <span class="n">stop_if_static</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">run</span> <span class="n">patched</span> <span class="n">model</span><span class="o">...</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">patched</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">input_ids</span><span class="p">:</span><span class="n">T7s2x3</span><span class="p">,</span><span class="n">attention_mask</span><span class="p">:</span><span class="n">T7s2x33</span><span class="p">,</span><span class="n">position_ids</span><span class="p">:</span><span class="n">T7s2x3</span><span class="p">,</span><span class="n">past_key_values</span><span class="p">:</span><span class="n">DynamicCache</span><span class="p">[</span><span class="n">serialized</span><span class="p">](</span><span class="c1">#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))</span>
+    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">xadupre</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">onnx</span><span class="o">-</span><span class="n">diagnostic</span><span class="o">/</span><span class="n">onnx_diagnostic</span><span class="o">/</span><span class="n">helpers</span><span class="o">/</span><span class="n">helper</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1105</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Converting</span> <span class="n">a</span> <span class="n">tensor</span> <span class="k">with</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span> <span class="n">to</span> <span class="n">a</span> <span class="n">scalar</span> <span class="n">may</span> <span class="n">lead</span> <span class="n">to</span> <span class="n">unexpected</span> <span class="n">behavior</span><span class="o">.</span>
+    <span class="n">Consider</span> <span class="n">using</span> <span class="n">tensor</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="n">first</span><span class="o">.</span> <span class="p">(</span><span class="n">Triggered</span> <span class="n">internally</span> <span class="n">at</span> <span class="o">/</span><span class="n">pytorch</span><span class="o">/</span><span class="n">aten</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">ATen</span><span class="o">/</span><span class="n">native</span><span class="o">/</span><span class="n">Scalar</span><span class="o">.</span><span class="n">cpp</span><span class="p">:</span><span class="mf">22.</span><span class="p">)</span>
+      <span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">done</span> <span class="p">(</span><span class="n">patched</span> <span class="n">run</span><span class="p">)</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">patched</span> <span class="n">discrepancies</span><span class="o">=</span><span class="nb">abs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">[</span><span class="n">call_torch_export_export</span><span class="p">]</span> <span class="n">exporter</span><span class="o">=</span><span class="s1">&#39;export-nostrict&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">optimization</span><span class="o">=</span><span class="kc">None</span>
@@ -575,18 +612,31 @@ the same model.</p>
     <span class="p">:</span><span class="n">model_shapes</span><span class="p">,</span><span class="nb">str</span><span class="p">;</span>
     <span class="p">:</span><span class="n">model_size</span><span class="p">,</span><span class="mi">51955968</span><span class="p">;</span>
     <span class="p">:</span><span class="n">model_task</span><span class="p">,</span><span class="n">text</span><span class="o">-</span><span class="n">generation</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.1342395249994297</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_export_export</span><span class="p">,</span><span class="mf">0.8152367570000933</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.025701209999169805</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run_exported</span><span class="p">,</span><span class="mf">0.02017114800037234</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run_patched</span><span class="p">,</span><span class="mf">0.011119652999695973</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">11</span><span class="n">T18</span><span class="p">:</span><span class="mi">28</span><span class="p">:</span><span class="mi">08</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">version_numpy</span><span class="p">,</span><span class="mf">2.1.0</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.1449364490035805</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_export_export</span><span class="p">,</span><span class="mf">1.5749759799946332</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.012465560001146514</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run_exported</span><span class="p">,</span><span class="mf">0.010201537996181287</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run_patched</span><span class="p">,</span><span class="mf">0.0037401809968287125</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T19</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="mi">12</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_device</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_do_run</span><span class="p">,</span><span class="kc">True</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_drop_inputs</span><span class="p">,[];</span>
+    <span class="p">:</span><span class="n">version_dtype</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_dump_folder</span><span class="p">,</span><span class="n">dump_models</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_exporter</span><span class="p">,</span><span class="n">export</span><span class="o">-</span><span class="n">nostrict</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_model_id</span><span class="p">,</span><span class="n">arnir0</span><span class="o">/</span><span class="n">Tiny</span><span class="o">-</span><span class="n">LLM</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_numpy</span><span class="p">,</span><span class="mf">2.2.4</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnx</span><span class="p">,</span><span class="mf">1.18.0</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnx_diagnostic</span><span class="p">,</span><span class="mf">0.4.0</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnxruntime</span><span class="p">,</span><span class="mf">1.22.0</span><span class="o">+</span><span class="n">cu126</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_onnxscript</span><span class="p">,</span><span class="mf">0.3.0</span><span class="o">.</span><span class="n">dev20250301</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_optimization</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_ortfusiontype</span><span class="p">,;</span>
+    <span class="p">:</span><span class="n">version_patch</span><span class="p">,</span><span class="kc">True</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_quiet</span><span class="p">,</span><span class="kc">False</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_stop_if_static</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_torch</span><span class="p">,</span><span class="mf">2.8.0</span><span class="o">.</span><span class="n">dev20250409</span><span class="o">+</span><span class="n">cu126</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_trained</span><span class="p">,</span><span class="kc">False</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_transformers</span><span class="p">,</span><span class="mf">4.52.0</span><span class="o">.</span><span class="n">dev0</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -595,6 +645,151 @@ the same model.</p>
 <h2>Validate ONNX discrepancies<a class="headerlink" href="#validate-onnx-discrepancies" title="Link to this heading">¶</a></h2>
 <p>Let’s export with ONNX this time and checks for discrepancies.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">onnx_diagnostic</span> <span class="n">validate</span> <span class="o">-</span><span class="n">m</span> <span class="n">arnir0</span><span class="o">/</span><span class="n">Tiny</span><span class="o">-</span><span class="n">LLM</span> <span class="o">--</span><span class="n">run</span> <span class="o">-</span><span class="n">v</span> <span class="mi">1</span> <span class="o">--</span><span class="n">export</span> <span class="n">onnx</span><span class="o">-</span><span class="n">dynamo</span> <span class="o">-</span><span class="n">o</span> <span class="n">dump_models</span> <span class="o">--</span><span class="n">patch</span> <span class="o">--</span><span class="n">opt</span> <span class="n">ir</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [validate_model] dump into &#39;arnir0_Tiny-LLM-onnx-dynamo-ir&#39;
+    [validate_model] validate model id &#39;arnir0/Tiny-LLM&#39;
+    [validate_model] get dummy inputs...
+    [get_untrained_model_with_inputs] model_id=&#39;arnir0/Tiny-LLM&#39;
+    [get_untrained_model_with_inputs] use preinstalled &#39;arnir0/Tiny-LLM&#39;
+    [get_untrained_model_with_inputs] architecture=&#39;LlamaForCausalLM&#39;
+    [get_untrained_model_with_inputs] cls=&#39;LlamaConfig&#39;
+    [get_untrained_model_with_inputs] task=&#39;text-generation&#39;
+    [validate_model] --
+    [validate_model] task=text-generation
+    [validate_model] size=49.549072265625 Mb
+    [validate_model] n_weights=12.988992 millions parameters
+    [validate_model] +INPUT input_ids=T7s2x3
+    [validate_model] +INPUT attention_mask=T7s2x33
+    [validate_model] +INPUT position_ids=T7s2x3
+    [validate_model] +INPUT past_key_values=DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]])
+    [validate_model] +SHAPE input_ids={0:Dim(batch),1:Dim(seq_length)}
+    [validate_model] +SHAPE attention_mask={0:Dim(batch),1:_DimHint(type:_DimHintType.DYNAMIC,_factory:bool)}
+    [validate_model] +SHAPE position_ids={0:Dim(batch),1:_DimHint(type:_DimHintType.DYNAMIC,_factory:bool)}
+    [validate_model] +SHAPE past_key_values=#2[#1[{0:Dim(batch),2:Dim(cache_length)}],#1[{0:Dim(batch),2:Dim(cache_length)}]]
+    [validate_model] --
+    [validate_model] -- run the model...
+    [validate_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_model] done (run)
+    [validate_model] -- export the model with &#39;onnx-dynamo&#39;, optimization=&#39;ir&#39;
+    [validate_model] applies patches before exporting stop_if_static=0
+    [validate_model] run patched model...
+    [validate_model] patched inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_model] done (patched run)
+    [validate_model] patched discrepancies=abs=0, rel=0
+    [call_torch_export_onnx] exporter=&#39;onnx-dynamo&#39;, optimization=&#39;ir&#39;
+    [call_torch_export_onnx] args=()
+    [call_torch_export_onnx] kwargs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [call_torch_export_onnx] dynamic_shapes=dict(input_ids:{0:Dim(batch),1:Dim(seq_length)},attention_mask:{0:Dim(batch),1:_DimHint(type:_DimHintType.DYNAMIC,_factory:bool)},position_ids:{0:Dim(batch),1:_DimHint(type:_DimHintType.DYNAMIC,_factory:bool)},past_key_values:#2[#1[{0:Dim(batch),2:Dim(cache_length)}],#1[{0:Dim(batch),2:Dim(cache_length)}]])
+    [call_torch_export_onnx] export...
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:816: FutureWarning: &#39;onnxscript.values.Op.param_schemas&#39; is deprecated in version 0.1 and will be removed in the future. Please use &#39;.op_signature&#39; instead.
+      param_schemas = callee.param_schemas()
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:816: FutureWarning: &#39;onnxscript.values.OnnxFunction.param_schemas&#39; is deprecated in version 0.1 and will be removed in the future. Please use &#39;.op_signature&#39; instead.
+      param_schemas = callee.param_schemas()
+    [torch.onnx] Obtain model graph for `LlamaForCausalLM([...]` with `torch.export.export(..., strict=False)`...
+    [torch.onnx] Obtain model graph for `LlamaForCausalLM([...]` with `torch.export.export(..., strict=False)`... ✅
+    [torch.onnx] Run decomposition...
+    [torch.onnx] Run decomposition... ✅
+    [torch.onnx] Translate the graph into ONNX...
+    [torch.onnx] Translate the graph into ONNX... ✅
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+      warnings.warn(
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+      warnings.warn(
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+      warnings.warn(
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: batch will not be used, since it shares the same shape constraints with another axis: batch.
+      warnings.warn(
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_dynamic_shapes.py:264: UserWarning: # The axis name: cache_length will not be used, since it shares the same shape constraints with another axis: cache_length.
+      warnings.warn(
+    Applied 54 of general pattern rewrite rules.
+    [call_torch_export_onnx] done (export)
+    [call_torch_export_onnx] starts optimization=&#39;ir&#39;...
+    [call_torch_export_onnx] done (optimization)
+    [validate_model] dumps onnx program in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
+    [validate_model] done (dump onnx) in 0.06448391899903072
+    [validate_model] dumps statistics in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
+    [validate_model] done (dump)
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=None
+    [validate_onnx_model] done (ort_session) flavour=None
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.00023354214369650364, n=204672.0
+    [validate_model] -- done (final)
+    
+    -- summary --
+    :disc_onnx_ort_run_abs,7.748603820800781e-07;
+    :disc_onnx_ort_run_dnan,0;
+    :disc_onnx_ort_run_n,204672.0;
+    :disc_onnx_ort_run_rel,0.00023354214369650364;
+    :disc_onnx_ort_run_sum,0.018764803891826887;
+    :disc_patched_abs,0;
+    :disc_patched_dnan,0;
+    :disc_patched_n,204672.0;
+    :disc_patched_rel,0;
+    :disc_patched_sum,0.0;
+    :dump_folder,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir;
+    :dump_folder_name,arnir0_Tiny-LLM-onnx-dynamo-ir;
+    :export_args,();
+    :export_dynamo,True;
+    :export_exporter,onnx-dynamo;
+    :export_kwargs,dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]));
+    :export_optimization,ir;
+    :model_class,LlamaForCausalLM;
+    :model_config,{&#39;vocab_size&#39;:32000,&#39;max_position_embeddings&#39;:1024,&#39;hidden_size&#39;:192,&#39;intermediate_size&#39;:1024,&#39;num_hidden_layers&#39;:1,&#39;num_attention_heads&#39;:2,&#39;num_key_value_heads&#39;:1,&#39;hidden_act&#39;:&#39;silu&#39;,&#39;initializer_range&#39;:0.02,&#39;rms_norm_eps&#39;:1e-05,&#39;pretraining_tp&#39;:1,&#39;use_cache&#39;:True,&#39;rope_theta&#39;:10000.0,&#39;rope_scaling&#39;:None,&#39;attention_bias&#39;:False,&#39;attention_dropout&#39;:0.0,&#39;mlp_bias&#39;:False,&#39;head_dim&#39;:96,&#39;return_dict&#39;:True,&#39;output_hidden_states&#39;:False,&#39;output_attentions&#39;:False,&#39;torchscript&#39;:False,&#39;torch_dtype&#39;:&#39;float32&#39;,&#39;use_bfloat16&#39;:False,&#39;tf_legacy_loss&#39;:False,&#39;pruned_heads&#39;:{},&#39;tie_word_embeddings&#39;:False,&#39;chunk_size_feed_forward&#39;:0,&#39;is_encoder_decoder&#39;:False,&#39;is_decoder&#39;:False,&#39;cross_attention_hidden_size&#39;:None,&#39;add_cross_attention&#39;:False,&#39;tie_encoder_decoder&#39;:False,&#39;max_length&#39;:20,&#39;min_length&#39;:0,&#39;do_sample&#39;:False,&#39;early_stopping&#39;:False,&#39;num_beams&#39;:1,&#39;num_beam_groups&#39;:1,&#39;diversity_penalty&#39;:0.0,&#39;temperature&#39;:1.0,&#39;top_k&#39;:50,&#39;top_p&#39;:1.0,&#39;typical_p&#39;:1.0,&#39;repetition_penalty&#39;:1.0,&#39;length_penalty&#39;:1.0,&#39;no_repeat_ngram_size&#39;:0,&#39;encoder_no_repeat_ngram_size&#39;:0,&#39;bad_words_ids&#39;:None,&#39;num_return_sequences&#39;:1,&#39;output_scores&#39;:False,&#39;return_dict_in_generate&#39;:False,&#39;forced_bos_token_id&#39;:None,&#39;forced_eos_token_id&#39;:None,&#39;remove_invalid_values&#39;:False,&#39;exponential_decay_length_penalty&#39;:None,&#39;suppress_tokens&#39;:None,&#39;begin_suppress_tokens&#39;:None,&#39;architectures&#39;:[&#39;LlamaForCausalLM&#39;],&#39;finetuning_task&#39;:None,&#39;id2label&#39;:{0:&#39;LABEL_0&#39;,1:&#39;LABEL_1&#39;},&#39;label2id&#39;:{&#39;LABEL_0&#39;:0,&#39;LABEL_1&#39;:1},&#39;tokenizer_class&#39;:None,&#39;prefix&#39;:None,&#39;bos_token_id&#39;:1,&#39;pad_token_id&#39;:None,&#39;eos_token_id&#39;:2,&#39;sep_token_id&#39;:None,&#39;decoder_start_token_id&#39;:None,&#39;task_specific_params&#39;:None,&#39;problem_type&#39;:None,&#39;_name_or_path&#39;:&#39;&#39;,&#39;_attn_implementation_autoset&#39;:True,&#39;transformers_version&#39;:&#39;4.52.0.dev0&#39;,&#39;model_type&#39;:&#39;llama&#39;};
+    :model_config_class,LlamaConfig;
+    :model_expected,CausalLMOutputWithPast(logits:T1s2x3x32000,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x33x96],#1[T1s2x1x33x96]]));
+    :model_id,arnir0/Tiny-LLM;
+    :model_inputs,dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]));
+    :model_nweights,12988992;
+    :model_shapes,str;
+    :model_size,51955968;
+    :model_task,text-generation;
+    :onnx_filename,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.onnx;
+    :onnx_ort_inputs,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_size,268582;
+    :time_create,0.21605615400039824;
+    :time_export_export,5.044002344999171;
+    :time_export_optimize_ir,0.045013470997218974;
+    :time_onnx_ort_create,0.17766535699774977;
+    :time_onnx_save,0.06448391899903072;
+    :time_run,0.01409424000303261;
+    :time_run_patched,0.020083053001144435;
+    :version_date,2025-04-14T19:37:13;
+    :version_device,;
+    :version_do_run,True;
+    :version_drop_inputs,[];
+    :version_dtype,;
+    :version_dump_folder,dump_models;
+    :version_exporter,onnx-dynamo;
+    :version_model_id,arnir0/Tiny-LLM;
+    :version_numpy,2.2.4;
+    :version_onnx,1.18.0;
+    :version_onnx_diagnostic,0.4.0;
+    :version_onnxruntime,1.22.0+cu126;
+    :version_onnxscript,0.3.0.dev20250301;
+    :version_optimization,ir;
+    :version_ortfusiontype,;
+    :version_patch,True;
+    :version_quiet,False;
+    :version_stop_if_static,0;
+    :version_torch,2.8.0.dev20250409+cu126;
+    :version_trained,False;
+    :version_transformers,4.52.0.dev0;
+</pre></div>
+</div>
+</section>
+<section id="run-onnxruntime-fusions">
+<h2>Run onnxruntime fusions<a class="headerlink" href="#run-onnxruntime-fusions" title="Link to this heading">¶</a></h2>
+<p>This option runs <a class="reference external" href="https://onnxruntime.ai/docs/performance/transformers-optimization.html">transformers optimizations</a>
+implemented in <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a>. The list of supported <code class="docutils literal notranslate"><span class="pre">model_type</span></code> can be found in the documentation
+of function <a class="reference internal" href="../api/torch_models/test_helper.html#onnx_diagnostic.torch_models.test_helper.run_ort_fusion" title="onnx_diagnostic.torch_models.test_helper.run_ort_fusion"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_models.test_helper.run_ort_fusion()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">onnx_diagnostic</span> <span class="n">validate</span> <span class="o">-</span><span class="n">m</span> <span class="n">arnir0</span><span class="o">/</span><span class="n">Tiny</span><span class="o">-</span><span class="n">LLM</span> <span class="o">--</span><span class="n">run</span> <span class="o">-</span><span class="n">v</span> <span class="mi">1</span> <span class="o">--</span><span class="n">export</span> <span class="n">onnx</span><span class="o">-</span><span class="n">dynamo</span> <span class="o">-</span><span class="n">o</span> <span class="n">dump_models</span> <span class="o">--</span><span class="n">patch</span> <span class="o">--</span><span class="n">opt</span> <span class="n">ir</span> <span class="o">--</span><span class="n">ortfusiontype</span> <span class="n">ALL</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [validate_model] dump into &#39;arnir0_Tiny-LLM-onnx-dynamo-ir&#39;
@@ -653,11 +848,11 @@ the same model.</p>
     [call_torch_export_onnx] starts optimization=&#39;ir&#39;...
     [call_torch_export_onnx] done (optimization)
     [validate_model] dumps onnx program in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
-    [validate_model] done (dump onnx)
+    [validate_model] done (dump onnx) in 0.11441364400525345
     [validate_model] dumps statistics in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
     [validate_model] done (dump)
-    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]...
-    [validate_onnx_model] done (ort_session)
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=None
+    [validate_onnx_model] done (ort_session) flavour=None
     [validate_onnx_model] -- make_feeds...
     [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
@@ -665,15 +860,390 @@ the same model.</p>
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=6.556510925292969e-07, rel=0.00024793442771417164, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.00025020622712408933, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;bart&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;bart&#39; in 0.3264363880007295, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bart.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbart&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortbart&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;bert&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;bert&#39; in 0.3421389789946261, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbert&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortbert&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;bert_keras&#39;
+    Model producer not matched: Expected &quot;keras2onnx&quot;, Got &quot;pytorch&quot;.Please specify correct --model_type parameter.
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;bert_keras&#39; in 0.21044116600387497, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_keras.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbert_keras&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortbert_keras&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;bert_tf&#39;
+    Model producer not matched: Expected &quot;tf2onnx&quot;, Got &quot;pytorch&quot;.Please specify correct --model_type parameter.
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;bert_tf&#39; in 0.2676572450000094, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_tf.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbert_tf&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortbert_tf&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;clip&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;clip&#39; in 0.25298163700063014, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.clip.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortclip&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortclip&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;conformer&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;conformer&#39; in 0.29075027200451586, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.conformer.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortconformer&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortconformer&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;gpt2&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;gpt2&#39; in 0.37021049100439996, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortgpt2&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortgpt2&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;gpt2_tf&#39;
+    Model producer not matched: Expected &quot;tf2onnx&quot;, Got &quot;pytorch&quot;.Please specify correct --model_type parameter.
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;gpt2_tf&#39; in 0.2577423549955711, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2_tf.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortgpt2_tf&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortgpt2_tf&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;gpt_neox&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;gpt_neox&#39; in 0.25008486500155414, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt_neox.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortgpt_neox&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortgpt_neox&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;mmdit&#39;
+    
+fusion:   0%|          | 0/5 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    
+                                             
+The optimized model requires LayerNormalization with broadcast support. Please use onnxruntime-gpu&gt;=1.21 for inference.
+    
+fusion:  20%|##        | 1/5 [00:00&lt;00:00, 28.45it/s]
+fusion: 100%|##########| 5/5 [00:00&lt;00:00, 71.53it/s]
+    [validate_model] done &#39;mmdit&#39; in 0.15265144799923291, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.mmdit.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortmmdit&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortmmdit&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;phi&#39;
+    [validate_model] done &#39;phi&#39; in 0.011883923994901124, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.phi.onnx&#39;
+    [validate_model] run onnxruntime fusion for &#39;sam2&#39;
+    
+sam2 fusion:   0%|          | 0/12 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    
+                                                   
+symbolic shape inference disabled or failed.
+    
+sam2 fusion:  50%|#####     | 6/12 [00:00&lt;00:00, 356.65it/s]
+sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 580.77it/s]
+    [validate_model] done &#39;sam2&#39; in 0.0857349889993202, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.sam2.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortsam2&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortsam2&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.00025020622712408933, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;swin&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;swin&#39; in 0.1873328939982457, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.swin.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortswin&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortswin&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;t5&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;t5&#39; in 0.23136903699924005, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.t5.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortt5&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortt5&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;tnlr&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;tnlr&#39; in 0.22898694899777183, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.tnlr.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;orttnlr&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;orttnlr&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;unet&#39;
+    
+fusion:   0%|          | 0/18 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    
+                                              
+symbolic shape inference disabled or failed.
+    
+fusion:  50%|#####     | 9/18 [00:00&lt;00:00, 201.46it/s]
+                                                       
+SkipGroupNorm fusion will be skipped since symbolic shape inference disabled or failed.
+    
+fusion:  67%|######6   | 12/18 [00:00&lt;00:00, 262.21it/s]
+fusion: 100%|##########| 18/18 [00:00&lt;00:00, 348.50it/s]
+    [validate_model] done &#39;unet&#39; in 0.11649406400101725, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.unet.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortunet&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortunet&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.00025020622712408933, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;vae&#39;
+    
+fusion:   0%|          | 0/18 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    
+                                              
+symbolic shape inference disabled or failed.
+    
+fusion:  50%|#####     | 9/18 [00:00&lt;00:00, 490.80it/s]
+                                                       
+SkipGroupNorm fusion will be skipped since symbolic shape inference disabled or failed.
+    
+fusion:  67%|######6   | 12/18 [00:00&lt;00:00, 618.24it/s]
+fusion: 100%|##########| 18/18 [00:00&lt;00:00, 757.06it/s]
+    [validate_model] done &#39;vae&#39; in 0.0857737830010592, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vae.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortvae&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortvae&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.00025020622712408933, n=204672.0
+    [validate_model] run onnxruntime fusion for &#39;vit&#39;
+    failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
+    symbolic shape inference disabled or failed.
+    symbolic shape inference disabled or failed.
+    [validate_model] done &#39;vit&#39; in 0.18457922599918675, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vit.onnx&#39;
+    [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortvit&#39;
+    [validate_onnx_model] done (ort_session) flavour=&#39;ortvit&#39;
+    [validate_onnx_model] -- make_feeds...
+    [validate_onnx_model] inputs=dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#1[T1s2x1x30x96],#1[T1s2x1x30x96]]))
+    [validate_onnx_model] ort inputs=dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96)
+    [validate_onnx_model] done (make_feeds)
+    [validate_onnx_model] run session...
+    [validate_onnx_model] done (run)
+    [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
+    [validate_onnx_model] discrepancies=abs=6.854534149169922e-07, rel=0.0002896594380901955, n=204672.0
     [validate_model] -- done (final)
     
     -- summary --
-    :disc_onnx_ort_run_abs,6.556510925292969e-07;
+    :ERR_onnx_missing_ortphi,FileNotFoundError(&#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.phi.onnx&#39;);
+    :ERR_opt_ort_phi,&#39;method&#39; object is not iterable;
+    :disc_onnx_ort_run_abs,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortbart,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortbert,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortbert_keras,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortbert_tf,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortclip,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortconformer,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortgpt2,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortgpt2_tf,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortgpt_neox,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortmmdit,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortsam2,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortswin,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortt5,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_orttnlr,6.854534149169922e-07;
+    :disc_onnx_ort_run_abs_ortunet,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortvae,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortvit,6.854534149169922e-07;
     :disc_onnx_ort_run_dnan,0;
+    :disc_onnx_ort_run_dnan_ortbart,0;
+    :disc_onnx_ort_run_dnan_ortbert,0;
+    :disc_onnx_ort_run_dnan_ortbert_keras,0;
+    :disc_onnx_ort_run_dnan_ortbert_tf,0;
+    :disc_onnx_ort_run_dnan_ortclip,0;
+    :disc_onnx_ort_run_dnan_ortconformer,0;
+    :disc_onnx_ort_run_dnan_ortgpt2,0;
+    :disc_onnx_ort_run_dnan_ortgpt2_tf,0;
+    :disc_onnx_ort_run_dnan_ortgpt_neox,0;
+    :disc_onnx_ort_run_dnan_ortmmdit,0;
+    :disc_onnx_ort_run_dnan_ortsam2,0;
+    :disc_onnx_ort_run_dnan_ortswin,0;
+    :disc_onnx_ort_run_dnan_ortt5,0;
+    :disc_onnx_ort_run_dnan_orttnlr,0;
+    :disc_onnx_ort_run_dnan_ortunet,0;
+    :disc_onnx_ort_run_dnan_ortvae,0;
+    :disc_onnx_ort_run_dnan_ortvit,0;
     :disc_onnx_ort_run_n,204672.0;
-    :disc_onnx_ort_run_rel,0.00024793442771417164;
-    :disc_onnx_ort_run_sum,0.017979788993784496;
+    :disc_onnx_ort_run_n_ortbart,204672.0;
+    :disc_onnx_ort_run_n_ortbert,204672.0;
+    :disc_onnx_ort_run_n_ortbert_keras,204672.0;
+    :disc_onnx_ort_run_n_ortbert_tf,204672.0;
+    :disc_onnx_ort_run_n_ortclip,204672.0;
+    :disc_onnx_ort_run_n_ortconformer,204672.0;
+    :disc_onnx_ort_run_n_ortgpt2,204672.0;
+    :disc_onnx_ort_run_n_ortgpt2_tf,204672.0;
+    :disc_onnx_ort_run_n_ortgpt_neox,204672.0;
+    :disc_onnx_ort_run_n_ortmmdit,204672.0;
+    :disc_onnx_ort_run_n_ortsam2,204672.0;
+    :disc_onnx_ort_run_n_ortswin,204672.0;
+    :disc_onnx_ort_run_n_ortt5,204672.0;
+    :disc_onnx_ort_run_n_orttnlr,204672.0;
+    :disc_onnx_ort_run_n_ortunet,204672.0;
+    :disc_onnx_ort_run_n_ortvae,204672.0;
+    :disc_onnx_ort_run_n_ortvit,204672.0;
+    :disc_onnx_ort_run_rel,0.00025020622712408933;
+    :disc_onnx_ort_run_rel_ortbart,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortbert,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortbert_keras,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortbert_tf,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortclip,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortconformer,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortgpt2,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortgpt2_tf,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortgpt_neox,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortmmdit,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortsam2,0.00025020622712408933;
+    :disc_onnx_ort_run_rel_ortswin,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortt5,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_orttnlr,0.0002896594380901955;
+    :disc_onnx_ort_run_rel_ortunet,0.00025020622712408933;
+    :disc_onnx_ort_run_rel_ortvae,0.00025020622712408933;
+    :disc_onnx_ort_run_rel_ortvit,0.0002896594380901955;
+    :disc_onnx_ort_run_sum,0.019040298843037817;
+    :disc_onnx_ort_run_sum_ortbart,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortbert,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortbert_keras,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortbert_tf,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortclip,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortconformer,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortgpt2,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortgpt2_tf,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortgpt_neox,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortmmdit,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortsam2,0.019040298843037817;
+    :disc_onnx_ort_run_sum_ortswin,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortt5,0.019852282275905964;
+    :disc_onnx_ort_run_sum_orttnlr,0.019852282275905964;
+    :disc_onnx_ort_run_sum_ortunet,0.019040298843037817;
+    :disc_onnx_ort_run_sum_ortvae,0.019040298843037817;
+    :disc_onnx_ort_run_sum_ortvit,0.019852282275905964;
     :disc_patched_abs,0;
     :disc_patched_dnan,0;
     :disc_patched_n,204672.0;
@@ -696,21 +1266,244 @@ the same model.</p>
     :model_shapes,str;
     :model_size,51955968;
     :model_task,text-generation;
+    :onnx_filename,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.onnx;
+    :onnx_filename_ortbart,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bart.onnx;
+    :onnx_filename_ortbert,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert.onnx;
+    :onnx_filename_ortbert_keras,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_keras.onnx;
+    :onnx_filename_ortbert_tf,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_tf.onnx;
+    :onnx_filename_ortclip,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.clip.onnx;
+    :onnx_filename_ortconformer,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.conformer.onnx;
+    :onnx_filename_ortgpt2,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2.onnx;
+    :onnx_filename_ortgpt2_tf,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2_tf.onnx;
+    :onnx_filename_ortgpt_neox,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt_neox.onnx;
+    :onnx_filename_ortmmdit,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.mmdit.onnx;
+    :onnx_filename_ortsam2,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.sam2.onnx;
+    :onnx_filename_ortswin,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.swin.onnx;
+    :onnx_filename_ortt5,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.t5.onnx;
+    :onnx_filename_orttnlr,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.tnlr.onnx;
+    :onnx_filename_ortunet,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.unet.onnx;
+    :onnx_filename_ortvae,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vae.onnx;
+    :onnx_filename_ortvit,dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vit.onnx;
     :onnx_ort_inputs,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
-    :onnx_size,52200198;
-    :time_create,0.1073487710000336;
-    :time_export_export,3.4283629300007306;
-    :time_export_optimize_ir,0.029888752000260865;
-    :time_onnx_ort_create,0.09056164600042393;
-    :time_run,0.01455567599987262;
-    :time_run_patched,0.0037396059997263364;
-    :version_date,2025-04-11T18:28:10;
-    :version_numpy,2.1.0;
+    :onnx_ort_inputs_ortbart,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortbert,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortbert_keras,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortbert_tf,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortclip,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortconformer,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortgpt2,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortgpt2_tf,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortgpt_neox,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortmmdit,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortsam2,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortswin,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortt5,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_orttnlr,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortunet,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortvae,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_ort_inputs_ortvit,dict(input_ids:A7s2x3,attention_mask:A7s2x33,position_ids:A7s2x3,past_key_values_key_cache_0:A1s2x1x30x96,past_key_values_value_cache_0:A1s2x1x30x96);
+    :onnx_size,268582;
+    :onnx_size_ortbart,224705;
+    :onnx_size_ortbert,224705;
+    :onnx_size_ortbert_keras,224761;
+    :onnx_size_ortbert_tf,224734;
+    :onnx_size_ortclip,224705;
+    :onnx_size_ortconformer,224750;
+    :onnx_size_ortgpt2,224705;
+    :onnx_size_ortgpt2_tf,224732;
+    :onnx_size_ortgpt_neox,224741;
+    :onnx_size_ortmmdit,239315;
+    :onnx_size_ortsam2,270742;
+    :onnx_size_ortswin,224705;
+    :onnx_size_ortt5,224687;
+    :onnx_size_orttnlr,224705;
+    :onnx_size_ortunet,270742;
+    :onnx_size_ortvae,270733;
+    :onnx_size_ortvit,224696;
+    :opt_ort_bart_delta_node,-26;
+    :opt_ort_bart_duration,0.20800317700195592;
+    :opt_ort_bart_duration_save,0.06675744799576933;
+    :opt_ort_bart_n_nodes1,182;
+    :opt_ort_bart_n_nodes2,156;
+    :opt_ort_bert_delta_node,-26;
+    :opt_ort_bert_duration,0.24375396899995394;
+    :opt_ort_bert_duration_save,0.06360515000415035;
+    :opt_ort_bert_keras_delta_node,-26;
+    :opt_ort_bert_keras_duration,0.1472248319987557;
+    :opt_ort_bert_keras_duration_save,0.051145179000741336;
+    :opt_ort_bert_keras_n_nodes1,182;
+    :opt_ort_bert_keras_n_nodes2,156;
+    :opt_ort_bert_n_nodes1,182;
+    :opt_ort_bert_n_nodes2,156;
+    :opt_ort_bert_tf_delta_node,-26;
+    :opt_ort_bert_tf_duration,0.14370065899856854;
+    :opt_ort_bert_tf_duration_save,0.08026357500057202;
+    :opt_ort_bert_tf_n_nodes1,182;
+    :opt_ort_bert_tf_n_nodes2,156;
+    :opt_ort_clip_delta_node,-26;
+    :opt_ort_clip_duration,0.174614825999015;
+    :opt_ort_clip_duration_save,0.06670251499599544;
+    :opt_ort_clip_n_nodes1,182;
+    :opt_ort_clip_n_nodes2,156;
+    :opt_ort_conformer_delta_node,-26;
+    :opt_ort_conformer_duration,0.20884364000085043;
+    :opt_ort_conformer_duration_save,0.06128445400099736;
+    :opt_ort_conformer_n_nodes1,182;
+    :opt_ort_conformer_n_nodes2,156;
+    :opt_ort_gpt2_delta_node,-26;
+    :opt_ort_gpt2_duration,0.22480375799932517;
+    :opt_ort_gpt2_duration_save,0.11539085399999749;
+    :opt_ort_gpt2_n_nodes1,182;
+    :opt_ort_gpt2_n_nodes2,156;
+    :opt_ort_gpt2_tf_delta_node,-26;
+    :opt_ort_gpt2_tf_duration,0.1846565140003804;
+    :opt_ort_gpt2_tf_duration_save,0.060174407000886276;
+    :opt_ort_gpt2_tf_n_nodes1,182;
+    :opt_ort_gpt2_tf_n_nodes2,156;
+    :opt_ort_gpt_neox_delta_node,-26;
+    :opt_ort_gpt_neox_duration,0.1844225800014101;
+    :opt_ort_gpt_neox_duration_save,0.046501964003255125;
+    :opt_ort_gpt_neox_n_nodes1,182;
+    :opt_ort_gpt_neox_n_nodes2,156;
+    :opt_ort_mmdit_delta_node,-18;
+    :opt_ort_mmdit_duration,0.07942367500072578;
+    :opt_ort_mmdit_duration_save,0.05778384800214553;
+    :opt_ort_mmdit_n_nodes1,182;
+    :opt_ort_mmdit_n_nodes2,164;
+    :opt_ort_phi_duration,0.0001140730018960312;
+    :opt_ort_sam2_delta_node,0;
+    :opt_ort_sam2_duration,0.024048961997323204;
+    :opt_ort_sam2_duration_save,0.04985537399625173;
+    :opt_ort_sam2_n_nodes1,182;
+    :opt_ort_sam2_n_nodes2,182;
+    :opt_ort_swin_delta_node,-26;
+    :opt_ort_swin_duration,0.11749126299400814;
+    :opt_ort_swin_duration_save,0.04915346000052523;
+    :opt_ort_swin_n_nodes1,182;
+    :opt_ort_swin_n_nodes2,156;
+    :opt_ort_t5_delta_node,-26;
+    :opt_ort_t5_duration,0.17090923600335373;
+    :opt_ort_t5_duration_save,0.04780412199761486;
+    :opt_ort_t5_n_nodes1,182;
+    :opt_ort_t5_n_nodes2,156;
+    :opt_ort_tnlr_delta_node,-26;
+    :opt_ort_tnlr_duration,0.1701776459958637;
+    :opt_ort_tnlr_duration_save,0.04672502299945336;
+    :opt_ort_tnlr_n_nodes1,182;
+    :opt_ort_tnlr_n_nodes2,156;
+    :opt_ort_unet_delta_node,0;
+    :opt_ort_unet_duration,0.055860077001852915;
+    :opt_ort_unet_duration_save,0.03874419499334181;
+    :opt_ort_unet_n_nodes1,182;
+    :opt_ort_unet_n_nodes2,182;
+    :opt_ort_vae_delta_node,0;
+    :opt_ort_vae_duration,0.02991360900341533;
+    :opt_ort_vae_duration_save,0.04296447499655187;
+    :opt_ort_vae_n_nodes1,182;
+    :opt_ort_vae_n_nodes2,182;
+    :opt_ort_vit_delta_node,-26;
+    :opt_ort_vit_duration,0.09291584200400393;
+    :opt_ort_vit_duration_save,0.07267469299404183;
+    :opt_ort_vit_n_nodes1,182;
+    :opt_ort_vit_n_nodes2,156;
+    :time_create,0.10669293400133029;
+    :time_export_export,3.7274948690028396;
+    :time_export_optimize_ir,0.08239890699769603;
+    :time_onnx_ort_create,0.11565435599914053;
+    :time_onnx_ort_create_ortbart,0.037915398002951406;
+    :time_onnx_ort_create_ortbert,0.04981707499973709;
+    :time_onnx_ort_create_ortbert_keras,0.043776151003839914;
+    :time_onnx_ort_create_ortbert_tf,0.0399843389968737;
+    :time_onnx_ort_create_ortclip,0.05400371699943207;
+    :time_onnx_ort_create_ortconformer,0.04833755800063955;
+    :time_onnx_ort_create_ortgpt2,0.03659952399902977;
+    :time_onnx_ort_create_ortgpt2_tf,0.030997758003650233;
+    :time_onnx_ort_create_ortgpt_neox,0.036910962997353636;
+    :time_onnx_ort_create_ortmmdit,0.05557525800395524;
+    :time_onnx_ort_create_ortsam2,0.09457561900489964;
+    :time_onnx_ort_create_ortswin,0.031744061001518276;
+    :time_onnx_ort_create_ortt5,0.028393210996000562;
+    :time_onnx_ort_create_orttnlr,0.03593704300146783;
+    :time_onnx_ort_create_ortunet,0.13734206200024346;
+    :time_onnx_ort_create_ortvae,0.16463802700309316;
+    :time_onnx_ort_create_ortvit,0.10211152100237086;
+    :time_onnx_save,0.11441364400525345;
+    :time_ortfusion_ortbart,0.3264363880007295;
+    :time_ortfusion_ortbert,0.3421389789946261;
+    :time_ortfusion_ortbert_keras,0.21044116600387497;
+    :time_ortfusion_ortbert_tf,0.2676572450000094;
+    :time_ortfusion_ortclip,0.25298163700063014;
+    :time_ortfusion_ortconformer,0.29075027200451586;
+    :time_ortfusion_ortgpt2,0.37021049100439996;
+    :time_ortfusion_ortgpt2_tf,0.2577423549955711;
+    :time_ortfusion_ortgpt_neox,0.25008486500155414;
+    :time_ortfusion_ortmmdit,0.15265144799923291;
+    :time_ortfusion_ortphi,0.011883923994901124;
+    :time_ortfusion_ortsam2,0.0857349889993202;
+    :time_ortfusion_ortswin,0.1873328939982457;
+    :time_ortfusion_ortt5,0.23136903699924005;
+    :time_ortfusion_orttnlr,0.22898694899777183;
+    :time_ortfusion_ortunet,0.11649406400101725;
+    :time_ortfusion_ortvae,0.0857737830010592;
+    :time_ortfusion_ortvit,0.18457922599918675;
+    :time_run,0.01071298399619991;
+    :time_run_patched,0.006633252000028733;
+    :version_date,2025-04-14T19:37:19;
+    :version_device,;
+    :version_do_run,True;
+    :version_drop_inputs,[];
+    :version_dtype,;
+    :version_dump_folder,dump_models;
+    :version_exporter,onnx-dynamo;
+    :version_model_id,arnir0/Tiny-LLM;
+    :version_numpy,2.2.4;
     :version_onnx,1.18.0;
     :version_onnx_diagnostic,0.4.0;
     :version_onnxruntime,1.22.0+cu126;
     :version_onnxscript,0.3.0.dev20250301;
+    :version_optimization,ir;
+    :version_ortbart_hidden_size,192;
+    :version_ortbart_num_attention_heads,2;
+    :version_ortbert_hidden_size,192;
+    :version_ortbert_keras_hidden_size,192;
+    :version_ortbert_keras_num_attention_heads,2;
+    :version_ortbert_num_attention_heads,2;
+    :version_ortbert_tf_hidden_size,192;
+    :version_ortbert_tf_num_attention_heads,2;
+    :version_ortclip_hidden_size,192;
+    :version_ortclip_num_attention_heads,2;
+    :version_ortconformer_hidden_size,192;
+    :version_ortconformer_num_attention_heads,2;
+    :version_ortfusiontype,ALL;
+    :version_ortgpt2_hidden_size,192;
+    :version_ortgpt2_num_attention_heads,2;
+    :version_ortgpt2_tf_hidden_size,192;
+    :version_ortgpt2_tf_num_attention_heads,2;
+    :version_ortgpt_neox_hidden_size,192;
+    :version_ortgpt_neox_num_attention_heads,2;
+    :version_ortmmdit_hidden_size,192;
+    :version_ortmmdit_num_attention_heads,2;
+    :version_ortphi_hidden_size,192;
+    :version_ortphi_num_attention_heads,2;
+    :version_ortsam2_hidden_size,192;
+    :version_ortsam2_num_attention_heads,2;
+    :version_ortswin_hidden_size,192;
+    :version_ortswin_num_attention_heads,2;
+    :version_ortt5_hidden_size,192;
+    :version_ortt5_num_attention_heads,2;
+    :version_orttnlr_hidden_size,192;
+    :version_orttnlr_num_attention_heads,2;
+    :version_ortunet_hidden_size,192;
+    :version_ortunet_num_attention_heads,2;
+    :version_ortvae_hidden_size,192;
+    :version_ortvae_num_attention_heads,2;
+    :version_ortvit_hidden_size,192;
+    :version_ortvit_num_attention_heads,2;
+    :version_patch,True;
+    :version_quiet,False;
+    :version_stop_if_static,0;
     :version_torch,2.8.0.dev20250409+cu126;
+    :version_trained,False;
     :version_transformers,4.52.0.dev0;
 </pre></div>
 </div>
@@ -779,6 +1572,7 @@ the same model.</p>
 <li><a class="reference internal" href="#validate-dummy-inputs-for-a-model">Validate dummy inputs for a model</a></li>
 <li><a class="reference internal" href="#validate-and-export-a-model">Validate and export a model</a></li>
 <li><a class="reference internal" href="#validate-onnx-discrepancies">Validate ONNX discrepancies</a></li>
+<li><a class="reference internal" href="#run-onnxruntime-fusions">Run onnxruntime fusions</a></li>
 </ul>
 </li>
 </ul>

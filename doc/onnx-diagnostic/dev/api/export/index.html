@@ -481,6 +481,31 @@ the given dynamic shapes.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_by_string">
+<span class="sig-name descname"><span class="pre">replace_by_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/onnx_diagnostic/export/dynamic_shapes.html#CoupleInputsDynamicShapes.replace_by_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_by_string" title="Link to this definition">¶</a></dt>
+<dd><p>Replaces dimensions by strings.</p>
+<p>Example:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.export.dynamic_shapes</span> <span class="kn">import</span> <span class="n">CoupleInputsDynamicShapes</span>
+
+<span class="n">Dim</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span>
+<span class="n">T3x1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">T3x4</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ds_batch</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">)}</span>
+<span class="n">ds_batch_seq</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;seq&quot;</span><span class="p">)}</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">T3x4</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">T3x1</span><span class="p">,</span> <span class="n">T3x1</span><span class="p">)}</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">ds_batch</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">ds_batch</span><span class="p">,</span> <span class="n">ds_batch_seq</span><span class="p">)}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CoupleInputsDynamicShapes</span><span class="p">((),</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span><span class="o">.</span><span class="n">replace_by_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch&#39;</span><span class="p">},</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch&#39;</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;seq&#39;</span><span class="p">})}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_string_by">
 <span class="sig-name descname"><span class="pre">replace_string_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/onnx_diagnostic/export/dynamic_shapes.html#CoupleInputsDynamicShapes.replace_string_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_string_by" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces string by the value <code class="docutils literal notranslate"><span class="pre">torch.export.Dim.DYNAMIC</span></code>
@@ -868,6 +893,7 @@ If not specified, the dynamic_shapes are guessed.</p>
 <li><a class="reference internal" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes"><code class="docutils literal notranslate"><span class="pre">CoupleInputsDynamicShapes</span></code></a><ul>
 <li><a class="reference internal" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes.change_dynamic_dimensions"><code class="docutils literal notranslate"><span class="pre">CoupleInputsDynamicShapes.change_dynamic_dimensions()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes.invalid_dimensions_for_export"><code class="docutils literal notranslate"><span class="pre">CoupleInputsDynamicShapes.invalid_dimensions_for_export()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_by_string"><code class="docutils literal notranslate"><span class="pre">CoupleInputsDynamicShapes.replace_by_string()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_string_by"><code class="docutils literal notranslate"><span class="pre">CoupleInputsDynamicShapes.replace_string_by()</span></code></a></li>
 </ul>
 </li>
