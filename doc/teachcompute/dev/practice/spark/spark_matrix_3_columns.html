@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -219,6 +219,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-05-31-route2025.html">2025-05-31: Feuille de route 2024-2025 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-05-31-route2024-gpu.html">2024-05-31: Feuille de route 2023-2024 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2023-11-31-route2023-spark.html">2023-11-31 : rappel feuille de route 2023</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2023-05-31-route2023-gpu.html">2023-05-31: Feuille de route 2022-2023 (3A)</a></li>
@@ -381,11 +382,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from pyspark.sql import SparkSession
 
-<span class="c1"># Create a SparkSession</span>
-<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;MySparkApp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-<span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>
+# Create a SparkSession
+spark = SparkSession.builder.appName(&quot;MySparkApp&quot;).master(&quot;local[*]&quot;).getOrCreate()
+sc = spark.sparkContext
 </pre></div>
 </div>
 </div>
@@ -409,11 +410,11 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">rand</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from numpy.random import rand
 
-<span class="n">rnd1</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">rnd2</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">rnd1</span> <span class="o">@</span> <span class="n">rnd2</span>
+rnd1 = rand(10, 10)
+rnd2 = rand(10, 2)
+rnd1 @ rnd2
 </pre></div>
 </div>
 </div>
@@ -439,11 +440,11 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import pandas
 
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rnd1</span><span class="p">)</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rnd2</span><span class="p">)</span>
-<span class="n">df2</span>
+df1 = pandas.DataFrame(rnd1)
+df2 = pandas.DataFrame(rnd2)
+df2
 </pre></div>
 </div>
 </div>
@@ -533,8 +534,8 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;rnd1.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">df2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;rnd2.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df1.to_csv(&quot;rnd1.txt&quot;, sep=&quot;\t&quot;, header=None, index=False)
+df2.to_csv(&quot;rnd2.txt&quot;, sep=&quot;\t&quot;, header=None, index=False)
 </pre></div>
 </div>
 </div>
@@ -542,7 +543,7 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;rnd1.txt&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat1 = spark.sparkContext.textFile(&quot;rnd1.txt&quot;)
 </pre></div>
 </div>
 </div>
@@ -554,8 +555,8 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;rnd1.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">df2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;rnd2.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df1.to_csv(&quot;rnd1.txt&quot;, sep=&quot;\t&quot;, header=None, index=True)
+df2.to_csv(&quot;rnd2.txt&quot;, sep=&quot;\t&quot;, header=None, index=True)
 </pre></div>
 </div>
 </div>
@@ -563,11 +564,11 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_mat_row</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
-    <span class="k">return</span> <span class="p">[[</span><span class="n">index</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">)]</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def process_mat_row(row):
+    values = row.split(&quot;\t&quot;)
+    index = int(values[0])
+    values = [float(_) for _ in values[1:]]
+    return [[index, j, v] for j, v in enumerate(values)]
 </pre></div>
 </div>
 </div>
@@ -575,9 +576,9 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;rnd1.txt&quot;</span><span class="p">)</span>
-<span class="n">new_mat1</span> <span class="o">=</span> <span class="n">mat1</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="n">process_mat_row</span><span class="p">)</span>
-<span class="n">new_mat1</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat1 = sc.textFile(&quot;rnd1.txt&quot;)
+new_mat1 = mat1.flatMap(process_mat_row)
+new_mat1.take(12)
 </pre></div>
 </div>
 </div>
@@ -613,9 +614,9 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat2</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;rnd2.txt&quot;</span><span class="p">)</span>
-<span class="n">new_mat2</span> <span class="o">=</span> <span class="n">mat2</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="n">process_mat_row</span><span class="p">)</span>
-<span class="n">new_mat2</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat2 = sc.textFile(&quot;rnd2.txt&quot;)
+new_mat2 = mat2.flatMap(process_mat_row)
+new_mat2.take(12)
 </pre></div>
 </div>
 </div>
@@ -647,16 +648,16 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">key_ij</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def key_ij(row):
+    return row[0], (row[1], row[2])
 
 
-<span class="k">def</span> <span class="nf">key_ji</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+def key_ji(row):
+    return row[1], (row[0], row[2])
 
 
-<span class="n">mat_join</span> <span class="o">=</span> <span class="n">new_mat1</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">key_ji</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_mat2</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">key_ij</span><span class="p">))</span>
-<span class="n">mat_join</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+mat_join = new_mat1.map(key_ji).join(new_mat2.map(key_ij))
+mat_join.take(12)
 </pre></div>
 </div>
 </div>
@@ -693,13 +694,13 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">produit_matriciel</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-    <span class="n">index</span><span class="p">,</span> <span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">v1</span><span class="p">),</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">v2</span><span class="p">))</span> <span class="o">=</span> <span class="n">row</span>
-    <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">v1</span> <span class="o">*</span> <span class="n">v2</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def produit_matriciel(row):
+    index, ((i, v1), (j, v2)) = row
+    return i, j, v1 * v2
 
 
-<span class="n">produit</span> <span class="o">=</span> <span class="n">mat_join</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">produit_matriciel</span><span class="p">)</span>
-<span class="n">produit</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+produit = mat_join.map(produit_matriciel)
+produit.take(12)
 </pre></div>
 </div>
 </div>
@@ -734,12 +735,12 @@ d’avoir regroupé toutes les valeurs associées à une clé.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from operator import add
 
-<span class="n">final</span> <span class="o">=</span> <span class="n">produit</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">((</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
-<span class="n">aslist</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-<span class="n">aslist</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="n">aslist</span>
+final = produit.map(lambda row: ((row[0], row[1]), row[2])).reduceByKey(add)
+aslist = final.collect()
+aslist.sort()
+aslist
 </pre></div>
 </div>
 </div>
@@ -776,7 +777,7 @@ d’avoir regroupé toutes les valeurs associées à une clé.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rnd1</span> <span class="o">@</span> <span class="n">rnd2</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>rnd1 @ rnd2
 </pre></div>
 </div>
 </div>
@@ -806,10 +807,10 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;c</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span>
-<span class="n">mat1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-    <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;rnd1.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span>
-<span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>schema = [&quot;index&quot;] + [&quot;c%d&quot; % i for i in range(1, 11)]
+mat1 = spark.createDataFrame(
+    pandas.read_csv(&quot;rnd1.txt&quot;, header=None, sep=&quot;\t&quot;), schema=schema
+)
 </pre></div>
 </div>
 </div>
@@ -817,7 +818,7 @@ array([[2.87499059, 2.8278766 ],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat1.printSchema()
 </pre></div>
 </div>
 </div>
@@ -845,10 +846,10 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;c</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
-<span class="n">mat2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-    <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;rnd2.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span>
-<span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>schema = [&quot;index&quot;] + [&quot;c%d&quot; % i for i in range(1, 3)]
+mat2 = spark.createDataFrame(
+    pandas.read_csv(&quot;rnd2.txt&quot;, header=None, sep=&quot;\t&quot;), schema=schema
+)
 </pre></div>
 </div>
 </div>
@@ -856,7 +857,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat2</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat2.printSchema()
 </pre></div>
 </div>
 </div>
@@ -874,25 +875,25 @@ root
 </div>
 <p>Nous allons avoir besoin de quelques-uns des fonctions et types suivant :</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.functions.explode">explode</a>, <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.functions.posexplode">posexplode</a>, <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.functions.array">array</a>, <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.alias">alias</a></p></li>
-<li><p><a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.types.StructType">StructType</a>, <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.types.StructField">StructField</a></p></li>
-<li><p><a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.types.ArrayType">ArrayType</a></p></li>
-<li><p><a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.types.DoubleType">DoubleType</a>, <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.types.IntegerType">IntegerType</a></p></li>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.explode">explode</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.posexplode">posexplode</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.functions.array">array</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.alias">alias</a></p></li>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.StructType">StructType</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.StructField">StructField</a></p></li>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.ArrayType">ArrayType</a></p></li>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.DoubleType">DoubleType</a>, <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.types.IntegerType">IntegerType</a></p></li>
 </ul>
 <p>Je recommande le type <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.types.FloatType">FloatType</a> qui prend deux fois moins de place pour une précision moindre mais suffisante dans la plupart des cas.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ArrayType</span><span class="p">,</span>
-    <span class="n">StructField</span><span class="p">,</span>
-    <span class="n">StructType</span><span class="p">,</span>
-    <span class="n">DoubleType</span><span class="p">,</span>
-    <span class="n">IntegerType</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">explode</span><span class="p">,</span> <span class="n">posexplode</span><span class="p">,</span> <span class="n">array</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Row</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from pyspark.sql.types import (
+    ArrayType,
+    StructField,
+    StructType,
+    DoubleType,
+    IntegerType,
+)
+from pyspark.sql.functions import explode, posexplode, array
+from pyspark.sql import Row
 </pre></div>
 </div>
 </div>
@@ -900,9 +901,9 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;c</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span>
-<span class="n">mat1_array</span> <span class="o">=</span> <span class="n">mat1</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">mat1</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="o">*</span><span class="n">cols</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
-<span class="n">mat1_array</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>cols = [&quot;c%d&quot; % i for i in range(1, 11)]
+mat1_array = mat1.select(mat1.index, array(*cols).alias(&quot;x&quot;))
+mat1_array.printSchema()
 </pre></div>
 </div>
 </div>
@@ -922,8 +923,8 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1_exploded</span> <span class="o">=</span> <span class="n">mat1_array</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">posexplode</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
-<span class="n">mat1_exploded</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat1_exploded = mat1_array.select(&quot;index&quot;, posexplode(&quot;x&quot;))
+mat1_exploded.printSchema()
 </pre></div>
 </div>
 </div>
@@ -943,7 +944,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat1</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mat1_exploded</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat1.toPandas().shape, mat1_exploded.toPandas().shape
 </pre></div>
 </div>
 </div>
@@ -969,23 +970,23 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;c</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
-<span class="n">mat2_array</span> <span class="o">=</span> <span class="n">mat2</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">mat2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">array</span><span class="p">(</span><span class="o">*</span><span class="n">cols</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
-<span class="n">mat2_exploded</span> <span class="o">=</span> <span class="n">mat2_array</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">posexplode</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>cols = [&quot;c%d&quot; % i for i in range(1, 3)]
+mat2_array = mat2.select(mat2.index, array(*cols).alias(&quot;x&quot;))
+mat2_exploded = mat2_array.select(&quot;index&quot;, posexplode(&quot;x&quot;))
 </pre></div>
 </div>
 </div>
-<p>Il ne reste plus qu’à faire le produit avec la méthode <a class="reference external" href="https://spark.apache.org/docs/2.0.2/api/python/pyspark.sql.html#pyspark.sql.DataFrame.join">join</a> après avoir renommé les colonnes avant la jointure pour éviter les ambiguïtés.</p>
+<p>Il ne reste plus qu’à faire le produit avec la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.DataFrame.join">join</a> après avoir renommé les colonnes avant la jointure pour éviter les ambiguïtés.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mat2_exp2</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">mat2_exploded</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;index2&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;pos&quot;</span><span class="p">,</span> <span class="s2">&quot;pos2&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;col&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">produit</span> <span class="o">=</span> <span class="n">mat1_exploded</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mat2_exp2</span><span class="p">,</span> <span class="n">mat1_exploded</span><span class="o">.</span><span class="n">pos</span> <span class="o">==</span> <span class="n">mat2_exp2</span><span class="o">.</span><span class="n">index2</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>mat2_exp2 = (
+    mat2_exploded.withColumnRenamed(&quot;index&quot;, &quot;index2&quot;)
+    .withColumnRenamed(&quot;pos&quot;, &quot;pos2&quot;)
+    .withColumnRenamed(&quot;col&quot;, &quot;col2&quot;)
+)
+produit = mat1_exploded.join(mat2_exp2, mat1_exploded.pos == mat2_exp2.index2)
 </pre></div>
 </div>
 </div>
@@ -993,7 +994,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">produit</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>produit.printSchema()
 </pre></div>
 </div>
 </div>
@@ -1016,7 +1017,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">produit</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>produit.toPandas().head()
 </pre></div>
 </div>
 </div>
@@ -1113,12 +1114,12 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prod</span> <span class="o">=</span> <span class="n">produit</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
-    <span class="n">produit</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">),</span>
-    <span class="n">produit</span><span class="o">.</span><span class="n">pos2</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;j&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">produit</span><span class="o">.</span><span class="n">col</span> <span class="o">*</span> <span class="n">produit</span><span class="o">.</span><span class="n">col2</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="n">final</span> <span class="o">=</span> <span class="n">prod</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;j&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>prod = produit.select(
+    produit.index.alias(&quot;i&quot;),
+    produit.pos2.alias(&quot;j&quot;),
+    (produit.col * produit.col2).alias(&quot;val&quot;),
+)
+final = prod.groupby(&quot;i&quot;, &quot;j&quot;).sum(&quot;val&quot;)
 </pre></div>
 </div>
 </div>
@@ -1126,7 +1127,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>final.printSchema()
 </pre></div>
 </div>
 </div>
@@ -1146,7 +1147,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df = final.toPandas()
 </pre></div>
 </div>
 </div>
@@ -1154,7 +1155,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="s2">&quot;j&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df.sort_values([&quot;i&quot;, &quot;j&quot;]).head()
 </pre></div>
 </div>
 </div>
@@ -1225,7 +1226,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>df.shape
 </pre></div>
 </div>
 </div>
@@ -1249,7 +1250,7 @@ root
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>spark.stop()
 </pre></div>
 </div>
 </div>
