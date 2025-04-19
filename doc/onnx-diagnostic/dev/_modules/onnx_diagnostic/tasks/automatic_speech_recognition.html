@@ -441,12 +441,12 @@
 <span class="sd">        )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
-    <span class="n">seq_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;seq_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
+    <span class="n">seq_length</span> <span class="o">=</span> <span class="s2">&quot;seq_length&quot;</span>
 
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;decoder_input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">},</span>
         <span class="s2">&quot;cache_position&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">},</span>
-        <span class="s2">&quot;encoder_outputs&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}],</span>
+        <span class="s2">&quot;encoder_outputs&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}],</span>  <span class="c1"># last_hidden_state</span>
         <span class="s2">&quot;past_key_values&quot;</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">[</span>
                 <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>

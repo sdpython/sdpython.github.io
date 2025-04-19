@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:10.329** total execution time for 15 files **from all galleries**:
+**00:26.013** total execution time for 15 files **from all galleries**:
 
 .. container::
 
@@ -32,22 +32,22 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``examples/plot_export_tiny_llm.py``)
-     - 00:10.329
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``examples/plot_export_cond.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``examples/plot_export_tiny_phi2.py``)
+     - 00:13.457
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``examples/plot_export_hub_codellama.py``)
+     - 00:12.555
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``examples/plot_export_cond.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_locate_issue.py` (``examples/plot_export_locate_issue.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm_patched.py` (``examples/plot_export_tiny_llm_patched.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``examples/plot_export_tiny_llm.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``examples/plot_export_tiny_phi2.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm_patched.py` (``examples/plot_export_tiny_llm_patched.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_with_args_kwargs.py` (``examples/plot_export_with_args_kwargs.py``)

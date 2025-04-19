@@ -35,7 +35,7 @@ the export or to compare performance. The relevance does not matter.
 Create the dummy model
 ++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-48
+.. GENERATED FROM PYTHON SOURCE LINES 19-49
 
 .. code-block:: Python
 
@@ -50,6 +50,7 @@ Create the dummy model
     from onnx_diagnostic.helpers.cache_helper import is_cache_dynamic_registered
     from onnx_diagnostic.helpers.rt_helper import make_feeds
     from onnx_diagnostic.torch_export_patches import bypass_export_some_errors
+    from onnx_diagnostic.torch_export_patches.patch_inputs import use_dyn_not_str
     from onnx_diagnostic.torch_models.hghub import (
         get_untrained_model_with_inputs,
     )
@@ -81,12 +82,12 @@ Create the dummy model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-51
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 The original model has 2.7 billion parameters. It was divided by more than 10.
 Let's see the configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-55
 
 .. code-block:: Python
 
@@ -137,11 +138,11 @@ Let's see the configuration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-56
+.. GENERATED FROM PYTHON SOURCE LINES 56-57
 
 Inputs:
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-59
+.. GENERATED FROM PYTHON SOURCE LINES 57-60
 
 .. code-block:: Python
 
@@ -156,16 +157,16 @@ Inputs:
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x30x80,T1s2x32x30x80],#2[T1s2x32x30x80,T1s2x32x30x80]]))
+    dict(input_ids:T7s2x3,attention_mask:T7s2x33,position_ids:T7s2x3,past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80,T1s2x32x30x80], value_cache=#2[T1s2x32x30x80,T1s2x32x30x80]))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-61
+.. GENERATED FROM PYTHON SOURCE LINES 61-62
 
 With min/max values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-63
+.. GENERATED FROM PYTHON SOURCE LINES 62-64
 
 .. code-block:: Python
 
@@ -179,16 +180,16 @@ With min/max values.
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3[1087,48049:A16244.666666666666],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x30x80[-4.489185810089111,4.442478179931641:A-0.003097513569957727],T1s2x32x30x80[-4.671633243560791,4.2682952880859375:A-0.005087840943259953]],#2[T1s2x32x30x80[-4.720743179321289,4.366498947143555:A-0.0011145513167832323],T1s2x32x30x80[-4.295710563659668,4.381348609924316:A-0.0001101726830572088]]]))
+    dict(input_ids:T7s2x3[13454,46912:A31986.0],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.488379955291748,4.408445358276367:A0.000691510358920245],T1s2x32x30x80[-4.122284412384033,4.258615970611572:A0.001670480268441509]], value_cache=#2[T1s2x32x30x80[-4.573291301727295,4.660712242126465:A0.0020118987114079922],T1s2x32x30x80[-4.601008415222168,4.737997055053711:A-0.0011605066664710773]]))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
+.. GENERATED FROM PYTHON SOURCE LINES 65-66
 
 And the dynamic shapes
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-67
+.. GENERATED FROM PYTHON SOURCE LINES 66-68
 
 .. code-block:: Python
 
@@ -202,35 +203,22 @@ And the dynamic shapes
 
  .. code-block:: none
 
-    {'attention_mask': {0: Dim('batch', min=1, max=1024),
-                        1: _DimHint(type=<_DimHintType.DYNAMIC: 3>,
-                                    min=None,
-                                    max=None,
-                                    _factory=True)},
-     'input_ids': {0: Dim('batch', min=1, max=1024),
-                   1: Dim('seq_length', min=1, max=4096)},
-     'past_key_values': [[{0: Dim('batch', min=1, max=1024),
-                           2: Dim('cache_length', min=1, max=4096)},
-                          {0: Dim('batch', min=1, max=1024),
-                           2: Dim('cache_length', min=1, max=4096)}],
-                         [{0: Dim('batch', min=1, max=1024),
-                           2: Dim('cache_length', min=1, max=4096)},
-                          {0: Dim('batch', min=1, max=1024),
-                           2: Dim('cache_length', min=1, max=4096)}]],
-     'position_ids': {0: Dim('batch', min=1, max=1024),
-                      1: _DimHint(type=<_DimHintType.DYNAMIC: 3>,
-                                  min=None,
-                                  max=None,
-                                  _factory=True)}}
+    {'attention_mask': {0: Dim('batch', min=1, max=1024), 1: 'cache+seq'},
+     'input_ids': {0: Dim('batch', min=1, max=1024), 1: 'seq_length'},
+     'past_key_values': [[{0: Dim('batch', min=1, max=1024), 2: 'cache_length'},
+                          {0: Dim('batch', min=1, max=1024), 2: 'cache_length'}],
+                         [{0: Dim('batch', min=1, max=1024), 2: 'cache_length'},
+                          {0: Dim('batch', min=1, max=1024), 2: 'cache_length'}]],
+     'position_ids': {0: Dim('batch', min=1, max=1024), 1: 'cache+seq'}}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-69
+.. GENERATED FROM PYTHON SOURCE LINES 69-70
 
 We execute the model to produce expected outputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 70-74
 
 .. code-block:: Python
 
@@ -246,17 +234,17 @@ We execute the model to produce expected outputs.
 
  .. code-block:: none
 
-    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.896296262741089,2.8011929988861084:A0.0013032040743541984],past_key_values:DynamicCache[serialized](#2[#2[T1s2x32x33x80[-4.489185810089111,4.442478179931641:A-0.003073029425958327],T1s2x32x33x80[-4.671633243560791,4.2682952880859375:A-0.004541110962624989]],#2[T1s2x32x33x80[-4.720743179321289,4.366498947143555:A-0.0016756718649513507],T1s2x32x33x80[-4.295710563659668,4.381348609924316:A-5.721585575444309e-05]]]))
+    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.635814666748047,2.8888063430786133:A0.00128678212820887],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.488379955291748,4.408445358276367:A0.0010753360827551587],T1s2x32x33x80[-4.122284412384033,4.258615970611572:A0.001497009799541995]], value_cache=#2[T1s2x32x33x80[-4.573291301727295,4.660712242126465:A0.0021999827648482083],T1s2x32x33x80[-4.601008415222168,4.737997055053711:A-0.0016313169832010705]]))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-76
+.. GENERATED FROM PYTHON SOURCE LINES 75-77
 
 Export
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-103
+.. GENERATED FROM PYTHON SOURCE LINES 77-104
 
 .. code-block:: Python
 
@@ -279,7 +267,7 @@ Export
             untrained_model,
             (),
             kwargs=modificator(copy.deepcopy(inputs)),
-            dynamic_shapes=dynamic_shapes,
+            dynamic_shapes=use_dyn_not_str(dynamic_shapes),
             strict=False,  # mandatory for torch==2.6
         )
 
@@ -294,7 +282,7 @@ Export
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-111
+.. GENERATED FROM PYTHON SOURCE LINES 105-112
 
 Export to ONNX
 ++++++++++++++
@@ -304,7 +292,7 @@ Patches are still needed because the export
 applies :meth:`torch.export.ExportedProgram.run_decompositions`
 may export local pieces of the model again.
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-117
+.. GENERATED FROM PYTHON SOURCE LINES 112-118
 
 .. code-block:: Python
 
@@ -331,11 +319,11 @@ may export local pieces of the model again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-119
+.. GENERATED FROM PYTHON SOURCE LINES 119-120
 
 We can save it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-125
+.. GENERATED FROM PYTHON SOURCE LINES 120-126
 
 .. code-block:: Python
 
@@ -352,7 +340,7 @@ We can save it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-132
+.. GENERATED FROM PYTHON SOURCE LINES 127-133
 
 Discrepancies
 +++++++++++++
@@ -361,7 +349,7 @@ The we check the conversion to ONNX.
 Let's make sure the ONNX model produces the same outputs.
 It takes flatten inputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-138
+.. GENERATED FROM PYTHON SOURCE LINES 133-139
 
 .. code-block:: Python
 
@@ -379,17 +367,17 @@ It takes flatten inputs.
 
  .. code-block:: none
 
-    torch inputs: dict(input_ids:T7r2,attention_mask:T7r2,position_ids:T7r2,past_key_values:DynamicCache[serialized](#2[#2[T1r4,T1r4],#2[T1r4,T1r4]]))
+    torch inputs: dict(input_ids:T7r2,attention_mask:T7r2,position_ids:T7r2,past_key_values:DynamicCache(key_cache=#2[T1r4,T1r4], value_cache=#2[T1r4,T1r4]))
     onxrt inputs: dict(input_ids:A7r2,attention_mask:A7r2,position_ids:A7r2,past_key_values_key_cache_0:A1r4,past_key_values_key_cache_1:A1r4,past_key_values_value_cache_0:A1r4,past_key_values_value_cache_1:A1r4)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-140
+.. GENERATED FROM PYTHON SOURCE LINES 140-141
 
 We then create a :class:`onnxruntime.InferenceSession`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-145
+.. GENERATED FROM PYTHON SOURCE LINES 141-146
 
 .. code-block:: Python
 
@@ -405,11 +393,11 @@ We then create a :class:`onnxruntime.InferenceSession`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-147
+.. GENERATED FROM PYTHON SOURCE LINES 147-148
 
 Let's run.
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-149
+.. GENERATED FROM PYTHON SOURCE LINES 148-150
 
 .. code-block:: Python
 
@@ -422,11 +410,11 @@ Let's run.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-151
+.. GENERATED FROM PYTHON SOURCE LINES 151-152
 
 And finally the discrepancies.
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-155
+.. GENERATED FROM PYTHON SOURCE LINES 152-156
 
 .. code-block:: Python
 
@@ -442,16 +430,16 @@ And finally the discrepancies.
 
  .. code-block:: none
 
-    onnx discrepancies: abs=1.9073486328125e-06, rel=0.001058278783352371, n=983040.0
+    onnx discrepancies: abs=2.1457672119140625e-06, rel=0.0009178099290705528, n=983040.0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-157
+.. GENERATED FROM PYTHON SOURCE LINES 157-158
 
 It looks good.
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-160
+.. GENERATED FROM PYTHON SOURCE LINES 160-161
 
 .. code-block:: Python
 
@@ -471,7 +459,7 @@ It looks good.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.802 seconds)
+   **Total running time of the script:** (0 minutes 13.457 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_phi2.py:
