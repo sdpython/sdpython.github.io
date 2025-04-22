@@ -468,7 +468,11 @@ for equivalent results.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    [torch.onnx] Obtain model graph for `Model()` with `torch.export.export(..., strict=False)`...
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    /home/xadupre/github/onnxscript/onnxscript/converter.py:816: FutureWarning: &#39;onnxscript.values.Op.param_schemas&#39; is deprecated in version 0.1 and will be removed in the future. Please use &#39;.op_signature&#39; instead.
+      param_schemas = callee.param_schemas()
+    /home/xadupre/github/onnxscript/onnxscript/converter.py:816: FutureWarning: &#39;onnxscript.values.OnnxFunction.param_schemas&#39; is deprecated in version 0.1 and will be removed in the future. Please use &#39;.op_signature&#39; instead.
+      param_schemas = callee.param_schemas()
+    [torch.onnx] Obtain model graph for `Model()` with `torch.export.export(..., strict=False)`...
     [torch.onnx] Obtain model graph for `Model()` with `torch.export.export(..., strict=False)`... ✅
     [torch.onnx] Run decomposition...
     [torch.onnx] Run decomposition... ✅
@@ -478,42 +482,42 @@ for equivalent results.</p>
     [run_aligned] +torch-cst: p_scalar_tensor_default: T1s=1.0
     [run_aligned] +onnx-init: scalar_tensor_default: A1s=1.0
     [run_aligned] +onnx-init: p_scalar_tensor_default: A1s=1.0
-    [run_aligned] +onnx-input: x: T1s5x4[-1.9074662923812866,1.9536939859390259:A0.046493266522884366]
+    [run_aligned] +onnx-input: x: T1s5x4[-2.3593130111694336,2.448429822921753:A-0.004149307310581207]
     [run_aligned] run ep.graph.nodes[0]: placeholder -&gt; &#39;x&#39;
-    [run_aligned] +torch x=T1s5x4[-1.9074662923812866,1.9536939859390259:A0.046493266522884366]
+    [run_aligned] +torch x=T1s5x4[-2.3593130111694336,2.448429822921753:A-0.004149307310581207]
     [run_aligned] run ep.graph.nodes[1]: call_function[aten.abs.default] -&gt; &#39;abs_1&#39;
-    [run_aligned] +torch abs_1=T1s5x4[0.024502132087945938,1.9536939859390259:A0.6627727054059506]
+    [run_aligned] +torch abs_1=T1s5x4[0.46380195021629333,2.448429822921753:A0.9873485788702965]
     [run_aligned] run onx.graph.node[0]: Abs(x) -&gt; abs_1
-    [run_aligned] +onnx abs_1=A1s5x4[0.024502132087945938,1.9536939859390259:A0.6627727054059506]
+    [run_aligned] +onnx abs_1=A1s5x4[0.46380195021629333,2.448429822921753:A0.9873485788702965]
     [run_aligned] =common results abs_1: abs=0.0, rel=0.0
     [run_aligned] run ep.graph.nodes[2]: call_function[aten.exp.default] -&gt; &#39;exp&#39;
-    [run_aligned] +torch exp=T1s5x4[1.0248048305511475,7.054699420928955:A2.3492783665657044]
+    [run_aligned] +torch exp=T1s5x4[1.590108036994934,11.570165634155273:A3.255267244577408]
     [run_aligned] run onx.graph.node[1]: Exp(abs_1) -&gt; exp
-    [run_aligned] +onnx exp=A1s5x4[1.024804711341858,7.054699420928955:A2.3492783129215242]
-    [run_aligned] =common results exp: abs=2.384185791015625e-07, rel=1.1621049735818863e-07, n=20.0
+    [run_aligned] +onnx exp=A1s5x4[1.5901079177856445,11.570164680480957:A3.255267196893692]
+    [run_aligned] =common results exp: abs=9.5367431640625e-07, rel=1.1443532632512232e-07, n=20.0
     [run_aligned] run ep.graph.nodes[3]: call_function[aten.add.Tensor] -&gt; &#39;add&#39;
-    [run_aligned] +torch add=T1s5x4[2.0248048305511475,8.054698944091797:A3.3492783665657044]
+    [run_aligned] +torch add=T1s5x4[2.5901079177856445,12.570165634155273:A4.255267250537872]
     [run_aligned] run ep.graph.nodes[4]: call_function[aten.log.default] -&gt; &#39;log&#39;
-    [run_aligned] +torch log=T1s5x4[0.7054733037948608,2.0862555503845215:A1.1126578360795976]
+    [run_aligned] +torch log=T1s5x4[0.9516995549201965,2.5313262939453125:A1.328681805729866]
     [run_aligned] run onx.graph.node[2]: Add(exp, scalar_tensor_default) -&gt; add_6
-    [run_aligned] +onnx add_6=A1s5x4[2.0248045921325684,8.054698944091797:A3.3492783188819883]
+    [run_aligned] +onnx add_6=A1s5x4[2.5901079177856445,12.570164680480957:A4.2552672028541565]
     [run_aligned] run onx.graph.node[3]: Log(add_6) -&gt; log
-    [run_aligned] +onnx log=A1s5x4[0.7054731845855713,2.0862555503845215:A1.1126578330993653]
-    [run_aligned] =common results log: abs=1.1920928955078125e-07, rel=1.6873856225060718e-07, n=20.0
+    [run_aligned] +onnx log=A1s5x4[0.9516995549201965,2.5313260555267334:A1.3286817997694016]
+    [run_aligned] =common results log: abs=2.384185791015625e-07, rel=1.183534673948118e-07, n=20.0
     [run_aligned] run ep.graph.nodes[5]: call_function[aten.add.Tensor] -&gt; &#39;add_1&#39;
-    [run_aligned] +torch add_1=T1s5x4[2.7302780151367188,10.140954971313477:A4.461936211585998]
+    [run_aligned] +torch add_1=T1s5x4[3.5418074131011963,15.101491928100586:A5.583949089050293]
     [run_aligned] run ep.graph.nodes[6]: output -&gt; &#39;output&#39;
-    [run_aligned] +torch output=(T1s5x4[2.7302780151367188,10.140954971313477:A4.461936211585998],)
+    [run_aligned] +torch output=(T1s5x4[3.5418074131011963,15.101491928100586:A5.583949089050293],)
     [run_aligned] run onx.graph.node[4]: Add(log, add_6) -&gt; add_13
-    [run_aligned] +onnx add_13=A1s5x4[2.7302777767181396,10.140954971313477:A4.461936175823212]
-    [run_aligned] =common results* add_1/add_13: abs=4.76837158203125e-07, rel=1.1059854642418534e-07, n=20.0
+    [run_aligned] +onnx add_13=A1s5x4[3.5418074131011963,15.10149097442627:A5.583949077129364]
+    [run_aligned] =common results* add_1/add_13: abs=9.5367431640625e-07, rel=1.210829198366151e-07, n=20.0
     ------------
     final results
        ep_id_node  onnx_id_node ep_name onnx_name       err_abs       err_rel
     0           1             0   abs_1     abs_1  0.000000e+00  0.000000e+00
-    1           2             1     exp       exp  2.384186e-07  1.162105e-07
-    2           4             3     log       log  1.192093e-07  1.687386e-07
-    3           6             4  add_13     add_1  4.768372e-07  1.105985e-07
+    1           2             1     exp       exp  9.536743e-07  1.144353e-07
+    2           4             3     log       log  2.384186e-07  1.183535e-07
+    3           6             4  add_13     add_1  9.536743e-07  1.210829e-07
 </pre></div>
 </div>
 </dd></dl>
