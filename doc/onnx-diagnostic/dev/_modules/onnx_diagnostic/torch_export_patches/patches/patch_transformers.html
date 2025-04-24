@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_export_patches.patches.patch_transformers - onnx-diagnostic 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -263,8 +263,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/tasks/index.html">onnx_diagnostic.tasks</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.tasks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/automatic_speech_recognition.html">onnx_diagnostic.tasks.automatic_speech_recognition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/fill_mask.html">onnx_diagnostic.tasks.fill_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/feature_extraction.html">onnx_diagnostic.tasks.feature_extraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
@@ -372,6 +374,7 @@
 <span class="kn">import</span> <span class="nn">transformers</span>
 <span class="kn">from</span> <span class="nn">transformers.modeling_attn_mask_utils</span> <span class="kn">import</span> <span class="n">AttentionMaskConverter</span>
 <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">StaticCache</span><span class="p">,</span> <span class="n">Cache</span><span class="p">,</span> <span class="n">DynamicCache</span>
+<span class="kn">from</span> <span class="nn">...ext_test_case</span> <span class="kn">import</span> <span class="n">has_transformers</span>
 <span class="kn">from</span> <span class="nn">...helpers.torch_test_helper</span> <span class="kn">import</span> <span class="n">is_torchdynamo_exporting</span>
 
 
@@ -419,7 +422,8 @@
 <span class="sd">    ``transformers.modeling_attn_mask_utils.AttentionMaskConverter._make_causal_mask``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_PATCHES_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_make_causal_mask&quot;</span><span class="p">]</span>
+    <span class="c1"># This method was fixed in 4.51 at least.</span>
+    <span class="n">_PATCHES_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_make_causal_mask&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">has_transformers</span><span class="p">(</span><span class="s2">&quot;4.48.3&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
     <span class="n">_PATCHED_CLASS_</span> <span class="o">=</span> <span class="n">AttentionMaskConverter</span>
 
     <span class="nd">@staticmethod</span>
@@ -438,6 +442,9 @@
 <span class="sd">        This static method may be called with ``AttentionMaskConverter._make_causal_mask``</span>
 <span class="sd">        or ``self._make_causal_mask``. That changes this argument is receives.</span>
 <span class="sd">        That should not matter but...</span>
+<span class="sd">        The patch should be implemented in another way. static methods do not play well</span>
+<span class="sd">        with a simple replacement.</span>
+<span class="sd">        Fortunately, this patch does not seem to be needed anymore with transformers&gt;=4.48.3.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">))</span> <span class="k">else</span> <span class="mi">1</span>

@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_export_patches.patches.patch_torch - onnx-diagnostic 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -263,8 +263,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/tasks/index.html">onnx_diagnostic.tasks</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.tasks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/automatic_speech_recognition.html">onnx_diagnostic.tasks.automatic_speech_recognition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/fill_mask.html">onnx_diagnostic.tasks.fill_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/feature_extraction.html">onnx_diagnostic.tasks.feature_extraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
@@ -414,7 +416,7 @@
             <span class="k">raise</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[_catch_produce_guards_and_solve_constraints] ERROR&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[_catch_produce_guards_and_solve_constraints] ERROR: &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;produce_guards_and_solve_constraints failed, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;fake_mode=</span><span class="si">{</span><span class="n">fake_mode</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -424,6 +426,7 @@
                 <span class="sa">f</span><span class="s2">&quot;_is_torch_jit_trace=</span><span class="si">{</span><span class="n">_is_torch_jit_trace</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;exc=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">gm=</span><span class="si">{</span><span class="n">gm</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="patch__check_input_constraints_for_graph">
@@ -442,13 +445,14 @@
             <span class="k">raise</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[_check_input_constraints_for_graph] ERROR&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[_check_input_constraints_for_graph] ERROR: &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;_check_input_constraints_for_graph failed, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;input_placeholders=</span><span class="si">{</span><span class="n">input_placeholders</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;range_constraints=</span><span class="si">{</span><span class="n">range_constraints</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;exc=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span></div>
+            <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
 
 
 

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:38.668** total execution time for 15 files **from all galleries**:
+**00:06.450** total execution time for 15 files **from all galleries**:
 
 .. container::
 
@@ -32,48 +32,48 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``examples/plot_export_tiny_phi2.py``)
-     - 00:09.409
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_failing_onnxruntime_evaluator.py` (``examples/plot_failing_onnxruntime_evaluator.py``)
-     - 00:07.950
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_args_kwargs.py` (``examples/plot_export_with_args_kwargs.py``)
-     - 00:05.552
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm_patched.py` (``examples/plot_export_tiny_llm_patched.py``)
-     - 00:04.893
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``examples/plot_export_hub_codellama.py``)
-     - 00:03.550
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``examples/plot_export_tiny_llm.py``)
-     - 00:03.171
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_max.py` (``recipes/plot_dynamic_shapes_max.py``)
+     - 00:06.450
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``examples/plot_export_cond.py``)
-     - 00:01.279
+     - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_failing_model_extract.py` (``examples/plot_failing_model_extract.py``)
-     - 00:01.237
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_nonzero.py` (``recipes/plot_dynamic_shapes_nonzero.py``)
-     - 00:00.435
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_max.py` (``recipes/plot_dynamic_shapes_max.py``)
-     - 00:00.308
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_auto.py` (``examples/plot_export_with_auto.py``)
-     - 00:00.243
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``examples/plot_export_with_dynamic_cache.py``)
-     - 00:00.210
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_python_int.py` (``recipes/plot_dynamic_shapes_python_int.py``)
-     - 00:00.199
+   * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``examples/plot_export_hub_codellama.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_locate_issue.py` (``examples/plot_export_locate_issue.py``)
-     - 00:00.196
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm.py` (``examples/plot_export_tiny_llm.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_llm_patched.py` (``examples/plot_export_tiny_llm_patched.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``examples/plot_export_tiny_phi2.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_args_kwargs.py` (``examples/plot_export_with_args_kwargs.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_auto.py` (``examples/plot_export_with_auto.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``examples/plot_export_with_dynamic_cache.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_model_extract.py` (``examples/plot_failing_model_extract.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_failing_onnxruntime_evaluator.py` (``examples/plot_failing_onnxruntime_evaluator.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_failing_reference_evaluator.py` (``examples/plot_failing_reference_evaluator.py``)
-     - 00:00.038
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_nonzero.py` (``recipes/plot_dynamic_shapes_nonzero.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_python_int.py` (``recipes/plot_dynamic_shapes_python_int.py``)
+     - 00:00.000
      - 0.0

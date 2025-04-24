@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.hghub.model_inputs - onnx-diagnostic 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -263,8 +263,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/tasks/index.html">onnx_diagnostic.tasks</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.tasks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/automatic_speech_recognition.html">onnx_diagnostic.tasks.automatic_speech_recognition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/fill_mask.html">onnx_diagnostic.tasks.fill_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/feature_extraction.html">onnx_diagnostic.tasks.feature_extraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
@@ -386,6 +388,7 @@
     <span class="n">dynamic_rope</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">same_as_pretrained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">use_preinstalled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">add_second_input</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets a non initialized model similar to the original model</span>
@@ -403,6 +406,8 @@
 <span class="sd">    :param same_as_pretrained: if True, do not change the default values</span>
 <span class="sd">        to get a smaller model</span>
 <span class="sd">    :param use_preinstalled: use preinstalled configurations</span>
+<span class="sd">    :param add_second_input: provides a second inputs to check a model</span>
+<span class="sd">        supports different shapes</span>
 <span class="sd">    :return: dictionary with a model, inputs, dynamic shapes, and the configuration</span>
 
 <span class="sd">    Example:</span>
@@ -476,7 +481,7 @@
     <span class="c1"># This line is important. Some models may produce different</span>
     <span class="c1"># outputs even with the same inputs in training mode.</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">fct</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">fct</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">add_second_input</span><span class="o">=</span><span class="n">add_second_input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">res</span><span class="p">[</span><span class="s2">&quot;input_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span>
     <span class="n">res</span><span class="p">[</span><span class="s2">&quot;model_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mkwargs</span>

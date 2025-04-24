@@ -29,10 +29,12 @@ The algorithm trying to automatically infer shapes after every operator
 in the exported program is something very aggreessive. Here is a case where
 it takes a wrong decision and how to get around it.
 
+**This bug was fixed after 4/24/2025**.
+
 Wrong Model
 +++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-39
+.. GENERATED FROM PYTHON SOURCE LINES 18-41
 
 .. code-block:: Python
 
@@ -72,12 +74,12 @@ Wrong Model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 42-44
 
 Export
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-49
+.. GENERATED FROM PYTHON SOURCE LINES 44-51
 
 .. code-block:: Python
 
@@ -98,29 +100,37 @@ Export
 
     ExportedProgram:
         class GraphModule(torch.nn.Module):
-            def forward(self, x: "i64[s35, s16]", y: "i64[s58, s43]", fact: "i64[1, s16]"):
+            def forward(self, x: "i64[s35, s16]", y: "i64[s58, s43]", fact: "i64[1, Max(s16, s43)]"):
                  # 
-                sym_size_int_8: "Sym(s35)" = torch.ops.aten.sym_size.int(x, 0)
-                sym_size_int_9: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1)
-                sym_size_int_10: "Sym(s58)" = torch.ops.aten.sym_size.int(y, 0)
-                sym_size_int_11: "Sym(s43)" = torch.ops.aten.sym_size.int(y, 1)
+                sym_size_int_10: "Sym(s35)" = torch.ops.aten.sym_size.int(x, 0)
+                sym_size_int_11: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1)
+                sym_size_int_12: "Sym(s58)" = torch.ops.aten.sym_size.int(y, 0)
+                sym_size_int_13: "Sym(s43)" = torch.ops.aten.sym_size.int(y, 1)
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:26 in forward, code: z = torch.zeros((s1, s2), dtype=x.dtype)
-                zeros: "i64[s58, s16]" = torch.ops.aten.zeros.default([sym_size_int_10, sym_size_int_9], dtype = torch.int64, device = device(type='cpu'), pin_memory = False);  sym_size_int_9 = None
+                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862 in sym_max, code: return a.__sym_max__(b)
+                sym_max: "Sym(Max(s35, s58))" = torch.sym_max(sym_size_int_10, sym_size_int_12)
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:27 in forward, code: z[: x.shape[0], : x.shape[1]] = x
-                slice_1: "i64[s35, s16]" = torch.ops.aten.slice.Tensor(zeros, 0, 0, sym_size_int_8);  sym_size_int_8 = None
-                copy_: "i64[s35, s16]" = torch.ops.aten.copy_.default(slice_1, x);  slice_1 = x = copy_ = None
+                 # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862 in sym_max, code: return a.__sym_max__(b)
+                sym_max_1: "Sym(Max(s16, s43))" = torch.sym_max(sym_size_int_11, sym_size_int_13)
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:28 in forward, code: z[: y.shape[0], : y.shape[1]] += y
-                slice_2: "i64[s58, s16]" = torch.ops.aten.slice.Tensor(zeros, 0, None, sym_size_int_10);  sym_size_int_10 = None
-                slice_3: "i64[s58, s43]" = torch.ops.aten.slice.Tensor(slice_2, 1, None, sym_size_int_11);  slice_2 = None
-                add_: "i64[s58, s43]" = torch.ops.aten.add_.Tensor(slice_3, y);  slice_3 = y = None
-                slice_4: "i64[s58, s43]" = torch.ops.aten.slice.Tensor(zeros, 1, 0, sym_size_int_11);  sym_size_int_11 = None
-                copy__1: "i64[s58, s43]" = torch.ops.aten.copy_.default(slice_4, add_);  slice_4 = add_ = copy__1 = None
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:28 in forward, code: z = torch.zeros((s1, s2), dtype=x.dtype)
+                zeros: "i64[Max(s35, s58), Max(s16, s43)]" = torch.ops.aten.zeros.default([sym_max, sym_max_1], dtype = torch.int64, device = device(type='cpu'), pin_memory = False);  sym_max = sym_max_1 = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:29 in forward, code: return z * fact
-                mul: "i64[s58, s16]" = torch.ops.aten.mul.Tensor(zeros, fact);  zeros = fact = None
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:29 in forward, code: z[: x.shape[0], : x.shape[1]] = x
+                slice_1: "i64[s35, Max(s16, s43)]" = torch.ops.aten.slice.Tensor(zeros, 0, 0, sym_size_int_10);  sym_size_int_10 = None
+                slice_2: "i64[s35, s16]" = torch.ops.aten.slice.Tensor(slice_1, 1, 0, sym_size_int_11);  slice_1 = sym_size_int_11 = None
+                copy_: "i64[s35, s16]" = torch.ops.aten.copy_.default(slice_2, x);  slice_2 = x = copy_ = None
+            
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:30 in forward, code: z[: y.shape[0], : y.shape[1]] += y
+                slice_3: "i64[s58, Max(s16, s43)]" = torch.ops.aten.slice.Tensor(zeros, 0, None, sym_size_int_12)
+                slice_4: "i64[s58, s43]" = torch.ops.aten.slice.Tensor(slice_3, 1, None, sym_size_int_13);  slice_3 = None
+                add_: "i64[s58, s43]" = torch.ops.aten.add_.Tensor(slice_4, y);  slice_4 = y = None
+                slice_5: "i64[s58, Max(s16, s43)]" = torch.ops.aten.slice.Tensor(zeros, 0, 0, sym_size_int_12);  sym_size_int_12 = None
+                slice_6: "i64[s58, s43]" = torch.ops.aten.slice.Tensor(slice_5, 1, 0, sym_size_int_13);  slice_5 = sym_size_int_13 = None
+                copy__1: "i64[s58, s43]" = torch.ops.aten.copy_.default(slice_6, add_);  slice_6 = add_ = copy__1 = None
+            
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:31 in forward, code: return z * fact
+                mul: "i64[Max(s35, s58), Max(s16, s43)]" = torch.ops.aten.mul.Tensor(zeros, fact);  zeros = fact = None
                 return (mul,)
             
     Graph signature: 
@@ -132,17 +142,17 @@ Export
         # outputs
         mul: USER_OUTPUT
     
-    Range constraints: {s35: VR[2, int_oo], s16: VR[2, int_oo], s58: VR[2, int_oo], s43: VR[2, int_oo]}
+    Range constraints: {s35: VR[2, int_oo], s16: VR[2, int_oo], s58: VR[2, int_oo], s43: VR[2, int_oo], Max(s16, s43): VR[2, int_oo]}
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-51
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 But does it really work? Let's print the shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-55
+.. GENERATED FROM PYTHON SOURCE LINES 53-57
 
 .. code-block:: Python
 
@@ -163,11 +173,11 @@ But does it really work? Let's print the shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-57
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
 
 Case with different shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-66
+.. GENERATED FROM PYTHON SOURCE LINES 59-68
 
 .. code-block:: Python
 
@@ -188,12 +198,12 @@ Case with different shapes.
 
  .. code-block:: none
 
-    case 2 failed: Expected input at *args[2].shape[1] to be equal to 2, but got 3
+    case 2: torch.Size([3, 3]) torch.Size([3, 3])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-76
+.. GENERATED FROM PYTHON SOURCE LINES 69-78
 
 It does not even compute. The exported program does not get the correct shape.
 
@@ -205,7 +215,7 @@ Rewritten Model
 We use a trick to introduce new shape the shape inference algorithm
 cannot know. This requires to hide the failing logic in a custom operator.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-126
+.. GENERATED FROM PYTHON SOURCE LINES 78-128
 
 .. code-block:: Python
 
@@ -266,11 +276,11 @@ cannot know. This requires to hide the failing logic in a custom operator.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-128
+.. GENERATED FROM PYTHON SOURCE LINES 129-130
 
 Now everything is registered. Let's rewrite the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-136
+.. GENERATED FROM PYTHON SOURCE LINES 130-138
 
 .. code-block:: Python
 
@@ -289,11 +299,11 @@ Now everything is registered. Let's rewrite the model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-138
+.. GENERATED FROM PYTHON SOURCE LINES 139-140
 
 And check it works.
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-145
+.. GENERATED FROM PYTHON SOURCE LINES 140-147
 
 .. code-block:: Python
 
@@ -317,12 +327,12 @@ And check it works.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-148
+.. GENERATED FROM PYTHON SOURCE LINES 148-150
 
 Export again
 ++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-156
+.. GENERATED FROM PYTHON SOURCE LINES 150-158
 
 .. code-block:: Python
 
@@ -348,7 +358,7 @@ Export again
                  # 
                 sym_size_int_4: "Sym(s23)" = torch.ops.aten.sym_size.int(fact, 1)
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:132 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
                 copy_max_dimensions: "i64[u0, s23]" = torch.ops.mylib.copy_max_dimensions.default(x, y);  x = y = None
             
                  # 
@@ -356,14 +366,14 @@ Export again
                 sym_size_int_6: "Sym(s23)" = torch.ops.aten.sym_size.int(copy_max_dimensions, 1)
                 sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_5);  sym_constrain_range_for_size_default = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:132 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
                 ge: "Sym(u0 >= 0)" = sym_size_int_5 >= 0;  sym_size_int_5 = None
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(ge, "Runtime assertion failed for expression u0 >= 0 on node 'ge'");  ge = _assert_scalar_default = None
             
                  # 
                 sym_constrain_range_for_size_default_1 = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_6);  sym_constrain_range_for_size_default_1 = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:132 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
                 ge_1: "Sym(s23 >= 2)" = sym_size_int_6 >= 2
                 _assert_scalar_default_1 = torch.ops.aten._assert_scalar.default(ge_1, "Runtime assertion failed for expression u1 >= 2 on node 'ge_1'");  ge_1 = _assert_scalar_default_1 = None
             
@@ -371,7 +381,7 @@ Export again
                 eq: "Sym(True)" = sym_size_int_6 == sym_size_int_4;  sym_size_int_6 = sym_size_int_4 = None
                 _assert_scalar_default_2 = torch.ops.aten._assert_scalar.default(eq, "Runtime assertion failed for expression Eq(u1, s23) on node 'eq'");  eq = _assert_scalar_default_2 = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:133 in forward, code: return z * fact
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:135 in forward, code: return z * fact
                 mul: "i64[u0, s23]" = torch.ops.aten.mul.Tensor(copy_max_dimensions, fact);  copy_max_dimensions = fact = None
                 return (mul,)
             
@@ -390,11 +400,11 @@ Export again
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-158
+.. GENERATED FROM PYTHON SOURCE LINES 159-160
 
 We check it works.
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-171
+.. GENERATED FROM PYTHON SOURCE LINES 160-173
 
 .. code-block:: Python
 
@@ -425,12 +435,12 @@ We check it works.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-174
+.. GENERATED FROM PYTHON SOURCE LINES 174-176
 
 Final Check on very different dimension
 +++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-181
+.. GENERATED FROM PYTHON SOURCE LINES 176-183
 
 .. code-block:: Python
 
@@ -454,18 +464,18 @@ Final Check on very different dimension
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 182-184
+.. GENERATED FROM PYTHON SOURCE LINES 184-186
 
 This is not perfect as we get an exported program but some logic
 is hidden in a custom operator.
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-187
+.. GENERATED FROM PYTHON SOURCE LINES 186-189
 
 .. code-block:: Python
 
 
 
-    doc.plot_legend("dynamic shapes\nworkaround\nmax(d1, d2)", "dynamic shapes", "yellow")
+    doc.plot_legend("max(d1, d2)\nwith d1, d2 dimensions", "dynamic shapes", "green")
 
 
 
@@ -481,7 +491,7 @@ is hidden in a custom operator.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.308 seconds)
+   **Total running time of the script:** (0 minutes 6.450 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_max.py:
