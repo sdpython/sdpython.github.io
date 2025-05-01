@@ -9,7 +9,7 @@
         <title>Examples Gallery - onnx-diagnostic 0.4.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -312,14 +312,14 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_cond.html">Export a model with a control flow (If)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm.html">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_hub_codellama.html">Test the export on untrained models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -385,6 +385,9 @@
 </div><div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond."><img alt="" src="../_images/sphx_glr_plot_export_cond_thumb.png" />
 <p><a class="reference internal" href="plot_export_cond.html#sphx-glr-auto-examples-plot-export-cond-py"><span class="std std-ref">Export a model with a control flow (If)</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export a model with a control flow (If)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This function exports an smaller untrained model with the same architecture. It is faster than the pretrained model. When this works, the untrained model can be replaced by the trained one."><img alt="" src="../_images/sphx_glr_plot_export_tiny_phi2_thumb.png" />
+<p><a class="reference internal" href="plot_export_tiny_phi2.html#sphx-glr-auto-examples-plot-export-tiny-phi2-py"><span class="std std-ref">Export microsoft/phi-2</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Export microsoft/phi-2</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Every LLMs implemented in transformers use cache. One of the most used is transformers.cache_utils.DynamicCache. The cache size is dynamic to cope with the growing context. The example shows a tool which determines the dynamic shapes for torch.export.export based on a set of valid inputs."><img alt="" src="../_images/sphx_glr_plot_export_with_dynamic_cache_thumb.png" />
 <p><a class="reference internal" href="plot_export_with_dynamic_cache.html#sphx-glr-auto-examples-plot-export-with-dynamic-cache-py"><span class="std std-ref">Export with DynamicCache and dynamic shapes</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export with DynamicCache and dynamic shapes</div>
@@ -400,15 +403,12 @@
 </div><div class="sphx-glr-thumbcontainer" tooltip="Example l-plot-failing-reference-evaluator demonstrated how to run a python runtime on a model but it may very slow sometimes and it could show some discrepancies if the only provider is not CPU. Let&#x27;s use onnx_diagnostic.reference.OnnxruntimeEvaluator. It splits the model into node and runs them independently until it succeeds or fails. This class converts every node into model based on the types discovered during the execution. It relies on onnx_diagnostic.helpers.ort_session.InferenceSessionForTorch or onnx_diagnostic.helpers.ort_session.InferenceSessionForNumpy for the execution. This example uses torch tensor and bfloat16."><img alt="" src="../_images/sphx_glr_plot_failing_onnxruntime_evaluator_thumb.png" />
 <p><a class="reference internal" href="plot_failing_onnxruntime_evaluator.html#sphx-glr-auto-examples-plot-failing-onnxruntime-evaluator-py"><span class="std std-ref">Intermediate results with onnxruntime</span></a></p>
   <div class="sphx-glr-thumbnail-title">Intermediate results with onnxruntime</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported withtorch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_thumb.png" />
-<p><a class="reference internal" href="plot_export_tiny_llm.html#sphx-glr-auto-examples-plot-export-tiny-llm-py"><span class="std std-ref">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported with torch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_thumb.png" />
+<p><a class="reference internal" href="plot_export_tiny_llm.html#sphx-glr-auto-examples-plot-export-tiny-llm-py"><span class="std std-ref">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Checking the exporter on a whole model takes time as it is usually big but we can create a smaller version with the same architecture. Then fix export issues on such a small model is faster."><img alt="" src="../_images/sphx_glr_plot_export_hub_codellama_thumb.png" />
 <p><a class="reference internal" href="plot_export_hub_codellama.html#sphx-glr-auto-examples-plot-export-hub-codellama-py"><span class="std std-ref">Test the export on untrained models</span></a></p>
   <div class="sphx-glr-thumbnail-title">Test the export on untrained models</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="microsoft/phi-2 is not a big models but still quite big when it comes to write unittest. Function onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs can be used to create a reduced untrained version of a model coming from HuggingFace. It downloads the configuration from the website but creates a dummy model with 1 or 2 hidden layers in order to reduce the size and get a fast execution. The goal is usually to test the export or to compare performance. The relevance does not matter."><img alt="" src="../_images/sphx_glr_plot_export_tiny_phi2_thumb.png" />
-<p><a class="reference internal" href="plot_export_tiny_phi2.html#sphx-glr-auto-examples-plot-export-tiny-phi2-py"><span class="std std-ref">Untrained microsoft/phi-2</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Untrained microsoft/phi-2</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work."><img alt="" src="../_images/sphx_glr_plot_export_with_auto_thumb.png" />
 <p><a class="reference internal" href="plot_export_with_auto.html#sphx-glr-auto-examples-plot-export-with-auto-py"><span class="std std-ref">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</span></a></p>
   <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</div>

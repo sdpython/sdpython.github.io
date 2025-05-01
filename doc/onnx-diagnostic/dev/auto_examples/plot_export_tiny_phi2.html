@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints" href="plot_export_with_auto.html" /><link rel="prev" title="Test the export on untrained models" href="plot_export_hub_codellama.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Export with DynamicCache and dynamic shapes" href="plot_export_with_dynamic_cache.html" /><link rel="prev" title="Export a model with a control flow (If)" href="plot_export_cond.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>Untrained microsoft/phi-2 - onnx-diagnostic 0.4.4 documentation</title>
+        <title>Export microsoft/phi-2 - onnx-diagnostic 0.4.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -312,14 +312,14 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_cond.html">Export a model with a control flow (If)</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Export microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_export_tiny_llm.html">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_hub_codellama.html">Test the export on untrained models</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Untrained microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -379,10 +379,13 @@
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-export-tiny-phi2-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="untrained-microsoft-phi-2">
-<span id="l-plot-export-tiny-phi2"></span><span id="sphx-glr-auto-examples-plot-export-tiny-phi2-py"></span><h1>Untrained microsoft/phi-2<a class="headerlink" href="#untrained-microsoft-phi-2" title="Link to this heading">¶</a></h1>
-<p><a class="reference external" href="https://huggingface.co/microsoft/phi-2">microsoft/phi-2</a> is not a big models but still quite big
-when it comes to write unittest. Function
+<section class="sphx-glr-example-title" id="export-microsoft-phi-2">
+<span id="l-plot-export-tiny-phi2"></span><span id="sphx-glr-auto-examples-plot-export-tiny-phi2-py"></span><h1>Export microsoft/phi-2<a class="headerlink" href="#export-microsoft-phi-2" title="Link to this heading">¶</a></h1>
+<p>This function exports an smaller untrained model with the same architecture.
+It is faster than the pretrained model.
+When this works, the untrained model can be replaced by the trained one.</p>
+<p><a class="reference external" href="https://huggingface.co/microsoft/phi-2">microsoft/phi-2</a> is not a big model but still quite big
+when it comes to write unittests. Function
 <a class="reference internal" href="../api/torch_models/hghub/index.html#onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs" title="onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs()</span></code></a>
 can be used to create a reduced untrained version of a model coming from
 <a class="reference external" href="https://huggingface.co/docs/hub/en/index">HuggingFace</a>. It downloads the configuration from the website
@@ -426,6 +429,8 @@ the export or to compare performance. The relevance does not matter.</p>
 </pre></div>
 </div>
 <p>The original model has 2.7 billion parameters. It was divided by more than 10.
+However, it can still be used with
+<code class="docutils literal notranslate"><span class="pre">get_untrained_model_with_inputs(&quot;microsoft/phi-2&quot;,</span> <span class="pre">same_as_pretrained=True)</span></code>.
 Let’s see the configuration.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 </pre></div>
@@ -474,7 +479,7 @@ Let’s see the configuration.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_type</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_min_max</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dict(input_ids:T7s2x3[4819,40948:A25144.0],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.3719329833984375,4.214013576507568:A-0.0034454566145567817],T1s2x32x30x80[-4.354637145996094,4.101736545562744:A0.00048715437119101424]], value_cache=#2[T1s2x32x30x80[-4.58950662612915,4.415571689605713:A-0.0011134230908122892],T1s2x32x30x80[-4.650355815887451,4.465639591217041:A-0.002472064368367359]]))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>dict(input_ids:T7s2x3[4645,50851:A36456.833333333336],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.3283209800720215,4.490790843963623:A-0.0024834681242234704],T1s2x32x30x80[-4.500185966491699,4.5200042724609375:A0.0027275379098153857]], value_cache=#2[T1s2x32x30x80[-4.518382549285889,4.521642208099365:A-0.0020305086688893487],T1s2x32x30x80[-4.291463851928711,4.346440315246582:A-0.0033254771222937557]]))
 </pre></div>
 </div>
 <p>And the dynamic shapes</p>
@@ -495,15 +500,19 @@ Let’s see the configuration.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;expected: </span><span class="si">{</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_type</span></a></a><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w"> </span><span class="n">with_min_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.479748487472534,2.470858573913574:A-0.0015045551299974135],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.3719329833984375,4.214013576507568:A-0.0032215617116300786],T1s2x32x33x80[-4.354637145996094,4.101736545562744:A0.00041614267573929735]], value_cache=#2[T1s2x32x33x80[-4.58950662612915,4.415571689605713:A-0.0012271389566834553],T1s2x32x33x80[-4.650355815887451,4.465639591217041:A-0.002322949412059211]]))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.5567877292633057,2.5877676010131836:A-0.0009189583060632837],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.3283209800720215,4.490790843963623:A-0.0020984506150923464],T1s2x32x33x80[-4.500185966491699,4.5200042724609375:A0.002412537062450274]], value_cache=#2[T1s2x32x33x80[-4.518382549285889,4.521642208099365:A-0.0013211549600469718],T1s2x32x33x80[-4.291463851928711,4.346440315246582:A-0.00296115123610301]]))
 </pre></div>
 </div>
 </section>
-<section id="export">
-<h2>Export<a class="headerlink" href="#export" title="Link to this heading">¶</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_patches" title="onnx_diagnostic.torch_export_patches.torch_export_patches" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_patches" title="onnx_diagnostic.torch_export_patches.torch_export_patches" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">torch_export_patches</span></a></a><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">modificator</span><span class="p">:</span>
+<section id="export-to-fx-graph">
+<h2>Export to fx.Graph<a class="headerlink" href="#export-to-fx-graph" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+gitd36b09c ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> is the first step before converting
+a model into ONNX. The inputs are duplicated (with <code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code>)
+because the model may modify them inline (a cache for example).
+Shapes may not match on the second call with the modified inputs.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_patches" title="onnx_diagnostic.torch_export_patches.torch_export_patches" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_patches" title="onnx_diagnostic.torch_export_patches.torch_export_patches" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches sphx-glr-backref-type-py-function"><span class="n">torch_export_patches</span></a></a><span class="p">(</span><span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-    <span class="c1"># Unnecessary steps but useful in case of an error</span>
+    <span class="c1"># Two unnecessary steps but useful in case of an error</span>
     <span class="c1"># We check the cache is registered.</span>
     <span class="k">assert</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" title="onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered" class="sphx-glr-backref-module-onnx_diagnostic-helpers-cache_helper sphx-glr-backref-type-py-function"><span class="n">is_cache_dynamic_registered</span></a></a><span class="p">()</span>
 
@@ -513,16 +522,17 @@ Let’s see the configuration.</p>
         <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a></a><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1e-5</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;The model with patches produces different outputs: </span><span class="si">{</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_diff" title="onnx_diagnostic.helpers.string_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_diff" title="onnx_diagnostic.helpers.string_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_diff</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a></a><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="c1"># Then we export.</span>
+    <span class="c1"># Then we export: the only import line in this section.</span>
     <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://pytorch.org/docs/main/export.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a><span class="p">(</span>
         <span class="n">untrained_model</span><span class="p">,</span>
         <span class="p">(),</span>
-        <span class="n">kwargs</span><span class="o">=</span><span class="n">modificator</span><span class="p">(</span><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">)),</span>
+        <span class="n">kwargs</span><span class="o">=</span><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">),</span>
         <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="o">=</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/patch_inputs.html#onnx_diagnostic.torch_export_patches.patch_inputs.use_dyn_not_str" title="onnx_diagnostic.torch_export_patches.patch_inputs.use_dyn_not_str" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches-patch_inputs sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/torch_export_patches/patch_inputs.html#onnx_diagnostic.torch_export_patches.patch_inputs.use_dyn_not_str" title="onnx_diagnostic.torch_export_patches.patch_inputs.use_dyn_not_str" class="sphx-glr-backref-module-onnx_diagnostic-torch_export_patches-patch_inputs sphx-glr-backref-type-py-function"><span class="n">use_dyn_not_str</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dynamic_shapes</span></a></a><span class="p">),</span>
         <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># mandatory for torch==2.6</span>
     <span class="p">)</span>
 
     <span class="c1"># We check the exported program produces the same results as well.</span>
+    <span class="c1"># This step is again unnecessary.</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a></a> <span class="o">=</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.max_diff" title="onnx_diagnostic.helpers.max_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.max_diff" title="onnx_diagnostic.helpers.max_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">max_diff</span></a></a><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram.module" title="torch.export.ExportedProgram.module" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-method"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram.module" title="torch.export.ExportedProgram.module" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-method"><span class="n">ep</span><span class="o">.</span><span class="n">module</span></a></a><span class="p">()(</span><span class="o">**</span><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><a href="https://docs.python.org/3/library/copy.html#copy.deepcopy" title="copy.deepcopy" class="sphx-glr-backref-module-copy sphx-glr-backref-type-py-function"><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">inputs</span></a></a><span class="p">)))</span>
     <span class="k">assert</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a></a><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;The exported model different outputs: </span><span class="si">{</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_diff" title="onnx_diagnostic.helpers.string_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_diff" title="onnx_diagnostic.helpers.string_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_diff</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">d</span></a></a><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
@@ -530,7 +540,8 @@ Let’s see the configuration.</p>
 </section>
 <section id="export-to-onnx">
 <h2>Export to ONNX<a class="headerlink" href="#export-to-onnx" title="Link to this heading">¶</a></h2>
-<p>The export works. We can export to ONNX now.
+<p>The export works. We can export to ONNX now
+<a class="reference external" href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.export" title="(in PyTorch vmain (2.8.0a0+gitd36b09c ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.onnx.export()</span></code></a>.
 Patches are still needed because the export
 applies <a class="reference external" href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram.run_decompositions" title="(in PyTorch vmain (2.8.0a0+gitd36b09c ))"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.export.ExportedProgram.run_decompositions()</span></code></a>
 may export local pieces of the model again.</p>
@@ -554,9 +565,8 @@ Applied 53 of general pattern rewrite rules.
 <a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a> <span class="o">=</span> <a href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.ONNXProgram.model_proto" title="torch.onnx.ONNXProgram.model_proto" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-property"><a href="https://pytorch.org/docs/main/onnx_dynamo.html#torch.onnx.ONNXProgram.model_proto" title="torch.onnx.ONNXProgram.model_proto" class="sphx-glr-backref-module-torch-onnx sphx-glr-backref-type-py-property"><span class="n">epo</span><span class="o">.</span><span class="n">model_proto</span></a></a>
 </pre></div>
 </div>
-</section>
 <section id="discrepancies">
-<h2>Discrepancies<a class="headerlink" href="#discrepancies" title="Link to this heading">¶</a></h2>
+<h3>Discrepancies<a class="headerlink" href="#discrepancies" title="Link to this heading">¶</a></h3>
 <p>The we check the conversion to ONNX.
 Let’s make sure the ONNX model produces the same outputs.
 It takes flatten inputs.</p>
@@ -585,14 +595,55 @@ onxrt inputs: dict(input_ids:A7r2,attention_mask:A7r2,position_ids:A7r2,past_key
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;onnx discrepancies: </span><span class="si">{</span><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_diff" title="onnx_diagnostic.helpers.string_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/index.html#onnx_diagnostic.helpers.string_diff" title="onnx_diagnostic.helpers.string_diff" class="sphx-glr-backref-module-onnx_diagnostic-helpers sphx-glr-backref-type-py-function"><span class="n">string_diff</span></a></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">diff</span></a></a><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>onnx discrepancies: abs=1.8477439880371094e-06, rel=0.0011736251685325742, n=983040.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>onnx discrepancies: abs=2.5033950805664062e-06, rel=0.0007942825483390192, n=983040.0
 </pre></div>
 </div>
 <p>It looks good.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;untrained smaller</span><span class="se">\n</span><span class="s2">microsoft/phi-2&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.onnx.export&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;export</span><span class="se">\n</span><span class="s2">untrained smaller</span><span class="se">\n</span><span class="s2">microsoft/phi-2&quot;</span><span class="p">,</span> <span class="s2">&quot;torch.onnx.export&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_export_tiny_phi2_001.png" srcset="../_images/sphx_glr_plot_export_tiny_phi2_001.png" alt="plot export tiny phi2" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 11.252 seconds)</p>
+<img src="../_images/sphx_glr_plot_export_tiny_phi2_001.png" srcset="../_images/sphx_glr_plot_export_tiny_phi2_001.png" alt="plot export tiny phi2" class = "sphx-glr-single-img"/></section>
+</section>
+<section id="possible-issues">
+<h2>Possible Issues<a class="headerlink" href="#possible-issues" title="Link to this heading">¶</a></h2>
+<section id="unknown-task">
+<h3>Unknown task<a class="headerlink" href="#unknown-task" title="Link to this heading">¶</a></h3>
+<p>Function <a class="reference internal" href="../api/torch_models/hghub/index.html#onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs" title="onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs()</span></code></a>
+is unabl to guess a task associated to the model.
+A different set of dummy inputs is defined for every task.
+The user needs to explicitly give that information to the function.
+Tasks are the same as the one defined by
+<a class="reference external" href="https://huggingface.co/models">HuggingFace/models</a>.</p>
+</section>
+<section id="inputs-are-incorrect">
+<h3>Inputs are incorrect<a class="headerlink" href="#inputs-are-incorrect" title="Link to this heading">¶</a></h3>
+<p>Example <a class="reference internal" href="plot_export_tiny_llm.html#l-plot-tiny-llm-export"><span class="std std-ref">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</span></a> explains
+how to retrieve that information. If you cannot guess the dynamic
+shapes - a cache can be tricky sometimes, follow example
+<a class="reference internal" href="plot_export_with_args_kwargs.html#l-plot-export-with-args-kwargs"><span class="std std-ref">Dynamic Shapes for *args, **kwargs</span></a>.</p>
+</section>
+<section id="dynamiccache-or-any-other-cache-cannot-be-exported">
+<h3>DynamicCache or any other cache cannot be exported<a class="headerlink" href="#dynamiccache-or-any-other-cache-cannot-be-exported" title="Link to this heading">¶</a></h3>
+<p>That’s the role of <a class="reference internal" href="../api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_patches" title="onnx_diagnostic.torch_export_patches.torch_export_patches"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.torch_export_patches()</span></code></a>.
+It registers the necessary information into pytorch to make the export
+work with these. Its need should slowly disappear until <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a>
+includes the serialization functions.</p>
+</section>
+<section id="control-flow">
+<h3>Control Flow<a class="headerlink" href="#control-flow" title="Link to this heading">¶</a></h3>
+<p>Every mixture of models goes through a control flow (a test).
+It also happens when a cache is truncated. The code of the model
+needs to be changed. See example <a class="reference internal" href="plot_export_cond.html#l-plot-export-cond"><span class="std std-ref">Export a model with a control flow (If)</span></a>.</p>
+</section>
+<section id="issue-with-dynamic-shapes">
+<h3>Issue with dynamic shapes<a class="headerlink" href="#issue-with-dynamic-shapes" title="Link to this heading">¶</a></h3>
+<p>Example <a class="reference internal" href="../auto_recipes/plot_dynamic_shapes_python_int.html#l-plot-dynamic-shapes-python-int"><span class="std std-ref">Do not use python int with dynamic shapes</span></a> gives one reason
+this process may fail but that’s not the only one.
+Example <a class="reference internal" href="plot_export_locate_issue.html#l-plot-export-locale-issue"><span class="std std-ref">Find and fix an export issue due to dynamic shapes</span></a> gives an way to locate
+the cause but that does not cover all the possible causes.
+Raising an issue on github would be the recommended option
+until it is fixed.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 23.275 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-export-tiny-phi2-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/b7ae553835c3028a55223a964b826cb3/plot_export_tiny_phi2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_export_tiny_phi2.ipynb</span></code></a></p>
@@ -608,13 +659,14 @@ onxrt inputs: dict(input_ids:A7r2,attention_mask:A7r2,position_ids:A7r2,past_key
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Checking the exporter on a whole model takes time as it is usually big but we can create a smaller version with the same architecture. Then fix export issues on such a small model is faster."><img alt="" src="../_images/sphx_glr_plot_export_hub_codellama_thumb.png" />
 <p><a class="reference internal" href="plot_export_hub_codellama.html#sphx-glr-auto-examples-plot-export-hub-codellama-py"><span class="std std-ref">Test the export on untrained models</span></a></p>
   <div class="sphx-glr-thumbnail-title">Test the export on untrained models</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported withtorch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_thumb.png" />
-<p><a class="reference internal" href="plot_export_tiny_llm.html#sphx-glr-auto-examples-plot-export-tiny-llm-py"><span class="std std-ref">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported with torch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_thumb.png" />
+<p><a class="reference internal" href="plot_export_tiny_llm.html#sphx-glr-auto-examples-plot-export-tiny-llm-py"><span class="std std-ref">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Many models from transformers cannot be converted because the implementation uses cache classes. Let&#x27;s see how to get around that. We focus on the model arnir0/Tiny-LLM. To avoid downloading any weights, we write a function creating a random model based on the same architecture. This continues example l-plot-tiny-llm-export."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_patched_thumb.png" />
 <p><a class="reference internal" href="plot_export_tiny_llm_patched.html#sphx-glr-auto-examples-plot-export-tiny-llm-patched-py"><span class="std std-ref">Export Tiny-LLM with patches</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export Tiny-LLM with patches</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
 </section>
 </section>
 
@@ -623,23 +675,23 @@ onxrt inputs: dict(input_ids:A7r2,attention_mask:A7r2,position_ids:A7r2,past_key
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="plot_export_with_auto.html">
+          <a class="next-page" href="plot_export_with_dynamic_cache.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</div>
+                <div class="title">Export with DynamicCache and dynamic shapes</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="plot_export_hub_codellama.html">
+          <a class="prev-page" href="plot_export_cond.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Test the export on untrained models</div>
+                <div class="title">Export a model with a control flow (If)</div>
                 
               </div>
             </a>
@@ -673,11 +725,21 @@ onxrt inputs: dict(input_ids:A7r2,attention_mask:A7r2,position_ids:A7r2,past_key
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Untrained microsoft/phi-2</a><ul>
+<li><a class="reference internal" href="#">Export microsoft/phi-2</a><ul>
 <li><a class="reference internal" href="#create-the-dummy-model">Create the dummy model</a></li>
-<li><a class="reference internal" href="#export">Export</a></li>
-<li><a class="reference internal" href="#export-to-onnx">Export to ONNX</a></li>
+<li><a class="reference internal" href="#export-to-fx-graph">Export to fx.Graph</a></li>
+<li><a class="reference internal" href="#export-to-onnx">Export to ONNX</a><ul>
 <li><a class="reference internal" href="#discrepancies">Discrepancies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#possible-issues">Possible Issues</a><ul>
+<li><a class="reference internal" href="#unknown-task">Unknown task</a></li>
+<li><a class="reference internal" href="#inputs-are-incorrect">Inputs are incorrect</a></li>
+<li><a class="reference internal" href="#dynamiccache-or-any-other-cache-cannot-be-exported">DynamicCache or any other cache cannot be exported</a></li>
+<li><a class="reference internal" href="#control-flow">Control Flow</a></li>
+<li><a class="reference internal" href="#issue-with-dynamic-shapes">Issue with dynamic shapes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

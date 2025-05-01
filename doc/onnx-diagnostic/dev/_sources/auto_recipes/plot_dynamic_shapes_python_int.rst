@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_recipes_plot_dynamic_shapes_python_int.py:
 
 
+.. _l-plot-dynamic-shapes-python-int:
+
 Do not use python int with dynamic shapes
 =========================================
 
@@ -29,7 +31,7 @@ or the algorithm looses information.
 Wrong Model
 +++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-34
+.. GENERATED FROM PYTHON SOURCE LINES 15-36
 
 .. code-block:: Python
 
@@ -67,12 +69,12 @@ Wrong Model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-39
 
 Export
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-42
+.. GENERATED FROM PYTHON SOURCE LINES 39-44
 
 .. code-block:: Python
 
@@ -95,7 +97,7 @@ Export
                  # 
                 sym_size_int_3: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1);  x = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:26 in forward, code: return torch.zeros(new_shape)
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:28 in forward, code: return torch.zeros(new_shape)
                 zeros: "f32[2, s16]" = torch.ops.aten.zeros.default([2, sym_size_int_3], device = device(type='cpu'), pin_memory = False);  sym_size_int_3 = None
                 return (zeros,)
             
@@ -112,7 +114,7 @@ Export
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-49
+.. GENERATED FROM PYTHON SOURCE LINES 45-51
 
 The last dimension became static. We must not use int.
 :func:`math.ceil` should be avoided as well since it is a python operation.
@@ -121,7 +123,7 @@ The exporter may fail to detect it is operating on shapes.
 Rewrite
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-64
+.. GENERATED FROM PYTHON SOURCE LINES 51-66
 
 .. code-block:: Python
 
@@ -153,12 +155,12 @@ Rewrite
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-67
+.. GENERATED FROM PYTHON SOURCE LINES 67-69
 
 Export
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-72
+.. GENERATED FROM PYTHON SOURCE LINES 69-74
 
 .. code-block:: Python
 
@@ -182,14 +184,14 @@ Export
                 sym_size_int_2: "Sym(s35)" = torch.ops.aten.sym_size.int(x, 0)
                 sym_size_int_3: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1);  x = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:56 in forward, code: new_shape = (self.dim(x.shape[0], 8), x.shape[1])
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:58 in forward, code: new_shape = (self.dim(x.shape[0], 8), x.shape[1])
                 add: "Sym(s35 + 8)" = sym_size_int_2 + 8;  sym_size_int_2 = None
                 sub: "Sym(s35 + 7)" = add - 1;  add = None
             
                  # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:466 in __floordiv__, code: return self.__int_floordiv__(other)
                 floordiv: "Sym(((s35 + 7)//8))" = sub // 8;  sub = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:57 in forward, code: return torch.zeros(new_shape)
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:59 in forward, code: return torch.zeros(new_shape)
                 zeros: "f32[((s35 + 7)//8), s16]" = torch.ops.aten.zeros.default([floordiv, sym_size_int_3], device = device(type='cpu'), pin_memory = False);  floordiv = sym_size_int_3 = None
                 return (zeros,)
             
@@ -206,7 +208,7 @@ Export
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-79
+.. GENERATED FROM PYTHON SOURCE LINES 75-81
 
 Find the error
 ++++++++++++++
@@ -215,7 +217,7 @@ Function :func:`onnx_diagnostic.torch_export_patches.torch_export_patches`
 has a parameter ``stop_if_static`` which patches torch to raise exception
 when something like that is happening.
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-85
+.. GENERATED FROM PYTHON SOURCE LINES 81-87
 
 .. code-block:: Python
 
@@ -239,7 +241,7 @@ when something like that is happening.
                  # 
                 sym_size_int_3: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1);  x = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:26 in forward, code: return torch.zeros(new_shape)
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_python_int.py:28 in forward, code: return torch.zeros(new_shape)
                 zeros: "f32[2, s16]" = torch.ops.aten.zeros.default([2, sym_size_int_3], device = device(type='cpu'), pin_memory = False);  sym_size_int_3 = None
                 return (zeros,)
             
@@ -256,7 +258,7 @@ when something like that is happening.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-87
+.. GENERATED FROM PYTHON SOURCE LINES 88-89
 
 .. code-block:: Python
 
@@ -276,7 +278,7 @@ when something like that is happening.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.157 seconds)
+   **Total running time of the script:** (0 minutes 0.122 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_python_int.py:

@@ -64,6 +64,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This function exports an smaller untrained model with the same architecture. It is faster than the pretrained model. When this works, the untrained model can be replaced by the trained one.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_tiny_phi2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export microsoft/phi-2</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Every LLMs implemented in transformers use cache. One of the most used is transformers.cache_utils.DynamicCache. The cache size is dynamic to cope with the growing context. The example shows a tool which determines the dynamic shapes for torch.export.export based on a set of valid inputs.">
 
 .. only:: html
@@ -149,7 +166,7 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported withtorch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported with torch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward.">
 
 .. only:: html
 
@@ -160,7 +177,7 @@ Examples Gallery
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</div>
+      <div class="sphx-glr-thumbnail-title">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</div>
     </div>
 
 
@@ -178,23 +195,6 @@ Examples Gallery
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Test the export on untrained models</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="microsoft/phi-2 is not a big models but still quite big when it comes to write unittest. Function onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs can be used to create a reduced untrained version of a model coming from HuggingFace. It downloads the configuration from the website but creates a dummy model with 1 or 2 hidden layers in order to reduce the size and get a fast execution. The goal is usually to test the export or to compare performance. The relevance does not matter.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_tiny_phi2_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Untrained microsoft/phi-2</div>
     </div>
 
 
@@ -228,6 +228,7 @@ Examples Gallery
    /auto_examples/plot_export_with_args_kwargs
    /auto_examples/plot_export_tiny_llm_patched
    /auto_examples/plot_export_cond
+   /auto_examples/plot_export_tiny_phi2
    /auto_examples/plot_export_with_dynamic_cache
    /auto_examples/plot_export_locate_issue
    /auto_examples/plot_failing_model_extract
@@ -235,7 +236,6 @@ Examples Gallery
    /auto_examples/plot_failing_onnxruntime_evaluator
    /auto_examples/plot_export_tiny_llm
    /auto_examples/plot_export_hub_codellama
-   /auto_examples/plot_export_tiny_phi2
    /auto_examples/plot_export_with_auto
 
 

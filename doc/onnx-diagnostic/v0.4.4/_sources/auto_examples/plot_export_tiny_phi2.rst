@@ -20,11 +20,16 @@
 
 .. _l-plot-export_tiny_phi2:
 
-Untrained microsoft/phi-2
-=========================
+======================
+Export microsoft/phi-2
+======================
 
-:epkg:`microsoft/phi-2` is not a big models but still quite big
-when it comes to write unittest. Function
+This function exports an smaller untrained model with the same architecture.
+It is faster than the pretrained model.
+When this works, the untrained model can be replaced by the trained one.
+
+:epkg:`microsoft/phi-2` is not a big model but still quite big
+when it comes to write unittests. Function
 :func:`onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs`
 can be used to create a reduced untrained version of a model coming from
 :epkg:`HuggingFace`. It downloads the configuration from the website
@@ -33,9 +38,9 @@ the size and get a fast execution. The goal is usually to test
 the export or to compare performance. The relevance does not matter.
 
 Create the dummy model
-++++++++++++++++++++++
+======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-49
+.. GENERATED FROM PYTHON SOURCE LINES 24-54
 
 .. code-block:: Python
 
@@ -82,12 +87,14 @@ Create the dummy model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 55-59
 
 The original model has 2.7 billion parameters. It was divided by more than 10.
+However, it can still be used with
+``get_untrained_model_with_inputs("microsoft/phi-2", same_as_pretrained=True)``.
 Let's see the configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-55
+.. GENERATED FROM PYTHON SOURCE LINES 59-62
 
 .. code-block:: Python
 
@@ -138,11 +145,11 @@ Let's see the configuration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-57
+.. GENERATED FROM PYTHON SOURCE LINES 63-64
 
 Inputs:
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-60
+.. GENERATED FROM PYTHON SOURCE LINES 64-67
 
 .. code-block:: Python
 
@@ -162,11 +169,11 @@ Inputs:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-62
+.. GENERATED FROM PYTHON SOURCE LINES 68-69
 
 With min/max values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-64
+.. GENERATED FROM PYTHON SOURCE LINES 69-71
 
 .. code-block:: Python
 
@@ -180,16 +187,16 @@ With min/max values.
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3[4819,40948:A25144.0],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.3719329833984375,4.214013576507568:A-0.0034454566145567817],T1s2x32x30x80[-4.354637145996094,4.101736545562744:A0.00048715437119101424]], value_cache=#2[T1s2x32x30x80[-4.58950662612915,4.415571689605713:A-0.0011134230908122892],T1s2x32x30x80[-4.650355815887451,4.465639591217041:A-0.002472064368367359]]))
+    dict(input_ids:T7s2x3[4645,50851:A36456.833333333336],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.3283209800720215,4.490790843963623:A-0.0024834681242234704],T1s2x32x30x80[-4.500185966491699,4.5200042724609375:A0.0027275379098153857]], value_cache=#2[T1s2x32x30x80[-4.518382549285889,4.521642208099365:A-0.0020305086688893487],T1s2x32x30x80[-4.291463851928711,4.346440315246582:A-0.0033254771222937557]]))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-66
+.. GENERATED FROM PYTHON SOURCE LINES 72-73
 
 And the dynamic shapes
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 73-75
 
 .. code-block:: Python
 
@@ -214,11 +221,11 @@ And the dynamic shapes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-70
+.. GENERATED FROM PYTHON SOURCE LINES 76-77
 
 We execute the model to produce expected outputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-74
+.. GENERATED FROM PYTHON SOURCE LINES 77-81
 
 .. code-block:: Python
 
@@ -234,25 +241,30 @@ We execute the model to produce expected outputs.
 
  .. code-block:: none
 
-    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.479748487472534,2.470858573913574:A-0.0015045551299974135],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.3719329833984375,4.214013576507568:A-0.0032215617116300786],T1s2x32x33x80[-4.354637145996094,4.101736545562744:A0.00041614267573929735]], value_cache=#2[T1s2x32x33x80[-4.58950662612915,4.415571689605713:A-0.0012271389566834553],T1s2x32x33x80[-4.650355815887451,4.465639591217041:A-0.002322949412059211]]))
+    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.5567877292633057,2.5877676010131836:A-0.0009189583060632837],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.3283209800720215,4.490790843963623:A-0.0020984506150923464],T1s2x32x33x80[-4.500185966491699,4.5200042724609375:A0.002412537062450274]], value_cache=#2[T1s2x32x33x80[-4.518382549285889,4.521642208099365:A-0.0013211549600469718],T1s2x32x33x80[-4.291463851928711,4.346440315246582:A-0.00296115123610301]]))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-77
+.. GENERATED FROM PYTHON SOURCE LINES 82-89
 
-Export
-++++++
+Export to fx.Graph
+==================
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-104
+:func:`torch.export.export` is the first step before converting
+a model into ONNX. The inputs are duplicated (with ``copy.deepcopy``)
+because the model may modify them inline (a cache for example).
+Shapes may not match on the second call with the modified inputs.
+
+.. GENERATED FROM PYTHON SOURCE LINES 89-117
 
 .. code-block:: Python
 
 
 
-    with torch_export_patches(patch_transformers=True) as modificator:
+    with torch_export_patches(patch_transformers=True):
 
-        # Unnecessary steps but useful in case of an error
+        # Two unnecessary steps but useful in case of an error
         # We check the cache is registered.
         assert is_cache_dynamic_registered()
 
@@ -262,16 +274,17 @@ Export
             d["abs"] < 1e-5
         ), f"The model with patches produces different outputs: {string_diff(d)}"
 
-        # Then we export.
+        # Then we export: the only import line in this section.
         ep = torch.export.export(
             untrained_model,
             (),
-            kwargs=modificator(copy.deepcopy(inputs)),
+            kwargs=copy.deepcopy(inputs),
             dynamic_shapes=use_dyn_not_str(dynamic_shapes),
             strict=False,  # mandatory for torch==2.6
         )
 
         # We check the exported program produces the same results as well.
+        # This step is again unnecessary.
         d = max_diff(expected, ep.module()(**copy.deepcopy(inputs)))
         assert d["abs"] < 1e-5, f"The exported model different outputs: {string_diff(d)}"
 
@@ -282,17 +295,18 @@ Export
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-112
+.. GENERATED FROM PYTHON SOURCE LINES 118-126
 
 Export to ONNX
-++++++++++++++
+==============
 
-The export works. We can export to ONNX now.
+The export works. We can export to ONNX now
+:func:`torch.onnx.export`.
 Patches are still needed because the export
 applies :meth:`torch.export.ExportedProgram.run_decompositions`
 may export local pieces of the model again.
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-118
+.. GENERATED FROM PYTHON SOURCE LINES 126-132
 
 .. code-block:: Python
 
@@ -319,11 +333,11 @@ may export local pieces of the model again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-120
+.. GENERATED FROM PYTHON SOURCE LINES 133-134
 
 We can save it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-126
+.. GENERATED FROM PYTHON SOURCE LINES 134-140
 
 .. code-block:: Python
 
@@ -340,7 +354,7 @@ We can save it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-133
+.. GENERATED FROM PYTHON SOURCE LINES 141-147
 
 Discrepancies
 +++++++++++++
@@ -349,7 +363,7 @@ The we check the conversion to ONNX.
 Let's make sure the ONNX model produces the same outputs.
 It takes flatten inputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-139
+.. GENERATED FROM PYTHON SOURCE LINES 147-153
 
 .. code-block:: Python
 
@@ -373,11 +387,11 @@ It takes flatten inputs.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-141
+.. GENERATED FROM PYTHON SOURCE LINES 154-155
 
 We then create a :class:`onnxruntime.InferenceSession`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-146
+.. GENERATED FROM PYTHON SOURCE LINES 155-160
 
 .. code-block:: Python
 
@@ -393,11 +407,11 @@ We then create a :class:`onnxruntime.InferenceSession`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-148
+.. GENERATED FROM PYTHON SOURCE LINES 161-162
 
 Let's run.
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-150
+.. GENERATED FROM PYTHON SOURCE LINES 162-164
 
 .. code-block:: Python
 
@@ -410,11 +424,11 @@ Let's run.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-152
+.. GENERATED FROM PYTHON SOURCE LINES 165-166
 
 And finally the discrepancies.
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-156
+.. GENERATED FROM PYTHON SOURCE LINES 166-170
 
 .. code-block:: Python
 
@@ -430,20 +444,21 @@ And finally the discrepancies.
 
  .. code-block:: none
 
-    onnx discrepancies: abs=1.8477439880371094e-06, rel=0.0011736251685325742, n=983040.0
+    onnx discrepancies: abs=2.5033950805664062e-06, rel=0.0007942825483390192, n=983040.0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-158
+.. GENERATED FROM PYTHON SOURCE LINES 171-172
 
 It looks good.
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-161
+.. GENERATED FROM PYTHON SOURCE LINES 174-176
 
 .. code-block:: Python
 
-    doc.plot_legend("untrained smaller\nmicrosoft/phi-2", "torch.onnx.export", "orange")
+    doc.plot_legend("export\nuntrained smaller\nmicrosoft/phi-2", "torch.onnx.export", "orange")
+
 
 
 
@@ -456,10 +471,58 @@ It looks good.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 177-222
+
+Possible Issues
+===============
+
+Unknown task
+++++++++++++
+
+Function :func:`onnx_diagnostic.torch_models.hghub.get_untrained_model_with_inputs`
+is unabl to guess a task associated to the model.
+A different set of dummy inputs is defined for every task.
+The user needs to explicitly give that information to the function.
+Tasks are the same as the one defined by
+`HuggingFace/models <https://huggingface.co/models>`_.
+
+Inputs are incorrect
+++++++++++++++++++++
+
+Example :ref:`l-plot-tiny-llm-export` explains
+how to retrieve that information. If you cannot guess the dynamic
+shapes - a cache can be tricky sometimes, follow example
+:ref:`l-plot-export-with-args-kwargs`.
+
+DynamicCache or any other cache cannot be exported
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+That's the role of :func:`onnx_diagnostic.torch_export_patches.torch_export_patches`.
+It registers the necessary information into pytorch to make the export
+work with these. Its need should slowly disappear until :epkg:`transformers`
+includes the serialization functions.
+
+Control Flow
+++++++++++++
+
+Every mixture of models goes through a control flow (a test).
+It also happens when a cache is truncated. The code of the model
+needs to be changed. See example :ref:`l-plot-export-cond`.
+
+Issue with dynamic shapes
++++++++++++++++++++++++++
+
+Example :ref:`l-plot-dynamic-shapes-python-int` gives one reason
+this process may fail but that's not the only one.
+Example :ref:`l-plot-export-locale-issue` gives an way to locate
+the cause but that does not cover all the possible causes.
+Raising an issue on github would be the recommended option
+until it is fixed.
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 11.252 seconds)
+   **Total running time of the script:** (0 minutes 23.275 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_phi2.py:
