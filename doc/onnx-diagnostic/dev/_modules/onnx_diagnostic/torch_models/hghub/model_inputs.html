@@ -267,6 +267,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/object_detection.html">onnx_diagnostic.tasks.object_detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
@@ -374,7 +375,7 @@
 <span class="kn">import</span> <span class="nn">transformers</span>
 <span class="kn">from</span> <span class="nn">...helpers.config_helper</span> <span class="kn">import</span> <span class="n">update_config</span>
 <span class="kn">from</span> <span class="nn">...tasks</span> <span class="kn">import</span> <span class="n">reduce_model_config</span><span class="p">,</span> <span class="n">random_input_kwargs</span>
-<span class="kn">from</span> <span class="nn">.hub_api</span> <span class="kn">import</span> <span class="n">task_from_arch</span><span class="p">,</span> <span class="n">get_pretrained_config</span>
+<span class="kn">from</span> <span class="nn">.hub_api</span> <span class="kn">import</span> <span class="n">task_from_arch</span><span class="p">,</span> <span class="n">task_from_id</span><span class="p">,</span> <span class="n">get_pretrained_config</span>
 
 
 <div class="viewcode-block" id="get_untrained_model_with_inputs">
@@ -390,6 +391,7 @@
     <span class="n">same_as_pretrained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">use_preinstalled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">add_second_input</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">subfolder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets a non initialized model similar to the original model</span>
@@ -409,6 +411,7 @@
 <span class="sd">    :param use_preinstalled: use preinstalled configurations</span>
 <span class="sd">    :param add_second_input: provides a second inputs to check a model</span>
 <span class="sd">        supports different shapes</span>
+<span class="sd">    :param subfolder: subfolder to use for this model id</span>
 <span class="sd">    :return: dictionary with a model, inputs, dynamic shapes, and the configuration</span>
 
 <span class="sd">    Example:</span>
@@ -434,24 +437,39 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] use preinstalled </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_pretrained_config</span><span class="p">(</span>
-            <span class="n">model_id</span><span class="p">,</span> <span class="n">use_preinstalled</span><span class="o">=</span><span class="n">use_preinstalled</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
+            <span class="n">model_id</span><span class="p">,</span>
+            <span class="n">use_preinstalled</span><span class="o">=</span><span class="n">use_preinstalled</span><span class="p">,</span>
+            <span class="n">subfolder</span><span class="o">=</span><span class="n">subfolder</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">(</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
         <span class="p">)</span>
-    <span class="n">archs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">architectures</span>  <span class="c1"># type: ignore</span>
-    <span class="k">assert</span> <span class="n">archs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">archs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;architecture&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">architecture</span><span class="p">:</span>
+        <span class="n">archs</span> <span class="o">=</span> <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">architecture</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="s2">&quot;_class_name&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to get the architecture from config=</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">archs</span> <span class="o">=</span> <span class="p">[</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;_class_name&quot;</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">archs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">architectures</span>  <span class="c1"># type: ignore</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">archs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">task_from_id</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">archs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">archs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Unable to determine the architecture for model </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">, &quot;</span>
         <span class="sa">f</span><span class="s2">&quot;architectures=</span><span class="si">{</span><span class="n">archs</span><span class="si">!r}</span><span class="s2">, conf=</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
-    <span class="n">arch</span> <span class="o">=</span> <span class="n">archs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] architecture=</span><span class="si">{</span><span class="n">arch</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] architectures=</span><span class="si">{</span><span class="n">archs</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] cls=</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">task</span> <span class="o">=</span> <span class="n">task_from_arch</span><span class="p">(</span><span class="n">arch</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">task_from_arch</span><span class="p">(</span><span class="n">archs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[get_untrained_model_with_inputs] task=</span><span class="si">{</span><span class="n">task</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># model kwagrs</span>
     <span class="k">if</span> <span class="n">dynamic_rope</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">dict</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unable to set dynamic_rope if the configuration is a dictionary</span><span class="se">\n</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;rope_scaling&quot;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing &#39;rope_scaling&#39; in</span><span class="se">\n</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">config</span><span class="o">.</span><span class="n">rope_scaling</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;rope_type&quot;</span><span class="p">:</span> <span class="s2">&quot;dynamic&quot;</span><span class="p">,</span> <span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">}</span> <span class="k">if</span> <span class="n">dynamic_rope</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="p">)</span>
@@ -478,7 +496,15 @@
     <span class="k">if</span> <span class="n">inputs_kwargs</span><span class="p">:</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">inputs_kwargs</span><span class="p">)</span>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">transformers</span><span class="p">,</span> <span class="n">arch</span><span class="p">)(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">archs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">transformers</span><span class="p">,</span> <span class="n">archs</span><span class="p">[</span><span class="mi">0</span><span class="p">])(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">same_as_pretrained</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Model </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2"> cannot be built, the model cannot be built. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;It must be downloaded. Use same_as_pretrained=True.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="c1"># This line is important. Some models may produce different</span>
     <span class="c1"># outputs even with the same inputs in training mode.</span>
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>

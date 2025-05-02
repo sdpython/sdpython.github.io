@@ -89,38 +89,38 @@ The dynamic shapes must be provided following the serialized form.
  .. code-block:: none
 
 
-    tensor([[[[-1.6451,  4.6769,  2.4954,  1.9903,  0.1196,  1.3573, -4.1147],
-              [ 1.0941,  2.5750, -2.9095,  2.2536,  3.6761,  1.4008, -2.9188],
-              [ 1.0428,  2.7288,  3.4837,  2.1204,  1.8898,  2.2318,  0.9838]],
+    tensor([[[[-2.7787, -4.0491,  0.5901,  1.8470,  1.2857,  3.2397,  0.7217],
+              [-3.6029,  0.7740,  4.2963, -1.1397, -3.0528,  2.3129, -1.6724],
+              [-2.5554,  5.1892,  2.2846,  0.3291,  1.8201,  2.9657, -0.5528]],
 
-             [[-1.6884,  3.2351, -2.3128,  4.5125,  1.8170,  0.0840, -3.0889],
-              [-0.5594, -3.1297, -2.1675,  2.7615, -0.0141,  1.8741, -5.6661],
-              [-2.6808,  3.7571,  1.1419,  2.4061,  0.6211,  4.6024, -3.0085]],
+             [[-4.3943,  0.7172,  3.4131,  3.5816,  2.6205,  0.8995,  0.0105],
+              [-0.1534,  1.2352,  0.0374,  0.8831,  0.6090,  1.4126, -0.8399],
+              [-1.8033, -3.3073, -2.1491, -2.6937, -0.5817,  0.1334, -1.5425]],
 
-             [[-1.3009, -0.6404, -1.0626,  4.8081,  0.3766,  4.3647, -5.1730],
-              [-1.8378,  0.5357,  2.9958, -2.0931,  0.5253,  3.6843, -4.1240],
-              [-1.0651,  1.1607, -0.9425,  2.2837,  2.8387, -0.4201, -3.5133]],
+             [[-2.3743,  2.8962,  1.2278,  1.1284,  0.0147, -3.2003, -0.5621],
+              [-4.1170, -2.4746,  2.1034, -0.1996, -1.6322, -3.0480,  1.6414],
+              [-3.9322, -1.8560,  0.3180,  0.2102, -0.7806, -4.1531,  1.0859]],
 
-             [[-2.7222,  1.5465,  1.8049, -0.4755,  0.6099,  2.4579, -2.7255],
-              [-4.4873,  1.3548,  1.0025,  1.2130,  0.7810, -0.0106, -3.3306],
-              [ 1.0511, -2.3566, -0.5066, -1.6400, -4.5910,  3.8744, -4.0520]]],
+             [[ 0.1846,  3.8178, -3.9087,  2.2458, -0.3611, -0.1528, -1.1948],
+              [-3.2047, -1.7107,  3.4738,  0.3071,  3.2227, -0.7417, -0.9667],
+              [-2.5967, -0.9199,  0.9515, -1.3049, -1.5334,  0.0790, -0.9437]]],
 
 
-            [[[ 0.2850,  2.7183,  3.2517,  1.2717,  2.8724,  0.7991, -3.1614],
-              [ 1.1191, -0.8127, -2.9343, -1.4724, -1.5950,  0.5661, -6.4547],
-              [-0.0330,  2.9147, -0.5010,  2.7049,  0.6924, -1.0156, -5.0240]],
+            [[[ 0.2117,  2.8061,  2.2056,  0.4865, -2.0913, -0.3447,  1.1472],
+              [-1.5308,  4.1224,  2.0390,  2.6326,  0.6907, -2.1033, -1.4964],
+              [ 2.8406,  3.8819,  1.4042,  1.1646, -2.6573,  0.2164, -1.3676]],
 
-             [[ 3.1593,  3.7994, -1.6015,  3.7717,  1.6989,  2.1202, -1.9168],
-              [-2.0209,  1.7215,  0.5721, -0.7653, -1.0193,  1.6929, -5.8299],
-              [ 0.0947, -2.9404,  2.3487,  1.5296, -2.0119,  3.3447, -6.1521]],
+             [[-0.1977,  2.6567,  2.6405,  3.1487,  4.0104, -2.9812, -1.0712],
+              [-4.0589, -1.0759,  3.9501,  2.4040,  0.5540, -0.9266, -3.6990],
+              [-2.4832,  0.5405,  0.2627,  2.6843,  2.8122,  0.5137,  0.6774]],
 
-             [[-0.4662,  0.6649,  1.2774, -0.1387, -0.4308,  2.0942, -3.0129],
-              [-0.7947, -1.6511,  2.1483, -1.0035, -3.3719, -0.3709,  1.1247],
-              [-1.3259,  1.4665, -2.9379, -3.0904,  3.0782,  6.3679, -5.4120]],
+             [[-1.2136,  0.6183,  0.6393,  0.0591,  0.4524,  0.1407, -0.4286],
+              [ 0.9989,  0.0877, -2.0250, -0.0813,  1.5826,  1.2435,  3.4254],
+              [-0.9514,  1.5891, -3.6032,  1.4337, -1.3183, -3.8903, -0.9285]],
 
-             [[-1.1213, -0.9122,  1.0147, -1.1665, -2.0338, -0.6723, -4.7350],
-              [-2.8199, -1.3486,  1.0302,  3.8690,  0.4719,  1.7988, -0.6435],
-              [ 0.7368, -0.7030,  5.8169, -0.4665, -1.5257, -4.3173, -0.8349]]]])
+             [[-3.0507,  0.4791,  3.4713, -0.2705,  2.7737,  0.9631,  1.9934],
+              [ 0.1608,  1.6646,  1.4608,  1.0155,  1.7904,  3.6289, -2.8592],
+              [-2.8865,  2.6105,  0.4324,  3.0624,  0.3097, -1.7066,  0.2701]]]])
 
 
 
@@ -290,7 +290,7 @@ transformers needs to be patched.
 registers functions to serialize ``DynamicCache``. This one is modified to make
 the shape inference implemented in :epkg:`torch` happy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-124
+.. GENERATED FROM PYTHON SOURCE LINES 105-115
 
 .. code-block:: Python
 
@@ -303,15 +303,6 @@ the shape inference implemented in :epkg:`torch` happy.
                 model, modificator(inputs[0]), dynamic_shapes=ds[0], strict=False
             )
     print(ep)
-
-    # Do we need to guess?
-    # ++++++++++++++++++++
-    #
-    # Function :func:`onnx_diagnostic.helpers.string_type` is using
-    # the serialization functions to print out the DynamicCache the was
-    # :func:`torch.export.export` expects them.
-
-    print(string_type(cache, with_shape=True))
 
 
 
@@ -344,19 +335,47 @@ the shape inference implemented in :epkg:`torch` happy.
     
     Range constraints: {s26: VR[2, int_oo], s28: VR[2, int_oo], s1: VR[2, int_oo]}
 
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-122
+
+Do we need to guess?
+++++++++++++++++++++
+
+Function :func:`onnx_diagnostic.helpers.string_type` is using
+the serialization functions to print out the DynamicCache the was
+:func:`torch.export.export` expects them.
+
+.. GENERATED FROM PYTHON SOURCE LINES 122-125
+
+.. code-block:: Python
+
+
+    print(string_type(cache, with_shape=True))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
     DynamicCache(key_cache=#2[T1s2x4x3x7,T1s2x4x3x7], value_cache=#2[T1s2x4x3x7,T1s2x4x3x7])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-129
+.. GENERATED FROM PYTHON SOURCE LINES 126-130
 
 You can also use function
 :func:`onnx_diagnostic.helpers.cache_helper.flatten_unflatten_for_dynamic_shapes`
 to show a DynamicCache restructured the way :func:`torch.export.export` expects
 it to be without the custom class.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-132
+.. GENERATED FROM PYTHON SOURCE LINES 130-133
 
 .. code-block:: Python
 
@@ -376,12 +395,12 @@ it to be without the custom class.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-135
+.. GENERATED FROM PYTHON SOURCE LINES 134-136
 
 This code works for any custom class if it was registered
 with :func:`torch.utils._pytree.register_pytree_node`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-138
+.. GENERATED FROM PYTHON SOURCE LINES 136-139
 
 .. code-block:: Python
 
@@ -403,7 +422,7 @@ with :func:`torch.utils._pytree.register_pytree_node`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.167 seconds)
+   **Total running time of the script:** (0 minutes 0.371 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_with_dynamic_cache.py:

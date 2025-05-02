@@ -73,7 +73,7 @@ Create the dummy model
         data["n_weights"],
     )
 
-    print(f"model {size / 2**20:1.3f} Mb with {n_weights // 1000} mille parameters.")
+    print(f"model {size / 2**20:1.1f} Mb with {n_weights // 1000} thousands of parameters.")
 
 
 
@@ -82,7 +82,7 @@ Create the dummy model
 
  .. code-block:: none
 
-    model 432.330 Mb with 113332 mille parameters.
+    model 432.3 Mb with 113332 thousands of parameters.
 
 
 
@@ -134,6 +134,7 @@ Let's see the configuration.
       "resid_pdrop": 0.1,
       "rope_scaling": null,
       "rope_theta": 10000.0,
+      "subfolder": null,
       "tie_word_embeddings": false,
       "torch_dtype": "float16",
       "transformers_version": "4.52.0.dev0",
@@ -187,7 +188,7 @@ With min/max values.
 
  .. code-block:: none
 
-    dict(input_ids:T7s2x3[4645,50851:A36456.833333333336],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.3283209800720215,4.490790843963623:A-0.0024834681242234704],T1s2x32x30x80[-4.500185966491699,4.5200042724609375:A0.0027275379098153857]], value_cache=#2[T1s2x32x30x80[-4.518382549285889,4.521642208099365:A-0.0020305086688893487],T1s2x32x30x80[-4.291463851928711,4.346440315246582:A-0.0033254771222937557]]))
+    dict(input_ids:T7s2x3[5868,42369:A28806.5],attention_mask:T7s2x33[1,1:A1.0],position_ids:T7s2x3[30,32:A31.0],past_key_values:DynamicCache(key_cache=#2[T1s2x32x30x80[-4.339683532714844,4.168929100036621:A-0.00015688629796453135],T1s2x32x30x80[-4.691745758056641,4.495841979980469:A-0.0017857432339830719]], value_cache=#2[T1s2x32x30x80[-4.3160271644592285,4.298698902130127:A-0.0037800918842078777],T1s2x32x30x80[-4.749629974365234,5.0046281814575195:A0.00033762750999332054]]))
 
 
 
@@ -241,7 +242,7 @@ We execute the model to produce expected outputs.
 
  .. code-block:: none
 
-    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.5567877292633057,2.5877676010131836:A-0.0009189583060632837],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.3283209800720215,4.490790843963623:A-0.0020984506150923464],T1s2x32x33x80[-4.500185966491699,4.5200042724609375:A0.002412537062450274]], value_cache=#2[T1s2x32x33x80[-4.518382549285889,4.521642208099365:A-0.0013211549600469718],T1s2x32x33x80[-4.291463851928711,4.346440315246582:A-0.00296115123610301]]))
+    expected: CausalLMOutputWithPast(logits:T1s2x3x51200[-2.425957202911377,2.6620113849639893:A-0.00048338043225195786],past_key_values:DynamicCache(key_cache=#2[T1s2x32x33x80[-4.339683532714844,4.168929100036621:A-0.0001798408414748936],T1s2x32x33x80[-4.691745758056641,4.495841979980469:A-0.001198434475900593]], value_cache=#2[T1s2x32x33x80[-4.3160271644592285,4.298698902130127:A-0.0041093787574674355],T1s2x32x33x80[-4.749629974365234,5.0046281814575195:A-0.0005269664030454032]]))
 
 
 
@@ -444,7 +445,7 @@ And finally the discrepancies.
 
  .. code-block:: none
 
-    onnx discrepancies: abs=2.5033950805664062e-06, rel=0.0007942825483390192, n=983040.0
+    onnx discrepancies: abs=2.205371856689453e-06, rel=0.0012052791646639817, n=983040.0
 
 
 
@@ -471,7 +472,7 @@ It looks good.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-222
+.. GENERATED FROM PYTHON SOURCE LINES 177-223
 
 Possible Issues
 ===============
@@ -508,6 +509,7 @@ Control Flow
 Every mixture of models goes through a control flow (a test).
 It also happens when a cache is truncated. The code of the model
 needs to be changed. See example :ref:`l-plot-export-cond`.
+Loops are not supported yet.
 
 Issue with dynamic shapes
 +++++++++++++++++++++++++
@@ -522,7 +524,7 @@ until it is fixed.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 23.275 seconds)
+   **Total running time of the script:** (0 minutes 23.760 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_tiny_phi2.py:

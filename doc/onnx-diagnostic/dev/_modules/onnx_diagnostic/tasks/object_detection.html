@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>onnx_diagnostic.tasks.text_generation - onnx-diagnostic 0.4.4 documentation</title>
+        <title>onnx_diagnostic.tasks.object_detection - onnx-diagnostic 0.4.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
@@ -368,225 +368,84 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for onnx_diagnostic.tasks.text_generation</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+          <h1>Source code for onnx_diagnostic.tasks.object_detection</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">transformers</span>
-<span class="kn">from</span> <span class="nn">..helpers.cache_helper</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">make_dynamic_cache</span><span class="p">,</span>
-    <span class="n">make_mamba_cache</span><span class="p">,</span>
-    <span class="n">make_sliding_window_cache</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..helpers.config_helper</span> <span class="kn">import</span> <span class="n">update_config</span><span class="p">,</span> <span class="n">check_hasattr</span><span class="p">,</span> <span class="n">_pick</span>
+<span class="kn">from</span> <span class="nn">..helpers.config_helper</span> <span class="kn">import</span> <span class="n">update_config</span><span class="p">,</span> <span class="n">check_hasattr</span>
 
-<span class="n">__TASK__</span> <span class="o">=</span> <span class="s2">&quot;text-generation&quot;</span>
+<span class="n">__TASK__</span> <span class="o">=</span> <span class="s2">&quot;object-detection&quot;</span>
 
 
 <div class="viewcode-block" id="reduce_model_config">
-<a class="viewcode-back" href="../../../api/tasks/text_generation.html#onnx_diagnostic.tasks.text_generation.reduce_model_config">[docs]</a>
+<a class="viewcode-back" href="../../../api/tasks/object_detection.html#onnx_diagnostic.tasks.object_detection.reduce_model_config">[docs]</a>
 <span class="k">def</span> <span class="nf">reduce_model_config</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reduces a model size.&quot;&quot;&quot;</span>
-    <span class="c1"># FalconMambaConfig: use_mambapy</span>
-    <span class="n">check_hasattr</span><span class="p">(</span>
-        <span class="n">config</span><span class="p">,</span>
-        <span class="p">(</span><span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span> <span class="s2">&quot;use_mambapy&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span>
-        <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;use_mambapy&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+    <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">,</span> <span class="s2">&quot;hidden_sizes&quot;</span><span class="p">))</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="p">(</span>
+            <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_sizes</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;FalconMambaConfig&quot;</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;conv_kernel&quot;</span><span class="p">,</span> <span class="s2">&quot;state_size&quot;</span><span class="p">,</span> <span class="s2">&quot;intermediate_size&quot;</span><span class="p">)</span>  <span class="c1"># 4 and 8</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">256</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">),</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="mi">256</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">),</span>
-            <span class="n">cls_cache</span><span class="o">=</span><span class="s2">&quot;MambaCache&quot;</span><span class="p">,</span>
-            <span class="n">state_size</span><span class="o">=</span><span class="mi">8</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;state_size&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">conv_kernel</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;conv_kernel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">head_dim</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
-                <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
-            <span class="p">),</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">num_key_value_heads</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">)</span>
-                <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
-            <span class="p">),</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="p">(</span>
-                <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="mi">3072</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span>
-                <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;intermediate_size&quot;</span><span class="p">):</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;intermediate_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span> <span class="mi">24576</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span>
-                <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span>
-            <span class="p">)</span>
     <span class="n">update_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">kwargs</span></div>
 
 
 
 <div class="viewcode-block" id="get_inputs">
-<a class="viewcode-back" href="../../../api/tasks/text_generation.html#onnx_diagnostic.tasks.text_generation.get_inputs">[docs]</a>
+<a class="viewcode-back" href="../../../api/tasks/object_detection.html#onnx_diagnostic.tasks.object_detection.get_inputs">[docs]</a>
 <span class="k">def</span> <span class="nf">get_inputs</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
-    <span class="n">dummy_max_token_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">num_hidden_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">input_width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">input_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">input_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">sequence_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
-    <span class="n">sequence_length2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
     <span class="n">dynamic_rope</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">num_key_value_heads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">head_dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">cls_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">add_second_input</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>  <span class="c1"># unused</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates input for task ``text-generation``.</span>
+<span class="sd">    Generates inputs for task ``object-detection``.</span>
 
 <span class="sd">    :param model: model to get the missing information</span>
 <span class="sd">    :param config: configuration used to generate the model</span>
-<span class="sd">    :param head_dim: last dimension of the cache</span>
-<span class="sd">    :param dummy_max_token_id: dummy max token id</span>
 <span class="sd">    :param batch_size: batch size</span>
-<span class="sd">    :param sequence_length: sequence length</span>
-<span class="sd">    :param sequence_length2: new sequence length</span>
-<span class="sd">    :param dynamic_rope: use dynamic rope (see :class:`transformers.LlamaConfig`)</span>
-<span class="sd">    :param cls_cache: cache class, by default it is</span>
-<span class="sd">        :class:`transformers.cache_utils.DynamicCache`</span>
+<span class="sd">    :param input_channels: input channel</span>
+<span class="sd">    :param input_width: input width</span>
+<span class="sd">    :param input_height: input height</span>
 <span class="sd">    :return: dictionary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
-    <span class="n">seq_length</span> <span class="o">=</span> <span class="s2">&quot;seq_length&quot;</span>  <span class="c1"># torch.export.Dim(&quot;seq_length&quot;, min=1, max=4096)</span>
-    <span class="n">cache_length</span> <span class="o">=</span> <span class="s2">&quot;cache_length&quot;</span>  <span class="c1"># torch.export.Dim(&quot;cache_length&quot;, min=1, max=4096)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">input_width</span><span class="p">,</span> <span class="nb">int</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for input_width </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_width</span><span class="p">)</span><span class="si">}{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">input_width</span><span class="p">,</span> <span class="nb">int</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type for input_height </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">input_height</span><span class="p">)</span><span class="si">}{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;FalconMambaConfig&quot;</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">cls_cache</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="s2">&quot;MambaCache&quot;</span><span class="p">,</span>
-            <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">MambaCache</span><span class="p">,</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for cls_cache=</span><span class="si">{</span><span class="n">cls_cache</span><span class="si">}</span><span class="s2"> and config=</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">seq_length_multiple</span> <span class="o">=</span> <span class="mi">8</span>
-        <span class="n">sequence_length</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">sequence_length</span> <span class="o">+</span> <span class="n">seq_length_multiple</span><span class="p">)</span>
-            <span class="o">//</span> <span class="n">seq_length_multiple</span>
-            <span class="o">*</span> <span class="n">seq_length_multiple</span>
-        <span class="p">)</span>
-        <span class="c1"># sequence_inc = seq_length_multiple</span>
-        <span class="n">sequence_length2</span> <span class="o">=</span> <span class="n">seq_length_multiple</span>
-
-        <span class="n">shapes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">},</span>
-            <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span>
-                <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;cache+seq&quot;</span><span class="p">,</span>  <span class="c1"># cache_length + seq_length</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;cache_position&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span>
-                <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;cache+seq&quot;</span><span class="p">,</span>  <span class="c1"># cache_length + seq_length</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;cache_params&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
-                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
-            <span class="p">],</span>
+    <span class="n">shapes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;pixel_values&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;width&quot;</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;height&quot;</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span> <span class="n">dummy_max_token_id</span><span class="p">,</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="n">sequence_length2</span><span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="n">attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="n">sequence_length2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
-            <span class="p">),</span>
-            <span class="n">cache_position</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;conv_kernel&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
-            <span class="c1"># .expand((batch_size, -1))</span>
-            <span class="n">cache_params</span><span class="o">=</span><span class="n">make_mamba_cache</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="p">(</span>
-                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
-                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;intermediate_size&quot;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;conv_kernel&quot;</span><span class="p">]</span>
-                        <span class="p">),</span>
-                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
-                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;intermediate_size&quot;</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;state_size&quot;</span><span class="p">]</span>
-                        <span class="p">),</span>
-                    <span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)</span>
-                <span class="p">]</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">shapes</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">head_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim is None, the value cannot be set without a configuration&quot;</span>
-            <span class="n">head_dim</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
-
-        <span class="n">shapes</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;input_ids&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">seq_length</span><span class="p">},</span>
-            <span class="s2">&quot;attention_mask&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span>
-                <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;cache+seq&quot;</span><span class="p">,</span>  <span class="c1"># cache_length + seq_length</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;position_ids&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span>
-                <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;cache+seq&quot;</span><span class="p">,</span>  <span class="c1"># cache_length + seq_length</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;past_key_values&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">cache_length</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
-                <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="n">batch</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">cache_length</span><span class="p">}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)],</span>
-            <span class="p">],</span>
-        <span class="p">}</span>
-
-        <span class="n">make_cache</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">make_sliding_window_cache</span>
-            <span class="k">if</span> <span class="n">cls_cache</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;SlidingWindowCache&quot;</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">SlidingWindowCache</span><span class="p">)</span>
-            <span class="k">else</span> <span class="n">make_dynamic_cache</span>
-        <span class="p">)</span>
-
-        <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dummy_max_token_id</span><span class="p">,</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
-            <span class="p">),</span>
-            <span class="n">attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="n">sequence_length2</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
-            <span class="p">),</span>
-            <span class="n">position_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">sequence_length</span> <span class="o">+</span> <span class="n">sequence_length2</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
-            <span class="n">past_key_values</span><span class="o">=</span><span class="n">make_cache</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="p">(</span>
-                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
-                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_key_value_heads</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">head_dim</span>
-                        <span class="p">),</span>
-                        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
-                            <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_key_value_heads</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">head_dim</span>
-                        <span class="p">),</span>
-                    <span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)</span>
-                <span class="p">]</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">shapes</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">input_channels</span><span class="p">,</span> <span class="n">input_width</span><span class="p">,</span> <span class="n">input_height</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span>
+            <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">shapes</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">add_second_input</span><span class="p">:</span>
         <span class="n">res</span><span class="p">[</span><span class="s2">&quot;inputs2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_inputs</span><span class="p">(</span>
             <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
-            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="n">dummy_max_token_id</span><span class="p">,</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="n">num_hidden_layers</span><span class="p">,</span>
+            <span class="n">input_width</span><span class="o">=</span><span class="n">input_width</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">input_height</span><span class="o">=</span><span class="n">input_height</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">input_channels</span><span class="o">=</span><span class="n">input_channels</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">sequence_length</span><span class="o">=</span><span class="n">sequence_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">sequence_length2</span><span class="o">=</span><span class="n">sequence_length2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">dynamic_rope</span><span class="o">=</span><span class="n">dynamic_rope</span><span class="p">,</span>
-            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="n">num_key_value_heads</span><span class="p">,</span>
-            <span class="n">head_dim</span><span class="o">=</span><span class="n">head_dim</span><span class="p">,</span>
-            <span class="n">cls_cache</span><span class="o">=</span><span class="n">cls_cache</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">res</span></div>
@@ -594,7 +453,7 @@
 
 
 <div class="viewcode-block" id="random_input_kwargs">
-<a class="viewcode-back" href="../../../api/tasks/text_generation.html#onnx_diagnostic.tasks.text_generation.random_input_kwargs">[docs]</a>
+<a class="viewcode-back" href="../../../api/tasks/object_detection.html#onnx_diagnostic.tasks.object_detection.random_input_kwargs">[docs]</a>
 <span class="k">def</span> <span class="nf">random_input_kwargs</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Callable</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inputs kwargs.</span>
@@ -602,52 +461,44 @@
 <span class="sd">    If the configuration is None, the function selects typical dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span>
-            <span class="n">config</span><span class="p">,</span>
-            <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
-            <span class="p">(</span><span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;use_mambapy&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;use_mambapy&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;FalconMambaConfig&quot;</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;conv_kernel&quot;</span><span class="p">,</span> <span class="s2">&quot;state_size&quot;</span><span class="p">,</span> <span class="s2">&quot;intermediate_size&quot;</span><span class="p">)</span>  <span class="c1"># 4 and 8</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;model_type&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">model_type</span> <span class="o">==</span> <span class="s2">&quot;timm_wrapper&quot;</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_hidden_layers&quot;</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">input_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pretrained_cfg</span><span class="p">[</span><span class="s2">&quot;input_size&quot;</span><span class="p">]</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">input_width</span><span class="o">=</span><span class="n">input_size</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">input_height</span><span class="o">=</span><span class="n">input_size</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">input_channels</span><span class="o">=</span><span class="n">input_size</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">get_inputs</span>
+
+        <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;image_size&quot;</span><span class="p">,</span> <span class="s2">&quot;architectures&quot;</span><span class="p">),</span> <span class="s2">&quot;num_channels&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;image_size&quot;</span><span class="p">):</span>
+            <span class="n">image_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">image_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">architectures</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;empty architecture in </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="kn">from</span> <span class="nn">..torch_models.hghub.hub_api</span> <span class="kn">import</span> <span class="n">get_architecture_default_values</span>
+
+            <span class="n">default_values</span> <span class="o">=</span> <span class="n">get_architecture_default_values</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">architectures</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">image_size</span> <span class="o">=</span> <span class="n">default_values</span><span class="p">[</span><span class="s2">&quot;image_size&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">sequence_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-            <span class="n">sequence_length2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31999</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
-            <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">256</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span>
-            <span class="n">cls_cache</span><span class="o">=</span><span class="s2">&quot;MambaCache&quot;</span><span class="p">,</span>
-            <span class="n">state_size</span><span class="o">=</span><span class="mi">8</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;state_size&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">conv_kernel</span><span class="o">=</span><span class="mi">8</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;conv_kernel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">input_width</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">image_size</span><span class="p">,</span>
+            <span class="n">input_height</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">image_size</span><span class="p">,</span>
+            <span class="n">input_channels</span><span class="o">=</span><span class="mi">3</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">sequence_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-            <span class="n">sequence_length2</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-            <span class="n">head_dim</span><span class="o">=</span><span class="p">(</span>
-                <span class="mi">16</span>
-                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span>
-                    <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
-                <span class="p">)</span>
-            <span class="p">),</span>
-            <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31999</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
-            <span class="n">num_key_value_heads</span><span class="o">=</span><span class="p">(</span>
-                <span class="mi">24</span>
-                <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
-                <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">)</span>
-            <span class="p">),</span>
-            <span class="n">hidden_size</span><span class="o">=</span><span class="mi">512</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
+            <span class="n">input_width</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">input_height</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">image_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">input_channels</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;intermediate_size&quot;</span><span class="p">):</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;intermediate_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="mi">1024</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span>
-            <span class="p">)</span>
-
     <span class="k">return</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">get_inputs</span></div>
 
 </pre></div>

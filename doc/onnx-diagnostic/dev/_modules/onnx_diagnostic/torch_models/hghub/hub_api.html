@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.hghub.hub_api - onnx-diagnostic 0.4.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -267,6 +267,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/object_detection.html">onnx_diagnostic.tasks.object_detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
@@ -311,14 +312,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_hub_codellama.html">Test the export on untrained models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -370,10 +371,11 @@
           <h1>Source code for onnx_diagnostic.torch_models.hghub.hub_api</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">transformers</span>
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfApi</span><span class="p">,</span> <span class="n">model_info</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfApi</span><span class="p">,</span> <span class="n">model_info</span><span class="p">,</span> <span class="n">hf_hub_download</span>
 <span class="kn">from</span> <span class="nn">...helpers.config_helper</span> <span class="kn">import</span> <span class="n">update_config</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">hub_data_cached_configs</span>
 <span class="kn">from</span> <span class="nn">.hub_data</span> <span class="kn">import</span> <span class="n">__date__</span><span class="p">,</span> <span class="n">__data_tasks__</span><span class="p">,</span> <span class="n">load_architecture_task</span><span class="p">,</span> <span class="n">__data_arch_values__</span>
@@ -437,7 +439,11 @@
 <div class="viewcode-block" id="get_pretrained_config">
 <a class="viewcode-back" href="../../../../api/torch_models/hghub/hub_api.html#onnx_diagnostic.torch_models.hghub.hub_api.get_pretrained_config">[docs]</a>
 <span class="k">def</span> <span class="nf">get_pretrained_config</span><span class="p">(</span>
-    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">use_preinstalled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">trust_remote_code</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">use_preinstalled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">subfolder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the config for a model_id.</span>
@@ -449,13 +455,32 @@
 <span class="sd">        accessing the network, if available, it is returned by</span>
 <span class="sd">        :func:`get_cached_configuration`, the cached list is mostly for</span>
 <span class="sd">        unit tests</span>
+<span class="sd">    :param subfolder: subfolder for the given model id</span>
 <span class="sd">    :param kwargs: additional kwargs</span>
 <span class="sd">    :return: a configuration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">use_preinstalled</span><span class="p">:</span>
-        <span class="n">conf</span> <span class="o">=</span> <span class="n">get_cached_configuration</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="n">get_cached_configuration</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">subfolder</span><span class="o">=</span><span class="n">subfolder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">conf</span>
+    <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoConfig</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+                <span class="n">model_id</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="n">trust_remote_code</span><span class="p">,</span> <span class="n">subfolder</span><span class="o">=</span><span class="n">subfolder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># Then we try to download it.</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span>
+                <span class="n">model_id</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;config.json&quot;</span><span class="p">,</span> <span class="n">subfolder</span><span class="o">=</span><span class="n">subfolder</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoConfig</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+                    <span class="n">config</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="n">trust_remote_code</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="c1"># Diffusers uses a dictionayr.</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">transformers</span><span class="o">.</span><span class="n">AutoConfig</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
         <span class="n">model_id</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="n">trust_remote_code</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span></div>
@@ -468,6 +493,15 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the model info for a model_id.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">model_info</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span></div>
 
+
+
+<span class="k">def</span> <span class="nf">_guess_task_from_config</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tries to infer a task from the configuration.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;bbox_loss_coefficient&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;giou_loss_coefficient&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;object-detection&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;architecture&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">architecture</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">task_from_arch</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">architecture</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="task_from_arch">
@@ -513,7 +547,7 @@
 <span class="sd">    :param default_value: if specified, the function returns this value</span>
 <span class="sd">        if the task cannot be determined</span>
 <span class="sd">    :param pretrained: uses the config</span>
-<span class="sd">    :param fall_back_to_pretrained: balls back to pretrained config</span>
+<span class="sd">    :param fall_back_to_pretrained: falls back to pretrained config</span>
 <span class="sd">    :return: task</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pretrained</span><span class="p">:</span>
@@ -526,6 +560,9 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">config</span><span class="o">.</span><span class="n">pipeline_tag</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">guess</span> <span class="o">=</span> <span class="n">_guess_task_from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">guess</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">guess</span>
         <span class="k">assert</span> <span class="n">config</span><span class="o">.</span><span class="n">architectures</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">architectures</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Cannot return the task of </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">, pipeline_tag is not setup, &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;architectures=</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">architectures</span><span class="si">}</span><span class="s2"> in config=</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span>

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:23.275** total execution time for 12 files **from auto_examples**:
+**00:24.132** total execution time for 12 files **from auto_examples**:
 
 .. container::
 
@@ -33,7 +33,10 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_export_tiny_phi2.py` (``plot_export_tiny_phi2.py``)
-     - 00:23.275
+     - 00:23.760
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``plot_export_with_dynamic_cache.py``)
+     - 00:00.371
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``plot_export_cond.py``)
      - 00:00.000
@@ -54,9 +57,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_with_auto.py` (``plot_export_with_auto.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``plot_export_with_dynamic_cache.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_failing_model_extract.py` (``plot_failing_model_extract.py``)

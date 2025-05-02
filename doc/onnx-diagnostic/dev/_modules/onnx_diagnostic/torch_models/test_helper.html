@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.torch_models.test_helper - onnx-diagnostic 0.4.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -267,6 +267,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/object_detection.html">onnx_diagnostic.tasks.object_detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
@@ -311,14 +312,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess the dynamic shapes (with Tiny-LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_hub_codellama.html">Test the export on untrained models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_phi2.html">Untrained microsoft/phi-2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_auto.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -494,9 +495,12 @@
     <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">subfolder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="s2">&quot;Creates a filename unique based on the given options.&quot;</span>
     <span class="n">els</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
+        <span class="n">els</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subfolder</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">exporter</span><span class="p">:</span>
         <span class="n">els</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">exporter</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">optimization</span><span class="p">:</span>
@@ -614,6 +618,7 @@
     <span class="n">ortfusiontype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">input_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">model_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">subfolder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validates a model.</span>
@@ -646,11 +651,11 @@
 <span class="sd">        used to export</span>
 <span class="sd">    :param model_options: additional options when creating the model such as</span>
 <span class="sd">        ``num_hidden_layers`` or ``attn_implementation``</span>
+<span class="sd">    :param subfolder: version or subfolders to uses when retrieving a model id</span>
 <span class="sd">    :return: two dictionaries, one with some metrics,</span>
 <span class="sd">        another one with whatever the function produces</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">summary</span> <span class="o">=</span> <span class="n">version_summary</span><span class="p">()</span>
-
     <span class="n">summary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="nb">dict</span><span class="p">(</span>
             <span class="n">version_model_id</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
@@ -672,7 +677,7 @@
     <span class="n">folder_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">dump_folder</span><span class="p">:</span>
         <span class="n">folder_name</span> <span class="o">=</span> <span class="n">_make_folder_name</span><span class="p">(</span>
-            <span class="n">model_id</span><span class="p">,</span> <span class="n">exporter</span><span class="p">,</span> <span class="n">optimization</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+            <span class="n">model_id</span><span class="p">,</span> <span class="n">exporter</span><span class="p">,</span> <span class="n">optimization</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">subfolder</span><span class="o">=</span><span class="n">subfolder</span>
         <span class="p">)</span>
         <span class="n">dump_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_folder</span><span class="p">,</span> <span class="n">folder_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dump_folder</span><span class="p">):</span>
@@ -683,11 +688,15 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] dump into </span><span class="si">{</span><span class="n">folder_name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] validate model id </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] validate model id </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">, subfolder=</span><span class="si">{</span><span class="n">subfolder</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] validate model id </span><span class="si">{</span><span class="n">model_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">model_options</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] model_options=</span><span class="si">{</span><span class="n">model_options</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[validate_model] get dummy inputs with input_options=</span><span class="si">{</span><span class="n">input_options</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;model_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_id</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;model_subfolder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subfolder</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
 
     <span class="n">iop</span> <span class="o">=</span> <span class="n">input_options</span> <span class="ow">or</span> <span class="p">{}</span>
     <span class="n">mop</span> <span class="o">=</span> <span class="n">model_options</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -697,7 +706,7 @@
         <span class="n">summary</span><span class="p">,</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">mid</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">tr</span><span class="o">=</span><span class="n">trained</span><span class="p">,</span> <span class="n">iop</span><span class="o">=</span><span class="n">iop</span><span class="p">:</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">mid</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">tr</span><span class="o">=</span><span class="n">trained</span><span class="p">,</span> <span class="n">iop</span><span class="o">=</span><span class="n">iop</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="n">subfolder</span><span class="p">:</span> <span class="p">(</span>
                 <span class="n">get_untrained_model_with_inputs</span><span class="p">(</span>
                     <span class="n">mid</span><span class="p">,</span>
                     <span class="n">verbose</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
@@ -705,6 +714,7 @@
                     <span class="n">same_as_pretrained</span><span class="o">=</span><span class="n">tr</span><span class="p">,</span>
                     <span class="n">inputs_kwargs</span><span class="o">=</span><span class="n">iop</span><span class="p">,</span>
                     <span class="n">model_kwargs</span><span class="o">=</span><span class="n">mop</span><span class="p">,</span>
+                    <span class="n">subfolder</span><span class="o">=</span><span class="n">sub</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">),</span>
@@ -1465,15 +1475,16 @@
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">optimization</span> <span class="ow">in</span> <span class="n">available</span>
     <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected value for optimization=</span><span class="si">{</span><span class="n">optimization</span><span class="si">}</span><span class="s2">, available=</span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">assert</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="p">{</span>
+    <span class="n">available</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
         <span class="s2">&quot;custom-strict&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;custom-strict-dec&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-strict-default&quot;</span><span class="p">,</span>
         <span class="s2">&quot;custom-strict-all&quot;</span><span class="p">,</span>
         <span class="s2">&quot;custom-nostrict&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;custom-nostrict-dec&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom-nostrict-default&quot;</span><span class="p">,</span>
         <span class="s2">&quot;custom-nostrict-all&quot;</span><span class="p">,</span>
-    <span class="p">},</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+    <span class="k">assert</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="n">available</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for exporter=</span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="s2">&quot;model&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;model is missing from data: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="s2">&quot;inputs_export&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;inputs_export is missing from data: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">summary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1505,7 +1516,7 @@
     <span class="n">export_options</span> <span class="o">=</span> <span class="n">ExportOptions</span><span class="p">(</span>
         <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span>
         <span class="n">decomposition_table</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;dec&quot;</span> <span class="k">if</span> <span class="s2">&quot;-dec&quot;</span> <span class="ow">in</span> <span class="n">exporter</span> <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;all&quot;</span> <span class="k">if</span> <span class="s2">&quot;-all&quot;</span> <span class="ow">in</span> <span class="n">exporter</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="s2">&quot;default&quot;</span> <span class="k">if</span> <span class="s2">&quot;-default&quot;</span> <span class="ow">in</span> <span class="n">exporter</span> <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;all&quot;</span> <span class="k">if</span> <span class="s2">&quot;-all&quot;</span> <span class="ow">in</span> <span class="n">exporter</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">OptimizationOptions</span><span class="p">(</span><span class="n">patterns</span><span class="o">=</span><span class="n">optimization</span><span class="p">)</span> <span class="k">if</span> <span class="n">optimization</span> <span class="k">else</span> <span class="kc">None</span>
