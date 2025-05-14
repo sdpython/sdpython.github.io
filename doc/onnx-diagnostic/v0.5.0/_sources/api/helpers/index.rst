@@ -12,10 +12,13 @@ onnx_diagnostic.helpers
     config_helper
     helper
     memory_peak
+    mini_onnx_builder
     onnx_helper
     ort_session
     rt_helper
-    torch_test_helper
+    torch_helper
+
+.. autofunction:: onnx_diagnostic.helpers.flatten_object
 
 .. autofunction:: onnx_diagnostic.helpers.max_diff
 

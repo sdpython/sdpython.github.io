@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.ext_test_case - onnx-diagnostic 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,10 +222,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../api/helpers/config_helper.html">onnx_diagnostic.helpers.config_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers/mini_onnx_builder.html">onnx_diagnostic.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers/torch_helper.html">onnx_diagnostic.helpers.torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/reference/index.html">onnx_diagnostic.reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,6 +282,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
 </ul>
@@ -313,7 +315,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and guessed dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
@@ -327,6 +329,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_technical/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_technical/plot_parallelized_reduction.html">Reproducible Parallelized Reduction is difficult</a></li>
 </ul>
 </li>
 </ul>
@@ -1381,7 +1387,7 @@
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>  <span class="c1"># noqa: B904</span>
             <span class="k">return</span>
 
-        <span class="kn">from</span> <span class="nn">.helpers.torch_test_helper</span> <span class="kn">import</span> <span class="n">to_numpy</span>
+        <span class="kn">from</span> <span class="nn">.helpers.torch_helper</span> <span class="kn">import</span> <span class="n">to_numpy</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="s2">&quot;detach&quot;</span><span class="p">):</span>
             <span class="n">expected</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
@@ -1599,6 +1605,14 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prefix=</span><span class="si">{</span><span class="n">prefix</span><span class="si">!r}</span><span class="s2"> does not start string  </span><span class="si">{</span><span class="n">full</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="ExtTestCase.assertEndsWith">
+<a class="viewcode-back" href="../../api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertEndsWith">[docs]</a>
+    <span class="k">def</span> <span class="nf">assertEndsWith</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">full</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">suffix</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;suffix=</span><span class="si">{</span><span class="n">suffix</span><span class="si">!r}</span><span class="s2"> does not end string  </span><span class="si">{</span><span class="n">full</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="ExtTestCase.capture">
 <a class="viewcode-back" href="../../api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.capture">[docs]</a>
     <span class="k">def</span> <span class="nf">capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
@@ -1727,7 +1741,9 @@
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vname</span><span class="si">}</span><span class="s2">] diff </span><span class="si">{</span><span class="n">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">])</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">])</span>
             <span class="ow">and</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">atol</span>
             <span class="ow">and</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">])</span>
             <span class="ow">and</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">rtol</span>

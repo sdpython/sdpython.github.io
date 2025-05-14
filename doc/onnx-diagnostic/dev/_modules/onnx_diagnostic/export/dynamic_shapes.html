@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.export.dynamic_shapes - onnx-diagnostic 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,10 +222,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/config_helper.html">onnx_diagnostic.helpers.config_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/mini_onnx_builder.html">onnx_diagnostic.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_helper.html">onnx_diagnostic.helpers.torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reference/index.html">onnx_diagnostic.reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,6 +282,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
 </ul>
@@ -313,7 +315,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and guessed dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
@@ -327,6 +329,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_technical/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_technical/plot_parallelized_reduction.html">Reproducible Parallelized Reduction is difficult</a></li>
 </ul>
 </li>
 </ul>
@@ -1119,13 +1125,14 @@
 <div class="viewcode-block" id="ModelInputs.guess_dynamic_dimensions">
 <a class="viewcode-back" href="../../../api/export/index.html#onnx_diagnostic.export.dynamic_shapes.ModelInputs.guess_dynamic_dimensions">[docs]</a>
     <span class="k">def</span> <span class="nf">guess_dynamic_dimensions</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="n">auto</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">,</span> <span class="n">auto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Infers the dynamic dimension from multiple shapes.</span>
 <span class="sd">        If auto is True, it returns ``torch.export.Dim.AUTO`` for every dimension</span>
 <span class="sd">        which cannot be guessed. Two tensors with the same value for one dimension</span>
-<span class="sd">        can be guessed, but if there is only 1, it cannot.</span>
+<span class="sd">        can be guessed, but if there is only 1, it cannot. ``auto``` can be a string</span>
+<span class="sd">        to produce strings.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
@@ -1136,7 +1143,7 @@
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">AUTO</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))}</span>  <span class="c1"># noqa: C420</span>
-                <span class="k">if</span> <span class="n">auto</span>
+                <span class="k">if</span> <span class="n">auto</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
                 <span class="k">else</span> <span class="p">{}</span>
             <span class="p">)</span>
         <span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tensors</span><span class="p">]</span>
@@ -1146,17 +1153,21 @@
             <span class="sa">f</span><span class="s2">&quot;shapes=</span><span class="si">{</span><span class="n">shapes</span><span class="si">}</span><span class="s2"> for module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;class=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">true_model_name</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="n">dynamic</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span>  <span class="c1"># type: ignore</span>
+        <span class="n">dynamic</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">auto</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">AUTO</span> <span class="k">if</span> <span class="n">auto</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">rk</span> <span class="o">=</span> <span class="n">set_length</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rk</span><span class="p">):</span>
             <span class="n">set_dim</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">set_dim</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dynamic</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dynamic</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dynamic</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">set_dim</span> <span class="o">==</span> <span class="p">{</span><span class="mi">0</span><span class="p">}:</span>
                 <span class="c1"># It is unexpected to find a null dimension. Let&#39;s replace it by a dynamic one.</span>
-                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dynamic</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dynamic</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dynamic</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dynamic</span><span class="si">}{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">continue</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
@@ -1164,7 +1175,7 @@
 <div class="viewcode-block" id="ModelInputs.guess_dynamic_shape_object">
 <a class="viewcode-back" href="../../../api/export/index.html#onnx_diagnostic.export.dynamic_shapes.ModelInputs.guess_dynamic_shape_object">[docs]</a>
     <span class="k">def</span> <span class="nf">guess_dynamic_shape_object</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">auto</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">auto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Guesses the dynamic shapes for one argument.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1189,7 +1200,11 @@
             <span class="n">shapes</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kl</span><span class="o">.</span><span class="n">pop</span><span class="p">()):</span>
                 <span class="n">shapes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span>
+                        <span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span>
+                        <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">t&quot;</span><span class="p">,</span>
+                        <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
 
@@ -1201,7 +1216,11 @@
             <span class="n">shapes</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kl</span><span class="o">.</span><span class="n">pop</span><span class="p">()):</span>
                 <span class="n">shapes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span>
+                        <span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span>
+                        <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">l&quot;</span><span class="p">,</span>
+                        <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">shapes</span>
 
@@ -1213,7 +1232,9 @@
             <span class="n">shapes</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
                 <span class="n">shapes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span>
-                    <span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span>
+                    <span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span>
+                    <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">,</span>
+                    <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">shapes</span>
 
@@ -1233,7 +1254,9 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kc</span><span class="o">.</span><span class="n">pop</span><span class="p">()):</span>
                 <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span>
-                        <span class="o">*</span><span class="p">[</span><span class="n">ca</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">ca</span> <span class="ow">in</span> <span class="n">col_args</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span>
+                        <span class="o">*</span><span class="p">[</span><span class="n">ca</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">ca</span> <span class="ow">in</span> <span class="n">col_args</span><span class="p">],</span>
+                        <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">o&quot;</span><span class="p">,</span>
+                        <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">values</span>
@@ -1251,12 +1274,18 @@
             <span class="n">key_cache</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kc</span><span class="o">.</span><span class="n">pop</span><span class="p">()):</span>
                 <span class="n">key_cache</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_dimensions</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">key_cache</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_dimensions</span><span class="p">(</span>
+                        <span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">key_cache</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span>
+                        <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">kdc&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
             <span class="n">value_cache</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vc</span><span class="o">.</span><span class="n">pop</span><span class="p">()):</span>
                 <span class="n">value_cache</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_dimensions</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">value_cache</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_dimensions</span><span class="p">(</span>
+                        <span class="o">*</span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">value_cache</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">],</span>
+                        <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">vdc&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">value_cache</span><span class="p">]</span>
 
@@ -1269,13 +1298,17 @@
 
 <div class="viewcode-block" id="ModelInputs.guess_dynamic_shapes">
 <a class="viewcode-back" href="../../../api/export/index.html#onnx_diagnostic.export.dynamic_shapes.ModelInputs.guess_dynamic_shapes">[docs]</a>
-    <span class="k">def</span> <span class="nf">guess_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPES</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">guess_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPES</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Guesses the dynamic shapes for that module from two execution.</span>
 <span class="sd">        If there is only one execution, then that would be static dimensions.</span>
 
 <span class="sd">        :param auto: if auto is True, use ``torch.export.Dim.AUTO`` for any</span>
-<span class="sd">            dimension if the number of inputs is one</span>
+<span class="sd">            dimension if the number of inputs is one,</span>
+<span class="sd">            if ``auto`` is a string, it uses strings</span>
+<span class="sd">        :return: guessed dynamic shapes</span>
+
+<span class="sd">        See example :ref:`l-guess-dynamic-shapes-example`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># No inputs, unable to guess.</span>
@@ -1302,7 +1335,9 @@
             <span class="n">objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span>
-                    <span class="o">*</span><span class="n">objs</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot; failing input </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="o">*</span><span class="n">objs</span><span class="p">,</span>
+                    <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">I&quot;</span><span class="p">,</span>
+                    <span class="n">msg</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot; failing input </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="n">s2</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
@@ -1315,7 +1350,9 @@
 
             <span class="n">objs</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_dynamic_shape_object</span><span class="p">(</span>
-                <span class="o">*</span><span class="n">objs</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="k">lambda</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot; failing input </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="o">*</span><span class="n">objs</span><span class="p">,</span>
+                <span class="n">auto</span><span class="o">=</span><span class="n">auto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">auto</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">auto</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">I&quot;</span><span class="p">,</span>
+                <span class="n">msg</span><span class="o">=</span><span class="k">lambda</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot; failing input </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="n">kwargs</span></div>
 

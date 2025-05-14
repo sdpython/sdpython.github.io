@@ -221,10 +221,11 @@
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/config_helper.html">onnx_diagnostic.helpers.config_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers/mini_onnx_builder.html">onnx_diagnostic.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers/torch_helper.html">onnx_diagnostic.helpers.torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/reference/index.html">onnx_diagnostic.reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -280,6 +281,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
 </ul>
@@ -312,7 +314,7 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and guessed dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
@@ -326,6 +328,10 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_technical/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_technical/plot_parallelized_reduction.html">Reproducible Parallelized Reduction is difficult</a></li>
 </ul>
 </li>
 </ul>
@@ -382,18 +388,26 @@
 </li>
         <li><a href="api/reference/ops/op_add_add_mul_mul.html#onnx_diagnostic.reference.ops.op_add_add_mul_mul.AddSharedInput">AddSharedInput (class in onnx_diagnostic.reference.ops.op_add_add_mul_mul)</a>
 </li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_dict">append_output_dict() (onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder method)</a>
+</li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_initializer">append_output_initializer() (onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder method)</a>
+</li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder.append_output_sequence">append_output_sequence() (onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder method)</a>
+</li>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assert_onnx_disc">assert_onnx_disc() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
 </li>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertAlmostEqual">assertAlmostEqual() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
 </li>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertEmpty">assertEmpty() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
 </li>
+        <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertEndsWith">assertEndsWith() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertEqual">assertEqual() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
 </li>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertEqualArray">assertEqualArray() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertEqualArrays">assertEqualArrays() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
 </li>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.assertExists">assertExists() (onnx_diagnostic.ext_test_case.ExtTestCase method)</a>
@@ -452,10 +466,10 @@
 </li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.check_model_ort">check_model_ort() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.RewrittenMethod.code">code (onnx_diagnostic.torch_export_patches.patch_module.RewrittenMethod property)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/export/validate.html#onnx_diagnostic.export.validate.compare_modules">compare_modules() (in module onnx_diagnostic.export.validate)</a>
 </li>
         <li><a href="api/reference/ops/op_complex.html#onnx_diagnostic.reference.ops.op_complex.ComplexModule">ComplexModule (class in onnx_diagnostic.reference.ops.op_complex)</a>
@@ -474,6 +488,10 @@
 </li>
         <li><a href="api/export/index.html#onnx_diagnostic.export.CoupleInputsDynamicShapes">CoupleInputsDynamicShapes (class in onnx_diagnostic.export)</a>
 </li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model">create_input_tensors_from_onnx_model() (in module onnx_diagnostic.helpers.mini_onnx_builder)</a>
+</li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.create_onnx_model_from_input_tensors">create_onnx_model_from_input_tensors() (in module onnx_diagnostic.helpers.mini_onnx_builder)</a>
+</li>
         <li><a href="api/torch_export_patches/patches/patch_transformers.html#onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicCache.crop">crop() (onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicCache method)</a>
 </li>
     </ul></td>
@@ -486,7 +504,7 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.dtype_to_tensor_dtype">dtype_to_tensor_dtype() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.dummy_llm">dummy_llm() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.dummy_llm">dummy_llm() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
@@ -520,16 +538,20 @@
   <h2>F</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.fake_torchdynamo_exporting">fake_torchdynamo_exporting() (in module onnx_diagnostic.helpers.torch_helper)</a>
+</li>
         <li><a href="api/torch_models/test_helper.html#onnx_diagnostic.torch_models.test_helper.filter_inputs">filter_inputs() (in module onnx_diagnostic.torch_models.test_helper)</a>
 </li>
         <li><a href="api/torch_models/hghub/model_inputs.html#onnx_diagnostic.torch_models.hghub.model_inputs.filter_out_unexpected_inputs">filter_out_unexpected_inputs() (in module onnx_diagnostic.torch_models.hghub.model_inputs)</a>
 </li>
         <li><a href="api/export/dynamic_shapes.html#onnx_diagnostic.export.dynamic_shapes.flatten_dynamic_shapes">flatten_dynamic_shapes() (in module onnx_diagnostic.export.dynamic_shapes)</a>
 </li>
-        <li><a href="api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.flatten_unflatten_for_dynamic_shapes">flatten_unflatten_for_dynamic_shapes() (in module onnx_diagnostic.helpers.cache_helper)</a>
+        <li><a href="api/helpers/index.html#onnx_diagnostic.helpers.flatten_object">flatten_object() (in module onnx_diagnostic.helpers)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.flatten_unflatten_for_dynamic_shapes">flatten_unflatten_for_dynamic_shapes() (in module onnx_diagnostic.helpers.cache_helper)</a>
+</li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.from_array_extended">from_array_extended() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.from_array_ml_dtypes">from_array_ml_dtypes() (in module onnx_diagnostic.helpers.onnx_helper)</a>
@@ -660,10 +682,10 @@
 </li>
         <li><a href="api/reference/index.html#onnx_diagnostic.reference.OnnxruntimeEvaluator.input_names">input_names (onnx_diagnostic.reference.OnnxruntimeEvaluator property)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/reference/index.html#onnx_diagnostic.reference.OnnxruntimeEvaluator.input_types">input_types (onnx_diagnostic.reference.OnnxruntimeEvaluator property)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/export/index.html#onnx_diagnostic.export.CoupleInputsDynamicShapes.invalid_dimensions_for_export">invalid_dimensions_for_export() (onnx_diagnostic.export.CoupleInputsDynamicShapes method)</a>
 </li>
         <li><a href="api/helpers/ort_session.html#onnx_diagnostic.helpers.ort_session.investigate_onnxruntime_issue">investigate_onnxruntime_issue() (in module onnx_diagnostic.helpers.ort_session)</a>
@@ -672,7 +694,11 @@
 </li>
         <li><a href="api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.is_cache_dynamic_registered">is_cache_dynamic_registered() (in module onnx_diagnostic.helpers.cache_helper)</a>
 </li>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.is_torchdynamo_exporting">is_torchdynamo_exporting() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.is_stealing">is_stealing() (in module onnx_diagnostic.helpers.torch_helper)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.is_torchdynamo_exporting">is_torchdynamo_exporting() (in module onnx_diagnostic.helpers.torch_helper)</a>
+</li>
+        <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.iterator_initializer_constant">iterator_initializer_constant() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -714,6 +740,8 @@
 </li>
         <li><a href="api/helpers/cache_helper.html#onnx_diagnostic.helpers.cache_helper.make_sliding_window_cache">make_sliding_window_cache() (in module onnx_diagnostic.helpers.cache_helper)</a>
 </li>
+        <li><a href="api/torch_export_patches/patch_expressions.html#onnx_diagnostic.torch_export_patches.patch_expressions.make_undefined_dimension">make_undefined_dimension() (in module onnx_diagnostic.torch_export_patches.patch_expressions)</a>
+</li>
         <li><a href="api/reference/ops/op_scatternd_of_shape.html#onnx_diagnostic.reference.ops.op_scatternd_of_shape.MaskedScatterNDOfShape">MaskedScatterNDOfShape (class in onnx_diagnostic.reference.ops.op_scatternd_of_shape)</a>
 </li>
         <li><a href="api/helpers/index.html#onnx_diagnostic.helpers.max_diff">max_diff() (in module onnx_diagnostic.helpers)</a>
@@ -725,6 +753,10 @@
         <li><a href="api/reference/ops/op_memcpy_host.html#onnx_diagnostic.reference.ops.op_memcpy_host.MemcpyToHost">MemcpyToHost (class in onnx_diagnostic.reference.ops.op_memcpy_host)</a>
 </li>
         <li><a href="api/helpers/memory_peak.html#onnx_diagnostic.helpers.memory_peak.MemorySpy">MemorySpy (class in onnx_diagnostic.helpers.memory_peak)</a>
+</li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder">MiniOnnxBuilder (class in onnx_diagnostic.helpers.mini_onnx_builder)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.model_statistics">model_statistics() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/export/index.html#onnx_diagnostic.export.ModelInputs">ModelInputs (class in onnx_diagnostic.export)</a>
 </li>
@@ -756,13 +788,15 @@
 </li>
           <li><a href="api/helpers/memory_peak.html#module-onnx_diagnostic.helpers.memory_peak">onnx_diagnostic.helpers.memory_peak</a>
 </li>
+          <li><a href="api/helpers/mini_onnx_builder.html#module-onnx_diagnostic.helpers.mini_onnx_builder">onnx_diagnostic.helpers.mini_onnx_builder</a>
+</li>
           <li><a href="api/helpers/onnx_helper.html#module-onnx_diagnostic.helpers.onnx_helper">onnx_diagnostic.helpers.onnx_helper</a>
 </li>
           <li><a href="api/helpers/ort_session.html#module-onnx_diagnostic.helpers.ort_session">onnx_diagnostic.helpers.ort_session</a>
 </li>
           <li><a href="api/helpers/rt_helper.html#module-onnx_diagnostic.helpers.rt_helper">onnx_diagnostic.helpers.rt_helper</a>
 </li>
-          <li><a href="api/helpers/torch_test_helper.html#module-onnx_diagnostic.helpers.torch_test_helper">onnx_diagnostic.helpers.torch_test_helper</a>
+          <li><a href="api/helpers/torch_helper.html#module-onnx_diagnostic.helpers.torch_helper">onnx_diagnostic.helpers.torch_helper</a>
 </li>
           <li><a href="api/reference/index.html#module-onnx_diagnostic.reference">onnx_diagnostic.reference</a>
 </li>
@@ -847,6 +881,8 @@
           <li><a href="api/tasks/zero_shot_image_classification.html#module-onnx_diagnostic.tasks.zero_shot_image_classification">onnx_diagnostic.tasks.zero_shot_image_classification</a>
 </li>
           <li><a href="api/torch_export_patches/index.html#module-onnx_diagnostic.torch_export_patches">onnx_diagnostic.torch_export_patches</a>
+</li>
+          <li><a href="api/torch_export_patches/patch_expressions.html#module-onnx_diagnostic.torch_export_patches.patch_expressions">onnx_diagnostic.torch_export_patches.patch_expressions</a>
 </li>
           <li><a href="api/torch_export_patches/patch_inputs.html#module-onnx_diagnostic.torch_export_patches.patch_inputs">onnx_diagnostic.torch_export_patches.patch_inputs</a>
 </li>
@@ -1006,6 +1042,13 @@
 </li>
         </ul></li>
         <li>
+    onnx_diagnostic.helpers.mini_onnx_builder
+
+        <ul>
+          <li><a href="api/helpers/mini_onnx_builder.html#module-onnx_diagnostic.helpers.mini_onnx_builder">module</a>
+</li>
+        </ul></li>
+        <li>
     onnx_diagnostic.helpers.onnx_helper
 
         <ul>
@@ -1027,10 +1070,10 @@
 </li>
         </ul></li>
         <li>
-    onnx_diagnostic.helpers.torch_test_helper
+    onnx_diagnostic.helpers.torch_helper
 
         <ul>
-          <li><a href="api/helpers/torch_test_helper.html#module-onnx_diagnostic.helpers.torch_test_helper">module</a>
+          <li><a href="api/helpers/torch_helper.html#module-onnx_diagnostic.helpers.torch_helper">module</a>
 </li>
         </ul></li>
         <li>
@@ -1330,6 +1373,13 @@
 </li>
         </ul></li>
         <li>
+    onnx_diagnostic.torch_export_patches.patch_expressions
+
+        <ul>
+          <li><a href="api/torch_export_patches/patch_expressions.html#module-onnx_diagnostic.torch_export_patches.patch_expressions">module</a>
+</li>
+        </ul></li>
+        <li>
     onnx_diagnostic.torch_export_patches.patch_inputs
 
         <ul>
@@ -1431,7 +1481,7 @@
 </li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.onnx_dtype_to_np_dtype">onnx_dtype_to_np_dtype() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
-        <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.onnx_dtype_to_torch_dtype">onnx_dtype_to_torch_dtype() (in module onnx_diagnostic.helpers.onnx_helper)</a>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.onnx_dtype_to_torch_dtype">onnx_dtype_to_torch_dtype() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.onnx_find">onnx_find() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
@@ -1461,14 +1511,18 @@
 </li>
         <li><a href="api/torch_export_patches/patches/patch_transformers.html#onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicCache">patched_DynamicCache (class in onnx_diagnostic.torch_export_patches.patches.patch_transformers)</a>
 </li>
+        <li><a href="api/torch_export_patches/patch_expressions.html#onnx_diagnostic.torch_export_patches.patch_expressions.patched_float_arange">patched_float_arange() (in module onnx_diagnostic.torch_export_patches.patch_expressions)</a>
+</li>
         <li><a href="api/torch_export_patches/patches/patch_transformers.html#onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin">patched_GenerationMixin (class in onnx_diagnostic.torch_export_patches.patches.patch_transformers)</a>
 </li>
         <li><a href="api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched_infer_size">patched_infer_size() (in module onnx_diagnostic.torch_export_patches.patches.patch_torch)</a>
 </li>
-        <li><a href="api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched_ShapeEnv">patched_ShapeEnv (class in onnx_diagnostic.torch_export_patches.patches.patch_torch)</a>
+        <li><a href="api/torch_export_patches/patch_expressions.html#onnx_diagnostic.torch_export_patches.patch_expressions.patched_selector">patched_selector() (in module onnx_diagnostic.torch_export_patches.patch_expressions)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched_ShapeEnv">patched_ShapeEnv (class in onnx_diagnostic.torch_export_patches.patches.patch_torch)</a>
+</li>
         <li><a href="api/torch_onnx/sbs.html#onnx_diagnostic.torch_onnx.sbs.prepare_args_kwargs">prepare_args_kwargs() (in module onnx_diagnostic.torch_onnx.sbs)</a>
 </li>
         <li><a href="api/torch_export_patches/patches/patch_transformers.html#onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin.prepare_inputs_for_generation">prepare_inputs_for_generation() (onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_GenerationMixin method)</a>
@@ -1481,7 +1535,9 @@
 </li>
         <li><a href="api/export/index.html#onnx_diagnostic.export.ModelInputs.process_inputs">process_inputs() (onnx_diagnostic.export.ModelInputs method)</a>
 </li>
-        <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.proto_from_tensor">proto_from_tensor() (in module onnx_diagnostic.helpers.onnx_helper)</a>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.proto_from_array">proto_from_array() (in module onnx_diagnostic.helpers.mini_onnx_builder)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.proto_from_tensor">proto_from_tensor() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -1571,15 +1627,17 @@
 </li>
         <li><a href="api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.register_flattening_functions">register_flattening_functions() (in module onnx_diagnostic.torch_export_patches)</a>
 </li>
+        <li><a href="api/torch_export_patches/patch_expressions.html#onnx_diagnostic.torch_export_patches.patch_expressions.register_patched_expressions">register_patched_expressions() (in module onnx_diagnostic.torch_export_patches.patch_expressions)</a>
+</li>
         <li><a href="api/torch_export_patches/patches/patch_transformers.html#onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicCache.reorder_cache">reorder_cache() (onnx_diagnostic.torch_export_patches.patches.patch_transformers.patched_DynamicCache method)</a>
 </li>
         <li><a href="api/export/index.html#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_by_string">replace_by_string() (onnx_diagnostic.export.CoupleInputsDynamicShapes method)</a>
 </li>
-        <li><a href="api/export/index.html#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_string_by">replace_string_by() (onnx_diagnostic.export.CoupleInputsDynamicShapes method)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.replace_string_by_dynamic">replace_string_by_dynamic() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/export/index.html#onnx_diagnostic.export.CoupleInputsDynamicShapes.replace_string_by">replace_string_by() (onnx_diagnostic.export.CoupleInputsDynamicShapes method)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.replace_string_by_dynamic">replace_string_by_dynamic() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/reference/ops/op_replace_zero.html#onnx_diagnostic.reference.ops.op_replace_zero.ReplaceZero">ReplaceZero (class in onnx_diagnostic.reference.ops.op_replace_zero)</a>
 </li>
@@ -1677,10 +1735,10 @@
 </li>
         <li><a href="api/reference/ops/op_slice.html#onnx_diagnostic.reference.ops.op_slice.Slice_10">Slice_10 (class in onnx_diagnostic.reference.ops.op_slice)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/torch_models/test_helper.html#onnx_diagnostic.torch_models.test_helper.split_args_kwargs">split_args_kwargs() (in module onnx_diagnostic.torch_models.test_helper)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/helpers/memory_peak.html#onnx_diagnostic.helpers.memory_peak.MemorySpy.start">start() (onnx_diagnostic.helpers.memory_peak.MemorySpy method)</a>
 </li>
         <li><a href="api/helpers/memory_peak.html#onnx_diagnostic.helpers.memory_peak.start_spying_on">start_spying_on() (in module onnx_diagnostic.helpers.memory_peak)</a>
@@ -1689,7 +1747,9 @@
 </li>
         <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.statistics_on_folder">statistics_on_folder() (in module onnx_diagnostic.ext_test_case)</a>
 </li>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.steal_forward">steal_forward() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.steal_append">steal_append() (in module onnx_diagnostic.helpers.torch_helper)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.steal_forward">steal_forward() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/helpers/memory_peak.html#onnx_diagnostic.helpers.memory_peak.MemorySpy.stop">stop() (onnx_diagnostic.helpers.memory_peak.MemorySpy method)</a>
 </li>
@@ -1723,23 +1783,31 @@
 </li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.tensor_dtype_to_np_dtype">tensor_dtype_to_np_dtype() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.to_any">to_any() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.tensor_statistics">tensor_statistics() (in module onnx_diagnostic.helpers.onnx_helper)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.to_any">to_any() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.to_array_extended">to_array_extended() (in module onnx_diagnostic.helpers.onnx_helper)</a>
 </li>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.to_numpy">to_numpy() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.to_numpy">to_numpy() (in module onnx_diagnostic.helpers.torch_helper)</a>
+</li>
+        <li><a href="api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder.to_onnx">to_onnx() (onnx_diagnostic.helpers.mini_onnx_builder.MiniOnnxBuilder method)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.to_tensor">to_tensor() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/reference/ops/op_complex.html#onnx_diagnostic.reference.ops.op_complex.ToComplex">ToComplex (class in onnx_diagnostic.reference.ops.op_complex)</a>
 </li>
-        <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.todo">todo() (onnx_diagnostic.ext_test_case.ExtTestCase class method)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/helpers/torch_test_helper.html#onnx_diagnostic.helpers.torch_test_helper.torch_deepcopy">torch_deepcopy() (in module onnx_diagnostic.helpers.torch_test_helper)</a>
+        <li><a href="api/ext_test_case.html#onnx_diagnostic.ext_test_case.ExtTestCase.todo">todo() (onnx_diagnostic.ext_test_case.ExtTestCase class method)</a>
 </li>
-        <li><a href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.torch_dtype_to_onnx_dtype">torch_dtype_to_onnx_dtype() (in module onnx_diagnostic.helpers.onnx_helper)</a>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.torch_deepcopy">torch_deepcopy() (in module onnx_diagnostic.helpers.torch_helper)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.torch_dtype_to_onnx_dtype">torch_dtype_to_onnx_dtype() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_patches">torch_export_patches() (in module onnx_diagnostic.torch_export_patches)</a>
+</li>
+        <li><a href="api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.torch_tensor_size">torch_tensor_size() (in module onnx_diagnostic.helpers.torch_helper)</a>
 </li>
         <li><a href="api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.transform_method">transform_method() (in module onnx_diagnostic.torch_export_patches.patch_module)</a>
 </li>

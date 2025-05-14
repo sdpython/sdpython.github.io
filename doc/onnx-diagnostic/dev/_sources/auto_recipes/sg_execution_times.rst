@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.122** total execution time for 3 files **from auto_recipes**:
+**00:00.239** total execution time for 3 files **from auto_recipes**:
 
 .. container::
 
@@ -32,12 +32,12 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_python_int.py` (``plot_dynamic_shapes_python_int.py``)
-     - 00:00.122
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_nonzero.py` (``plot_dynamic_shapes_nonzero.py``)
+     - 00:00.239
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_max.py` (``plot_dynamic_shapes_max.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_nonzero.py` (``plot_dynamic_shapes_nonzero.py``)
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_python_int.py` (``plot_dynamic_shapes_python_int.py``)
      - 00:00.000
      - 0.0

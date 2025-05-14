@@ -31,7 +31,7 @@ does not know what you know.
 A Model
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-47
+.. GENERATED FROM PYTHON SOURCE LINES 15-49
 
 .. code-block:: Python
 
@@ -58,14 +58,16 @@ A Model
             mask_right = seq_range_expand < boundary_right.unsqueeze(-1)
             return mask_left & mask_right
 
-        def forward(self, x):
-            return self.adaptive_enc_mask(x.shape[1], [])
+        def forward(self, x, y):
+            return self.adaptive_enc_mask(
+                x.shape[1], torch.tensor([], dtype=torch.int64), left_window=y.shape[0]
+            )
 
 
     model = Model()
-    x = torch.rand((5, 8))
-    y = model(x)
-    print(f"x.shape={x.shape}, y.shape={y.shape}")
+    x, y = torch.rand((2, 546)), torch.rand((18,))
+    z = model(x, y)
+    print(f"y.shape={x.shape}, y.shape={y.shape}, z.shape={z.shape}")
 
 
 
@@ -75,23 +77,23 @@ A Model
 
  .. code-block:: none
 
-    x.shape=torch.Size([5, 8]), y.shape=torch.Size([8, 8])
+    y.shape=torch.Size([2, 546]), y.shape=torch.Size([18]), z.shape=torch.Size([546, 546])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 Export
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-56
+.. GENERATED FROM PYTHON SOURCE LINES 52-58
 
 .. code-block:: Python
 
 
     DYN = torch.export.Dim.DYNAMIC
-    ep = torch.export.export(model, (x,), dynamic_shapes=(({0: DYN, 1: DYN}),))
+    ep = torch.export.export(model, (x, y), dynamic_shapes=({0: DYN, 1: DYN}, {0: DYN}))
     print(ep)
 
 
@@ -105,24 +107,29 @@ Export
 
     ExportedProgram:
         class GraphModule(torch.nn.Module):
-            def forward(self, c_lifted_tensor_0: "f32[0]", c_lifted_tensor_1: "i64[1]", c_lifted_tensor_2: "i64[]", c_lifted_tensor_3: "i64[]", x: "f32[s35, s16]"):
+            def forward(self, c_lifted_tensor_0: "i64[0]", c_lifted_tensor_1: "i64[1]", c_lifted_tensor_2: "i64[]", c_lifted_tensor_3: "i64[]", x: "f32[s35, s16]", y: "f32[s58]"):
                  # 
-                sym_size_int_2: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1);  x = None
+                sym_size_int_3: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1);  x = None
+                sym_size_int_4: "Sym(s58)" = torch.ops.aten.sym_size.int(y, 0);  y = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(x.shape[1], [])
-                lift_fresh_copy: "f32[0]" = torch.ops.aten.lift_fresh_copy.default(c_lifted_tensor_0);  c_lifted_tensor_0 = None
-                _assert_tensor_metadata_default = torch.ops.aten._assert_tensor_metadata.default(lift_fresh_copy, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default = None
-                to: "i64[0]" = torch.ops.aten.to.dtype(lift_fresh_copy, torch.int64);  lift_fresh_copy = None
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:40 in forward, code: x.shape[1], torch.tensor([], dtype=torch.int64), left_window=y.shape[0]
+                lift_fresh_copy: "i64[0]" = torch.ops.aten.lift_fresh_copy.default(c_lifted_tensor_0);  c_lifted_tensor_0 = None
+                detach_: "i64[0]" = torch.ops.aten.detach_.default(lift_fresh_copy);  lift_fresh_copy = None
+            
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(
+                alias: "i64[0]" = torch.ops.aten.alias.default(detach_);  detach_ = None
+                _assert_tensor_metadata_default = torch.ops.aten._assert_tensor_metadata.default(alias, dtype = torch.int64, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default = None
+                to: "i64[0]" = torch.ops.aten.to.dtype(alias, torch.int64);  alias = None
                 lift_fresh_copy_1: "i64[1]" = torch.ops.aten.lift_fresh_copy.default(c_lifted_tensor_1);  c_lifted_tensor_1 = None
-                detach_: "i64[1]" = torch.ops.aten.detach_.default(lift_fresh_copy_1);  lift_fresh_copy_1 = None
-                cat: "i64[1]" = torch.ops.aten.cat.default([detach_, to]);  detach_ = None
-                scalar_tensor: "i64[]" = torch.ops.aten.scalar_tensor.default(sym_size_int_2, dtype = torch.int64, device = device(type='cpu'), pin_memory = False)
+                detach__1: "i64[1]" = torch.ops.aten.detach_.default(lift_fresh_copy_1);  lift_fresh_copy_1 = None
+                cat: "i64[1]" = torch.ops.aten.cat.default([detach__1, to]);  detach__1 = None
+                scalar_tensor: "i64[]" = torch.ops.aten.scalar_tensor.default(sym_size_int_3, dtype = torch.int64, device = device(type='cpu'), pin_memory = False)
                 stack: "i64[1]" = torch.ops.aten.stack.default([scalar_tensor]);  scalar_tensor = None
                 _assert_tensor_metadata_default_1 = torch.ops.aten._assert_tensor_metadata.default(stack, dtype = torch.int64, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_1 = None
                 to_1: "i64[1]" = torch.ops.aten.to.device(stack, device(type='cpu'), torch.int64);  stack = None
-                detach__1: "i64[1]" = torch.ops.aten.detach_.default(to_1);  to_1 = None
-                cat_1: "i64[1]" = torch.ops.aten.cat.default([to, detach__1]);  to = detach__1 = None
-                arange: "i64[s16]" = torch.ops.aten.arange.start(0, sym_size_int_2, device = device(type='cpu'), pin_memory = False)
+                detach__2: "i64[1]" = torch.ops.aten.detach_.default(to_1);  to_1 = None
+                cat_1: "i64[1]" = torch.ops.aten.cat.default([to, detach__2]);  to = detach__2 = None
+                arange: "i64[s16]" = torch.ops.aten.arange.start(0, sym_size_int_3, device = device(type='cpu'), pin_memory = False)
                 unsqueeze: "i64[s16, 1]" = torch.ops.aten.unsqueeze.default(arange, -1);  arange = None
                 lt: "b8[s16, 1]" = torch.ops.aten.lt.Tensor(unsqueeze, cat_1)
                 ge: "b8[s16, 1]" = torch.ops.aten.ge.Tensor(unsqueeze, cat);  unsqueeze = None
@@ -130,24 +137,24 @@ Export
                 nonzero: "i64[s16, 2]" = torch.ops.aten.nonzero.default(and_1);  and_1 = None
             
                  # 
-                sym_size_int_3: "Sym(s16)" = torch.ops.aten.sym_size.int(nonzero, 0)
-                sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_3);  sym_constrain_range_for_size_default = None
+                sym_size_int_5: "Sym(s16)" = torch.ops.aten.sym_size.int(nonzero, 0)
+                sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_5);  sym_constrain_range_for_size_default = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(x.shape[1], [])
-                ge_2: "Sym(s16 >= 2)" = sym_size_int_3 >= 2
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(
+                ge_2: "Sym(s16 >= 2)" = sym_size_int_5 >= 2
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(ge_2, "Runtime assertion failed for expression u0 >= 2 on node 'ge_2'");  ge_2 = _assert_scalar_default = None
             
                  # 
-                eq: "Sym(True)" = sym_size_int_2 == sym_size_int_3;  sym_size_int_3 = None
+                eq: "Sym(True)" = sym_size_int_3 == sym_size_int_5;  sym_size_int_5 = None
                 _assert_scalar_default_1 = torch.ops.aten._assert_scalar.default(eq, "Runtime assertion failed for expression Eq(s16, u0) on node 'eq'");  eq = _assert_scalar_default_1 = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(x.shape[1], [])
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(
                 slice_1: "i64[s16, 2]" = torch.ops.aten.slice.Tensor(nonzero);  nonzero = None
                 select: "i64[s16]" = torch.ops.aten.select.int(slice_1, 1, 1);  slice_1 = None
-                arange_1: "i64[s16]" = torch.ops.aten.arange.start(0, sym_size_int_2, device = device(type='cpu'), pin_memory = False)
+                arange_1: "i64[s16]" = torch.ops.aten.arange.start(0, sym_size_int_3, device = device(type='cpu'), pin_memory = False)
                 unsqueeze_1: "i64[1, s16]" = torch.ops.aten.unsqueeze.default(arange_1, 0);  arange_1 = None
-                expand: "i64[s16, s16]" = torch.ops.aten.expand.default(unsqueeze_1, [sym_size_int_2, -1]);  unsqueeze_1 = sym_size_int_2 = None
-                sub: "i64[s16]" = torch.ops.aten.sub.Tensor(select, 0)
+                expand: "i64[s16, s16]" = torch.ops.aten.expand.default(unsqueeze_1, [sym_size_int_3, -1]);  unsqueeze_1 = sym_size_int_3 = None
+                sub: "i64[s16]" = torch.ops.aten.sub.Tensor(select, sym_size_int_4);  sym_size_int_4 = None
                 lt_1: "b8[s16]" = torch.ops.aten.lt.Scalar(sub, 0)
                 lift_fresh_copy_2: "i64[]" = torch.ops.aten.lift_fresh_copy.default(c_lifted_tensor_2);  c_lifted_tensor_2 = None
                 index_put_: "i64[s16]" = torch.ops.aten.index_put_.default(sub, [lt_1], lift_fresh_copy_2);  sub = lt_1 = lift_fresh_copy_2 = None
@@ -171,24 +178,25 @@ Export
         c_lifted_tensor_2: CONSTANT_TENSOR target='lifted_tensor_2'
         c_lifted_tensor_3: CONSTANT_TENSOR target='lifted_tensor_3'
         x: USER_INPUT
+        y: USER_INPUT
     
         # outputs
         and_2: USER_OUTPUT
     
-    Range constraints: {u0: VR[2, 9223372036854775806], s35: VR[2, int_oo], s16: VR[2, 9223372036854775806]}
+    Range constraints: {u0: VR[2, 9223372036854775806], s35: VR[2, int_oo], s16: VR[2, 9223372036854775806], s58: VR[2, int_oo]}
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-61
+.. GENERATED FROM PYTHON SOURCE LINES 59-63
 
 We can see the following line in the exported program.
 It tells what it cannot verify.
 ``torch.ops.aten._assert_scalar.default(eq,``
 ``"Runtime assertion failed for expression Eq(s16, u0) on node 'eq'");``
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
+.. GENERATED FROM PYTHON SOURCE LINES 66-67
 
 .. code-block:: Python
 
@@ -208,7 +216,7 @@ It tells what it cannot verify.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.254 seconds)
+   **Total running time of the script:** (0 minutes 0.239 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_nonzero.py:

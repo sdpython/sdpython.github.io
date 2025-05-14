@@ -223,10 +223,11 @@
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/config_helper.html">onnx_diagnostic.helpers.config_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers/mini_onnx_builder.html">onnx_diagnostic.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers/torch_helper.html">onnx_diagnostic.helpers.torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/reference/index.html">onnx_diagnostic.reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -282,6 +283,7 @@
 <li class="toctree-l4"><a class="reference internal" href="api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
 </ul>
@@ -314,7 +316,7 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and guessed dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
@@ -328,6 +330,10 @@
 <li class="toctree-l2"><a class="reference internal" href="auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="auto_technical/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_technical/plot_parallelized_reduction.html">Reproducible Parallelized Reduction is difficult</a></li>
 </ul>
 </li>
 </ul>
@@ -404,6 +410,7 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <li class="toctree-l1"><a class="reference internal" href="cmds/index.html">Command Lines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_recipes/index.html">Common Export Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_technical/index.html">Technical Details</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -435,7 +442,7 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <ul class="simple">
 <li><p><a class="reference internal" href="auto_examples/plot_export_cond.html#l-plot-export-cond"><span class="std std-ref">Export a model with a control flow (If)</span></a></p></li>
 <li><p><a class="reference internal" href="auto_examples/plot_export_with_auto.html#l-plot-sxport-with-auto"><span class="std std-ref">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</span></a></p></li>
-<li><p><a class="reference internal" href="auto_examples/plot_export_with_dynamic_cache.html#l-plot-export-with-dynamic-shape"><span class="std std-ref">Export with DynamicCache and dynamic shapes</span></a></p></li>
+<li><p><a class="reference internal" href="auto_examples/plot_export_with_dynamic_cache.html#l-plot-export-with-dynamic-shape"><span class="std std-ref">Export with DynamicCache and guessed dynamic shapes</span></a></p></li>
 <li><p><a class="reference internal" href="auto_examples/plot_export_locate_issue.html#l-plot-export-locale-issue"><span class="std std-ref">Find and fix an export issue due to dynamic shapes</span></a></p></li>
 <li><p><a class="reference internal" href="auto_examples/plot_export_tiny_llm.html#l-plot-tiny-llm-export"><span class="std std-ref">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</span></a></p></li>
 <li><p><a class="reference internal" href="auto_examples/plot_export_tiny_llm_patched.html#l-plot-tiny-llm-export-patched"><span class="std std-ref">Export Tiny-LLM with patches</span></a></p></li>
@@ -447,7 +454,12 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <li><p><a class="reference internal" href="auto_examples/plot_failing_onnxruntime_evaluator.html#l-plot-failing-onnxruntime-evaluator"><span class="std std-ref">Intermediate results with onnxruntime</span></a></p></li>
 <li><p><a class="reference internal" href="auto_examples/plot_failing_model_extract.html#l-plot-failing-model-extract"><span class="std std-ref">Find where a model is failing by running submodels</span></a></p></li>
 </ul>
-<p><strong>Some Usefuls Tools</strong></p>
+</section>
+<section id="some-usefuls-tools">
+<h2>Some Usefuls Tools<a class="headerlink" href="#some-usefuls-tools" title="Link to this heading">¶</a></h2>
+<section id="string-type">
+<h3>string_type<a class="headerlink" href="#string-type" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="api/helpers/index.html#onnx_diagnostic.helpers.string_type" title="onnx_diagnostic.helpers.string_type"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.string_type()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
 
@@ -466,8 +478,12 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">T10s3x4</span><span class="p">,</span><span class="c1">#2[T10s5x6,T10s5x6x7])</span>
 </pre></div>
 </div>
+</section>
+<section id="onnx-dtype-name">
+<h3>onnx_dtype_name<a class="headerlink" href="#onnx-dtype-name" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="api/helpers/onnx_helper.html#onnx_diagnostic.helpers.onnx_helper.onnx_dtype_name" title="onnx_diagnostic.helpers.onnx_helper.onnx_dtype_name"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.onnx_helper.onnx_dtype_name()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">onnx_dtype_name</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.onnx_helper</span> <span class="kn">import</span> <span class="n">onnx_dtype_name</span>
 
 <span class="n">itype</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">onnx_dtype_name</span><span class="p">(</span><span class="n">itype</span><span class="p">))</span>
@@ -478,9 +494,60 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <span class="gp">&gt;&gt;&gt; </span><span class="n">INT64</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="api/helpers/index.html#onnx_diagnostic.helpers.max_diff" title="onnx_diagnostic.helpers.max_diff"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.max_diff()</span></code></a>, …</p>
+</section>
+<section id="max-diff">
+<h3>max_diff<a class="headerlink" href="#max-diff" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="api/helpers/index.html#onnx_diagnostic.helpers.max_diff" title="onnx_diagnostic.helpers.max_diff"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.max_diff()</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">max_diff</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">max_diff</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),)),</span>
+        <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),)),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span><span class="s2">&quot;abs&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;rel&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span> <span class="s2">&quot;dnan&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span><span class="n">s</span>
+</pre></div>
+</div>
+</section>
+<section id="guess-dynamic-shapes">
+<h3>guess_dynamic_shapes<a class="headerlink" href="#guess-dynamic-shapes" title="Link to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="api/export/index.html#onnx_diagnostic.export.ModelInputs.guess_dynamic_shapes" title="onnx_diagnostic.export.ModelInputs.guess_dynamic_shapes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">onnx_diagnostic.export.ModelInputs.guess_dynamic_shapes()</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)),</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))),</span>
+    <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">))),</span>
+<span class="p">]</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ModelInputs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span><span class="o">.</span><span class="n">guess_dynamic_shapes</span><span class="p">(</span><span class="n">auto</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(({</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;dim_0I0&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;dim_0I1&#39;</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;dim_1I1&#39;</span><span class="p">}),</span> <span class="p">{})</span>
+</pre></div>
+</div>
+</section>
+<section id="use-dyn-for-str">
+<h3>use_dyn_for_str<a class="headerlink" href="#use-dyn-for-str" title="Link to this heading">¶</a></h3>
+</section>
+<section id="older-versions">
+<h3>Older versions<a class="headerlink" href="#older-versions" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="../v0.5.0/index.html">0.5.0</a></p></li>
+<li><p><a class="reference external" href="../v0.4.4/index.html">0.4.4</a></p></li>
+<li><p><a class="reference external" href="../v0.4.3/index.html">0.4.3</a></p></li>
+<li><p><a class="reference external" href="../v0.4.2/index.html">0.4.2</a></p></li>
+<li><p><a class="reference external" href="../v0.4.1/index.html">0.4.1</a></p></li>
+<li><p><a class="reference external" href="../v0.4.0/index.html">0.4.0</a></p></li>
+<li><p><a class="reference external" href="../v0.3.0/index.html">0.3.0</a></p></li>
+<li><p><a class="reference external" href="../v0.2.2/index.html">0.2.2</a></p></li>
+<li><p><a class="reference external" href="../v0.2.1/index.html">0.2.1</a></p></li>
+<li><p><a class="reference external" href="../v0.2.0/index.html">0.2.0</a></p></li>
+<li><p><a class="reference external" href="../v0.1.0/index.html">0.1.0</a></p></li>
+</ul>
 <p>The documentation was updated on:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">2025</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">06</span> <span class="mi">19</span><span class="p">:</span><span class="mi">23</span><span class="p">:</span><span class="mf">51.279628</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">2025</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">14</span> <span class="mi">18</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mf">03.651420</span>
 </pre></div>
 </div>
 <p>With the following versions:</p>
@@ -499,32 +566,17 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <p>Size of the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                              <span class="n">lines</span>   <span class="n">chars</span>
     <span class="n">ext</span> <span class="nb">dir</span>                                
-    <span class="o">.</span><span class="n">py</span>                        <span class="mi">1404</span>   <span class="mi">39874</span>
-        <span class="n">export</span>                  <span class="mi">926</span>   <span class="mi">29144</span>
-        <span class="n">helpers</span>                <span class="mi">3848</span>  <span class="mi">111619</span>
-        <span class="n">reference</span>              <span class="mi">1337</span>   <span class="mi">38371</span>
+    <span class="o">.</span><span class="n">py</span>                        <span class="mi">1499</span>   <span class="mi">41888</span>
+        <span class="n">export</span>                  <span class="mi">954</span>   <span class="mi">29897</span>
+        <span class="n">helpers</span>                <span class="mi">4772</span>  <span class="mi">140066</span>
+        <span class="n">reference</span>              <span class="mi">1570</span>   <span class="mi">45236</span>
         <span class="n">tasks</span>                  <span class="mi">1239</span>   <span class="mi">40524</span>
-        <span class="n">torch_export_patches</span>   <span class="mi">1925</span>   <span class="mi">66091</span>
-        <span class="n">torch_models</span>           <span class="mi">5523</span>  <span class="mi">279126</span>
-        <span class="n">torch_onnx</span>              <span class="mi">349</span>   <span class="mi">11207</span>
+        <span class="n">torch_export_patches</span>   <span class="mi">2000</span>   <span class="mi">68530</span>
+        <span class="n">torch_models</span>           <span class="mi">5524</span>  <span class="mi">279194</span>
+        <span class="n">torch_onnx</span>              <span class="mi">349</span>   <span class="mi">11213</span>
 </pre></div>
 </div>
 </section>
-<section id="older-versions">
-<h2>Older versions<a class="headerlink" href="#older-versions" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="../v0.5.0/index.html">0.5.0</a></p></li>
-<li><p><a class="reference external" href="../v0.4.4/index.html">0.4.4</a></p></li>
-<li><p><a class="reference external" href="../v0.4.3/index.html">0.4.3</a></p></li>
-<li><p><a class="reference external" href="../v0.4.2/index.html">0.4.2</a></p></li>
-<li><p><a class="reference external" href="../v0.4.1/index.html">0.4.1</a></p></li>
-<li><p><a class="reference external" href="../v0.4.0/index.html">0.4.0</a></p></li>
-<li><p><a class="reference external" href="../v0.3.0/index.html">0.3.0</a></p></li>
-<li><p><a class="reference external" href="../v0.2.2/index.html">0.2.2</a></p></li>
-<li><p><a class="reference external" href="../v0.2.1/index.html">0.2.1</a></p></li>
-<li><p><a class="reference external" href="../v0.2.0/index.html">0.2.0</a></p></li>
-<li><p><a class="reference external" href="../v0.1.0/index.html">0.1.0</a></p></li>
-</ul>
 </section>
 </section>
 
@@ -576,7 +628,15 @@ Sources available at <a class="reference external" href="https://github.com/sdpy
 <li><a class="reference internal" href="#">onnx-diagnostic: investigate onnx models</a><ul>
 <li><a class="reference internal" href="#getting-started">Getting started</a></li>
 <li><a class="reference internal" href="#enlightening-examples">Enlightening Examples</a></li>
+<li><a class="reference internal" href="#some-usefuls-tools">Some Usefuls Tools</a><ul>
+<li><a class="reference internal" href="#string-type">string_type</a></li>
+<li><a class="reference internal" href="#onnx-dtype-name">onnx_dtype_name</a></li>
+<li><a class="reference internal" href="#max-diff">max_diff</a></li>
+<li><a class="reference internal" href="#guess-dynamic-shapes">guess_dynamic_shapes</a></li>
+<li><a class="reference internal" href="#use-dyn-for-str">use_dyn_for_str</a></li>
 <li><a class="reference internal" href="#older-versions">Older versions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

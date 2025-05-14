@@ -92,7 +92,7 @@ Examples Gallery
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Export with DynamicCache and dynamic shapes</div>
+      <div class="sphx-glr-thumbnail-title">Export with DynamicCache and guessed dynamic shapes</div>
     </div>
 
 

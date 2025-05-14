@@ -8,7 +8,7 @@
         <title>onnx_diagnostic.helpers.helper - onnx-diagnostic 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -222,10 +222,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/config_helper.html">onnx_diagnostic.helpers.config_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/mini_onnx_builder.html">onnx_diagnostic.helpers.mini_onnx_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_test_helper.html">onnx_diagnostic.helpers.torch_test_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/helpers/torch_helper.html">onnx_diagnostic.helpers.torch_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/reference/index.html">onnx_diagnostic.reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -281,6 +282,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
 </ul>
@@ -313,7 +315,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and guessed dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
@@ -327,6 +329,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_technical/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_technical/plot_parallelized_reduction.html">Reproducible Parallelized Reduction is difficult</a></li>
 </ul>
 </li>
 </ul>
@@ -373,7 +379,7 @@
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">is_dataclass</span><span class="p">,</span> <span class="n">fields</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
@@ -800,7 +806,7 @@
 
     <span class="c1"># Tensors</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_tensor</span><span class="o">.</span><span class="n">FakeTensor</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">.onnx_helper</span> <span class="kn">import</span> <span class="n">torch_dtype_to_onnx_dtype</span>
+        <span class="kn">from</span> <span class="nn">.torch_helper</span> <span class="kn">import</span> <span class="n">torch_dtype_to_onnx_dtype</span>
 
         <span class="n">i</span> <span class="o">=</span> <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;G&quot;</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">with_device</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -812,7 +818,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[string_type] F2:</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">F</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">s</span><span class="si">{</span><span class="s1">&#39;x&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">obj</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">.onnx_helper</span> <span class="kn">import</span> <span class="n">torch_dtype_to_onnx_dtype</span>
+        <span class="kn">from</span> <span class="nn">.torch_helper</span> <span class="kn">import</span> <span class="n">torch_dtype_to_onnx_dtype</span>
 
         <span class="k">if</span> <span class="n">with_min_max</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">string_type</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">with_shape</span><span class="o">=</span><span class="n">with_shape</span><span class="p">,</span> <span class="n">with_device</span><span class="o">=</span><span class="n">with_device</span><span class="p">)</span>
@@ -1183,6 +1189,8 @@
     <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">new_tree</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="flatten_object">
+<a class="viewcode-back" href="../../../api/helpers/index.html#onnx_diagnostic.helpers.flatten_object">[docs]</a>
 <span class="k">def</span> <span class="nf">flatten_object</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">drop_keys</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Flattens the object.</span>
@@ -1228,6 +1236,13 @@
     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2"> for x, drop_keys=</span><span class="si">{</span><span class="n">drop_keys</span><span class="si">}</span><span class="s2">, &quot;</span>
         <span class="sa">f</span><span class="s2">&quot;content is </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_make_debug_info</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">debug_info</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">[</span><span class="o">*</span><span class="p">(</span><span class="n">debug_info</span> <span class="k">if</span> <span class="n">debug_info</span> <span class="k">else</span> <span class="p">[]),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">level</span><span class="si">}{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="p">)</span>
 
 
@@ -1244,7 +1259,8 @@
     <span class="n">end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">allow_unique_tensor_with_list_of_one_element</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="n">hist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the maximum discrepancy.</span>
 
@@ -1259,6 +1275,7 @@
 <span class="sd">    :param _index: used with begin and end</span>
 <span class="sd">    :param allow_unique_tensor_with_list_of_one_element:</span>
 <span class="sd">        allow a comparison between a single tensor and a list of one tensor</span>
+<span class="sd">    :param hist: compute an histogram of the discrepancies</span>
 <span class="sd">    :return: dictionary with many values</span>
 
 <span class="sd">    * abs: max absolute error</span>
@@ -1273,6 +1290,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">expected</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">got</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">_dkws_</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
+        <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+        <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
+        <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_dkws</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">_dkws_</span><span class="p">,</span> <span class="s2">&quot;flatten&quot;</span><span class="p">:</span> <span class="n">flatten</span><span class="p">}</span>
+    <span class="n">_dkwsf</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">_dkws_</span><span class="p">,</span> <span class="s2">&quot;flatten&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+
+    <span class="n">_debug</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="n">_make_debug_info</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">debug_info</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>  <span class="c1"># noqa: E731</span>
+
     <span class="k">if</span> <span class="n">allow_unique_tensor_with_list_of_one_element</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
@@ -1283,6 +1314,7 @@
                 <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
                 <span class="n">allow_unique_tensor_with_list_of_one_element</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
             <span class="n">expected</span><span class="p">,</span>
@@ -1295,44 +1327,17 @@
             <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
             <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
             <span class="n">allow_unique_tensor_with_list_of_one_element</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="s2">&quot;to_tuple&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] to_tuple1: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-            <span class="n">expected</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">(),</span>
-            <span class="n">got</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">debug_info</span><span class="o">=</span><span class="p">(</span>
-                <span class="p">[</span><span class="o">*</span><span class="p">(</span><span class="n">debug_info</span> <span class="k">if</span> <span class="n">debug_info</span> <span class="k">else</span> <span class="p">[]),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">level</span><span class="si">}</span><span class="s2">to_tupleA&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">5</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-            <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-            <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">(),</span> <span class="n">got</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;to_tuple1&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="s2">&quot;to_tuple&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] to_tuple2: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-            <span class="n">expected</span><span class="p">,</span>
-            <span class="n">got</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">(),</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">debug_info</span><span class="o">=</span><span class="p">(</span>
-                <span class="p">[</span><span class="o">*</span><span class="p">(</span><span class="n">debug_info</span> <span class="k">if</span> <span class="n">debug_info</span> <span class="k">else</span> <span class="p">[]),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">level</span><span class="si">}</span><span class="s2">to_tupleB&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">5</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
-            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-            <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-            <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">(),</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;to_tuple2&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -1362,17 +1367,7 @@
                 <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] list,tuple,1: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-                <span class="n">expected</span><span class="p">,</span>
-                <span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-                <span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-                <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-                <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-                <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
-                <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;lt1&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
@@ -1380,17 +1375,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">expected</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] list,tuple,3: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-                <span class="n">expected</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">got</span><span class="p">,</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-                <span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-                <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-                <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-                <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
-                <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">expected</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">got</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;lt2&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] list,tuple,4: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1426,11 +1411,6 @@
                 <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
                     <span class="n">flat_a</span><span class="p">,</span>
                     <span class="n">flat_b</span><span class="p">,</span>
-                    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-                    <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
-                    <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-                    <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-                    <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
                     <span class="n">debug_info</span><span class="o">=</span><span class="p">(</span>
                         <span class="p">[</span>
                             <span class="o">*</span><span class="p">(</span><span class="n">debug_info</span> <span class="k">if</span> <span class="n">debug_info</span> <span class="k">else</span> <span class="p">[]),</span>
@@ -1442,7 +1422,7 @@
                         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">5</span>
                         <span class="k">else</span> <span class="kc">None</span>
                     <span class="p">),</span>
-                    <span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">_dkwsf</span><span class="p">,</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -1464,7 +1444,7 @@
 
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] list,tuple,6: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">am</span><span class="p">,</span> <span class="n">rm</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dn</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="n">am</span><span class="p">,</span> <span class="n">rm</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">drep</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">ip</span><span class="p">,</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">)):</span>
             <span class="n">d</span> <span class="o">=</span> <span class="n">max_diff</span><span class="p">(</span>
                 <span class="n">e</span><span class="p">,</span>
@@ -1483,20 +1463,31 @@
                 <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
                 <span class="n">_index</span><span class="o">=</span><span class="n">_index</span> <span class="o">+</span> <span class="n">ip</span><span class="p">,</span>
                 <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
+                <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">am</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">am</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">])</span>
             <span class="n">dn</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;dnan&quot;</span><span class="p">])</span>
             <span class="n">rm</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rm</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">])</span>
-            <span class="n">sm</span> <span class="o">+=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span>
-            <span class="n">n</span> <span class="o">+=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">am</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">rm</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">sm</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">dn</span><span class="p">)</span>
+            <span class="n">sm</span> <span class="o">+=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="s2">&quot;rep&quot;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">drep</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">drep</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">drep</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">am</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">rm</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">sm</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">dn</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">drep</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">drep</span>
+        <span class="k">return</span> <span class="n">res</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] dict: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">begin</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;begin=</span><span class="si">{</span><span class="n">begin</span><span class="si">}</span><span class="s2">, end=</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> not compatible with dictionaries&quot;</span>
+        <span class="k">assert</span> <span class="n">begin</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;begin=</span><span class="si">{</span><span class="n">begin</span><span class="si">}</span><span class="s2">, end=</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2"> not compatible with dictionaries, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;keys=</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">):</span>
                 <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
@@ -1506,30 +1497,15 @@
             <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">expected</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">],</span>
-                <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
-                <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-                <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
-                <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-                <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-                <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;dict1&quot;</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">_dkws</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
             <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-            <span class="nb">list</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-            <span class="n">got</span><span class="p">,</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
-            <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-            <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
-            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-            <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">got</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;dict2&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span><span class="p">)</span>
 
     <span class="kn">import</span> <span class="nn">torch</span>
 
@@ -1538,7 +1514,6 @@
             <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
             <span class="n">got</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[max_diff] tensor: </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> ? </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">got</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1594,6 +1569,7 @@
                 <span class="k">if</span> <span class="n">exp_cpu</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">got_cpu</span><span class="o">.</span><span class="n">size</span>
                 <span class="k">else</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
             <span class="p">)</span>
+            <span class="n">argm</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel_diff</span><span class="p">,</span> <span class="n">sum_diff</span><span class="p">,</span> <span class="n">n_diff</span><span class="p">,</span> <span class="n">nan_diff</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span>
@@ -1602,6 +1578,7 @@
                 <span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
                 <span class="nb">float</span><span class="p">(</span><span class="n">ndiff</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
             <span class="p">)</span>
+            <span class="n">argm</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="n">diff</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="ow">and</span> <span class="p">(</span><span class="n">abs_diff</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="ow">or</span> <span class="n">rel_diff</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">):</span>
             <span class="c1"># To understand the value it comes from.</span>
             <span class="k">if</span> <span class="n">debug_info</span><span class="p">:</span>
@@ -1632,7 +1609,18 @@
                     <span class="sa">f</span><span class="s2">&quot;_index=</span><span class="si">{</span><span class="n">_index</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">rel_diff</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">sum_diff</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_diff</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">nan_diff</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="nb">abs</span><span class="o">=</span><span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">rel_diff</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">sum_diff</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_diff</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">nan_diff</span><span class="p">,</span> <span class="n">argm</span><span class="o">=</span><span class="n">argm</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">hist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="n">hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">diff</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)),</span> <span class="n">hist</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">cou</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">ind</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="n">cou</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">cou</span><span class="p">))])</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
@@ -1664,10 +1652,21 @@
             <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
         <span class="c1"># nan are replace by 1e10, any discrepancies in that order of magnitude</span>
         <span class="c1"># is likely caused by nans</span>
-        <span class="n">exp_cpu</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="mf">1e10</span><span class="p">)</span>
-        <span class="n">got_cpu</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="mf">1e10</span><span class="p">)</span>
+        <span class="n">exp_cpu</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="mf">1e10</span><span class="p">)</span>
+        <span class="n">got_cpu</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="mf">1e10</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">got_cpu</span><span class="o">.</span><span class="n">device</span> <span class="o">!=</span> <span class="n">exp_cpu</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">{</span><span class="n">got_cpu</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">exp_cpu</span><span class="o">.</span><span class="n">device</span><span class="p">}:</span>
+                <span class="n">got_cpu</span> <span class="o">=</span> <span class="n">got_cpu</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span>
+                <span class="n">exp_cpu</span> <span class="o">=</span> <span class="n">exp_cpu</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span>
+                <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span>
+                <span class="n">got</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">got_cpu</span> <span class="o">=</span> <span class="n">got_cpu</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+                <span class="n">exp_cpu</span> <span class="o">=</span> <span class="n">exp_cpu</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+                <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+                <span class="n">got</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
         <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">got_cpu</span> <span class="o">-</span> <span class="n">exp_cpu</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
-        <span class="n">ndiff</span> <span class="o">=</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">isnan</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">-</span> <span class="n">got</span><span class="o">.</span><span class="n">isnan</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+        <span class="n">ndiff</span> <span class="o">=</span> <span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">isnan</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">-</span> <span class="n">got</span><span class="o">.</span><span class="n">isnan</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
         <span class="n">rdiff</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="p">(</span><span class="n">exp_cpu</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-3</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">diff</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel_diff</span><span class="p">,</span> <span class="n">sum_diff</span><span class="p">,</span> <span class="n">n_diff</span><span class="p">,</span> <span class="n">nan_diff</span> <span class="o">=</span> <span class="p">(</span>
@@ -1677,8 +1676,10 @@
                 <span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">numel</span><span class="p">()),</span>
                 <span class="nb">float</span><span class="p">(</span><span class="n">ndiff</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
             <span class="p">)</span>
+            <span class="n">argm</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="n">diff</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
         <span class="k">elif</span> <span class="n">got_cpu</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="n">exp_cpu</span><span class="o">.</span><span class="n">numel</span><span class="p">():</span>
             <span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel_diff</span><span class="p">,</span> <span class="n">sum_diff</span><span class="p">,</span> <span class="n">n_diff</span><span class="p">,</span> <span class="n">nan_diff</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">argm</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel_diff</span><span class="p">,</span> <span class="n">sum_diff</span><span class="p">,</span> <span class="n">n_diff</span><span class="p">,</span> <span class="n">nan_diff</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
@@ -1687,6 +1688,7 @@
                 <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="n">argm</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="ow">and</span> <span class="p">(</span><span class="n">abs_diff</span> <span class="o">&gt;=</span> <span class="mi">10</span> <span class="ow">or</span> <span class="n">rel_diff</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">):</span>
             <span class="c1"># To understand the value it comes from.</span>
@@ -1718,7 +1720,24 @@
                     <span class="sa">f</span><span class="s2">&quot;_index=</span><span class="si">{</span><span class="n">_index</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">abs</span><span class="o">=</span><span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">rel_diff</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">sum_diff</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_diff</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">nan_diff</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="nb">abs</span><span class="o">=</span><span class="n">abs_diff</span><span class="p">,</span> <span class="n">rel</span><span class="o">=</span><span class="n">rel_diff</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="n">sum_diff</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_diff</span><span class="p">,</span> <span class="n">dnan</span><span class="o">=</span><span class="n">nan_diff</span><span class="p">,</span> <span class="n">argm</span><span class="o">=</span><span class="n">argm</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">hist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="n">hist</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">diff</span><span class="o">.</span><span class="n">dtype</span>
+                <span class="p">)</span>
+            <span class="n">hist</span> <span class="o">=</span> <span class="n">hist</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bucketize</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)),</span> <span class="n">hist</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">cou</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="n">ind</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span>
+                    <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hist</span><span class="p">],</span>
+                    <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="n">cou</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">cou</span><span class="p">,</span> <span class="mi">0</span><span class="p">))],</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="s2">&quot;SquashedNormal&quot;</span> <span class="ow">in</span> <span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
@@ -1727,16 +1746,7 @@
             <span class="n">expected</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">),</span>
             <span class="n">expected</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-            <span class="n">values</span><span class="p">,</span>
-            <span class="n">got</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-            <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-            <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="s2">&quot;SquashedNormal&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">got</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
@@ -1749,15 +1759,7 @@
         <span class="n">expected_args</span><span class="p">,</span> <span class="n">_spec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
         <span class="n">got_args</span><span class="p">,</span> <span class="n">_spec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">got</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
-            <span class="n">expected_args</span><span class="p">,</span>
-            <span class="n">got_args</span><span class="p">,</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
-            <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-            <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
-            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-            <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">expected_args</span><span class="p">,</span> <span class="n">got_args</span><span class="p">,</span> <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="o">**</span><span class="n">_dkws</span>
         <span class="p">)</span>
 
     <span class="c1"># backup function in case pytorch does not know how to serialize.</span>
@@ -1769,12 +1771,14 @@
                 <span class="p">[</span><span class="n">expected</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">value_cache</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">got</span><span class="o">.</span><span class="n">value_cache</span><span class="p">],</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">expected</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">value_cache</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">got</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">_dkws</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;DynamicCache not fully implemented with classes &quot;</span>
@@ -1791,12 +1795,14 @@
                 <span class="p">[</span><span class="n">expected</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">value_cache</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">got</span><span class="o">.</span><span class="n">value_cache</span><span class="p">],</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">expected</span><span class="o">.</span><span class="n">key_cache</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">value_cache</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">got</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">_dkws</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;SlidingWindowCache not fully implemented with classes &quot;</span>
@@ -1816,12 +1822,14 @@
                 <span class="p">[</span><span class="n">expected</span><span class="o">.</span><span class="n">self_attention_cache</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">cross_attention_cache</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="o">.</span><span class="n">self_attention_cache</span><span class="p">,</span> <span class="n">got</span><span class="o">.</span><span class="n">cross_attention_cache</span><span class="p">],</span>
                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">hist</span><span class="o">=</span><span class="n">hist</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">expected</span><span class="o">.</span><span class="n">self_attention_cache</span><span class="p">,</span> <span class="n">expected</span><span class="o">.</span><span class="n">cross_attention_cache</span><span class="p">],</span>
                 <span class="p">[</span><span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">got</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+                <span class="o">**</span><span class="n">_dkws</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;EncoderDecoderCache not fully implemented with classes &quot;</span>
@@ -1845,13 +1853,8 @@
         <span class="k">return</span> <span class="n">max_diff</span><span class="p">(</span>
             <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atts</span><span class="p">],</span>
             <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atts</span><span class="p">],</span>
-            <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
-            <span class="n">flatten</span><span class="o">=</span><span class="n">flatten</span><span class="p">,</span>
-            <span class="n">debug_info</span><span class="o">=</span><span class="n">debug_info</span><span class="p">,</span>
-            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
-            <span class="n">_index</span><span class="o">=</span><span class="n">_index</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">debug_info</span><span class="o">=</span><span class="n">_debug</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">_dkws</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
@@ -1867,13 +1870,30 @@
 <span class="k">def</span> <span class="nf">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders discrepancies return by :func:`max_diff` into one string.&quot;&quot;&quot;</span>
     <span class="c1"># dict(abs=, rel=, sum=, n=n_diff, dnan=)</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;rep&quot;</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;rep&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">v</span><span class="si">}{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;argm&quot;</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="n">sa</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;argm&quot;</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;argm&quot;</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">)</span>
+            <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="s2">&quot;argm&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;,amax=</span><span class="si">{</span><span class="n">sa</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="n">diff</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dnan&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, dnan=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;dnan&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, dnan=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;dnan&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, dnan=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;dnan&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, dnan=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;dnan&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;abs&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">diff</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;abs=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;abs&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, rel=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">diff</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 </pre></div>
         </article>

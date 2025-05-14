@@ -20,9 +20,9 @@
 
 .. _l-plot-export-with-dynamic-shape:
 
-===========================================
-Export with DynamicCache and dynamic shapes
-===========================================
+===================================================
+Export with DynamicCache and guessed dynamic shapes
+===================================================
 
 Every LLMs implemented in :epkg:`transformers` use cache.
 One of the most used is :class:`transformers.cache_utils.DynamicCache`.
@@ -89,38 +89,62 @@ The dynamic shapes must be provided following the serialized form.
  .. code-block:: none
 
 
-    tensor([[[[-2.7787, -4.0491,  0.5901,  1.8470,  1.2857,  3.2397,  0.7217],
-              [-3.6029,  0.7740,  4.2963, -1.1397, -3.0528,  2.3129, -1.6724],
-              [-2.5554,  5.1892,  2.2846,  0.3291,  1.8201,  2.9657, -0.5528]],
+    tensor([[[[ 1.6211e+00, -4.4963e-01,  3.7138e-01, -1.1672e+00,  3.0473e+00,
+               -3.8904e+00, -3.7442e+00],
+              [ 5.1387e-01,  5.5463e-01,  3.2164e+00, -2.0300e+00, -4.9825e-01,
+               -2.8044e+00, -3.4624e+00],
+              [-3.1017e+00, -3.0667e+00, -8.5357e-01, -2.0056e+00,  1.5722e+00,
+                1.9887e+00, -2.8111e+00]],
 
-             [[-4.3943,  0.7172,  3.4131,  3.5816,  2.6205,  0.8995,  0.0105],
-              [-0.1534,  1.2352,  0.0374,  0.8831,  0.6090,  1.4126, -0.8399],
-              [-1.8033, -3.3073, -2.1491, -2.6937, -0.5817,  0.1334, -1.5425]],
+             [[-1.5656e+00,  2.6021e+00, -6.9981e-03, -6.1359e-01, -1.8002e+00,
+               -1.8340e-02,  4.5578e-01],
+              [ 3.2180e-01,  3.9261e-02,  2.3844e-01, -6.3152e-01, -2.4216e+00,
+               -2.3339e+00,  1.7688e+00],
+              [-5.2917e-01, -2.4031e+00,  7.8195e-01, -1.4755e+00,  2.1120e+00,
+                3.2735e-01, -1.2401e+00]],
 
-             [[-2.3743,  2.8962,  1.2278,  1.1284,  0.0147, -3.2003, -0.5621],
-              [-4.1170, -2.4746,  2.1034, -0.1996, -1.6322, -3.0480,  1.6414],
-              [-3.9322, -1.8560,  0.3180,  0.2102, -0.7806, -4.1531,  1.0859]],
+             [[-6.8606e-01, -1.3246e+00, -2.0586e+00,  4.8146e-02,  1.4194e+00,
+                1.2322e+00, -7.9979e-01],
+              [ 1.6524e+00, -9.8557e-01, -7.8124e-01, -6.3959e-01,  7.0277e-02,
+                6.7879e-02, -1.3848e+00],
+              [-2.8186e+00, -2.7293e+00, -3.2263e-01, -2.3429e-01, -1.7123e+00,
+               -5.7148e-01, -9.9731e-02]],
 
-             [[ 0.1846,  3.8178, -3.9087,  2.2458, -0.3611, -0.1528, -1.1948],
-              [-3.2047, -1.7107,  3.4738,  0.3071,  3.2227, -0.7417, -0.9667],
-              [-2.5967, -0.9199,  0.9515, -1.3049, -1.5334,  0.0790, -0.9437]]],
+             [[-4.7298e-01,  1.0095e+00,  6.8650e-01,  1.1478e-01, -2.0815e+00,
+               -2.7628e+00, -1.5509e+00],
+              [ 2.3727e+00, -4.8947e+00,  5.2629e-01, -1.2931e+00,  1.0776e+00,
+               -2.6690e+00, -1.0616e+00],
+              [-3.7991e-01, -2.4463e-01, -2.0551e+00,  2.7257e-01,  1.5132e+00,
+               -1.2175e+00, -3.2151e-01]]],
 
 
-            [[[ 0.2117,  2.8061,  2.2056,  0.4865, -2.0913, -0.3447,  1.1472],
-              [-1.5308,  4.1224,  2.0390,  2.6326,  0.6907, -2.1033, -1.4964],
-              [ 2.8406,  3.8819,  1.4042,  1.1646, -2.6573,  0.2164, -1.3676]],
+            [[[ 3.7307e+00, -2.8901e-01, -1.8701e+00,  1.7091e+00,  2.9891e-01,
+               -3.6944e+00, -8.1635e-01],
+              [-2.5388e+00,  1.0909e+00, -6.7015e-01, -3.6232e+00, -2.1953e-01,
+               -3.1885e+00,  2.2721e+00],
+              [ 1.8095e-02, -2.6668e+00, -2.6200e+00,  6.7534e-01,  2.6317e+00,
+               -1.5612e+00, -9.8545e-01]],
 
-             [[-0.1977,  2.6567,  2.6405,  3.1487,  4.0104, -2.9812, -1.0712],
-              [-4.0589, -1.0759,  3.9501,  2.4040,  0.5540, -0.9266, -3.6990],
-              [-2.4832,  0.5405,  0.2627,  2.6843,  2.8122,  0.5137,  0.6774]],
+             [[ 1.6619e+00, -7.3568e-02,  1.8104e+00, -2.6276e+00, -1.5602e+00,
+                1.8792e+00, -2.8923e+00],
+              [ 3.1849e+00,  1.1824e+00, -1.1947e+00,  3.7644e-01, -2.5369e+00,
+                4.8330e-03,  9.9245e-01],
+              [ 1.0146e+00,  3.8534e-01,  4.0157e-01,  7.2531e-01,  1.9562e-01,
+                7.5785e-01,  2.7832e-01]],
 
-             [[-1.2136,  0.6183,  0.6393,  0.0591,  0.4524,  0.1407, -0.4286],
-              [ 0.9989,  0.0877, -2.0250, -0.0813,  1.5826,  1.2435,  3.4254],
-              [-0.9514,  1.5891, -3.6032,  1.4337, -1.3183, -3.8903, -0.9285]],
+             [[-2.3417e+00, -2.9269e+00,  2.3163e+00, -8.0094e-02,  3.8486e+00,
+               -4.0846e-01, -2.5925e+00],
+              [ 9.1589e-01, -8.1134e-01,  3.5342e+00, -3.5822e+00,  2.8905e+00,
+                1.7780e+00, -1.5687e+00],
+              [ 3.0770e+00, -9.1214e-01,  4.6789e-01, -6.9587e-01, -5.3018e-01,
+               -1.2687e-01, -1.2247e+00]],
 
-             [[-3.0507,  0.4791,  3.4713, -0.2705,  2.7737,  0.9631,  1.9934],
-              [ 0.1608,  1.6646,  1.4608,  1.0155,  1.7904,  3.6289, -2.8592],
-              [-2.8865,  2.6105,  0.4324,  3.0624,  0.3097, -1.7066,  0.2701]]]])
+             [[ 5.3347e+00,  1.7573e+00,  7.6813e-01, -1.4423e+00,  3.8983e+00,
+                7.3556e-02,  1.2060e+00],
+              [-1.6905e+00,  4.6349e-01, -2.4926e+00,  8.4244e-01, -2.1735e+00,
+               -3.1046e-01, -1.7711e+00],
+              [ 1.6472e+00,  1.2324e+00, -8.4641e-01, -7.6808e-01, -3.5611e+00,
+               -2.4918e+00,  3.9598e-01]]]])
 
 
 
@@ -198,7 +222,9 @@ And the second set of inputs looks like:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-92
+.. GENERATED FROM PYTHON SOURCE LINES 87-94
+
+.. _l-guess-dynamic-shapes-example:
 
 Guess the dynamic shapes
 ========================
@@ -206,7 +232,7 @@ Guess the dynamic shapes
 The following tool can be used to guess the dynamic shapes
 the way :func:`torch.export.export` expects them.
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-98
+.. GENERATED FROM PYTHON SOURCE LINES 94-100
 
 .. code-block:: Python
 
@@ -281,7 +307,7 @@ the way :func:`torch.export.export` expects them.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-105
+.. GENERATED FROM PYTHON SOURCE LINES 101-107
 
 And finally the export.
 The export is simple if ``transformers>=4.50``, otherwise,
@@ -290,7 +316,7 @@ transformers needs to be patched.
 registers functions to serialize ``DynamicCache``. This one is modified to make
 the shape inference implemented in :epkg:`torch` happy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-115
+.. GENERATED FROM PYTHON SOURCE LINES 107-117
 
 .. code-block:: Python
 
@@ -339,7 +365,42 @@ the shape inference implemented in :epkg:`torch` happy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-122
+.. GENERATED FROM PYTHON SOURCE LINES 118-123
+
+Use string instead of DYNAMIC
++++++++++++++++++++++++++++++
+
+ONNX exporter considers strings instead of DYNAMIC or AUTO
+to give names to every dimension.
+
+.. GENERATED FROM PYTHON SOURCE LINES 123-128
+
+.. code-block:: Python
+
+
+    dss = mi.guess_dynamic_shapes(auto="dim")
+    pprint.pprint(dss)
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    (([[{0: 'dim_0I_0o_0l0', 2: 'dim_0I_0o_0l2', 3: 'dim_0I_0o_0l3'},
+        {0: 'dim_0I_0o_1l0', 2: 'dim_0I_0o_1l2', 3: 'dim_0I_0o_1l3'}],
+       [{0: 'dim_0I_1o_0l0', 2: 'dim_0I_1o_0l2', 3: 'dim_0I_1o_0l3'},
+        {0: 'dim_0I_1o_1l0', 2: 'dim_0I_1o_1l2', 3: 'dim_0I_1o_1l3'}]],
+      {3: 'dim_1I3'}),
+     {})
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 129-135
 
 Do we need to guess?
 ++++++++++++++++++++
@@ -348,7 +409,7 @@ Function :func:`onnx_diagnostic.helpers.string_type` is using
 the serialization functions to print out the DynamicCache the was
 :func:`torch.export.export` expects them.
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-125
+.. GENERATED FROM PYTHON SOURCE LINES 135-138
 
 .. code-block:: Python
 
@@ -368,14 +429,14 @@ the serialization functions to print out the DynamicCache the was
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-130
+.. GENERATED FROM PYTHON SOURCE LINES 139-143
 
 You can also use function
 :func:`onnx_diagnostic.helpers.cache_helper.flatten_unflatten_for_dynamic_shapes`
 to show a DynamicCache restructured the way :func:`torch.export.export` expects
 it to be without the custom class.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-133
+.. GENERATED FROM PYTHON SOURCE LINES 143-146
 
 .. code-block:: Python
 
@@ -395,12 +456,12 @@ it to be without the custom class.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-136
+.. GENERATED FROM PYTHON SOURCE LINES 147-149
 
 This code works for any custom class if it was registered
 with :func:`torch.utils._pytree.register_pytree_node`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-139
+.. GENERATED FROM PYTHON SOURCE LINES 149-152
 
 .. code-block:: Python
 
@@ -422,7 +483,7 @@ with :func:`torch.utils._pytree.register_pytree_node`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.371 seconds)
+   **Total running time of the script:** (0 minutes 11.039 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_export_with_dynamic_cache.py:
