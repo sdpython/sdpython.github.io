@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.189** total execution time for 1 file **from auto_technical**:
+**00:02.143** total execution time for 1 file **from auto_technical**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``plot_parallelized_reduction.py``)
-     - 00:02.189
+     - 00:02.143
      - 0.0

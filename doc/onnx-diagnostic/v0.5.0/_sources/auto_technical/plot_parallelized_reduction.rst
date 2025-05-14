@@ -21,8 +21,8 @@
 Reproducible Parallelized Reduction is difficult
 ================================================
 
-A reduction is a frequent operation in neural network. It appears in layer normalization,
-softmax. Because of the float precision, the result of the computation
+A reduction is a frequent operation with neural networks. It appears in layer normalization,
+softmax... Because of the float precision, the result of the computation
 changes based on the order of the elements. The following examples show the variation
 based on different hypothesis on the vector distribution.
 We consider a vector :math:`X = (x_1, ..., x_n)`.
@@ -38,16 +38,18 @@ Or the normalization of the vector:
 
     norm(X)_i = \frac{ X_i  - \mathbb{E}X}{ \sqrt{ \mathbb{V}X}}
 
-We draw 128 random permutation of X. The average or mean should not change.
-And the normalized vector should have the same value. In the first case, we compute
+With :math:`\mathbb{E}X = mean(X)`,
+:math:`\mathbb{V}X = mean\left(\left(X - mean(X)\right)^2\right)`.
+We draw 128 random permutations of X. The average or mean should not change.
+And the normalized vector should have the same values. In the first case, we compute
 the difference between the highest and the lowest values obtained for the average.
 In the second case, we look for the maximum difference between the original normalized
-vector and the permuted one (both sorted).
+vector and the permuted one, both sorted.
 
 The computation code
 ++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-115
+.. GENERATED FROM PYTHON SOURCE LINES 33-117
 
 .. code-block:: Python
 
@@ -142,7 +144,7 @@ The computation code
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-121
+.. GENERATED FROM PYTHON SOURCE LINES 118-123
 
 Normal Law
 ++++++++++
@@ -150,7 +152,7 @@ Normal Law
 Let's see what it returns an on random sample following a normal law.
 First the average.
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-127
+.. GENERATED FROM PYTHON SOURCE LINES 123-129
 
 .. code-block:: Python
 
@@ -168,27 +170,27 @@ First the average.
 
  .. code-block:: none
 
-      0%|          | 0/3456 [00:00<?, ?it/s]     83%|████████▎ | 2864/3456 [00:00<00:00, 28627.13it/s]    100%|██████████| 3456/3456 [00:00<00:00, 21464.25it/s]
+      0%|          | 0/3456 [00:00<?, ?it/s]     95%|█████████▍| 3275/3456 [00:00<00:00, 32733.56it/s]    100%|██████████| 3456/3456 [00:00<00:00, 29419.14it/s]
     dtype  fp16          fp32          fp64    name
     size                                           
     2       0.0  0.000000e+00  0.000000e+00  normal
-    4       0.0  1.192093e-07  2.220446e-16  normal
-    8       0.0  1.192093e-07  1.110223e-16  normal
-    16      0.0  8.940697e-08  1.110223e-16  normal
-    512     0.0  1.862645e-08  7.632783e-17  normal
-    1024    0.0  2.235174e-08  5.551115e-17  normal
-    2048    0.0  1.490116e-08  2.775558e-17  normal
-    4096    0.0  5.960464e-08  1.110223e-16  normal
-    8192    0.0  5.960464e-08  1.110223e-16  normal
+    4       0.0  2.980232e-08  0.000000e+00  normal
+    8       0.0  4.470348e-08  1.110223e-16  normal
+    16      0.0  4.470348e-08  1.110223e-16  normal
+    512     0.0  3.911555e-08  7.285839e-17  normal
+    1024    0.0  3.166497e-08  7.112366e-17  normal
+    2048    0.0  7.357448e-08  3.035766e-17  normal
+    4096    0.0  3.166497e-08  8.500145e-17  normal
+    8192    0.0  3.213063e-08  8.413409e-17  normal
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-129
+.. GENERATED FROM PYTHON SOURCE LINES 130-131
 
 Then the layer normalization.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-135
+.. GENERATED FROM PYTHON SOURCE LINES 131-137
 
 .. code-block:: Python
 
@@ -206,30 +208,30 @@ Then the layer normalization.
 
  .. code-block:: none
 
-      0%|          | 0/3456 [00:00<?, ?it/s]     65%|██████▍   | 2240/3456 [00:00<00:00, 22343.39it/s]    100%|██████████| 3456/3456 [00:00<00:00, 6913.98it/s] 
-    dtype          fp16          fp32          fp64    name
-    size                                                   
-    2      0.000000e+00  0.000000e+00  0.000000e+00  normal
-    4      0.000000e+00  2.384186e-07  4.440892e-16  normal
-    8      0.000000e+00  2.384186e-07  2.220446e-16  normal
-    16     0.000000e+00  2.384186e-07  4.440892e-16  normal
-    512    5.960464e-08  2.384186e-07  6.661338e-16  normal
-    1024   9.765625e-04  2.384186e-07  4.440892e-16  normal
-    2048   9.765625e-04  1.192093e-07  4.440892e-16  normal
-    4096   7.629395e-06  2.384186e-07  4.440892e-16  normal
-    8192   7.629395e-06  2.384186e-07  4.440892e-16  normal
+      0%|          | 0/3456 [00:00<?, ?it/s]     70%|██████▉   | 2412/3456 [00:00<00:00, 24111.97it/s]    100%|██████████| 3456/3456 [00:00<00:00, 7924.62it/s] 
+    dtype  fp16          fp32          fp64    name
+    size                                           
+    2       0.0  0.000000e+00  0.000000e+00  normal
+    4       0.0  2.980232e-08  2.220446e-16  normal
+    8       0.0  1.192093e-07  2.220446e-16  normal
+    16      0.0  2.384186e-07  4.440892e-16  normal
+    512     0.0  2.384186e-07  4.440892e-16  normal
+    1024    0.0  2.384186e-07  4.440892e-16  normal
+    2048    0.0  2.384186e-07  4.440892e-16  normal
+    4096    0.0  2.384186e-07  4.440892e-16  normal
+    8192    0.0  2.384186e-07  4.440892e-16  normal
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-140
+.. GENERATED FROM PYTHON SOURCE LINES 138-142
 
 Fixed values
 ++++++++++++
 
 We try a fixed vector with one very high value and all the others are small.
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-153
+.. GENERATED FROM PYTHON SOURCE LINES 142-149
 
 .. code-block:: Python
 
@@ -240,6 +242,37 @@ We try a fixed vector with one very high value and all the others are small.
     mean["name"] = "fixed"
     print(mean)
 
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+      0%|          | 0/3456 [00:00<?, ?it/s]     99%|█████████▉| 3417/3456 [00:00<00:00, 34147.16it/s]    100%|██████████| 3456/3456 [00:00<00:00, 33216.27it/s]
+    dtype  fp16          fp32          fp64   name
+    size                                          
+    2       0.0  0.000000e+00  0.000000e+00  fixed
+    4       0.0  0.000000e+00  3.552714e-15  fixed
+    8       0.0  0.000000e+00  0.000000e+00  fixed
+    16      0.0  0.000000e+00  0.000000e+00  fixed
+    512     0.0  2.384186e-07  4.440892e-16  fixed
+    1024    0.0  2.980232e-07  4.440892e-16  fixed
+    2048    0.0  4.768372e-07  4.440892e-16  fixed
+    4096    0.0  2.384186e-07  9.992007e-16  fixed
+    8192    0.0  2.980232e-07  9.992007e-16  fixed
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 150-151
+
+And the normalized vector.
+
+.. GENERATED FROM PYTHON SOURCE LINES 151-156
+
+.. code-block:: Python
 
     ln = compute(values, layer_norm)
     ln["name"] = "fixed"
@@ -254,26 +287,14 @@ We try a fixed vector with one very high value and all the others are small.
 
  .. code-block:: none
 
-      0%|          | 0/3456 [00:00<?, ?it/s]     88%|████████▊ | 3042/3456 [00:00<00:00, 30406.98it/s]    100%|██████████| 3456/3456 [00:00<00:00, 25203.85it/s]
-    dtype  fp16          fp32          fp64   name
-    size                                          
-    2       0.0  0.000000e+00  0.000000e+00  fixed
-    4       0.0  0.000000e+00  3.552714e-15  fixed
-    8       0.0  0.000000e+00  0.000000e+00  fixed
-    16      0.0  0.000000e+00  0.000000e+00  fixed
-    512     0.0  2.980232e-07  5.551115e-16  fixed
-    1024    0.0  2.384186e-07  4.440892e-16  fixed
-    2048    0.0  4.768372e-07  4.440892e-16  fixed
-    4096    0.0  2.980232e-07  9.992007e-16  fixed
-    8192    0.0  2.980232e-07  9.992007e-16  fixed
-      0%|          | 0/3456 [00:00<?, ?it/s]     76%|███████▌  | 2623/3456 [00:00<00:00, 26222.84it/s]    100%|██████████| 3456/3456 [00:00<00:00, 10175.88it/s]
+      0%|          | 0/3456 [00:00<?, ?it/s]     72%|███████▏  | 2474/3456 [00:00<00:00, 24721.34it/s]    100%|██████████| 3456/3456 [00:00<00:00, 12200.92it/s]
     dtype  fp16      fp32          fp64   name
     size                                      
     2       0.0  0.000000  0.000000e+00  fixed
     4       0.0  0.000000  2.220446e-16  fixed
     8       0.0  0.000000  0.000000e+00  fixed
     16      0.0  0.000000  0.000000e+00  fixed
-    512     0.0  0.000003  1.776357e-15  fixed
+    512     0.0  0.000002  1.776357e-15  fixed
     1024    0.0  0.000002  1.776357e-15  fixed
     2048    0.0  0.000004  7.105427e-15  fixed
     4096    0.0  0.000002  1.776357e-15  fixed
@@ -282,14 +303,14 @@ We try a fixed vector with one very high value and all the others are small.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-158
+.. GENERATED FROM PYTHON SOURCE LINES 157-161
 
 Pareto Distribution
 +++++++++++++++++++
 
 A law with a long tail.
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-172
+.. GENERATED FROM PYTHON SOURCE LINES 161-169
 
 .. code-block:: Python
 
@@ -301,6 +322,39 @@ A law with a long tail.
     mean["name"] = "normal"
     print(mean)
 
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    [20.31721071  2.09292762  1.05623266 ... 15.6123532   2.43049564
+      1.18719163]
+      0%|          | 0/3456 [00:00<?, ?it/s]     93%|█████████▎| 3214/3456 [00:00<00:00, 32130.53it/s]    100%|██████████| 3456/3456 [00:00<00:00, 27493.04it/s]
+    dtype  fp16          fp32          fp64    name
+    size                                           
+    2       0.0  0.000000e+00  0.000000e+00  normal
+    4       0.0  4.768372e-07  0.000000e+00  normal
+    8       0.0  2.384186e-07  4.440892e-16  normal
+    16      0.0  4.768372e-07  8.881784e-16  normal
+    512     0.0  2.861023e-06  3.552714e-15  normal
+    1024    0.0  9.536743e-07  3.552714e-15  normal
+    2048    0.0  9.536743e-07  2.664535e-15  normal
+    4096    0.0  9.536743e-07  1.776357e-15  normal
+    8192    0.0  1.907349e-06  1.776357e-15  normal
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 170-171
+
+And the normalized vector.
+
+.. GENERATED FROM PYTHON SOURCE LINES 171-176
+
+.. code-block:: Python
 
     ln = compute(values, layer_norm)
     ln["name"] = "pareto"
@@ -315,48 +369,34 @@ A law with a long tail.
 
  .. code-block:: none
 
-    [6.74765115 1.46723716 1.78061809 ... 2.843406   0.23612517 2.31461451]
-      0%|          | 0/3456 [00:00<?, ?it/s]     85%|████████▌ | 2939/3456 [00:00<00:00, 29353.15it/s]    100%|██████████| 3456/3456 [00:00<00:00, 20033.16it/s]
-    dtype  fp16          fp32          fp64    name
-    size                                           
-    2       0.0  0.000000e+00  0.000000e+00  normal
-    4       0.0  2.384186e-07  4.440892e-16  normal
-    8       0.0  9.536743e-07  3.552714e-15  normal
-    16      0.0  1.430511e-06  2.664535e-15  normal
-    512     0.0  1.907349e-06  3.552714e-15  normal
-    1024    0.0  3.814697e-06  7.105427e-15  normal
-    2048    0.0  5.722046e-06  1.065814e-14  normal
-    4096    0.0  3.814697e-06  5.329071e-15  normal
-    8192    0.0  3.814697e-06  5.329071e-15  normal
-      0%|          | 0/3456 [00:00<?, ?it/s]     65%|██████▍   | 2236/3456 [00:00<00:00, 22344.68it/s]    100%|██████████| 3456/3456 [00:00<00:00, 6662.11it/s] 
+      0%|          | 0/3456 [00:00<?, ?it/s]     74%|███████▍  | 2557/3456 [00:00<00:00, 25557.35it/s]    100%|██████████| 3456/3456 [00:00<00:00, 8311.26it/s] 
     dtype      fp16          fp32          fp64    name
     size                                               
     2      0.000000  0.000000e+00  0.000000e+00  pareto
-    4      0.000000  3.576279e-07  4.440892e-16  pareto
+    4      0.000000  2.384186e-07  0.000000e+00  pareto
     8      0.000000  2.384186e-07  4.440892e-16  pareto
-    16     0.000000  4.768372e-07  8.881784e-16  pareto
-    512    0.000000  4.768372e-07  3.552714e-15  pareto
-    1024   0.000061  9.536743e-06  1.065814e-14  pareto
-    2048   0.000031  1.144409e-05  1.421085e-14  pareto
-    4096   0.000031  1.144409e-05  1.421085e-14  pareto
-    8192   0.000031  7.629395e-06  1.421085e-14  pareto
+    16     0.000000  4.768372e-07  4.440892e-16  pareto
+    512    0.000000  1.907349e-06  3.552714e-15  pareto
+    1024   0.000000  7.629395e-06  7.105427e-15  pareto
+    2048   0.000008  7.629395e-06  7.105427e-15  pareto
+    4096   0.000031  3.814697e-06  1.421085e-14  pareto
+    8192   0.000031  3.814697e-06  1.421085e-14  pareto
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-177
+.. GENERATED FROM PYTHON SOURCE LINES 177-181
 
 Summary
 +++++++
 
 We consider the maximum difference obtained for any sample size.
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-182
+.. GENERATED FROM PYTHON SOURCE LINES 181-185
 
 .. code-block:: Python
 
 
-    print(DATA)
     df = pandas.DataFrame(DATA).set_index("name")
     print(df)
 
@@ -368,36 +408,20 @@ We consider the maximum difference obtained for any sample size.
 
  .. code-block:: none
 
-    [dtype
-    fp16    0.000977
-    fp32         0.0
-    fp64         0.0
-    name      normal
-    dtype: object, dtype
-    fp16         0.0
-    fp32    0.000004
-    fp64         0.0
-    name       fixed
-    dtype: object, dtype
-    fp16    0.000061
-    fp32    0.000011
-    fp64         0.0
-    name      pareto
-    dtype: object]
     dtype       fp16          fp32          fp64
     name                                        
-    normal  0.000977  2.384186e-07  6.661338e-16
+    normal  0.000000  2.384186e-07  4.440892e-16
     fixed   0.000000  3.814697e-06  7.105427e-15
-    pareto  0.000061  1.144409e-05  1.421085e-14
+    pareto  0.000031  7.629395e-06  1.421085e-14
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 183-184
+.. GENERATED FROM PYTHON SOURCE LINES 186-187
 
 Visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 184-189
+.. GENERATED FROM PYTHON SOURCE LINES 187-192
 
 .. code-block:: Python
 
@@ -418,14 +442,14 @@ Visually.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-199
+.. GENERATED FROM PYTHON SOURCE LINES 193-202
 
 In a deep neural network
 ++++++++++++++++++++++++
 
 Some of the vector have 500 values, 16x32x1024x1024. A layer normalization
 does 16x32x1024 ~ 2M reductions, over 20 layers.
-When a deep neural network is computed with a difference code,
+When a deep neural network is computed with a different code
 doing a different parallelization (GPU/CPU for example),
 the order of the reduction may change and therefore,
 some errors will appear and propagate.
@@ -433,7 +457,7 @@ some errors will appear and propagate.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.189 seconds)
+   **Total running time of the script:** (0 minutes 2.143 seconds)
 
 
 .. _sphx_glr_download_auto_technical_plot_parallelized_reduction.py:

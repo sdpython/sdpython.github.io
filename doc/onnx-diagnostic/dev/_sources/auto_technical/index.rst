@@ -13,7 +13,7 @@ Technical Details
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A reduction is a frequent operation in neural network. It appears in layer normalization, softmax. Because of the float precision, the result of the computation changes based on the order of the elements. The following examples show the variation based on different hypothesis on the vector distribution. We consider a vector X = (x_1, ..., x_n). It computes the average:">
+    <div class="sphx-glr-thumbcontainer" tooltip="A reduction is a frequent operation with neural networks. It appears in layer normalization, softmax... Because of the float precision, the result of the computation changes based on the order of the elements. The following examples show the variation based on different hypothesis on the vector distribution. We consider a vector X = (x_1, ..., x_n). It computes the average:">
 
 .. only:: html
 
