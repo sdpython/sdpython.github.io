@@ -664,16 +664,16 @@ x2.shape=torch.Size([6, 8, 8]), y2.shape=torch.Size([6, 8, 8])
             le: &quot;Sym(s1 &lt;= 4*(((s1 + 3)//4)))&quot; = sym_size_int_4 &lt;= mul_1
             _assert_scalar_default = torch.ops.aten._assert_scalar.default(le, &quot;Runtime assertion failed for expression s1 &lt;= 4*(((s1 + 3)//4)) on node &#39;le&#39;&quot;);  le = _assert_scalar_default = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:37 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:37 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
             add: &quot;Sym(s1 + 4)&quot; = sym_size_int_4 + 4;  add = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:38 in forward, code: to_pad = next_dim - dim
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:38 in forward, code: to_pad = next_dim - dim
             sub_1: &quot;Sym(-s1 + 4*(((s1 + 3)//4)))&quot; = mul_1 - sym_size_int_4;  mul_1 = sym_size_int_4 = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:39 in forward, code: pad = torch.zeros(
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:39 in forward, code: pad = torch.zeros(
             zeros: &quot;f32[s0, -s1 + 4*(((s1 + 3)//4)), s2]&quot; = torch.ops.aten.zeros.default([sym_size_int_3, sub_1, sym_size_int_5], dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_3 = sub_1 = sym_size_int_5 = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:42 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_dynpad.py:42 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
             cat: &quot;f32[s0, 4*(((s1 + 3)//4)), s2]&quot; = torch.ops.aten.cat.default([x, zeros], 1);  x = zeros = None
             return (cat,)
 

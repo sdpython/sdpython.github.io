@@ -653,7 +653,7 @@ x2.shape=torch.Size([6, 8, 8]), y2.shape=torch.Size([6, 8, 8])
 <span class="nb">print</span><span class="p">(</span><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pytorch.org/docs/main/export.html#torch.export.ExportedProgram" title="torch.export.ExportedProgram" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 ExportedProgram:
     class GraphModule(torch.nn.Module):
@@ -668,16 +668,16 @@ ExportedProgram:
             le: &quot;Sym(s1 &lt;= 4*(((s1 + 3)//4)))&quot; = sym_size_int_4 &lt;= mul_1
             _assert_scalar_default = torch.ops.aten._assert_scalar.default(le, &quot;Runtime assertion failed for expression s1 &lt;= 4*(((s1 + 3)//4)) on node &#39;le&#39;&quot;);  le = _assert_scalar_default = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:39 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:39 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
             add: &quot;Sym(s1 + 4)&quot; = sym_size_int_4 + 4;  add = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: to_pad = next_dim - dim
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: to_pad = next_dim - dim
             sub_1: &quot;Sym(-s1 + 4*(((s1 + 3)//4)))&quot; = mul_1 - sym_size_int_4;  mul_1 = sym_size_int_4 = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: pad = torch.zeros(
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: pad = torch.zeros(
             zeros: &quot;f32[s0, -s1 + 4*(((s1 + 3)//4)), s2]&quot; = torch.ops.aten.zeros.default([sym_size_int_3, sub_1, sym_size_int_5], dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_3 = sub_1 = sym_size_int_5 = None
 
-             # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:44 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
+             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:44 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
             cat: &quot;f32[s0, 4*(((s1 + 3)//4)), s2]&quot; = torch.ops.aten.cat.default([x, zeros], 1);  x = zeros = None
             return (cat,)
 
@@ -690,9 +690,9 @@ Range constraints: {s0: VR[2, int_oo], s1: VR[2, int_oo], s2: VR[2, int_oo]}
 <span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><span class="n">pretty_onnx</span></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 opset: domain=&#39;&#39; version=18
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&#39;, &#39;seq_len&#39;, &#39;num_frames&#39;]

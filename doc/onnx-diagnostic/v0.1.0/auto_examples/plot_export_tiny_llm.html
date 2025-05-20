@@ -387,7 +387,7 @@ associated with the previous input_ids and mask.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>input type dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#1[T1s2x1x30x96], value_cache=#1[T1s2x1x30x96]))
 input after the execution dict(input_ids:T7s2x3,attention_mask:T7s2x33,past_key_values:DynamicCache(key_cache=#1[T1s2x1x33x96], value_cache=#1[T1s2x1x33x96]))
 result type dict(logits:T1s2x3x32000,past_key_values:DynamicCache(key_cache=#1[T1s2x1x33x96], value_cache=#1[T1s2x1x33x96]))
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 </pre></div>
 </div>
@@ -408,7 +408,7 @@ result type dict(logits:T1s2x3x32000,past_key_values:DynamicCache(key_cache=#1[T
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It failed:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 It worked:
 ExportedProgram:
@@ -419,19 +419,19 @@ ExportedProgram:
             sym_size_int_21: &quot;Sym(s1)&quot; = torch.ops.aten.sym_size.int(input_ids, 1)
             sym_size_int_22: &quot;Sym(s5)&quot; = torch.ops.aten.sym_size.int(past_key_values_key_cache_0, 2)
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
             embedding: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
             add: &quot;Sym(s1 + s5)&quot; = sym_size_int_22 + sym_size_int_21
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
             arange: &quot;i64[s1]&quot; = torch.ops.aten.arange.start(sym_size_int_22, add, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_22 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:569 in forward, code: position_ids = cache_position.unsqueeze(0)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:569 in forward, code: position_ids = cache_position.unsqueeze(0)
             unsqueeze: &quot;i64[1, s1]&quot; = torch.ops.aten.unsqueeze.default(arange, 0)
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
             full: &quot;f32[s1, s1 + s5]&quot; = torch.ops.aten.full.default([sym_size_int_21, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False)
             triu: &quot;f32[s1, s1 + s5]&quot; = torch.ops.aten.triu.default(full, 1);  full = None
             arange_1: &quot;i64[s1 + s5]&quot; = torch.ops.aten.arange.default(add, device = device(type=&#39;cpu&#39;), pin_memory = False)
@@ -467,48 +467,48 @@ ExportedProgram:
             submod_3 = self.submod_1
             wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, b_model_rotary_emb_inv_freq, unsqueeze);  submod_3 = b_model_rotary_emb_inv_freq = unsqueeze = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
             to_6: &quot;f32[1, s1, 96]&quot; = wrap_with_set_grad_enabled[0]
             to_7: &quot;f32[1, s1, 96]&quot; = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
             to_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
             pow_1: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
             mean: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_3: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
             rsqrt: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
             mul_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
             to_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
             mul_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_9);  p_model_layers_0_input_layernorm_weight = to_9 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.view.default(linear, [sym_size_int_20, sym_size_int_21, -1, 96]);  linear = None
             transpose_1: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.transpose.int(view, 1, 2);  view = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_1: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_1: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_1, [sym_size_int_20, sym_size_int_21, -1, 96]);  linear_1 = None
             transpose_2: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_2: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_2: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_2, [sym_size_int_20, sym_size_int_21, -1, 96]);  linear_2 = None
             transpose_3: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
             unsqueeze_8: &quot;f32[1, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
             unsqueeze_9: &quot;f32[1, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
             mul_4: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_8)
@@ -526,11 +526,11 @@ ExportedProgram:
             mul_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_9);  cat_2 = unsqueeze_9 = None
             add_5: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
             cat_3: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.cat.default([past_key_values_key_cache_0, add_5], -2);  past_key_values_key_cache_0 = add_5 = None
             cat_4: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.cat.default([past_key_values_value_cache_0, transpose_3], -2);  past_key_values_value_cache_0 = transpose_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
             slice_21: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
             slice_22: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
             unsqueeze_10: &quot;f32[s0, 1, 1, s1 + s5, 96]&quot; = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
@@ -555,84 +555,84 @@ ExportedProgram:
             transpose_4: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
             contiguous_3: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
             reshape_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.reshape.default(contiguous_3, [sym_size_int_20, sym_size_int_21, -1]);  contiguous_3 = sym_size_int_20 = sym_size_int_21 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(reshape_3, p_model_layers_0_self_attn_o_proj_weight);  reshape_3 = p_model_layers_0_self_attn_o_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
             add_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
             to_10: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
             pow_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
             mean_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_8: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
             rsqrt_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
             mul_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
             to_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
             mul_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_11);  p_model_layers_0_post_attention_layernorm_weight = to_11 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_4: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_proj_weight);  p_model_layers_0_mlp_gate_proj_weight = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/activation.py:432 in forward, code: return F.silu(input, inplace=self.inplace)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/activation.py:432 in forward, code: return F.silu(input, inplace=self.inplace)
             silu: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.silu.default(linear_4);  linear_4 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_5: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_up_proj_weight);  mul_9 = p_model_layers_0_mlp_up_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
             mul_10: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_6: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
             add_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
             to_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
             pow_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
             mean_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_10: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
             rsqrt_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
             mul_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
             to_13: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
             mul_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
             slice_32: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
             slice_33: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
             slice_34: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_7: &quot;f32[s0, s1, 32000]&quot; = torch.ops.aten.linear.default(slice_34, p_lm_head_weight);  slice_34 = p_lm_head_weight = None
             return (linear_7, cat_3, cat_4)
 
         class submod_1(torch.nn.Module):
             def forward(self, b_model_rotary_emb_inv_freq: &quot;f32[48]&quot;, unsqueeze: &quot;i64[1, s1]&quot;):
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
                 unsqueeze_5: &quot;f32[1, 48]&quot; = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
                 slice_14: &quot;f32[1, 48]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_5, 1, 0, 9223372036854775807);  unsqueeze_5 = None
                 unsqueeze_6: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
                 to_1: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype(unsqueeze_6, torch.float32);  unsqueeze_6 = None
                 expand_1: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.expand.default(to_1, [1, -1, 1]);  to_1 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
                 slice_15: &quot;i64[1, s1]&quot; = torch.ops.aten.slice.Tensor(unsqueeze, 0, 0, 9223372036854775807);  unsqueeze = None
                 unsqueeze_7: &quot;i64[1, 1, s1]&quot; = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
                 slice_16: &quot;i64[1, 1, s1]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_7, 2, 0, 9223372036854775807);  unsqueeze_7 = None
@@ -642,39 +642,39 @@ ExportedProgram:
                 submod_3 = self.submod_1
                 wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast(&#39;cpu&#39;, torch.bfloat16, False, False, submod_3, expand_1, to_2);  submod_3 = expand_1 = to_2 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
                 cos: &quot;f32[1, s1, 96]&quot; = wrap_with_autocast[0]
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
                 sin: &quot;f32[1, s1, 96]&quot; = wrap_with_autocast[1];  wrap_with_autocast = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
                 mul: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
                 mul_1: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
                 to_6: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
                 to_7: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
                 return (to_6, to_7)
 
             class submod_1(torch.nn.Module):
                 def forward(self, expand_1: &quot;f32[1, 48, 1]&quot;, to_2: &quot;f32[1, 1, s1]&quot;):
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
                     to_3: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
                     to_4: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type=&#39;cpu&#39;));  to_3 = None
                     to_5: &quot;f32[1, 1, s1]&quot; = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
                     matmul: &quot;f32[1, 48, s1]&quot; = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
                     transpose: &quot;f32[1, s1, 48]&quot; = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
                     cat: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
                     cos: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.cos.default(cat)
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
                     sin: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.sin.default(cat);  cat = None
                     return (cos, sin)
 
@@ -697,7 +697,7 @@ Range constraints: {s0: VR[1, 1024], s1: VR[1, 4096], s1 + s5: VR[4, 8192], s5: 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It failed:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 It worked:
 ExportedProgram:
@@ -708,19 +708,19 @@ ExportedProgram:
             sym_size_int_21: &quot;Sym(s1)&quot; = torch.ops.aten.sym_size.int(input_ids, 1)
             sym_size_int_22: &quot;Sym(s5)&quot; = torch.ops.aten.sym_size.int(past_key_values_key_cache_0, 2)
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
             embedding: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:565 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
             add: &quot;Sym(s1 + s5)&quot; = sym_size_int_22 + sym_size_int_21
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:564 in forward, code: cache_position = torch.arange(
             arange: &quot;i64[s1]&quot; = torch.ops.aten.arange.start(sym_size_int_22, add, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_22 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:569 in forward, code: position_ids = cache_position.unsqueeze(0)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:569 in forward, code: position_ids = cache_position.unsqueeze(0)
             unsqueeze: &quot;i64[1, s1]&quot; = torch.ops.aten.unsqueeze.default(arange, 0)
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:571 in forward, code: causal_mask = self._update_causal_mask(
             full: &quot;f32[s1, s1 + s5]&quot; = torch.ops.aten.full.default([sym_size_int_21, add], -3.4028234663852886e+38, dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False)
             triu: &quot;f32[s1, s1 + s5]&quot; = torch.ops.aten.triu.default(full, 1);  full = None
             arange_1: &quot;i64[s1 + s5]&quot; = torch.ops.aten.arange.default(add, device = device(type=&#39;cpu&#39;), pin_memory = False)
@@ -756,48 +756,48 @@ ExportedProgram:
             submod_3 = self.submod_1
             wrap_with_set_grad_enabled = torch.ops.higher_order.wrap_with_set_grad_enabled(False, submod_3, b_model_rotary_emb_inv_freq, unsqueeze);  submod_3 = b_model_rotary_emb_inv_freq = unsqueeze = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
             to_6: &quot;f32[1, s1, 96]&quot; = wrap_with_set_grad_enabled[0]
             to_7: &quot;f32[1, s1, 96]&quot; = wrap_with_set_grad_enabled[1];  wrap_with_set_grad_enabled = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
             to_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
             pow_1: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_8, 2)
             mean: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_1, [-1], True);  pow_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_3: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
             rsqrt: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_3);  add_3 = None
             mul_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_8, rsqrt);  rsqrt = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
             to_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_2, torch.float32);  mul_2 = None
             mul_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_input_layernorm_weight, to_9);  p_model_layers_0_input_layernorm_weight = to_9 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:277 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.view.default(linear, [sym_size_int_20, sym_size_int_21, -1, 96]);  linear = None
             transpose_1: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.transpose.int(view, 1, 2);  view = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_1: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:278 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_1: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_1, [sym_size_int_20, sym_size_int_21, -1, 96]);  linear_1 = None
             transpose_2: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_2: &quot;f32[s0, s1, 96]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:279 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
             view_2: &quot;f32[s0, s1, 1, 96]&quot; = torch.ops.aten.view.default(linear_2, [sym_size_int_20, sym_size_int_21, -1, 96]);  linear_2 = None
             transpose_3: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:282 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
             unsqueeze_8: &quot;f32[1, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_6, 1);  to_6 = None
             unsqueeze_9: &quot;f32[1, 1, s1, 96]&quot; = torch.ops.aten.unsqueeze.default(to_7, 1);  to_7 = None
             mul_4: &quot;f32[s0, 2, s1, 96]&quot; = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_8)
@@ -815,11 +815,11 @@ ExportedProgram:
             mul_7: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_9);  cat_2 = unsqueeze_9 = None
             add_5: &quot;f32[s0, 1, s1, 96]&quot; = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:287 in forward, code: key_states, value_states = past_key_value.update(key_states, value_states, self.layer_idx, cache_kwargs)
             cat_3: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.cat.default([past_key_values_key_cache_0, add_5], -2);  past_key_values_key_cache_0 = add_5 = None
             cat_4: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.cat.default([past_key_values_value_cache_0, transpose_3], -2);  past_key_values_value_cache_0 = transpose_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:299 in forward, code: attn_output, attn_weights = attention_interface(
             slice_21: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.slice.Tensor(cat_3, 0, 0, 9223372036854775807)
             slice_22: &quot;f32[s0, 1, s1 + s5, 96]&quot; = torch.ops.aten.slice.Tensor(slice_21, 1, 0, 9223372036854775807);  slice_21 = None
             unsqueeze_10: &quot;f32[s0, 1, 1, s1 + s5, 96]&quot; = torch.ops.aten.unsqueeze.default(slice_22, 2);  slice_22 = None
@@ -844,84 +844,84 @@ ExportedProgram:
             transpose_4: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
             contiguous_3: &quot;f32[s0, s1, 2, 96]&quot; = torch.ops.aten.contiguous.default(transpose_4);  transpose_4 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:310 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
             reshape_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.reshape.default(contiguous_3, [sym_size_int_20, sym_size_int_21, -1]);  contiguous_3 = sym_size_int_20 = sym_size_int_21 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(reshape_3, p_model_layers_0_self_attn_o_proj_weight);  reshape_3 = p_model_layers_0_self_attn_o_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:354 in forward, code: hidden_states = residual + hidden_states
             add_7: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_8, linear_3);  to_8 = linear_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
             to_10: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_7, torch.float32);  add_7 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
             pow_2: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_10, 2)
             mean_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_2, [-1], True);  pow_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_8: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
             rsqrt_1: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_8);  add_8 = None
             mul_8: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_10, rsqrt_1);  rsqrt_1 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
             to_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_8, torch.float32);  mul_8 = None
             mul_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_layers_0_post_attention_layernorm_weight, to_11);  p_model_layers_0_post_attention_layernorm_weight = to_11 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_4: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_gate_proj_weight);  p_model_layers_0_mlp_gate_proj_weight = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/activation.py:432 in forward, code: return F.silu(input, inplace=self.inplace)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/activation.py:432 in forward, code: return F.silu(input, inplace=self.inplace)
             silu: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.silu.default(linear_4);  linear_4 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_5: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.linear.default(mul_9, p_model_layers_0_mlp_up_proj_weight);  mul_9 = p_model_layers_0_mlp_up_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:197 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
             mul_10: &quot;f32[s0, s1, 1024]&quot; = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_6: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_down_proj_weight);  mul_10 = p_model_layers_0_mlp_down_proj_weight = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:360 in forward, code: hidden_states = residual + hidden_states
             add_9: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.add.Tensor(to_10, linear_6);  to_10 = linear_6 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:78 in forward, code: hidden_states = hidden_states.to(torch.float32)
             to_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(add_9, torch.float32);  add_9 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:79 in forward, code: variance = hidden_states.pow(2).mean(-1, keepdim=True)
             pow_3: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.pow.Tensor_Scalar(to_12, 2)
             mean_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.mean.dim(pow_3, [-1], True);  pow_3 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:80 in forward, code: hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
             add_10: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
             rsqrt_2: &quot;f32[s0, s1, 1]&quot; = torch.ops.aten.rsqrt.default(add_10);  add_10 = None
             mul_11: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(to_12, rsqrt_2);  to_12 = rsqrt_2 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:81 in forward, code: return self.weight * hidden_states.to(input_dtype)
             to_13: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.to.dtype(mul_11, torch.float32);  mul_11 = None
             mul_12: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.mul.Tensor(p_model_norm_weight, to_13);  p_model_norm_weight = to_13 = None
 
-             # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
+             # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:870 in forward, code: logits = self.lm_head(hidden_states[:, slice_indices, :])
             slice_32: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(mul_12, 0, 0, 9223372036854775807);  mul_12 = None
             slice_33: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(slice_32, 1, 0, 9223372036854775807);  slice_32 = None
             slice_34: &quot;f32[s0, s1, 192]&quot; = torch.ops.aten.slice.Tensor(slice_33, 2, 0, 9223372036854775807);  slice_33 = None
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
             linear_7: &quot;f32[s0, s1, 32000]&quot; = torch.ops.aten.linear.default(slice_34, p_lm_head_weight);  slice_34 = p_lm_head_weight = None
             return (linear_7, cat_3, cat_4)
 
         class submod_1(torch.nn.Module):
             def forward(self, b_model_rotary_emb_inv_freq: &quot;f32[48]&quot;, unsqueeze: &quot;i64[1, s1]&quot;):
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1)
                 unsqueeze_5: &quot;f32[1, 48]&quot; = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
                 slice_14: &quot;f32[1, 48]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_5, 1, 0, 9223372036854775807);  unsqueeze_5 = None
                 unsqueeze_6: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.unsqueeze.default(slice_14, 2);  slice_14 = None
                 to_1: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype(unsqueeze_6, torch.float32);  unsqueeze_6 = None
                 expand_1: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.expand.default(to_1, [1, -1, 1]);  to_1 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:134 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
                 slice_15: &quot;i64[1, s1]&quot; = torch.ops.aten.slice.Tensor(unsqueeze, 0, 0, 9223372036854775807);  unsqueeze = None
                 unsqueeze_7: &quot;i64[1, 1, s1]&quot; = torch.ops.aten.unsqueeze.default(slice_15, 1);  slice_15 = None
                 slice_16: &quot;i64[1, 1, s1]&quot; = torch.ops.aten.slice.Tensor(unsqueeze_7, 2, 0, 9223372036854775807);  unsqueeze_7 = None
@@ -931,39 +931,39 @@ ExportedProgram:
                 submod_3 = self.submod_1
                 wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast(&#39;cpu&#39;, torch.bfloat16, False, False, submod_3, expand_1, to_2);  submod_3 = expand_1 = to_2 = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
                 cos: &quot;f32[1, s1, 96]&quot; = wrap_with_autocast[0]
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
                 sin: &quot;f32[1, s1, 96]&quot; = wrap_with_autocast[1];  wrap_with_autocast = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:145 in forward, code: cos = cos * self.attention_scaling
                 mul: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:146 in forward, code: sin = sin * self.attention_scaling
                 mul_1: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
 
-                 # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:148 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
                 to_6: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
                 to_7: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
                 return (to_6, to_7)
 
             class submod_1(torch.nn.Module):
                 def forward(self, expand_1: &quot;f32[1, 48, 1]&quot;, to_2: &quot;f32[1, 1, s1]&quot;):
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:139 in forward, code: freqs = (inv_freq_expanded.float().to(x.device) @ position_ids_expanded.float()).transpose(1, 2)
                     to_3: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype(expand_1, torch.float32);  expand_1 = None
                     to_4: &quot;f32[1, 48, 1]&quot; = torch.ops.aten.to.dtype_layout(to_3, dtype = torch.float32, layout = torch.strided, device = device(type=&#39;cpu&#39;));  to_3 = None
                     to_5: &quot;f32[1, 1, s1]&quot; = torch.ops.aten.to.dtype(to_2, torch.float32);  to_2 = None
                     matmul: &quot;f32[1, 48, s1]&quot; = torch.ops.aten.matmul.default(to_4, to_5);  to_4 = to_5 = None
                     transpose: &quot;f32[1, s1, 48]&quot; = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:140 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
                     cat: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:141 in forward, code: cos = emb.cos()
                     cos: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.cos.default(cat)
 
-                     # File: /home/xadupre/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:142 in forward, code: sin = emb.sin()
                     sin: &quot;f32[1, s1, 96]&quot; = torch.ops.aten.sin.default(cat);  cat = None
                     return (cos, sin)
 

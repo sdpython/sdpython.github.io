@@ -642,11 +642,11 @@ to use <a class="reference external" href="https://pytorch.org/docs/main/generat
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Dynamic control flow is not supported at the moment. Please use torch.cond to explicitly capture the control flow. For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#cond-operands
 
 from user code:
-   File &quot;/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py&quot;, line 39, in forward
+   File &quot;~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py&quot;, line 39, in forward
     out = self.mlp(x)
-  File &quot;/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py&quot;, line 1762, in _call_impl
+  File &quot;~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py&quot;, line 1762, in _call_impl
     return forward_call(*args, **kwargs)
-  File &quot;/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py&quot;, line 24, in forward
+  File &quot;~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py&quot;, line 24, in forward
     if x.sum():
 
 Set TORCH_LOGS=&quot;+dynamo&quot; and TORCHDYNAMO_VERBOSE=1 for more information
@@ -665,11 +665,11 @@ But the model is not exactly the same as the initial model.</p>
 
 
 def forward(self, arg0_1: &quot;f32[2, 3]&quot;, arg1_1: &quot;f32[2]&quot;, arg2_1: &quot;f32[1, 2]&quot;, arg3_1: &quot;f32[1]&quot;, arg4_1: &quot;f32[3]&quot;):
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
+     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:125 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[2]&quot; = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
     linear_1: &quot;f32[1]&quot; = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
 
-     # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:24 in forward, code: if x.sum():
+     # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:24 in forward, code: if x.sum():
     sum_1: &quot;f32[]&quot; = torch.ops.aten.sum.default(linear_1);  linear_1 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
@@ -678,13 +678,13 @@ def forward(self, arg0_1: &quot;f32[2, 3]&quot;, arg1_1: &quot;f32[2]&quot;, arg
 [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export`...
 [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with `torch.export.export`... ❌
 [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with Torch Script...
-/home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:24: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can&#39;t record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_oe_cond.py:24: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can&#39;t record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
   if x.sum():
 [torch.onnx] Obtain model graph for `ModelWithControlFlowTest([...]` with Torch Script... ✅
 [torch.onnx] Run decomposition...
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:81: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+~/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:81: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
   getattr_node = gm.graph.get_attr(lifted_node)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1794: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what &#39;get_attr&#39; Nodes typically target
+~/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1794: UserWarning: Node lifted_tensor_6 target lifted_tensor_6 lifted_tensor_6 of  does not reference an nn.Module, nn.Parameter, or buffer, which is what &#39;get_attr&#39; Nodes typically target
   warnings.warn(
 [torch.onnx] Run decomposition... ✅
 [torch.onnx] Translate the graph into ONNX...

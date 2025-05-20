@@ -270,6 +270,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/object_detection.html">onnx_diagnostic.tasks.object_detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/summarization.html">onnx_diagnostic.tasks.summarization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text2text_generation.html">onnx_diagnostic.tasks.text2text_generation</a></li>
@@ -285,6 +286,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module_helper.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_models/index.html">onnx_diagnostic.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -1101,9 +1103,22 @@
 
 <div class="viewcode-block" id="to_any">
 <a class="viewcode-back" href="../../../api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.to_any">[docs]</a>
-<span class="k">def</span> <span class="nf">to_any</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">to_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">to_any</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">to_value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies torch.to if applicable. Goes recursively.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">))</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span>
+        <span class="s2">&quot;DynamicCache&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;EncoderDecoderCache&quot;</span><span class="p">,</span>
+    <span class="p">}:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">to_value</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">to_value</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;float16&quot;</span><span class="p">,</span> <span class="s2">&quot;bfloat16&quot;</span><span class="p">,</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span> <span class="s2">&quot;float64&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">}</span>
+        <span class="p">):</span>
+            <span class="c1"># int vector should not be changed.</span>
+            <span class="k">return</span> <span class="n">value</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">to_value</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">to_any</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">to_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
@@ -1113,8 +1128,6 @@
         <span class="k">return</span> <span class="p">{</span><span class="n">to_any</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">to_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">value</span><span class="p">}</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">to_any</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">to_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">to_value</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">make_dynamic_cache</span><span class="p">(</span>
             <span class="nb">list</span><span class="p">(</span>
@@ -1124,11 +1137,23 @@
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;EncoderDecoderCache&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">make_encoder_decoder_cache</span><span class="p">(</span>
+            <span class="n">to_any</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">self_attention_cache</span><span class="p">,</span> <span class="n">to_value</span><span class="p">),</span>
+            <span class="n">to_any</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">cross_attention_cache</span><span class="p">,</span> <span class="n">to_value</span><span class="p">),</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">in</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">SUPPORTED_NODES</span><span class="p">:</span>
         <span class="n">args</span><span class="p">,</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">new_args</span> <span class="o">=</span> <span class="n">to_any</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">to_value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_unflatten</span><span class="p">(</span><span class="n">new_args</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">to_value</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="s2">&quot;Cache&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Class </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> should be registered &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;to be able to change the type in every tensor it contains.&quot;</span>
+    <span class="p">)</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unsupported type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">value</span></div>
 

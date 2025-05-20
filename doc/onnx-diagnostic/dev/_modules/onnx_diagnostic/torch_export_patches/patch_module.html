@@ -209,6 +209,7 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../patches.html">Patches Explained</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API of onnx_diagnostic</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API of onnx_diagnostic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/export/index.html">onnx_diagnostic.export</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.export</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/export/dynamic_shapes.html">onnx_diagnostic.export.dynamic_shapes</a></li>
@@ -270,6 +271,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/object_detection.html">onnx_diagnostic.tasks.object_detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/summarization.html">onnx_diagnostic.tasks.summarization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/tasks/text2text_generation.html">onnx_diagnostic.tasks.text2text_generation</a></li>
@@ -277,6 +279,8 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_export_patches/index.html">onnx_diagnostic.torch_export_patches</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_export_patches</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/onnx_export_errors.html">onnx_diagnostic.torch_export_patches.onnx_export_errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/onnx_export_serialization.html">onnx_diagnostic.torch_export_patches.onnx_export_serialization</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/torch_export_patches/patches/index.html">onnx_diagnostic.torch_export_patches.patches</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_export_patches.patches</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/torch_export_patches/patches/patch_torch.html">onnx_diagnostic.torch_export_patches.patches.patch_torch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
@@ -285,6 +289,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module_helper.html">onnx_diagnostic.torch_export_patches.patch_module_helper</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_models/index.html">onnx_diagnostic.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -377,10 +382,15 @@
           <h1>Source code for onnx_diagnostic.torch_export_patches.patch_module</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">difflib</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">types</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">.patch_module_helper</span> <span class="kn">import</span> <span class="n">code_needing_rewriting</span>
 
 <span class="n">NODE_TYPES</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
     <span class="nb">getattr</span><span class="p">(</span><span class="n">ast</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -409,13 +419,73 @@
     <span class="k">return</span> <span class="n">node</span>
 
 
+<div class="viewcode-block" id="UsedVarsFinder">
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.UsedVarsFinder">[docs]</a>
+<span class="k">class</span> <span class="nc">UsedVarsFinder</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeVisitor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds used and defined local variables with a section.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">used</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defined</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">visit_Name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">used</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">defined</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_Global</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">visit_Nonlocal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="ShapeFinder">
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.ShapeFinder">[docs]</a>
+<span class="k">class</span> <span class="nc">ShapeFinder</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeVisitor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Finds &lt;x&gt; in the expression ``x.shape[0]``.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">found_shape</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">visit_Call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s2">&quot;range&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Subscript</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">slice</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">slice</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">slice</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">n</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;shape&quot;</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">found_shape</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="RewriteControlFlow">
-<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.RewriteControlFlow">[docs]</a>
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.RewriteControlFlow">[docs]</a>
 <span class="k">class</span> <span class="nc">RewriteControlFlow</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeTransformer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The class rewrites tests with function :func:`torch.cond`.</span>
 <span class="sd">    ``empty_tensor`` is a function returning an empty tensor,</span>
 <span class="sd">    when a branch returns something the other branch does not.</span>
+
+<span class="sd">    :param prefix: prefix used for nested tests</span>
+<span class="sd">    :param skip_objects: to skip variable names if included in that list</span>
+<span class="sd">        such as modules</span>
+<span class="sd">    :param args_names: defines the local variables</span>
+<span class="sd">    :param filter_nodes: a function which is used to decide which node</span>
+<span class="sd">        to rewrite, True by default</span>
+<span class="sd">    :param pre_rewriter: a rewriter applied before the automated rewriting</span>
+<span class="sd">    :param post_rewriter: a rewriter applied after the automated rewriting</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -423,22 +493,43 @@
         <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;branch_cond&quot;</span><span class="p">,</span>
         <span class="n">skip_objects</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">args_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ast.Node&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pre_rewriter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ast.Node&quot;</span><span class="p">],</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">post_rewriter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ast.Node&quot;</span><span class="p">],</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter_test</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter_loop</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_func_args</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_objects</span> <span class="o">=</span> <span class="n">skip_objects</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args_names</span> <span class="o">=</span> <span class="n">args_names</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args_names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_node</span> <span class="o">=</span> <span class="n">filter_node</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">_node</span><span class="p">:</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_rewriter</span> <span class="o">=</span> <span class="n">pre_rewriter</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post_rewriter</span> <span class="o">=</span> <span class="n">post_rewriter</span> <span class="ow">or</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="n">node</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RewriteControlFlow.generic_visit">
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.RewriteControlFlow.generic_visit">[docs]</a>
+    <span class="k">def</span> <span class="nf">generic_visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_check</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks the condition is True, otherwise raises an exception with an error message</span>
+<span class="sd">        including the parsed code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">cond</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="bp">cls</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">smsg</span> <span class="o">=</span> <span class="n">msg</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">msg</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="bp">cls</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">smsg</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="k">assert</span> <span class="n">cond</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="n">cond</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="nb">str</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">msg</span><span class="p">()</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">--</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">ast</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">visit_Name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
@@ -466,6 +557,12 @@
                     <span class="nb">vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">vars</span><span class="p">))</span>
 
+    <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name&quot;</span>
+        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;clone&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span> <span class="n">args</span><span class="o">=</span><span class="p">[],</span> <span class="n">keywords</span><span class="o">=</span><span class="p">[]</span>
+        <span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_rewrite_if</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">then_exprs</span><span class="p">,</span> <span class="n">else_exprs</span><span class="p">,</span> <span class="n">tgt_mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">known_local_variables</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
@@ -474,8 +571,8 @@
         <span class="n">drop</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
         <span class="c1"># extract free variables</span>
-        <span class="n">then_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_then_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">else_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_else_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">then_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_then_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">counter_test</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">else_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_else_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">counter_test</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">then_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_id</span><span class="p">(</span><span class="n">then_exprs</span><span class="p">)</span>
         <span class="n">else_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_id</span><span class="p">(</span><span class="n">else_exprs</span><span class="p">)</span>
         <span class="n">then_else_vars</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">then_vars</span><span class="p">,</span> <span class="o">*</span><span class="n">else_vars</span><span class="p">]</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">known_local_variables</span><span class="p">)</span>
@@ -486,6 +583,23 @@
             <span class="n">else_ret</span> <span class="o">=</span> <span class="n">else_exprs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">then_exprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Return</span><span class="p">)]</span>
             <span class="n">else_exprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">orelse</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Return</span><span class="p">)]</span>
+            <span class="n">is_tuple_or_list</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">then_ret</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">)),</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">else_ret</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">is_tuple_or_list</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;is_tuple_or_list=</span><span class="si">{</span><span class="n">is_tuple_or_list</span><span class="si">}</span><span class="s2">, inconsistencies return &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;then value=</span><span class="si">{</span><span class="n">then_ret</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;else value=</span><span class="si">{</span><span class="n">else_ret</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_tuple_or_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">then_ret</span><span class="o">.</span><span class="n">elts</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">else_ret</span><span class="o">.</span><span class="n">elts</span><span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unexpected number of elements on both branches, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;then:</span><span class="si">{</span><span class="n">then_ret</span><span class="o">.</span><span class="n">elts</span><span class="si">}</span><span class="s2">, else:</span><span class="si">{</span><span class="n">else_ret</span><span class="o">.</span><span class="n">elts</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">n_returned_values</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">then_ret</span><span class="o">.</span><span class="n">elts</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n_returned_values</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
                 <span class="n">tgt_mapping</span><span class="p">,</span>
@@ -507,11 +621,16 @@
                 <span class="n">then_rets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">then_e</span> <span class="ow">or</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">else_e</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()))</span>
                 <span class="n">else_rets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">else_e</span> <span class="ow">or</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">then_e</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()))</span>
             <span class="n">then_ret</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">then_rets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">then_rets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">(</span><span class="n">then_rets</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">then_rets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">then_rets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="k">else</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">then_rets</span><span class="p">],</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
             <span class="p">)</span>
             <span class="n">else_ret</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">else_rets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">else_rets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">(</span><span class="n">else_rets</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">else_rets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">else_rets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="k">else</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">else_rets</span><span class="p">],</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
             <span class="p">)</span>
+            <span class="n">n_returned_values</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">then_rets</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">then_rets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span>
 
         <span class="c1"># build local funcs</span>
         <span class="n">then_def</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">(</span>
@@ -563,7 +682,7 @@
             <span class="p">],</span>
             <span class="n">keywords</span><span class="o">=</span><span class="p">[],</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">drop</span>
+        <span class="k">return</span> <span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">drop</span><span class="p">,</span> <span class="n">n_returned_values</span>
 
     <span class="k">def</span> <span class="nf">_filter_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">tgt_mapping</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -607,6 +726,11 @@
         <span class="k">return</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">tgt_mapping</span>
 
     <span class="k">def</span> <span class="nf">visit_If</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_node</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_rewriter</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
         <span class="c1"># First recurse into subnodes</span>
         <span class="n">known_local_variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_variables</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
@@ -624,7 +748,7 @@
             <span class="ne">NotImplementedError</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_func_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="s2">&quot;current_func_args is None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter_test</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">has_then_return</span><span class="p">:</span>
             <span class="c1"># Case 1: simple assignment in both branches</span>
@@ -635,7 +759,7 @@
             <span class="c1"># the targets we need to export</span>
             <span class="n">tgt</span><span class="p">,</span> <span class="n">tgt_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_targets</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">then_assigns</span><span class="p">,</span> <span class="n">else_assigns</span><span class="p">)</span>
 
-            <span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">dropped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rewrite_if</span><span class="p">(</span>
+            <span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">dropped</span><span class="p">,</span> <span class="n">n_returned_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rewrite_if</span><span class="p">(</span>
                 <span class="n">node</span><span class="p">,</span>
                 <span class="n">then_assigns</span><span class="p">,</span>
                 <span class="n">else_assigns</span><span class="p">,</span>
@@ -643,16 +767,31 @@
                 <span class="n">known_local_variables</span><span class="o">=</span><span class="n">known_local_variables</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">dropped</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">):</span>
-                <span class="n">tgt</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">(</span>
-                    <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tgt</span><span class="o">.</span><span class="n">elts</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dropped</span><span class="p">),</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">()</span>
+                <span class="n">tgt_elts</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tgt</span><span class="o">.</span><span class="n">elts</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dropped</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">):</span>
+                <span class="n">tgt_elts</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tgt</span><span class="o">.</span><span class="n">elts</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dropped</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tgt_elts</span> <span class="o">=</span> <span class="p">[</span><span class="n">tgt</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">n_returned_values</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tgt_elts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Inconsistencies between n_returned_values=</span><span class="si">{</span><span class="n">n_returned_values</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;dropped=</span><span class="si">{</span><span class="n">dropped</span><span class="si">}</span><span class="s2">, tgt.elts=</span><span class="si">{</span><span class="n">tgt</span><span class="o">.</span><span class="n">elts</span><span class="si">}</span><span class="s2">, tgt_elts=</span><span class="si">{</span><span class="n">tgt_elts</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
+                <span class="n">tgt</span> <span class="o">=</span> <span class="n">tgt_elts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">n_returned_values</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">tgt_elts</span><span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Inconsistencies between n_returned_values=</span><span class="si">{</span><span class="n">n_returned_values</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;dropped=</span><span class="si">{</span><span class="n">dropped</span><span class="si">}</span><span class="s2">, tgt.elts=</span><span class="si">{</span><span class="n">tgt</span><span class="o">.</span><span class="n">elts</span><span class="si">}</span><span class="s2">, tgt_elts=</span><span class="si">{</span><span class="n">tgt_elts</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">tgt</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">(</span><span class="n">tgt_elts</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">())</span>
 
             <span class="n">added</span> <span class="o">=</span> <span class="p">{</span><span class="n">tgt</span><span class="o">.</span><span class="n">id</span><span class="p">}</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tgt</span><span class="o">.</span><span class="n">elts</span><span class="p">)</span>
             <span class="n">assign</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="n">tgt</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">call</span><span class="p">)</span>
             <span class="n">ast</span><span class="o">.</span><span class="n">copy_location</span><span class="p">(</span><span class="n">assign</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
             <span class="n">ast</span><span class="o">.</span><span class="n">fix_missing_locations</span><span class="p">(</span><span class="n">assign</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">local_variables</span> <span class="o">=</span> <span class="n">known_local_variables</span> <span class="o">|</span> <span class="n">added</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">assign</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_rewriter</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">assign</span><span class="p">]]</span>
 
         <span class="c1"># Case 2: return in both branches, we assume both branches return the same results.</span>
         <span class="n">then_ret</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -669,24 +808,242 @@
         <span class="p">)</span>
         <span class="n">then_expr</span> <span class="o">=</span> <span class="n">then_ret</span><span class="o">.</span><span class="n">value</span>
         <span class="n">else_expr</span> <span class="o">=</span> <span class="n">else_ret</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">dropped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rewrite_if</span><span class="p">(</span>
+        <span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">dropped</span><span class="p">,</span> <span class="n">n_returned_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rewrite_if</span><span class="p">(</span>
             <span class="n">node</span><span class="p">,</span> <span class="p">[</span><span class="n">then_expr</span><span class="p">],</span> <span class="p">[</span><span class="n">else_expr</span><span class="p">],</span> <span class="n">known_local_variables</span><span class="o">=</span><span class="n">known_local_variables</span>
         <span class="p">)</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Return</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
         <span class="n">ast</span><span class="o">.</span><span class="n">copy_location</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
         <span class="n">ast</span><span class="o">.</span><span class="n">fix_missing_locations</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">ret</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_rewriter</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="n">then_def</span><span class="p">,</span> <span class="n">else_def</span><span class="p">,</span> <span class="n">ret</span><span class="p">]]</span>
 
-<div class="viewcode-block" id="RewriteControlFlow.generic_visit">
-<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.RewriteControlFlow.generic_visit">[docs]</a>
-    <span class="k">def</span> <span class="nf">generic_visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></div>
-</div>
+    <span class="k">def</span> <span class="nf">_find_loop_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">For</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2"> for node&quot;</span>
+        <span class="n">finder</span> <span class="o">=</span> <span class="n">ShapeFinder</span><span class="p">()</span>
+        <span class="n">finder</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">iter</span><span class="p">)</span>
+        <span class="n">scan_shape_vars</span> <span class="o">=</span> <span class="n">finder</span><span class="o">.</span><span class="n">found_shape</span>
+        <span class="n">scan_vars</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="n">finder</span> <span class="o">=</span> <span class="n">UsedVarsFinder</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+            <span class="n">finder</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+
+        <span class="n">assigned_in_body</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="n">stmt</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">):</span>
+                        <span class="n">assigned_in_body</span> <span class="o">|=</span> <span class="p">{</span><span class="n">tgt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+
+        <span class="n">extra_defined</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">stmt</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stmt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="n">stmt</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Subscript</span><span class="p">):</span>
+                        <span class="c1"># It means the target existed before.</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span>
+                            <span class="ow">and</span> <span class="n">tgt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">assigned_in_body</span>
+                        <span class="p">):</span>
+                            <span class="n">extra_defined</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="n">loop_vars</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
+            <span class="n">loop_vars</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">)):</span>
+            <span class="n">loop_vars</span> <span class="o">|=</span> <span class="p">{</span><span class="n">elt</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">elts</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)}</span>
+
+        <span class="n">output_vars</span> <span class="o">=</span> <span class="n">finder</span><span class="o">.</span><span class="n">defined</span> <span class="o">|</span> <span class="n">assigned_in_body</span>
+        <span class="n">input_vars</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">finder</span><span class="o">.</span><span class="n">used</span>
+            <span class="o">-</span> <span class="n">finder</span><span class="o">.</span><span class="n">defined</span>
+            <span class="o">-</span> <span class="n">loop_vars</span>
+            <span class="o">-</span> <span class="n">scan_shape_vars</span>
+            <span class="o">-</span> <span class="n">scan_vars</span>
+            <span class="o">-</span> <span class="n">output_vars</span>
+            <span class="o">-</span> <span class="n">assigned_in_body</span>
+            <span class="o">-</span> <span class="n">extra_defined</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">init</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">extra_defined</span><span class="p">),</span>
+            <span class="n">loop</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">loop_vars</span><span class="p">),</span>
+            <span class="n">scan_shape</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">scan_shape_vars</span><span class="p">),</span>
+            <span class="n">scan</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">scan_vars</span><span class="p">),</span>
+            <span class="nb">input</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">input_vars</span><span class="p">),</span>
+            <span class="n">output</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">output_vars</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_For</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_node</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_rewriter</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># For nested loops.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generic_visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="c1"># look for variables, loop, inputs and outputs of the body</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_loop_vars</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">init_vars</span><span class="p">,</span> <span class="n">loop_vars</span><span class="p">,</span> <span class="n">scan_shape_vars</span><span class="p">,</span> <span class="n">scan_vars</span><span class="p">,</span> <span class="n">input_vars</span><span class="p">,</span> <span class="n">output_vars</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">vars</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;loop&quot;</span><span class="p">,</span> <span class="s2">&quot;scan_shape&quot;</span><span class="p">,</span> <span class="s2">&quot;scan&quot;</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">scan_shape_vars</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">loop_vars</span><span class="p">),</span>
+            <span class="n">node</span><span class="p">,</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Inconsistencies between loop_vars=</span><span class="si">{</span><span class="n">loop_vars</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and scan_shape_vars=</span><span class="si">{</span><span class="n">scan_shape_vars</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">scan_shape_vars</span><span class="p">)</span> <span class="ow">in</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
+            <span class="n">node</span><span class="p">,</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Inconsistencies with scan_shape_vars=</span><span class="si">{</span><span class="n">scan_shape_vars</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+            <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scan_shape_vars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_vars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">scan_shape_vars</span> <span class="ow">or</span> <span class="n">scan_vars</span><span class="p">),</span>
+            <span class="n">node</span><span class="p">,</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Inconsistencies between scan_vars=</span><span class="si">{</span><span class="n">scan_vars</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and scan_shape_vars=</span><span class="si">{</span><span class="n">scan_shape_vars</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># creates the function</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;loop_body_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">counter_loop</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter_loop</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">func_def</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">arguments</span><span class="p">(</span>
+                <span class="n">posonlyargs</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">ast</span><span class="o">.</span><span class="n">arg</span><span class="p">(</span><span class="n">arg</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
+                        <span class="o">*</span><span class="n">init_vars</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">loop_vars</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">scan_vars</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">scan_shape_vars</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">input_vars</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="p">],</span>
+                <span class="n">kwonlyargs</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">kw_defaults</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">defaults</span><span class="o">=</span><span class="p">[],</span>
+            <span class="p">),</span>
+            <span class="n">body</span><span class="o">=</span><span class="p">[</span>
+                <span class="o">*</span><span class="p">[</span>
+                    <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span>
+                        <span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())],</span>
+                        <span class="n">value</span><span class="o">=</span><span class="p">[</span>
+                            <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span>
+                                <span class="n">func</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                                    <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                                    <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;clone&quot;</span><span class="p">,</span>
+                                    <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                                <span class="p">),</span>
+                                <span class="n">args</span><span class="o">=</span><span class="p">[],</span>
+                                <span class="n">keywords</span><span class="o">=</span><span class="p">[],</span>
+                                <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                            <span class="p">)</span>
+                        <span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">init_vars</span>
+                <span class="p">],</span>
+                <span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">Return</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
+                        <span class="p">[</span>
+                            <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
+                            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">init_vars</span><span class="p">,</span> <span class="o">*</span><span class="n">loop_vars</span><span class="p">,</span> <span class="o">*</span><span class="n">output_vars</span><span class="p">]</span>
+                        <span class="p">],</span>
+                        <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
+            <span class="p">],</span>
+            <span class="n">decorator_list</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># final rewriting</span>
+        <span class="n">call</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                            <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;ops&quot;</span><span class="p">,</span>
+                            <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                        <span class="p">),</span>
+                        <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;higher_order&quot;</span><span class="p">,</span>
+                        <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                    <span class="p">),</span>
+                    <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;scan&quot;</span><span class="p">,</span>
+                    <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
+                    <span class="n">elts</span><span class="o">=</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_vars</span><span class="p">],</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">()</span>
+                <span class="p">),</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
+                    <span class="n">elts</span><span class="o">=</span><span class="p">[</span>
+                        <span class="o">*</span><span class="p">[</span>
+                            <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span>
+                                <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                                    <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                                    <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;arange&quot;</span><span class="p">,</span>
+                                    <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                                <span class="p">),</span>
+                                <span class="n">args</span><span class="o">=</span><span class="p">[</span>
+                                    <span class="n">ast</span><span class="o">.</span><span class="n">Subscript</span><span class="p">(</span>
+                                        <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                                            <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                                            <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span>
+                                            <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                                        <span class="p">),</span>
+                                        <span class="nb">slice</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                                        <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                                    <span class="p">),</span>
+                                <span class="p">],</span>
+                                <span class="n">keywords</span><span class="o">=</span><span class="p">[</span>
+                                    <span class="n">ast</span><span class="o">.</span><span class="n">keyword</span><span class="p">(</span>
+                                        <span class="n">arg</span><span class="o">=</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span>
+                                            <span class="n">value</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">()),</span>
+                                            <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;int64&quot;</span><span class="p">,</span>
+                                            <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                                        <span class="p">),</span>
+                                    <span class="p">)</span>
+                                <span class="p">],</span>
+                                <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+                            <span class="p">)</span>
+                            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">scan_shape_vars</span>
+                        <span class="p">],</span>
+                        <span class="o">*</span><span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">scan_vars</span><span class="p">],</span>
+                    <span class="p">],</span>
+                    <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">(),</span>
+                <span class="p">),</span>
+                <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">(</span>
+                    <span class="n">elts</span><span class="o">=</span><span class="p">[</span>
+                        <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">scan_shape_vars</span><span class="p">,</span> <span class="o">*</span><span class="n">input_vars</span><span class="p">]</span>
+                    <span class="p">],</span>
+                    <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">(),</span>
+                <span class="p">),</span>
+            <span class="p">],</span>
+            <span class="n">keywords</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">())</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">init_vars</span><span class="p">,</span> <span class="o">*</span><span class="n">loop_vars</span><span class="p">,</span> <span class="o">*</span><span class="n">output_vars</span><span class="p">]],</span>
+            <span class="n">ctx</span><span class="o">=</span><span class="n">ast</span><span class="o">.</span><span class="n">Store</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">assign</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">targets</span><span class="o">=</span><span class="p">[</span><span class="n">target</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">call</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_rewriter</span><span class="p">(</span><span class="n">func_def</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_rewriter</span><span class="p">(</span><span class="n">assign</span><span class="p">)]</span></div>
 
 
 
 <div class="viewcode-block" id="RewrittenMethod">
-<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.RewrittenMethod">[docs]</a>
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.RewrittenMethod">[docs]</a>
 <span class="k">class</span> <span class="nc">RewrittenMethod</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stores a rewritten method using</span>
@@ -747,7 +1104,7 @@
 
 
 <div class="viewcode-block" id="inplace_add_parent">
-<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.inplace_add_parent">[docs]</a>
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.inplace_add_parent">[docs]</a>
 <span class="k">def</span> <span class="nf">inplace_add_parent</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds parents to an AST tree.&quot;&quot;&quot;</span>
     <span class="n">_AddParentTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></div>
@@ -755,7 +1112,7 @@
 
 
 <div class="viewcode-block" id="normalize_assignment_in_test">
-<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.normalize_assignment_in_test">[docs]</a>
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.normalize_assignment_in_test">[docs]</a>
 <span class="k">def</span> <span class="nf">normalize_assignment_in_test</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Split AugAssign into BinOp and Assign to simplify whatever comes after.&quot;&quot;&quot;</span>
     <span class="n">_SelectiveAssignNormalizer</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></div>
@@ -763,15 +1120,20 @@
 
 
 <div class="viewcode-block" id="transform_method">
-<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.transform_method">[docs]</a>
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.transform_method">[docs]</a>
 <span class="k">def</span> <span class="nf">transform_method</span><span class="p">(</span>
     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;branch_cond&quot;</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">filter_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ast.Node&quot;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pre_rewriter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ast.Node&quot;</span><span class="p">],</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">post_rewriter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s2">&quot;ast.Node&quot;</span><span class="p">],</span> <span class="s2">&quot;ast.Node&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RewrittenMethod</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a new function based on `func` where every test (if)</span>
 <span class="sd">    is replaced by a call to :func:`torch.cond`.</span>
+<span class="sd">    Some known rewriting are part of the default patches</span>
+<span class="sd">    (see :ref:`l-control-flow-rewriting`).</span>
 
 <span class="sd">    A test must return the same things if it returns something</span>
 <span class="sd">    or assign something. It cannot return in one branch and assign</span>
@@ -788,6 +1150,9 @@
 <span class="sd">    :param func: method or function to rewrite</span>
 <span class="sd">    :param prefix: prefix used to create the functions for the branches</span>
 <span class="sd">    :param verbose: verbosity</span>
+<span class="sd">    :param filter_node: a function which tells which node to rewrite</span>
+<span class="sd">    :param pre_rewriter: a rewriter applied before the automated rewriting</span>
+<span class="sd">    :param post_rewriter: a rewriter applied after the automated rewriting</span>
 <span class="sd">    :return: rewritten method</span>
 
 <span class="sd">    An example with **return**:</span>
@@ -872,6 +1237,9 @@
         <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
         <span class="n">skip_objects</span><span class="o">=</span><span class="n">modules</span><span class="p">,</span>
         <span class="n">args_names</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">),</span>
+        <span class="n">filter_node</span><span class="o">=</span><span class="n">filter_node</span><span class="p">,</span>
+        <span class="n">pre_rewriter</span><span class="o">=</span><span class="n">pre_rewriter</span><span class="p">,</span>
+        <span class="n">post_rewriter</span><span class="o">=</span><span class="n">post_rewriter</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">normalize_assignment_in_test</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
     <span class="n">inplace_add_parent</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
@@ -909,6 +1277,212 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_func</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Transformed function not found&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">RewrittenMethod</span><span class="p">(</span><span class="n">new_tree</span><span class="p">,</span> <span class="n">new_func</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="torch_export_rewrite">
+<a class="viewcode-back" href="../../../api/torch_export_patches/index.html#onnx_diagnostic.torch_export_patches.torch_export_rewrite">[docs]</a>
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">torch_export_rewrite</span><span class="p">(</span>
+    <span class="n">rewrite</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Callable</span><span class="p">]]]</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">dump_rewriting</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automatically rewrite the methods given in `rewrite` to export</span>
+<span class="sd">    control flows (test and loops).</span>
+
+<span class="sd">    :param rewrite: methods of functions to rewrite, if not empty, the function may try</span>
+<span class="sd">        to discover them, a method is defined by its class (a type) and its name</span>
+<span class="sd">        if the class is local, by itself otherwise, it can also be a model,</span>
+<span class="sd">        in that case, the function calls :func:`code_needing_rewriting</span>
+<span class="sd">        &lt;onnx_diagnostic.torch_export_patches.patch_module_helper.code_needing_rewriting&gt;`</span>
+<span class="sd">        to retrieve the necessary rewriting</span>
+<span class="sd">    :param dump_rewriting: dumps rewriting into that folder, if it does not exists,</span>
+<span class="sd">        it creates it.</span>
+<span class="sd">    :param verbose: verbosity, up to 10, 10 shows the rewritten code,</span>
+<span class="sd">        ``verbose=1`` shows the rewritten function,</span>
+<span class="sd">        ``verbose=2`` shows the rewritten code as well</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        class Model(torch.nn.Module):</span>
+<span class="sd">            def forward(self, x, y):</span>
+<span class="sd">                if x.sum() &gt; 0:</span>
+<span class="sd">                    return x + y</span>
+<span class="sd">                else:</span>
+<span class="sd">                    return torch.abs(x) + y + 1</span>
+
+<span class="sd">        model = Model()</span>
+<span class="sd">        x, y = torch.rand((4, 5)), torch.rand((4, 5))</span>
+<span class="sd">        DYN = torch.export.Dim.DYNAMIC</span>
+<span class="sd">        ds = ({0: DYN, 1: DYN}, {0: DYN, 1: DYN})</span>
+<span class="sd">        with torch_export_rewrite(rewrite=[(Model, &quot;forward&quot;)]):</span>
+<span class="sd">            ep = torch.export.export(model, (x, y), dynamic_shapes=ds)</span>
+
+<span class="sd">    If the method to rewrite is not local, then the following can be used:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        with torch_export_rewrite(rewrite=[Model.forward]):</span>
+<span class="sd">            ep = torch.export.export(model, (x, y), dynamic_shapes=ds)</span>
+
+<span class="sd">    Functions (if not local) can also be rewritten:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        def outside(x, y):</span>
+<span class="sd">            if x.sum() &gt; 0:</span>
+<span class="sd">                return x + y</span>
+<span class="sd">            else:</span>
+<span class="sd">                return torch.abs(x) + y + 1</span>
+
+<span class="sd">        class Model(torch.nn.Module):</span>
+<span class="sd">            def forward(self, x, y):</span>
+<span class="sd">                return outside(x, y)</span>
+
+<span class="sd">        model = Model()</span>
+<span class="sd">        x, y = torch.rand((4, 5)), torch.rand((4, 5))</span>
+<span class="sd">        DYN = torch.export.Dim.DYNAMIC</span>
+<span class="sd">        ds = ({0: DYN, 1: DYN}, {0: DYN, 1: DYN})</span>
+<span class="sd">        with torch_export_rewrite(rewrite=[outside]):</span>
+<span class="sd">            ep = torch.export.export(model, (x, y), dynamic_shapes=ds)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rewrite</span><span class="p">,</span> <span class="s2">&quot;forward&quot;</span><span class="p">):</span>
+        <span class="c1"># It is a torch.nn.Module.</span>
+        <span class="c1"># Let&#39;s retrieve the known rewriting for this model class.</span>
+        <span class="n">rewrite</span> <span class="o">=</span> <span class="n">code_needing_rewriting</span><span class="p">(</span><span class="n">rewrite</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">rewrite</span><span class="p">,</span> <span class="s2">&quot;rewrite is empty, automated discovery is not implemented yet&quot;</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">me</span> <span class="ow">in</span> <span class="n">rewrite</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">me</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected value for a rewritten method or function </span><span class="si">{</span><span class="n">me</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">me</span>
+            <span class="n">to_rewrite</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;method&quot;</span>
+            <span class="n">kws</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># type: ignore[var-annotated]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">assert</span> <span class="s2">&quot;function&quot;</span> <span class="ow">in</span> <span class="n">me</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="s2">&quot;filter_node&quot;</span> <span class="ow">in</span> <span class="n">me</span> <span class="ow">or</span> <span class="s2">&quot;pre_rewriter&quot;</span> <span class="ow">in</span> <span class="n">me</span> <span class="ow">or</span> <span class="s2">&quot;post_rewriter&quot;</span> <span class="ow">in</span> <span class="n">me</span>
+                <span class="p">),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;If the rewriting code is defined as a dictionary, key &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;function&#39; must be defined, other arguments must be understood by &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">transform_method</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;the given value is </span><span class="si">{</span><span class="n">me</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+                <span class="n">kws</span> <span class="o">=</span> <span class="n">me</span>
+                <span class="n">me</span> <span class="o">=</span> <span class="n">me</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">kws</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kws</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="vm">__qualname__</span>
+            <span class="n">spl</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># This a function</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="vm">__module__</span>
+                <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">me</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">:</span>
+                    <span class="n">mod</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">,</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Cannot find module name </span><span class="si">{</span><span class="n">module</span><span class="si">!r}</span><span class="s2"> in sys.modules or &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;__globals__=</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">mod</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
+                <span class="n">cls_name</span> <span class="o">=</span> <span class="n">module</span>
+                <span class="bp">cls</span> <span class="o">=</span> <span class="n">mod</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">to_rewrite</span> <span class="o">=</span> <span class="n">me</span>
+                <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;function&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;method&quot;</span>
+                <span class="c1"># This is a method</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">spl</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">me</span><span class="si">}</span><span class="s2"> is not method, its name </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not contain a class name, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;dir(me)=</span><span class="si">{</span><span class="nb">dir</span><span class="p">(</span><span class="n">me</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">cls_name</span> <span class="o">=</span> <span class="n">spl</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">assert</span> <span class="n">cls_name</span> <span class="ow">in</span> <span class="n">me</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Class name </span><span class="si">{</span><span class="n">cls_name</span><span class="si">!r}</span><span class="s2"> from method </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;could not be found in set(me.__globals__)=</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">me</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">cls</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">cls_name</span><span class="p">]</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="n">to_rewrite</span> <span class="o">=</span> <span class="n">me</span>
+                <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span>
+                    <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Method </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> inferred form </span><span class="si">{</span><span class="n">me</span><span class="si">}</span><span class="s2"> was not found in class </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">me</span><span class="si">}</span><span class="s2"> cannot be rewritten twice.&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_rewrite] rewrites </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">keep</span><span class="p">[</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">to_rewrite</span>
+        <span class="k">if</span> <span class="n">dump_rewriting</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dump_rewriting</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dump_rewriting</span><span class="p">)</span>
+            <span class="n">filename1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_rewriting</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.original.py&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_rewrite] dump original code in </span><span class="si">{</span><span class="n">filename1</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">_clean_code</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="n">to_rewrite</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="n">rewr</span> <span class="o">=</span> <span class="n">transform_method</span><span class="p">(</span><span class="n">to_rewrite</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">verbose</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dump_rewriting</span><span class="p">:</span>
+            <span class="n">filename2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_rewriting</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.rewritten.py&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_rewrite] dump rewritten code in </span><span class="si">{</span><span class="n">filename2</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">rcode</span> <span class="o">=</span> <span class="n">_clean_code</span><span class="p">(</span><span class="n">rewr</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rcode</span><span class="p">)</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dump_rewriting</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.diff&quot;</span><span class="p">)</span>
+            <span class="n">make_diff</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">rcode</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rewr</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">for</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">me</span> <span class="ow">in</span> <span class="n">keep</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_rewrite] restored </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">me</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_clean_code</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">black</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">code</span>
+    <span class="k">return</span> <span class="n">black</span><span class="o">.</span><span class="n">format_str</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">black</span><span class="o">.</span><span class="n">FileMode</span><span class="p">(</span><span class="n">line_length</span><span class="o">=</span><span class="mi">98</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="make_diff">
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.make_diff">[docs]</a>
+<span class="k">def</span> <span class="nf">make_diff</span><span class="p">(</span><span class="n">code1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">code2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a diff between two codes.</span>
+
+<span class="sd">    :param code1: first code</span>
+<span class="sd">    :param code2: second code</span>
+<span class="sd">    :param output: if not empty, stores the output in this file</span>
+<span class="sd">    :return: diff</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">difflib</span><span class="o">.</span><span class="n">unified_diff</span><span class="p">(</span>
+            <span class="n">code1</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(),</span>
+            <span class="n">code2</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(),</span>
+            <span class="n">fromfile</span><span class="o">=</span><span class="s2">&quot;original&quot;</span><span class="p">,</span>
+            <span class="n">tofile</span><span class="o">=</span><span class="s2">&quot;rewritten&quot;</span><span class="p">,</span>
+            <span class="n">lineterm</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
 
 </pre></div>
         </article>

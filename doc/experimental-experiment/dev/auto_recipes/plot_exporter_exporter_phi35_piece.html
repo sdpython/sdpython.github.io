@@ -1329,21 +1329,21 @@ the refactoring to make it work.</p>
 
 
 def forward(self, arg0_1: &quot;f32[32064, 3072]&quot;, arg1_1: &quot;f32[3072, 3072]&quot;, arg2_1: &quot;f32[9216, 3072]&quot;, arg3_1: &quot;f32[16384, 3072]&quot;, arg4_1: &quot;f32[3072, 8192]&quot;, arg5_1: &quot;f32[3072]&quot;, arg6_1: &quot;f32[3072]&quot;, arg7_1: &quot;f32[3072, 3072]&quot;, arg8_1: &quot;f32[9216, 3072]&quot;, arg9_1: &quot;f32[16384, 3072]&quot;, arg10_1: &quot;f32[3072, 8192]&quot;, arg11_1: &quot;f32[3072]&quot;, arg12_1: &quot;f32[3072]&quot;, arg13_1: &quot;f32[3072]&quot;, arg14_1: &quot;f32[32064, 3072]&quot;, arg15_1: &quot;f32[48]&quot;, arg16_1: &quot;i64[s0, s1]&quot;, arg17_1: &quot;i64[s0, s3]&quot;, arg18_1: &quot;f32[2, 32, s5, 96]&quot;, arg19_1: &quot;f32[s6, 32, s7, 96]&quot;, arg20_1: &quot;f32[s8, 32, s9, 96]&quot;, arg21_1: &quot;f32[s10, 32, s11, 96]&quot;):
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
+     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
     embedding: &quot;f32[s0, s1, 3072]&quot; = torch.ops.aten.embedding.default(arg0_1, arg16_1, 32000);  arg0_1 = embedding = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:598 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:598 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
     sym_size_int: &quot;Sym(s5)&quot; = torch.ops.aten.sym_size.int(arg18_1, 2);  arg18_1 = None
     sym_size_int_1: &quot;Sym(s1)&quot; = torch.ops.aten.sym_size.int(arg16_1, 1)
     add: &quot;Sym(s1 + s5)&quot; = sym_size_int + sym_size_int_1
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:597 in forward, code: cache_position = torch.arange(
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:597 in forward, code: cache_position = torch.arange(
     arange: &quot;i64[s1]&quot; = torch.ops.aten.arange.start(sym_size_int, add, device = device(type=&#39;cpu&#39;), pin_memory = False);  add = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:602 in forward, code: position_ids = cache_position.unsqueeze(0)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:602 in forward, code: position_ids = cache_position.unsqueeze(0)
     unsqueeze: &quot;i64[1, s1]&quot; = torch.ops.aten.unsqueeze.default(arange, 0)
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:604 in forward, code: causal_mask = self._update_causal_mask(
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:604 in forward, code: causal_mask = self._update_causal_mask(
     add_1: &quot;Sym(s1 + s5)&quot; = sym_size_int_1 + sym_size_int;  sym_size_int = None
     lt: &quot;Sym(s1 + s5 &lt; 262144)&quot; = add_1 &lt; 262144;  add_1 = lt = None
     sym_size_int_2: &quot;Sym(s3)&quot; = torch.ops.aten.sym_size.int(arg17_1, 1)
@@ -1406,20 +1406,20 @@ def forward(self, arg0_1: &quot;f32[32064, 3072]&quot;, arg1_1: &quot;f32[3072, 
     eq_16: &quot;Sym(True)&quot; = sym_size_int_5 == sym_size_int_5;  sym_size_int_5 = eq_16 = None
     copy_: &quot;f32[s0, 1, s1, s3]&quot; = torch.ops.aten.copy_.default(slice_13, masked_fill);  slice_13 = masked_fill = copy_ = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
     _set_grad_enabled = torch._C._set_grad_enabled(False);  _set_grad_enabled = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:362 in forward, code: self._longrope_frequency_update(position_ids, device=x.device)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:362 in forward, code: self._longrope_frequency_update(position_ids, device=x.device)
     max_1: &quot;i64[]&quot; = torch.ops.aten.max.default(unsqueeze);  unsqueeze = None
     add_3: &quot;i64[]&quot; = torch.ops.aten.add.Tensor(max_1, 1);  max_1 = None
     gt_2: &quot;b8[]&quot; = torch.ops.aten.gt.Scalar(add_3, 4096);  add_3 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(gt_2, 0);  gt_2 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
     _set_grad_enabled_1 = torch._C._set_grad_enabled(True);  _set_grad_enabled_1 = None
 
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX]  M:__main__-Phi3ForCausalLM --- FAIL, step=EXPORT, reason=Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
@@ -1427,21 +1427,21 @@ def forward(self, arg0_1: &quot;f32[32064, 3072]&quot;, arg1_1: &quot;f32[3072, 
 
 
 def forward(self, arg0_1: &quot;f32[32064, 3072]&quot;, arg1_1: &quot;f32[3072, 3072]&quot;, arg2_1: &quot;f32[9216, 3072]&quot;, arg3_1: &quot;f32[16384, 3072]&quot;, arg4_1: &quot;f32[3072, 8192]&quot;, arg5_1: &quot;f32[3072]&quot;, arg6_1: &quot;f32[3072]&quot;, arg7_1: &quot;f32[3072, 3072]&quot;, arg8_1: &quot;f32[9216, 3072]&quot;, arg9_1: &quot;f32[16384, 3072]&quot;, arg10_1: &quot;f32[3072, 8192]&quot;, arg11_1: &quot;f32[3072]&quot;, arg12_1: &quot;f32[3072]&quot;, arg13_1: &quot;f32[3072]&quot;, arg14_1: &quot;f32[48]&quot;, arg15_1: &quot;i64[s0, s1]&quot;, arg16_1: &quot;i64[s0, s3]&quot;, arg17_1, arg18_1: &quot;f32[2, 32, s5, 96]&quot;, arg19_1: &quot;f32[s6, 32, s7, 96]&quot;, arg20_1: &quot;f32[s8, 32, s9, 96]&quot;, arg21_1: &quot;f32[s10, 32, s11, 96]&quot;, arg22_1, arg23_1, arg24_1, arg25_1, arg26_1, arg27_1):
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
+     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:190 in forward, code: return F.embedding(
     embedding: &quot;f32[s0, s1, 3072]&quot; = torch.ops.aten.embedding.default(arg0_1, arg15_1, 32000);  arg0_1 = embedding = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:598 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:598 in forward, code: past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
     sym_size_int: &quot;Sym(s5)&quot; = torch.ops.aten.sym_size.int(arg18_1, 2);  arg18_1 = None
     sym_size_int_1: &quot;Sym(s1)&quot; = torch.ops.aten.sym_size.int(arg15_1, 1)
     add: &quot;Sym(s1 + s5)&quot; = sym_size_int + sym_size_int_1
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:597 in forward, code: cache_position = torch.arange(
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:597 in forward, code: cache_position = torch.arange(
     arange: &quot;i64[s1]&quot; = torch.ops.aten.arange.start(sym_size_int, add, device = device(type=&#39;cpu&#39;), pin_memory = False);  add = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:602 in forward, code: position_ids = cache_position.unsqueeze(0)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:602 in forward, code: position_ids = cache_position.unsqueeze(0)
     unsqueeze: &quot;i64[1, s1]&quot; = torch.ops.aten.unsqueeze.default(arange, 0)
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:604 in forward, code: causal_mask = self._update_causal_mask(
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:604 in forward, code: causal_mask = self._update_causal_mask(
     add_1: &quot;Sym(s1 + s5)&quot; = sym_size_int_1 + sym_size_int;  sym_size_int = None
     lt: &quot;Sym(s1 + s5 &lt; 262144)&quot; = add_1 &lt; 262144;  add_1 = lt = None
     sym_size_int_2: &quot;Sym(s3)&quot; = torch.ops.aten.sym_size.int(arg16_1, 1)
@@ -1504,76 +1504,76 @@ def forward(self, arg0_1: &quot;f32[32064, 3072]&quot;, arg1_1: &quot;f32[3072, 
     eq_16: &quot;Sym(True)&quot; = sym_size_int_5 == sym_size_int_5;  sym_size_int_5 = eq_16 = None
     copy_: &quot;f32[s0, 1, s1, s3]&quot; = torch.ops.aten.copy_.default(slice_13, masked_fill);  slice_13 = masked_fill = copy_ = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
     _set_grad_enabled = torch._C._set_grad_enabled(False);  _set_grad_enabled = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:362 in forward, code: self._longrope_frequency_update(position_ids, device=x.device)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:362 in forward, code: self._longrope_frequency_update(position_ids, device=x.device)
     max_1: &quot;i64[]&quot; = torch.ops.aten.max.default(unsqueeze);  unsqueeze = None
     add_3: &quot;i64[]&quot; = torch.ops.aten.add.Tensor(max_1, 1);  max_1 = None
     gt_2: &quot;b8[]&quot; = torch.ops.aten.gt.Scalar(add_3, 4096);  add_3 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(gt_2, 0);  gt_2 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:611 in forward, code: position_embeddings = self.rotary_emb(hidden_states, position_ids)
     _set_grad_enabled_1 = torch._C._set_grad_enabled(True);  _set_grad_enabled_1 = None
 
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] .. M:model-Phi3Model --- FAIL, step=EXPORT, reason=Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] .... M:embed_tokens-Embedding --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ........ M:o_proj-Linear --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ........ M:qkv_proj-Linear --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ...... M:mlp-Phi3MLP --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ...... M:input_layernorm-Phi3RMSNorm --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ...... M:post_attention_layernorm-Phi3RMSNorm --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ...... M:resid_attn_dropout-Dropout --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-[try_export-FX] ...... M:resid_mlp_dropout-Dropout --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
-  torch._C._set_onednn_allow_tf32(_allow_tf32)
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ........ M:o_proj-Linear --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ........ M:qkv_proj-Linear --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ...... M:mlp-Phi3MLP --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ...... M:input_layernorm-Phi3RMSNorm --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ...... M:post_attention_layernorm-Phi3RMSNorm --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ...... M:resid_attn_dropout-Dropout --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] ...... M:resid_mlp_dropout-Dropout --- OK:
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ........ M:o_proj-Linear --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ........ M:qkv_proj-Linear --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ...... M:mlp-Phi3MLP --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ...... M:input_layernorm-Phi3RMSNorm --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ...... M:post_attention_layernorm-Phi3RMSNorm --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ...... M:resid_attn_dropout-Dropout --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+  torch._C._set_onednn_allow_tf32(_allow_tf32)
+[try_export-FX] ...... M:resid_mlp_dropout-Dropout --- OK:
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] .... M:norm-Phi3RMSNorm --- OK:
 
@@ -1584,7 +1584,7 @@ def forward(self, arg0_1: &quot;f32[48]&quot;, arg1_1: &quot;f32[s0, s1, 3072]&q
     # No stacktrace found for following nodes
     _set_grad_enabled = torch._C._set_grad_enabled(False);  _set_grad_enabled = None
 
-     # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:362 in forward, code: self._longrope_frequency_update(position_ids, device=x.device)
+     # File: ~/vv/this312/lib/python3.12/site-packages/transformers/models/phi3/modeling_phi3.py:362 in forward, code: self._longrope_frequency_update(position_ids, device=x.device)
     max_1: &quot;i64[]&quot; = torch.ops.aten.max.default(arg2_1);  arg2_1 = None
     add: &quot;i64[]&quot; = torch.ops.aten.add.Tensor(max_1, 1);  max_1 = None
     gt: &quot;b8[]&quot; = torch.ops.aten.gt.Scalar(add, 4096);  add = None
@@ -1594,11 +1594,11 @@ def forward(self, arg0_1: &quot;f32[48]&quot;, arg1_1: &quot;f32[s0, s1, 3072]&q
     # No stacktrace found for following nodes
     _set_grad_enabled_1 = torch._C._set_grad_enabled(True);  _set_grad_enabled_1 = None
 
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] .... M:rotary_emb-Phi3RotaryEmbedding --- FAIL, step=EXPORT, reason=Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 [try_export-FX] .... M:rotary_emb-Phi3RotaryEmbedding --- FAIL: Could not guard on data-depend...
-/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
+~/vv/this312/lib/python3.12/site-packages/torch/backends/mkldnn/__init__.py:78: UserWarning: TF32 acceleration on top of oneDNN is available for Intel GPUs. The current Torch version does not have Intel GPU Support. (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:148.)
   torch._C._set_onednn_allow_tf32(_allow_tf32)
 [try_export-FX] .. M:lm_head-Linear --- OK:
 </pre></div>

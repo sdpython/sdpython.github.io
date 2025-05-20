@@ -434,21 +434,21 @@ it takes a wrong decision and how to get around it.</p>
             sym_size_int_12: &quot;Sym(s58)&quot; = torch.ops.aten.sym_size.int(y, 0)
             sym_size_int_13: &quot;Sym(s43)&quot; = torch.ops.aten.sym_size.int(y, 1)
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862 in sym_max, code: return a.__sym_max__(b)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862 in sym_max, code: return a.__sym_max__(b)
             sym_max: &quot;Sym(Max(s35, s58))&quot; = torch.sym_max(sym_size_int_10, sym_size_int_12)
 
-             # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862 in sym_max, code: return a.__sym_max__(b)
+             # File: ~/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862 in sym_max, code: return a.__sym_max__(b)
             sym_max_1: &quot;Sym(Max(s16, s43))&quot; = torch.sym_max(sym_size_int_11, sym_size_int_13)
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:28 in forward, code: z = torch.zeros((s1, s2), dtype=x.dtype)
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:28 in forward, code: z = torch.zeros((s1, s2), dtype=x.dtype)
             zeros: &quot;i64[Max(s35, s58), Max(s16, s43)]&quot; = torch.ops.aten.zeros.default([sym_max, sym_max_1], dtype = torch.int64, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_max = sym_max_1 = None
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:29 in forward, code: z[: x.shape[0], : x.shape[1]] = x
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:29 in forward, code: z[: x.shape[0], : x.shape[1]] = x
             slice_1: &quot;i64[s35, Max(s16, s43)]&quot; = torch.ops.aten.slice.Tensor(zeros, 0, 0, sym_size_int_10);  sym_size_int_10 = None
             slice_2: &quot;i64[s35, s16]&quot; = torch.ops.aten.slice.Tensor(slice_1, 1, 0, sym_size_int_11);  slice_1 = sym_size_int_11 = None
             copy_: &quot;i64[s35, s16]&quot; = torch.ops.aten.copy_.default(slice_2, x);  slice_2 = x = copy_ = None
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:30 in forward, code: z[: y.shape[0], : y.shape[1]] += y
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:30 in forward, code: z[: y.shape[0], : y.shape[1]] += y
             slice_3: &quot;i64[s58, Max(s16, s43)]&quot; = torch.ops.aten.slice.Tensor(zeros, 0, None, sym_size_int_12)
             slice_4: &quot;i64[s58, s43]&quot; = torch.ops.aten.slice.Tensor(slice_3, 1, None, sym_size_int_13);  slice_3 = None
             add_: &quot;i64[s58, s43]&quot; = torch.ops.aten.add_.Tensor(slice_4, y);  slice_4 = y = None
@@ -456,7 +456,7 @@ it takes a wrong decision and how to get around it.</p>
             slice_6: &quot;i64[s58, s43]&quot; = torch.ops.aten.slice.Tensor(slice_5, 1, 0, sym_size_int_13);  slice_5 = sym_size_int_13 = None
             copy__1: &quot;i64[s58, s43]&quot; = torch.ops.aten.copy_.default(slice_6, add_);  slice_6 = add_ = copy__1 = None
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:31 in forward, code: return z * fact
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:31 in forward, code: return z * fact
             mul: &quot;i64[Max(s35, s58), Max(s16, s43)]&quot; = torch.ops.aten.mul.Tensor(zeros, fact);  zeros = fact = None
             return (mul,)
 
@@ -586,7 +586,7 @@ cannot know. This requires to hide the failing logic in a custom operator.</p>
              #
             sym_size_int_4: &quot;Sym(s23)&quot; = torch.ops.aten.sym_size.int(fact, 1)
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
             copy_max_dimensions: &quot;i64[u0, s23]&quot; = torch.ops.mylib.copy_max_dimensions.default(x, y);  x = y = None
 
              #
@@ -594,14 +594,14 @@ cannot know. This requires to hide the failing logic in a custom operator.</p>
             sym_size_int_6: &quot;Sym(s23)&quot; = torch.ops.aten.sym_size.int(copy_max_dimensions, 1)
             sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_5);  sym_constrain_range_for_size_default = None
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
             ge: &quot;Sym(u0 &gt;= 0)&quot; = sym_size_int_5 &gt;= 0;  sym_size_int_5 = None
             _assert_scalar_default = torch.ops.aten._assert_scalar.default(ge, &quot;Runtime assertion failed for expression u0 &gt;= 0 on node &#39;ge&#39;&quot;);  ge = _assert_scalar_default = None
 
              #
             sym_constrain_range_for_size_default_1 = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_6);  sym_constrain_range_for_size_default_1 = None
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:134 in forward, code: z = torch.ops.mylib.copy_max_dimensions(x, y)
             ge_1: &quot;Sym(s23 &gt;= 2)&quot; = sym_size_int_6 &gt;= 2
             _assert_scalar_default_1 = torch.ops.aten._assert_scalar.default(ge_1, &quot;Runtime assertion failed for expression u1 &gt;= 2 on node &#39;ge_1&#39;&quot;);  ge_1 = _assert_scalar_default_1 = None
 
@@ -609,7 +609,7 @@ cannot know. This requires to hide the failing logic in a custom operator.</p>
             eq: &quot;Sym(True)&quot; = sym_size_int_6 == sym_size_int_4;  sym_size_int_6 = sym_size_int_4 = None
             _assert_scalar_default_2 = torch.ops.aten._assert_scalar.default(eq, &quot;Runtime assertion failed for expression Eq(u1, s23) on node &#39;eq&#39;&quot;);  eq = _assert_scalar_default_2 = None
 
-             # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:135 in forward, code: return z * fact
+             # File: ~/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_max.py:135 in forward, code: return z * fact
             mul: &quot;i64[u0, s23]&quot; = torch.ops.aten.mul.Tensor(copy_max_dimensions, fact);  copy_max_dimensions = fact = None
             return (mul,)
 

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:26.938** total execution time for 18 files **from all galleries**:
+**00:00.000** total execution time for 18 files **from all galleries**:
 
 .. container::
 
@@ -32,9 +32,6 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_profile_gemm_ort.py` (``examples/plot_profile_gemm_ort.py``)
-     - 00:26.938
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``examples/plot_bench_cpu.py``)
      - 00:00.000
      - 0.0
@@ -84,5 +81,8 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_op_tree_ensemble_sparse.py` (``examples/plot_op_tree_ensemble_sparse.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_profile_gemm_ort.py` (``examples/plot_profile_gemm_ort.py``)
      - 00:00.000
      - 0.0
