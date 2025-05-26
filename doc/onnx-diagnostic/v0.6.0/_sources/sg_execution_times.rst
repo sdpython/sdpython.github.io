@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.000** total execution time for 16 files **from all galleries**:
+**00:09.758** total execution time for 16 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,11 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_export_cond.py` (``examples/plot_export_cond.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_auto_recipes_plot_export_cond.py` (``recipes/plot_export_cond.py``)
+     - 00:09.404
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_export_with_dynamic.py` (``recipes/plot_export_with_dynamic.py``)
+     - 00:00.355
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``examples/plot_export_hub_codellama.py``)
      - 00:00.000
@@ -51,9 +54,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_with_args_kwargs.py` (``examples/plot_export_with_args_kwargs.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_export_with_auto.py` (``examples/plot_export_with_auto.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_with_dynamic_cache.py` (``examples/plot_export_with_dynamic_cache.py``)

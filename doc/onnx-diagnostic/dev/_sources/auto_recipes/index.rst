@@ -47,6 +47,23 @@ Common Export Issues
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_export_cond_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_export_cond.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Export a model with a control flow (If)</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="torch.nonzero returns the indices of the first zero found in a tensor. The output shape is unknown in the generic case but... If you have a 2D tensor with at least a nonzero value in every row, you can guess the dimension. But torch.export.export does not know what you know.">
 
 .. only:: html
@@ -62,6 +79,23 @@ Common Export Issues
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_export_with_dynamic_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_export_with_dynamic.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -74,7 +108,9 @@ Common Export Issues
 
    /auto_recipes/plot_dynamic_shapes_max
    /auto_recipes/plot_dynamic_shapes_python_int
+   /auto_recipes/plot_export_cond
    /auto_recipes/plot_dynamic_shapes_nonzero
+   /auto_recipes/plot_export_with_dynamic
 
 
 .. only:: html

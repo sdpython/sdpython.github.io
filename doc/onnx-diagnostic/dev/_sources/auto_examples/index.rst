@@ -47,23 +47,6 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.cond.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_cond_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_export_cond.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Export a model with a control flow (If)</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This function exports an smaller untrained model with the same architecture. It is faster than the pretrained model. When this works, the untrained model can be replaced by the trained one.">
 
 .. only:: html
@@ -198,23 +181,6 @@ Examples Gallery
     </div>
 
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_export_with_auto_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_export_with_auto.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</div>
-    </div>
-
-
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -227,7 +193,6 @@ Examples Gallery
 
    /auto_examples/plot_export_with_args_kwargs
    /auto_examples/plot_export_tiny_llm_patched
-   /auto_examples/plot_export_cond
    /auto_examples/plot_export_tiny_phi2
    /auto_examples/plot_export_with_dynamic_cache
    /auto_examples/plot_export_locate_issue
@@ -236,7 +201,6 @@ Examples Gallery
    /auto_examples/plot_failing_onnxruntime_evaluator
    /auto_examples/plot_export_tiny_llm
    /auto_examples/plot_export_hub_codellama
-   /auto_examples/plot_export_with_auto
 
 
 .. only:: html
