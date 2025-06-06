@@ -34,7 +34,7 @@ torch implementation of nan_euclidean_distances
 ===============================================
 
 Let's start with a simple case, a pairwise distance.
-See :func:`sklearn.metrics.nan_euclidean_distances`.
+See :func:`sklearn.metrics.pairwise.nan_euclidean_distances`.
 
 Module
 ++++++
@@ -69,7 +69,7 @@ Module
 
 
     class NanEuclidean(torch.nn.Module):
-        """Implements :func:`sklearn.metrics.nan_euclidean_distances`."""
+        """Implements :func:`sklearn.metrics.pairwise.nan_euclidean_distances`."""
 
         def __init__(self, squared=False, copy=True):
             super().__init__()
@@ -176,7 +176,7 @@ Validation
 
  .. code-block:: none
 
-    discrepancies: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 15.0, 'dnan': 0.0, 'argm': (0, 0)}
+    discrepancies: {'abs': 8.809426799416542e-05, 'rel': 0.03632292589905887, 'sum': 8.82134772837162e-05, 'n': 15.0, 'dnan': 0.0, 'argm': (4, 2)}
 
 
 
@@ -632,19 +632,19 @@ We need to do that with different sizes of training set.
 
  .. code-block:: none
 
-    knn discrepancies for size=5: {'abs': 1.4901161193847656e-08, 'rel': 3.727023293108136e-08, 'sum': 1.043081283569336e-07, 'n': 30.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=5: {'abs': 1.4901161193847656e-08, 'rel': 3.727023293108136e-08, 'sum': 1.4901161193847656e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=50: {'abs': 9.368009423749157e-09, 'rel': 1.379606193778086e-07, 'sum': 5.808165843348978e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (2, 2)}
-    knn discrepancies for size=50: {'abs': 7.450580596923828e-09, 'rel': 9.230125399471292e-08, 'sum': 1.2490679233978508e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 1)}
-    knn discrepancies for size=10: {'abs': 1.9868214962137642e-08, 'rel': 2.948249269874871e-08, 'sum': 1.9868214962137642e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
-    knn discrepancies for size=10: {'abs': 1.9868214962137642e-08, 'rel': 2.948249269874871e-08, 'sum': 1.9868214962137642e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=11: {'abs': 9.934107481068821e-09, 'rel': 3.110919082332138e-08, 'sum': 9.934107481068821e-09, 'n': 33.0, 'dnan': 0.0, 'argm': (1, 0)}
-    knn discrepancies for size=11: {'abs': 9.934107481068821e-09, 'rel': 3.110919082332138e-08, 'sum': 9.934107481068821e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=5: {'abs': 2.9802322387695312e-08, 'rel': 2.4402870642893876e-08, 'sum': 2.0489096641540527e-07, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2)}
+    knn discrepancies for size=5: {'abs': 3.725290298461914e-09, 'rel': 1.2956110063866028e-08, 'sum': 3.725290298461914e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 1.3586352876071572e-08, 'rel': 4.962472696898559e-08, 'sum': 8.043887867459354e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (2, 2)}
+    knn discrepancies for size=50: {'abs': 1.210719347000122e-08, 'rel': 4.962472696898559e-08, 'sum': 1.670902266548424e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 1)}
+    knn discrepancies for size=10: {'abs': 9.93410742555767e-09, 'rel': 1.780621247726317e-08, 'sum': 9.93410742555767e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
+    knn discrepancies for size=10: {'abs': 9.93410742555767e-09, 'rel': 1.780621247726317e-08, 'sum': 9.93410742555767e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=11: {'abs': 9.934107536579972e-09, 'rel': 9.201214463939375e-09, 'sum': 9.934107536579972e-09, 'n': 33.0, 'dnan': 0.0, 'argm': (1, 0)}
+    knn discrepancies for size=11: {'abs': 9.934107536579972e-09, 'rel': 9.201214463939375e-09, 'sum': 9.934107536579972e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 560-575
+.. GENERATED FROM PYTHON SOURCE LINES 560-577
 
 Export to ONNX
 ==============
@@ -654,7 +654,9 @@ expects a fixed number of neighbour but the model makes it variable.
 This is case not supported by :func:`torch.export.export`.
 We need to isolate that part before exporting the model.
 It is done by replacing it with a custom op.
-This is automatically done by function :func:`trace_execution_piece_by_piece`.
+This is automatically done by function
+:func:`experimental_experiment.torch_interpreter.
+piece_by_piece.trace_execution_piece_by_piece`.
 
 First step, we create two sets of inputs. A function will use this
 to infer the dynamic shapes.
@@ -662,7 +664,7 @@ to infer the dynamic shapes.
 First step: tracing intermediate outputs
 ++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 575-590
+.. GENERATED FROM PYTHON SOURCE LINES 577-592
 
 .. code-block:: Python
 
@@ -688,7 +690,7 @@ First step: tracing intermediate outputs
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 591-599
+.. GENERATED FROM PYTHON SOURCE LINES 593-601
 
 Then we trace the execution to capture every input and output of every submodule.
 The model implementation was refactored to introduce many tiny one and get
@@ -699,7 +701,7 @@ every submodule receives enough data to guess dynamic shapes and export.
 When the model has control flow, we need more data to make sure every
 piece is used.
 
-.. GENERATED FROM PYTHON SOURCE LINES 599-604
+.. GENERATED FROM PYTHON SOURCE LINES 601-606
 
 .. code-block:: Python
 
@@ -747,11 +749,11 @@ piece is used.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 605-606
+.. GENERATED FROM PYTHON SOURCE LINES 607-608
 
 We need more so let's add more.
 
-.. GENERATED FROM PYTHON SOURCE LINES 606-626
+.. GENERATED FROM PYTHON SOURCE LINES 608-628
 
 .. code-block:: Python
 
@@ -782,11 +784,11 @@ We need more so let's add more.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 627-628
+.. GENERATED FROM PYTHON SOURCE LINES 629-630
 
 Let's try again.
 
-.. GENERATED FROM PYTHON SOURCE LINES 628-634
+.. GENERATED FROM PYTHON SOURCE LINES 630-636
 
 .. code-block:: Python
 
@@ -836,11 +838,11 @@ Let's try again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 635-636
+.. GENERATED FROM PYTHON SOURCE LINES 637-638
 
 The dynamic shapes for the whole model:
 
-.. GENERATED FROM PYTHON SOURCE LINES 636-639
+.. GENERATED FROM PYTHON SOURCE LINES 638-641
 
 .. code-block:: Python
 
@@ -861,12 +863,12 @@ The dynamic shapes for the whole model:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 640-642
+.. GENERATED FROM PYTHON SOURCE LINES 642-644
 
 The method ``try_export`` cannot infer all links between input shapes and output shapes
 for every submodule. The following function fills this gap.
 
-.. GENERATED FROM PYTHON SOURCE LINES 642-682
+.. GENERATED FROM PYTHON SOURCE LINES 644-684
 
 .. code-block:: Python
 
@@ -917,7 +919,7 @@ for every submodule. The following function fills this gap.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 683-688
+.. GENERATED FROM PYTHON SOURCE LINES 685-690
 
 Then we we try to export piece by piece.
 We capture the standard output to avoid being overwhelmed
@@ -925,7 +927,7 @@ and we use function
 :func:`onnx_diagnostic.torch_export_patches.torch_export_patches`
 to skip some errors with shape checking made by :mod:`torch`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 688-708
+.. GENERATED FROM PYTHON SOURCE LINES 690-710
 
 .. code-block:: Python
 
@@ -960,35 +962,35 @@ to skip some errors with shape checking made by :mod:`torch`.
     __main__                  TorchKNNImputer        OK_CHILDC -- ExportedProgram
     ..dist                    NanEuclidean           OK -- ExportedProgram
     ..columns[0]              ColProcessor           OK_CHILDC -- ExportedProgram
-    ...._calc_impute          CalcImpute             OK_CHILDC -- ExportedProgram
-    ......_weights            SubWeightMatrix        OK -- ExportedProgram
-    ......_donors_idx         SubDonorsIdx           OK -- ExportedProgram
-    ......_make_new_neights   MakeNewWeights         OK -- ExportedProgram
+    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_weights            SubWeightMatrix        FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_donors_idx         SubDonorsIdx           FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_make_new_neights   MakeNewWeights         FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
     ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
-    ......_identity           ColProcessorIdentity   OK -- ExportedProgram
+    ......_identity           ColProcessorIdentity   FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
     ..columns[1]              ColProcessor           OK_CHILDC -- ExportedProgram
-    ...._calc_impute          CalcImpute             OK_CHILDC -- ExportedProgram
-    ......_weights            SubWeightMatrix        OK -- ExportedProgram
-    ......_donors_idx         SubDonorsIdx           OK -- ExportedProgram
-    ......_make_new_neights   MakeNewWeights         OK -- ExportedProgram
+    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_weights            SubWeightMatrix        FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_donors_idx         SubDonorsIdx           FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_make_new_neights   MakeNewWeights         FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
     ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
-    ......_identity           ColProcessorIdentity   OK -- ExportedProgram
+    ......_identity           ColProcessorIdentity   FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
     ..columns[2]              ColProcessor           OK_CHILDC -- ExportedProgram
-    ...._calc_impute          CalcImpute             OK_CHILDC -- ExportedProgram
-    ......_weights            SubWeightMatrix        OK -- ExportedProgram
-    ......_donors_idx         SubDonorsIdx           OK -- ExportedProgram
-    ......_make_new_neights   MakeNewWeights         OK -- ExportedProgram
+    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_weights            SubWeightMatrix        FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_donors_idx         SubDonorsIdx           FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_make_new_neights   MakeNewWeights         FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
     ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
-    ......_identity           ColProcessorIdentity   OK -- ExportedProgram
+    ......_identity           ColProcessorIdentity   FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
     .._make_dict_idx_map      MakeDictIdxMap         OK -- ExportedProgram
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 709-714
+.. GENERATED FROM PYTHON SOURCE LINES 711-716
 
 ``OK`` means the module is exportable. ``OK_CHILDC`` means the module
 can be exported after its submodules are replaced by custom ops.
@@ -996,14 +998,14 @@ It works except for the topk function. ``FAIL`` means
 the submodule cannot be exported at all but that
 module is simple enough and its ONNX conversion can be provided.
 
-.. GENERATED FROM PYTHON SOURCE LINES 716-720
+.. GENERATED FROM PYTHON SOURCE LINES 718-722
 
 Final step
 ++++++++++
 
 We first start by running the decompositions on every exported program.
 
-.. GENERATED FROM PYTHON SOURCE LINES 720-731
+.. GENERATED FROM PYTHON SOURCE LINES 722-733
 
 .. code-block:: Python
 
@@ -1029,41 +1031,41 @@ We first start by running the decompositions on every exported program.
     [run_decompositions]  M:__main__-TorchKNNImputer
     [run_decompositions] .. M:dist-NanEuclidean
     [run_decompositions] .. M:columns[0]-ColProcessor
-    [run_decompositions] .... M:_calc_impute-CalcImpute
-    [run_decompositions] ...... M:_weights-SubWeightMatrix
-    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
-    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
+    [run_decompositions] .... M:_calc_impute-CalcImpute - skipped
+    [run_decompositions] ...... M:_weights-SubWeightMatrix - skipped
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx - skipped
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights - skipped
     [run_decompositions] .... M:_col_cond-ColProcessorCond - skipped
     [run_decompositions] ...... M:_all_nan-ColProcessorAllNan
-    [run_decompositions] ...... M:_identity-ColProcessorIdentity
+    [run_decompositions] ...... M:_identity-ColProcessorIdentity - skipped
     [run_decompositions] .. M:columns[1]-ColProcessor
-    [run_decompositions] .... M:_calc_impute-CalcImpute
-    [run_decompositions] ...... M:_weights-SubWeightMatrix
-    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
-    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
+    [run_decompositions] .... M:_calc_impute-CalcImpute - skipped
+    [run_decompositions] ...... M:_weights-SubWeightMatrix - skipped
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx - skipped
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights - skipped
     [run_decompositions] .... M:_col_cond-ColProcessorCond - skipped
     [run_decompositions] ...... M:_all_nan-ColProcessorAllNan
-    [run_decompositions] ...... M:_identity-ColProcessorIdentity
+    [run_decompositions] ...... M:_identity-ColProcessorIdentity - skipped
     [run_decompositions] .. M:columns[2]-ColProcessor
-    [run_decompositions] .... M:_calc_impute-CalcImpute
-    [run_decompositions] ...... M:_weights-SubWeightMatrix
-    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
-    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
+    [run_decompositions] .... M:_calc_impute-CalcImpute - skipped
+    [run_decompositions] ...... M:_weights-SubWeightMatrix - skipped
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx - skipped
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights - skipped
     [run_decompositions] .... M:_col_cond-ColProcessorCond - skipped
     [run_decompositions] ...... M:_all_nan-ColProcessorAllNan
-    [run_decompositions] ...... M:_identity-ColProcessorIdentity
+    [run_decompositions] ...... M:_identity-ColProcessorIdentity - skipped
     [run_decompositions] .. M:_make_dict_idx_map-MakeDictIdxMap
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 732-735
+.. GENERATED FROM PYTHON SOURCE LINES 734-737
 
 Let's run the conversion. We also check the conversion into ONNX
 is accurate. It is doable because every intermediate results
 were previously traced.
 
-.. GENERATED FROM PYTHON SOURCE LINES 735-745
+.. GENERATED FROM PYTHON SOURCE LINES 737-747
 
 .. code-block:: Python
 
@@ -1095,62 +1097,62 @@ were previously traced.
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0014024811098352075,7.827565670013428:A1.572636351330908N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.028980839997529984,7.9434733390808105:A1.8153098032319697N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0014024811098352075,4.854142665863037:A1.9105679926750085N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0874500647187233,6.80252742767334:A1.9661558493971825N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.891329288482666,3.3306772708892822:A2.516362464427948],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.891329288482666,3.3306772708892822:A2.516362464427948]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.2284390926361084,6.330379009246826:A2.37332763671875],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.2284390926361084,6.330379009246826:A2.37332763671875]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.6446343064308167,3.4043798446655273:A1.950129048390822],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.6446343064308167,3.4043798446655273:A1.950129048390822]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0014024811098352075,7.827565670013428:A1.572636351330908N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.028980839997529984,7.9434733390808105:A1.8153098032319697N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0014024811098352075,4.854142665863037:A1.9105679926750085N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0874500647187233,6.80252742767334:A1.9661558493971825N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.891329288482666,3.3306772708892822:A2.5163624405860903],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.891329288482666,3.3306772708892822:A2.5163624405860903]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.6446343064308167,3.4043798446655273:A1.950129048390822],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.6446343064308167,3.4043798446655273:A1.950129048390822]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.7027118802070618,3.1566286087036133:A1.4538565819913691],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.7027118802070618,3.1566286087036133:A1.4538565819913691]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0014024811098352075,7.827565670013428:A1.572636351330908N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.028980839997529984,7.9434733390808105:A1.8153098032319697N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0014024811098352075,4.854142665863037:A1.9105679926750085N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0874500647187233,6.80252742767334:A1.9661558493971825N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.891329288482666,3.330677032470703:A2.5163624405860903],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.891329288482666,3.330677032470703:A2.5163624405860903]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.6446343064308167,3.4043798446655273:A1.950129048390822],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.6446343064308167,3.4043798446655273:A1.950129048390822]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean validation done
     [to_onnx_local] .. M:dist-NanEuclidean - done
@@ -1169,336 +1171,16 @@ were previously traced.
     [to_onnx_local]  M:__main__-TorchKNNImputer - export child 'C_TorchKNNImputer_columns_0_'
     [to_onnx_local] .. M:columns[0]-ColProcessor - to_onnx_local 
     [to_onnx_local] .. M:columns[0]-ColProcessor - export child 'C_TorchKNNImputer_columns_0___calc_impute'
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - to_onnx_local 
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_0___calc_impute__weights'
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - to_onnx_local 
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - export starts C_TorchKNNImputer_columns_0___calc_impute__weights
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - export done
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - run validation
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x2,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x2[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x2[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x2[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s1x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s1x3[1.960836410522461,2.320211172103882:A2.0816839933395386],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s1x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s1x3[1.0,1.0:A1.0]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0,amax=0,0
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s1x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s1x3[0.6446343064308167,1.6473352909088135:A1.0984085599581401],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s1x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s1x3[1.0,1.0:A1.0]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0.0, rel=0.0,amax=0,0
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x1,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x1[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x1[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x1[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x2,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x2[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x2[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x2[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix run with ((T1s0x3,),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix flattened into ((T1s0x3[empty],),{})
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_weights-SubWeightMatrix validation done
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - done
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0,amax=0,0
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0.0, rel=0.0,amax=0,0
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_weights-SubWeightMatrix - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_0___calc_impute__donors_idx'
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - to_onnx_local 
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - export starts C_TorchKNNImputer_columns_0___calc_impute__donors_idx
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - export done
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - run validation
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x17,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x17[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x2,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x2[empty],T7s1[2,2:A2.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x2[empty],T1s0x2[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x2[empty],A1s0x2[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s1x9,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s1x9[1.960836410522461,3.3306772708892822:A2.585810595088535],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s1x3[0,7:A3.6666666666666665],T1s1x3[1.960836410522461,2.320211172103882:A2.0816839933395386])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s1x3[0,7:A3.6666666666666665],A1s1x3[1.960836410522461,2.320211172103882:A2.0816839933395386])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s1x10,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s1x10[0.6446343064308167,3.4043798446655273:A1.947733038663864],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s1x3[1,9:A5.333333333333333],T1s1x3[0.6446343064308167,1.6473352909088135:A1.0984085599581401])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s1x3[1,9:A5.333333333333333],A1s1x3[0.6446343064308167,1.6473352909088135:A1.0984085599581401])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x16,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x16[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x1,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x1[empty],T7s1[1,1:A1.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x1[empty],T1s0x1[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x1[empty],A1s0x1[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x10,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x10[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x11,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x11[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x17,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x17[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x2,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x2[empty],T7s1[2,2:A2.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x2[empty],T1s0x2[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x2[empty],A1s0x2[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x10,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x10[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx run with ((T1s0x11,T7s1),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx flattened into ((T1s0x11[empty],T7s1[3,3:A3.0]),{})
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx expecting (T7s0x3[empty],T1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx computing (A7s0x3[empty],A1s0x3[empty])
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx diff=abs=0, rel=0
-    [onnx_run_disc] ...... M:_donors_idx-SubDonorsIdx validation done
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - done
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] ...... M:_donors_idx-SubDonorsIdx - discrepancies: abs=0, rel=0
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - export child 'C_TorchKNNImputer_columns_0___calc_impute__make_new_neights'
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - to_onnx_local 
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - export starts C_TorchKNNImputer_columns_0___calc_impute__make_new_neights
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - export done
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - run validation
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x2,T1s0x2,T1s0x2),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x2[empty],T1s0x2[empty],T1s0x2[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x2[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x2[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s1x3,T1s1x3,T1s1x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s1x3[1,1:A1.0],T1s1x3[0.2025328278541565,0.9459595680236816:A0.6728987495104471],T1s1x3[1.0,1.0:A1.0]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s1x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s1x3[1.0,1.0:A1.0]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0,amax=0,0
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s1x3,T1s1x3,T1s1x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s1x3[1,1:A1.0],T1s1x3[-0.7442224621772766,0.23930585384368896:A-0.3183303078015645],T1s1x3[1.0,1.0:A1.0]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s1x3[1.0,1.0:A1.0],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s1x3[1.0,1.0:A1.0]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0.0, rel=0.0,amax=0,0
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x1,T1s0x1,T1s0x1),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x1[empty],T1s0x1[empty],T1s0x1[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x1[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x1[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x2,T1s0x2,T1s0x2),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x2[empty],T1s0x2[empty],T1s0x2[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x2[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x2[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights run with ((T7s0x3,T1s0x3,T1s0x3),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights flattened into ((T7s0x3[empty],T1s0x3[empty],T1s0x3[empty]),{})
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights expecting (T1s0x3[empty],)
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights computing A1s0x3[empty]
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] ...... M:_make_new_neights-MakeNewWeights validation done
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - done
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0,amax=0,0
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0.0, rel=0.0,amax=0,0
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] ...... M:_make_new_neights-MakeNewWeights - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - export starts C_TorchKNNImputer_columns_0___calc_impute
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - export done
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - run validation
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with cls=ExtendedReferenceEvaluator on ModelProto
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x17,T7s1,T1s17,T9s17),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x17[empty],T7s1[3,3:A3.0],T1s17[-1.0490533113479614,1.4862864017486572:A0.05360487717039445],T9s17[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x2,T7s1,T1s2,T9s2),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x2[empty],T7s1[2,2:A2.0],T1s2[-1.0841875076293945,0.28655949234962463:A-0.39881400763988495],T9s2[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s1x9,T7s1,T1s9,T9s9),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s1x9[1.960836410522461,3.3306772708892822:A2.585810595088535],T7s1[3,3:A3.0],T1s9[-2.2622437477111816,0.9459595680236816:A-0.2179878850777944],T9s9[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s1[0.6728987693786621,0.6728987693786621:A0.6728987693786621],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s1[0.6728987693786621,0.6728987693786621:A0.6728987693786621]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0,amax=0
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s1x10,T7s1,T1s10,T9s10),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s1x10[0.6446343064308167,3.4043798446655273:A1.947733038663864],T7s1[3,3:A3.0],T1s10[-1.0289477109909058,1.3091744184494019:A-0.06142359673976898],T9s10[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s1[-0.318330317735672,-0.318330317735672:A-0.318330317735672],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s1[-0.318330317735672,-0.318330317735672:A-0.318330317735672]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0.0, rel=0.0,amax=0
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x16,T7s1,T1s16,T9s16),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x16[empty],T7s1[3,3:A3.0],T1s16[-1.5512176752090454,1.0594156980514526:A-0.16428888589143753],T9s16[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x1,T7s1,T1s1,T9s1),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x1[empty],T7s1[1,1:A1.0],T1s1[0.5527158379554749,0.5527158379554749:A0.5527158379554749],T9s1[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x10,T7s1,T1s10,T9s10),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x10[empty],T7s1[3,3:A3.0],T1s10[-1.9389777183532715,1.426966905593872:A-0.5683467619121074],T9s10[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x11,T7s1,T1s11,T9s11),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x11[empty],T7s1[3,3:A3.0],T1s11[-1.745384693145752,1.8026071786880493:A0.23856408157470552],T9s11[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x17,T7s1,T1s17,T9s17),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x17[empty],T7s1[3,3:A3.0],T1s17[-1.9769785404205322,1.096831202507019:A-0.06690350366646752],T9s17[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x2,T7s1,T1s2,T9s2),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x2[empty],T7s1[2,2:A2.0],T1s2[-1.8390218019485474,0.472423791885376:A-0.6832990050315857],T9s2[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x10,T7s1,T1s10,T9s10),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x10[empty],T7s1[3,3:A3.0],T1s10[-1.918097734451294,2.5004260540008545:A-0.2677750276401639],T9s10[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute run with ((T1s0x11,T7s1,T1s11,T9s11),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute flattened into ((T1s0x11[empty],T7s1[3,3:A3.0],T1s11[-0.9313030242919922,0.7051165103912354:A-0.03593648805029013],T9s11[False,False:A0.0]),{})
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute expecting (T1s0[empty],)
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute computing A1s0[empty]
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute diff=abs=0, rel=0,amax=None
-    [onnx_run_disc] .... M:_calc_impute-CalcImpute validation done
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - done
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0,amax=0
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0.0, rel=0.0,amax=0
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .... M:_calc_impute-CalcImpute - discrepancies: abs=0, rel=0,amax=None
-    [to_onnx_local] .. M:columns[0]-ColProcessor - export child 'C_TorchKNNImputer_columns_0___col_cond'
-    The example is broken: _col_cond:ColProcessorCond: exporter failed, status=<StatusExportCode.FAIL_CHILDC: 6>, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(), (FakeTensor(..., size=(s85, 3)), FakeTensor(..., size=(s57, s30)), FakeTensor(..., size=(s84, 3), dtype=torch.bool), FakeTensor(..., size=(s52, 3)), FakeTensor(..., size=(s94,), dtype=torch.int64), FakeTensor(..., size=(s29,), dtype=torch.int64), FakeTensor(..., size=(s72,), dtype=torch.bool), FakeTensor(..., size=(s79, s54)), FakeTensor(..., size=(s31,), dtype=torch.int64), FakeTensor(..., size=(s96,), dtype=torch.int64))), **{}): got AssertionError((0, 1)) ---  --- from user code: ---    File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 184, in _cond_op_wrapper ---     return cond_op(*args, **kwargs) ---  --- Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you\'re reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo" --- [\'Traceback (most recent call last):\\n\', \'  File "/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/piece_by_piece.py", line 1587, in _try_export_no_bypass_export\\n    ep = torch.export.export(\\n         ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 319, in export\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 286, in export\\n    return _export(\\n           ^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1159, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1125, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 123, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2172, in _export\\n    ep = _export_for_training(\\n         ^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1159, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1125, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 123, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2033, in _export_for_training\\n    export_artifact = export_func(\\n                      ^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1975, in _non_strict_export\\n    aten_export_artifact = _to_aten_func(  # type: ignore[operator]\\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1760, in _export_to_aten_ir_make_fx\\n    gm, graph_signature = transform(_make_fx_helper)(\\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1901, in _aot_export_non_strict\\n    gm, sig = aot_export(wrapped_mod, args, kwargs=kwargs, **flags)\\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1679, in _make_fx_helper\\n    gm = make_fx(\\n         ^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2290, in wrapped\\n    return make_fx_tracer.trace(f, *args)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2228, in trace\\n    return self._trace_inner(f, *args)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 2199, in _trace_inner\\n    t = dispatch_trace(\\n        ^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_compile.py", line 51, in inner\\n    return disable_fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 893, in _fn\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1223, in dispatch_trace\\n    graph = tracer.trace(root, concrete_args)  # type: ignore[arg-type]\\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1787, in trace\\n    res = super().trace(root, concrete_args)\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 850, in trace\\n    (self.create_arg(fn(*args)),),\\n                     ^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1278, in wrapped\\n    out = f(*tensors)  # type:ignore[call-arg]\\n          ^^^^^^^^^^^\\n\', \'  File "<string>", line 1, in <lambda>\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1583, in wrapped_fn\\n    return tuple(flat_fn(*args))\\n                 ^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py", line 184, in flat_fn\\n    tree_out = fn(*args, **kwargs)\\n               ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/traced_function_transforms.py", line 906, in functional_call\\n    out = mod(*args[params_len:], **kwargs)\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 825, in module_call_wrapper\\n    return self.call_module(mod, forward, args, kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1857, in call_module\\n    return Tracer.call_module(self, m, forward, args, kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 542, in call_module\\n    ret_val = forward(*args, **kwargs)\\n              ^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 818, in forward\\n    return _orig_module_call(mod, *args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1767, in _wrapped_call_impl\\n    return self._call_impl(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _call_impl\\n    return forward_call(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1885, in forward\\n    tree_out = mod(*args, **kwargs)\\n               ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 825, in module_call_wrapper\\n    return self.call_module(mod, forward, args, kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py", line 1857, in call_module\\n    return Tracer.call_module(self, m, forward, args, kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 542, in call_module\\n    ret_val = forward(*args, **kwargs)\\n              ^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 818, in forward\\n    return _orig_module_call(mod, *args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1767, in _wrapped_call_impl\\n    return self._call_impl(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _call_impl\\n    return forward_call(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_sklearn_201.py", line 293, in forward\\n    X, dist_subset, receivers_idx = torch.cond(\\n                                    ^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 192, in cond\\n    return torch.compile(_cond_op_wrapper, backend=backend, fullgraph=True)(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py", line 699, in _fn\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 1463, in __call__\\n    return self._torchdynamo_orig_callable(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 624, in __call__\\n    return _compile(\\n           ^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 1087, in _compile\\n    guarded_code = compile_inner(code, one_graph, hooks, transform)\\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_utils_internal.py", line 97, in wrapper_function\\n    return function(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 778, in compile_inner\\n    return _compile_inner(code, one_graph, hooks, transform)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 817, in _compile_inner\\n    out_code = transform_code_object(code, transform)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/bytecode_transformation.py", line 1423, in transform_code_object\\n    transformations(instructions, code_options)\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 264, in _fn\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py", line 742, in transform\\n    tracer.run()\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py", line 3508, in run\\n    super().run()\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py", line 1345, in run\\n    while self.step():\\n          ^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py", line 1253, in step\\n    self.dispatch_table[inst.opcode](self, inst)\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py", line 828, in wrapper\\n    return inner_fn(self, inst)\\n           ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py", line 2254, in CALL_FUNCTION_EX\\n    self.call_function(fn, argsvars.items, kwargsvars)\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/symbolic_convert.py", line 1179, in call_function\\n    self.push(fn.call_function(self, args, kwargs))  # type: ignore[arg-type]\\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/lazy.py", line 201, in realize_and_forward\\n    return getattr(self.realize(), name)(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/higher_order_ops.py", line 75, in graph_break_as_hard_error\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/higher_order_ops.py", line 1129, in call_function\\n    return _call_function_and_unflatten_output(\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/higher_order_ops.py", line 210, in _call_function_and_unflatten_output\\n    flat_variable = wrap_fx_proxy(\\n                    ^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/builder.py", line 2490, in wrap_fx_proxy\\n    return wrap_fx_proxy_cls(target_cls=TensorVariable, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/builder.py", line 2556, in wrap_fx_proxy_cls\\n    return _wrap_fx_proxy(\\n           ^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/variables/builder.py", line 2654, in _wrap_fx_proxy\\n    example_value = get_fake_value(proxy.node, tx, allow_non_graph_fake=True)\\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/utils.py", line 3302, in get_fake_value\\n    raise TorchRuntimeError(str(e)).with_traceback(e.__traceback__) from None\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/utils.py", line 3200, in get_fake_value\\n    ret_val = wrap_fake_exception(\\n              ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/utils.py", line 2700, in wrap_fake_exception\\n    return fn()\\n           ^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/utils.py", line 3201, in <lambda>\\n    lambda: run_node(tx.output, node, args, kwargs, nnmodule)\\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/utils.py", line 3409, in run_node\\n    raise RuntimeError(make_error_message(e)).with_traceback(\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_dynamo/utils.py", line 3368, in run_node\\n    return node.target(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 59, in __call__\\n    return super().__call__(pred, true_fn, false_fn, operands)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 501, in __call__\\n    return wrapper()\\n           ^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 497, in wrapper\\n    return self.dispatch(\\n           ^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 485, in dispatch\\n    return kernel(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 320, in maybe_run_autograd\\n    return self(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 59, in __call__\\n    return super().__call__(pred, true_fn, false_fn, operands)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 501, in __call__\\n    return wrapper()\\n           ^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 497, in wrapper\\n    return self.dispatch(\\n           ^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py", line 393, in dispatch\\n    result = handler(mode, *args, **kwargs)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 432, in cond_fake_tensor_mode\\n    merged_outs.append(_merge_tensors(true_out, false_out, mode))\\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 656, in _merge_tensors\\n    merged_stride: list[Union[int, torch.SymInt]] = _bound_stride(\\n                                                    ^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 624, in _bound_stride\\n    assert b_val == 0, (a_val, b_val)\\n           ^^^^^^^^^^\\n\', \'torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(), (FakeTensor(..., size=(s85, 3)), FakeTensor(..., size=(s57, s30)), FakeTensor(..., size=(s84, 3), dtype=torch.bool), FakeTensor(..., size=(s52, 3)), FakeTensor(..., size=(s94,), dtype=torch.int64), FakeTensor(..., size=(s29,), dtype=torch.int64), FakeTensor(..., size=(s72,), dtype=torch.bool), FakeTensor(..., size=(s79, s54)), FakeTensor(..., size=(s31,), dtype=torch.int64), FakeTensor(..., size=(s96,), dtype=torch.int64))), **{}): got AssertionError((0, 1))\\n\\nfrom user code:\\n   File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py", line 184, in _cond_op_wrapper\\n    return cond_op(*args, **kwargs)\\n\\nSet TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you\\\'re reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"\\n\\n\']', a custom onnx converter must be provided for 'diag_lib::C_TorchKNNImputer_columns_0___col_cond', args=(T1s40x3,T1s27x17,T9s50x3,T1s50x3,T7s27,T7s27,T9s27,T1s40x50,T7s40,T7s17), kwargs={}, outputs=(T1s40x3,T1s0x17,T7s0)
+    The example is broken: _calc_impute:CalcImpute: exporter failed, status=<StatusExportCode.FAIL_CHILDC: 6>, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: --- - Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].[\'Traceback (most recent call last):\\n\', \'  File "/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/piece_by_piece.py", line 1588, in _try_export_no_bypass_export\\n    ep = torch.export.export(\\n         ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 319, in export\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 286, in export\\n    return _export(\\n           ^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1159, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1125, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 123, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2172, in _export\\n    ep = _export_for_training(\\n         ^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1159, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1125, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 123, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2053, in _export_for_training\\n    range_constraints = _get_range_constraints(\\n                        ^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1306, in _get_range_constraints\\n    range_constraints = make_constraints(\\n                        ^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 673, in make_constraints\\n    raise ValueError(prefix + "\\\\n".join(range_violations))\\n\', "ValueError: Found the following conflicts between user-specified ranges and inferred ranges from model tracing:\\n- Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].\\n"]', a custom onnx converter must be provided for 'diag_lib::C_TorchKNNImputer_columns_0___calc_impute', args=(T1s0x17,T7s1,T1s17,T9s17), kwargs={}, outputs=(T1s0,)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 746-747
+.. GENERATED FROM PYTHON SOURCE LINES 748-749
 
 Let's save it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 747-750
+.. GENERATED FROM PYTHON SOURCE LINES 749-752
 
 .. code-block:: Python
 
@@ -1512,11 +1194,11 @@ Let's save it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 751-752
+.. GENERATED FROM PYTHON SOURCE LINES 753-754
 
 We can also print it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 752-756
+.. GENERATED FROM PYTHON SOURCE LINES 754-758
 
 .. code-block:: Python
 
@@ -1531,12 +1213,12 @@ We can also print it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 757-759
+.. GENERATED FROM PYTHON SOURCE LINES 759-761
 
 Validation again
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 759-836
+.. GENERATED FROM PYTHON SOURCE LINES 761-838
 
 .. code-block:: Python
 
@@ -1624,11 +1306,11 @@ Validation again
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 837-838
+.. GENERATED FROM PYTHON SOURCE LINES 839-840
 
 This does not work yet.
 
-.. GENERATED FROM PYTHON SOURCE LINES 838-842
+.. GENERATED FROM PYTHON SOURCE LINES 840-844
 
 .. code-block:: Python
 
@@ -1643,7 +1325,7 @@ This does not work yet.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 843-850
+.. GENERATED FROM PYTHON SOURCE LINES 845-852
 
 ModelProto to python Code
 =========================
@@ -1653,7 +1335,7 @@ We finally call function :func:`to_graph_builder_code
 to convert the onnx model into pseudo code if that helps moving that code
 to a converter library (:epkg:`sklearn-onnx`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 850-876
+.. GENERATED FROM PYTHON SOURCE LINES 852-878
 
 .. code-block:: Python
 
@@ -1690,11 +1372,11 @@ to a converter library (:epkg:`sklearn-onnx`).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 877-878
+.. GENERATED FROM PYTHON SOURCE LINES 879-880
 
 Let's finally check it produces the same results.
 
-.. GENERATED FROM PYTHON SOURCE LINES 878-882
+.. GENERATED FROM PYTHON SOURCE LINES 880-884
 
 .. code-block:: Python
 
@@ -1709,7 +1391,7 @@ Let's finally check it produces the same results.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 883-887
+.. GENERATED FROM PYTHON SOURCE LINES 885-889
 
 Let's run it...
 It can be run this way.
@@ -1719,7 +1401,7 @@ It can be run this way.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 24.578 seconds)
+   **Total running time of the script:** (0 minutes 20.508 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_sklearn_201.py:

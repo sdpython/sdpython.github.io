@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:02.825** total execution time for 44 files **from all galleries**:
+**00:20.508** total execution time for 44 files **from all galleries**:
 
 .. container::
 
@@ -33,13 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``examples/plot_torch_sklearn_201.py``)
-     - 00:24.578
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py` (``recipes/plot_exporter_recipes_oe_phi2.py``)
-     - 00:19.737
-     - 0.0
-   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``recipes/plot_exporter_recipes_c_phi2.py``)
-     - 00:18.509
+     - 00:20.508
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_convolutation_matmul_102.py` (``examples/plot_convolutation_matmul_102.py``)
      - 00:00.000
@@ -143,6 +137,9 @@ Computation times
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py` (``recipes/plot_exporter_recipes_c_named_ds_auto.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py` (``recipes/plot_exporter_recipes_c_phi2.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py` (``recipes/plot_exporter_recipes_c_scan_pdist.py``)
      - 00:00.000
      - 0.0
@@ -162,5 +159,8 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_named_ds_auto.py` (``recipes/plot_exporter_recipes_oe_named_ds_auto.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py` (``recipes/plot_exporter_recipes_oe_phi2.py``)
      - 00:00.000
      - 0.0
