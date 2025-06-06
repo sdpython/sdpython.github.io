@@ -9,7 +9,7 @@
         <title>Patches Explained - onnx-diagnostic 0.6.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -270,6 +270,14 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="api/reference/torch_ops/index.html">onnx_diagnostic.reference.torch_ops</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference.torch_ops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/access_ops.html">onnx_diagnostic.reference.torch_ops.access_ops</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/binary_ops.html">onnx_diagnostic.reference.torch_ops.binary_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/controlflow_ops.html">onnx_diagnostic.reference.torch_ops.controlflow_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/generator_ops.html">onnx_diagnostic.reference.torch_ops.generator_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/nn_ops.html">onnx_diagnostic.reference.torch_ops.nn_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/other_ops.html">onnx_diagnostic.reference.torch_ops.other_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/reduce_ops.html">onnx_diagnostic.reference.torch_ops.reduce_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/sequence_ops.html">onnx_diagnostic.reference.torch_ops.sequence_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/shape_ops.html">onnx_diagnostic.reference.torch_ops.shape_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/reference/torch_ops/unary_ops.html">onnx_diagnostic.reference.torch_ops.unary_ops</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="api/reference/evaluator.html">onnx_diagnostic.reference.evaluator</a></li>
@@ -328,6 +336,7 @@
 <li class="toctree-l3"><a class="reference internal" href="api/torch_onnx/sbs.html">onnx_diagnostic.torch_onnx.sbs</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="api/api.html">onnx_diagnostic.api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
 </ul>
 </li>
@@ -364,6 +373,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
@@ -437,10 +447,10 @@ it disables some exceptions or improves some functions related to dynamic shapes
 until <a class="reference external" href="https://pytorch.org/docs/stable/torch.html">torch</a> addresses the issues
 (see <a class="reference external" href="https://github.com/pytorch/pytorch/issues?q=is%3Aissue%20state%3Aopen%20author%3Axadupre">mostly exporter issues</a>)</p></li>
 <li><p><strong>transformers rewriting</strong>:
-some methods are replaced with a version <a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+git2b2245d ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> can understand,
+some methods are replaced with a version <a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+gitd5f6422 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> can understand,
 some rewriting may migrate to <a class="reference external" href="https://huggingface.co/docs/transformers/en/index">transformers</a>, others are applied only
 at export time because it would make the implementation less efficient</p></li>
-<li><p><strong>cache serialization</strong>: <a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+git2b2245d ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> needs to know how to
+<li><p><strong>cache serialization</strong>: <a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+gitd5f6422 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a> needs to know how to
 serialize custom classes such as <code class="xref py py-class docutils literal notranslate"><span class="pre">transformers.cache_utils.DynamicCache</span></code></p></li>
 <li><p><strong>control flow rewriting</strong>: control flow (if, for) cannot be exported as is,
 there is still some work to be done to automatically process them,
@@ -482,7 +492,23 @@ becomes static (<code class="docutils literal notranslate"><span class="pre">sto
 </div>
 <p>The packages automatically parses this file to extract the patched methods.
 More can be added by populating the argument <code class="docutils literal notranslate"><span class="pre">custom_patches</span></code>:
-<code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch_export_patches(custom_patches=[...])</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">torch_export_patches(patch_transformers=True,</span> <span class="pre">custom_patches=[...])</span></code>.
+Here is the list of available patches:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx_diagnostic.torch_export_patches.patches.patch_transformers</span> <span class="k">as</span> <span class="nn">p</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;patched_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;_PATCHES_&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">_PATCHED_CLASS_</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_PATCHES_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">AttentionMaskConverter</span><span class="p">:</span> 
+    <span class="n">DynamicCache</span><span class="p">:</span> <span class="n">reorder_cache</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">crop</span><span class="p">,</span> <span class="n">from_batch_splits</span><span class="p">,</span> <span class="n">get_seq_length</span>
+    <span class="n">GenerationMixin</span><span class="p">:</span> <span class="n">_cache_dependant_input_preparation</span><span class="p">,</span> <span class="n">_cache_dependant_input_preparation_exporting</span><span class="p">,</span> <span class="n">prepare_inputs_for_generation</span>
+    <span class="n">Phi3RotaryEmbedding</span><span class="p">:</span> <span class="n">forward</span>
+</pre></div>
+</div>
 </section>
 <section id="cache-serialization">
 <h2>Cache serialization<a class="headerlink" href="#cache-serialization" title="Link to this heading">¶</a></h2>
@@ -495,7 +521,22 @@ This function does one class,
 <a class="reference internal" href="api/torch_export_patches/onnx_export_serialization.html#onnx_diagnostic.torch_export_patches.onnx_export_serialization.register_cache_serialization" title="onnx_diagnostic.torch_export_patches.onnx_export_serialization.register_cache_serialization"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.onnx_export_serialization.register_cache_serialization()</span></code></a>
 does all known classes.
 It can be undone with <a class="reference internal" href="api/torch_export_patches/onnx_export_serialization.html#onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister" title="onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister()</span></code></a>
-or <a class="reference internal" href="api/torch_export_patches/onnx_export_serialization.html#onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister_cache_serialization" title="onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister_cache_serialization"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister_cache_serialization()</span></code></a>.</p>
+or <a class="reference internal" href="api/torch_export_patches/onnx_export_serialization.html#onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister_cache_serialization" title="onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister_cache_serialization"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.onnx_export_serialization.unregister_cache_serialization()</span></code></a>.
+Here is the list of supported caches:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx_diagnostic.torch_export_patches.onnx_export_serialization</span> <span class="k">as</span> <span class="nn">p</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">serialization_functions</span><span class="p">())))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">BaseModelOutput</span>
+    <span class="n">DynamicCache</span>
+    <span class="n">EncoderDecoderCache</span>
+    <span class="n">MambaCache</span>
+    <span class="n">SlidingWindowCache</span>
+</pre></div>
+</div>
 </section>
 <section id="control-flow-rewriting">
 <span id="l-control-flow-rewriting"></span><h2>Control flow rewriting<a class="headerlink" href="#control-flow-rewriting" title="Link to this heading">¶</a></h2>
@@ -510,7 +551,7 @@ The list of known rewriting to apply are returned by function
 <a class="reference internal" href="api/torch_export_patches/patch_module_helper.html#onnx_diagnostic.torch_export_patches.patch_module_helper.code_needing_rewriting" title="onnx_diagnostic.torch_export_patches.patch_module_helper.code_needing_rewriting"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.patch_module_helper.code_needing_rewriting()</span></code></a>
 and applied by function <a class="reference internal" href="api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.transform_method" title="onnx_diagnostic.torch_export_patches.patch_module.transform_method"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.patch_module.transform_method()</span></code></a>.</p>
 <p>While parsing the code, it is missing type information but this is known by
-<a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+git2b2245d ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>. Due to that, the automation usually needs manual tuning
+<a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.export" title="(in PyTorch vmain (2.8.0a0+gitd5f6422 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.export.export()</span></code></a>. Due to that, the automation usually needs manual tuning
 to filter out some tests (argument <code class="docutils literal notranslate"><span class="pre">filter_node</span></code>) or pre/post processing
 (arguments <code class="docutils literal notranslate"><span class="pre">pre_rewriter</span></code>,  <code class="docutils literal notranslate"><span class="pre">post_rewriter</span></code>) of function
 <a class="reference internal" href="api/torch_export_patches/patch_module.html#onnx_diagnostic.torch_export_patches.patch_module.transform_method" title="onnx_diagnostic.torch_export_patches.patch_module.transform_method"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.torch_export_patches.patch_module.transform_method()</span></code></a>.</p>
@@ -529,12 +570,12 @@ requires the following value for parameter <code class="docutils literal notrans
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[{</span><span class="s1">&#39;filter_node&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">rewritings_transformers_clamp_float16</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x774bbdce60c0</span><span class="o">&gt;</span><span class="p">,</span>
-      <span class="s1">&#39;function&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">BartEncoderLayer</span><span class="o">.</span><span class="n">forward</span> <span class="n">at</span> <span class="mh">0x774bc3f5bc40</span><span class="o">&gt;</span><span class="p">,</span>
-      <span class="s1">&#39;pre_rewriter&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">ast_or_into_bitor</span> <span class="n">at</span> <span class="mh">0x774bd07859e0</span><span class="o">&gt;</span><span class="p">},</span>
-     <span class="p">{</span><span class="s1">&#39;filter_node&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">rewritings_transformers_clamp_float16</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x774bbdce60c0</span><span class="o">&gt;</span><span class="p">,</span>
-      <span class="s1">&#39;function&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">PLBartEncoderLayer</span><span class="o">.</span><span class="n">forward</span> <span class="n">at</span> <span class="mh">0x774bc3fd2ac0</span><span class="o">&gt;</span><span class="p">,</span>
-      <span class="s1">&#39;pre_rewriter&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">ast_or_into_bitor</span> <span class="n">at</span> <span class="mh">0x774bd07859e0</span><span class="o">&gt;</span><span class="p">}]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[{</span><span class="s1">&#39;filter_node&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">rewritings_transformers_clamp_float16</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x7e2bbf119ee0</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="s1">&#39;function&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">BartEncoderLayer</span><span class="o">.</span><span class="n">forward</span> <span class="n">at</span> <span class="mh">0x7e2bbfd677e0</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="s1">&#39;pre_rewriter&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">ast_or_into_bitor</span> <span class="n">at</span> <span class="mh">0x7e2bc0718900</span><span class="o">&gt;</span><span class="p">},</span>
+     <span class="p">{</span><span class="s1">&#39;filter_node&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">rewritings_transformers_clamp_float16</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.&lt;</span><span class="k">lambda</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x7e2bbf119ee0</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="s1">&#39;function&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">PLBartEncoderLayer</span><span class="o">.</span><span class="n">forward</span> <span class="n">at</span> <span class="mh">0x7e2bbfd72ac0</span><span class="o">&gt;</span><span class="p">,</span>
+      <span class="s1">&#39;pre_rewriter&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">ast_or_into_bitor</span> <span class="n">at</span> <span class="mh">0x7e2bc0718900</span><span class="o">&gt;</span><span class="p">}]</span>
 </pre></div>
 </div>
 <p>This method has two tests. Only the first one needs to be rewritten.
@@ -582,6 +623,75 @@ We finally get:</p>
 <span class="gd">-</span>
 <span class="gi">+        outputs = outputs + (attn_weights,)</span>
 <span class="w"> </span>   return outputs
+</pre></div>
+</div>
+<p>The locations where it has to be done:</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">known_transformers_rewritings_clamp_float16</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">known_transformers_rewritings_clamp_float16</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;AutoformerEncoder&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;AutoformerForPrediction&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;AutoformerModel&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BartForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BigBirdPegasusForCausalLM&#39;</span><span class="p">:</span> <span class="s1">&#39;BigBirdPegasusEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BigBirdPegasusForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BigBirdPegasusEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BigBirdPegasusForQuestionAnswering&#39;</span><span class="p">:</span> <span class="s1">&#39;BigBirdPegasusEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BlenderbotSmallForCausalLM&#39;</span><span class="p">:</span> <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BlenderbotSmallForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;InformerEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;InformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;InformerForPrediction&#39;</span><span class="p">:</span> <span class="s1">&#39;InformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;LEDClassificationHead&#39;</span><span class="p">:</span> <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;LEDForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianEncoder&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianMTModel&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianModel&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForCausalLM&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForQuestionAnswering&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForSequenceClassification&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpPrompt&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;NllbMoeEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;NllbMoeEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;NllbMoeForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;NllbMoeEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PLBartEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PLBartForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;TimeSeriesTransformerEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;TimeSeriesTransformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;TimeSeriesTransformerForPrediction&#39;</span><span class="p">:</span> <span class="s1">&#39;TimeSeriesTransformerEncoderLayer&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_rewrite_forward_clamp_float16</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">_rewrite_forward_clamp_float16</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    {&#39;AutoformerEncoderLayer&#39;: [&lt;class &#39;transformers.models.autoformer.modeling_autoformer.AutoformerEncoderLayer&#39;&gt;],
+     &#39;BartEncoderLayer&#39;: [&lt;class &#39;transformers.models.bart.modeling_bart.BartEncoderLayer&#39;&gt;,
+                          &lt;class &#39;transformers.models.plbart.modeling_plbart.PLBartEncoderLayer&#39;&gt;],
+     &#39;BigBirdPegasusEncoderLayer&#39;: [&lt;class &#39;transformers.models.bigbird_pegasus.modeling_bigbird_pegasus.BigBirdPegasusEncoderLayer&#39;&gt;],
+     &#39;BlenderbotSmallEncoderLayer&#39;: [&lt;class &#39;transformers.models.blenderbot_small.modeling_blenderbot_small.BlenderbotSmallEncoderLayer&#39;&gt;],
+     &#39;InformerEncoderLayer&#39;: [&lt;class &#39;transformers.models.informer.modeling_informer.InformerEncoderLayer&#39;&gt;],
+     &#39;LEDEncoderLayer&#39;: [&lt;class &#39;transformers.models.led.modeling_led.LEDEncoderLayer&#39;&gt;],
+     &#39;MarianEncoderLayer&#39;: [&lt;class &#39;transformers.models.marian.modeling_marian.MarianEncoderLayer&#39;&gt;],
+     &#39;MvpEncoderLayer&#39;: [&lt;class &#39;transformers.models.mvp.modeling_mvp.MvpEncoderLayer&#39;&gt;],
+     &#39;NllbMoeEncoderLayer&#39;: [&lt;class &#39;transformers.models.nllb_moe.modeling_nllb_moe.NllbMoeEncoderLayer&#39;&gt;],
+     &#39;TimeSeriesTransformerEncoderLayer&#39;: [&lt;class &#39;transformers.models.time_series_transformer.modeling_time_series_transformer.TimeSeriesTransformerEncoderLayer&#39;&gt;]}
 </pre></div>
 </div>
 </section>

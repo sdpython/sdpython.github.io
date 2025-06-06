@@ -9,7 +9,7 @@
         <title>Coverage of the Patches - onnx-diagnostic 0.6.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -270,6 +270,14 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../api/reference/torch_ops/index.html">onnx_diagnostic.reference.torch_ops</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference.torch_ops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/access_ops.html">onnx_diagnostic.reference.torch_ops.access_ops</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/binary_ops.html">onnx_diagnostic.reference.torch_ops.binary_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/controlflow_ops.html">onnx_diagnostic.reference.torch_ops.controlflow_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/generator_ops.html">onnx_diagnostic.reference.torch_ops.generator_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/nn_ops.html">onnx_diagnostic.reference.torch_ops.nn_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/other_ops.html">onnx_diagnostic.reference.torch_ops.other_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/reduce_ops.html">onnx_diagnostic.reference.torch_ops.reduce_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/sequence_ops.html">onnx_diagnostic.reference.torch_ops.sequence_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/shape_ops.html">onnx_diagnostic.reference.torch_ops.shape_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api/reference/torch_ops/unary_ops.html">onnx_diagnostic.reference.torch_ops.unary_ops</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../api/reference/evaluator.html">onnx_diagnostic.reference.evaluator</a></li>
@@ -328,6 +336,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_onnx/sbs.html">onnx_diagnostic.torch_onnx.sbs</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api/api.html">onnx_diagnostic.api</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
 </ul>
 </li>
@@ -364,6 +373,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -441,23 +451,81 @@ for transformers.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">AttentionMaskConverter</span><span class="p">:</span> 
     <span class="n">DynamicCache</span><span class="p">:</span> <span class="n">reorder_cache</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">crop</span><span class="p">,</span> <span class="n">from_batch_splits</span><span class="p">,</span> <span class="n">get_seq_length</span>
     <span class="n">GenerationMixin</span><span class="p">:</span> <span class="n">_cache_dependant_input_preparation</span><span class="p">,</span> <span class="n">_cache_dependant_input_preparation_exporting</span><span class="p">,</span> <span class="n">prepare_inputs_for_generation</span>
+    <span class="n">Phi3RotaryEmbedding</span><span class="p">:</span> <span class="n">forward</span>
 </pre></div>
 </div>
 </section>
 <section id="half-automated-rewrites-for-control-flows">
 <h2>Half Automated Rewrites for Control Flows<a class="headerlink" href="#half-automated-rewrites-for-control-flows" title="Link to this heading">¶</a></h2>
 <p>The following script shows the list of methods automatically rewritten
-due to control flows.</p>
+due to control flows. The same code is duplicated in many model classes.
+The number of fixes if much less than the number of classes to fix.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span> <span class="k">as</span> <span class="nn">p</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">known_transformers_rewritings_clamp_float16</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_rewrite_&quot;</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">known_transformers_rewritings_clamp_float16</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kc">None</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;AutoformerEncoder&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;AutoformerForPrediction&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;AutoformerModel&#39;</span><span class="p">:</span> <span class="s1">&#39;AutoformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BartForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BigBirdPegasusForCausalLM&#39;</span><span class="p">:</span> <span class="s1">&#39;BigBirdPegasusEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BigBirdPegasusForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BigBirdPegasusEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BigBirdPegasusForQuestionAnswering&#39;</span><span class="p">:</span> <span class="s1">&#39;BigBirdPegasusEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BlenderbotSmallForCausalLM&#39;</span><span class="p">:</span> <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;BlenderbotSmallForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BlenderbotSmallEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;InformerEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;InformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;InformerForPrediction&#39;</span><span class="p">:</span> <span class="s1">&#39;InformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;LEDClassificationHead&#39;</span><span class="p">:</span> <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;LEDForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;LEDEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianEncoder&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianMTModel&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MarianModel&#39;</span><span class="p">:</span> <span class="s1">&#39;MarianEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForCausalLM&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForQuestionAnswering&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpForSequenceClassification&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;MvpPrompt&#39;</span><span class="p">:</span> <span class="s1">&#39;MvpEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;NllbMoeEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;NllbMoeEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;NllbMoeForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;NllbMoeEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PLBartEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;PLBartForConditionalGeneration&#39;</span><span class="p">:</span> <span class="s1">&#39;BartEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;TimeSeriesTransformerEncoderLayer&#39;</span><span class="p">:</span> <span class="s1">&#39;TimeSeriesTransformerEncoderLayer&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;TimeSeriesTransformerForPrediction&#39;</span><span class="p">:</span> <span class="s1">&#39;TimeSeriesTransformerEncoderLayer&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_rewrite_forward_clamp_float16</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">_rewrite_forward_clamp_float16</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    {&#39;AutoformerEncoderLayer&#39;: [&lt;class &#39;transformers.models.autoformer.modeling_autoformer.AutoformerEncoderLayer&#39;&gt;],
+     &#39;BartEncoderLayer&#39;: [&lt;class &#39;transformers.models.bart.modeling_bart.BartEncoderLayer&#39;&gt;,
+                          &lt;class &#39;transformers.models.plbart.modeling_plbart.PLBartEncoderLayer&#39;&gt;],
+     &#39;BigBirdPegasusEncoderLayer&#39;: [&lt;class &#39;transformers.models.bigbird_pegasus.modeling_bigbird_pegasus.BigBirdPegasusEncoderLayer&#39;&gt;],
+     &#39;BlenderbotSmallEncoderLayer&#39;: [&lt;class &#39;transformers.models.blenderbot_small.modeling_blenderbot_small.BlenderbotSmallEncoderLayer&#39;&gt;],
+     &#39;InformerEncoderLayer&#39;: [&lt;class &#39;transformers.models.informer.modeling_informer.InformerEncoderLayer&#39;&gt;],
+     &#39;LEDEncoderLayer&#39;: [&lt;class &#39;transformers.models.led.modeling_led.LEDEncoderLayer&#39;&gt;],
+     &#39;MarianEncoderLayer&#39;: [&lt;class &#39;transformers.models.marian.modeling_marian.MarianEncoderLayer&#39;&gt;],
+     &#39;MvpEncoderLayer&#39;: [&lt;class &#39;transformers.models.mvp.modeling_mvp.MvpEncoderLayer&#39;&gt;],
+     &#39;NllbMoeEncoderLayer&#39;: [&lt;class &#39;transformers.models.nllb_moe.modeling_nllb_moe.NllbMoeEncoderLayer&#39;&gt;],
+     &#39;TimeSeriesTransformerEncoderLayer&#39;: [&lt;class &#39;transformers.models.time_series_transformer.modeling_time_series_transformer.TimeSeriesTransformerEncoderLayer&#39;&gt;]}
 </pre></div>
 </div>
 </section>
