@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:01.590** total execution time for 2 files **from auto_technical**:
+**01:08.626** total execution time for 2 files **from auto_technical**:
 
 .. container::
 
@@ -33,8 +33,8 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``plot_layer_norm_discrepancies.py``)
-     - 00:58.552
+     - 01:08.626
      - 0.0
    * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``plot_parallelized_reduction.py``)
-     - 00:03.038
+     - 00:00.000
      - 0.0

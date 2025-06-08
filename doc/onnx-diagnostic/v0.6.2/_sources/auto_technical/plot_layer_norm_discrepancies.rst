@@ -188,31 +188,31 @@ That will be :epkg:`onnxruntime` and
 
     -- running on CPU with FLOAT
     -- running with torch
-    -- torch: #1[CT1s2x1024x1152[248.91334533691406,342.6495666503906:A293.47585376841664]]
+    -- torch: #1[CT1s2x1024x1152[240.0281982421875,333.2430725097656:A285.0493383403518]]
     -- running with ort
-    -- ort: #1[A1s2x1024x1152[248.91336059570312,342.6495666503906:A293.47585369208053]]
-    -- diff abs=0.000152587890625, rel=5.375654055506395e-07, n=2359296.0/#1500052>0.0-#2609>0.0001
+    -- ort: #1[A1s2x1024x1152[240.02822875976562,333.2430419921875:A285.0493383583897]]
+    -- diff abs=0.000152587890625, rel=5.568541537966721e-07, n=2359296.0/#1484455>0.0-#2032>0.0001
 
     -- running on CPU with FLOAT16
     -- running with torch
-    -- torch: #1[CT10s2x1024x1152[248.875,342.5:A293.4774925443861]]
+    -- torch: #1[CT10s2x1024x1152[240.0,333.25:A285.05135504404706]]
     -- running with ort
-    -- ort: #1[A10s2x1024x1152[248.875,342.75:A293.4759013387892]]
-    -- diff abs=0.25, rel=0.0009765586853176355, n=2359296.0/#585348>0.0-#585348>0.0001-#585348>0.001-#585348>0.01-#585348>0.1
+    -- ort: #1[A10s2x1024x1152[240.0,333.25:A285.0493660502964]]
+    -- diff abs=0.25, rel=0.0009765586853176355, n=2359296.0/#585826>0.0-#585826>0.0001-#585826>0.001-#585826>0.01-#585826>0.1
 
     -- running on CUDA with FLOAT
     -- running with torch
-    -- torch: #1[GT1s32x1024x1152[241.55111694335938,344.2181091308594:A293.3795202517556]]
+    -- torch: #1[GT1s32x1024x1152[234.32650756835938,335.265869140625:A285.04125916001027]]
     -- running with ort
-    -- ort: #1[A1s32x1024x1152[241.54922485351562,344.21795654296875:A293.37674252890713]]
-    -- diff abs=0.020782470703125, rel=6.967948218278697e-05, n=37748736.0/#37651458>0.0-#37065905>0.0001-#31432713>0.001-#637985>0.01
+    -- ort: #1[A1s32x1024x1152[234.3227996826172,335.26470947265625:A285.03857064794204]]
+    -- diff abs=0.019561767578125, rel=6.741366235333735e-05, n=37748736.0/#37648559>0.0-#37048890>0.0001-#31279193>0.001-#522757>0.01
 
     -- running on CUDA with FLOAT16
     -- running with torch
-    -- torch: #1[GT10s32x1024x1152[241.5,344.25:A293.3788362344106]]
+    -- torch: #1[GT10s32x1024x1152[234.375,335.25:A285.04108573993045]]
     -- running with ort
-    -- ort: #1[A10s32x1024x1152[241.5,344.25:A293.3788364330928]]
-    -- diff abs=0.25, rel=0.0009425035155381131, n=37748736.0/#1670>0.0-#1670>0.0001-#1670>0.001-#1670>0.01-#1670>0.1
+    -- ort: #1[A10s32x1024x1152[234.375,335.25:A285.0410857167509]]
+    -- diff abs=0.5, rel=0.00187969218160834, n=37748736.0/#1601>0.0-#1601>0.0001-#1601>0.001-#1601>0.01-#1601>0.1
 
 
 
@@ -232,12 +232,14 @@ That will be :epkg:`onnxruntime` and
 
  .. code-block:: none
 
-                           abs           rel            sum           n      >0.0   >0.0001    >0.001   >0.01    >0.1  >1.0
-    provider dtype                                                                                                         
-    CPU      FLOAT    0.000153  5.375654e-07      58.982132   2359296.0   1500052      2609         0       0       0     0
-             FLOAT16  0.250000  9.765587e-04  146335.875000   2359296.0    585348    585348    585348  585348  585348     0
-    CUDA     FLOAT    0.020782  6.967948e-05  134018.442352  37748736.0  37651458  37065905  31432713  637985       0     0
-             FLOAT16  0.250000  9.425035e-04     417.500000  37748736.0      1670      1670      1670    1670    1670     0
+                           abs           rel            sum  ...   >0.01    >0.1  >1.0
+    provider dtype                                           ...                      
+    CPU      FLOAT    0.000153  5.568542e-07      57.637527  ...       0       0     0
+             FLOAT16  0.250000  9.765587e-04  146385.375000  ...  585826  585826     0
+    CUDA     FLOAT    0.019562  6.741366e-05  130786.453049  ...  522757       0     0
+             FLOAT16  0.500000  1.879692e-03     400.375000  ...    1601    1601     0
+
+    [4 rows x 10 columns]
 
 
 
@@ -251,7 +253,7 @@ Visually.
 .. code-block:: Python
 
 
-    df["abs"].plot(title="Discrepancies ORT / torch for LayerNorm(X) @ W + B")
+    df["abs"].plot.bar(title="Discrepancies ORT / torch for LayerNorm(X) @ W + B")
 
 
 
@@ -336,44 +338,44 @@ We mix torch and onnxruntime to execute the kernels.
 
 
     -- ORT-TORCH running on CPU with FLOAT
-    -- ORT-TORCH: #1[CT1s2x1024x1152[248.91334533691406,342.6495666503906:A293.47585377937907]]
-    -- diff with torch abs=9.1552734375e-05, rel=3.360282135954935e-07, n=2359296.0
-    -- diff with ort abs=0.00018310546875, rel=5.854694235994041e-07, n=2359296.0
+    -- ORT-TORCH: #1[CT1s2x1024x1152[240.02818298339844,333.2430725097656:A285.04933834518954]]
+    -- diff with torch abs=9.1552734375e-05, rel=3.225682013818846e-07, n=2359296.0
+    -- diff with ort abs=0.000152587890625, rel=5.813544669095066e-07, n=2359296.0
 
     -- ORT-TORCH running on CPU with FLOAT16
-    -- ORT-TORCH: #1[CT10s2x1024x1152[248.875,342.5:A293.4774929682414]]
-    -- diff with torch abs=0.25, rel=0.000936326081175726, n=2359296.0
-    -- diff with ort abs=0.25, rel=0.0009756059488548338, n=2359296.0
+    -- ORT-TORCH: #1[CT10s2x1024x1152[240.0,333.25:A285.0513520770603]]
+    -- diff with torch abs=0.5, rel=0.001848422002136776, n=2359296.0
+    -- diff with ort abs=0.25, rel=0.0009765586853176355, n=2359296.0
 
     -- ORT-TORCH running on CUDA with FLOAT
-    -- ORT-TORCH: #1[GT1s32x1024x1152[241.55113220214844,344.21807861328125:A293.37952024923527]]
-    -- diff with torch abs=0.000152587890625, rel=5.384998433969219e-07, n=37748736.0
-    -- diff with ort abs=0.020782470703125, rel=6.968433775135773e-05, n=37748736.0
+    -- ORT-TORCH: #1[GT1s32x1024x1152[234.32652282714844,335.2658386230469:A285.04125915866217]]
+    -- diff with torch abs=0.0001220703125, rel=4.5536574584636475e-07, n=37748736.0
+    -- diff with ort abs=0.019561767578125, rel=6.741820726159815e-05, n=37748736.0
 
     -- ORT-TORCH running on CUDA with FLOAT16
-    -- ORT-TORCH: #1[GT10s32x1024x1152[241.5,344.25:A293.3788364330927]]
-    -- diff with torch abs=0.25, rel=0.0009425035155381131, n=37748736.0
+    -- ORT-TORCH: #1[GT10s32x1024x1152[234.375,335.25:A285.04108571675084]]
+    -- diff with torch abs=0.5, rel=0.00187969218160834, n=37748736.0
     -- diff with ort abs=0, rel=0
 
     -- TORCH-ORT running on CPU with FLOAT
-    -- TORCH-ORT: #1[CT1s2x1024x1152[248.90866088867188,342.6494445800781:A293.4730477682703]]
-    -- diff with torch abs=0.018768310546875, rel=6.353966933762668e-05, n=2359296.0
-    -- diff with ort abs=0.01873779296875, rel=6.343635935614322e-05, n=2359296.0
+    -- TORCH-ORT: #1[CT1s2x1024x1152[240.0251007080078,333.2402648925781:A285.04672243771427]]
+    -- diff with torch abs=0.018798828125, rel=6.496689800285014e-05, n=2359296.0
+    -- diff with ort abs=0.018798828125, rel=6.496689800285014e-05, n=2359296.0
 
     -- TORCH-ORT running on CPU with FLOAT16
-    -- TORCH-ORT: #1[CT10s2x1024x1152[248.875,342.5:A293.47518783145483]]
-    -- diff with torch abs=0.5, rel=0.0017093958653132812, n=2359296.0
-    -- diff with ort abs=0.25, rel=0.0009756059488548338, n=2359296.0
+    -- TORCH-ORT: #1[CT10s2x1024x1152[240.0,333.25:A285.04913934071857]]
+    -- diff with torch abs=0.5, rel=0.0018867853328855364, n=2359296.0
+    -- diff with ort abs=0.25, rel=0.0009765586853176355, n=2359296.0
 
     -- TORCH-ORT running on CUDA with FLOAT
-    -- TORCH-ORT: #1[GT1s32x1024x1152[241.54922485351562,344.21795654296875:A293.37674214654055]]
-    -- diff with torch abs=0.020782470703125, rel=6.967948218278697e-05, n=37748736.0
-    -- diff with ort abs=0.001953125, rel=7.090316636083033e-06, n=37748736.0
+    -- TORCH-ORT: #1[GT1s32x1024x1152[234.32289123535156,335.26470947265625:A285.03857107711394]]
+    -- diff with torch abs=0.019561767578125, rel=6.741366235333735e-05, n=37748736.0
+    -- diff with ort abs=0.002410888671875, rel=8.311597291643774e-06, n=37748736.0
 
     -- TORCH-ORT running on CUDA with FLOAT16
-    -- TORCH-ORT: #1[GT10s32x1024x1152[241.5,344.25:A293.3788362344106]]
+    -- TORCH-ORT: #1[GT10s32x1024x1152[234.375,335.25:A285.04108573993045]]
     -- diff with torch abs=0, rel=0
-    -- diff with ort abs=0.25, rel=0.0009433926664427682, n=37748736.0
+    -- diff with ort abs=0.5, rel=0.0018832320782219277, n=37748736.0
 
 
 
@@ -396,14 +398,14 @@ We mix torch and onnxruntime to execute the kernels.
 
                                 diff_ort  diff_torch
     model     provider dtype                        
-    ORT-TORCH CPU      FLOAT    0.000183    0.000092
-                       FLOAT16  0.250000    0.250000
-              CUDA     FLOAT    0.020782    0.000153
-                       FLOAT16  0.000000    0.250000
-    TORCH-ORT CPU      FLOAT    0.018738    0.018768
+    ORT-TORCH CPU      FLOAT    0.000153    0.000092
                        FLOAT16  0.250000    0.500000
-              CUDA     FLOAT    0.001953    0.020782
-                       FLOAT16  0.250000    0.000000
+              CUDA     FLOAT    0.019562    0.000122
+                       FLOAT16  0.000000    0.500000
+    TORCH-ORT CPU      FLOAT    0.018799    0.018799
+                       FLOAT16  0.250000    0.500000
+              CUDA     FLOAT    0.002411    0.019562
+                       FLOAT16  0.500000    0.000000
 
 
 
@@ -412,12 +414,14 @@ We mix torch and onnxruntime to execute the kernels.
 
 Visually.
 
-.. GENERATED FROM PYTHON SOURCE LINES 209-211
+.. GENERATED FROM PYTHON SOURCE LINES 209-213
 
 .. code-block:: Python
 
 
-    df[["diff_ort", "diff_torch"]].plot(title="ORT/Torch or Torch/ORT for LayerNorm(X) @ W + B")
+    df[["diff_ort", "diff_torch"]].plot.bar(
+        title="ORT/Torch or Torch/ORT for LayerNorm(X) @ W + B"
+    )
 
 
 
@@ -433,7 +437,7 @@ Visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 58.552 seconds)
+   **Total running time of the script:** (1 minutes 8.626 seconds)
 
 
 .. _sphx_glr_download_auto_technical_plot_layer_norm_discrepancies.py:
