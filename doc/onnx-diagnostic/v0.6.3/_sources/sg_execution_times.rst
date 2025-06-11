@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:13.415** total execution time for 17 files **from all galleries**:
+**00:10.040** total execution time for 19 files **from all galleries**:
 
 .. container::
 
@@ -32,11 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``technical/plot_layer_norm_discrepancies.py``)
-     - 01:11.287
-     - 0.0
-   * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``technical/plot_parallelized_reduction.py``)
-     - 00:02.128
+   * - :ref:`sphx_glr_auto_examples_plot_dump_intermediate_results.py` (``examples/plot_dump_intermediate_results.py``)
+     - 00:10.040
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``examples/plot_export_hub_codellama.py``)
      - 00:00.000
@@ -80,6 +77,15 @@ Computation times
    * - :ref:`sphx_glr_auto_recipes_plot_export_cond.py` (``recipes/plot_export_cond.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_export_dim1.py` (``recipes/plot_export_dim1.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_export_with_dynamic.py` (``recipes/plot_export_with_dynamic.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_layer_norm_discrepancies.py` (``technical/plot_layer_norm_discrepancies.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_technical_plot_parallelized_reduction.py` (``technical/plot_parallelized_reduction.py``)
      - 00:00.000
      - 0.0

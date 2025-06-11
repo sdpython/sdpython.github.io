@@ -18,6 +18,8 @@
 .. _sphx_glr_auto_recipes_plot_dynamic_shapes_nonzero.py:
 
 
+.. _l-plot-nonzero:
+
 Half certain nonzero
 ====================
 
@@ -31,7 +33,7 @@ does not know what you know.
 A Model
 +++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-49
+.. GENERATED FROM PYTHON SOURCE LINES 17-51
 
 .. code-block:: Python
 
@@ -82,12 +84,12 @@ A Model
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 52-54
 
 Export
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-58
+.. GENERATED FROM PYTHON SOURCE LINES 54-60
 
 .. code-block:: Python
 
@@ -112,11 +114,11 @@ Export
                 sym_size_int_3: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1);  x = None
                 sym_size_int_4: "Sym(s58)" = torch.ops.aten.sym_size.int(y, 0);  y = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:40 in forward, code: x.shape[1], torch.tensor([], dtype=torch.int64), left_window=y.shape[0]
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:42 in forward, code: x.shape[1], torch.tensor([], dtype=torch.int64), left_window=y.shape[0]
                 lift_fresh_copy: "i64[0]" = torch.ops.aten.lift_fresh_copy.default(c_lifted_tensor_0);  c_lifted_tensor_0 = None
                 detach_: "i64[0]" = torch.ops.aten.detach_.default(lift_fresh_copy);  lift_fresh_copy = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:41 in forward, code: return self.adaptive_enc_mask(
                 alias: "i64[0]" = torch.ops.aten.alias.default(detach_);  detach_ = None
                 _assert_tensor_metadata_default = torch.ops.aten._assert_tensor_metadata.default(alias, dtype = torch.int64, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default = None
                 to: "i64[0]" = torch.ops.aten.to.dtype(alias, torch.int64);  alias = None
@@ -140,7 +142,7 @@ Export
                 sym_size_int_5: "Sym(s16)" = torch.ops.aten.sym_size.int(nonzero, 0)
                 sym_constrain_range_for_size_default = torch.ops.aten.sym_constrain_range_for_size.default(sym_size_int_5);  sym_constrain_range_for_size_default = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:41 in forward, code: return self.adaptive_enc_mask(
                 ge_2: "Sym(s16 >= 2)" = sym_size_int_5 >= 2
                 _assert_scalar_default = torch.ops.aten._assert_scalar.default(ge_2, "Runtime assertion failed for expression u0 >= 2 on node 'ge_2'");  ge_2 = _assert_scalar_default = None
             
@@ -148,7 +150,7 @@ Export
                 eq: "Sym(True)" = sym_size_int_3 == sym_size_int_5;  sym_size_int_5 = None
                 _assert_scalar_default_1 = torch.ops.aten._assert_scalar.default(eq, "Runtime assertion failed for expression Eq(s16, u0) on node 'eq'");  eq = _assert_scalar_default_1 = None
             
-                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:39 in forward, code: return self.adaptive_enc_mask(
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_dynamic_shapes_nonzero.py:41 in forward, code: return self.adaptive_enc_mask(
                 slice_1: "i64[s16, 2]" = torch.ops.aten.slice.Tensor(nonzero);  nonzero = None
                 select: "i64[s16]" = torch.ops.aten.select.int(slice_1, 1, 1);  slice_1 = None
                 arange_1: "i64[s16]" = torch.ops.aten.arange.start(0, sym_size_int_3, device = device(type='cpu'), pin_memory = False)
@@ -189,14 +191,14 @@ Export
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-63
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
 
 We can see the following line in the exported program.
 It tells what it cannot verify.
 ``torch.ops.aten._assert_scalar.default(eq,``
 ``"Runtime assertion failed for expression Eq(s16, u0) on node 'eq'");``
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-67
+.. GENERATED FROM PYTHON SOURCE LINES 68-69
 
 .. code-block:: Python
 
@@ -216,7 +218,7 @@ It tells what it cannot verify.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.598 seconds)
+   **Total running time of the script:** (0 minutes 0.428 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_dynamic_shapes_nonzero.py:

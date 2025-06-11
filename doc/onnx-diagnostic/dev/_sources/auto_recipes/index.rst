@@ -13,6 +13,23 @@ Common Export Issues
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="torch.export.export does not work if a tensor given to the function has 0 or 1 for dimension declared as dynamic dimension.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_export_dim1_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_export_dim1.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">0, 1, 2 for a Dynamic Dimension in the dummy example to export a model</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This is related to the following issues: Cannot export torch.sym_max(x.shape[0], y.shape[0]).">
 
 .. only:: html
@@ -106,6 +123,7 @@ Common Export Issues
 .. toctree::
    :hidden:
 
+   /auto_recipes/plot_export_dim1
    /auto_recipes/plot_dynamic_shapes_max
    /auto_recipes/plot_dynamic_shapes_python_int
    /auto_recipes/plot_export_cond

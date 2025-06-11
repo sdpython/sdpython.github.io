@@ -13,6 +13,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip=" codellama/CodeLlama-7b-Python-hf ++++++++++++++++++++++++++++++++">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_dump_intermediate_results_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_dump_intermediate_results.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Dumps intermediate results of a torch model</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Quick tour of dynamic shapes. We first look at examples playing positional and names parameters to understand how torch.export.export works.">
 
 .. only:: html
@@ -191,6 +208,7 @@ Examples Gallery
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_dump_intermediate_results
    /auto_examples/plot_export_with_args_kwargs
    /auto_examples/plot_export_tiny_llm_patched
    /auto_examples/plot_export_tiny_phi2
