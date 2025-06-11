@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:10.040** total execution time for 11 files **from auto_examples**:
+**00:14.179** total execution time for 11 files **from auto_examples**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_dump_intermediate_results.py` (``plot_dump_intermediate_results.py``)
-     - 00:10.040
+     - 00:14.179
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_export_hub_codellama.py` (``plot_export_hub_codellama.py``)
      - 00:00.000

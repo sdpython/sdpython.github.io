@@ -23,11 +23,23 @@
 Dumps intermediate results of a torch model
 ===========================================
 
+Looking for discrepancies is quickly annoying. Discrepancies
+come from two results obtained with the same models
+implemented in two different ways, :epkg:`pytorch` and :epkg:`onnx`.
+Models are big so where do they come from? That's the
+unavoidable question. Unless there is an obvious reason,
+the only way is to compare intermediate outputs alon the computation.
+The first step into that direction is to dump the intermediate results
+coming from :epkg:`pytorch`.
+We use :func:`onnx_diagnostic.helpers.torch_helper.steal_forward` for that.
 
-codellama/CodeLlama-7b-Python-hf
-++++++++++++++++++++++++++++++++
+A simple LLM Model
+++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-29
+See :func:`onnx_diagnostic.helpers.torch_helper.dummy_llm`
+for its definition. It is mostly used for unit test or example.
+
+.. GENERATED FROM PYTHON SOURCE LINES 24-41
 
 .. code-block:: Python
 
@@ -63,11 +75,11 @@ codellama/CodeLlama-7b-Python-hf
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-31
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
 It contains the following submodules.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-35
+.. GENERATED FROM PYTHON SOURCE LINES 43-47
 
 .. code-block:: Python
 
@@ -109,7 +121,7 @@ It contains the following submodules.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-42
+.. GENERATED FROM PYTHON SOURCE LINES 48-54
 
 Steal and dump the output of submodules
 +++++++++++++++++++++++++++++++++++++++
@@ -118,7 +130,7 @@ The following context spies on the intermediate results
 for the following module and submodules. It stores
 in one onnx file all the input/output for those.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-59
+.. GENERATED FROM PYTHON SOURCE LINES 54-71
 
 .. code-block:: Python
 
@@ -184,7 +196,7 @@ in one onnx file all the input/output for those.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-68
+.. GENERATED FROM PYTHON SOURCE LINES 72-81
 
 Restores saved inputs/outputs
 +++++++++++++++++++++++++++++
@@ -192,10 +204,11 @@ Restores saved inputs/outputs
 All the intermediate tensors were saved in one unique onnx model,
 every tensor is stored in a constant node.
 The model can be run with any runtime to restore the inputs
-and function :func:`onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model`
+and function :func:`create_input_tensors_from_onnx_model
+<onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model>`
 can restore their names.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-75
+.. GENERATED FROM PYTHON SOURCE LINES 81-88
 
 .. code-block:: Python
 
@@ -230,7 +243,7 @@ can restore their names.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-100
+.. GENERATED FROM PYTHON SOURCE LINES 89-113
 
 Let's explained the naming convention.
 
@@ -245,7 +258,7 @@ Let's explained the naming convention.
                |                 it is possible to call multiple times,
                |                 the model to store more
                |
-               +--> the name given to steal forward
+               +--> the name given to function steal_forward
 
 The same goes for output except ``'I'`` is replaced by ``'O'``.
 
@@ -257,7 +270,7 @@ This trick can be used to compare intermediate results coming
 from pytorch to any other implementation of the same model
 as long as it is possible to map the stored inputs/outputs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-108
+.. GENERATED FROM PYTHON SOURCE LINES 115-121
 
 Conversion to ONNX
 ++++++++++++++++++
@@ -266,7 +279,7 @@ The difficult point is to be able to map the saved intermediate
 results to intermediate results in ONNX.
 Let's create the ONNX model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-113
+.. GENERATED FROM PYTHON SOURCE LINES 121-126
 
 .. code-block:: Python
 
@@ -294,11 +307,11 @@ Let's create the ONNX model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-115
+.. GENERATED FROM PYTHON SOURCE LINES 127-128
 
 It looks like the following.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-118
+.. GENERATED FROM PYTHON SOURCE LINES 128-131
 
 .. code-block:: Python
 
@@ -317,7 +330,7 @@ It looks like the following.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-120
+.. GENERATED FROM PYTHON SOURCE LINES 132-133
 
 .. code-block:: Python
 
@@ -337,7 +350,7 @@ It looks like the following.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.040 seconds)
+   **Total running time of the script:** (0 minutes 14.179 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_dump_intermediate_results.py:

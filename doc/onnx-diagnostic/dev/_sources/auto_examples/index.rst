@@ -13,7 +13,7 @@ Examples Gallery
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip=" codellama/CodeLlama-7b-Python-hf ++++++++++++++++++++++++++++++++">
+    <div class="sphx-glr-thumbcontainer" tooltip="Looking for discrepancies is quickly annoying. Discrepancies come from two results obtained with the same models implemented in two different ways, pytorch and onnx. Models are big so where do they come from? That&#x27;s the unavoidable question. Unless there is an obvious reason, the only way is to compare intermediate outputs alon the computation. The first step into that direction is to dump the intermediate results coming from pytorch. We use onnx_diagnostic.helpers.torch_helper.steal_forward for that.">
 
 .. only:: html
 

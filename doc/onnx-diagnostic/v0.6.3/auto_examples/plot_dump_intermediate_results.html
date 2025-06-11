@@ -426,8 +426,19 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="dumps-intermediate-results-of-a-torch-model">
 <span id="l-plot-intermediate-results"></span><span id="sphx-glr-auto-examples-plot-dump-intermediate-results-py"></span><h1>Dumps intermediate results of a torch model<a class="headerlink" href="#dumps-intermediate-results-of-a-torch-model" title="Link to this heading">¶</a></h1>
-<section id="codellama-codellama-7b-python-hf">
-<h2>codellama/CodeLlama-7b-Python-hf<a class="headerlink" href="#codellama-codellama-7b-python-hf" title="Link to this heading">¶</a></h2>
+<p>Looking for discrepancies is quickly annoying. Discrepancies
+come from two results obtained with the same models
+implemented in two different ways, <a class="reference external" href="https://pytorch.org/">pytorch</a> and <a class="reference external" href="https://onnx.ai/onnx/">onnx</a>.
+Models are big so where do they come from? That’s the
+unavoidable question. Unless there is an obvious reason,
+the only way is to compare intermediate outputs alon the computation.
+The first step into that direction is to dump the intermediate results
+coming from <a class="reference external" href="https://pytorch.org/">pytorch</a>.
+We use <a class="reference internal" href="../api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.steal_forward" title="onnx_diagnostic.helpers.torch_helper.steal_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.torch_helper.steal_forward()</span></code></a> for that.</p>
+<section id="a-simple-llm-model">
+<h2>A simple LLM Model<a class="headerlink" href="#a-simple-llm-model" title="Link to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="../api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.dummy_llm" title="onnx_diagnostic.helpers.torch_helper.dummy_llm"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.torch_helper.dummy_llm()</span></code></a>
+for its definition. It is mostly used for unit test or example.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">onnx_array_api.plotting.graphviz_helper</span> <span class="kn">import</span> <a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a>
@@ -542,7 +553,7 @@ in one onnx file all the input/output for those.</p>
 <p>All the intermediate tensors were saved in one unique onnx model,
 every tensor is stored in a constant node.
 The model can be run with any runtime to restore the inputs
-and function <a class="reference internal" href="../api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" title="onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model()</span></code></a>
+and function <a class="reference internal" href="../api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" title="onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_input_tensors_from_onnx_model</span></code></a>
 can restore their names.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">saved_tensors</span></a></a> <span class="o">=</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" title="onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" class="sphx-glr-backref-module-onnx_diagnostic-helpers-mini_onnx_builder sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/mini_onnx_builder.html#onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" title="onnx_diagnostic.helpers.mini_onnx_builder.create_input_tensors_from_onnx_model" class="sphx-glr-backref-module-onnx_diagnostic-helpers-mini_onnx_builder sphx-glr-backref-type-py-function"><span class="n">create_input_tensors_from_onnx_model</span></a></a><span class="p">(</span>
     <span class="s2">&quot;plot_dump_intermediate_results.inputs.onnx&quot;</span>
@@ -575,7 +586,7 @@ can restore their names.</p>
             <span class="o">|</span>                 <span class="n">it</span> <span class="ow">is</span> <span class="n">possible</span> <span class="n">to</span> <span class="n">call</span> <span class="n">multiple</span> <span class="n">times</span><span class="p">,</span>
             <span class="o">|</span>                 <span class="n">the</span> <span class="n">model</span> <span class="n">to</span> <span class="n">store</span> <span class="n">more</span>
             <span class="o">|</span>
-            <span class="o">+--&gt;</span> <span class="n">the</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a></a> <span class="n">given</span> <span class="n">to</span> <span class="n">steal</span> <span class="n">forward</span>
+            <span class="o">+--&gt;</span> <span class="n">the</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a></a> <span class="n">given</span> <span class="n">to</span> <span class="n">function</span> <a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.steal_forward" title="onnx_diagnostic.helpers.torch_helper.steal_forward" class="sphx-glr-backref-module-onnx_diagnostic-helpers-torch_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-diagnostic/dev/api/helpers/torch_helper.html#onnx_diagnostic.helpers.torch_helper.steal_forward" title="onnx_diagnostic.helpers.torch_helper.steal_forward" class="sphx-glr-backref-module-onnx_diagnostic-helpers-torch_helper sphx-glr-backref-type-py-function"><span class="n">steal_forward</span></a></a>
 </pre></div>
 </div>
 <p>The same goes for output except <code class="docutils literal notranslate"><span class="pre">'I'</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">'O'</span></code>.</p>
@@ -613,7 +624,7 @@ Applied 4 of general pattern rewrite rules.
 <img src="../_images/sphx_glr_plot_dump_intermediate_results_001.png" srcset="../_images/sphx_glr_plot_dump_intermediate_results_001.png" alt="plot dump intermediate results" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">doc</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="s2">&quot;steal and dump</span><span class="se">\n</span><span class="s2">intermediate</span><span class="se">\n</span><span class="s2">results&quot;</span><span class="p">,</span> <span class="s2">&quot;steal_forward&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_dump_intermediate_results_002.png" srcset="../_images/sphx_glr_plot_dump_intermediate_results_002.png" alt="plot dump intermediate results" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.040 seconds)</p>
+<img src="../_images/sphx_glr_plot_dump_intermediate_results_002.png" srcset="../_images/sphx_glr_plot_dump_intermediate_results_002.png" alt="plot dump intermediate results" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 14.179 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-dump-intermediate-results-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d0337118884dee1fe287b68cfd25b0ef/plot_dump_intermediate_results.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_dump_intermediate_results.ipynb</span></code></a></p>
@@ -629,12 +640,12 @@ Applied 4 of general pattern rewrite rules.
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This function exports an smaller untrained model with the same architecture. It is faster than the pretrained model. When this works, the untrained model can be replaced by the trained one."><img alt="" src="../_images/sphx_glr_plot_export_tiny_phi2_thumb.png" />
 <p><a class="reference internal" href="plot_export_tiny_phi2.html#sphx-glr-auto-examples-plot-export-tiny-phi2-py"><span class="std std-ref">Export microsoft/phi-2</span></a></p>
   <div class="sphx-glr-thumbnail-title">Export microsoft/phi-2</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Checking the exporter on a whole model takes time as it is usually big but we can create a smaller version with the same architecture. Then fix export issues on such a small model is faster."><img alt="" src="../_images/sphx_glr_plot_export_hub_codellama_thumb.png" />
-<p><a class="reference internal" href="plot_export_hub_codellama.html#sphx-glr-auto-examples-plot-export-hub-codellama-py"><span class="std std-ref">Test the export on untrained models</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Test the export on untrained models</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Inputs are always dynamic with LLMs that is why dynamic shapes needs to be specified when a LLM is exported with torch.export.export. Most of the examples on HuggingFace use method transformers.GenerationMixin.generate but we only want to export the model and its method forward."><img alt="" src="../_images/sphx_glr_plot_export_tiny_llm_thumb.png" />
 <p><a class="reference internal" href="plot_export_tiny_llm.html#sphx-glr-auto-examples-plot-export-tiny-llm-py"><span class="std std-ref">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</span></a></p>
   <div class="sphx-glr-thumbnail-title">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="LLMs must be exported with dynamic shapes and it is common that a static dimension turns into a static ones. The error message from pytorch tells the user to define TORCH_LOGS=&quot;+dynamic&quot; but it shows a very long list of messages where we need to find the string range_refined_to_singleton and that does not really indicates where it comes from. The example shows how to tweak pytorch to get that information until it gets better."><img alt="" src="../_images/sphx_glr_plot_export_locate_issue_thumb.png" />
+<p><a class="reference internal" href="plot_export_locate_issue.html#sphx-glr-auto-examples-plot-export-locate-issue-py"><span class="std std-ref">Find and fix an export issue due to dynamic shapes</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Find and fix an export issue due to dynamic shapes</div>
 </div></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
@@ -695,7 +706,7 @@ Applied 4 of general pattern rewrite rules.
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Dumps intermediate results of a torch model</a><ul>
-<li><a class="reference internal" href="#codellama-codellama-7b-python-hf">codellama/CodeLlama-7b-Python-hf</a></li>
+<li><a class="reference internal" href="#a-simple-llm-model">A simple LLM Model</a></li>
 <li><a class="reference internal" href="#steal-and-dump-the-output-of-submodules">Steal and dump the output of submodules</a></li>
 <li><a class="reference internal" href="#restores-saved-inputs-outputs">Restores saved inputs/outputs</a></li>
 <li><a class="reference internal" href="#conversion-to-onnx">Conversion to ONNX</a></li>
