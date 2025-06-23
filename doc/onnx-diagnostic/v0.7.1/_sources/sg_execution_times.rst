@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.615** total execution time for 20 files **from all galleries**:
+**00:00.000** total execution time for 21 files **from all galleries**:
 
 .. container::
 
@@ -32,9 +32,6 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_what.py` (``recipes/plot_dynamic_shapes_what.py``)
-     - 00:03.615
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_dump_intermediate_results.py` (``examples/plot_dump_intermediate_results.py``)
      - 00:00.000
      - 0.0
@@ -68,6 +65,9 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_failing_reference_evaluator.py` (``examples/plot_failing_reference_evaluator.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_json.py` (``recipes/plot_dynamic_shapes_json.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_max.py` (``recipes/plot_dynamic_shapes_max.py``)
      - 00:00.000
      - 0.0
@@ -75,6 +75,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_python_int.py` (``recipes/plot_dynamic_shapes_python_int.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_what.py` (``recipes/plot_dynamic_shapes_what.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_export_cond.py` (``recipes/plot_export_cond.py``)

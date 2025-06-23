@@ -369,6 +369,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_json.html">JSON returns list when the original dynamic shapes are list or tuple</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_with_dynamic.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -440,7 +441,7 @@
 <span class="sd">        :func:`torch.export.export` only considers the values,</span>
 <span class="sd">        the context gives the dictionary keys but it is not expressed</span>
 <span class="sd">        in the dynamic shapes, these specifications seems to be different</span>
-<span class="sd">        for the strict and non strict mode.</span>
+<span class="sd">        for the strict and non strict mode. It also preserves tuple.</span>
 <span class="sd">    :param change_function: to modifies the tensor in the structure itself,</span>
 <span class="sd">        like replace them by a shape</span>
 <span class="sd">    :return: the serialized object</span>
@@ -459,9 +460,12 @@
         <span class="p">)</span>
         <span class="n">subtrees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">end</span>
-    <span class="k">if</span> <span class="n">use_dict</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="n">spec</span><span class="o">.</span><span class="n">context</span><span class="p">):</span>
-        <span class="c1"># This a dictionary.</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">subtrees</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">use_dict</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="n">spec</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
+            <span class="c1"># This a dictionary.</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">subtrees</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">subtrees</span><span class="p">)</span>
     <span class="c1"># This is a list.</span>
     <span class="k">return</span> <span class="n">subtrees</span></div>
 

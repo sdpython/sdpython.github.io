@@ -369,6 +369,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_json.html">JSON returns list when the original dynamic shapes are list or tuple</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_with_dynamic.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -701,7 +702,8 @@
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">trained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">same_as_pretrained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">use_pretrained</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">patch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -736,7 +738,9 @@
 <span class="sd">    :param verbose: verbosity level</span>
 <span class="sd">    :param dtype: uses this dtype to check the model</span>
 <span class="sd">    :param device: do the verification on this device</span>
-<span class="sd">    :param trained: use the trained model, not the untrained one</span>
+<span class="sd">    :param same_as_pretrained: use a model equivalent to the trained,</span>
+<span class="sd">        this is not always possible</span>
+<span class="sd">    :param use_pretrained: use the trained model, not the untrained one</span>
 <span class="sd">    :param optimization: optimization to apply to the exported model,</span>
 <span class="sd">        depend on the the exporter</span>
 <span class="sd">    :param quiet: if quiet, catches exception if any issue</span>
@@ -795,7 +799,8 @@
             <span class="n">version_do_run</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">do_run</span><span class="p">),</span>
             <span class="n">version_dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">dtype</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
             <span class="n">version_device</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">device</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">version_trained</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">trained</span><span class="p">),</span>
+            <span class="n">version_same_as_pretrained</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">same_as_pretrained</span><span class="p">),</span>
+            <span class="n">version_use_pretrained</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">use_pretrained</span><span class="p">),</span>
             <span class="n">version_optimization</span><span class="o">=</span><span class="n">optimization</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="n">version_quiet</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">quiet</span><span class="p">),</span>
             <span class="n">version_patch</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">patch</span><span class="p">),</span>
@@ -850,11 +855,12 @@
         <span class="n">summary</span><span class="p">,</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">mid</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">tr</span><span class="o">=</span><span class="n">trained</span><span class="p">,</span> <span class="n">iop</span><span class="o">=</span><span class="n">iop</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="n">subfolder</span><span class="p">,</span> <span class="n">i2</span><span class="o">=</span><span class="n">inputs2</span><span class="p">:</span> <span class="p">(</span>  <span class="c1"># noqa: E501</span>
+            <span class="k">lambda</span> <span class="n">mid</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span> <span class="n">uptr</span><span class="o">=</span><span class="n">use_pretrained</span><span class="p">,</span> <span class="n">tr</span><span class="o">=</span><span class="n">same_as_pretrained</span><span class="p">,</span> <span class="n">iop</span><span class="o">=</span><span class="n">iop</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="n">subfolder</span><span class="p">,</span> <span class="n">i2</span><span class="o">=</span><span class="n">inputs2</span><span class="p">:</span> <span class="p">(</span>  <span class="c1"># noqa: E501</span>
                 <span class="n">get_untrained_model_with_inputs</span><span class="p">(</span>
                     <span class="n">mid</span><span class="p">,</span>
                     <span class="n">verbose</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
                     <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
+                    <span class="n">use_pretrained</span><span class="o">=</span><span class="n">uptr</span><span class="p">,</span>
                     <span class="n">same_as_pretrained</span><span class="o">=</span><span class="n">tr</span><span class="p">,</span>
                     <span class="n">inputs_kwargs</span><span class="o">=</span><span class="n">iop</span><span class="p">,</span>
                     <span class="n">model_kwargs</span><span class="o">=</span><span class="n">mop</span><span class="p">,</span>

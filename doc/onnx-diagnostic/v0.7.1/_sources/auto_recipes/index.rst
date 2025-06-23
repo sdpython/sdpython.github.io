@@ -115,6 +115,23 @@ Common Export Issues
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes given to torch.export.export must follow the same semantic. What if we confuse tuple and list when defining the dynamic shapes, how to restore the expected type assuming we know the inputs? Not often useful but maybe we will learn more about optree.">
+
+.. only:: html
+
+  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_dynamic_shapes_json_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_recipes_plot_dynamic_shapes_json.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">JSON returns list when the original dynamic shapes are list or tuple</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Setting the dynamic shapes is not always easy. Here are a few tricks to make it work.">
 
 .. only:: html
@@ -146,6 +163,7 @@ Common Export Issues
    /auto_recipes/plot_dynamic_shapes_python_int
    /auto_recipes/plot_export_cond
    /auto_recipes/plot_dynamic_shapes_nonzero
+   /auto_recipes/plot_dynamic_shapes_json
    /auto_recipes/plot_export_with_dynamic
 
 

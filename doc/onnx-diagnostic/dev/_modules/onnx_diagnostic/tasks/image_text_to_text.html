@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>onnx_diagnostic.tasks.image_text_to_text - onnx-diagnostic 0.7.0 documentation</title>
+        <title>onnx_diagnostic.tasks.image_text_to_text - onnx-diagnostic 0.7.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
@@ -172,7 +172,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">onnx-diagnostic 0.7.0 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">onnx-diagnostic 0.7.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -199,7 +199,7 @@
     <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">onnx-diagnostic 0.7.0 documentation</span>
+  <span class="sidebar-brand-text">onnx-diagnostic 0.7.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,6 +220,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API of onnx_diagnostic</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API of onnx_diagnostic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/export/index.html">onnx_diagnostic.export</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.export</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/export/dynamic_shapes.html">onnx_diagnostic.export.dynamic_shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/export/shape_helper.html">onnx_diagnostic.export.shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/export/validate.html">onnx_diagnostic.export.validate</a></li>
 </ul>
 </li>
@@ -363,10 +364,12 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../auto_recipes/index.html">Common Export Issues</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Common Export Issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_dim1.html">0, 1, 2 for a Dynamic Dimension in the dummy example to export a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_what.html">Builds dynamic shapes from any input</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_json.html">JSON returns list when the original dynamic shapes are list or tuple</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_with_dynamic.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -518,10 +521,10 @@
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_hidden_layers</span><span class="p">)</span>
             <span class="p">]</span>
         <span class="p">),</span>
-        <span class="n">image_attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length2</span><span class="p">,</span> <span class="n">n_images</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+        <span class="n">pixel_values</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">n_images</span><span class="p">,</span> <span class="n">num_channels</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
         <span class="p">),</span>
-        <span class="n">pixel_values</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">n_images</span><span class="p">,</span> <span class="n">num_channels</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+        <span class="n">image_attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length2</span><span class="p">,</span> <span class="n">n_images</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -557,16 +560,30 @@
 <span class="sd">    If the configuration is None, the function selects typical dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">check_hasattr</span><span class="p">(</span>
-            <span class="n">config</span><span class="p">,</span>
-            <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
-            <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;intermediate_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;vision_config&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;text_config&quot;</span><span class="p">):</span>
+            <span class="n">check_hasattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;intermediate_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;vision_config&quot;</span><span class="p">)</span>
+            <span class="n">text_config</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_hasattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="s2">&quot;vocab_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;intermediate_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;vision_config&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">text_config</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">check_hasattr</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="p">,</span> <span class="s2">&quot;image_size&quot;</span><span class="p">,</span> <span class="s2">&quot;num_channels&quot;</span><span class="p">)</span>
     <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -575,17 +592,54 @@
         <span class="n">head_dim</span><span class="o">=</span><span class="p">(</span>
             <span class="mi">16</span>
             <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="o">//</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span><span class="p">)</span>
+            <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="s2">&quot;head_dim&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="k">if</span> <span class="n">text_config</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+                <span class="o">//</span> <span class="p">(</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+                    <span class="k">if</span> <span class="n">text_config</span>
+                    <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_attention_heads</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
         <span class="p">),</span>
-        <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="mi">31999</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="mi">4</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span><span class="p">,</span>
+        <span class="n">dummy_max_token_id</span><span class="o">=</span><span class="p">(</span>
+            <span class="mi">31999</span>
+            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">vocab_size</span> <span class="k">if</span> <span class="n">text_config</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="p">),</span>
+        <span class="n">num_hidden_layers</span><span class="o">=</span><span class="p">(</span>
+            <span class="mi">4</span>
+            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">num_hidden_layers</span>
+                <span class="k">if</span> <span class="n">text_config</span>
+                <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">num_hidden_layers</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
         <span class="n">num_key_value_heads</span><span class="o">=</span><span class="p">(</span>
             <span class="mi">8</span>
             <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">(</span>
+                <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">text_config</span>
+                <span class="k">else</span> <span class="n">_pick</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;num_key_value_heads&quot;</span><span class="p">,</span> <span class="s2">&quot;num_attention_heads&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="p">),</span>
-        <span class="n">intermediate_size</span><span class="o">=</span><span class="mi">1024</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span><span class="p">,</span>
-        <span class="n">hidden_size</span><span class="o">=</span><span class="mi">512</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span>
+        <span class="n">intermediate_size</span><span class="o">=</span><span class="p">(</span>
+            <span class="mi">1024</span>
+            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">intermediate_size</span>
+                <span class="k">if</span> <span class="n">text_config</span>
+                <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">intermediate_size</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="p">(</span>
+            <span class="mi">512</span>
+            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">text_config</span><span class="o">.</span><span class="n">hidden_size</span> <span class="k">if</span> <span class="n">text_config</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+        <span class="p">),</span>
         <span class="n">width</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
         <span class="n">height</span><span class="o">=</span><span class="mi">224</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">image_size</span><span class="p">,</span>
         <span class="n">num_channels</span><span class="o">=</span><span class="mi">3</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">vision_config</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
@@ -624,7 +678,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=c62cc9a0"></script>
+</div><script src="../../../_static/documentation_options.js?v=7dd04bbd"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

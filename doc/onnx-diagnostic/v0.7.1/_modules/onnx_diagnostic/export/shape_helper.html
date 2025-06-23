@@ -369,6 +369,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_dynamic_shapes_json.html">JSON returns list when the original dynamic shapes are list or tuple</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../auto_recipes/plot_export_with_dynamic.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -417,8 +418,9 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for onnx_diagnostic.export.shape_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Set</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">..helpers.cache_helper</span> <span class="kn">import</span> <span class="n">flatten_unflatten_for_dynamic_shapes</span>
+<span class="kn">from</span> <span class="nn">.dynamic_shapes</span> <span class="kn">import</span> <span class="n">ModelInputs</span>
 
 
 <div class="viewcode-block" id="all_dynamic_shape_from_inputs">
@@ -468,6 +470,85 @@
     <span class="k">return</span> <span class="n">flatten_unflatten_for_dynamic_shapes</span><span class="p">(</span>
         <span class="n">inputs</span><span class="p">,</span> <span class="n">change_function</span><span class="o">=</span><span class="n">tensor_to_shape</span><span class="p">,</span> <span class="n">use_dict</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="guess_dynamic_shapes_from_inputs">
+<a class="viewcode-back" href="../../../api/export/shape_helper.html#onnx_diagnostic.export.shape_helper.guess_dynamic_shapes_from_inputs">[docs]</a>
+<span class="k">def</span> <span class="nf">guess_dynamic_shapes_from_inputs</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">auto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Guesses which dimension is dimension from a set of inputs.</span>
+<span class="sd">    Every dimension having different values over multiple sets</span>
+<span class="sd">    of inputs. Every dimension not changing remains static.</span>
+
+<span class="sd">    :param inputs: a list of input sets</span>
+<span class="sd">    :param auto: True for ``torch.export.Dim.AUTO``,</span>
+<span class="sd">        False for ``torch.export.Dim.DYNAMIC``,</span>
+<span class="sd">        a string to get a unique string for every dynamic dimension</span>
+<span class="sd">    :return: args and kwargs</span>
+
+<span class="sd">    .. runpython::</span>
+<span class="sd">        :showcode:</span>
+
+<span class="sd">        import pprint</span>
+<span class="sd">        import torch</span>
+<span class="sd">        from onnx_diagnostic.helpers.cache_helper import make_dynamic_cache</span>
+<span class="sd">        from onnx_diagnostic.export.shape_helper import guess_dynamic_shapes_from_inputs</span>
+
+<span class="sd">        bsize, nheads, slen, dim = 2, 1, 30, 96</span>
+<span class="sd">        inputs1 = dict(</span>
+<span class="sd">            input_ids=torch.randint(15, size=(2, 3), dtype=torch.int64),</span>
+<span class="sd">            attention_mask=torch.randint(1, size=(2, 33), dtype=torch.int64),</span>
+<span class="sd">            position_ids=torch.arange(3, dtype=torch.int64),</span>
+<span class="sd">            past_key_values=make_dynamic_cache(</span>
+<span class="sd">                [</span>
+<span class="sd">                    (</span>
+<span class="sd">                        torch.randn(bsize, nheads, slen, dim),</span>
+<span class="sd">                        torch.randn(bsize, nheads, slen, dim),</span>
+<span class="sd">                    ),</span>
+<span class="sd">                ]</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        bsize, nheads, slen, dim = 3, 1, 33, 96</span>
+<span class="sd">        inputs2 = dict(</span>
+<span class="sd">            input_ids=torch.randint(15, size=(3, 4), dtype=torch.int64),</span>
+<span class="sd">            attention_mask=torch.randint(1, size=(3, 34), dtype=torch.int64),</span>
+<span class="sd">            position_ids=torch.arange(4, dtype=torch.int64),</span>
+<span class="sd">            past_key_values=make_dynamic_cache(</span>
+<span class="sd">                [</span>
+<span class="sd">                    (</span>
+<span class="sd">                        torch.randn(bsize, nheads, slen, dim),</span>
+<span class="sd">                        torch.randn(bsize, nheads, slen, dim),</span>
+<span class="sd">                    ),</span>
+<span class="sd">                ]</span>
+<span class="sd">            ),</span>
+<span class="sd">        )</span>
+<span class="sd">        ds = guess_dynamic_shapes_from_inputs([inputs1, inputs2], auto=&quot;d&quot;)</span>
+<span class="sd">        pprint.pprint(ds)</span>
+
+<span class="sd">    This function returns something equivalent to function</span>
+<span class="sd">    :class:`torch.export.dynamic_shapes.AdditionalInputs` but this</span>
+<span class="sd">    one needs a model.</span>
+
+<span class="sd">    .. runpython::</span>
+<span class="sd">        :showcode:</span>
+
+<span class="sd">        import pprint</span>
+<span class="sd">        import torch</span>
+<span class="sd">        from onnx_diagnostic.helpers.cache_helper import make_dynamic_cache</span>
+<span class="sd">        from onnx_diagnostic.export.shape_helper import guess_dynamic_shapes_from_inputs</span>
+<span class="sd">        from onnx_diagnostic.torch_models.hghub import get_untrained_model_with_inputs</span>
+
+<span class="sd">        data = get_untrained_model_with_inputs(&quot;arnir0/Tiny-LLM&quot;, add_second_input=True)</span>
+<span class="sd">        ds = torch.export.dynamic_shapes.AdditionalInputs()</span>
+<span class="sd">        ds.add((), data[&quot;inputs&quot;])</span>
+<span class="sd">        ds.add((), data[&quot;inputs2&quot;])</span>
+<span class="sd">        pprint.pprint(ds.dynamic_shapes(data[&quot;model&quot;], (), data[&quot;inputs&quot;]))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mi</span> <span class="o">=</span> <span class="n">ModelInputs</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mi</span><span class="o">.</span><span class="n">guess_dynamic_shapes</span><span class="p">(</span><span class="n">auto</span><span class="o">=</span><span class="n">auto</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

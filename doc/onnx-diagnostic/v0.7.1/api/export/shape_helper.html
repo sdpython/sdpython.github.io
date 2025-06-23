@@ -370,6 +370,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_export_cond.html">Export a model with a control flow (If)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_dynamic_shapes_json.html">JSON returns list when the original dynamic shapes are list or tuple</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_recipes/plot_export_with_dynamic.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
 </ul>
 </li>
@@ -427,7 +428,7 @@
 <span id="onnx-diagnostic-export-shape-helper"></span><h1>onnx_diagnostic.export.shape_helper<a class="headerlink" href="#module-onnx_diagnostic.export.shape_helper" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="onnx_diagnostic.export.shape_helper.all_dynamic_shape_from_inputs">
-<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.export.shape_helper.</span></span><span class="sig-name descname"><span class="pre">all_dynamic_shape_from_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'d'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/bed8fe5/onnx_diagnostic/export/shape_helper.py#L5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/export/shape_helper.html#all_dynamic_shape_from_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.export.shape_helper.all_dynamic_shape_from_inputs" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.export.shape_helper.</span></span><span class="sig-name descname"><span class="pre">all_dynamic_shape_from_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'d'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/c5d5466/onnx_diagnostic/export/shape_helper.py#L6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/export/shape_helper.html#all_dynamic_shape_from_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.export.shape_helper.all_dynamic_shape_from_inputs" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the dynamic shapes for the given inputs.
 All dimensions are considered as dynamic.
 <code class="docutils literal notranslate"><span class="pre">dim_prefix</span></code> can be a string (the function uses it as a prefix),
@@ -463,6 +464,138 @@ or <code class="docutils literal notranslate"><span class="pre">torch.export.Dim
                                           <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;d_4_2&#39;</span><span class="p">,</span>
                                           <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;d_4_3&#39;</span><span class="p">}]},</span>
      <span class="s1">&#39;position_ids&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;d_2_0&#39;</span><span class="p">}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="onnx_diagnostic.export.shape_helper.guess_dynamic_shapes_from_inputs">
+<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.export.shape_helper.</span></span><span class="sig-name descname"><span class="pre">guess_dynamic_shapes_from_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.13)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/c5d5466/onnx_diagnostic/export/shape_helper.py#L53"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/export/shape_helper.html#guess_dynamic_shapes_from_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.export.shape_helper.guess_dynamic_shapes_from_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Guesses which dimension is dimension from a set of inputs.
+Every dimension having different values over multiple sets
+of inputs. Every dimension not changing remains static.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> – a list of input sets</p></li>
+<li><p><strong>auto</strong> – True for <code class="docutils literal notranslate"><span class="pre">torch.export.Dim.AUTO</span></code>,
+False for <code class="docutils literal notranslate"><span class="pre">torch.export.Dim.DYNAMIC</span></code>,
+a string to get a unique string for every dynamic dimension</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>args and kwargs</p>
+</dd>
+</dl>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">make_dynamic_cache</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.export.shape_helper</span> <span class="kn">import</span> <span class="n">guess_dynamic_shapes_from_inputs</span>
+
+<span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">96</span>
+<span class="n">inputs1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="n">attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">33</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="n">position_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="n">past_key_values</span><span class="o">=</span><span class="n">make_dynamic_cache</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">96</span>
+<span class="n">inputs2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">input_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="n">attention_mask</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="n">position_ids</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+    <span class="n">past_key_values</span><span class="o">=</span><span class="n">make_dynamic_cache</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">bsize</span><span class="p">,</span> <span class="n">nheads</span><span class="p">,</span> <span class="n">slen</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">guess_dynamic_shapes_from_inputs</span><span class="p">([</span><span class="n">inputs1</span><span class="p">,</span> <span class="n">inputs2</span><span class="p">],</span> <span class="n">auto</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">((),</span>
+     <span class="p">{</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;d_0I0&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;d_0I1&#39;</span><span class="p">},</span>
+      <span class="s1">&#39;input_ids&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;d_1I0&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;d_1I1&#39;</span><span class="p">},</span>
+      <span class="s1">&#39;past_key_values&#39;</span><span class="p">:</span> <span class="p">[[{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;d_2I_0o_0l0&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;d_2I_0o_0l2&#39;</span><span class="p">}],</span>
+                          <span class="p">[{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;d_2I_1o_0l0&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;d_2I_1o_0l2&#39;</span><span class="p">}]],</span>
+      <span class="s1">&#39;position_ids&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;d_3I0&#39;</span><span class="p">}})</span>
+</pre></div>
+</div>
+<p>This function returns something equivalent to function
+<a class="reference external" href="https://docs.pytorch.org/docs/main/export.html#torch.export.dynamic_shapes.AdditionalInputs" title="(in PyTorch vmain (2.8.0a0+git3dabc35 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.export.dynamic_shapes.AdditionalInputs</span></code></a> but this
+one needs a model.</p>
+<p>&lt;&lt;&lt;</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">make_dynamic_cache</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.export.shape_helper</span> <span class="kn">import</span> <span class="n">guess_dynamic_shapes_from_inputs</span>
+<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_models.hghub</span> <span class="kn">import</span> <span class="n">get_untrained_model_with_inputs</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">get_untrained_model_with_inputs</span><span class="p">(</span><span class="s2">&quot;arnir0/Tiny-LLM&quot;</span><span class="p">,</span> <span class="n">add_second_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="o">.</span><span class="n">AdditionalInputs</span><span class="p">()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">add</span><span class="p">((),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">])</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">add</span><span class="p">((),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs2&quot;</span><span class="p">])</span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">dynamic_shapes</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">],</span> <span class="p">(),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>&gt;&gt;&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">{</span><span class="s1">&#39;attention_mask&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                 <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                        <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                 <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                 <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+     <span class="s1">&#39;input_ids&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                            <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                   <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                            <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+     <span class="s1">&#39;past_key_values&#39;</span><span class="p">:</span> <span class="p">[[(</span><span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                    <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="kc">None</span><span class="p">,</span>
+                           <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                    <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="kc">None</span><span class="p">)],</span>
+                         <span class="p">[(</span><span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                    <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="kc">None</span><span class="p">,</span>
+                           <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                                    <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                    <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="kc">None</span><span class="p">)]],</span>
+     <span class="s1">&#39;position_ids&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                               <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                      <span class="n">_DimHint</span><span class="p">(</span><span class="nb">type</span><span class="o">=&lt;</span><span class="n">_DimHintType</span><span class="o">.</span><span class="n">DYNAMIC</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                               <span class="nb">min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="nb">max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">_factory</span><span class="o">=</span><span class="kc">True</span><span class="p">))}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -526,6 +659,7 @@ or <code class="docutils literal notranslate"><span class="pre">torch.export.Dim
             <ul>
 <li><a class="reference internal" href="#">onnx_diagnostic.export.shape_helper</a><ul>
 <li><a class="reference internal" href="#onnx_diagnostic.export.shape_helper.all_dynamic_shape_from_inputs"><code class="docutils literal notranslate"><span class="pre">all_dynamic_shape_from_inputs()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_diagnostic.export.shape_helper.guess_dynamic_shapes_from_inputs"><code class="docutils literal notranslate"><span class="pre">guess_dynamic_shapes_from_inputs()</span></code></a></li>
 </ul>
 </li>
 </ul>
