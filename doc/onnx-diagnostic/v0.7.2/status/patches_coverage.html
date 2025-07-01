@@ -388,6 +388,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -437,11 +438,26 @@
 <p>&lt;&lt;&lt;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">onnx_diagnostic.torch_export_patches.onnx_export_serialization</span> <span class="k">as</span> <span class="nn">p</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">serialization_functions</span><span class="p">())))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">t</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">serialization_functions</span><span class="p">(</span>
+                <span class="n">patch_transformers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_diffusers</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">BaseModelOutput</span>
+    <span class="n">DynamicCache</span>
+    <span class="n">EncoderDecoderCache</span>
+    <span class="n">MambaCache</span>
+    <span class="n">SlidingWindowCache</span>
+    <span class="n">StaticCache</span>
+    <span class="n">UNet2DConditionOutput</span>
 </pre></div>
 </div>
 </section>

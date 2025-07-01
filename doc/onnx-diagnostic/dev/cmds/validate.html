@@ -388,6 +388,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -439,9 +440,9 @@
 available on <a class="reference external" href="https://huggingface.co/docs/hub/en/index">HuggingFace</a> but not only.
 It creates dummy inputs, runs the models on them,
 exports the model, measures the discrepancies…</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    usage: validate [-h] [-m MID] [-t TASK] [-e EXPORT] [--opt OPT] [-r | --run | --no-run] [-q | --quiet | --no-quiet] [--patch | --no-patch] [--rewrite | --no-rewrite] [--stop-if-static STOP_IF_STATIC]
-                    [--same-as-trained | --no-same-as-trained] [--trained | --no-trained] [--inputs2 | --no-inputs2] [--runtime {onnxruntime,torch,ref}] [-o DUMP_FOLDER] [--drop DROP] [--opset OPSET]
-                    [--subfolder SUBFOLDER] [--ortfusiontype ORTFUSIONTYPE] [-v VERBOSE] [--dtype DTYPE] [--device DEVICE] [--iop [KEY=VALUE ...]] [--mop [KEY=VALUE ...]] [--repeat REPEAT] [--warmup WARMUP]
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    usage: validate [-h] [-m MID] [-t TASK] [-e EXPORT] [--opt OPT] [-r | --run | --no-run] [-q | --quiet | --no-quiet] [--patch | --no-patch] [--rewrite | --no-rewrite] [--stop-if-static STOP_IF_STATIC] [--same-as-trained | --no-same-as-trained] [--trained | --no-trained]
+                    [--inputs2 | --no-inputs2] [--runtime {onnxruntime,torch,ref}] [-o DUMP_FOLDER] [--drop DROP] [--opset OPSET] [--subfolder SUBFOLDER] [--ortfusiontype ORTFUSIONTYPE] [-v VERBOSE] [--dtype DTYPE] [--device DEVICE] [--iop [KEY=VALUE ...]]
+                    [--mop [KEY=VALUE ...]] [--repeat REPEAT] [--warmup WARMUP]
     
     Prints out dummy inputs for a particular task or a model id.
     If both mid and task are empty, the command line displays the list
@@ -579,7 +580,7 @@ if this fails.</p>
     <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">architectures</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;LlamaForCausalLM&#39;</span><span class="p">]</span>
     <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="bp">cls</span><span class="o">=</span><span class="s1">&#39;LlamaConfig&#39;</span>
     <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">task</span><span class="o">=</span><span class="s1">&#39;text-generation&#39;</span>
-    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">use</span> <span class="n">fct</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">get_inputs</span> <span class="n">at</span> <span class="mh">0x7b7f4fa262a0</span><span class="o">&gt;</span>
+    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">use</span> <span class="n">fct</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">get_inputs</span> <span class="n">at</span> <span class="mh">0x70385ba0a5c0</span><span class="o">&gt;</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="o">--</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">task</span><span class="o">=</span><span class="n">text</span><span class="o">-</span><span class="n">generation</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">size</span><span class="o">=</span><span class="mf">49.549072265625</span> <span class="n">Mb</span>
@@ -617,10 +618,10 @@ if this fails.</p>
     <span class="p">:</span><span class="n">model_task</span><span class="p">,</span><span class="n">text</span><span class="o">-</span><span class="n">generation</span><span class="p">;</span>
     <span class="p">:</span><span class="n">run_expected</span><span class="p">,</span><span class="n">CausalLMOutputWithPast</span><span class="p">(</span><span class="n">logits</span><span class="p">:</span><span class="n">T1s2x3x32000</span><span class="p">,</span><span class="n">past_key_values</span><span class="p">:</span><span class="n">DynamicCache</span><span class="p">(</span><span class="n">key_cache</span><span class="o">=</span><span class="c1">#1[T1s2x1x33x96], value_cache=#1[T1s2x1x33x96]));</span>
     <span class="p">:</span><span class="n">run_expected2</span><span class="p">,</span><span class="n">CausalLMOutputWithPast</span><span class="p">(</span><span class="n">logits</span><span class="p">:</span><span class="n">T1s3x4x32000</span><span class="p">,</span><span class="n">past_key_values</span><span class="p">:</span><span class="n">DynamicCache</span><span class="p">(</span><span class="n">key_cache</span><span class="o">=</span><span class="c1">#1[T1s3x1x35x96], value_cache=#1[T1s3x1x35x96]));</span>
-    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.18651194400001714</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.025423404999969534</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run2</span><span class="p">,</span><span class="mf">0.01683243599995876</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">30</span><span class="n">T09</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="mi">03</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.1250330150000991</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.06024520699997993</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run2</span><span class="p">,</span><span class="mf">0.023287000999971497</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">01</span><span class="n">T10</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">49</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_device</span><span class="p">,;</span>
     <span class="p">:</span><span class="n">version_do_run</span><span class="p">,</span><span class="kc">True</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_drop_inputs</span><span class="p">,[];</span>
@@ -670,7 +671,7 @@ the same model.</p>
     <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">architectures</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;LlamaForCausalLM&#39;</span><span class="p">]</span>
     <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="bp">cls</span><span class="o">=</span><span class="s1">&#39;LlamaConfig&#39;</span>
     <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">task</span><span class="o">=</span><span class="s1">&#39;text-generation&#39;</span>
-    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">use</span> <span class="n">fct</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">get_inputs</span> <span class="n">at</span> <span class="mh">0x7b7f4fa262a0</span><span class="o">&gt;</span>
+    <span class="p">[</span><span class="n">get_untrained_model_with_inputs</span><span class="p">]</span> <span class="n">use</span> <span class="n">fct</span><span class="o">=&lt;</span><span class="n">function</span> <span class="n">get_inputs</span> <span class="n">at</span> <span class="mh">0x70385ba0a5c0</span><span class="o">&gt;</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="o">--</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">task</span><span class="o">=</span><span class="n">text</span><span class="o">-</span><span class="n">generation</span>
     <span class="p">[</span><span class="n">validate_model</span><span class="p">]</span> <span class="n">size</span><span class="o">=</span><span class="mf">49.549072265625</span> <span class="n">Mb</span>
@@ -749,13 +750,13 @@ the same model.</p>
     <span class="p">:</span><span class="n">model_task</span><span class="p">,</span><span class="n">text</span><span class="o">-</span><span class="n">generation</span><span class="p">;</span>
     <span class="p">:</span><span class="n">run_expected</span><span class="p">,</span><span class="n">CausalLMOutputWithPast</span><span class="p">(</span><span class="n">logits</span><span class="p">:</span><span class="n">T1s2x3x32000</span><span class="p">,</span><span class="n">past_key_values</span><span class="p">:</span><span class="n">DynamicCache</span><span class="p">(</span><span class="n">key_cache</span><span class="o">=</span><span class="c1">#1[T1s2x1x33x96], value_cache=#1[T1s2x1x33x96]));</span>
     <span class="p">:</span><span class="n">run_expected2</span><span class="p">,</span><span class="n">CausalLMOutputWithPast</span><span class="p">(</span><span class="n">logits</span><span class="p">:</span><span class="n">T1s3x4x32000</span><span class="p">,</span><span class="n">past_key_values</span><span class="p">:</span><span class="n">DynamicCache</span><span class="p">(</span><span class="n">key_cache</span><span class="o">=</span><span class="c1">#1[T1s3x1x35x96], value_cache=#1[T1s3x1x35x96]));</span>
-    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.14956615599999168</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_export_export</span><span class="p">,</span><span class="mf">2.504275665000023</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.009283589999995456</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run2</span><span class="p">,</span><span class="mf">0.008982917000025736</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run_exported</span><span class="p">,</span><span class="mf">0.007969192000018666</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">time_run_patched</span><span class="p">,</span><span class="mf">0.00482109600000058</span><span class="p">;</span>
-    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">30</span><span class="n">T09</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="mi">03</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_create</span><span class="p">,</span><span class="mf">0.13757461799991688</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_export_export</span><span class="p">,</span><span class="mf">1.539207241999975</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run</span><span class="p">,</span><span class="mf">0.027963967999994566</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run2</span><span class="p">,</span><span class="mf">0.015753087000121013</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run_exported</span><span class="p">,</span><span class="mf">0.032172109999919485</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">time_run_patched</span><span class="p">,</span><span class="mf">0.01708337099989876</span><span class="p">;</span>
+    <span class="p">:</span><span class="n">version_date</span><span class="p">,</span><span class="mi">2025</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">01</span><span class="n">T10</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">50</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_device</span><span class="p">,;</span>
     <span class="p">:</span><span class="n">version_do_run</span><span class="p">,</span><span class="kc">True</span><span class="p">;</span>
     <span class="p">:</span><span class="n">version_drop_inputs</span><span class="p">,[];</span>
@@ -802,7 +803,7 @@ the same model.</p>
     [get_untrained_model_with_inputs] architectures=[&#39;LlamaForCausalLM&#39;]
     [get_untrained_model_with_inputs] cls=&#39;LlamaConfig&#39;
     [get_untrained_model_with_inputs] task=&#39;text-generation&#39;
-    [get_untrained_model_with_inputs] use fct=&lt;function get_inputs at 0x7b7f4fa262a0&gt;
+    [get_untrained_model_with_inputs] use fct=&lt;function get_inputs at 0x70385ba0a5c0&gt;
     [validate_model] --
     [validate_model] task=text-generation
     [validate_model] size=49.549072265625 Mb
@@ -859,7 +860,7 @@ the same model.</p>
     [call_torch_export_onnx] starts optimization=&#39;ir&#39;...
     [call_torch_export_onnx] done (optimization)
     [validate_model] dumps onnx program in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
-    [validate_model] done (dump onnx) in 0.1133118600000671
+    [validate_model] done (dump onnx) in 0.11585100000002058
     [validate_model] dumps statistics in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
     [validate_model] done (dump)
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=None
@@ -871,7 +872,7 @@ the same model.</p>
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.0002942988739454129, n=204672.0
+    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002985879434505733, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -879,20 +880,20 @@ the same model.</p>
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0003243013424403138, n=404160.0
+    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.0003462456206117471, n=404160.0
     [validate_model] -- done (final)
     
     -- summary --
-    :disc_onnx_ort_run2_abs,7.152557373046875e-07;
+    :disc_onnx_ort_run2_abs,7.748603820800781e-07;
     :disc_onnx_ort_run2_dnan,0;
     :disc_onnx_ort_run2_n,404160.0;
-    :disc_onnx_ort_run2_rel,0.0003243013424403138;
-    :disc_onnx_ort_run2_sum,0.036741107251117455;
-    :disc_onnx_ort_run_abs,7.748603820800781e-07;
+    :disc_onnx_ort_run2_rel,0.0003462456206117471;
+    :disc_onnx_ort_run2_sum,0.03783584481413982;
+    :disc_onnx_ort_run_abs,7.152557373046875e-07;
     :disc_onnx_ort_run_dnan,0;
     :disc_onnx_ort_run_n,204672.0;
-    :disc_onnx_ort_run_rel,0.0002942988739454129;
-    :disc_onnx_ort_run_sum,0.01868382131283397;
+    :disc_onnx_ort_run_rel,0.0002985879434505733;
+    :disc_onnx_ort_run_sum,0.01900996133110766;
     :disc_patched_abs,0;
     :disc_patched_dnan,0;
     :disc_patched_n,204672.0;
@@ -929,17 +930,17 @@ the same model.</p>
     :run_feeds_inputs2,dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96);
     :run_output_inputs,#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96];
     :run_output_inputs2,#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96];
-    :time_create,0.15040329900000415;
-    :time_export_onnx,23.79722432599999;
-    :time_export_onnx_opt_ir,0.047435634000066784;
-    :time_onnx_ort_create,0.04572287899998173;
-    :time_onnx_save,0.1133118600000671;
-    :time_run,0.040081621000013;
-    :time_run2,0.02185501999997541;
-    :time_run_patched,0.004041862999997647;
-    :time_time_onnx_ort_run,0.0021964819999311658;
-    :time_time_onnx_ort_run2,0.0023306069999762258;
-    :version_date,2025-06-30T09:37:05;
+    :time_create,0.09873314900005425;
+    :time_export_onnx,16.060874899999817;
+    :time_export_onnx_opt_ir,0.03533446599999479;
+    :time_onnx_ort_create,0.06028623599991079;
+    :time_onnx_save,0.11585100000002058;
+    :time_run,0.019170557000052213;
+    :time_run2,0.008336933999999019;
+    :time_run_patched,0.0034999049998987175;
+    :time_time_onnx_ort_run,0.01606956299997364;
+    :time_time_onnx_ort_run2,0.0065592180001203815;
+    :version_date,2025-07-01T10:47:52;
     :version_device,;
     :version_do_run,True;
     :version_drop_inputs,[];
@@ -988,7 +989,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [get_untrained_model_with_inputs] architectures=[&#39;LlamaForCausalLM&#39;]
     [get_untrained_model_with_inputs] cls=&#39;LlamaConfig&#39;
     [get_untrained_model_with_inputs] task=&#39;text-generation&#39;
-    [get_untrained_model_with_inputs] use fct=&lt;function get_inputs at 0x7b7f4fa262a0&gt;
+    [get_untrained_model_with_inputs] use fct=&lt;function get_inputs at 0x70385ba0a5c0&gt;
     [validate_model] --
     [validate_model] task=text-generation
     [validate_model] size=49.549072265625 Mb
@@ -1045,7 +1046,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [call_torch_export_onnx] starts optimization=&#39;ir&#39;...
     [call_torch_export_onnx] done (optimization)
     [validate_model] dumps onnx program in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
-    [validate_model] done (dump onnx) in 0.24890904500000488
+    [validate_model] done (dump onnx) in 0.12181915300016044
     [validate_model] dumps statistics in &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir&#39;...
     [validate_model] done (dump)
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=None
@@ -1057,7 +1058,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003077876777498603, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.000258120690393311, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1065,10 +1066,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.642673492431641e-07, rel=0.00041368136337648325, n=404160.0
+    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.00034659392181808895, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;bart&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;bart&#39; in 0.33487213900002644, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bart.onnx&#39;
+    [validate_model] done &#39;bart&#39; in 0.20671899099988877, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bart.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbart&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortbart&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1078,7 +1079,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1086,10 +1087,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;bert&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;bert&#39; in 0.3396002920000001, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert.onnx&#39;
+    [validate_model] done &#39;bert&#39; in 0.2543547249999847, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbert&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortbert&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1099,7 +1100,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1107,10 +1108,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;bert_keras&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;bert_keras&#39; in 0.3164025139999467, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_keras.onnx&#39;
+    [validate_model] done &#39;bert_keras&#39; in 0.21197029499990094, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_keras.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbert_keras&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortbert_keras&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1120,7 +1121,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1128,10 +1129,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;bert_tf&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;bert_tf&#39; in 0.29849727800001347, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_tf.onnx&#39;
+    [validate_model] done &#39;bert_tf&#39; in 0.2593017920000875, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.bert_tf.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortbert_tf&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortbert_tf&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1141,7 +1142,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1149,10 +1150,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;clip&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;clip&#39; in 0.3141440299999658, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.clip.onnx&#39;
+    [validate_model] done &#39;clip&#39; in 0.2738597430000027, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.clip.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortclip&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortclip&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1162,7 +1163,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1170,10 +1171,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;conformer&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;conformer&#39; in 0.25242519699997956, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.conformer.onnx&#39;
+    [validate_model] done &#39;conformer&#39; in 0.28092832100014675, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.conformer.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortconformer&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortconformer&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1183,7 +1184,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1191,10 +1192,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;gpt2&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;gpt2&#39; in 0.2901295270000901, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2.onnx&#39;
+    [validate_model] done &#39;gpt2&#39; in 0.23451372800013814, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortgpt2&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortgpt2&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1204,7 +1205,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1212,10 +1213,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;gpt2_tf&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;gpt2_tf&#39; in 0.2887869529999989, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2_tf.onnx&#39;
+    [validate_model] done &#39;gpt2_tf&#39; in 0.22789125700001023, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt2_tf.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortgpt2_tf&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortgpt2_tf&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1225,7 +1226,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1233,10 +1234,10 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;gpt_neox&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;gpt_neox&#39; in 0.2980618729999378, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt_neox.onnx&#39;
+    [validate_model] done &#39;gpt_neox&#39; in 0.2020795089999865, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.gpt_neox.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortgpt_neox&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortgpt_neox&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1246,7 +1247,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1254,7 +1255,7 @@ of function <a class="reference internal" href="../api/torch_models/validate.htm
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;mmdit&#39;
     
 fusion:   0%|          | 0/5 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
@@ -1262,9 +1263,9 @@ fusion:   0%|          | 0/5 [00:00&lt;?, ?it/s]failed in shape inference &lt;cl
                                              
 The optimized model requires LayerNormalization with broadcast support. Please use onnxruntime-gpu&gt;=1.21 for inference.
     
-fusion:  20%|##        | 1/5 [00:00&lt;00:00, 12.05it/s]
-fusion: 100%|##########| 5/5 [00:00&lt;00:00, 51.12it/s]
-    [validate_model] done &#39;mmdit&#39; in 0.2577838659999543, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.mmdit.onnx&#39;
+fusion:  20%|##        | 1/5 [00:00&lt;00:00, 89.51it/s]
+fusion: 100%|##########| 5/5 [00:00&lt;00:00, 271.60it/s]
+    [validate_model] done &#39;mmdit&#39; in 0.10987270600003285, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.mmdit.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortmmdit&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortmmdit&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1274,7 +1275,7 @@ fusion: 100%|##########| 5/5 [00:00&lt;00:00, 51.12it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1282,21 +1283,20 @@ fusion: 100%|##########| 5/5 [00:00&lt;00:00, 51.12it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;phi&#39;
-    [validate_model] done &#39;phi&#39; in 0.09043711699996493, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.phi.onnx&#39;
+    [validate_model] done &#39;phi&#39; in 0.040552426999965974, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.phi.onnx&#39;
     [validate_onnx_model] missing &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.phi.onnx&#39;
     [validate_model] run onnxruntime fusion for &#39;sam2&#39;
     
 sam2 fusion:   0%|          | 0/12 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
     
-sam2 fusion:  33%|###3      | 4/12 [00:00&lt;00:00, 39.40it/s]
-                                                           
+                                                   
 symbolic shape inference disabled or failed.
     
-sam2 fusion:  50%|#####     | 6/12 [00:00&lt;00:00, 39.40it/s]
-sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
-    [validate_model] done &#39;sam2&#39; in 0.23798992699994415, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.sam2.onnx&#39;
+sam2 fusion:  50%|#####     | 6/12 [00:00&lt;00:00, 297.29it/s]
+sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 515.15it/s]
+    [validate_model] done &#39;sam2&#39; in 0.1349745120000989, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.sam2.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortsam2&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortsam2&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1306,7 +1306,7 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003077876777498603, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.000258120690393311, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1314,10 +1314,10 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.642673492431641e-07, rel=0.00041368136337648325, n=404160.0
+    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.00034659392181808895, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;swin&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;swin&#39; in 0.2891333290000375, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.swin.onnx&#39;
+    [validate_model] done &#39;swin&#39; in 0.14629440500016244, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.swin.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortswin&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortswin&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1327,7 +1327,7 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1335,10 +1335,10 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;t5&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;t5&#39; in 0.2688670210000055, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.t5.onnx&#39;
+    [validate_model] done &#39;t5&#39; in 0.12839906799990786, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.t5.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortt5&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortt5&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1348,7 +1348,7 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1356,10 +1356,10 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;tnlr&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;tnlr&#39; in 0.13780449000000772, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.tnlr.onnx&#39;
+    [validate_model] done &#39;tnlr&#39; in 0.18140566500005662, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.tnlr.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;orttnlr&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;orttnlr&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1369,7 +1369,7 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1377,7 +1377,7 @@ sam2 fusion: 100%|##########| 12/12 [00:00&lt;00:00, 109.32it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;unet&#39;
     
 fusion:   0%|          | 0/18 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
@@ -1385,13 +1385,13 @@ fusion:   0%|          | 0/18 [00:00&lt;?, ?it/s]failed in shape inference &lt;c
                                               
 symbolic shape inference disabled or failed.
     
-fusion:  50%|#####     | 9/18 [00:00&lt;00:00, 265.85it/s]
+fusion:  50%|#####     | 9/18 [00:00&lt;00:00, 182.20it/s]
                                                        
 SkipGroupNorm fusion will be skipped since symbolic shape inference disabled or failed.
     
-fusion:  67%|######6   | 12/18 [00:00&lt;00:00, 335.78it/s]
-fusion: 100%|##########| 18/18 [00:00&lt;00:00, 419.77it/s]
-    [validate_model] done &#39;unet&#39; in 0.14509972700000162, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.unet.onnx&#39;
+fusion:  67%|######6   | 12/18 [00:00&lt;00:00, 237.92it/s]
+fusion: 100%|##########| 18/18 [00:00&lt;00:00, 331.73it/s]
+    [validate_model] done &#39;unet&#39; in 0.20818782199989982, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.unet.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortunet&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortunet&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1401,7 +1401,7 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 419.77it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003077876777498603, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.000258120690393311, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1409,7 +1409,7 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 419.77it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.642673492431641e-07, rel=0.00041368136337648325, n=404160.0
+    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.00034659392181808895, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;vae&#39;
     
 fusion:   0%|          | 0/18 [00:00&lt;?, ?it/s]failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
@@ -1417,13 +1417,13 @@ fusion:   0%|          | 0/18 [00:00&lt;?, ?it/s]failed in shape inference &lt;c
                                               
 symbolic shape inference disabled or failed.
     
-fusion:  50%|#####     | 9/18 [00:00&lt;00:00, 200.79it/s]
+fusion:  50%|#####     | 9/18 [00:00&lt;00:00, 122.88it/s]
                                                        
 SkipGroupNorm fusion will be skipped since symbolic shape inference disabled or failed.
     
-fusion:  67%|######6   | 12/18 [00:00&lt;00:00, 253.45it/s]
-fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
-    [validate_model] done &#39;vae&#39; in 0.16179567799997585, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vae.onnx&#39;
+fusion:  67%|######6   | 12/18 [00:00&lt;00:00, 159.97it/s]
+fusion: 100%|##########| 18/18 [00:00&lt;00:00, 223.34it/s]
+    [validate_model] done &#39;vae&#39; in 0.2725181429998429, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vae.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortvae&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortvae&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1433,7 +1433,7 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003077876777498603, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.000258120690393311, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1441,10 +1441,10 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.642673492431641e-07, rel=0.00041368136337648325, n=404160.0
+    [validate_onnx_model] discrepancies=abs=7.748603820800781e-07, rel=0.00034659392181808895, n=404160.0
     [validate_model] run onnxruntime fusion for &#39;vit&#39;
     failed in shape inference &lt;class &#39;AssertionError&#39;&gt;
-    [validate_model] done &#39;vit&#39; in 0.1641941880000104, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vit.onnx&#39;
+    [validate_model] done &#39;vit&#39; in 0.18537663600000087, saved into &#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.vit.onnx&#39;
     [validate_onnx_model] verify onnx model with providers [&#39;CPUExecutionProvider&#39;]..., flavour=&#39;ortvit&#39;
     [validate_onnx_model] done (ort_session) flavour=&#39;ortvit&#39;
     [validate_onnx_model] -- make_feeds for &#39;inputs&#39;...
@@ -1454,7 +1454,7 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96]
-    [validate_onnx_model] discrepancies=abs=7.152557373046875e-07, rel=0.0002567951016471367, n=204672.0
+    [validate_onnx_model] discrepancies=abs=8.940696716308594e-07, rel=0.000293254699171955, n=204672.0
     [validate_onnx_model] -- make_feeds for &#39;inputs2&#39;...
     [validate_onnx_model] inputs=dict(input_ids:T7s3x4,attention_mask:T7s3x35,position_ids:T7s3x4,past_key_values:DynamicCache(key_cache=#1[T1s3x1x31x96], value_cache=#1[T1s3x1x31x96]))
     [validate_onnx_model] ort inputs=dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96)
@@ -1462,13 +1462,13 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     [validate_onnx_model] run session...
     [validate_onnx_model] done (run)
     [validate_onnx_model] got=#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96]
-    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.0003504924101963113, n=404160.0
+    [validate_onnx_model] discrepancies=abs=8.344650268554688e-07, rel=0.00035658207330423105, n=404160.0
     [validate_model] -- done (final)
     
     -- summary --
     :ERR_onnx_missing_ortphi,FileNotFoundError(&#39;dump_models/arnir0_Tiny-LLM-onnx-dynamo-ir/arnir0_Tiny-LLM-onnx-dynamo-ir.ort.phi.onnx&#39;);
     :ERR_opt_ort_phi,&#39;method&#39; object is not iterable;
-    :disc_onnx_ort_run2_abs,8.642673492431641e-07;
+    :disc_onnx_ort_run2_abs,7.748603820800781e-07;
     :disc_onnx_ort_run2_abs_ortbart,8.344650268554688e-07;
     :disc_onnx_ort_run2_abs_ortbert,8.344650268554688e-07;
     :disc_onnx_ort_run2_abs_ortbert_keras,8.344650268554688e-07;
@@ -1479,12 +1479,12 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     :disc_onnx_ort_run2_abs_ortgpt2_tf,8.344650268554688e-07;
     :disc_onnx_ort_run2_abs_ortgpt_neox,8.344650268554688e-07;
     :disc_onnx_ort_run2_abs_ortmmdit,8.344650268554688e-07;
-    :disc_onnx_ort_run2_abs_ortsam2,8.642673492431641e-07;
+    :disc_onnx_ort_run2_abs_ortsam2,7.748603820800781e-07;
     :disc_onnx_ort_run2_abs_ortswin,8.344650268554688e-07;
     :disc_onnx_ort_run2_abs_ortt5,8.344650268554688e-07;
     :disc_onnx_ort_run2_abs_orttnlr,8.344650268554688e-07;
-    :disc_onnx_ort_run2_abs_ortunet,8.642673492431641e-07;
-    :disc_onnx_ort_run2_abs_ortvae,8.642673492431641e-07;
+    :disc_onnx_ort_run2_abs_ortunet,7.748603820800781e-07;
+    :disc_onnx_ort_run2_abs_ortvae,7.748603820800781e-07;
     :disc_onnx_ort_run2_abs_ortvit,8.344650268554688e-07;
     :disc_onnx_ort_run2_dnan,0;
     :disc_onnx_ort_run2_dnan_ortbart,0;
@@ -1522,60 +1522,60 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     :disc_onnx_ort_run2_n_ortunet,404160.0;
     :disc_onnx_ort_run2_n_ortvae,404160.0;
     :disc_onnx_ort_run2_n_ortvit,404160.0;
-    :disc_onnx_ort_run2_rel,0.00041368136337648325;
-    :disc_onnx_ort_run2_rel_ortbart,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortbert,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortbert_keras,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortbert_tf,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortclip,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortconformer,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortgpt2,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortgpt2_tf,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortgpt_neox,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortmmdit,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortsam2,0.00041368136337648325;
-    :disc_onnx_ort_run2_rel_ortswin,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortt5,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_orttnlr,0.0003504924101963113;
-    :disc_onnx_ort_run2_rel_ortunet,0.00041368136337648325;
-    :disc_onnx_ort_run2_rel_ortvae,0.00041368136337648325;
-    :disc_onnx_ort_run2_rel_ortvit,0.0003504924101963113;
-    :disc_onnx_ort_run2_sum,0.03957000287448409;
-    :disc_onnx_ort_run2_sum_ortbart,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortbert,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortbert_keras,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortbert_tf,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortclip,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortconformer,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortgpt2,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortgpt2_tf,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortgpt_neox,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortmmdit,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortsam2,0.03957000287448409;
-    :disc_onnx_ort_run2_sum_ortswin,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortt5,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_orttnlr,0.040188641076042586;
-    :disc_onnx_ort_run2_sum_ortunet,0.03957000287448409;
-    :disc_onnx_ort_run2_sum_ortvae,0.03957000287448409;
-    :disc_onnx_ort_run2_sum_ortvit,0.040188641076042586;
+    :disc_onnx_ort_run2_rel,0.00034659392181808895;
+    :disc_onnx_ort_run2_rel_ortbart,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortbert,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortbert_keras,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortbert_tf,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortclip,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortconformer,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortgpt2,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortgpt2_tf,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortgpt_neox,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortmmdit,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortsam2,0.00034659392181808895;
+    :disc_onnx_ort_run2_rel_ortswin,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortt5,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_orttnlr,0.00035658207330423105;
+    :disc_onnx_ort_run2_rel_ortunet,0.00034659392181808895;
+    :disc_onnx_ort_run2_rel_ortvae,0.00034659392181808895;
+    :disc_onnx_ort_run2_rel_ortvit,0.00035658207330423105;
+    :disc_onnx_ort_run2_sum,0.035637305339445646;
+    :disc_onnx_ort_run2_sum_ortbart,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortbert,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortbert_keras,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortbert_tf,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortclip,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortconformer,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortgpt2,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortgpt2_tf,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortgpt_neox,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortmmdit,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortsam2,0.035637305339445646;
+    :disc_onnx_ort_run2_sum_ortswin,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortt5,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_orttnlr,0.03831223675548401;
+    :disc_onnx_ort_run2_sum_ortunet,0.035637305339445646;
+    :disc_onnx_ort_run2_sum_ortvae,0.035637305339445646;
+    :disc_onnx_ort_run2_sum_ortvit,0.03831223675548401;
     :disc_onnx_ort_run_abs,8.344650268554688e-07;
-    :disc_onnx_ort_run_abs_ortbart,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortbert,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortbert_keras,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortbert_tf,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortclip,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortconformer,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortgpt2,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortgpt2_tf,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortgpt_neox,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortmmdit,7.152557373046875e-07;
+    :disc_onnx_ort_run_abs_ortbart,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortbert,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortbert_keras,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortbert_tf,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortclip,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortconformer,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortgpt2,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortgpt2_tf,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortgpt_neox,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortmmdit,8.940696716308594e-07;
     :disc_onnx_ort_run_abs_ortsam2,8.344650268554688e-07;
-    :disc_onnx_ort_run_abs_ortswin,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_ortt5,7.152557373046875e-07;
-    :disc_onnx_ort_run_abs_orttnlr,7.152557373046875e-07;
+    :disc_onnx_ort_run_abs_ortswin,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_ortt5,8.940696716308594e-07;
+    :disc_onnx_ort_run_abs_orttnlr,8.940696716308594e-07;
     :disc_onnx_ort_run_abs_ortunet,8.344650268554688e-07;
     :disc_onnx_ort_run_abs_ortvae,8.344650268554688e-07;
-    :disc_onnx_ort_run_abs_ortvit,7.152557373046875e-07;
+    :disc_onnx_ort_run_abs_ortvit,8.940696716308594e-07;
     :disc_onnx_ort_run_dnan,0;
     :disc_onnx_ort_run_dnan_ortbart,0;
     :disc_onnx_ort_run_dnan_ortbert,0;
@@ -1612,42 +1612,42 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     :disc_onnx_ort_run_n_ortunet,204672.0;
     :disc_onnx_ort_run_n_ortvae,204672.0;
     :disc_onnx_ort_run_n_ortvit,204672.0;
-    :disc_onnx_ort_run_rel,0.0003077876777498603;
-    :disc_onnx_ort_run_rel_ortbart,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortbert,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortbert_keras,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortbert_tf,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortclip,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortconformer,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortgpt2,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortgpt2_tf,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortgpt_neox,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortmmdit,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortsam2,0.0003077876777498603;
-    :disc_onnx_ort_run_rel_ortswin,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortt5,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_orttnlr,0.0002567951016471367;
-    :disc_onnx_ort_run_rel_ortunet,0.0003077876777498603;
-    :disc_onnx_ort_run_rel_ortvae,0.0003077876777498603;
-    :disc_onnx_ort_run_rel_ortvit,0.0002567951016471367;
-    :disc_onnx_ort_run_sum,0.019164599778378033;
-    :disc_onnx_ort_run_sum_ortbart,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortbert,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortbert_keras,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortbert_tf,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortclip,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortconformer,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortgpt2,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortgpt2_tf,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortgpt_neox,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortmmdit,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortsam2,0.019164599778378033;
-    :disc_onnx_ort_run_sum_ortswin,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortt5,0.020591960648744134;
-    :disc_onnx_ort_run_sum_orttnlr,0.020591960648744134;
-    :disc_onnx_ort_run_sum_ortunet,0.019164599778378033;
-    :disc_onnx_ort_run_sum_ortvae,0.019164599778378033;
-    :disc_onnx_ort_run_sum_ortvit,0.020591960648744134;
+    :disc_onnx_ort_run_rel,0.000258120690393311;
+    :disc_onnx_ort_run_rel_ortbart,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortbert,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortbert_keras,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortbert_tf,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortclip,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortconformer,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortgpt2,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortgpt2_tf,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortgpt_neox,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortmmdit,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortsam2,0.000258120690393311;
+    :disc_onnx_ort_run_rel_ortswin,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortt5,0.000293254699171955;
+    :disc_onnx_ort_run_rel_orttnlr,0.000293254699171955;
+    :disc_onnx_ort_run_rel_ortunet,0.000258120690393311;
+    :disc_onnx_ort_run_rel_ortvae,0.000258120690393311;
+    :disc_onnx_ort_run_rel_ortvit,0.000293254699171955;
+    :disc_onnx_ort_run_sum,0.019863840158905077;
+    :disc_onnx_ort_run_sum_ortbart,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortbert,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortbert_keras,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortbert_tf,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortclip,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortconformer,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortgpt2,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortgpt2_tf,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortgpt_neox,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortmmdit,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortsam2,0.019863840158905077;
+    :disc_onnx_ort_run_sum_ortswin,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortt5,0.02136164642570293;
+    :disc_onnx_ort_run_sum_orttnlr,0.02136164642570293;
+    :disc_onnx_ort_run_sum_ortunet,0.019863840158905077;
+    :disc_onnx_ort_run_sum_ortvae,0.019863840158905077;
+    :disc_onnx_ort_run_sum_ortvit,0.02136164642570293;
     :disc_patched_abs,0;
     :disc_patched_dnan,0;
     :disc_patched_n,204672.0;
@@ -1747,89 +1747,89 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     :onnx_size_ortvae,230223;
     :onnx_size_ortvit,195696;
     :opt_ort_bart_delta_node,-20;
-    :opt_ort_bart_duration,0.15885994900008882;
-    :opt_ort_bart_duration_save,0.08199013700004798;
+    :opt_ort_bart_duration,0.07530586100006076;
+    :opt_ort_bart_duration_save,0.07878970399997343;
     :opt_ort_bart_n_nodes1,159;
     :opt_ort_bart_n_nodes2,139;
     :opt_ort_bert_delta_node,-20;
-    :opt_ort_bert_duration,0.1434911239999792;
-    :opt_ort_bert_duration_save,0.08332186999996338;
+    :opt_ort_bert_duration,0.07927328200003103;
+    :opt_ort_bert_duration_save,0.07435326100016937;
     :opt_ort_bert_keras_delta_node,-20;
-    :opt_ort_bert_keras_duration,0.11148503300000812;
-    :opt_ort_bert_keras_duration_save,0.07910475299991049;
+    :opt_ort_bert_keras_duration,0.07421576699994148;
+    :opt_ort_bert_keras_duration_save,0.06407767599989711;
     :opt_ort_bert_keras_n_nodes1,159;
     :opt_ort_bert_keras_n_nodes2,139;
     :opt_ort_bert_n_nodes1,159;
     :opt_ort_bert_n_nodes2,139;
     :opt_ort_bert_tf_delta_node,-20;
-    :opt_ort_bert_tf_duration,0.12698428099997727;
-    :opt_ort_bert_tf_duration_save,0.08410661400000663;
+    :opt_ort_bert_tf_duration,0.07267948300000171;
+    :opt_ort_bert_tf_duration_save,0.07398211999998239;
     :opt_ort_bert_tf_n_nodes1,159;
     :opt_ort_bert_tf_n_nodes2,139;
     :opt_ort_clip_delta_node,-20;
-    :opt_ort_clip_duration,0.12087664799992126;
-    :opt_ort_clip_duration_save,0.07732502100009242;
+    :opt_ort_clip_duration,0.07978535200004444;
+    :opt_ort_clip_duration_save,0.07818186600002264;
     :opt_ort_clip_n_nodes1,159;
     :opt_ort_clip_n_nodes2,139;
     :opt_ort_conformer_delta_node,-20;
-    :opt_ort_conformer_duration,0.10421362500005671;
-    :opt_ort_conformer_duration_save,0.07150797200006309;
+    :opt_ort_conformer_duration,0.07970030499996028;
+    :opt_ort_conformer_duration_save,0.06600142799993591;
     :opt_ort_conformer_n_nodes1,159;
     :opt_ort_conformer_n_nodes2,139;
     :opt_ort_gpt2_delta_node,-20;
-    :opt_ort_gpt2_duration,0.11026609600003212;
-    :opt_ort_gpt2_duration_save,0.06903655499991146;
+    :opt_ort_gpt2_duration,0.0800212299998293;
+    :opt_ort_gpt2_duration_save,0.07557754600020417;
     :opt_ort_gpt2_n_nodes1,159;
     :opt_ort_gpt2_n_nodes2,139;
     :opt_ort_gpt2_tf_delta_node,-20;
-    :opt_ort_gpt2_tf_duration,0.11120977799998855;
-    :opt_ort_gpt2_tf_duration_save,0.09751806199994917;
+    :opt_ort_gpt2_tf_duration,0.09593939199999113;
+    :opt_ort_gpt2_tf_duration_save,0.06689223000012134;
     :opt_ort_gpt2_tf_n_nodes1,159;
     :opt_ort_gpt2_tf_n_nodes2,139;
     :opt_ort_gpt_neox_delta_node,-20;
-    :opt_ort_gpt_neox_duration,0.12248750499998096;
-    :opt_ort_gpt_neox_duration_save,0.07346190299995214;
+    :opt_ort_gpt_neox_duration,0.09179374599989387;
+    :opt_ort_gpt_neox_duration_save,0.04161171700002342;
     :opt_ort_gpt_neox_n_nodes1,159;
     :opt_ort_gpt_neox_n_nodes2,139;
     :opt_ort_mmdit_delta_node,-20;
-    :opt_ort_mmdit_duration,0.10756630800005951;
-    :opt_ort_mmdit_duration_save,0.06795123500000955;
+    :opt_ort_mmdit_duration,0.02774547099988922;
+    :opt_ort_mmdit_duration_save,0.0703621899999689;
     :opt_ort_mmdit_n_nodes1,159;
     :opt_ort_mmdit_n_nodes2,139;
-    :opt_ort_phi_duration,0.0001503119999597402;
+    :opt_ort_phi_duration,0.0002859659998648567;
     :opt_ort_sam2_delta_node,0;
-    :opt_ort_sam2_duration,0.12062641900001836;
-    :opt_ort_sam2_duration_save,0.05618907799998851;
+    :opt_ort_sam2_duration,0.036394514000221534;
+    :opt_ort_sam2_duration_save,0.060424541999964276;
     :opt_ort_sam2_n_nodes1,159;
     :opt_ort_sam2_n_nodes2,159;
     :opt_ort_swin_delta_node,-20;
-    :opt_ort_swin_duration,0.10772984999994151;
-    :opt_ort_swin_duration_save,0.08958064099999774;
+    :opt_ort_swin_duration,0.048040028999821516;
+    :opt_ort_swin_duration_save,0.05324925199988684;
     :opt_ort_swin_n_nodes1,159;
     :opt_ort_swin_n_nodes2,139;
     :opt_ort_t5_delta_node,-20;
-    :opt_ort_t5_duration,0.11574074499992548;
-    :opt_ort_t5_duration_save,0.04721282900004553;
+    :opt_ort_t5_duration,0.037556404000042676;
+    :opt_ort_t5_duration_save,0.05927783499987527;
     :opt_ort_t5_n_nodes1,159;
     :opt_ort_t5_n_nodes2,139;
     :opt_ort_tnlr_delta_node,-20;
-    :opt_ort_tnlr_duration,0.05459024499998577;
-    :opt_ort_tnlr_duration_save,0.06484647699994639;
+    :opt_ort_tnlr_duration,0.07826172799991582;
+    :opt_ort_tnlr_duration_save,0.06491019800000686;
     :opt_ort_tnlr_n_nodes1,159;
     :opt_ort_tnlr_n_nodes2,139;
     :opt_ort_unet_delta_node,0;
-    :opt_ort_unet_duration,0.053835303000028034;
-    :opt_ort_unet_duration_save,0.06357533200002763;
+    :opt_ort_unet_duration,0.05970182600003682;
+    :opt_ort_unet_duration_save,0.06205083300005754;
     :opt_ort_unet_n_nodes1,159;
     :opt_ort_unet_n_nodes2,159;
     :opt_ort_vae_delta_node,0;
-    :opt_ort_vae_duration,0.06864241899995704;
-    :opt_ort_vae_duration_save,0.07286647399996582;
+    :opt_ort_vae_duration,0.08749723999994785;
+    :opt_ort_vae_duration_save,0.08500160099993082;
     :opt_ort_vae_n_nodes1,159;
     :opt_ort_vae_n_nodes2,159;
     :opt_ort_vit_delta_node,-20;
-    :opt_ort_vit_duration,0.05789232600000105;
-    :opt_ort_vit_duration_save,0.08755954900004781;
+    :opt_ort_vit_duration,0.07272966799996539;
+    :opt_ort_vit_duration_save,0.05635814200013556;
     :opt_ort_vit_n_nodes1,159;
     :opt_ort_vit_n_nodes2,139;
     :run_expected,CausalLMOutputWithPast(logits:T1s2x3x32000,past_key_values:DynamicCache(key_cache=#1[T1s2x1x33x96], value_cache=#1[T1s2x1x33x96]));
@@ -1838,86 +1838,86 @@ fusion: 100%|##########| 18/18 [00:00&lt;00:00, 312.56it/s]
     :run_feeds_inputs2,dict(input_ids:A7s3x4,attention_mask:A7s3x35,position_ids:A7s3x4,past_key_values_key_cache_0:A1s3x1x31x96,past_key_values_value_cache_0:A1s3x1x31x96);
     :run_output_inputs,#3[A1s2x3x32000,A1s2x1x33x96,A1s2x1x33x96];
     :run_output_inputs2,#3[A1s3x4x32000,A1s3x1x35x96,A1s3x1x35x96];
-    :time_create,0.1500564080000686;
-    :time_export_onnx,21.74060763199998;
-    :time_export_onnx_opt_ir,0.08054452100009257;
-    :time_onnx_ort_create,0.07587168999998539;
-    :time_onnx_ort_create_ortbart,0.04788536399996701;
-    :time_onnx_ort_create_ortbert,0.08108618200003548;
-    :time_onnx_ort_create_ortbert_keras,0.04322853899998336;
-    :time_onnx_ort_create_ortbert_tf,0.053987607999943066;
-    :time_onnx_ort_create_ortclip,0.04152042399994116;
-    :time_onnx_ort_create_ortconformer,0.047389664000093035;
-    :time_onnx_ort_create_ortgpt2,0.03869833800001743;
-    :time_onnx_ort_create_ortgpt2_tf,0.07631160300002193;
-    :time_onnx_ort_create_ortgpt_neox,0.049228355999957785;
-    :time_onnx_ort_create_ortmmdit,0.053236903999959395;
-    :time_onnx_ort_create_ortsam2,0.04595172400001957;
-    :time_onnx_ort_create_ortswin,0.04260302000000138;
-    :time_onnx_ort_create_ortt5,0.04589672400004474;
-    :time_onnx_ort_create_orttnlr,0.04810110199991868;
-    :time_onnx_ort_create_ortunet,0.03924558599999273;
-    :time_onnx_ort_create_ortvae,0.042276399999991554;
-    :time_onnx_ort_create_ortvit,0.05399130800003604;
-    :time_onnx_save,0.24890904500000488;
-    :time_ortfusion_ortbart,0.33487213900002644;
-    :time_ortfusion_ortbert,0.3396002920000001;
-    :time_ortfusion_ortbert_keras,0.3164025139999467;
-    :time_ortfusion_ortbert_tf,0.29849727800001347;
-    :time_ortfusion_ortclip,0.3141440299999658;
-    :time_ortfusion_ortconformer,0.25242519699997956;
-    :time_ortfusion_ortgpt2,0.2901295270000901;
-    :time_ortfusion_ortgpt2_tf,0.2887869529999989;
-    :time_ortfusion_ortgpt_neox,0.2980618729999378;
-    :time_ortfusion_ortmmdit,0.2577838659999543;
-    :time_ortfusion_ortphi,0.09043711699996493;
-    :time_ortfusion_ortsam2,0.23798992699994415;
-    :time_ortfusion_ortswin,0.2891333290000375;
-    :time_ortfusion_ortt5,0.2688670210000055;
-    :time_ortfusion_orttnlr,0.13780449000000772;
-    :time_ortfusion_ortunet,0.14509972700000162;
-    :time_ortfusion_ortvae,0.16179567799997585;
-    :time_ortfusion_ortvit,0.1641941880000104;
-    :time_run,0.007902730999944652;
-    :time_run2,0.008728030000042963;
-    :time_run_patched,0.004332832000045528;
-    :time_time_onnx_ort_run,0.00347353999995903;
-    :time_time_onnx_ort_run2,0.0030431999999791515;
-    :time_time_onnx_ort_run2_ortbart,0.002812059000007139;
-    :time_time_onnx_ort_run2_ortbert,0.004313681999974506;
-    :time_time_onnx_ort_run2_ortbert_keras,0.003487326999902507;
-    :time_time_onnx_ort_run2_ortbert_tf,0.002863627000010638;
-    :time_time_onnx_ort_run2_ortclip,0.00286196199999722;
-    :time_time_onnx_ort_run2_ortconformer,0.003046895000011318;
-    :time_time_onnx_ort_run2_ortgpt2,0.0032719780000434184;
-    :time_time_onnx_ort_run2_ortgpt2_tf,0.0038284009999642876;
-    :time_time_onnx_ort_run2_ortgpt_neox,0.003610270000081073;
-    :time_time_onnx_ort_run2_ortmmdit,0.004829340000014781;
-    :time_time_onnx_ort_run2_ortsam2,0.0031176229999800853;
-    :time_time_onnx_ort_run2_ortswin,0.0029798900000059803;
-    :time_time_onnx_ort_run2_ortt5,0.0025740579999364854;
-    :time_time_onnx_ort_run2_orttnlr,0.0031847959999140585;
-    :time_time_onnx_ort_run2_ortunet,0.002701725999941118;
-    :time_time_onnx_ort_run2_ortvae,0.0027260059999889563;
-    :time_time_onnx_ort_run2_ortvit,0.0028051880000248275;
-    :time_time_onnx_ort_run_ortbart,0.003655743000081202;
-    :time_time_onnx_ort_run_ortbert,0.0029851900000039677;
-    :time_time_onnx_ort_run_ortbert_keras,0.002679470000089168;
-    :time_time_onnx_ort_run_ortbert_tf,0.002592541000012716;
-    :time_time_onnx_ort_run_ortclip,0.002717283000038151;
-    :time_time_onnx_ort_run_ortconformer,0.003392141999938758;
-    :time_time_onnx_ort_run_ortgpt2,0.002268294000032256;
-    :time_time_onnx_ort_run_ortgpt2_tf,0.002823712000008527;
-    :time_time_onnx_ort_run_ortgpt_neox,0.003666698999950313;
-    :time_time_onnx_ort_run_ortmmdit,0.0031493610000552508;
-    :time_time_onnx_ort_run_ortsam2,0.0026084190000119634;
-    :time_time_onnx_ort_run_ortswin,0.002327072999946722;
-    :time_time_onnx_ort_run_ortt5,0.0029997850000427206;
-    :time_time_onnx_ort_run_orttnlr,0.0027906530000336716;
-    :time_time_onnx_ort_run_ortunet,0.002416705999962687;
-    :time_time_onnx_ort_run_ortvae,0.0021292249999760315;
-    :time_time_onnx_ort_run_ortvit,0.003624351999974351;
-    :version_date,2025-06-30T09:37:29;
+    :time_create,0.1068892319999577;
+    :time_export_onnx,15.060493868999856;
+    :time_export_onnx_opt_ir,0.05590606499981732;
+    :time_onnx_ort_create,0.07843520300002638;
+    :time_onnx_ort_create_ortbart,0.06620610599998145;
+    :time_onnx_ort_create_ortbert,0.05337644600012936;
+    :time_onnx_ort_create_ortbert_keras,0.03252037999982349;
+    :time_onnx_ort_create_ortbert_tf,0.03035673899989888;
+    :time_onnx_ort_create_ortclip,0.08068261699986579;
+    :time_onnx_ort_create_ortconformer,0.04033178100007717;
+    :time_onnx_ort_create_ortgpt2,0.02641761899985795;
+    :time_onnx_ort_create_ortgpt2_tf,0.10117013900003258;
+    :time_onnx_ort_create_ortgpt_neox,0.03669458200010922;
+    :time_onnx_ort_create_ortmmdit,0.0475397120001162;
+    :time_onnx_ort_create_ortsam2,0.053060522000123456;
+    :time_onnx_ort_create_ortswin,0.03024887700007639;
+    :time_onnx_ort_create_ortt5,0.08394217199997911;
+    :time_onnx_ort_create_orttnlr,0.09723696200012455;
+    :time_onnx_ort_create_ortunet,0.10194509600000856;
+    :time_onnx_ort_create_ortvae,0.0562175009999919;
+    :time_onnx_ort_create_ortvit,0.06047529699981169;
+    :time_onnx_save,0.12181915300016044;
+    :time_ortfusion_ortbart,0.20671899099988877;
+    :time_ortfusion_ortbert,0.2543547249999847;
+    :time_ortfusion_ortbert_keras,0.21197029499990094;
+    :time_ortfusion_ortbert_tf,0.2593017920000875;
+    :time_ortfusion_ortclip,0.2738597430000027;
+    :time_ortfusion_ortconformer,0.28092832100014675;
+    :time_ortfusion_ortgpt2,0.23451372800013814;
+    :time_ortfusion_ortgpt2_tf,0.22789125700001023;
+    :time_ortfusion_ortgpt_neox,0.2020795089999865;
+    :time_ortfusion_ortmmdit,0.10987270600003285;
+    :time_ortfusion_ortphi,0.040552426999965974;
+    :time_ortfusion_ortsam2,0.1349745120000989;
+    :time_ortfusion_ortswin,0.14629440500016244;
+    :time_ortfusion_ortt5,0.12839906799990786;
+    :time_ortfusion_orttnlr,0.18140566500005662;
+    :time_ortfusion_ortunet,0.20818782199989982;
+    :time_ortfusion_ortvae,0.2725181429998429;
+    :time_ortfusion_ortvit,0.18537663600000087;
+    :time_run,0.005407544000036069;
+    :time_run2,0.0054470239999773185;
+    :time_run_patched,0.003031537999959255;
+    :time_time_onnx_ort_run,0.004742820000046777;
+    :time_time_onnx_ort_run2,0.0054611640000530315;
+    :time_time_onnx_ort_run2_ortbart,0.005481185000007827;
+    :time_time_onnx_ort_run2_ortbert,0.0022889440001563344;
+    :time_time_onnx_ort_run2_ortbert_keras,0.0019400229998609575;
+    :time_time_onnx_ort_run2_ortbert_tf,0.0030443399998603127;
+    :time_time_onnx_ort_run2_ortclip,0.0028370019999783835;
+    :time_time_onnx_ort_run2_ortconformer,0.006831471999930727;
+    :time_time_onnx_ort_run2_ortgpt2,0.00202742000010403;
+    :time_time_onnx_ort_run2_ortgpt2_tf,0.006580622999990737;
+    :time_time_onnx_ort_run2_ortgpt_neox,0.0021505130000605277;
+    :time_time_onnx_ort_run2_ortmmdit,0.006310199000154171;
+    :time_time_onnx_ort_run2_ortsam2,0.005510531000027186;
+    :time_time_onnx_ort_run2_ortswin,0.0021856040000329813;
+    :time_time_onnx_ort_run2_ortt5,0.0020510910001121374;
+    :time_time_onnx_ort_run2_orttnlr,0.005847212999924523;
+    :time_time_onnx_ort_run2_ortunet,0.00570721200006119;
+    :time_time_onnx_ort_run2_ortvae,0.0020259750001514476;
+    :time_time_onnx_ort_run2_ortvit,0.0029310830000213173;
+    :time_time_onnx_ort_run_ortbart,0.004960566999898219;
+    :time_time_onnx_ort_run_ortbert,0.0016358830000626767;
+    :time_time_onnx_ort_run_ortbert_keras,0.0016221370001403557;
+    :time_time_onnx_ort_run_ortbert_tf,0.0030589129999043507;
+    :time_time_onnx_ort_run_ortclip,0.0024696230000245123;
+    :time_time_onnx_ort_run_ortconformer,0.0034881310000400845;
+    :time_time_onnx_ort_run_ortgpt2,0.0017611289999877044;
+    :time_time_onnx_ort_run_ortgpt2_tf,0.007537043999946036;
+    :time_time_onnx_ort_run_ortgpt_neox,0.001684865000015634;
+    :time_time_onnx_ort_run_ortmmdit,0.005375288000095679;
+    :time_time_onnx_ort_run_ortsam2,0.00669525600005727;
+    :time_time_onnx_ort_run_ortswin,0.0019772799998918344;
+    :time_time_onnx_ort_run_ortt5,0.0036419790001218644;
+    :time_time_onnx_ort_run_orttnlr,0.006525608000174543;
+    :time_time_onnx_ort_run_ortunet,0.005026904000033028;
+    :time_time_onnx_ort_run_ortvae,0.0019466480000573938;
+    :time_time_onnx_ort_run_ortvit,0.0050000679998447595;
+    :version_date,2025-07-01T10:48:08;
     :version_device,;
     :version_do_run,True;
     :version_drop_inputs,[];
