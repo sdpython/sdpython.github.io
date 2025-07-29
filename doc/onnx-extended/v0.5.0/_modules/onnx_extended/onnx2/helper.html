@@ -359,7 +359,110 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for onnx_extended.onnx2.helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.cpu._onnx2py</span> <span class="kn">import</span> <span class="n">OperatorSetIdProto</span>
+<span></span><span class="c1"># source: https://github.com/onnx/onnx/blob/main/onnx/helper.py</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numbers</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.cpu._onnx2py</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AttributeProto</span><span class="p">,</span>
+    <span class="n">FunctionProto</span><span class="p">,</span>
+    <span class="n">GraphProto</span><span class="p">,</span>
+    <span class="n">ModelProto</span><span class="p">,</span>
+    <span class="n">NodeProto</span><span class="p">,</span>
+    <span class="n">OperatorSetIdProto</span><span class="p">,</span>
+    <span class="n">SparseTensorProto</span><span class="p">,</span>
+    <span class="n">StringStringEntryProto</span><span class="p">,</span>
+    <span class="n">TensorProto</span><span class="p">,</span>
+    <span class="n">TypeProto</span><span class="p">,</span>
+    <span class="n">ValueInfoProto</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">_ATTRIBUTE_TYPE_TO_STR</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="n">_ATTRIBUTE_TYPE_INT_TO_STR</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="TensorDtypeMap">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.TensorDtypeMap">[docs]</a>
+<span class="k">class</span> <span class="nc">TensorDtypeMap</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">np_dtype</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span>
+    <span class="n">storage_dtype</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<span class="n">TENSOR_TYPE_MAP</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">TensorDtypeMap</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">),</span> <span class="s2">&quot;TensorProto.FLOAT&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT8</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.UINT8&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT8</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.INT8&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT16</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;uint16&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.UINT16&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT16</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;int16&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.INT16&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.INT32&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;int64&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">),</span> <span class="s2">&quot;TensorProto.INT64&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.BOOL&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;float16&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">),</span> <span class="s2">&quot;TensorProto.FLOAT16&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">),</span> <span class="s2">&quot;TensorProto.DOUBLE&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX64</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;complex64&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">),</span> <span class="s2">&quot;TensorProto.COMPLEX64&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX128</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;complex128&quot;</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">),</span>
+        <span class="s2">&quot;TensorProto.COMPLEX128&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT32</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;uint32&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">),</span> <span class="s2">&quot;TensorProto.UINT32&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;uint64&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">),</span> <span class="s2">&quot;TensorProto.UINT64&quot;</span>
+    <span class="p">),</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">):</span> <span class="n">TensorDtypeMap</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">),</span> <span class="s2">&quot;TensorProto.STRING&quot;</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="tensor_dtype_to_np_dtype">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.tensor_dtype_to_np_dtype">[docs]</a>
+<span class="k">def</span> <span class="nf">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">tensor_dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a TensorProto&#39;s data_type to corresponding numpy dtype.</span>
+<span class="sd">    It can be used while making tensor.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tensor_dtype: TensorProto&#39;s data_type</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy&#39;s data_type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TENSOR_TYPE_MAP</span><span class="p">[</span><span class="n">tensor_dtype</span><span class="p">]</span><span class="o">.</span><span class="n">np_dtype</span></div>
+
 
 
 <div class="viewcode-block" id="make_operatorsetid">
@@ -380,6 +483,808 @@
     <span class="n">operatorsetid</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
     <span class="n">operatorsetid</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
     <span class="k">return</span> <span class="n">operatorsetid</span></div>
+
+
+
+<div class="viewcode-block" id="make_tensor_type_proto">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_tensor_type_proto">[docs]</a>
+<span class="k">def</span> <span class="nf">make_tensor_type_proto</span><span class="p">(</span>
+    <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">shape_denotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a Tensor TypeProto based on the data type and shape.&quot;&quot;&quot;</span>
+    <span class="n">type_proto</span> <span class="o">=</span> <span class="n">TypeProto</span><span class="p">()</span>
+    <span class="n">tensor_type_proto</span> <span class="o">=</span> <span class="n">type_proto</span><span class="o">.</span><span class="n">tensor_type</span>
+    <span class="n">tensor_type_proto</span><span class="o">.</span><span class="n">elem_type</span> <span class="o">=</span> <span class="n">elem_type</span>
+    <span class="n">tensor_shape_proto</span> <span class="o">=</span> <span class="n">tensor_type_proto</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tensor_shape_proto</span><span class="o">.</span><span class="n">dim</span><span class="o">.</span><span class="n">extend</span><span class="p">([])</span>
+
+        <span class="k">if</span> <span class="n">shape_denotation</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_denotation</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid shape_denotation. Must be of the same length as shape.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="n">tensor_shape_proto</span><span class="o">.</span><span class="n">dim</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">dim</span><span class="o">.</span><span class="n">dim_value</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">dim</span><span class="o">.</span><span class="n">dim_param</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Invalid item in shape: </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">. Needs to be of int or str.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">shape_denotation</span><span class="p">:</span>
+                <span class="n">dim</span><span class="o">.</span><span class="n">denotation</span> <span class="o">=</span> <span class="n">shape_denotation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">type_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_empty_tensor_value_info">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_empty_tensor_value_info">[docs]</a>
+<span class="k">def</span> <span class="nf">make_empty_tensor_value_info</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates an empty tensor value info.&quot;&quot;&quot;</span>
+    <span class="n">value_info_proto</span> <span class="o">=</span> <span class="n">ValueInfoProto</span><span class="p">()</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">value_info_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_tensor_value_info">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_tensor_value_info">[docs]</a>
+<span class="k">def</span> <span class="nf">make_tensor_value_info</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">shape_denotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a ValueInfoProto based on the data type and shape.&quot;&quot;&quot;</span>
+    <span class="n">value_info_proto</span> <span class="o">=</span> <span class="n">ValueInfoProto</span><span class="p">()</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">value_info_proto</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+
+    <span class="n">tensor_type_proto</span> <span class="o">=</span> <span class="n">make_tensor_type_proto</span><span class="p">(</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">shape_denotation</span><span class="p">)</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">tensor_type_proto</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value_info_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_sparse_tensor_type_proto">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_sparse_tensor_type_proto">[docs]</a>
+<span class="k">def</span> <span class="nf">make_sparse_tensor_type_proto</span><span class="p">(</span>
+    <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">shape_denotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a SparseTensor TypeProto based on the data type and shape.&quot;&quot;&quot;</span>
+    <span class="n">type_proto</span> <span class="o">=</span> <span class="n">TypeProto</span><span class="p">()</span>
+    <span class="n">sparse_tensor_type_proto</span> <span class="o">=</span> <span class="n">type_proto</span><span class="o">.</span><span class="n">sparse_tensor_type</span>
+    <span class="n">sparse_tensor_type_proto</span><span class="o">.</span><span class="n">elem_type</span> <span class="o">=</span> <span class="n">elem_type</span>
+    <span class="n">sparse_tensor_shape_proto</span> <span class="o">=</span> <span class="n">sparse_tensor_type_proto</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># You might think this is a no-op (extending a normal Python</span>
+        <span class="c1"># list by [] certainly is), but protobuf lists work a little</span>
+        <span class="c1"># differently; if a field is never set, it is omitted from the</span>
+        <span class="c1"># resulting protobuf; a list that is explicitly set to be</span>
+        <span class="c1"># empty will get an (empty) entry in the protobuf. This</span>
+        <span class="c1"># difference is visible to our consumers, so make sure we emit</span>
+        <span class="c1"># an empty shape!</span>
+        <span class="n">sparse_tensor_shape_proto</span><span class="o">.</span><span class="n">dim</span><span class="o">.</span><span class="n">extend</span><span class="p">([])</span>
+
+        <span class="k">if</span> <span class="n">shape_denotation</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_denotation</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Invalid shape_denotation. Must be of the same length as shape.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="n">sparse_tensor_shape_proto</span><span class="o">.</span><span class="n">dim</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">dim</span><span class="o">.</span><span class="n">dim_value</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">dim</span><span class="o">.</span><span class="n">dim_param</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Invalid item in shape: </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">. Needs to be of int or text.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">shape_denotation</span><span class="p">:</span>
+                <span class="n">dim</span><span class="o">.</span><span class="n">denotation</span> <span class="o">=</span> <span class="n">shape_denotation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">type_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_sparse_tensor_value_info">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_sparse_tensor_value_info">[docs]</a>
+<span class="k">def</span> <span class="nf">make_sparse_tensor_value_info</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">shape_denotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a SparseTensor ValueInfoProto based on the data type and shape.&quot;&quot;&quot;</span>
+    <span class="n">value_info_proto</span> <span class="o">=</span> <span class="n">ValueInfoProto</span><span class="p">()</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">value_info_proto</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+
+    <span class="n">sparse_tensor_type_proto</span> <span class="o">=</span> <span class="n">make_sparse_tensor_type_proto</span><span class="p">(</span>
+        <span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">shape_denotation</span>
+    <span class="p">)</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">sparse_tensor_type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span>
+        <span class="n">sparse_tensor_type_proto</span><span class="o">.</span><span class="n">sparse_tensor_type</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">value_info_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_sequence_type_proto">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_sequence_type_proto">[docs]</a>
+<span class="k">def</span> <span class="nf">make_sequence_type_proto</span><span class="p">(</span>
+    <span class="n">inner_type_proto</span><span class="p">:</span> <span class="n">TypeProto</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a sequence TypeProto.&quot;&quot;&quot;</span>
+    <span class="n">type_proto</span> <span class="o">=</span> <span class="n">TypeProto</span><span class="p">()</span>
+    <span class="n">type_proto</span><span class="o">.</span><span class="n">sequence_type</span><span class="o">.</span><span class="n">elem_type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">inner_type_proto</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">type_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_optional_type_proto">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_optional_type_proto">[docs]</a>
+<span class="k">def</span> <span class="nf">make_optional_type_proto</span><span class="p">(</span>
+    <span class="n">inner_type_proto</span><span class="p">:</span> <span class="n">TypeProto</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes an optional TypeProto.&quot;&quot;&quot;</span>
+    <span class="n">type_proto</span> <span class="o">=</span> <span class="n">TypeProto</span><span class="p">()</span>
+    <span class="n">type_proto</span><span class="o">.</span><span class="n">optional_type</span><span class="o">.</span><span class="n">elem_type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">inner_type_proto</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">type_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_map_type_proto">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_map_type_proto">[docs]</a>
+<span class="k">def</span> <span class="nf">make_map_type_proto</span><span class="p">(</span>
+    <span class="n">key_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">value_type</span><span class="p">:</span> <span class="n">TypeProto</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a map TypeProto.&quot;&quot;&quot;</span>
+    <span class="n">type_proto</span> <span class="o">=</span> <span class="n">TypeProto</span><span class="p">()</span>
+    <span class="n">type_proto</span><span class="o">.</span><span class="n">map_type</span><span class="o">.</span><span class="n">key_type</span> <span class="o">=</span> <span class="n">key_type</span>
+    <span class="n">type_proto</span><span class="o">.</span><span class="n">map_type</span><span class="o">.</span><span class="n">value_type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">value_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">type_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_value_info">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_value_info">[docs]</a>
+<span class="k">def</span> <span class="nf">make_value_info</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">type_proto</span><span class="p">:</span> <span class="n">TypeProto</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a ValueInfoProto with the given type_proto.&quot;&quot;&quot;</span>
+    <span class="n">value_info_proto</span> <span class="o">=</span> <span class="n">ValueInfoProto</span><span class="p">()</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">value_info_proto</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">type_proto</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value_info_proto</span></div>
+
+
+
+<div class="viewcode-block" id="make_tensor_sequence_value_info">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_tensor_sequence_value_info">[docs]</a>
+<span class="k">def</span> <span class="nf">make_tensor_sequence_value_info</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">elem_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">shape</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">elem_shape_denotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueInfoProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a Sequence[Tensors] ValueInfoProto based on the data type and shape.&quot;&quot;&quot;</span>
+    <span class="n">value_info_proto</span> <span class="o">=</span> <span class="n">ValueInfoProto</span><span class="p">()</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">value_info_proto</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+
+    <span class="n">tensor_type_proto</span> <span class="o">=</span> <span class="n">make_tensor_type_proto</span><span class="p">(</span><span class="n">elem_type</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">elem_shape_denotation</span><span class="p">)</span>
+    <span class="n">sequence_type_proto</span> <span class="o">=</span> <span class="n">make_sequence_type_proto</span><span class="p">(</span><span class="n">tensor_type_proto</span><span class="p">)</span>
+    <span class="n">value_info_proto</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">sequence_type</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">sequence_type_proto</span><span class="o">.</span><span class="n">sequence_type</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">value_info_proto</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_attr_type_to_str</span><span class="p">(</span><span class="n">attr_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert AttributeProto type to string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        attr_type: AttributeProto type.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        String representing the supplied attr_type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">attr_type</span> <span class="ow">in</span> <span class="n">_ATTRIBUTE_TYPE_TO_STR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ATTRIBUTE_TYPE_TO_STR</span><span class="p">[</span><span class="n">attr_type</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attr_type</span> <span class="ow">in</span> <span class="n">_ATTRIBUTE_TYPE_INT_TO_STR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ATTRIBUTE_TYPE_INT_TO_STR</span><span class="p">[</span><span class="n">attr_type</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce a string (or bytes) value into UTF-8 bytes.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<div class="viewcode-block" id="make_attribute">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_attribute">[docs]</a>
+<span class="k">def</span> <span class="nf">make_attribute</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">attr_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AttributeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes an AttributeProto based on the value type.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">attr_type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">AttributeType</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span>
+    <span class="n">attr</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
+    <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">key</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+
+    <span class="c1"># Singular cases</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">):</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INT</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">):</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOAT</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
+        <span class="c1"># Encode strings into utf-8</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRING</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSOR</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">SparseTensorProto</span><span class="p">):</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">sparse_tensor</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">SPARSE_TENSOR</span>
+    <span class="c1"># elif isinstance(value, GraphProto):</span>
+    <span class="c1">#    attr.g.CopyFrom(value)</span>
+    <span class="c1">#    attr.type = AttributeProto.GRAPH</span>
+    <span class="c1"># elif isinstance(value, TypeProto):</span>
+    <span class="c1">#    attr.tp.CopyFrom(value)</span>
+    <span class="c1">#    attr.type = AttributeProto.TYPE_PROTO</span>
+    <span class="c1"># Iterable cases</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">Iterable</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">attr_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not infer attribute </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> type from empty iterator&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">attr_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">exp_t</span><span class="p">,</span> <span class="n">exp_enum</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">,</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INTS</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">numbers</span><span class="o">.</span><span class="n">Real</span><span class="p">,</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOATS</span><span class="p">),</span>
+                <span class="p">((</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">),</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRINGS</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSORS</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">SparseTensorProto</span><span class="p">,</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">SPARSE_TENSORS</span><span class="p">),</span>
+                <span class="c1"># (GraphProto, AttributeProto.GRAPHS),</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">exp_t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">types</span><span class="p">):</span>
+                    <span class="n">attr_type</span> <span class="o">=</span> <span class="n">exp_enum</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">attr_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not infer the attribute type from the &quot;</span>
+                    <span class="s2">&quot;elements of the passed Iterable value.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INTS</span><span class="p">:</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">ints</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INTS</span>
+        <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOATS</span><span class="p">:</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">floats</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOATS</span>
+        <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRINGS</span><span class="p">:</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">strings</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRINGS</span>
+        <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSORS</span><span class="p">:</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">tensors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSORS</span>
+        <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">SPARSE_TENSORS</span><span class="p">:</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">sparse_tensors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">SPARSE_TENSORS</span>
+        <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPHS</span><span class="p">:</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">graphs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPHS</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type=</span><span class="si">{</span><span class="n">attr_type</span><span class="si">}</span><span class="s2"> for an attribute.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> is not an accepted attribute value.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">AttributeType</span><span class="o">.</span><span class="n">UNDEFINED</span> <span class="ow">and</span> <span class="n">attr_type</span> <span class="o">!=</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">attr_type</span>
+    <span class="k">if</span> <span class="n">attr_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr_type</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Inferred attribute type </span><span class="si">{</span><span class="n">_attr_type_to_str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="si">!r}</span><span class="s2">(</span><span class="si">{</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">) &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;mismatched with specified type </span><span class="si">{</span><span class="n">_attr_type_to_str</span><span class="p">(</span><span class="n">attr_type</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">attr_type</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">attr</span></div>
+
+
+
+<div class="viewcode-block" id="make_attribute_ref">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_attribute_ref">[docs]</a>
+<span class="k">def</span> <span class="nf">make_attribute_ref</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attr_type</span><span class="p">:</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">AttributeType</span><span class="p">,</span> <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AttributeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes an AttributeProto holding a reference to the parent &quot;</span>
+<span class="sd">    function&#39;s attribute of given name and type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">attr</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
+    <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">attr_type</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">attr</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+    <span class="k">return</span> <span class="n">attr</span></div>
+
+
+
+<div class="viewcode-block" id="get_attribute_value">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.get_attribute_value">[docs]</a>
+<span class="k">def</span> <span class="nf">get_attribute_value</span><span class="p">(</span><span class="n">attr</span><span class="p">:</span> <span class="n">AttributeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the attribute value whatever the type is.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">ref_attr_name</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot get value of reference attribute: </span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">f</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">i</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">s</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSOR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">t</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">SPARSE_TENSOR</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">sparse_tensor</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="o">.</span><span class="n">g</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">FLOATS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">floats</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">INTS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">ints</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRINGS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">strings</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSORS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">tensors</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">SPARSE_TENSORS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">sparse_tensors</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPHS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">graphs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">UNDEFINED</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported ONNX attribute </span><span class="si">{</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tensor_dtype_to_field">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.tensor_dtype_to_field">[docs]</a>
+<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">tensor_dtype_to_field</span><span class="p">(</span><span class="n">tensor_dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a TensorProto&#39;s data_type to corresponding field name for storage.</span>
+<span class="sd">    It can be used while making tensors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tensor_dtype: TensorProto&#39;s data_type</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        field name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">storage_tensor_type_to_field</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">):</span> <span class="s2">&quot;float_data&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT32</span><span class="p">):</span> <span class="s2">&quot;int32_data&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">):</span> <span class="s2">&quot;int64_data&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">):</span> <span class="s2">&quot;double_data&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT32</span><span class="p">):</span> <span class="s2">&quot;uint64_data&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">):</span> <span class="s2">&quot;uint64_data&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">):</span> <span class="s2">&quot;string_data&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">storage_tensor_type_to_field</span><span class="p">[</span><span class="n">TENSOR_TYPE_MAP</span><span class="p">[</span><span class="n">tensor_dtype</span><span class="p">]</span><span class="o">.</span><span class="n">storage_dtype</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="make_tensor">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">make_tensor</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">data_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dims</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">vals</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes a TensorProto with specified arguments.  If raw is False, this</span>
+<span class="sd">    function will choose the corresponding proto field to store the</span>
+<span class="sd">    values based on data_type. If raw is True, use &quot;raw_data&quot; proto</span>
+<span class="sd">    field to store the values, and values should be of type bytes in</span>
+<span class="sd">    this case.</span>
+
+<span class="sd">    :param name: tensor name</span>
+<span class="sd">    :param data_type: a value such as TensorProto.FLOAT</span>
+<span class="sd">    :param dims: shape</span>
+<span class="sd">    :param vals: values</span>
+<span class="sd">    :param raw: if True, vals contains the serialized content of the tensor,</span>
+<span class="sd">        otherwise, vals should be a list of values</span>
+<span class="sd">        of the type defined by ``data_type``.</span>
+<span class="sd">    :return: TensorProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">TensorProto</span><span class="p">()</span>
+    <span class="n">tensor</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+    <span class="n">tensor</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">tensor</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span> <span class="ow">and</span> <span class="n">raw</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Can not use raw_data to store string type.&quot;</span><span class="p">)</span>
+
+    <span class="n">np_dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">raw</span><span class="p">:</span>
+        <span class="c1"># NumPy doesn&#39;t have INT4/FP4. It is packed in couples to UINT8 buffers.</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT4</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT4</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT4E2M1</span><span class="p">}:</span>
+            <span class="n">expected_size_bytes</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">expected_size_bytes</span> <span class="o">=</span> <span class="n">np_dtype</span><span class="o">.</span><span class="n">itemsize</span>
+        <span class="n">expected_size_bytes</span> <span class="o">*=</span> <span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+        <span class="n">expected_size_bytes</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">expected_size_bytes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">vals</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Raw data must be bytes or numpy.ndarray, but got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">expected_size_bytes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Raw data size does not match tensor&#39;s size. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">expected_size_bytes</span><span class="si">}</span><span class="s2"> bytes, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span><span class="si">}</span><span class="s2"> bytes.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">tensor</span><span class="o">.</span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">raw_data</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">raw</span><span class="p">,</span> <span class="s2">&quot;Bug: raw should be False at this point.&quot;</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">)(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX128</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX64</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">}:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span>
+        <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FN</span><span class="p">,</span>
+        <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E4M3FNUZ</span><span class="p">,</span>
+        <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2</span><span class="p">,</span>
+        <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E5M2FNUZ</span><span class="p">,</span>
+        <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT8E8M0</span><span class="p">,</span>
+    <span class="p">}:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">data_type</span> <span class="o">&gt;=</span> <span class="mi">16</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected data_type=</span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="n">field</span> <span class="o">=</span> <span class="n">tensor_dtype_to_field</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+    <span class="nb">getattr</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tensor</span></div>
+
+
+
+<div class="viewcode-block" id="make_sparse_tensor">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_sparse_tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">make_sparse_tensor</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">TensorProto</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">TensorProto</span><span class="p">,</span> <span class="n">dims</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SparseTensorProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a SparseTensorProto</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        values (TensorProto): the values</span>
+<span class="sd">        indices (TensorProto): the indices</span>
+<span class="sd">        dims: the shape</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        SparseTensorProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sparse</span> <span class="o">=</span> <span class="n">SparseTensorProto</span><span class="p">()</span>
+    <span class="n">sparse</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">sparse</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="n">sparse</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sparse</span></div>
+
+
+
+<div class="viewcode-block" id="make_node">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_node">[docs]</a>
+<span class="k">def</span> <span class="nf">make_node</span><span class="p">(</span>
+    <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">overload</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a NodeProto.</span>
+
+<span class="sd">    :param op_type: (string): The name of the operator to construct</span>
+<span class="sd">    :param inputs: (list of string): list of input names</span>
+<span class="sd">    :param outputs: (list of string): list of output names</span>
+<span class="sd">    :param name: (string, default None): optional unique identifier for NodeProto</span>
+<span class="sd">    :param doc_string: (string, default None):</span>
+<span class="sd">        optional documentation string for NodeProto</span>
+<span class="sd">    :param domain: (string, default None): optional domain for NodeProto.</span>
+<span class="sd">        If it&#39;s None, we will just use default domain (which is empty)</span>
+<span class="sd">    :param overload: (string, default None): optional field, used to</span>
+<span class="sd">        resolve calls to model-local functions</span>
+<span class="sd">    :param kwargs: (dict): the attributes of the node.  The acceptable values</span>
+<span class="sd">        are documented in :func:`make_attribute`.</span>
+<span class="sd">    :return: NodeProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">NodeProto</span><span class="p">()</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">=</span> <span class="n">op_type</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+    <span class="k">if</span> <span class="n">domain</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+    <span class="k">if</span> <span class="n">overload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">overload</span> <span class="o">=</span> <span class="n">overload</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">make_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">node</span></div>
+
+
+
+<div class="viewcode-block" id="set_metadata_props">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.set_metadata_props">[docs]</a>
+<span class="k">def</span> <span class="nf">set_metadata_props</span><span class="p">(</span>
+    <span class="n">proto</span><span class="p">:</span> <span class="p">(</span>
+        <span class="n">ModelProto</span>
+        <span class="o">|</span> <span class="n">GraphProto</span>
+        <span class="o">|</span> <span class="n">FunctionProto</span>
+        <span class="o">|</span> <span class="n">NodeProto</span>
+        <span class="o">|</span> <span class="n">TensorProto</span>
+        <span class="o">|</span> <span class="n">ValueInfoProto</span>
+    <span class="p">),</span>
+    <span class="n">dict_value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets metadata_props.&quot;&quot;&quot;</span>
+    <span class="k">del</span> <span class="n">proto</span><span class="o">.</span><span class="n">metadata_props</span><span class="p">[:]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dict_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">proto</span><span class="o">.</span><span class="n">metadata_props</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">v</span></div>
+
+
+
+<div class="viewcode-block" id="set_model_props">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.set_model_props">[docs]</a>
+<span class="k">def</span> <span class="nf">set_model_props</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">dict_value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets metadata_props.&quot;&quot;&quot;</span>
+    <span class="n">set_metadata_props</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dict_value</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_graph">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">make_graph</span><span class="p">(</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ValueInfoProto</span><span class="p">],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ValueInfoProto</span><span class="p">],</span>
+    <span class="n">initializer</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">TensorProto</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">value_info</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ValueInfoProto</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sparse_initializer</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">SparseTensorProto</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GraphProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a GraphProto</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nodes: list of NodeProto</span>
+<span class="sd">        name (string): graph name</span>
+<span class="sd">        inputs: list of ValueInfoProto</span>
+<span class="sd">        outputs: list of ValueInfoProto</span>
+<span class="sd">        initializer: list of TensorProto</span>
+<span class="sd">        doc_string (string): graph documentation</span>
+<span class="sd">        value_info: list of ValueInfoProto</span>
+<span class="sd">        sparse_initializer: list of SparseTensorProto</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        GraphProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">initializer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">initializer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">sparse_initializer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sparse_initializer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">value_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">value_info</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">GraphProto</span><span class="p">()</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">initializer</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">sparse_initializer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sparse_initializer</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value_info</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+
+<div class="viewcode-block" id="make_opsetid">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_opsetid">[docs]</a>
+<span class="k">def</span> <span class="nf">make_opsetid</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OperatorSetIdProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs an OperatorSetIdProto.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        domain (string): The domain of the operator set id</span>
+<span class="sd">        version (integer): Version of operator set id</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        OperatorSetIdProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">opsetid</span> <span class="o">=</span> <span class="n">OperatorSetIdProto</span><span class="p">()</span>
+    <span class="n">opsetid</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+    <span class="n">opsetid</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+    <span class="k">return</span> <span class="n">opsetid</span></div>
+
+
+
+<div class="viewcode-block" id="make_function">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_function">[docs]</a>
+<span class="k">def</span> <span class="nf">make_function</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
+    <span class="n">opset_imports</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">OperatorSetIdProto</span><span class="p">],</span>
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">attribute_protos</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">overload</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">value_info</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ValueInfoProto</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a FunctionProto.</span>
+
+<span class="sd">    :param domain: domain name</span>
+<span class="sd">    :param fname: function name</span>
+<span class="sd">    :param inputs: input names</span>
+<span class="sd">    :param outputs: output names</span>
+<span class="sd">    :param nodes: sequence of NodeProto</span>
+<span class="sd">    :param opset_imports: required domains (opset_import)</span>
+<span class="sd">    :param attributes: attribute names</span>
+<span class="sd">    :param attribute_protos: typed attributes</span>
+<span class="sd">    :param doc_string: documentation</span>
+<span class="sd">    :param overload: overload</span>
+<span class="sd">    :param value_info: information about type and shape for results</span>
+<span class="sd">    :return: a FunctionProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">attributes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">attribute_protos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">attribute_protos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">value_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">value_info</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">FunctionProto</span><span class="p">()</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">domain</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">fname</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">opset_imports</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">attribute_proto</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">attribute_protos</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+    <span class="k">if</span> <span class="n">overload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">overload</span> <span class="o">=</span> <span class="n">overload</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">value_info</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value_info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_onnx_opset_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">23</span>
+
+
+<span class="k">def</span> <span class="nf">_onnx_ir_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">11</span>
+
+
+<div class="viewcode-block" id="make_model">
+<a class="viewcode-back" href="../../../api/onnx2/helper.html#onnx_extended.onnx2.helper.make_model">[docs]</a>
+<span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span>
+    <span class="n">graph</span><span class="p">:</span> <span class="n">GraphProto</span><span class="p">,</span>
+    <span class="n">ir_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_onnx_ir_version</span><span class="p">(),</span>
+    <span class="n">opset_imports</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">OperatorSetIdProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">FunctionProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">metadata_props</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">StringStringEntryProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc_string</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">producer_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">producer_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelProto</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a ModelProto</span>
+
+<span class="sd">    :param graph: GraphProto</span>
+<span class="sd">    :param ir_version: ir version, use the default one if missing</span>
+<span class="sd">    :param opset_imports: required domains, use the default one if missing</span>
+<span class="sd">    :param functions: list of functions</span>
+<span class="sd">    :param metadata_props: additional information</span>
+<span class="sd">    :param producer_name: producer name</span>
+<span class="sd">    :param producer_version: producer version</span>
+<span class="sd">    :param doc_string: documentation</span>
+<span class="sd">    :return: model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ModelProto</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="n">ir_version</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">opset_imports</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">opset_imports</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">imp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">opset_import</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+        <span class="n">imp</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">_onnx_opset_version</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">functions</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">functions</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">metadata_props</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">metadata_props</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">metadata_props</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">doc_string</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">=</span> <span class="n">doc_string</span>
+    <span class="k">if</span> <span class="n">producer_name</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">producer_name</span> <span class="o">=</span> <span class="n">producer_name</span>
+    <span class="k">if</span> <span class="n">producer_version</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">producer_version</span> <span class="o">=</span> <span class="n">producer_version</span>
+    <span class="k">return</span> <span class="n">model</span></div>
 
 </pre></div>
         </article>
