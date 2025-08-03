@@ -19,6 +19,23 @@ Examples Gallery
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Measures loading, saving time for an onnx model in python">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_onnx2_time_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_onnx2_time.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measures loading, saving time for an onnx model in python</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Processor caches must be taken into account when writing an algorithm, see Memory part 2: CPU caches from Ulrich Drepper.">
 
 .. only:: html
@@ -333,6 +350,7 @@ Examples Gallery
 .. toctree::
    :hidden:
 
+   /auto_examples/plot_onnx2_time
    /auto_examples/plot_bench_cpu
    /auto_examples/plot_op_conv_py_vs_c
    /auto_examples/plot_bench_cypy_ort

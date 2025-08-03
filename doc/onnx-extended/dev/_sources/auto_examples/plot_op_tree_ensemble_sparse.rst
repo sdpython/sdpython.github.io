@@ -248,7 +248,7 @@ training
     building tree 1 of 1
     Xb.shape=(1000, 500)
     yb.shape=(1000,)
-    measured sparsity=0.990094
+    measured sparsity=0.989828
 
 
 
@@ -284,7 +284,7 @@ First the current model.
     opset: domain='' version=18
     opset: domain='' version=18
     input: name='X' type=dtype('float32') shape=['', 500]
-    TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=790:[78,77,60...0,0,0], nodes_featureids=790:[42,285,196...0,101,0], nodes_hitrates=790:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=790:[0,0,0...0,0,0], nodes_modes=790:[b'BRANCH_LEQ',b'BRANCH_LEQ'...b'LEAF',b'LEAF'], nodes_nodeids=790:[0,1,2...76,77,78], nodes_treeids=790:[0,0,0...9,9,9], nodes_truenodeids=790:[1,2,3...0,0,0], nodes_values=790:[1.1106555461883545,1.1359018087387085...-0.4278838038444519,0.0], post_transform=b'NONE', target_ids=400:[0,0,0...0,0,0], target_nodeids=400:[5,8,10...76,77,78], target_treeids=400:[0,0,0...9,9,9], target_weights=400:[83.8045883178711,-158.5025634765625...461.4992980957031,399.7672119140625]) -> variable
+    TreeEnsembleRegressor(X, n_targets=1, nodes_falsenodeids=510:[8,5,4...0,0,0], nodes_featureids=510:[334,334,258...75,212,151], nodes_hitrates=510:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=510:[0,0,0...0,0,0], nodes_modes=510:[b'BRANCH_LEQ',b'BRANCH_LEQ'...b'LEAF',b'LEAF'], nodes_nodeids=510:[0,1,2...48,49,50], nodes_treeids=510:[0,0,0...9,9,9], nodes_truenodeids=510:[1,2,3...0,0,0], nodes_values=510:[-0.334079384803772,-1.1418758630752563...0.5451419949531555,0.18698275089263916], post_transform=b'NONE', target_ids=260:[0,0,0...0,0,0], target_nodeids=260:[3,4,6...48,49,50], target_treeids=260:[0,0,0...9,9,9], target_weights=260:[-497.15765380859375,-413.06390380859375...286.3339538574219,411.51983642578125]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
@@ -353,7 +353,7 @@ And then the modified model.
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cpu' version=1
     input: name='X' type=dtype('float32') shape=['', 500]
-    TreeEnsembleRegressor[onnx_extended.ortops.optim.cpu](X, nodes_modes=b'LEQ,LEQ,LEQ,LEQ,LEQ,LEAF,LEQ,LEQ,LEAF,...LEAF,LEAF', n_targets=1, nodes_falsenodeids=790:[78,77,60...0,0,0], nodes_featureids=790:[42,285,196...0,101,0], nodes_hitrates=790:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=790:[0,0,0...0,0,0], nodes_nodeids=790:[0,1,2...76,77,78], nodes_treeids=790:[0,0,0...9,9,9], nodes_truenodeids=790:[1,2,3...0,0,0], nodes_values=790:[1.1106555461883545,1.1359018087387085...-0.4278838038444519,0.0], post_transform=b'NONE', target_ids=400:[0,0,0...0,0,0], target_nodeids=400:[5,8,10...76,77,78], target_treeids=400:[0,0,0...9,9,9], target_weights=400:[83.8045883178711,-158.5025634765625...461.4992980957031,399.7672119140625]) -> variable
+    TreeEnsembleRegressor[onnx_extended.ortops.optim.cpu](X, nodes_modes=b'LEQ,LEQ,LEQ,LEAF,LEAF,LEQ,LEAF,LEAF,LE...LEAF,LEAF', n_targets=1, nodes_falsenodeids=510:[8,5,4...0,0,0], nodes_featureids=510:[334,334,258...75,212,151], nodes_hitrates=510:[1.0,1.0...1.0,1.0], nodes_missing_value_tracks_true=510:[0,0,0...0,0,0], nodes_nodeids=510:[0,1,2...48,49,50], nodes_treeids=510:[0,0,0...9,9,9], nodes_truenodeids=510:[1,2,3...0,0,0], nodes_values=510:[-0.334079384803772,-1.1418758630752563...0.5451419949531555,0.18698275089263916], post_transform=b'NONE', target_ids=260:[0,0,0...0,0,0], target_nodeids=260:[3,4,6...48,49,50], target_treeids=260:[0,0,0...9,9,9], target_weights=260:[-497.15765380859375,-413.06390380859375...286.3339538574219,411.51983642578125]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
@@ -393,7 +393,7 @@ Same with sparse.
     opset: domain='' version=18
     opset: domain='onnx_extended.ortops.optim.cpu' version=1
     input: name='X' type=dtype('float32') shape=['']
-    TreeEnsembleRegressorSparse[onnx_extended.ortops.optim.cpu](X, nodes_missing_value_tracks_true=790:[1,1,1...1,0,1], nodes_modes=b'LEQ,LEQ,LEQ,LEQ,LEQ,LEAF,LEQ,LEQ,LEAF,...LEAF,LEAF', n_targets=1, nodes_falsenodeids=790:[78,77,60...0,0,0], nodes_featureids=790:[42,285,196...0,101,0], nodes_hitrates=790:[1.0,1.0...1.0,1.0], nodes_nodeids=790:[0,1,2...76,77,78], nodes_treeids=790:[0,0,0...9,9,9], nodes_truenodeids=790:[1,2,3...0,0,0], nodes_values=790:[1.1106555461883545,1.1359018087387085...-0.4278838038444519,0.0], post_transform=b'NONE', target_ids=400:[0,0,0...0,0,0], target_nodeids=400:[5,8,10...76,77,78], target_treeids=400:[0,0,0...9,9,9], target_weights=400:[83.8045883178711,-158.5025634765625...461.4992980957031,399.7672119140625]) -> variable
+    TreeEnsembleRegressorSparse[onnx_extended.ortops.optim.cpu](X, nodes_missing_value_tracks_true=510:[0,0,0...1,1,1], nodes_modes=b'LEQ,LEQ,LEQ,LEAF,LEAF,LEQ,LEAF,LEAF,LE...LEAF,LEAF', n_targets=1, nodes_falsenodeids=510:[8,5,4...0,0,0], nodes_featureids=510:[334,334,258...75,212,151], nodes_hitrates=510:[1.0,1.0...1.0,1.0], nodes_nodeids=510:[0,1,2...48,49,50], nodes_treeids=510:[0,0,0...9,9,9], nodes_truenodeids=510:[1,2,3...0,0,0], nodes_values=510:[-0.334079384803772,-1.1418758630752563...0.5451419949531555,0.18698275089263916], post_transform=b'NONE', target_ids=260:[0,0,0...0,0,0], target_nodeids=260:[3,4,6...48,49,50], target_treeids=260:[0,0,0...9,9,9], target_weights=260:[-497.15765380859375,-413.06390380859375...286.3339538574219,411.51983642578125]) -> variable
     output: name='variable' type=dtype('float32') shape=['', 1]
 
 
@@ -456,7 +456,7 @@ Comparing onnxruntime and the custom kernel
     Running once with shape (1000, 500).
     Running modified with shape (1000, 500).
     done.
-    Running modified sparse with shape (9962,).
+    Running modified sparse with shape (10228,).
     done.
 
 
@@ -485,8 +485,8 @@ Discrepancies?
 
  .. code-block:: none
 
-    Discrepancies: 0.0001220703125
-    Discrepancies sparse: 0.0001220703125
+    Discrepancies: 0.00048828125
+    Discrepancies sparse: 0.00048828125
 
 
 
@@ -513,7 +513,7 @@ Baseline with onnxruntime.
 
  .. code-block:: none
 
-    baseline: 0.005446884999400936
+    baseline: 0.030573562999961723
 
 
 
@@ -537,7 +537,7 @@ The custom implementation.
 
  .. code-block:: none
 
-    new time: 0.2242279670026619
+    new time: 0.43016456399982417
 
 
 
@@ -561,7 +561,7 @@ The custom sparse implementation.
 
  .. code-block:: none
 
-    new time sparse: 0.02018368199787801
+    new time sparse: 0.34882718500011833
 
 
 
@@ -690,7 +690,7 @@ Then the optimization for dense
 
  .. code-block:: none
 
-      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00<00:03,  4.52it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=0.65x:   6%|▋         | 1/16 [00:00<00:03,  4.52it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=0.65x:  12%|█▎        | 2/16 [00:00<00:02,  5.59it/s]    i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=0.65x:  12%|█▎        | 2/16 [00:00<00:02,  5.59it/s]     i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=0.65x:  19%|█▉        | 3/16 [00:00<00:02,  6.41it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  19%|█▉        | 3/16 [00:00<00:02,  6.41it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  25%|██▌       | 4/16 [00:00<00:01,  6.95it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  25%|██▌       | 4/16 [00:00<00:01,  6.95it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  31%|███▏      | 5/16 [00:00<00:01,  7.29it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  31%|███▏      | 5/16 [00:00<00:01,  7.29it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  38%|███▊      | 6/16 [00:00<00:01,  7.52it/s]    i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  38%|███▊      | 6/16 [00:00<00:01,  7.52it/s]     i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  44%|████▍     | 7/16 [00:00<00:01,  7.68it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  44%|████▍     | 7/16 [00:00<00:01,  7.68it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  50%|█████     | 8/16 [00:01<00:01,  7.50it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  50%|█████     | 8/16 [00:01<00:01,  7.50it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  56%|█████▋    | 9/16 [00:01<00:01,  6.45it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  56%|█████▋    | 9/16 [00:01<00:01,  6.45it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  62%|██████▎   | 10/16 [00:01<00:01,  5.52it/s]    i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  62%|██████▎   | 10/16 [00:01<00:01,  5.52it/s]     i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  69%|██████▉   | 11/16 [00:01<00:00,  6.00it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  69%|██████▉   | 11/16 [00:01<00:00,  6.00it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  75%|███████▌  | 12/16 [00:01<00:00,  6.48it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  75%|███████▌  | 12/16 [00:01<00:00,  6.48it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  81%|████████▏ | 13/16 [00:01<00:00,  6.50it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  81%|████████▏ | 13/16 [00:01<00:00,  6.50it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  88%|████████▊ | 14/16 [00:02<00:00,  6.08it/s]    i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  88%|████████▊ | 14/16 [00:02<00:00,  6.08it/s]     i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.04x:  94%|█████████▍| 15/16 [00:02<00:00,  6.37it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  94%|█████████▍| 15/16 [00:02<00:00,  6.37it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x: 100%|██████████| 16/16 [00:02<00:00,  6.35it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x: 100%|██████████| 16/16 [00:02<00:00,  6.45it/s]
+      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00<00:03,  4.55it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:   6%|▋         | 1/16 [00:00<00:03,  4.55it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  12%|█▎        | 2/16 [00:00<00:02,  6.39it/s]    i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  12%|█▎        | 2/16 [00:00<00:02,  6.39it/s]     i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  19%|█▉        | 3/16 [00:00<00:01,  7.16it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  19%|█▉        | 3/16 [00:00<00:01,  7.16it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  25%|██▌       | 4/16 [00:00<00:01,  7.62it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  25%|██▌       | 4/16 [00:00<00:01,  7.62it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  31%|███▏      | 5/16 [00:00<00:01,  7.88it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  31%|███▏      | 5/16 [00:00<00:01,  7.88it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.12x:  38%|███▊      | 6/16 [00:00<00:01,  8.12it/s]    i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  38%|███▊      | 6/16 [00:00<00:01,  8.12it/s]     i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  44%|████▍     | 7/16 [00:00<00:01,  8.29it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  44%|████▍     | 7/16 [00:00<00:01,  8.29it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  50%|█████     | 8/16 [00:01<00:00,  8.37it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  50%|█████     | 8/16 [00:01<00:00,  8.37it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  56%|█████▋    | 9/16 [00:01<00:00,  8.50it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  56%|█████▋    | 9/16 [00:01<00:00,  8.50it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  62%|██████▎   | 10/16 [00:01<00:00,  8.58it/s]    i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  62%|██████▎   | 10/16 [00:01<00:00,  8.58it/s]     i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  69%|██████▉   | 11/16 [00:01<00:00,  8.65it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  69%|██████▉   | 11/16 [00:01<00:00,  8.65it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  69%|██████▉   | 11/16 [00:00<00:00,  8.65it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  69%|██████▉   | 11/16 [00:00<00:00,  8.65it/s]    i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  69%|██████▉   | 11/16 [00:00<00:00,  8.65it/s]     i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x:  69%|██████▉   | 11/16 [00:00<00:00,  8.65it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0  ~=1.23x: 100%|██████████| 16/16 [00:00<00:00, 22.64it/s]
 
 
 
@@ -727,7 +727,7 @@ Then the optimization for sparse
 
  .. code-block:: none
 
-      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00<00:02,  5.49it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00<00:02,  5.49it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  12%|█▎        | 2/16 [00:00<00:02,  6.43it/s]    i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  12%|█▎        | 2/16 [00:00<00:02,  6.43it/s]     i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  19%|█▉        | 3/16 [00:00<00:02,  5.98it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  19%|█▉        | 3/16 [00:00<00:02,  5.98it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  25%|██▌       | 4/16 [00:00<00:02,  5.32it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  25%|██▌       | 4/16 [00:00<00:02,  5.32it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  31%|███▏      | 5/16 [00:00<00:01,  5.72it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  31%|███▏      | 5/16 [00:00<00:01,  5.72it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  38%|███▊      | 6/16 [00:01<00:01,  5.91it/s]    i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  38%|███▊      | 6/16 [00:01<00:01,  5.91it/s]     i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  44%|████▍     | 7/16 [00:01<00:01,  5.58it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  44%|████▍     | 7/16 [00:01<00:01,  5.58it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  50%|█████     | 8/16 [00:01<00:01,  5.85it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  50%|█████     | 8/16 [00:01<00:01,  5.85it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  56%|█████▋    | 9/16 [00:01<00:01,  6.10it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  56%|█████▋    | 9/16 [00:01<00:01,  6.10it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  62%|██████▎   | 10/16 [00:01<00:00,  6.43it/s]    i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  62%|██████▎   | 10/16 [00:01<00:00,  6.43it/s]     i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  69%|██████▉   | 11/16 [00:01<00:00,  6.61it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  69%|██████▉   | 11/16 [00:01<00:00,  6.61it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  75%|███████▌  | 12/16 [00:01<00:00,  6.55it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  75%|███████▌  | 12/16 [00:01<00:00,  6.55it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  81%|████████▏ | 13/16 [00:02<00:00,  6.49it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  81%|████████▏ | 13/16 [00:02<00:00,  6.49it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  88%|████████▊ | 14/16 [00:02<00:00,  6.31it/s]    i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  88%|████████▊ | 14/16 [00:02<00:00,  6.31it/s]     i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  94%|█████████▍| 15/16 [00:02<00:00,  5.75it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  94%|█████████▍| 15/16 [00:02<00:00,  5.75it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0: 100%|██████████| 16/16 [00:02<00:00,  6.01it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0: 100%|██████████| 16/16 [00:02<00:00,  6.04it/s]
+      0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   0%|          | 0/16 [00:00<?, ?it/s]    i=1/16 TRY=0 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00<00:02,  6.13it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:   6%|▋         | 1/16 [00:00<00:02,  6.13it/s]    i=2/16 TRY=0 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  12%|█▎        | 2/16 [00:00<00:02,  5.84it/s]    i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  12%|█▎        | 2/16 [00:00<00:02,  5.84it/s]     i=3/16 TRY=0 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  19%|█▉        | 3/16 [00:00<00:02,  6.24it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  19%|█▉        | 3/16 [00:00<00:02,  6.24it/s]    i=4/16 TRY=0 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  25%|██▌       | 4/16 [00:00<00:01,  6.30it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  25%|██▌       | 4/16 [00:00<00:01,  6.30it/s]    i=5/16 TRY=0 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  31%|███▏      | 5/16 [00:00<00:01,  5.89it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  31%|███▏      | 5/16 [00:00<00:01,  5.89it/s]    i=6/16 TRY=0 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  38%|███▊      | 6/16 [00:00<00:01,  6.36it/s]    i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  38%|███▊      | 6/16 [00:00<00:01,  6.36it/s]     i=7/16 TRY=0 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  44%|████▍     | 7/16 [00:01<00:01,  6.45it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  44%|████▍     | 7/16 [00:01<00:01,  6.45it/s]    i=8/16 TRY=0 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  50%|█████     | 8/16 [00:01<00:01,  6.64it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  50%|█████     | 8/16 [00:01<00:01,  6.64it/s]    i=9/16 TRY=1 //tree=80 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  56%|█████▋    | 9/16 [00:01<00:01,  6.91it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  56%|█████▋    | 9/16 [00:01<00:01,  6.91it/s]    i=10/16 TRY=1 //tree=80 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  62%|██████▎   | 10/16 [00:01<00:00,  7.25it/s]    i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  62%|██████▎   | 10/16 [00:01<00:00,  7.25it/s]     i=11/16 TRY=1 //tree=80 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  69%|██████▉   | 11/16 [00:01<00:00,  7.25it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  69%|██████▉   | 11/16 [00:01<00:00,  7.25it/s]    i=12/16 TRY=1 //tree=80 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  75%|███████▌  | 12/16 [00:01<00:00,  7.22it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  75%|███████▌  | 12/16 [00:01<00:00,  7.22it/s]    i=13/16 TRY=1 //tree=40 //tree_N=128 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  81%|████████▏ | 13/16 [00:01<00:00,  7.11it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  81%|████████▏ | 13/16 [00:01<00:00,  7.11it/s]    i=14/16 TRY=1 //tree=40 //tree_N=128 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  88%|████████▊ | 14/16 [00:02<00:00,  7.25it/s]    i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  88%|████████▊ | 14/16 [00:02<00:00,  7.25it/s]     i=15/16 TRY=1 //tree=40 //tree_N=64 //N=50 bs_tree=1 batch_size_rows=1 n3=0:  94%|█████████▍| 15/16 [00:02<00:00,  7.30it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0:  94%|█████████▍| 15/16 [00:02<00:00,  7.30it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0: 100%|██████████| 16/16 [00:02<00:00,  7.45it/s]    i=16/16 TRY=1 //tree=40 //tree_N=64 //N=25 bs_tree=1 batch_size_rows=1 n3=0: 100%|██████████| 16/16 [00:02<00:00,  6.87it/s]
 
 
 
@@ -765,12 +765,12 @@ And the results.
            'parallel_N', 'batch_size_tree', 'batch_size_rows', 'use_node3',
            'input'],
           dtype='object')
-        average  deviation  min_exec  ...  batch_size_rows  use_node3  input
-    0  0.000037   0.000003  0.000034  ...              NaN        NaN  dense
-    1  0.000058   0.000018  0.000043  ...              1.0        0.0  dense
-    2  0.000103   0.000112  0.000037  ...              1.0        0.0  dense
-    3  0.000036   0.000004  0.000032  ...              1.0        0.0  dense
-    4  0.000036   0.000002  0.000034  ...              1.0        0.0  dense
+        average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time  n_exp  ...         short_name  TRY             name parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3  input
+    0  0.000029   0.000003  0.000025  0.000033      10      10  0.000291            64     0.000341      0  ...         0,baseline  0.0         baseline           NaN              NaN         NaN              NaN              NaN        NaN  dense
+    1  0.000026   0.000003  0.000022  0.000031      10      10  0.000260            64     0.000497      0  ...  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0          80.0            128.0        50.0              1.0              1.0        0.0  dense
+    2  0.000034   0.000023  0.000023  0.000101      10      10  0.000336            64     0.000501      1  ...  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0          80.0            128.0        25.0              1.0              1.0        0.0  dense
+    3  0.000054   0.000011  0.000045  0.000081      10      10  0.000542            64     0.000928      2  ...   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0          80.0             64.0        50.0              1.0              1.0        0.0  dense
+    4  0.000031   0.000003  0.000028  0.000039      10      10  0.000307            64     0.000530      3  ...   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0          80.0             64.0        25.0              1.0              1.0        0.0  dense
 
     [5 rows x 21 columns]
 
@@ -809,19 +809,17 @@ Sorting
 
  .. code-block:: none
 
-         average  deviation     ttime  ...  batch_size_rows  use_node3  input
-    15  0.000033   0.000002  0.000333  ...              1.0        0.0  dense
-    3   0.000036   0.000004  0.000358  ...              1.0        0.0  dense
-    4   0.000036   0.000002  0.000360  ...              1.0        0.0  dense
-    6   0.000036   0.000003  0.000361  ...              1.0        0.0  dense
-    0   0.000037   0.000003  0.000374  ...              NaN        NaN  dense
-    11  0.000038   0.000003  0.000384  ...              1.0        0.0  dense
-    12  0.000039   0.000003  0.000387  ...              1.0        0.0  dense
-    7   0.000040   0.000003  0.000396  ...              1.0        0.0  dense
-    5   0.000044   0.000003  0.000443  ...              1.0        0.0  dense
-    8   0.000052   0.000012  0.000518  ...              1.0        0.0  dense
-
-    [10 rows x 15 columns]
+         average  deviation     ttime  warmup_time  n_exp         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3  input
+    6   0.000024   0.000004  0.000236     0.000511      5  0,40,128,25,1,1,0  NaN  40,128,25,1,1,0           40.0            128.0        25.0              1.0              1.0        0.0  dense
+    10  0.000024   0.000002  0.000243     0.000500      9  1,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0  dense
+    13  0.000025   0.000002  0.000253     0.000468     12  1,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0  dense
+    1   0.000026   0.000003  0.000260     0.000497      0  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0  dense
+    7   0.000026   0.000003  0.000263     0.000539      6   0,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0  dense
+    11  0.000028   0.000003  0.000275     0.000873     10   1,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0  dense
+    8   0.000028   0.000002  0.000279     0.000855      7   0,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0  dense
+    17  0.000028   0.000005  0.000281     0.000336      0         1,baseline  1.0         baseline            NaN              NaN         NaN              NaN              NaN        NaN  dense
+    5   0.000028   0.000004  0.000283     0.001240      4  0,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0  dense
+    9   0.000029   0.000004  0.000285     0.000599      8  1,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0  dense
 
 
 
@@ -847,19 +845,17 @@ Worst
 
  .. code-block:: none
 
-         average  deviation     ttime  ...  batch_size_rows  use_node3   input
-    0   0.000230   0.000173  0.002303  ...              1.0        0.0  sparse
-    7   0.000235   0.000138  0.002350  ...              1.0        0.0  sparse
-    11  0.000235   0.000178  0.002351  ...              1.0        0.0  sparse
-    14  0.000238   0.000164  0.002376  ...              1.0        0.0  sparse
-    16  0.000318   0.000560  0.003184  ...              1.0        0.0   dense
-    10  0.000360   0.000980  0.003600  ...              1.0        0.0   dense
-    4   0.000362   0.000050  0.003616  ...              1.0        0.0  sparse
-    2   0.000439   0.000476  0.004387  ...              1.0        0.0  sparse
-    3   0.000483   0.000421  0.004832  ...              1.0        0.0  sparse
-    6   0.000773   0.001455  0.007726  ...              1.0        0.0  sparse
-
-    [10 rows x 15 columns]
+         average  deviation     ttime  warmup_time  n_exp         short_name  TRY             name  parallel_tree  parallel_tree_N  parallel_N  batch_size_tree  batch_size_rows  use_node3   input
+    10  0.000239   0.000052  0.002385     0.001695     10   1,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0  sparse
+    11  0.000241   0.000130  0.002408     0.002516     11   1,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0  sparse
+    7   0.000274   0.000233  0.002740     0.001014      7   0,40,64,25,1,1,0  NaN   40,64,25,1,1,0           40.0             64.0        25.0              1.0              1.0        0.0  sparse
+    2   0.000282   0.000199  0.002824     0.001397      2   0,80,64,50,1,1,0  NaN   80,64,50,1,1,0           80.0             64.0        50.0              1.0              1.0        0.0  sparse
+    6   0.000317   0.000228  0.003166     0.005450      6   0,40,64,50,1,1,0  NaN   40,64,50,1,1,0           40.0             64.0        50.0              1.0              1.0        0.0  sparse
+    12  0.000342   0.000240  0.003416     0.001607     12  1,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0  sparse
+    3   0.000370   0.000396  0.003701     0.001636      3   0,80,64,25,1,1,0  NaN   80,64,25,1,1,0           80.0             64.0        25.0              1.0              1.0        0.0  sparse
+    0   0.000574   0.000300  0.005743     0.001749      0  0,80,128,50,1,1,0  NaN  80,128,50,1,1,0           80.0            128.0        50.0              1.0              1.0        0.0  sparse
+    1   0.000624   0.000698  0.006245     0.001596      1  0,80,128,25,1,1,0  NaN  80,128,25,1,1,0           80.0            128.0        25.0              1.0              1.0        0.0  sparse
+    4   0.000751   0.001037  0.007505     0.001604      4  0,40,128,50,1,1,0  NaN  40,128,50,1,1,0           40.0            128.0        50.0              1.0              1.0        0.0  sparse
 
 
 
@@ -894,7 +890,7 @@ Plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.312 seconds)
+   **Total running time of the script:** (0 minutes 4.547 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_tree_ensemble_sparse.py:

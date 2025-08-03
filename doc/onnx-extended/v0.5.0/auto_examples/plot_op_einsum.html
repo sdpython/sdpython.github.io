@@ -258,6 +258,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/onnx2/index.html">onnx2</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/helper.html">helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/io_helper.html">io_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/parsing.html">Serializing, Parsing Options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/protos.html">protos</a></li>
 </ul>
 </li>
@@ -323,7 +325,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
 
@@ -581,7 +582,7 @@ equal to the default number of used threads to parallelize.</p>
 <p>The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-f1aa3e0209a46070eba61a340550dd77eb520b09.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-c0aef1dd91580584f3cbc2400e6e3338533bad60.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -590,28 +591,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbsnh\\n[ 0  3  2  1 -1]&quot;];
-136071142364592 [label=&quot;id\\nNone&quot;];
-0 -&gt; 136071142364592;
-136071142364976 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-136071142364592 -&gt; 136071142364976;
+124349497192096 [label=&quot;id\\nNone&quot;];
+0 -&gt; 124349497192096;
+124349497188880 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+124349497192096 -&gt; 124349497188880;
 1 [label=&quot;input 1\\nbtnh\\n[ 0  3  2 -1  1]&quot;];
-136071142374912 [label=&quot;id\\nNone&quot;];
-1 -&gt; 136071142374912;
-136071142364352 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-136071142374912 -&gt; 136071142364352;
-136071142370208 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-136071142361520 -&gt; 136071142370208;
-136071142371168 -&gt; 136071142370208;
-136071142365552 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-136071142360896 -&gt; 136071142365552;
-136071142361232 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-136071142365552 -&gt; 136071142361232;
-136071142361520 [label=&quot;transpose - I0\\nperm=(np.int64(0), np.int64(2), np.int64(1), np.int64(4), np.int64(3))None&quot; style=filled fillcolor=red];
-136071142364976 -&gt; 136071142361520;
-136071142371168 [label=&quot;transpose\\nperm=(np.int64(0), np.int64(2), np.int64(3), np.int64(1), np.int64(4))None&quot;];
-136071142364352 -&gt; 136071142371168;
-136071142360896 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-136071142370208 -&gt; 136071142360896;
+124349497193872 [label=&quot;id\\nNone&quot;];
+1 -&gt; 124349497193872;
+124349497189504 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+124349497193872 -&gt; 124349497189504;
+124349497195024 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+124349497193632 -&gt; 124349497195024;
+124349481351408 -&gt; 124349497195024;
+124349497189840 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+124349497190272 -&gt; 124349497189840;
+124349497181056 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+124349497189840 -&gt; 124349497181056;
+124349497193632 [label=&quot;transpose - I0\\nperm=(np.int64(0), np.int64(2), np.int64(1), np.int64(4), np.int64(3))None&quot; style=filled fillcolor=red];
+124349497188880 -&gt; 124349497193632;
+124349481351408 [label=&quot;transpose\\nperm=(np.int64(0), np.int64(2), np.int64(3), np.int64(1), np.int64(4))None&quot;];
+124349497189504 -&gt; 124349481351408;
+124349497190272 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+124349497195024 -&gt; 124349497190272;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dfs</span></a></a></a></a> <span class="o">=</span> <span class="p">[]</span>
@@ -622,37 +623,32 @@ node [shape=record];
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_op_einsum_001.png" srcset="../_images/sphx_glr_plot_op_einsum_001.png" alt="Einsum benchmark bsnh,btnh->bnts -- (2, N, 12, 64) lower better, Einsum Speedup, baseline=numpy bsnh,btnh->bnts -- (2, N, 12, 64) higher better" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.021 rtbest=&#39;bsnh,btnh-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.021 rtbest=&#39;bsnh,btnh-&gt;bnts&#39;:   1%|          | 1/121 [00:00&lt;00:13,  9.18it/s]
-0.012 rtbest=&#39;btnh,bsnh-&gt;bnst&#39;:   1%|          | 1/121 [00:00&lt;00:13,  9.18it/s]
-0.0078 rtbest=&#39;bnth,bsth-&gt;btsn&#39;:   1%|          | 1/121 [00:00&lt;00:13,  9.18it/s]
-0.0074 rtbest=&#39;btsh,bnsh-&gt;bsnt&#39;:   1%|          | 1/121 [00:00&lt;00:13,  9.18it/s]
-0.0072 rtbest=&#39;bsth,bnth-&gt;btns&#39;:   1%|          | 1/121 [00:00&lt;00:13,  9.18it/s]
-0.0072 rtbest=&#39;bsth,bnth-&gt;btns&#39;:   6%|▌         | 7/121 [00:00&lt;00:03, 36.81it/s]
-0.007 rtbest=&#39;bshn,bthn-&gt;bhts&#39;:   6%|▌         | 7/121 [00:00&lt;00:03, 36.81it/s]
-0.007 rtbest=&#39;bshn,bthn-&gt;bhts&#39;:  13%|█▎        | 16/121 [00:00&lt;00:01, 58.13it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  13%|█▎        | 16/121 [00:00&lt;00:01, 58.13it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  21%|██▏       | 26/121 [00:00&lt;00:01, 71.38it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  31%|███       | 37/121 [00:00&lt;00:01, 82.18it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  40%|███▉      | 48/121 [00:00&lt;00:00, 87.68it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  49%|████▉     | 59/121 [00:00&lt;00:00, 92.26it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  58%|█████▊    | 70/121 [00:00&lt;00:00, 96.16it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  66%|██████▌   | 80/121 [00:01&lt;00:00, 83.85it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  74%|███████▎  | 89/121 [00:01&lt;00:00, 85.08it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  82%|████████▏ | 99/121 [00:01&lt;00:00, 88.96it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  90%|█████████ | 109/121 [00:01&lt;00:00, 89.25it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;:  98%|█████████▊| 119/121 [00:01&lt;00:00, 90.30it/s]
-0.0069 rtbest=&#39;bhst,bnst-&gt;bsnh&#39;: 100%|██████████| 121/121 [00:01&lt;00:00, 82.79it/s]
+0.0058 rtbest=&#39;bsnh,btnh-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.0058 rtbest=&#39;btnh,bsnh-&gt;bnst&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.0058 rtbest=&#39;btnh,bsnh-&gt;bnst&#39;:   8%|▊         | 10/121 [00:00&lt;00:01, 92.45it/s]
+0.0055 rtbest=&#39;bnht,bsht-&gt;bhsn&#39;:   8%|▊         | 10/121 [00:00&lt;00:01, 92.45it/s]
+0.0054 rtbest=&#39;bsht,bnht-&gt;bhns&#39;:   8%|▊         | 10/121 [00:00&lt;00:01, 92.45it/s]
+0.0054 rtbest=&#39;bhsn,btsn-&gt;bsth&#39;:   8%|▊         | 10/121 [00:00&lt;00:01, 92.45it/s]
+0.0053 rtbest=&#39;bhnt,bsnt-&gt;bnsh&#39;:   8%|▊         | 10/121 [00:00&lt;00:01, 92.45it/s]
+0.0053 rtbest=&#39;bhnt,bsnt-&gt;bnsh&#39;:  20%|█▉        | 24/121 [00:00&lt;00:00, 119.23it/s]
+0.0053 rtbest=&#39;hsnb,htnb-&gt;hnts&#39;:  20%|█▉        | 24/121 [00:00&lt;00:00, 119.23it/s]
+0.0053 rtbest=&#39;hsnb,htnb-&gt;hnts&#39;:  31%|███       | 37/121 [00:00&lt;00:00, 108.37it/s]
+0.0053 rtbest=&#39;hsnb,htnb-&gt;hnts&#39;:  40%|████      | 49/121 [00:00&lt;00:00, 111.78it/s]
+0.0053 rtbest=&#39;hsnb,htnb-&gt;hnts&#39;:  52%|█████▏    | 63/121 [00:00&lt;00:00, 120.27it/s]
+0.0053 rtbest=&#39;thbn,tsbn-&gt;tbsh&#39;:  52%|█████▏    | 63/121 [00:00&lt;00:00, 120.27it/s]
+0.0053 rtbest=&#39;thbn,tsbn-&gt;tbsh&#39;:  63%|██████▎   | 76/121 [00:00&lt;00:00, 119.18it/s]
+0.0053 rtbest=&#39;thbn,tsbn-&gt;tbsh&#39;:  74%|███████▍  | 90/121 [00:00&lt;00:00, 124.90it/s]
+0.0053 rtbest=&#39;thbn,tsbn-&gt;tbsh&#39;:  86%|████████▌ | 104/121 [00:00&lt;00:00, 127.51it/s]
+0.0053 rtbest=&#39;thbn,tsbn-&gt;tbsh&#39;:  97%|█████████▋| 117/121 [00:00&lt;00:00, 123.10it/s]
+0.0053 rtbest=&#39;thbn,tsbn-&gt;tbsh&#39;: 100%|██████████| 121/121 [00:01&lt;00:00, 120.09it/s]
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 12%|█▎        | 1/8 [00:00&lt;00:01,  4.14it/s]
- 25%|██▌       | 2/8 [00:00&lt;00:01,  5.10it/s]
- 50%|█████     | 4/8 [00:00&lt;00:00,  4.01it/s]
- 62%|██████▎   | 5/8 [00:01&lt;00:01,  2.45it/s]
- 75%|███████▌  | 6/8 [00:02&lt;00:01,  1.67it/s]
- 88%|████████▊ | 7/8 [00:04&lt;00:00,  1.03it/s]
-100%|██████████| 8/8 [00:07&lt;00:00,  1.44s/it]
-100%|██████████| 8/8 [00:07&lt;00:00,  1.13it/s]
+ 25%|██▌       | 2/8 [00:00&lt;00:00, 18.57it/s]
+ 50%|█████     | 4/8 [00:00&lt;00:00,  6.65it/s]
+ 75%|███████▌  | 6/8 [00:02&lt;00:01,  1.88it/s]
+ 88%|████████▊ | 7/8 [00:04&lt;00:00,  1.24it/s]
+100%|██████████| 8/8 [00:06&lt;00:00,  1.24s/it]
+100%|██████████| 8/8 [00:06&lt;00:00,  1.21it/s]
 </pre></div>
 </div>
 </section>
@@ -664,7 +660,7 @@ Is it worth transposing before doing the summation…
 The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-da0bea900efe1392f0049c87ea75ffdcd9796452.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-fef4c7d10cb4a34f461053f59181ae724fbb6306.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -673,28 +669,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbshn\\n[ 0  2  3  1 -1]&quot;];
-136071142365984 [label=&quot;id\\nNone&quot;];
-0 -&gt; 136071142365984;
-136071142366128 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-136071142365984 -&gt; 136071142366128;
+124349497193152 [label=&quot;id\\nNone&quot;];
+0 -&gt; 124349497193152;
+124349497195840 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+124349497193152 -&gt; 124349497195840;
 1 [label=&quot;input 1\\nbthn\\n[ 0  2  3 -1  1]&quot;];
-136071142366992 [label=&quot;id\\nNone&quot;];
-1 -&gt; 136071142366992;
-136071142366752 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-136071142366992 -&gt; 136071142366752;
-136071142370208 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-136071142364304 -&gt; 136071142370208;
-136071142366800 -&gt; 136071142370208;
-136071142367424 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-136071142374912 -&gt; 136071142367424;
-136071142371168 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-136071142367424 -&gt; 136071142371168;
-136071142364304 [label=&quot;transpose - I0\\nperm=(np.int64(0), np.int64(3), np.int64(1), np.int64(4), np.int64(2))None&quot; style=filled fillcolor=red];
-136071142366128 -&gt; 136071142364304;
-136071142366800 [label=&quot;transpose\\nperm=(np.int64(0), np.int64(4), np.int64(3), np.int64(1), np.int64(2))None&quot;];
-136071142366752 -&gt; 136071142366800;
-136071142374912 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-136071142370208 -&gt; 136071142374912;
+124349497188832 [label=&quot;id\\nNone&quot;];
+1 -&gt; 124349497188832;
+124349497195456 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+124349497188832 -&gt; 124349497195456;
+124349497188256 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+124349497189024 -&gt; 124349497188256;
+124349497194928 -&gt; 124349497188256;
+124349497195168 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+124349497190272 -&gt; 124349497195168;
+124349497181056 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+124349497195168 -&gt; 124349497181056;
+124349497189024 [label=&quot;transpose - I0\\nperm=(np.int64(0), np.int64(3), np.int64(1), np.int64(4), np.int64(2))None&quot; style=filled fillcolor=red];
+124349497195840 -&gt; 124349497189024;
+124349497194928 [label=&quot;transpose\\nperm=(np.int64(0), np.int64(4), np.int64(3), np.int64(1), np.int64(2))None&quot;];
+124349497195456 -&gt; 124349497194928;
+124349497190272 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+124349497188256 -&gt; 124349497190272;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">equation</span></a></a></a></a> <span class="o">=</span> <span class="s2">&quot;bshn,bthn-&gt;bnts&quot;</span>
@@ -704,41 +700,28 @@ node [shape=record];
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_op_einsum_002.png" srcset="../_images/sphx_glr_plot_op_einsum_002.png" alt="Einsum benchmark bshn,bthn->bnts -- (2, N, 12, 64) lower better, Einsum Speedup, baseline=numpy bshn,bthn->bnts -- (2, N, 12, 64) higher better" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.061 rtbest=&#39;bshn,bthn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.024 rtbest=&#39;bshn,bthn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.024 rtbest=&#39;bshn,bthn-&gt;bnts&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.015 rtbest=&#39;bthn,bshn-&gt;bnst&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.012 rtbest=&#39;bnhs,bths-&gt;bstn&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.0095 rtbest=&#39;bnht,bsht-&gt;btsn&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.0092 rtbest=&#39;bths,bnhs-&gt;bsnt&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.0087 rtbest=&#39;bsht,bnht-&gt;btns&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.0078 rtbest=&#39;bsnh,btnh-&gt;bhts&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.0072 rtbest=&#39;btnh,bsnh-&gt;bhst&#39;:   2%|▏         | 2/121 [00:00&lt;00:05, 19.87it/s]
-0.0072 rtbest=&#39;btnh,bsnh-&gt;bhst&#39;:   8%|▊         | 10/121 [00:00&lt;00:02, 52.64it/s]
-0.0071 rtbest=&#39;bsth,bnth-&gt;bhns&#39;:   8%|▊         | 10/121 [00:00&lt;00:02, 52.64it/s]
-0.0071 rtbest=&#39;bhnt,bsnt-&gt;btsh&#39;:   8%|▊         | 10/121 [00:00&lt;00:02, 52.64it/s]
-0.0071 rtbest=&#39;bhnt,bsnt-&gt;btsh&#39;:  17%|█▋        | 21/121 [00:00&lt;00:01, 74.63it/s]
-0.0071 rtbest=&#39;bhnt,bsnt-&gt;btsh&#39;:  26%|██▌       | 31/121 [00:00&lt;00:01, 82.00it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  26%|██▌       | 31/121 [00:00&lt;00:01, 82.00it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  35%|███▍      | 42/121 [00:00&lt;00:00, 89.43it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  42%|████▏     | 51/121 [00:00&lt;00:00, 89.27it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  51%|█████     | 62/121 [00:00&lt;00:00, 93.57it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  60%|██████    | 73/121 [00:00&lt;00:00, 97.66it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  69%|██████▊   | 83/121 [00:00&lt;00:00, 96.16it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  78%|███████▊  | 94/121 [00:01&lt;00:00, 99.53it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  86%|████████▌ | 104/121 [00:01&lt;00:00, 90.51it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;:  94%|█████████▍| 114/121 [00:01&lt;00:00, 89.39it/s]
-0.0069 rtbest=&#39;nhbs,ntbs-&gt;nsth&#39;: 100%|██████████| 121/121 [00:01&lt;00:00, 88.26it/s]
+0.0057 rtbest=&#39;bshn,bthn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.0054 rtbest=&#39;bnhs,bths-&gt;bstn&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.0054 rtbest=&#39;bnhs,bths-&gt;bstn&#39;:   9%|▉         | 11/121 [00:00&lt;00:02, 44.33it/s]
+0.0054 rtbest=&#39;bnhs,bths-&gt;bstn&#39;:  19%|█▉        | 23/121 [00:00&lt;00:01, 71.32it/s]
+0.0053 rtbest=&#39;bnst,bhst-&gt;bthn&#39;:  19%|█▉        | 23/121 [00:00&lt;00:01, 71.32it/s]
+0.0053 rtbest=&#39;bnst,bhst-&gt;bthn&#39;:  30%|██▉       | 36/121 [00:00&lt;00:00, 89.81it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  30%|██▉       | 36/121 [00:00&lt;00:00, 89.81it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  42%|████▏     | 51/121 [00:00&lt;00:00, 107.01it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  52%|█████▏    | 63/121 [00:00&lt;00:00, 108.33it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  62%|██████▏   | 75/121 [00:00&lt;00:00, 111.59it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  74%|███████▎  | 89/121 [00:00&lt;00:00, 119.22it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  84%|████████▍ | 102/121 [00:00&lt;00:00, 119.12it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;:  95%|█████████▌| 115/121 [00:01&lt;00:00, 120.94it/s]
+0.0052 rtbest=&#39;nhbt,nsbt-&gt;ntsh&#39;: 100%|██████████| 121/121 [00:01&lt;00:00, 106.94it/s]
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 12%|█▎        | 1/8 [00:00&lt;00:02,  3.11it/s]
- 25%|██▌       | 2/8 [00:00&lt;00:01,  4.32it/s]
- 50%|█████     | 4/8 [00:01&lt;00:01,  3.45it/s]
- 62%|██████▎   | 5/8 [00:01&lt;00:01,  2.17it/s]
- 75%|███████▌  | 6/8 [00:03&lt;00:01,  1.42it/s]
- 88%|████████▊ | 7/8 [00:05&lt;00:01,  1.20s/it]
-100%|██████████| 8/8 [00:09&lt;00:00,  2.04s/it]
-100%|██████████| 8/8 [00:09&lt;00:00,  1.19s/it]
+ 25%|██▌       | 2/8 [00:00&lt;00:00, 16.43it/s]
+ 50%|█████     | 4/8 [00:00&lt;00:00,  8.93it/s]
+ 75%|███████▌  | 6/8 [00:02&lt;00:00,  2.19it/s]
+ 88%|████████▊ | 7/8 [00:04&lt;00:00,  1.15it/s]
+100%|██████████| 8/8 [00:07&lt;00:00,  1.53s/it]
+100%|██████████| 8/8 [00:07&lt;00:00,  1.04it/s]
 </pre></div>
 </div>
 </section>
@@ -749,7 +732,7 @@ on the second one. It is worth transposing before multiplying.
 The decomposition of this equation without einsum function gives
 the following.</p>
 <blockquote>
-<div><div class="graphviz"><img src="../_images/graphviz-da33b5a2f60ec73f9c6fe98f8827d4d2ff779d25.png" alt="digraph{
+<div><div class="graphviz"><img src="../_images/graphviz-dbed43c5fed90acbb35334d697d0690cea1c09d6.png" alt="digraph{
 orientation=portrait;
 ranksep=0.25;
 nodesep=0.05;
@@ -758,28 +741,28 @@ height=0.1;
 size=5;
 node [shape=record];
 0 [label=&quot;input 0\\nbhsn\\n[ 0  1  3  2 -1]&quot;];
-136071142374144 [label=&quot;id\\nNone&quot;];
-0 -&gt; 136071142374144;
-136071142371024 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
-136071142374144 -&gt; 136071142371024;
+124349503044592 [label=&quot;id\\nNone&quot;];
+0 -&gt; 124349503044592;
+124349503039888 [label=&quot;expand_dims\\naxes=((4, 4),)None&quot;];
+124349503044592 -&gt; 124349503039888;
 1 [label=&quot;input 1\\nbhtn\\n[ 0  1  3 -1  2]&quot;];
-136071142366896 [label=&quot;id\\nNone&quot;];
-1 -&gt; 136071142366896;
-136071142371648 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
-136071142366896 -&gt; 136071142371648;
-136071142369200 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
-136071142369248 -&gt; 136071142369200;
-136071142371600 -&gt; 136071142369200;
-136071142369008 [label=&quot;squeeze\\naxes=(1,)None&quot;];
-136071142369440 -&gt; 136071142369008;
-136071142373520 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
-136071142369008 -&gt; 136071142373520;
-136071142369248 [label=&quot;transpose - I0\\nperm=(np.int64(0), np.int64(3), np.int64(2), np.int64(4), np.int64(1))None&quot; style=filled fillcolor=red];
-136071142371024 -&gt; 136071142369248;
-136071142371600 [label=&quot;transpose\\nperm=(np.int64(0), np.int64(4), np.int64(3), np.int64(2), np.int64(1))None&quot;];
-136071142371648 -&gt; 136071142371600;
-136071142369440 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
-136071142369200 -&gt; 136071142369440;
+124349503037632 [label=&quot;id\\nNone&quot;];
+1 -&gt; 124349503037632;
+124349503039312 [label=&quot;expand_dims\\naxes=((3, 3),)None&quot;];
+124349503037632 -&gt; 124349503039312;
+124349503034032 [label=&quot;batch_dot\\nbatch_axes=(0, 1) keep_axes=None left=(0, 1, 2) ndim=5 right=(0, 1, 3) sum_axes=(4,)None&quot;];
+124349497184176 -&gt; 124349503034032;
+124349497187344 -&gt; 124349503034032;
+124349497186912 [label=&quot;squeeze\\naxes=(1,)None&quot;];
+124349497185808 -&gt; 124349497186912;
+124349497186144 [label=&quot;id - I-1\\nNone&quot; style=filled fillcolor=red];
+124349497186912 -&gt; 124349497186144;
+124349497184176 [label=&quot;transpose - I0\\nperm=(np.int64(0), np.int64(3), np.int64(2), np.int64(4), np.int64(1))None&quot; style=filled fillcolor=red];
+124349503039888 -&gt; 124349497184176;
+124349497187344 [label=&quot;transpose\\nperm=(np.int64(0), np.int64(4), np.int64(3), np.int64(2), np.int64(1))None&quot;];
+124349503039312 -&gt; 124349497187344;
+124349497185808 [label=&quot;transpose - I1\\nperm=(0, 4, 1, 3, 2)None&quot; style=filled fillcolor=red];
+124349503034032 -&gt; 124349497185808;
 }" class="graphviz" /></div>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">equation</span></a></a></a></a> <span class="o">=</span> <span class="s2">&quot;bhsn,bhtn-&gt;bnts&quot;</span>
@@ -789,42 +772,31 @@ node [shape=record];
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_plot_op_einsum_003.png" srcset="../_images/sphx_glr_plot_op_einsum_003.png" alt="Einsum benchmark bhsn,bhtn->bnts -- (2, N, 12, 64) lower better, Einsum Speedup, baseline=numpy bhsn,bhtn->bnts -- (2, N, 12, 64) higher better" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.061 rtbest=&#39;bhsn,bhtn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.034 rtbest=&#39;bhsn,bhtn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
-0.034 rtbest=&#39;bhsn,bhtn-&gt;bnts&#39;:   2%|▏         | 2/121 [00:00&lt;00:06, 19.28it/s]
-0.033 rtbest=&#39;bhtn,bhsn-&gt;bnst&#39;:   2%|▏         | 2/121 [00:00&lt;00:06, 19.28it/s]
-0.02 rtbest=&#39;bhns,bhts-&gt;bstn&#39;:   2%|▏         | 2/121 [00:00&lt;00:06, 19.28it/s]
-0.0093 rtbest=&#39;bhnt,bhst-&gt;btsn&#39;:   2%|▏         | 2/121 [00:00&lt;00:06, 19.28it/s]
-0.0093 rtbest=&#39;bhnt,bhst-&gt;btsn&#39;:   7%|▋         | 8/121 [00:00&lt;00:02, 40.33it/s]
-0.008 rtbest=&#39;bnth,bnsh-&gt;bhst&#39;:   7%|▋         | 8/121 [00:00&lt;00:02, 40.33it/s]
-0.0078 rtbest=&#39;bsnh,bsth-&gt;bhtn&#39;:   7%|▋         | 8/121 [00:00&lt;00:02, 40.33it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:   7%|▋         | 8/121 [00:00&lt;00:02, 40.33it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  13%|█▎        | 16/121 [00:00&lt;00:01, 54.50it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  21%|██▏       | 26/121 [00:00&lt;00:01, 68.96it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  27%|██▋       | 33/121 [00:00&lt;00:01, 62.29it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  34%|███▍      | 41/121 [00:00&lt;00:01, 65.19it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  40%|███▉      | 48/121 [00:00&lt;00:01, 63.96it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  47%|████▋     | 57/121 [00:00&lt;00:00, 69.97it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  54%|█████▎    | 65/121 [00:01&lt;00:00, 72.26it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  60%|██████    | 73/121 [00:01&lt;00:00, 67.84it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  66%|██████▌   | 80/121 [00:01&lt;00:00, 67.53it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  72%|███████▏  | 87/121 [00:01&lt;00:00, 61.57it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  79%|███████▊  | 95/121 [00:01&lt;00:00, 66.26it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  85%|████████▌ | 103/121 [00:01&lt;00:00, 68.67it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  92%|█████████▏| 111/121 [00:01&lt;00:00, 67.07it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;:  98%|█████████▊| 118/121 [00:01&lt;00:00, 67.78it/s]
-0.0073 rtbest=&#39;btnh,btsh-&gt;bhsn&#39;: 100%|██████████| 121/121 [00:01&lt;00:00, 65.03it/s]
+0.017 rtbest=&#39;bhsn,bhtn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.015 rtbest=&#39;bhsn,bhtn-&gt;bnts&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.011 rtbest=&#39;bhtn,bhsn-&gt;bnst&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.0057 rtbest=&#39;bhns,bhts-&gt;bstn&#39;:   0%|          | 0/121 [00:00&lt;?, ?it/s]
+0.0057 rtbest=&#39;bhns,bhts-&gt;bstn&#39;:   7%|▋         | 8/121 [00:00&lt;00:01, 77.59it/s]
+0.0057 rtbest=&#39;bhns,bhts-&gt;bstn&#39;:  15%|█▍        | 18/121 [00:00&lt;00:01, 84.71it/s]
+0.0057 rtbest=&#39;bhns,bhts-&gt;bstn&#39;:  22%|██▏       | 27/121 [00:00&lt;00:01, 73.12it/s]
+0.0057 rtbest=&#39;bhns,bhts-&gt;bstn&#39;:  34%|███▍      | 41/121 [00:00&lt;00:00, 93.77it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  34%|███▍      | 41/121 [00:00&lt;00:00, 93.77it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  44%|████▍     | 53/121 [00:00&lt;00:00, 100.07it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  53%|█████▎    | 64/121 [00:00&lt;00:00, 102.44it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  62%|██████▏   | 75/121 [00:00&lt;00:00, 100.13it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  72%|███████▏  | 87/121 [00:00&lt;00:00, 103.54it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  81%|████████  | 98/121 [00:01&lt;00:00, 94.10it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  89%|████████▉ | 108/121 [00:01&lt;00:00, 89.65it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;:  99%|█████████▉| 120/121 [00:01&lt;00:00, 96.05it/s]
+0.0056 rtbest=&#39;nbts,nbhs-&gt;nsht&#39;: 100%|██████████| 121/121 [00:01&lt;00:00, 94.61it/s]
 
   0%|          | 0/8 [00:00&lt;?, ?it/s]
- 12%|█▎        | 1/8 [00:00&lt;00:02,  2.88it/s]
- 25%|██▌       | 2/8 [00:00&lt;00:01,  4.64it/s]
- 38%|███▊      | 3/8 [00:00&lt;00:01,  3.64it/s]
- 50%|█████     | 4/8 [00:01&lt;00:01,  3.15it/s]
- 62%|██████▎   | 5/8 [00:01&lt;00:01,  2.58it/s]
- 75%|███████▌  | 6/8 [00:02&lt;00:00,  2.07it/s]
- 88%|████████▊ | 7/8 [00:03&lt;00:00,  1.58it/s]
-100%|██████████| 8/8 [00:04&lt;00:00,  1.26it/s]
-100%|██████████| 8/8 [00:04&lt;00:00,  1.80it/s]
+ 25%|██▌       | 2/8 [00:00&lt;00:00, 19.81it/s]
+ 50%|█████     | 4/8 [00:00&lt;00:00,  8.76it/s]
+ 75%|███████▌  | 6/8 [00:00&lt;00:00,  7.28it/s]
+ 88%|████████▊ | 7/8 [00:01&lt;00:00,  5.58it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  4.47it/s]
+100%|██████████| 8/8 [00:01&lt;00:00,  5.69it/s]
 </pre></div>
 </div>
 </section>
@@ -842,7 +814,7 @@ the implementation of einsum and find some ways to optimize it.</p>
 <span class="c1"># plt.show()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_op_einsum_004.png" srcset="../_images/sphx_glr_plot_op_einsum_004.png" alt="plot op einsum" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 27.314 seconds)</p>
+<img src="../_images/sphx_glr_plot_op_einsum_004.png" srcset="../_images/sphx_glr_plot_op_einsum_004.png" alt="plot op einsum" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 22.758 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-einsum-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cdb3b96d7830c82b5bb3b60f12922177/plot_op_einsum.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_einsum.ipynb</span></code></a></p>

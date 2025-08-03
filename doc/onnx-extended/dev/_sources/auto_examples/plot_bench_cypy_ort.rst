@@ -162,9 +162,9 @@ Time measurement
 
  .. code-block:: none
 
-    t_ort={'average': np.float64(5.4070025496912415e-06), 'deviation': np.float64(2.1811158847588845e-06), 'min_exec': np.float64(4.663300005631754e-06), 'max_exec': np.float64(2.5058569999600877e-05), 'repeat': 100, 'number': 200, 'ttime': np.float64(0.0005407002549691241), 'context_size': 64, 'warmup_time': 0.0001342309988103807}
-    t_ext={'average': np.float64(5.1815271996019875e-06), 'deviation': np.float64(4.304988726654559e-07), 'min_exec': np.float64(4.901085003439221e-06), 'max_exec': np.float64(7.735379995210678e-06), 'repeat': 100, 'number': 200, 'ttime': np.float64(0.0005181527199601988), 'context_size': 64, 'warmup_time': 8.35049995657755e-05}
-    t_ext2={'average': np.float64(4.72687039982702e-06), 'deviation': np.float64(5.308661812130688e-07), 'min_exec': np.float64(4.307794997657766e-06), 'max_exec': np.float64(7.513645005019498e-06), 'repeat': 100, 'number': 200, 'ttime': np.float64(0.00047268703998270205), 'context_size': 64, 'warmup_time': 2.5773000743356533e-05}
+    t_ort={'average': np.float64(6.816206299890837e-06), 'deviation': np.float64(4.8577671754785265e-06), 'min_exec': np.float64(4.879819998677704e-06), 'max_exec': np.float64(3.079738499764062e-05), 'repeat': 100, 'number': 200, 'ttime': np.float64(0.0006816206299890838), 'context_size': 64, 'warmup_time': 9.300300007453188e-05}
+    t_ext={'average': np.float64(9.220920799907617e-06), 'deviation': np.float64(5.9112694677095366e-06), 'min_exec': np.float64(4.495544999372214e-06), 'max_exec': np.float64(4.499776499869768e-05), 'repeat': 100, 'number': 200, 'ttime': np.float64(0.0009220920799907616), 'context_size': 64, 'warmup_time': 0.0005774110004495014}
+    t_ext2={'average': np.float64(5.045960999950692e-06), 'deviation': np.float64(1.491688519781219e-06), 'min_exec': np.float64(3.978839999945194e-06), 'max_exec': np.float64(1.0508724999453989e-05), 'repeat': 100, 'number': 200, 'ttime': np.float64(0.0005045960999950693), 'context_size': 64, 'warmup_time': 0.00011649099997157464}
 
 
 
@@ -219,7 +219,7 @@ Benchmark
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]    100%|██████████| 4/4 [00:01<00:00,  2.38it/s]    100%|██████████| 4/4 [00:01<00:00,  2.38it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]    100%|██████████| 4/4 [00:00<00:00,  4.75it/s]    100%|██████████| 4/4 [00:00<00:00,  4.75it/s]
 
 
 .. raw:: html
@@ -260,168 +260,168 @@ Benchmark
         <tr>
           <th>0</th>
           <td>0.000005</td>
-          <td>3.113291e-07</td>
+          <td>1.440359e-06</td>
           <td>0.000005</td>
-          <td>0.000007</td>
+          <td>0.000014</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000254</td>
+          <td>0.000265</td>
           <td>64</td>
-          <td>0.000072</td>
+          <td>0.000181</td>
           <td>ort</td>
           <td>1</td>
         </tr>
         <tr>
           <th>1</th>
           <td>0.000006</td>
-          <td>1.095015e-06</td>
+          <td>1.915202e-06</td>
           <td>0.000005</td>
-          <td>0.000009</td>
+          <td>0.000011</td>
           <td>10</td>
           <td>10</td>
           <td>0.000056</td>
           <td>64</td>
-          <td>0.000068</td>
+          <td>0.001632</td>
           <td>ext</td>
           <td>1</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.000007</td>
-          <td>4.366461e-06</td>
           <td>0.000004</td>
-          <td>0.000018</td>
+          <td>1.165294e-07</td>
+          <td>0.000004</td>
+          <td>0.000005</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000071</td>
+          <td>0.000043</td>
           <td>64</td>
-          <td>0.000016</td>
+          <td>0.000023</td>
           <td>ext_1_1</td>
           <td>1</td>
         </tr>
         <tr>
           <th>3</th>
           <td>0.000006</td>
-          <td>3.298409e-06</td>
+          <td>1.054422e-06</td>
           <td>0.000005</td>
-          <td>0.000022</td>
+          <td>0.000011</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000288</td>
+          <td>0.000296</td>
           <td>64</td>
-          <td>0.000042</td>
+          <td>0.000075</td>
           <td>ort</td>
           <td>10</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.000005</td>
-          <td>3.370656e-07</td>
-          <td>0.000005</td>
-          <td>0.000006</td>
+          <td>0.000007</td>
+          <td>2.343609e-07</td>
+          <td>0.000007</td>
+          <td>0.000008</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000053</td>
+          <td>0.000072</td>
           <td>64</td>
-          <td>0.000059</td>
+          <td>0.000104</td>
           <td>ext</td>
           <td>10</td>
         </tr>
         <tr>
           <th>5</th>
-          <td>0.000006</td>
-          <td>5.555920e-06</td>
+          <td>0.000005</td>
+          <td>8.849431e-07</td>
           <td>0.000004</td>
-          <td>0.000023</td>
+          <td>0.000007</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000064</td>
+          <td>0.000045</td>
           <td>64</td>
-          <td>0.000015</td>
+          <td>0.000022</td>
           <td>ext_1_1</td>
           <td>10</td>
         </tr>
         <tr>
           <th>6</th>
-          <td>0.000006</td>
-          <td>1.399302e-06</td>
-          <td>0.000006</td>
-          <td>0.000013</td>
+          <td>0.000007</td>
+          <td>6.277157e-07</td>
+          <td>0.000007</td>
+          <td>0.000010</td>
           <td>50</td>
           <td>10</td>
-          <td>0.000313</td>
+          <td>0.000362</td>
           <td>64</td>
-          <td>0.000038</td>
+          <td>0.000066</td>
           <td>ort</td>
           <td>100</td>
         </tr>
         <tr>
           <th>7</th>
-          <td>0.000007</td>
-          <td>2.568428e-07</td>
-          <td>0.000007</td>
           <td>0.000008</td>
+          <td>9.626267e-07</td>
+          <td>0.000007</td>
+          <td>0.000010</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000071</td>
+          <td>0.000076</td>
           <td>64</td>
-          <td>0.000042</td>
+          <td>0.000066</td>
           <td>ext</td>
           <td>100</td>
         </tr>
         <tr>
           <th>8</th>
-          <td>0.000006</td>
-          <td>7.985796e-08</td>
-          <td>0.000006</td>
+          <td>0.000007</td>
+          <td>9.653891e-08</td>
+          <td>0.000007</td>
           <td>0.000007</td>
           <td>10</td>
           <td>10</td>
-          <td>0.000064</td>
+          <td>0.000069</td>
           <td>64</td>
-          <td>0.000016</td>
+          <td>0.000015</td>
           <td>ext_1_1</td>
           <td>100</td>
         </tr>
         <tr>
           <th>9</th>
-          <td>0.000062</td>
-          <td>2.124362e-05</td>
-          <td>0.000035</td>
-          <td>0.000132</td>
+          <td>0.000082</td>
+          <td>3.342515e-05</td>
+          <td>0.000049</td>
+          <td>0.000171</td>
           <td>50</td>
           <td>50</td>
-          <td>0.003124</td>
+          <td>0.004080</td>
           <td>64</td>
-          <td>0.005340</td>
+          <td>0.001063</td>
           <td>ort</td>
           <td>1000</td>
         </tr>
         <tr>
           <th>10</th>
-          <td>0.000294</td>
-          <td>5.240357e-05</td>
-          <td>0.000247</td>
-          <td>0.000469</td>
+          <td>0.000420</td>
+          <td>1.931256e-04</td>
+          <td>0.000264</td>
+          <td>0.001075</td>
           <td>50</td>
           <td>50</td>
-          <td>0.014722</td>
+          <td>0.021020</td>
           <td>64</td>
-          <td>0.003543</td>
+          <td>0.014655</td>
           <td>ext</td>
           <td>1000</td>
         </tr>
         <tr>
           <th>11</th>
-          <td>0.000297</td>
-          <td>7.914858e-05</td>
-          <td>0.000241</td>
-          <td>0.000518</td>
+          <td>0.000328</td>
+          <td>8.118093e-05</td>
+          <td>0.000267</td>
+          <td>0.000612</td>
           <td>50</td>
           <td>50</td>
-          <td>0.014847</td>
+          <td>0.016385</td>
           <td>64</td>
-          <td>0.000593</td>
+          <td>0.000313</td>
           <td>ext_1_1</td>
           <td>1000</td>
         </tr>
@@ -463,7 +463,7 @@ Plots
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.464 seconds)
+   **Total running time of the script:** (0 minutes 1.877 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cypy_ort.py:

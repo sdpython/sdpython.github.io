@@ -258,6 +258,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/onnx2/index.html">onnx2</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/helper.html">helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/io_helper.html">io_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/parsing.html">Serializing, Parsing Options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/protos.html">protos</a></li>
 </ul>
 </li>
@@ -323,7 +325,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
 
@@ -511,10 +512,10 @@ output: name=&#39;Y&#39; type=dtype(&#39;float16&#39;) shape=[&#39;b&#39;, &#39;
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X float32 (64, 32)
-[[ 1.706   0.166   0.3164 -0.9204]
- [ 1.061   2.488  -0.225   0.874 ]
- [ 0.1326 -0.1356 -1.261  -0.9277]
- [ 0.521   2.23   -0.1929 -0.8003]]
+[[ 0.7783   0.3904  -2.078   -0.4753 ]
+ [ 0.3113   0.49     0.03867  0.869  ]
+ [-0.1342  -0.07654 -1.763    0.8047 ]
+ [ 1.229    1.312   -0.3147  -0.7603 ]]
 </pre></div>
 </div>
 <p>Same model but using the fused op.</p>
@@ -533,10 +534,10 @@ opset: domain=&#39;onnx_extended.ortops.optim.cuda&#39; version=1
 input: name=&#39;X&#39; type=dtype(&#39;float32&#39;) shape=[&#39;a&#39;, &#39;b&#39;]
 Transpose2DCastFP16[onnx_extended.ortops.optim.cuda](X) -&gt; Y
 output: name=&#39;Y&#39; type=dtype(&#39;float16&#39;) shape=[&#39;b&#39;, &#39;a&#39;]
-[[ 1.706   0.166   0.3164 -0.9204]
- [ 1.061   2.488  -0.225   0.874 ]
- [ 0.1326 -0.1356 -1.261  -0.9277]
- [ 0.521   2.23   -0.1929 -0.8003]]
+[[ 0.7783   0.3904  -2.078   -0.4753 ]
+ [ 0.3113   0.49     0.03867  0.869  ]
+ [-0.1342  -0.07654 -1.763    0.8047 ]
+ [ 1.229    1.312   -0.3147  -0.7603 ]]
 </pre></div>
 </div>
 </section>
@@ -620,8 +621,8 @@ output: name=&#39;Y&#39; type=dtype(&#39;float16&#39;) shape=[&#39;b&#39;, &#39;
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>sizes=(256, 512, 1024)
 
   0%|          | 0/3 [00:00&lt;?, ?it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 23.71it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 23.64it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 28.16it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 28.03it/s]
 </pre></div>
 </div>
 <p>Fused.</p>
@@ -631,7 +632,7 @@ output: name=&#39;Y&#39; type=dtype(&#39;float16&#39;) shape=[&#39;b&#39;, &#39;
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/3 [00:00&lt;?, ?it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 64.22it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 50.74it/s]
 </pre></div>
 </div>
 <section id="data">
@@ -644,12 +645,12 @@ output: name=&#39;Y&#39; type=dtype(&#39;float16&#39;) shape=[&#39;b&#39;, &#39;
     <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">df</span><span class="o">.</span><span class="n">head</span></a></a></a></a><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     warmup      time           std       min       max  repeat  size      label
-0  0.001479  0.000072  1.364091e-05  0.000057  0.000088       5   256  Not Fused
-1  0.015482  0.000056  4.718586e-06  0.000053  0.000065       5   512  Not Fused
-2  0.002378  0.000081  4.979069e-06  0.000072  0.000087       5  1024  Not Fused
-3  0.000258  0.000618  1.086752e-03  0.000036  0.002790       5   256      Fused
-4  0.000240  0.000056  6.747664e-07  0.000055  0.000057       5   512      Fused
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     warmup      time       std       min       max  repeat  size      label
+0  0.001769  0.000394  0.000036  0.000348  0.000440       5   256  Not Fused
+1  0.006707  0.000147  0.000005  0.000141  0.000156       5   512  Not Fused
+2  0.001694  0.000180  0.000046  0.000140  0.000249       5  1024  Not Fused
+3  0.000665  0.000114  0.000004  0.000111  0.000121       5   256      Fused
+4  0.000702  0.000127  0.000017  0.000116  0.000161       5   512      Fused
 </pre></div>
 </div>
 <p>Pivot.</p>
@@ -672,13 +673,13 @@ output: name=&#39;Y&#39; type=dtype(&#39;float16&#39;) shape=[&#39;b&#39;, &#39;
 </div>
 <img src="../_images/sphx_glr_plot_op_transpose_2d_cast_cuda_001.png" srcset="../_images/sphx_glr_plot_op_transpose_2d_cast_cuda_001.png" alt="Not Fused/Fused implementation for Transpose + Cast on CUDA itype=10" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>label     Fused  Not Fused     ratio
 size
-256    0.000618   0.000072  0.115843
-512    0.000056   0.000056  1.003410
-1024   0.000097   0.000081  0.836284
+256    0.000114   0.000394  3.440091
+512    0.000127   0.000147  1.158230
+1024   0.000123   0.000180  1.469552
 </pre></div>
 </div>
 <p>It seems worth it to combine both operators.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.553 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.659 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-transpose-2d-cast-cuda-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/2b7134aa7c7a9a7f35fb88c5360ab8fa/plot_op_transpose_2d_cast_cuda.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_transpose_2d_cast_cuda.ipynb</span></code></a></p>

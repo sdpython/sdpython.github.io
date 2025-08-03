@@ -258,6 +258,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/onnx2/index.html">onnx2</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/helper.html">helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/io_helper.html">io_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/parsing.html">Serializing, Parsing Options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/protos.html">protos</a></li>
 </ul>
 </li>
@@ -323,7 +325,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
 
@@ -449,9 +450,9 @@ The following example compares the processing time for three runtimes.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;speedup is </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a></a></a></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t2</span></a></a></a></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 0.00018555449999621486s
-CReferenceEvaluator: 1.9222871997044423e-05s
-speedup is 9.652797980694272
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ReferenceEvaluator: 0.00017072672399808653s
+CReferenceEvaluator: 1.6088258000308996e-05s
+speedup is 10.61188377230198
 </pre></div>
 </div>
 <p>Let’s add <a class="reference external" href="https://onnxruntime.ai/">onnxruntime</a> as well.</p>
@@ -464,8 +465,8 @@ speedup is 9.652797980694272
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;speedup is </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1</span></a></a></a></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t3</span></a></a></a></a><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>InferenceSession: 2.281684399713413e-05s
-speedup is 8.132347314094845
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>InferenceSession: 1.26557519997732e-05s
+speedup is 13.490049741899657
 </pre></div>
 </div>
 </section>
@@ -491,9 +492,9 @@ speedup is 8.132347314094845
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/4 [00:00&lt;?, ?it/s]
- 50%|█████     | 2/4 [00:00&lt;00:00, 12.18it/s]
-100%|██████████| 4/4 [00:00&lt;00:00, 11.35it/s]
-100%|██████████| 4/4 [00:00&lt;00:00, 11.46it/s]
+ 50%|█████     | 2/4 [00:00&lt;00:00, 15.98it/s]
+100%|██████████| 4/4 [00:00&lt;00:00, 12.76it/s]
+100%|██████████| 4/4 [00:00&lt;00:00, 13.15it/s]
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -524,25 +525,25 @@ speedup is 8.132347314094845
     <tr>
       <th>0</th>
       <td>16</td>
-      <td>0.000177</td>
-      <td>0.000014</td>
+      <td>0.000100</td>
+      <td>0.000011</td>
     </tr>
     <tr>
       <th>1</th>
       <td>32</td>
-      <td>0.000118</td>
-      <td>0.000014</td>
+      <td>0.000122</td>
+      <td>0.000012</td>
     </tr>
     <tr>
       <th>2</th>
       <td>48</td>
-      <td>0.000157</td>
-      <td>0.000015</td>
+      <td>0.000150</td>
+      <td>0.000014</td>
     </tr>
     <tr>
       <th>3</th>
       <td>64</td>
-      <td>0.000177</td>
+      <td>0.000173</td>
       <td>0.000016</td>
     </tr>
   </tbody>
@@ -565,7 +566,7 @@ speedup is 8.132347314094845
 <span class="c1"># plt.show()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" srcset="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" alt="Comparison python / C implementation for Conv" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.421 seconds)</p>
+<img src="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" srcset="../_images/sphx_glr_plot_op_conv_py_vs_c_001.png" alt="Comparison python / C implementation for Conv" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.677 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-conv-py-vs-c-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/1ebdc612f5f9c97bca264aafd83effec/plot_op_conv_py_vs_c.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_conv_py_vs_c.ipynb</span></code></a></p>

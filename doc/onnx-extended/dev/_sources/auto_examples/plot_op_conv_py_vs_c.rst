@@ -144,9 +144,9 @@ Time measurement
 
  .. code-block:: none
 
-    ReferenceEvaluator: 0.00018555449999621486s
-    CReferenceEvaluator: 1.9222871997044423e-05s
-    speedup is 9.652797980694272
+    ReferenceEvaluator: 0.00017072672399808653s
+    CReferenceEvaluator: 1.6088258000308996e-05s
+    speedup is 10.61188377230198
 
 
 
@@ -177,8 +177,8 @@ Let's add :epkg:`onnxruntime` as well.
 
  .. code-block:: none
 
-    InferenceSession: 2.281684399713413e-05s
-    speedup is 8.132347314094845
+    InferenceSession: 1.26557519997732e-05s
+    speedup is 13.490049741899657
 
 
 
@@ -220,7 +220,7 @@ Plotting
 
  .. code-block:: none
 
-      0%|          | 0/4 [00:00<?, ?it/s]     50%|█████     | 2/4 [00:00<00:00, 12.18it/s]    100%|██████████| 4/4 [00:00<00:00, 11.35it/s]    100%|██████████| 4/4 [00:00<00:00, 11.46it/s]
+      0%|          | 0/4 [00:00<?, ?it/s]     50%|█████     | 2/4 [00:00<00:00, 15.98it/s]    100%|██████████| 4/4 [00:00<00:00, 12.76it/s]    100%|██████████| 4/4 [00:00<00:00, 13.15it/s]
 
 
 .. raw:: html
@@ -253,25 +253,25 @@ Plotting
         <tr>
           <th>0</th>
           <td>16</td>
-          <td>0.000177</td>
-          <td>0.000014</td>
+          <td>0.000100</td>
+          <td>0.000011</td>
         </tr>
         <tr>
           <th>1</th>
           <td>32</td>
-          <td>0.000118</td>
-          <td>0.000014</td>
+          <td>0.000122</td>
+          <td>0.000012</td>
         </tr>
         <tr>
           <th>2</th>
           <td>48</td>
-          <td>0.000157</td>
-          <td>0.000015</td>
+          <td>0.000150</td>
+          <td>0.000014</td>
         </tr>
         <tr>
           <th>3</th>
           <td>64</td>
-          <td>0.000177</td>
+          <td>0.000173</td>
           <td>0.000016</td>
         </tr>
       </tbody>
@@ -317,7 +317,7 @@ Finally.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.421 seconds)
+   **Total running time of the script:** (0 minutes 1.677 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_conv_py_vs_c.py:

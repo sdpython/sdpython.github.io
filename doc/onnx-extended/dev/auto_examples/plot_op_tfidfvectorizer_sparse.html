@@ -258,6 +258,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/onnx2/index.html">onnx2</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/helper.html">helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/io_helper.html">io_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/parsing.html">Serializing, Parsing Options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/protos.html">protos</a></li>
 </ul>
 </li>
@@ -323,7 +325,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
 
@@ -550,35 +551,33 @@ with onnxruntime for different batch size and vocabulary size.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/20 [00:00&lt;?, ?it/s]
-  5%|▌         | 1/20 [00:03&lt;01:15,  3.98s/it]
- 10%|█         | 2/20 [00:08&lt;01:12,  4.04s/it]
- 15%|█▌        | 3/20 [00:12&lt;01:08,  4.02s/it]
- 20%|██        | 4/20 [00:16&lt;01:08,  4.29s/it]
- 25%|██▌       | 5/20 [00:20&lt;01:01,  4.11s/it]
- 30%|███       | 6/20 [00:24&lt;00:57,  4.14s/it]
- 35%|███▌      | 7/20 [00:28&lt;00:52,  4.02s/it]
- 40%|████      | 8/20 [00:32&lt;00:48,  4.05s/it]
- 45%|████▌     | 9/20 [00:36&lt;00:44,  4.02s/it]
- 50%|█████     | 10/20 [00:41&lt;00:41,  4.19s/it]
- 55%|█████▌    | 11/20 [00:45&lt;00:37,  4.15s/it]
- 60%|██████    | 12/20 [00:49&lt;00:32,  4.05s/it]
- 65%|██████▌   | 13/20 [00:53&lt;00:29,  4.15s/it]
- 70%|███████   | 14/20 [00:57&lt;00:25,  4.20s/it]
- 75%|███████▌  | 15/20 [01:01&lt;00:20,  4.12s/it]
- 80%|████████  | 16/20 [01:05&lt;00:16,  4.10s/it]
- 85%|████████▌ | 17/20 [01:09&lt;00:12,  4.09s/it]
- 90%|█████████ | 18/20 [01:14&lt;00:08,  4.22s/it]
- 95%|█████████▌| 19/20 [01:18&lt;00:04,  4.20s/it]
-100%|██████████| 20/20 [01:22&lt;00:00,  4.17s/it]
-100%|██████████| 20/20 [01:22&lt;00:00,  4.13s/it]
-    average     deviation  min_exec  ...  voc_size  batch_size      time
-0  0.000007  7.581871e-07  0.000007  ...       100           1  0.000007
-1  0.000006  8.600416e-08  0.000006  ...       100           1  0.000006
-2  0.000006  5.242533e-07  0.000005  ...       100           1  0.000006
-3  0.000013  3.670098e-07  0.000012  ...       100          10  0.000013
-4  0.000019  5.916206e-06  0.000015  ...       100          10  0.000019
-
-[5 rows x 14 columns]
+  5%|▌         | 1/20 [00:04&lt;01:16,  4.00s/it]
+ 10%|█         | 2/20 [00:08&lt;01:13,  4.10s/it]
+ 15%|█▌        | 3/20 [00:12&lt;01:07,  4.00s/it]
+ 20%|██        | 4/20 [00:16&lt;01:03,  3.99s/it]
+ 25%|██▌       | 5/20 [00:20&lt;01:00,  4.06s/it]
+ 30%|███       | 6/20 [00:23&lt;00:51,  3.69s/it]
+ 35%|███▌      | 7/20 [00:27&lt;00:49,  3.82s/it]
+ 40%|████      | 8/20 [00:31&lt;00:46,  3.84s/it]
+ 45%|████▌     | 9/20 [00:35&lt;00:44,  4.03s/it]
+ 50%|█████     | 10/20 [00:39&lt;00:39,  4.00s/it]
+ 55%|█████▌    | 11/20 [00:43&lt;00:35,  3.90s/it]
+ 60%|██████    | 12/20 [00:47&lt;00:31,  3.89s/it]
+ 65%|██████▌   | 13/20 [00:50&lt;00:27,  3.87s/it]
+ 70%|███████   | 14/20 [00:53&lt;00:21,  3.53s/it]
+ 75%|███████▌  | 15/20 [00:57&lt;00:18,  3.68s/it]
+ 80%|████████  | 16/20 [01:01&lt;00:14,  3.75s/it]
+ 85%|████████▌ | 17/20 [01:05&lt;00:11,  3.91s/it]
+ 90%|█████████ | 18/20 [01:09&lt;00:07,  3.91s/it]
+ 95%|█████████▌| 19/20 [01:13&lt;00:03,  3.90s/it]
+100%|██████████| 20/20 [01:17&lt;00:00,  3.91s/it]
+100%|██████████| 20/20 [01:17&lt;00:00,  3.88s/it]
+    average     deviation  min_exec  max_exec  repeat    number     ttime  context_size  warmup_time  peak    name  voc_size  batch_size      time
+0  0.000009  1.925226e-06  0.000007  0.000155       1  130268.0  1.112059            64     0.000296     0  sparse       100           1  0.000009
+1  0.000005  1.922921e-07  0.000005  0.000040       1  234006.0  1.235137            64     0.000109     0     ref       100           1  0.000005
+2  0.000006  4.807136e-07  0.000005  0.000128       1  193376.0  1.086917            64     0.000105     0  custom       100           1  0.000006
+3  0.000019  1.178412e-05  0.000012  0.000418       1   52922.0  1.030980            64     0.000253     0  sparse       100          10  0.000019
+4  0.000015  2.246243e-06  0.000013  0.000032       1   72425.0  1.116466            64     0.000369     0     ref       100          10  0.000015
 </pre></div>
 </div>
 </section>
@@ -592,18 +591,18 @@ with onnxruntime for different batch size and vocabulary size.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           1         10        500       1000      2000
 voc_size name
-100      custom  0.000006  0.000006  0.000023  0.000054  0.000050
-         ref     0.000006  0.000019  0.000027  0.000051  0.000076
-         sparse  0.000007  0.000013  0.000317  0.000523  0.001015
-1000     custom  0.000005  0.000007  0.000054  0.000085  0.000181
-         ref     0.000006  0.000014  0.000077  0.000150  0.000291
-         sparse  0.000006  0.000012  0.000299  0.000599  0.001170
-5000     custom  0.000006  0.000010  0.000200  0.000389  0.000837
-         ref     0.000008  0.000017  0.000286  0.000566  0.001150
-         sparse  0.000006  0.000011  0.000295  0.000557  0.001005
-10000    custom  0.000006  0.000014  0.000361  0.000788  0.002377
-         ref     0.000010  0.000022  0.000572  0.001207  0.002468
-         sparse  0.000006  0.000011  0.000263  0.000638  0.001057
+100      custom  0.000006  0.000007  0.002576  0.004193  0.000110
+         ref     0.000005  0.000015  0.000032  0.000049  0.000079
+         sparse  0.000009  0.000019  0.020261  0.010807  0.015054
+1000     custom  0.000006  0.000007  0.003343  0.004693  0.004949
+         ref     0.000006  0.000016  0.000086  0.000158  0.000293
+         sparse  0.000007  0.000017  0.013015  0.021382  0.008598
+5000     custom  0.000006  0.000010  0.004730  0.004188  0.004321
+         ref     0.000008  0.000024  0.000313  0.000602  0.001269
+         sparse  0.000010  0.000017  0.018696  0.014958  0.013342
+10000    custom  0.000006  0.000015  0.000997  0.003041  0.004751
+         ref     0.000011  0.000028  0.000568  0.001238  0.002511
+         sparse  0.000010  0.000015  0.005802  0.003670  0.005919
 </pre></div>
 </div>
 </section>
@@ -619,20 +618,20 @@ began.</p>
 <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.core.frame.DataFrame" class="sphx-glr-backref-module-pandas-core-frame sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">piv</span></a></a></a></a> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size           1         10         500        1000       2000
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>batch_size          1        10        500       1000      2000
 voc_size name
-100      custom  0.000000  0.000000   0.000000   0.000000   0.003906
-         ref     0.000000  0.000000   0.011719   0.000000   0.000000
-         sparse  0.019531  0.000000   0.035156   0.000000   0.000000
-1000     custom  0.000000  0.000000   0.152344   0.000000   0.000000
-         ref     0.000000  0.007812   0.007812   0.003906   0.011719
-         sparse  0.000000  0.000000   0.000000   0.000000   0.000000
-5000     custom  0.000000  0.000000   9.042969  20.640625  39.378906
-         ref     0.000000  0.000000   0.015625   0.015625  38.640625
-         sparse  0.000000  0.000000   0.000000   0.000000   0.000000
-10000    custom  0.000000  0.000000  20.640625  39.378906  77.382812
-         ref     0.000000  0.000000   0.015625  38.640625  77.378906
-         sparse  0.000000  0.000000   0.000000   0.000000   0.000000
+100      custom  0.00000  0.00000   0.00000   0.00000   0.00000
+         ref     0.00000  0.00000   0.00000   0.00000   0.00000
+         sparse  0.00000  0.00000   0.15625   0.15625   0.15625
+1000     custom  0.00000  0.00000   0.00000   0.62500   7.18750
+         ref     0.00000  0.00000   0.00000   0.00000   3.90625
+         sparse  0.00000  0.00000   0.00000   0.00000   0.00000
+5000     custom  0.00000  0.00000   5.78125  19.06250  37.96875
+         ref     0.00000  0.00000   0.00000  19.21875  37.81250
+         sparse  0.00000  0.00000   0.15625   0.15625   0.00000
+10000    custom  0.00000  0.00000  19.37500  38.28125  76.40625
+         ref     0.00000  0.00000  18.90625  38.28125  75.93750
+         sparse  0.15625  0.15625   0.00000   0.15625   0.00000
 </pre></div>
 </div>
 </section>
@@ -647,7 +646,7 @@ voc_size name
 <section id="take-away">
 <h2>Take away<a class="headerlink" href="#take-away" title="Link to this heading">¶</a></h2>
 <p>Sparse works better when the sparsity is big enough and the batch size as well.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 27.466 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 23.417 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-tfidfvectorizer-sparse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9dd5da9d3b69fcd7a1c0ebd41d7a2271/plot_op_tfidfvectorizer_sparse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_tfidfvectorizer_sparse.ipynb</span></code></a></p>

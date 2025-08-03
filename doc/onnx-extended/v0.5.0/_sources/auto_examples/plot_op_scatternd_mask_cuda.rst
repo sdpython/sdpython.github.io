@@ -604,7 +604,7 @@ Benchmark.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  4.74it/s]     67%|██████▋   | 2/3 [00:00<00:00,  5.40it/s]    100%|██████████| 3/3 [00:00<00:00,  3.60it/s]    100%|██████████| 3/3 [00:00<00:00,  3.92it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  4.87it/s]     67%|██████▋   | 2/3 [00:00<00:00,  5.24it/s]    100%|██████████| 3/3 [00:00<00:00,  3.34it/s]    100%|██████████| 3/3 [00:00<00:00,  3.68it/s]
 
 
 
@@ -634,14 +634,12 @@ Data
 
  .. code-block:: none
 
-                        label    warmup      time  ...       max  repeat  size
-    0               ScatterND  0.038962  0.004259  ...  0.010871       5   256
-    1        ScatterNDOfShape  0.009495  0.002064  ...  0.002508       5   256
-    2  MaskedScatterNDOfShape  0.002251  0.000402  ...  0.000407       5   256
-    3               ScatterND  0.014780  0.003834  ...  0.003929       5   512
-    4        ScatterNDOfShape  0.010314  0.002375  ...  0.002752       5   512
-
-    [5 rows x 8 columns]
+                        label    warmup      time       std       min       max  repeat  size
+    0               ScatterND  0.066488  0.003221  0.000698  0.002481  0.004219       5   256
+    1        ScatterNDOfShape  0.007669  0.002114  0.000070  0.002025  0.002236       5   256
+    2  MaskedScatterNDOfShape  0.009236  0.000508  0.000105  0.000402  0.000692       5   256
+    3               ScatterND  0.017695  0.003977  0.000023  0.003964  0.004023       5   512
+    4        ScatterNDOfShape  0.013440  0.002483  0.000050  0.002449  0.002582       5   512
 
 
 
@@ -689,15 +687,15 @@ Pivot.
     Time
     label  MaskedScatterNDOfShape  ScatterND  ScatterNDOfShape
     size                                                      
-    256                  0.000402   0.004259          0.002064
-    512                  0.000562   0.003834          0.002375
-    1024                 0.000248   0.012335          0.009773
+    256                  0.000508   0.003221          0.002114
+    512                  0.000673   0.003977          0.002483
+    1024                 0.001247   0.012495          0.008867
     Speed up compare to the onnx standaed.
     label  MaskedScatterNDOfShape  ScatterND  ScatterNDOfShape
     size                                                      
-    256                 10.586996        1.0          2.063711
-    512                  6.825229        1.0          1.613907
-    1024                49.753071        1.0          1.262147
+    256                  6.340738        1.0          1.523339
+    512                  5.906427        1.0          1.601727
+    1024                10.022180        1.0          1.409173
 
 
 
@@ -712,7 +710,7 @@ For big sizes, ScatterND seems very slow as it is using atomic addition.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.233 seconds)
+   **Total running time of the script:** (0 minutes 1.084 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_scatternd_mask_cuda.py:

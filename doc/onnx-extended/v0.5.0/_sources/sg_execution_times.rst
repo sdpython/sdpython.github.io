@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.000** total execution time for 18 files **from all galleries**:
+**01:40.482** total execution time for 19 files **from all galleries**:
 
 .. container::
 
@@ -32,6 +32,9 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_plot_onnx2_time.py` (``examples/plot_onnx2_time.py``)
+     - 01:40.482
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_bench_cpu.py` (``examples/plot_bench_cpu.py``)
      - 00:00.000
      - 0.0

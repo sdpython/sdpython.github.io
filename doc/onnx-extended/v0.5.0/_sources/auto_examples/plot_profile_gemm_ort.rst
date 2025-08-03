@@ -517,7 +517,7 @@ Let's run the profiles
 
  .. code-block:: none
 
-      0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):   0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  29%|██▉       | 7/24 [00:00<00:01, 12.61it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  29%|██▉       | 7/24 [00:00<00:01, 12.61it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  29%|██▉       | 7/24 [00:00<00:01, 12.61it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  38%|███▊      | 9/24 [00:00<00:01, 10.34it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  38%|███▊      | 9/24 [00:00<00:01, 10.34it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  42%|████▏     | 10/24 [00:01<00:03,  4.53it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  42%|████▏     | 10/24 [00:01<00:03,  4.53it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  46%|████▌     | 11/24 [00:02<00:04,  3.06it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  46%|████▌     | 11/24 [00:02<00:04,  3.06it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  46%|████▌     | 11/24 [00:02<00:04,  3.06it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  54%|█████▍    | 13/24 [00:02<00:03,  3.67it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  54%|█████▍    | 13/24 [00:02<00:03,  3.67it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  58%|█████▊    | 14/24 [00:02<00:02,  4.11it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  58%|█████▊    | 14/24 [00:02<00:02,  4.11it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  58%|█████▊    | 14/24 [00:02<00:02,  4.11it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  67%|██████▋   | 16/24 [00:03<00:02,  3.90it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  67%|██████▋   | 16/24 [00:03<00:02,  3.90it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  71%|███████   | 17/24 [00:03<00:02,  3.50it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  71%|███████   | 17/24 [00:03<00:02,  3.50it/s]    t=16 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  71%|███████   | 17/24 [00:03<00:02,  3.50it/s]    t=16 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  83%|████████▎ | 20/24 [00:04<00:00,  4.96it/s]    t=16 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  83%|████████▎ | 20/24 [00:04<00:00,  4.96it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  83%|████████▎ | 20/24 [00:04<00:00,  4.96it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  96%|█████████▌| 23/24 [00:04<00:00,  5.34it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  96%|█████████▌| 23/24 [00:04<00:00,  5.34it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096): 100%|██████████| 24/24 [00:04<00:00,  5.13it/s]
+      0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):   0%|          | 0/24 [00:00<?, ?it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  29%|██▉       | 7/24 [00:00<00:01, 11.51it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  29%|██▉       | 7/24 [00:00<00:01, 11.51it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  29%|██▉       | 7/24 [00:00<00:01, 11.51it/s]    t=1 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  38%|███▊      | 9/24 [00:00<00:01,  8.47it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  38%|███▊      | 9/24 [00:00<00:01,  8.47it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  42%|████▏     | 10/24 [00:02<00:03,  3.66it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  42%|████▏     | 10/24 [00:02<00:03,  3.66it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  46%|████▌     | 11/24 [00:02<00:05,  2.48it/s]    t=1 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  46%|████▌     | 11/24 [00:02<00:05,  2.48it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  46%|████▌     | 11/24 [00:02<00:05,  2.48it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  54%|█████▍    | 13/24 [00:03<00:04,  2.57it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  54%|█████▍    | 13/24 [00:03<00:04,  2.57it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  58%|█████▊    | 14/24 [00:04<00:03,  2.59it/s]    t=10 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  58%|█████▊    | 14/24 [00:04<00:03,  2.59it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  58%|█████▊    | 14/24 [00:04<00:03,  2.59it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  67%|██████▋   | 16/24 [00:04<00:02,  2.94it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  67%|██████▋   | 16/24 [00:04<00:02,  2.94it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  71%|███████   | 17/24 [00:05<00:02,  2.59it/s]    t=10 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  71%|███████   | 17/24 [00:05<00:02,  2.59it/s]    t=16 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  71%|███████   | 17/24 [00:05<00:02,  2.59it/s]    t=16 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  83%|████████▎ | 20/24 [00:05<00:00,  4.35it/s]    t=16 e=InferenceSession p=CUDA dim=(2048, 2048, 2048):  83%|████████▎ | 20/24 [00:05<00:00,  4.35it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  83%|████████▎ | 20/24 [00:05<00:00,  4.35it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  96%|█████████▌| 23/24 [00:05<00:00,  5.08it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096):  96%|█████████▌| 23/24 [00:05<00:00,  5.08it/s]    t=16 e=InferenceSession p=CUDA dim=(4096, 4096, 4096): 100%|██████████| 24/24 [00:05<00:00,  4.17it/s]
 
 
 
@@ -556,7 +556,7 @@ Results
     args_op_name                        CG                           CG              CG                     CG                           CG
     args_provider    CUDAExecutionProvider                                               CUDAExecutionProvider                             
     event_name                 kernel_time  SequentialExecutor::Execute       model_run            kernel_time  SequentialExecutor::Execute
-    dur                              92210                       111907          321659                 151964                       133199
+    dur                             121420                       133726          392671                  32840                        22359
 
 
 
@@ -601,12 +601,12 @@ Summary
     xdomain                                                  ORT       EXT       ORT       EXT       ORT
     args_op_name                                            Gemm        CG      Gemm        CG      Gemm
     xdim           cat     event_name                                                                   
-    2048x2048x2048 Node    kernel_time                    1656.0   41241.0    2482.0   92210.0    3839.0
-                   Session SequentialExecutor::Execute    2385.0   44320.0    3157.0  111907.0    4980.0
-                           model_run                     60889.0   96192.0   84374.0  321659.0  196800.0
-    4096x4096x4096 Node    kernel_time                    2577.0  113073.0    3392.0  181328.0    2890.0
-                   Session SequentialExecutor::Execute    3606.0  121278.0    4670.0  194798.0    4072.0
-                           model_run                    336987.0  409862.0  325905.0  693965.0  661219.0
+    2048x2048x2048 Node    kernel_time                    3437.0   49315.0    3179.0  121420.0    3850.0
+                   Session SequentialExecutor::Execute    4612.0   52879.0    4408.0  133726.0    5511.0
+                           model_run                     98360.0  109922.0  116216.0  392671.0  251705.0
+    4096x4096x4096 Node    kernel_time                    2810.0  119296.0    3016.0  194830.0    2902.0
+                   Session SequentialExecutor::Execute    4138.0  128579.0    4506.0  208963.0    4106.0
+                           model_run                    347349.0  418581.0  381186.0  727855.0  632205.0
 
 
 
@@ -695,21 +695,21 @@ plot
     xdomain            ORT       EXT     ORT       EXT     ORT
     args_op_name      Gemm        CG    Gemm        CG    Gemm
     xdim                                                      
-    2048x2048x2048  1656.0   41241.0  2482.0   92210.0  3839.0
-    4096x4096x4096  2577.0  113073.0  3392.0  181328.0  2890.0
+    2048x2048x2048  3437.0   49315.0  3179.0  121420.0  3850.0
+    4096x4096x4096  2810.0  119296.0  3016.0  194830.0  2902.0
 
     not operator
     xdtype                                          bf16       f16                 f32          
     xdomain                                          ORT       EXT       ORT       EXT       ORT
     xdim           event_name                                                                   
-    2048x2048x2048 SequentialExecutor::Execute  107549.0  125637.5    2105.5  122553.0    3076.5
-                   model_loading_array             361.0     481.0     136.0      75.0     469.0
-                   model_run                    141703.5  159313.0   46401.5  259426.0  105919.5
-                   session_initialization          498.0     697.0     420.0     205.0     936.0
-    4096x4096x4096 SequentialExecutor::Execute    3536.5   67956.5    2962.0  106198.5    3752.0
-                   model_loading_array             329.0     165.0     114.0     213.0     140.0
-                   model_run                    230408.5  258038.5  179318.0  393573.0  360343.5
-                   session_initialization         1266.0     507.0     331.0     493.0     427.0
+    2048x2048x2048 SequentialExecutor::Execute    3523.5  294300.5   14588.0   78042.5    4836.5
+                   model_loading_array             464.0     139.0     326.0     307.0     194.0
+                   model_run                     54811.5  329536.0  145131.5  281627.5  150757.0
+                   session_initialization         2095.0    1122.0    5121.0    4115.0    2561.0
+    4096x4096x4096 SequentialExecutor::Execute    3068.5   69992.5    4313.0  117364.0    7762.0
+                   model_loading_array            1729.0     197.0     192.0     176.0     403.0
+                   model_run                    200833.5  245693.5  260633.5  479674.0  433622.0
+                   session_initialization         2349.0    2023.0    3634.0    7627.0    4062.0
 
 
 
@@ -717,7 +717,7 @@ plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 26.938 seconds)
+   **Total running time of the script:** (0 minutes 12.105 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_profile_gemm_ort.py:

@@ -592,7 +592,7 @@ Not Fused.
  .. code-block:: none
 
     sizes=(256, 512, 1024)
-      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:00<00:00,  9.94it/s]    100%|██████████| 3/3 [00:00<00:00, 14.72it/s]    100%|██████████| 3/3 [00:00<00:00, 14.01it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 18.58it/s]    100%|██████████| 3/3 [00:00<00:00, 18.53it/s]
 
 
 
@@ -621,7 +621,7 @@ Fused.
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 26.69it/s]    100%|██████████| 3/3 [00:00<00:00, 26.57it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]    100%|██████████| 3/3 [00:00<00:00, 21.93it/s]    100%|██████████| 3/3 [00:00<00:00, 21.84it/s]
 
 
 
@@ -651,14 +651,12 @@ Data
 
  .. code-block:: none
 
-         warmup      time       std  ...  repeat  size             label
-    0  0.037671  0.005782  0.004978  ...       5   256  Atomic/Not Fused
-    1  0.006900  0.002018  0.000222  ...       5   512  Atomic/Not Fused
-    2  0.018271  0.003646  0.000036  ...       5  1024  Atomic/Not Fused
-    3  0.003791  0.001053  0.000026  ...       5   256   No Atomic/Fused
-    4  0.006131  0.002176  0.000240  ...       5   512   No Atomic/Fused
-
-    [5 rows x 8 columns]
+         warmup      time       std       min       max  repeat  size             label
+    0  0.003432  0.001122  0.000021  0.001096  0.001160       5   256  Atomic/Not Fused
+    1  0.005995  0.001997  0.000018  0.001985  0.002032       5   512  Atomic/Not Fused
+    2  0.019626  0.003961  0.000026  0.003926  0.003993       5  1024  Atomic/Not Fused
+    3  0.003219  0.001119  0.000055  0.001057  0.001223       5   256   No Atomic/Fused
+    4  0.006072  0.002051  0.000175  0.001937  0.002396       5   512   No Atomic/Fused
 
 
 
@@ -702,9 +700,9 @@ Pivot.
     Speed up compare to the onnx standaed.
     label  Atomic/Not Fused  No Atomic/Fused     ratio
     size                                              
-    256            0.005782         0.001053  5.490221
-    512            0.002018         0.002176  0.927604
-    1024           0.003646         0.002373  1.536898
+    256            0.001122         0.001119  1.003006
+    512            0.001997         0.002051  0.973857
+    1024           0.003961         0.002383  1.662192
 
 
 
@@ -718,7 +716,7 @@ the computation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.723 seconds)
+   **Total running time of the script:** (0 minutes 0.623 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_op_scatternd_cuda.py:

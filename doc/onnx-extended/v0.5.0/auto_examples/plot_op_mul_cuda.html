@@ -258,6 +258,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api/helper.html">onnx_extended.helper</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/onnx2/index.html">onnx2</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx2</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/helper.html">helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/io_helper.html">io_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/onnx2/parsing.html">Serializing, Parsing Options</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/onnx2/protos.html">protos</a></li>
 </ul>
 </li>
@@ -323,7 +325,6 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">LICENSE</a></li>
 </ul>
 
@@ -628,8 +629,8 @@ output: name=&#39;final&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, &#
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>sizes=(256, 512, 1024)
 
   0%|          | 0/3 [00:00&lt;?, ?it/s]
- 67%|██████▋   | 2/3 [00:00&lt;00:00, 15.89it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 12.86it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 11.19it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 11.17it/s]
 </pre></div>
 </div>
 <p>Fused.</p>
@@ -639,8 +640,8 @@ output: name=&#39;final&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, &#
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/3 [00:00&lt;?, ?it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 19.18it/s]
-100%|██████████| 3/3 [00:00&lt;00:00, 19.13it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 26.36it/s]
+100%|██████████| 3/3 [00:00&lt;00:00, 26.29it/s]
 </pre></div>
 </div>
 </section>
@@ -655,11 +656,11 @@ output: name=&#39;final&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, &#
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>     warmup      time       std       min       max  repeat  size      label
-0  0.001093  0.001460  0.002395  0.000164  0.006246       5   256  Not Fused
-1  0.004641  0.000494  0.000235  0.000310  0.000959       5   512  Not Fused
-2  0.008424  0.000623  0.000044  0.000564  0.000678       5  1024  Not Fused
-3  0.001408  0.000294  0.000173  0.000147  0.000612       5   256      Fused
-4  0.004554  0.000266  0.000012  0.000252  0.000286       5   512      Fused
+0  0.003476  0.000277  0.000017  0.000250  0.000301       5   256  Not Fused
+1  0.002614  0.000221  0.000028  0.000202  0.000277       5   512  Not Fused
+2  0.008067  0.000415  0.000003  0.000411  0.000419       5  1024  Not Fused
+3  0.000360  0.000079  0.000004  0.000076  0.000087       5   256      Fused
+4  0.003379  0.000153  0.000010  0.000144  0.000167       5   512      Fused
 </pre></div>
 </div>
 <p>Pivot.</p>
@@ -679,13 +680,13 @@ output: name=&#39;final&#39; type=dtype(&#39;float32&#39;) shape=[&#39;&#39;, &#
 </div>
 <img src="../_images/sphx_glr_plot_op_mul_cuda_001.png" srcset="../_images/sphx_glr_plot_op_mul_cuda_001.png" alt="Fused/Unfused element wise multiplication on CUDA itype=1" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>label     Fused  Not Fused     ratio
 size
-256    0.000294   0.001460  0.200999
-512    0.000266   0.000494  0.538331
-1024   0.000399   0.000623  0.640968
+256    0.000079   0.000277  0.286126
+512    0.000153   0.000221  0.692082
+1024   0.000264   0.000415  0.636913
 </pre></div>
 </div>
 <p>It seems the fused operator is 33% faster.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.329 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.747 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-op-mul-cuda-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/74b42487bbc1187f0ac875492555e8c1/plot_op_mul_cuda.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_op_mul_cuda.ipynb</span></code></a></p>
