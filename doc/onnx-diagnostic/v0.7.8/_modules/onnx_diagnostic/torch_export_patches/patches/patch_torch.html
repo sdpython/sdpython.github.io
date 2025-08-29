@@ -1,0 +1,946 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+        <link rel="prefetch" href="../../../../_static/logo.png" as="image" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.07.19 -->
+        <title>onnx_diagnostic.torch_export_patches.patches.patch_torch - onnx-diagnostic 0.7.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=a7360d90" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">onnx-diagnostic 0.7.7 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">onnx-diagnostic 0.7.7 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../patches.html">Patches Explained</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Patches Explained</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../status/index.html">Exporter Status</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Exporter Status</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../status/exported_program_dynamic.html">Exported Programs with Dynamic Shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../status/exporter_dynamic.html">Exported ONNX with Dynamic Shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../status/patches_coverage.html">Coverage of the Patches</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api/index.html">API of onnx_diagnostic</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of API of onnx_diagnostic</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/export/index.html">onnx_diagnostic.export</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.export</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/export/dynamic_shapes.html">onnx_diagnostic.export.dynamic_shapes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/export/shape_helper.html">onnx_diagnostic.export.shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/export/validate.html">onnx_diagnostic.export.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/helpers/index.html">onnx_diagnostic.helpers</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.helpers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/args_helper.html">onnx_diagnostic.helpers.args_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/bench_run.html">onnx_diagnostic.helpers.bench_run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/cache_helper.html">onnx_diagnostic.helpers.cache_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/config_helper.html">onnx_diagnostic.helpers.config_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/doc_helper.html">onnx_diagnostic.helpers.doc_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/graph_helper.html">onnx_diagnostic.helpers.graph_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/helper.html">onnx_diagnostic.helpers.helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/_log_helper.html">onnx_diagnostic.helpers._log_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/log_helper.html">onnx_diagnostic.helpers.log_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/memory_peak.html">onnx_diagnostic.helpers.memory_peak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/mini_onnx_builder.html">onnx_diagnostic.helpers.mini_onnx_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/model_builder_helper.html">onnx_diagnostic.helpers.model_builder_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/onnx_helper.html">onnx_diagnostic.helpers.onnx_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/ort_session.html">onnx_diagnostic.helpers.ort_session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/rt_helper.html">onnx_diagnostic.helpers.rt_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/helpers/torch_helper.html">onnx_diagnostic.helpers.torch_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/reference/index.html">onnx_diagnostic.reference</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../api/reference/ops/index.html">onnx_diagnostic.reference.ops</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference.ops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_add_add_mul_mul.html">onnx_diagnostic.reference.ops.op_add_add_mul_mul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_average_pool_grad.html">onnx_diagnostic.reference.ops.op_average_pool_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_cast_like.html">onnx_diagnostic.reference.ops.op_cast_like</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_complex.html">onnx_diagnostic.reference.ops.op_complex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_concat.html">onnx_diagnostic.reference.ops.op_concat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_constant_of_shape.html">onnx_diagnostic.reference.ops.op_constant_of_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_fused_matmul.html">onnx_diagnostic.reference.ops.op_fused_matmul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_gather_grad.html">onnx_diagnostic.reference.ops.op_gather_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_memcpy_host.html">onnx_diagnostic.reference.ops.op_memcpy_host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_mul_sigmoid.html">onnx_diagnostic.reference.ops.op_mul_sigmoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_negxplus1.html">onnx_diagnostic.reference.ops.op_negxplus1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_quick_gelu.html">onnx_diagnostic.reference.ops.op_quick_gelu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_replace_zero.html">onnx_diagnostic.reference.ops.op_replace_zero</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_rotary.html">onnx_diagnostic.reference.ops.op_rotary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_qlinear_average_pool.html">onnx_diagnostic.reference.ops.op_qlinear_average_pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_qlinear_conv.html">onnx_diagnostic.reference.ops.op_qlinear_conv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_scatter_elements.html">onnx_diagnostic.reference.ops.op_scatter_elements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_scatternd_of_shape.html">onnx_diagnostic.reference.ops.op_scatternd_of_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_simplified_layer_normalization.html">onnx_diagnostic.reference.ops.op_simplified_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_skip_layer_normalization.html">onnx_diagnostic.reference.ops.op_skip_layer_normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_slice.html">onnx_diagnostic.reference.ops.op_slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_transpose_cast.html">onnx_diagnostic.reference.ops.op_transpose_cast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/ops/op_tri_matrix.html">onnx_diagnostic.reference.ops.op_tri_matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../api/reference/torch_ops/index.html">onnx_diagnostic.reference.torch_ops</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.reference.torch_ops</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/access_ops.html">onnx_diagnostic.reference.torch_ops.access_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/binary_ops.html">onnx_diagnostic.reference.torch_ops.binary_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/controlflow_ops.html">onnx_diagnostic.reference.torch_ops.controlflow_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/generator_ops.html">onnx_diagnostic.reference.torch_ops.generator_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/nn_ops.html">onnx_diagnostic.reference.torch_ops.nn_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/other_ops.html">onnx_diagnostic.reference.torch_ops.other_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/reduce_ops.html">onnx_diagnostic.reference.torch_ops.reduce_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/sequence_ops.html">onnx_diagnostic.reference.torch_ops.sequence_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/shape_ops.html">onnx_diagnostic.reference.torch_ops.shape_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/reference/torch_ops/unary_ops.html">onnx_diagnostic.reference.torch_ops.unary_ops</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/evaluator.html">onnx_diagnostic.reference.evaluator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/quantized_tensor.html">onnx_diagnostic.reference.quantized_tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/ort_evaluator.html">onnx_diagnostic.reference.ort_evaluator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/report_results_comparison.html">onnx_diagnostic.reference.report_results_comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/reference/torch_evaluator.html">onnx_diagnostic.reference.torch_evaluator</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/tasks/index.html">onnx_diagnostic.tasks</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.tasks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/automatic_speech_recognition.html">onnx_diagnostic.tasks.automatic_speech_recognition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/fill_mask.html">onnx_diagnostic.tasks.fill_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/feature_extraction.html">onnx_diagnostic.tasks.feature_extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_classification.html">onnx_diagnostic.tasks.image_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/image_text_to_text.html">onnx_diagnostic.export.image_text_to_text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/mixture_of_expert.html">onnx_diagnostic.tasks.mixture_of_expert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/object_detection.html">onnx_diagnostic.tasks.object_detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/sentence_similarity.html">onnx_diagnostic.tasks.sentence_similarity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/summarization.html">onnx_diagnostic.tasks.summarization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_classification.html">onnx_diagnostic.tasks.text_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_generation.html">onnx_diagnostic.tasks.text_generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text_to_image.html">onnx_diagnostic.tasks.text_to_image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/text2text_generation.html">onnx_diagnostic.tasks.text2text_generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/tasks/zero_shot_image_classification.html">onnx_diagnostic.tasks.zero_shot_image_classification</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_export_patches/index.html">onnx_diagnostic.torch_export_patches</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_export_patches</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../api/torch_export_patches/eval/index.html">onnx_diagnostic.torch_export_patches.eval</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_export_patches.eval</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_export_patches/eval/model_cases.html">onnx_diagnostic.torch_export_patches.eval.model_cases</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/onnx_export_errors.html">onnx_diagnostic.torch_export_patches.onnx_export_errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/onnx_export_serialization.html">onnx_diagnostic.torch_export_patches.onnx_export_serialization</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../api/torch_export_patches/patches/index.html">onnx_diagnostic.torch_export_patches.patches</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_export_patches.patches</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_export_patches/patches/patch_torch.html">onnx_diagnostic.torch_export_patches.patches.patch_torch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_module_helper.html">onnx_diagnostic.torch_export_patches.patch_module_helper</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../api/torch_export_patches/serialization/index.html">onnx_diagnostic.torch_export_patches.serialization</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_export_patches.serialization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_export_patches/serialization/diffusers_impl.html">onnx_diagnostic.torch_export_patches.serialization.diffusers_impl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_export_patches/serialization/transformers_impl.html">onnx_diagnostic.torch_export_patches.serialization.transformers_impl</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_models/index.html">onnx_diagnostic.torch_models</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../api/torch_models/hghub/index.html">onnx_diagnostic.torch_models.hghub</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_models.hghub</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_models/hghub/hub_api.html">onnx_diagnostic.torch_models.hghub.hub_api</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_models/hghub/hub_data.html">onnx_diagnostic.torch_models.hghub.hub_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_models/hghub/model_inputs.html">onnx_diagnostic.torch_models.hghub.model_inputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llms.html">onnx_diagnostic.torch_models.llms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/validate.html">onnx_diagnostic.torch_models.validate</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_onnx/index.html">onnx_diagnostic.torch_onnx</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of onnx_diagnostic.torch_onnx</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_onnx/runtime_info.html">onnx_diagnostic.torch_onnx.runtime_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_onnx/sbs.html">onnx_diagnostic.torch_onnx.sbs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/api.html">onnx_diagnostic.api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/ext_test_case.html">onnx_diagnostic.ext_test_case</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../cmds/index.html">Command Lines</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Command Lines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cmds/config.html">-m onnx_diagnostic config … prints the config for a model id</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cmds/validate.html">-m onnx_diagnostic validate … validate a model id</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_examples/index.html">Examples Gallery</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of Examples Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_dump_intermediate_results.html">Dumps intermediate results of a torch model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_args_kwargs.html">Dynamic Shapes for <code class="docutils literal notranslate"><span class="pre">*args</span></code>, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm_patched.html">Export Tiny-LLM with patches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_phi2.html">Export microsoft/phi-2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_with_dynamic_cache.html">Export with DynamicCache and guessed dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_locate_issue.html">Find and fix an export issue due to dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_failing_model_extract.html">Find where a model is failing by running submodels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_failing_reference_evaluator.html">Intermediate results with (ONNX) ReferenceEvaluator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_failing_onnxruntime_evaluator.html">Intermediate results with onnxruntime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_tiny_llm.html">Steel method forward to guess inputs and dynamic shapes (with Tiny-LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_examples/plot_export_hub_codellama.html">Test the export on untrained models</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_recipes/index.html">Common Export Issues</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of Common Export Issues</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_export_dim1.html">0, 1, 2 for a Dynamic Dimension in the dummy example to export a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_dynamic_shapes_what.html">Builds dynamic shapes from any input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_dynamic_shapes_max.html">Cannot export <code class="docutils literal notranslate"><span class="pre">torch.sym_max(x.shape[0],</span> <span class="pre">y.shape[0])</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_dynamic_shapes_python_int.html">Do not use python int with dynamic shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_export_cond.html">Export a model with a control flow (If)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_dynamic_shapes_nonzero.html">Half certain nonzero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_dynamic_shapes_json.html">JSON returns list when the original dynamic shapes are list or tuple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_recipes/plot_export_with_dynamic.html">Use DYNAMIC or AUTO when exporting if dynamic shapes has constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../auto_technical/index.html">Technical Details</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of Technical Details</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_technical/plot_layer_norm_discrepancies.html">LayerNormalization implementation cannot be exchanged</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../auto_technical/plot_parallelized_reduction.html">Reproducible Parallelized Reduction is difficult</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">More</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for onnx_diagnostic.torch_export_patches.patches.patch_torch</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch._subclasses.fake_tensor</span> <span class="kn">import</span> <span class="n">FakeTensorMode</span>
+
+
+<div class="viewcode-block" id="retrieve_stacktrace">
+<a class="viewcode-back" href="../../../../api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.retrieve_stacktrace">[docs]</a>
+<span class="k">def</span> <span class="nf">retrieve_stacktrace</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieves and prints the current stack trace, avoids every torch file.&quot;&quot;&quot;</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">stack_frames</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">stack_frames</span><span class="p">:</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">code_line</span> <span class="o">=</span> <span class="n">frame</span>
+        <span class="k">if</span> <span class="s2">&quot;/torch/&quot;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">, Line </span><span class="si">{</span><span class="n">lineno</span><span class="si">}</span><span class="s2">, in </span><span class="si">{</span><span class="n">function_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">code_line</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">code_line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_catch_produce_guards_and_solve_constraints</span><span class="p">(</span>
+    <span class="n">previous_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">fake_mode</span><span class="p">:</span> <span class="s2">&quot;FakeTensorMode&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">gm</span><span class="p">:</span> <span class="s2">&quot;torch.fx.GraphModule&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">equalities_inputs</span><span class="p">:</span> <span class="s2">&quot;EqualityConstraint&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">original_signature</span><span class="p">:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">previous_function</span><span class="p">(</span>
+            <span class="n">fake_mode</span><span class="o">=</span><span class="n">fake_mode</span><span class="p">,</span>
+            <span class="n">gm</span><span class="o">=</span><span class="n">gm</span><span class="p">,</span>
+            <span class="n">dynamic_shapes</span><span class="o">=</span><span class="n">dynamic_shapes</span><span class="p">,</span>
+            <span class="n">equalities_inputs</span><span class="o">=</span><span class="n">equalities_inputs</span><span class="p">,</span>
+            <span class="n">original_signature</span><span class="o">=</span><span class="n">original_signature</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SKIP_SOLVE_CONSTRAINTS&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[_catch_produce_guards_and_solve_constraints] ERROR: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;produce_guards_and_solve_constraints failed, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;fake_mode=</span><span class="si">{</span><span class="n">fake_mode</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="n">dynamic_shapes</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;equalities_inputs=</span><span class="si">{</span><span class="n">equalities_inputs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;original_signature=</span><span class="si">{</span><span class="n">original_signature</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;kwargs=</span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;exc=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">gm=</span><span class="si">{</span><span class="n">gm</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="patch__check_input_constraints_for_graph">
+<a class="viewcode-back" href="../../../../api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patch__check_input_constraints_for_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">patch__check_input_constraints_for_graph</span><span class="p">(</span>
+    <span class="n">previous_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">input_placeholders</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">],</span>
+    <span class="n">flat_args_with_path</span><span class="p">,</span>
+    <span class="n">range_constraints</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">previous_function</span><span class="p">(</span><span class="n">input_placeholders</span><span class="p">,</span> <span class="n">flat_args_with_path</span><span class="p">,</span> <span class="n">range_constraints</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SKIP_SOLVE_CONSTRAINTS&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[_check_input_constraints_for_graph] ERROR: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;_check_input_constraints_for_graph failed, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;use SKIP_SOLVE_CONSTRAINTS=0 to avoid skipping</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;input_placeholders=</span><span class="si">{</span><span class="n">input_placeholders</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;range_constraints=</span><span class="si">{</span><span class="n">range_constraints</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;exc=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="patched_infer_size">
+<a class="viewcode-back" href="../../../../api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched_infer_size">[docs]</a>
+<span class="k">def</span> <span class="nf">patched_infer_size</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Patches ``torch._subclasses.fake_impls.infer_size``.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">torch.fx.experimental.symbolic_shapes</span> <span class="kn">import</span> <span class="n">guard_size_oblivious</span>
+
+    <span class="n">dimsA</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">dimsB</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dimsA</span><span class="p">,</span> <span class="n">dimsB</span><span class="p">)</span>
+    <span class="n">expandedSizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
+        <span class="n">dimA</span> <span class="o">=</span> <span class="n">dimsA</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">offset</span>
+        <span class="n">dimB</span> <span class="o">=</span> <span class="n">dimsB</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">offset</span>
+        <span class="n">sizeA</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">dimA</span><span class="p">]</span> <span class="k">if</span> <span class="n">dimA</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">sizeB</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">dimB</span><span class="p">]</span> <span class="k">if</span> <span class="n">dimB</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+
+        <span class="c1"># NB: It is very important to test for broadcasting, before testing</span>
+        <span class="c1"># sizeA == sizeB.  This is because the broadcasting tests are likely</span>
+        <span class="c1"># to be statically known (in particular, if sizeA/sizeB is unbacked</span>
+        <span class="c1"># but size-like, we will unsoundly assume they never equal 1), but</span>
+        <span class="c1"># the sizeA == sizeB test may not be statically known.  However, once</span>
+        <span class="c1"># we have established that no broadcasting is happening, the</span>
+        <span class="c1"># sizeA == sizeB is now expect_true and we can defer it as a runtime</span>
+        <span class="c1"># assert (this works because Python will return the terminal</span>
+        <span class="c1"># expression of an or statement as-is, without bool()&#39;ing it; if this</span>
+        <span class="c1"># were not the case, we&#39;d need to write this using torch.sym_or() or</span>
+        <span class="c1"># something like that).</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">b1</span> <span class="o">=</span> <span class="n">guard_size_oblivious</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
+            <span class="n">b1</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">b2</span> <span class="o">=</span> <span class="n">guard_size_oblivious</span><span class="p">(</span><span class="n">sizeB</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
+            <span class="n">b2</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">b3</span> <span class="o">=</span> <span class="n">guard_size_oblivious</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="n">sizeB</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">symbolic_shapes</span><span class="o">.</span><span class="n">GuardOnDataDependentSymNode</span><span class="p">:</span>
+            <span class="n">b3</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">b1</span> <span class="ow">or</span> <span class="n">b2</span> <span class="ow">or</span> <span class="n">b3</span><span class="p">:</span>
+            <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizeB</span> <span class="k">if</span> <span class="n">guard_size_oblivious</span><span class="p">(</span><span class="n">sizeA</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">sizeA</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># In this case, the current implementation of torch fails (17/12/2024).</span>
+            <span class="c1"># Try model SmolLM.</span>
+            <span class="n">expandedSizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sym_max</span><span class="p">(</span><span class="n">sizeA</span><span class="p">,</span> <span class="n">sizeB</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">expandedSizes</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="patched__broadcast_shapes">
+<a class="viewcode-back" href="../../../../api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched__broadcast_shapes">[docs]</a>
+<span class="k">def</span> <span class="nf">patched__broadcast_shapes</span><span class="p">(</span><span class="o">*</span><span class="n">_shapes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Patches ``torch._refs._broadcast_shapes``.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+    <span class="kn">from</span> <span class="nn">torch._prims_common</span> <span class="kn">import</span> <span class="n">IntLike</span>
+    <span class="kn">from</span> <span class="nn">torch.fx.experimental.symbolic_shapes</span> <span class="kn">import</span> <span class="n">guard_size_oblivious</span>
+
+    <span class="n">shapes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">IntLike</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_shapes</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Short-circuits on no input</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># Type checking</span>
+    <span class="c1"># TODO: make common validations available as utils</span>
+    <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span>
+
+    <span class="c1"># Computes common shape</span>
+    <span class="n">common_shape</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># List[Union[int, torch.SymInt]]</span>
+        <span class="mi">1</span><span class="p">,</span>
+    <span class="p">]</span> <span class="o">*</span> <span class="n">reduce</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">_arg_idx</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shapes</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">guard_size_oblivious</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Attempting to broadcast a dimension with negative length!&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">guard_size_oblivious</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sym_max</span><span class="p">(</span><span class="n">common_shape</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">common_shape</span></div>
+
+
+
+<div class="viewcode-block" id="patched_ShapeEnv">
+<a class="viewcode-back" href="../../../../api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched_ShapeEnv">[docs]</a>
+<span class="k">class</span> <span class="nc">patched_ShapeEnv</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">_check_frozen</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="s2">&quot;sympy.Basic&quot;</span><span class="p">,</span> <span class="n">concrete_val</span><span class="p">:</span> <span class="s2">&quot;sympy.Basic&quot;</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frozen</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">[</span><span class="s2">&quot;ignored_backward_guard&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[patched_ShapeEnv] Ignored guard </span><span class="si">{</span><span class="n">expr</span><span class="si">}</span><span class="s2"> == </span><span class="si">{</span><span class="n">concrete_val</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;this could result in accuracy problems&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_replacement</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;sympy.Symbol&quot;</span><span class="p">,</span> <span class="n">tgt</span><span class="p">:</span> <span class="s2">&quot;sympy.Expr&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds or updates a replacement for a symbol.</span>
+<span class="sd">        Use this instead of `self.replacements[a] = tgt`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tgt</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">tgt</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="kn">import</span> <span class="nn">sympy</span>
+        <span class="kn">from</span> <span class="nn">torch._logging</span> <span class="kn">import</span> <span class="n">structured</span>
+        <span class="kn">from</span> <span class="nn">torch.utils._traceback</span> <span class="kn">import</span> <span class="n">CapturedTraceback</span>
+        <span class="kn">from</span> <span class="nn">torch._logging</span> <span class="kn">import</span> <span class="n">trace_structured</span>
+        <span class="kn">from</span> <span class="nn">torch._guards</span> <span class="kn">import</span> <span class="n">TracingContext</span>
+        <span class="kn">from</span> <span class="nn">torch.utils._sympy.functions</span> <span class="kn">import</span> <span class="n">FloorToInt</span><span class="p">,</span> <span class="n">CeilToInt</span>
+        <span class="kn">from</span> <span class="nn">torch.utils._sympy.solve</span> <span class="kn">import</span> <span class="n">try_solve</span>
+        <span class="kn">from</span> <span class="nn">torch.fx.experimental.symbolic_shapes</span> <span class="kn">import</span> <span class="p">(</span>
+            <span class="n">_is_supported_equivalence</span><span class="p">,</span>
+            <span class="n">ValueRanges</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Precondition: a == tgt</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_complex_guards_as_runtime_asserts</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_is_supported_equivalence</span><span class="p">(</span><span class="n">tgt</span><span class="p">):</span>
+            <span class="c1"># continuing leads to placeholder shapes</span>
+            <span class="c1"># having complex expressions that we can&#39;t resolve</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Handles nested tensor symbolic variables which don&#39;t have</span>
+        <span class="c1"># var_to_range bounds</span>
+        <span class="n">tgt_bound</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_to_range</span><span class="p">:</span>
+            <span class="n">src_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_to_range</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+
+            <span class="c1"># First, refine the value range of a based on the computed value range</span>
+            <span class="c1"># of tgt.  This is always OK to do, even if we decide not to do the</span>
+            <span class="c1"># substitution in the end.  This might be a no-op, if a already has</span>
+            <span class="c1"># a tighter bound</span>
+            <span class="n">tgt_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound_sympy</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_var_to_range</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">tgt_bound</span><span class="p">)</span>
+
+            <span class="c1"># Next, check if we can update the range of free symbols in tgt</span>
+            <span class="c1"># based on the range in a. But only do it if:</span>
+            <span class="c1">#  - the source bound non-trivially improves over what we get out of</span>
+            <span class="c1">#    the existing bounds.</span>
+            <span class="c1">#  - the replacement is univariate and we can invert the tgt expression</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tgt_bound</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">src_bound</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">))</span>
+                <span class="c1"># Try to invert the equality</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">try_solve</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">tgt</span><span class="p">),</span> <span class="n">b</span><span class="p">,</span> <span class="n">floordiv_inequality</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="s2">&quot;set_replacement: solve for </span><span class="si">%s</span><span class="s2"> in </span><span class="si">%s</span><span class="s2"> == </span><span class="si">%s</span><span class="s2"> gives </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">b</span><span class="p">,</span>
+                        <span class="n">a</span><span class="p">,</span>
+                        <span class="n">tgt</span><span class="p">,</span>
+                        <span class="n">r</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="c1"># The solution here can be non-integral, for example, if</span>
+                    <span class="c1"># we have s0 = 2*s1, then s1 = s0/2.  What we would like</span>
+                    <span class="c1"># to do is calculated the bounds in arbitrary precision,</span>
+                    <span class="c1"># and then requantize the bound to integers when we are</span>
+                    <span class="c1"># done.</span>
+                    <span class="n">rat_b_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound_sympy</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">b_bound</span> <span class="o">=</span> <span class="n">ValueRanges</span><span class="p">(</span>
+                        <span class="n">CeilToInt</span><span class="p">(</span><span class="n">rat_b_bound</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span> <span class="n">FloorToInt</span><span class="p">(</span><span class="n">rat_b_bound</span><span class="o">.</span><span class="n">upper</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_update_var_to_range</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_bound</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_to_range_sloc</span><span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                    <span class="n">tgt_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound_sympy</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
+                    <span class="k">assert</span> <span class="n">tgt_bound</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span>
+                        <span class="n">src_bound</span>
+                    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tgt_bound</span><span class="si">=}</span><span class="s2"> not a subset of </span><span class="si">{</span><span class="n">src_bound</span><span class="si">=}</span><span class="s2">&quot;</span>
+
+            <span class="c1"># TODO: Should we propagate size-like-ness?</span>
+            <span class="c1">#</span>
+            <span class="c1"># Pros: if u0 is size-like, intuitively u0 == u1 should cause u1</span>
+            <span class="c1"># to become size-like.</span>
+            <span class="c1">#</span>
+            <span class="c1"># Cons: if u0 is size-like, what about u0 - 1 == u1?  You CAN&#39;T</span>
+            <span class="c1"># propagate in this case, because what if u0 == 0, then u1 is negative</span>
+            <span class="c1"># and clearly isn&#39;t a size.  So, at minimum, any f(x) whose value</span>
+            <span class="c1"># range isn&#39;t [0, inf] given x in [0, inf] cannot propagate</span>
+            <span class="c1"># size-like-ness.  But there are many situations where you could</span>
+            <span class="c1"># imagine u1 is going to be size-like and actually you just didn&#39;t</span>
+            <span class="c1"># have a refined enough value range on u0.  Since even innocuous</span>
+            <span class="c1"># looking arithmetic operations can destroy size-like-ness, it&#39;s</span>
+            <span class="c1"># best to not propagate it at all and force the user to annotate it</span>
+            <span class="c1"># as necessary.</span>
+            <span class="c1">#</span>
+            <span class="c1"># Compromise: we preserve size-like-ness only for exact equality</span>
+            <span class="c1"># and nothing else.</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_like</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size_like</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tgt</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tgt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_like</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">size_like</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+            <span class="c1"># Now, decide if we will do the substitution.</span>
+            <span class="c1">#</span>
+            <span class="c1">#  - If the source has a non-trivial range, only substitute if</span>
+            <span class="c1">#    we preserve this range.  Note that we may have propagated</span>
+            <span class="c1">#    the src_range to free variables in tgt when tgt is univariate</span>
+            <span class="c1">#    and we could find an inverse, which helps us achieve this.</span>
+            <span class="c1">#    This ensures we never &quot;forget&quot; about user defined ranges,</span>
+            <span class="c1">#    even if they end up being defined on composite formulas</span>
+            <span class="c1">#    like s0 + s1.</span>
+            <span class="c1">#</span>
+            <span class="c1">#  - If the variable is unbacked, only substitute if the substitution</span>
+            <span class="c1">#    would preserve the bounds also under size-like-ness conditions.</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tgt_bound</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">src_bound</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;skipped set_replacement </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) [</span><span class="si">%s</span><span class="s2"> not subset of </span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                    <span class="n">a</span><span class="p">,</span>
+                    <span class="n">tgt</span><span class="p">,</span>
+                    <span class="n">msg</span><span class="p">,</span>
+                    <span class="n">tgt_bound</span><span class="p">,</span>
+                    <span class="n">src_bound</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_like</span><span class="p">:</span>
+                <span class="n">tgt_bound_so</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound_sympy</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="n">size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">src_bound_so</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bound_sympy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">tgt_bound_so</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">src_bound_so</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="s2">&quot;skipped set_replacement </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) &quot;</span>
+                        <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2"> not subset of </span><span class="si">%s</span><span class="s2"> (size-oblivious conditions)]&quot;</span><span class="p">,</span>
+                        <span class="n">a</span><span class="p">,</span>
+                        <span class="n">tgt</span><span class="p">,</span>
+                        <span class="n">msg</span><span class="p">,</span>
+                        <span class="n">tgt_bound_so</span><span class="p">,</span>
+                        <span class="n">src_bound_so</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tgt</span><span class="p">,</span> <span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Float</span><span class="p">)):</span>
+            <span class="c1"># specializing to a constant, which is likely unexpected (unless</span>
+            <span class="c1"># you specified dynamic=True)</span>
+
+            <span class="n">user_tb</span> <span class="o">=</span> <span class="n">TracingContext</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()</span>
+            <span class="n">trace_structured</span><span class="p">(</span>
+                <span class="s2">&quot;symbolic_shape_specialization&quot;</span><span class="p">,</span>
+                <span class="n">metadata_fn</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;symbol&quot;</span><span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+                    <span class="s2">&quot;sources&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_to_sources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[])],</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">tgt</span><span class="p">),</span>
+                    <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
+                    <span class="s2">&quot;stack&quot;</span><span class="p">:</span> <span class="n">structured</span><span class="o">.</span><span class="n">from_traceback</span><span class="p">(</span>
+                        <span class="n">CapturedTraceback</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">skip</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+                    <span class="p">),</span>
+                    <span class="s2">&quot;user_stack&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">structured</span><span class="o">.</span><span class="n">from_traceback</span><span class="p">(</span><span class="n">user_tb</span><span class="p">)</span> <span class="k">if</span> <span class="n">user_tb</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+
+            <span class="c1"># if config.print_specializations:</span>
+            <span class="c1">#    self.log.warning(</span>
+            <span class="c1">#         &quot;Specializing %s to %s&quot;, self.var_to_sources[a][0].name(), tgt</span>
+            <span class="c1">#     )</span>
+            <span class="c1">#     self.log.debug(&quot;SPECIALIZATION&quot;, stack_info=True)</span>
+        <span class="k">assert</span> <span class="n">msg</span> <span class="o">!=</span> <span class="s2">&quot;range_refined_to_singleton&quot;</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;patched_ShapeEnv: A dynamic dimension becomes static! &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;a=</span><span class="si">{</span><span class="n">a</span><span class="si">!r}</span><span class="s2">, tgt=</span><span class="si">{</span><span class="n">tgt</span><span class="si">!r}</span><span class="s2">, msg=</span><span class="si">{</span><span class="n">msg</span><span class="si">!r}</span><span class="s2">, tgt_bound=</span><span class="si">{</span><span class="n">tgt_bound</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># log.info(&quot;set_replacement %s = %s (%s) %s&quot;, a, tgt, msg, tgt_bound)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replacements</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">tgt</span>
+        <span class="c1"># NB: the replacement may get refined, but the user will find the</span>
+        <span class="c1"># FIRST one most useful (TODO: Maybe we could consider tracking all of</span>
+        <span class="c1"># them)</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacements_slocs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replacements_slocs</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sloc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_version_counter</span><span class="p">()</span>
+
+        <span class="c1"># When specializing &#39;a == tgt&#39;, the equality should be also conveyed to</span>
+        <span class="c1"># Z3, in case an expression uses &#39;a&#39;.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_target_expr</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">tgt</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_log_guard</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;SympyBoolean&quot;</span><span class="p">,</span> <span class="n">forcing_spec</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_guard_remember</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">forcing_spec</span><span class="o">=</span><span class="n">forcing_spec</span><span class="p">)</span></div>
+
+        <span class="c1"># It happens too often to be relevant.</span>
+        <span class="c1"># sloc, _maybe_extra_debug = self._get_stack_summary(True)</span>
+        <span class="c1"># warnings.warn(</span>
+        <span class="c1">#     f&quot;A guard was added, prefix={prefix!r}, g={g!r}, &quot;</span>
+        <span class="c1">#     f&quot;forcing_spec={forcing_spec}, location=\n{sloc}\n&quot;</span>
+        <span class="c1">#    f&quot;--stack trace--\n{retrieve_stacktrace()}&quot;,</span>
+        <span class="c1">#     RuntimeWarning,</span>
+        <span class="c1">#     stacklevel=0,</span>
+        <span class="c1"># )</span>
+
+
+<div class="viewcode-block" id="patched_vmap">
+<a class="viewcode-back" href="../../../../api/torch_export_patches/patches/patch_torch.html#onnx_diagnostic.torch_export_patches.patches.patch_torch.patched_vmap">[docs]</a>
+<span class="k">def</span> <span class="nf">patched_vmap</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">in_dims</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">out_dims</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Python implementation of :func:`torch.vmap`.</span>
+<span class="sd">    The implementation raises an issue when it is being exported with</span>
+<span class="sd">    :func:`torch.export.export` when the function is called with</span>
+<span class="sd">    non tensors arguments and the batch size is dynamic.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">...helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
+
+    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;dictionaries are not implemented in &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">in_dims_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">([</span><span class="n">in_dims</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_dims</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span>
+            <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_dims</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_dims_</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Mismtch between in_dims=</span><span class="si">{</span><span class="n">in_dims_</span><span class="si">}</span><span class="s2"> and &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">batched_args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">in_dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">in_dims_</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">in_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">batched_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">assert</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="n">arg</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">in_dim</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to continue, batch_size=</span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s2">, in_dim=</span><span class="si">{</span><span class="n">in_dim</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;arg.size(in_dim)=</span><span class="si">{</span><span class="n">arg</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">in_dim</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">batch_size</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">in_dim</span><span class="p">)</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">batched_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">batch_size</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span>
+        <span class="p">):</span>
+            <span class="n">batched_tensors</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="n">arg</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="n">in_dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="n">arg</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">in_dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">batched_args</span><span class="p">,</span> <span class="n">in_dims_</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">higher_order</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[],</span> <span class="n">batched_tensors</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">stacked</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">out_dims</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">stacked</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">out_dims</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">stacked</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">),</span>
+                <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;patched_vmap supports dynamic batch_size only if all argument &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;are tensors but types are </span><span class="si">{</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">args</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">batched_tensors</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="ow">and</span> <span class="n">in_dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">in_dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">batched_args</span><span class="p">,</span> <span class="n">in_dims_</span><span class="p">)</span>
+            <span class="p">]</span>
+
+            <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+                <span class="n">input_slice</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">arg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">batched_tensors</span><span class="p">]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">input_slice</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">stacked</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">out_dims</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">stacked</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">out_dims</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">stacked</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+    <span class="k">return</span> <span class="n">wrapped</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=53394b71"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>
