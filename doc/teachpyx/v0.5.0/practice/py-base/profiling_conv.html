@@ -11,7 +11,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -293,7 +293,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Collections d’articles périssables</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-11-31-route2025.html">2025-11-31 : rappel feuille de route 2024</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-11-31-route2025.html">2025-11-31 : rappel feuille de route 2025</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-09-03-ensae.html">2025-09-03 : ENSAE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-04-01-route2025.html">2025-04-01 : feuille de route 2025 - avril</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025/2025-03-01-route2025.html">2025-03-01 : feuille de route 2025 - mars</a></li>
@@ -554,7 +554,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../api/tools/display/video_helper.html">teachpyx.tools.display.video_helper</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/tools/blockdiag_helper.html">teachpyx.tools.blockdiag_helper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/tools/data_helper.html">teachpyx.tools.data_helper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/tools/graphviz_helper.html">teachpyx.tools.graphviz_helper</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/tools/helpers.html">teachpyx.tools.helpers</a></li>
@@ -642,17 +641,17 @@
 <h1>Profiling, application à la convolution<a class="headerlink" href="#Profiling,-application-à-la-convolution" title="Lien vers cette rubrique">¶</a></h1>
 <p>Une <a class="reference external" href="https://fr.wikipedia.org/wiki/Noyau_(traitement_d%27image)">convolution</a> est une opération très fréquente en deep learning lorsqu’il s’agit d’interpréter des images. Elle est aussi coûteuse et c’est pour ça que beaucoup essayent d’accélérer son calcul à défaut de s’en passer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from IPython.display import SVG
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">SVG</span>
 
-SVG(&quot;https://upload.wikimedia.org/wikipedia/commons/9/9f/ConvolutionAndPooling.svg&quot;)
+<span class="n">SVG</span><span class="p">(</span><span class="s2">&quot;images/conv_schema2.svg&quot;</span><span class="p">)</span>  <span class="c1"># source wikipedia</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -663,18 +662,18 @@ SVG(&quot;https://upload.wikimedia.org/wikipedia/commons/9/9f/ConvolutionAndPool
 <h2>Implémentation naïve<a class="headerlink" href="#Implémentation-naïve" title="Lien vers cette rubrique">¶</a></h2>
 <p>On implémente l’algorithme dans sa version naïve et on compare les résultats à la version implémentée dans <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.convolve2d.html">scipy.signal.convolve2d</a>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import numpy
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
 
-img = numpy.arange(49).reshape((7, 7)).astype(numpy.float32)
-img
+<span class="n">img</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">49</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">img</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -689,16 +688,16 @@ array([[ 0.,  1.,  2.,  3.,  4.,  5.,  6.],
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>kernel = numpy.ones((3, 3)).astype(numpy.float32) / 9
-kernel
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kernel</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">9</span>
+<span class="n">kernel</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -709,17 +708,17 @@ array([[0.11111111, 0.11111111, 0.11111111],
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from scipy.signal import convolve2d
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve2d</span>
 
-convolve2d(img, kernel, mode=&quot;valid&quot;)
+<span class="n">convolve2d</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -733,25 +732,25 @@ array([[ 8.      ,  9.      , 10.      , 10.999999, 12.      ],
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def convolve_naive(x, kernel):
-    res = numpy.zeros(x.shape, dtype=x.dtype)
-    for i in range(1, x.shape[0] - 1):
-        for j in range(1, x.shape[1] - 1):
-            for k in range(kernel.shape[0]):
-                for l in range(kernel.shape[1]):
-                    res[i, j] += x[i + k - 1, j + l - 1] * kernel[k, l]
-    return res
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">convolve_naive</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span>
 
 
-convolve_naive(img, kernel)
+<span class="n">convolve_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -780,23 +779,23 @@ array([[ 0.       ,  0.       ,  0.       ,  0.       ,  0.       ,
 <h3>Q2: comparer avec une seconde implémentation<a class="headerlink" href="#Q2:-comparer-avec-une-seconde-implémentation" title="Lien vers cette rubrique">¶</a></h3>
 <p>La fonction suivante fait exactement la même chose. Est-elle plus rapide ?</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def convolve_naive2(x, kernel):
-    res = numpy.zeros(x.shape, dtype=x.dtype)
-    for i in range(1, x.shape[0] - 1):
-        for j in range(1, x.shape[1] - 1):
-            res[i, j] += (x[i - 1 : i + 2, j - 1 : j + 2] * kernel).sum()
-    return res
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">convolve_naive2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">res</span>
 
 
-convolve_naive2(img, kernel)
+<span class="n">convolve_naive2</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -819,27 +818,19 @@ array([[ 0.      ,  0.      ,  0.      ,  0.      ,  0.      ,  0.      ,
 </div>
 <p>On s’assure de façon plus méthodique que les deux fonctions retournent le même résultat en écrivant un test unitaire.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from numpy.testing import assert_almost_equal
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_almost_equal</span>
 
 
-def test_unitaire():
-    assert_almost_equal(
-        convolve_naive(img, kernel), convolve_naive2(img, kernel), decimal=5
-    )
+<span class="k">def</span> <span class="nf">test_unitaire</span><span class="p">():</span>
+    <span class="n">assert_almost_equal</span><span class="p">(</span>
+        <span class="n">convolve_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">convolve_naive2</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
 
 
-test_unitaire()
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
+<span class="n">test_unitaire</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -851,69 +842,69 @@ test_unitaire()
 <p><code class="docutils literal notranslate"><span class="pre">convolve2d(img,</span> <span class="pre">kernel)</span> <span class="pre">=</span> <span class="pre">im2col(img)</span> <span class="pre">&#64;</span> <span class="pre">kernel.flatten()</span></code></p>
 <p>ou quelque chose de pas loin.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def _get_indices(i, shape):
-    res = numpy.empty((len(shape),), dtype=numpy.int64)
-    k = len(shape) - 1
-    while k &gt; 0:
-        m = i % shape[k]
-        res[k] = m
-        i -= m
-        i /= shape[k]
-        k -= 1
-    res[0] = i
-    return res
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_get_indices</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">),),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">shape</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="n">i</span> <span class="o">-=</span> <span class="n">m</span>
+        <span class="n">i</span> <span class="o">/=</span> <span class="n">shape</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">res</span>
 
 
-def _is_out(ind, shape):
-    for i, s in zip(ind, shape):
-        if i &lt; 0:
-            return True
-        if i &gt;= s:
-            return True
-    return False
+<span class="k">def</span> <span class="nf">_is_out</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
 
 
-def im2col_naive(data, kernel_shape, fill_value=0):
-    if not isinstance(kernel_shape, tuple):
-        raise TypeError(f&quot;Unexpected type {type(kernel_shape)!r} for kernel_shape.&quot;)
-    if len(data.shape) != len(kernel_shape):
-        raise ValueError(f&quot;Shape mismatch {data.shape!r} and {kernel_shape!r}.&quot;)
-    output_shape = data.shape + kernel_shape
-    res = numpy.empty(output_shape, dtype=data.dtype)
-    middle = numpy.array([-m / 2 for m in kernel_shape], dtype=numpy.int64)
-    kernel_size = numpy.prod(kernel_shape)
-    data_size = numpy.prod(data.shape)
-    for i in range(data_size):
-        for j in range(kernel_size):
-            i_data = _get_indices(i, data.shape)
-            i_kernel = _get_indices(j, kernel_shape)
-            ind = i_data + i_kernel + middle
-            t_data = tuple(i_data)
-            t_kernel = tuple(i_kernel)
-            i_out = t_data + t_kernel
-            res[i_out] = fill_value if _is_out(ind, data.shape) else data[tuple(ind)]
-    return res.reshape(data.shape[:2] + (-1,))
+<span class="k">def</span> <span class="nf">im2col_naive</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">kernel_shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kernel_shape</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">kernel_shape</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> for kernel_shape.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kernel_shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape mismatch </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s2"> and </span><span class="si">{</span><span class="n">kernel_shape</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">output_shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="n">kernel_shape</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">output_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">middle</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">m</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">kernel_shape</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">kernel_size</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">kernel_shape</span><span class="p">)</span>
+    <span class="n">data_size</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data_size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">):</span>
+            <span class="n">i_data</span> <span class="o">=</span> <span class="n">_get_indices</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">i_kernel</span> <span class="o">=</span> <span class="n">_get_indices</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">kernel_shape</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">i_data</span> <span class="o">+</span> <span class="n">i_kernel</span> <span class="o">+</span> <span class="n">middle</span>
+            <span class="n">t_data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i_data</span><span class="p">)</span>
+            <span class="n">t_kernel</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i_kernel</span><span class="p">)</span>
+            <span class="n">i_out</span> <span class="o">=</span> <span class="n">t_data</span> <span class="o">+</span> <span class="n">t_kernel</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">i_out</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span> <span class="k">if</span> <span class="n">_is_out</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">else</span> <span class="n">data</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ind</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
 
 
-def convolve_im2col_naive(data, kernel, fill_value=0):
-    res = im2col_naive(img, kernel.shape, fill_value=fill_value)
-    conv = res @ kernel.flatten()
-    conv[0, :] = fill_value
-    conv[:, 0] = fill_value
-    conv[-1, :] = fill_value
-    conv[:, -1] = fill_value
-    return conv
+<span class="k">def</span> <span class="nf">convolve_im2col_naive</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">im2col_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">)</span>
+    <span class="n">conv</span> <span class="o">=</span> <span class="n">res</span> <span class="o">@</span> <span class="n">kernel</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">conv</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="n">conv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="n">conv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="n">conv</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="k">return</span> <span class="n">conv</span>
 
 
-convolve_im2col_naive(img, kernel)
+<span class="n">convolve_im2col_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -935,16 +926,16 @@ array([[ 0.      ,  0.      ,  0.      ,  0.      ,  0.      ,  0.      ,
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def test_unitaire2():
-    assert_almost_equal(
-        convolve_naive(img, kernel), convolve_im2col_naive(img, kernel), decimal=5
-    )
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_unitaire2</span><span class="p">():</span>
+    <span class="n">assert_almost_equal</span><span class="p">(</span>
+        <span class="n">convolve_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">convolve_im2col_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
 
 
-test_unitaire2()
+<span class="n">test_unitaire2</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -954,7 +945,7 @@ test_unitaire2()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -964,48 +955,48 @@ test_unitaire2()
 <h2>Profiling<a class="headerlink" href="#Profiling" title="Lien vers cette rubrique">¶</a></h2>
 <p>La fonction <code class="docutils literal notranslate"><span class="pre">convolve_im2col_naive</span></code> est en fait composées de quatre fonctions. On sait mesurer le temps global mais cela n’aide pas à savoir dans quelle direction partir pour l’accélérer. Le profiling et justement l’outil qu’il nous faut. Il mesure le temps d’exécution passé dans chaque fonction.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>import os
-import sys
-import IPython
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
 
 
-def clean(profiling):
-    &quot;Cette fonction nettoie quelques chemins trop longs.&quot;
-    profiling = profiling.replace(&quot;\\&quot;, &quot;/&quot;)
-    profiling = profiling.replace(
-        os.path.dirname(numpy.__file__).replace(&quot;\\&quot;, &quot;/&quot;), &quot;&quot;
-    )
-    profiling = profiling.replace(
-        os.path.dirname(IPython.__file__).replace(&quot;\\&quot;, &quot;/&quot;), &quot;&quot;
-    )
-    profiling = profiling.replace(sys.exec_prefix.replace(&quot;\\&quot;, &quot;/&quot;), &quot;&quot;)
-    return profiling
+<span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="n">profiling</span><span class="p">):</span>
+    <span class="s2">&quot;Cette fonction nettoie quelques chemins trop longs.&quot;</span>
+    <span class="n">profiling</span> <span class="o">=</span> <span class="n">profiling</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">profiling</span> <span class="o">=</span> <span class="n">profiling</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">profiling</span> <span class="o">=</span> <span class="n">profiling</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">IPython</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">profiling</span> <span class="o">=</span> <span class="n">profiling</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exec_prefix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">profiling</span>
 
 
-def profile_code():
-    for i in range(0, 100):
-        convolve_im2col_naive(img, kernel)
+<span class="k">def</span> <span class="nf">profile_code</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="n">convolve_im2col_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
 
 
-import cProfile, pstats, io
-from pstats import SortKey
-from io import StringIO
+<span class="kn">import</span> <span class="nn">cProfile</span><span class="o">,</span> <span class="nn">pstats</span><span class="o">,</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">SortKey</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
 
-pr = cProfile.Profile(builtins=False)
-pr.enable()
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">(</span><span class="n">builtins</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
 
-profile_code()
+<span class="n">profile_code</span><span class="p">()</span>
 
-pr.disable()
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
 
-s = StringIO()
-sortby = SortKey.CUMULATIVE
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-print(clean(s.getvalue()))
+<span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">clean</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
@@ -1014,33 +1005,112 @@ print(clean(s.getvalue()))
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-         133426 function calls in 0.847 seconds
+         133455 function calls in 0.377 seconds
 
    Ordered by: cumulative time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        2    0.000    0.000    0.847    0.424 /core/interactiveshell.py:3472(run_code)
-        1    0.001    0.001    0.847    0.847 /tmp/ipykernel_8787/3679460054.py:19(profile_code)
-      100    0.005    0.000    0.847    0.008 /tmp/ipykernel_8787/3311625431.py:45(convolve_im2col_naive)
-      100    0.457    0.005    0.842    0.008 /tmp/ipykernel_8787/3311625431.py:23(im2col_naive)
-    88200    0.254    0.000    0.254    0.000 /tmp/ipykernel_8787/3311625431.py:1(_get_indices)
-    44100    0.124    0.000    0.124    0.000 /tmp/ipykernel_8787/3311625431.py:14(_is_out)
-      200    0.001    0.000    0.006    0.000 /core/fromnumeric.py:2979(prod)
-      200    0.005    0.000    0.005    0.000 /core/fromnumeric.py:71(_wrapreduction)
-      200    0.000    0.000    0.000    0.000 /core/fromnumeric.py:72(&lt;dictcomp&gt;)
-      100    0.000    0.000    0.000    0.000 /tmp/ipykernel_8787/3311625431.py:30(&lt;listcomp&gt;)
-      200    0.000    0.000    0.000    0.000 /core/fromnumeric.py:2974(_prod_dispatcher)
-        2    0.000    0.000    0.000    0.000 /lib/python3.10/codeop.py:117(__call__)
-        2    0.000    0.000    0.000    0.000 /lib/python3.10/contextlib.py:279(helper)
-        2    0.000    0.000    0.000    0.000 /lib/python3.10/contextlib.py:130(__enter__)
-        2    0.000    0.000    0.000    0.000 /lib/python3.10/contextlib.py:139(__exit__)
-        2    0.000    0.000    0.000    0.000 /local/lib/python3.10/dist-packages/traitlets/traitlets.py:692(__get__)
+        2    0.000    0.000    0.356    0.178 /core/interactiveshell.py:3541(run_code)
+        1    0.000    0.000    0.356    0.356 /tmp/ipykernel_1225166/3679460054.py:1(&lt;module&gt;)
+        1    0.000    0.000    0.356    0.356 /tmp/ipykernel_1225166/3679460054.py:19(profile_code)
+      100    0.003    0.000    0.338    0.003 /tmp/ipykernel_1225166/3311625431.py:45(convolve_im2col_naive)
+      100    0.209    0.002    0.335    0.003 /tmp/ipykernel_1225166/3311625431.py:23(im2col_naive)
+        1    0.000    0.000    0.097    0.097 /lib/python3.12/site-packages/decorator.py:229(fun)
+        1    0.019    0.019    0.097    0.097 /core/history.py:55(only_when_enabled)
+    88200    0.078    0.000    0.078    0.000 /tmp/ipykernel_1225166/3311625431.py:1(_get_indices)
+    44100    0.051    0.000    0.051    0.000 /tmp/ipykernel_1225166/3311625431.py:14(_is_out)
+        2    0.000    0.000    0.019    0.009 /usr/lib/python3.12/asyncio/events.py:86(_run)
+        1    0.000    0.000    0.018    0.018 /lib/python3.12/site-packages/tornado/platform/asyncio.py:200(_handle_events)
+        2    0.000    0.000    0.018    0.009 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:583(_handle_events)
+        2    0.000    0.000    0.018    0.009 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:624(_handle_recv)
+        2    0.000    0.000    0.018    0.009 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:556(_run_callback)
+        2    0.006    0.003    0.017    0.009 /lib/python3.12/site-packages/ipykernel/iostream.py:157(_handle_event)
+        2    0.000    0.000    0.012    0.006 /lib/python3.12/site-packages/ipykernel/iostream.py:276(&lt;lambda&gt;)
+        2    0.000    0.000    0.012    0.006 /lib/python3.12/site-packages/ipykernel/iostream.py:278(_really_send)
+        1    0.000    0.000    0.006    0.006 /core/history.py:845(writeout_cache)
+        1    0.003    0.003    0.005    0.005 /core/history.py:833(_writeout_input_cache)
+       14    0.003    0.000    0.005    0.000 /lib/python3.12/site-packages/zmq/sugar/socket.py:626(send)
+        2    0.000    0.000    0.004    0.002 /lib/python3.12/site-packages/zmq/sugar/socket.py:703(send_multipart)
+      200    0.000    0.000    0.003    0.000 /_core/fromnumeric.py:3328(prod)
+      200    0.002    0.000    0.002    0.000 /_core/fromnumeric.py:69(_wrapreduction)
+        4    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/sugar/attrsettr.py:43(__getattr__)
+        4    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/sugar/attrsettr.py:66(_get_attr_opt)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/sugar/socket.py:774(recv_multipart)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:708(__set__)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:3631(set)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:1922(_run_once)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:689(set)
+       14    0.000    0.000    0.000    0.000 /usr/lib/python3.12/enum.py:1545(__or__)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:663(_rebuild_io_state)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/tornado/ioloop.py:742(_run_callback)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:694(&lt;lambda&gt;)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/codeop.py:121(__call__)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:686(_update_handler)
+        6    0.000    0.000    0.000    0.000 /usr/lib/python3.12/enum.py:1556(__and__)
+       60    0.000    0.000    0.000    0.000 /usr/lib/python3.12/enum.py:1538(_get_value)
+       26    0.000    0.000    0.000    0.000 /usr/lib/python3.12/enum.py:720(__call__)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:718(_validate)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/decorator.py:199(fix)
+        6    0.000    0.000    0.000    0.000 /usr/lib/python3.12/typing.py:392(inner)
+      200    0.000    0.000    0.000    0.000 /_core/fromnumeric.py:3323(_prod_dispatcher)
+        8    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:676(__get__)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:3474(validate)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:1512(_notify_trait)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:3272(bind)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/selectors.py:451(select)
+       26    0.000    0.000    0.000    0.000 /usr/lib/python3.12/enum.py:1123(__new__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:3133(_bind)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/tornado/platform/asyncio.py:225(add_callback)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:1523(notify_change)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/typing.py:1221(__instancecheck__)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/contextlib.py:299(helper)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/selector_events.py:750(_process_events)
+        1    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:1527(_notify_observers)
+        8    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:629(get)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:727(_cross_validate)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:3624(validate_elements)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/ipykernel/iostream.py:216(_check_mp_mode)
+        4    0.000    0.000    0.000    0.000 &lt;frozen importlib._bootstrap&gt;:1390(_handle_fromlist)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/typing.py:1492(__subclasscheck__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:789(call_soon)
+        4    0.000    0.000    0.000    0.000 /usr/lib/python3.12/typing.py:1285(__hash__)
+        1    0.000    0.000    0.000    0.000 /core/history.py:839(_writeout_output_cache)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:542(sending)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/contextlib.py:104(__init__)
+        3    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:738(time)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/contextlib.py:132(__enter__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:818(_call_soon)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/ipykernel/iostream.py:213(_is_master_process)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/contextlib.py:141(__exit__)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/queue.py:97(empty)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:2949(apply_defaults)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:2304(validate)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:1907(_add_callback)
         4    0.000    0.000    0.000    0.000 /core/compilerop.py:180(extra_flags)
-        2    0.000    0.000    0.000    0.000 /lib/python3.10/contextlib.py:102(__init__)
-        2    0.000    0.000    0.000    0.000 /core/interactiveshell.py:3424(compare)
-        2    0.000    0.000    0.000    0.000 /local/lib/python3.10/dist-packages/traitlets/traitlets.py:654(get)
-        1    0.000    0.000    0.000    0.000 /tmp/ipykernel_8787/3679460054.py:1(&lt;module&gt;)
-        2    0.000    0.000    0.000    0.000 /core/interactiveshell.py:1229(user_global_ns)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/threading.py:299(__enter__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/selectors.py:275(_key_from_fd)
+        2    0.000    0.000    0.000    0.000 &lt;frozen abc&gt;:121(__subclasscheck__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/events.py:36(__init__)
+       28    0.000    0.000    0.000    0.000 /usr/lib/python3.12/typing.py:2187(cast)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:2896(args)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/threading.py:627(clear)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/traitlets/traitlets.py:3486(validate_elements)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/threading.py:302(__exit__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/threading.py:314(_is_owned)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/threading.py:311(_acquire_restore)
+        2    0.000    0.000    0.000    0.000 /core/interactiveshell.py:3493(compare)
+        4    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/zmq/eventloop/zmqstream.py:538(receiving)
+        2    0.000    0.000    0.000    0.000 /usr/lib/python3.12/queue.py:209(_qsize)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:2919(kwargs)
+        2    0.000    0.000    0.000    0.000 /core/interactiveshell.py:1277(user_global_ns)
+        2    0.000    0.000    0.000    0.000 /lib/python3.12/site-packages/ipykernel/iostream.py:255(closed)
+       10    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:2808(kind)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/threading.py:308(_release_save)
+        4    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:2796(name)
+        4    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:3089(parameters)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:543(_check_closed)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/inspect.py:2888(__init__)
+        1    0.000    0.000    0.000    0.000 /usr/lib/python3.12/asyncio/base_events.py:2017(get_debug)
 
 
 
@@ -1052,7 +1122,7 @@ print(clean(s.getvalue()))
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1061,25 +1131,25 @@ print(clean(s.getvalue()))
 <h3>Profilage : événements ou échantillonnage<a class="headerlink" href="#Profilage-:-événements-ou-échantillonnage" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le profileur de python enregistre les événements du programme, il note chaque temps auquel il rentre et sort de chaque fonction. Cela lui permet de construire un graphe d’appel des fonctions.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>from teachpyx.tools.profiling import profile2graph, profile
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">teachpyx.tools.profiling</span> <span class="kn">import</span> <span class="n">profile2graph</span><span class="p">,</span> <span class="n">profile</span>
 
-stat, text = profile(profile_code)
-gr = profile2graph(stat)
-text_prof = clean(gr[0].to_text(fct_width=50))
+<span class="n">stat</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">profile</span><span class="p">(</span><span class="n">profile_code</span><span class="p">)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">profile2graph</span><span class="p">(</span><span class="n">stat</span><span class="p">)</span>
+<span class="n">text_prof</span> <span class="o">=</span> <span class="n">clean</span><span class="p">(</span><span class="n">gr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_text</span><span class="p">(</span><span class="n">fct_width</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
 
-# pour un affichage plus facile à comprendre
-from IPython.display import display, HTML
+<span class="c1"># pour un affichage plus facile à comprendre</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
 
-display(
-    HTML(
-        &#39;&lt;pre style=&quot;white-space: pre !important;&quot;&gt;&#39;
-        + text_prof.replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;).replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;)
-        + &quot;&lt;/pre&gt;&quot;
-    )
-)
+<span class="n">display</span><span class="p">(</span>
+    <span class="n">HTML</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;pre style=&quot;white-space: pre !important;&quot;&gt;&#39;</span>
+        <span class="o">+</span> <span class="n">text_prof</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;gt;&quot;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot;&lt;/pre&gt;&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1087,29 +1157,31 @@ display(
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space: pre !important;">profile_code                                       --      1      1 -- 0.00032 0.79024 -- /tmp/ipykernel_8787/3679460054.py:19:profile_code (profile_code)
-    convolve_im2col_naive                          --    100    100 -- 0.00211 0.78992 -- /tmp/ipykernel_8787/3311625431.py:45:convolve_im2col_naive (convolve_im2col_naive)
-        im2col_naive                               --    100    100 -- 0.29408 0.78693 -- /tmp/ipykernel_8787/3311625431.py:23:im2col_naive (im2col_naive)
-            _prod_dispatcher                       --    200    200 -- 0.00018 0.00018 -- /core/fromnumeric.py:2974:_prod_dispatcher (_prod_dispatcher)
-            prod                                   --    200    200 -- 0.00065 0.00448 -- /core/fromnumeric.py:2979:prod (prod)
-                _wrapreduction                     --    200    200 -- 0.00134 0.00383 -- /core/fromnumeric.py:71:_wrapreduction (_wrapreduction)
-                    &lt;dictcomp&gt;                     --    200    200 -- 0.00025 0.00025 -- /core/fromnumeric.py:72:&lt;dictcomp&gt; (&lt;dictcomp&gt;)
-                    &lt;method 'items...ict' objects&gt; --    200    200 -- 0.00017 0.00017 -- ~:0:&lt;method 'items' of 'dict' objects&gt; (&lt;method 'items' of 'dict' objects&gt;)
-                    &lt;built-in meth...tins.getattr&gt; --    200    200 -- 0.00052 0.00052 -- ~:0:&lt;built-in method builtins.getattr&gt; (&lt;built-in method builtins.getattr&gt;)
-                    &lt;method 'reduc...unc' objects&gt; --    200    200 -- 0.00155 0.00155 -- ~:0:&lt;method 'reduce' of 'numpy.ufunc' objects&gt; (&lt;method 'reduce' of 'numpy.ufunc' objects&gt;)
-            _get_indices                           --  88200  88200 -- 0.24745 0.40406 -- /tmp/ipykernel_8787/3311625431.py:1:_get_indices (_get_indices)
-                &lt;built-in method builtins.len&gt;     --  176400  176400 -- 0.08453 0.08453 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
-                &lt;built-in method numpy.empty&gt;      --  88200  88200 -- 0.07207 0.07207 -- ~:0:&lt;built-in method numpy.empty&gt; (&lt;built-in method numpy.empty&gt;) +++
-            _is_out                                --  44100  44100 -- 0.08270 0.08270 -- /tmp/ipykernel_8787/3311625431.py:14:_is_out (_is_out)
-            &lt;listcomp&gt;                             --    100    100 -- 0.00021 0.00021 -- /tmp/ipykernel_8787/3311625431.py:30:&lt;listcomp&gt; (&lt;listcomp&gt;)
-            &lt;built-in method builtins.isinstance&gt;  --    100    100 -- 0.00007 0.00007 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;)
-            &lt;built-in method builtins.len&gt;         --    200    200 -- 0.00010 0.00010 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
-            &lt;method 'reshape' ...ndarray' objects&gt; --    100    100 -- 0.00037 0.00037 -- ~:0:&lt;method 'reshape' of 'numpy.ndarray' objects&gt; (&lt;method 'reshape' of 'numpy.ndarray' objects&gt;)
-            &lt;built-in method numpy.array&gt;          --    100    100 -- 0.00049 0.00049 -- ~:0:&lt;built-in method numpy.array&gt; (&lt;built-in method numpy.array&gt;)
-            &lt;built-in method numpy.empty&gt;          --    100    100 -- 0.00019 0.00019 -- ~:0:&lt;built-in method numpy.empty&gt; (&lt;built-in method numpy.empty&gt;) +++
-        &lt;method 'flatten' of...y.ndarray' objects&gt; --    100    100 -- 0.00087 0.00087 -- ~:0:&lt;method 'flatten' of 'numpy.ndarray' objects&gt; (&lt;method 'flatten' of 'numpy.ndarray' objects&gt;)
-&lt;built-in method builtins.len&gt;                     --  176600  176600 -- 0.08463 0.08463 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;)
-&lt;built-in method numpy.empty&gt;                      --  88300  88300 -- 0.07226 0.07226 -- ~:0:&lt;built-in method numpy.empty&gt; (&lt;built-in method numpy.empty&gt;)</pre></div>
+<pre style="white-space: pre !important;">profile_code                                       --      1      2 -- 0.00565 0.15479 -- /tmp/ipykernel_1225166/3679460054.py:19:profile_code (profile_code)
+    convolve_im2col_naive                          --    100    100 -- 0.00141 0.34204 -- /tmp/ipykernel_1225166/3311625431.py:45:convolve_im2col_naive (convolve_im2col_naive)
+        im2col_naive                               --    100    100 -- 0.19314 0.34022 -- /tmp/ipykernel_1225166/3311625431.py:23:im2col_naive (im2col_naive)
+            _prod_dispatcher                       --    200    200 -- 0.00004 0.00004 -- /_core/fromnumeric.py:3323:_prod_dispatcher (_prod_dispatcher)
+            prod                                   --    200    200 -- 0.00032 0.00215 -- /_core/fromnumeric.py:3328:prod (prod)
+                _wrapreduction                     --    200    200 -- 0.00066 0.00183 -- /_core/fromnumeric.py:69:_wrapreduction (_wrapreduction)
+                    &lt;method 'items...ict' objects&gt; --    200    200 -- 0.00006 0.00006 -- ~:0:&lt;method 'items' of 'dict' objects&gt; (&lt;method 'items' of 'dict' objects&gt;) +++
+                    &lt;built-in meth...tins.getattr&gt; --    200    200 -- 0.00028 0.00028 -- ~:0:&lt;built-in method builtins.getattr&gt; (&lt;built-in method builtins.getattr&gt;)
+                    &lt;method 'reduc...unc' objects&gt; --    200    200 -- 0.00083 0.00083 -- ~:0:&lt;method 'reduce' of 'numpy.ufunc' objects&gt; (&lt;method 'reduce' of 'numpy.ufunc' objects&gt;)
+            _get_indices                           --  88200  88200 -- 0.06253 0.10034 -- /tmp/ipykernel_1225166/3311625431.py:1:_get_indices (_get_indices)
+                &lt;built-in method builtins.len&gt;     --  176400  176400 -- 0.01397 0.01397 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+                &lt;built-in method numpy.empty&gt;      --  88200  88200 -- 0.02384 0.02384 -- ~:0:&lt;built-in method numpy.empty&gt; (&lt;built-in method numpy.empty&gt;) +++
+            _is_out                                --  44100  44100 -- 0.04596 0.04596 -- /tmp/ipykernel_1225166/3311625431.py:14:_is_out (_is_out)
+            &lt;built-in method builtins.isinstance&gt;  --    100    100 -- 0.00004 0.00004 -- ~:0:&lt;built-in method builtins.isinstance&gt; (&lt;built-in method builtins.isinstance&gt;)
+            &lt;built-in method builtins.len&gt;         --    200    200 -- 0.00003 0.00003 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;) +++
+            &lt;method 'reshape' ...ndarray' objects&gt; --    100    100 -- 0.00018 0.00018 -- ~:0:&lt;method 'reshape' of 'numpy.ndarray' objects&gt; (&lt;method 'reshape' of 'numpy.ndarray' objects&gt;)
+            &lt;built-in method numpy.array&gt;          --    100    100 -- 0.00027 0.00027 -- ~:0:&lt;built-in method numpy.array&gt; (&lt;built-in method numpy.array&gt;)
+            &lt;built-in method numpy.empty&gt;          --    100    100 -- 0.00015 0.00015 -- ~:0:&lt;built-in method numpy.empty&gt; (&lt;built-in method numpy.empty&gt;) +++
+        time                                       --      2      2 -- 0.00002 0.00002 -- /usr/lib/python3.12/asyncio/base_events.py:738:time (time)
+        _run                                       --      1      1 -- 0.00001 0.00009 -- /usr/lib/python3.12/asyncio/events.py:86:_run (_run)
+        _process_events                            --      1      1 -- 0.00000 0.00000 -- /usr/lib/python3.12/asyncio/selector_events.py:750:_process_events (_process_events)
+        &lt;method 'flatten' of...y.ndarray' objects&gt; --    100    100 -- 0.00041 0.00041 -- ~:0:&lt;method 'flatten' of 'numpy.ndarray' objects&gt; (&lt;method 'flatten' of 'numpy.ndarray' objects&gt;)
+&lt;built-in method builtins.len&gt;                     --  176603  176603 -- 0.01400 0.01400 -- ~:0:&lt;built-in method builtins.len&gt; (&lt;built-in method builtins.len&gt;)
+&lt;built-in method numpy.empty&gt;                      --  88300  88300 -- 0.02399 0.02399 -- ~:0:&lt;built-in method numpy.empty&gt; (&lt;built-in method numpy.empty&gt;)
+&lt;method 'items' of 'dict' objects&gt;                 --    201    201 -- 0.00006 0.00006 -- ~:0:&lt;method 'items' of 'dict' objects&gt; (&lt;method 'items' of 'dict' objects&gt;)</pre></div>
 </div>
 <p>Les langages interprétés sont plus faciles à profiler car c’est l’interpréteur qui enregistre les appels. Dans le cas d’un langage compilé (plus bas niveau) comme le C, C++, cette technique ne fonctionne pas. Le programme est converti en langage machine et inclure des instructions pour enregistrer les appels ralentit considérablement le programme au point de fausser la mesure.</p>
 <p>Les profileurs procèdent alors en interrompant le programme, ils enregistrent alors la ligne qui est en train d’être exécutée car le compilateur a inséré des marqueurs qui permettent d’associer ligne de code et langage machine. Ces profileurs sont souvent considérés comme des <a class="reference external" href="https://en.wikipedia.org/wiki/Profiling_(computer_programming)#Statistical_profilers">profileurs statistiques</a>.</p>
@@ -1120,71 +1192,71 @@ informations de débuggage. Si le processeur sait quelle instruction il exécute
 <section id="Une-dernière-implémentation">
 <h2>Une dernière implémentation<a class="headerlink" href="#Une-dernière-implémentation" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>def im2col_recursive(data, kernel_shape, fill_value=0):
-    &quot;&quot;&quot;
-    Recursive implementation, falls back to
-    @see fn im2col_naive_implementation for dimension `&lt;= fall_back_dim`.
-    The function is equivalent to
-    :func:`torch.nn.Unfold` (but with `padding=1` on all dimensions).
-    :param image: image (float)
-    :param kernel_shape: kernel shape
-    :param fill_value: fill value
-    :param fall_back_dim: below that threshold,
-        switches to @see fn im2col_naive_implementation.
-    :return: result
-    &quot;&quot;&quot;
-    if len(data.shape) &lt;= 2:
-        return im2col_naive(data, kernel_shape, fill_value)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">im2col_recursive</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">kernel_shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recursive implementation, falls back to</span>
+<span class="sd">    @see fn im2col_naive_implementation for dimension `&lt;= fall_back_dim`.</span>
+<span class="sd">    The function is equivalent to</span>
+<span class="sd">    :func:`torch.nn.Unfold` (but with `padding=1` on all dimensions).</span>
+<span class="sd">    :param image: image (float)</span>
+<span class="sd">    :param kernel_shape: kernel shape</span>
+<span class="sd">    :param fill_value: fill value</span>
+<span class="sd">    :param fall_back_dim: below that threshold,</span>
+<span class="sd">        switches to @see fn im2col_naive_implementation.</span>
+<span class="sd">    :return: result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">im2col_naive</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">kernel_shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span>
 
-    perm = numpy.arange(len(data.shape) * 2).tolist()
-    del perm[1:2]
-    perm.insert(len(data.shape), 1)
+    <span class="n">perm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">del</span> <span class="n">perm</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">perm</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 
-    res = []
-    N0 = data.shape[0]
-    k0 = kernel_shape[0]
-    mini_kernel = kernel_shape[1:]
-    mini_shape = data.shape[1:] + mini_kernel
-    for i in range(N0):
-        for k in range(k0):
-            ii = k - k0 // 2 + i
-            if ii &lt; 0 or ii &gt;= N0:
-                cc = numpy.full(mini_shape, dtype=data.dtype, fill_value=fill_value)
-            else:
-                # many computation are already done, results should be cached.
-                cc = im2col_recursive(data[ii], mini_kernel, fill_value)
-            cc2 = cc[numpy.newaxis, ...]
-            res.append(cc2)
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">N0</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">k0</span> <span class="o">=</span> <span class="n">kernel_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mini_kernel</span> <span class="o">=</span> <span class="n">kernel_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">mini_shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">mini_kernel</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k0</span><span class="p">):</span>
+            <span class="n">ii</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">k0</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">i</span>
+            <span class="k">if</span> <span class="n">ii</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ii</span> <span class="o">&gt;=</span> <span class="n">N0</span><span class="p">:</span>
+                <span class="n">cc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">mini_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># many computation are already done, results should be cached.</span>
+                <span class="n">cc</span> <span class="o">=</span> <span class="n">im2col_recursive</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">mini_kernel</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span>
+            <span class="n">cc2</span> <span class="o">=</span> <span class="n">cc</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cc2</span><span class="p">)</span>
 
-    final = numpy.vstack(res)
-    new_shape = (N0, k0) + cc.shape
-    resh = final.reshape(new_shape)
-    return numpy.transpose(resh, tuple(perm))
-
-
-im2col_recursive(img, (3, 3))
+    <span class="n">final</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">N0</span><span class="p">,</span> <span class="n">k0</span><span class="p">)</span> <span class="o">+</span> <span class="n">cc</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">resh</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">resh</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span>
 
 
-def convolve_im2col_recursive(data, kernel, fill_value=0):
-    res = im2col_recursive(img, kernel.shape, fill_value=fill_value)
-    conv = res @ kernel.flatten()
-    conv[0, :] = fill_value
-    conv[:, 0] = fill_value
-    conv[-1, :] = fill_value
-    conv[:, -1] = fill_value
-    return conv
+<span class="n">im2col_recursive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
 
-def test_unitaire3():
-    assert_almost_equal(
-        convolve_naive(img, kernel), convolve_im2col_recursive(img, kernel), decimal=5
-    )
+<span class="k">def</span> <span class="nf">convolve_im2col_recursive</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">im2col_recursive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">)</span>
+    <span class="n">conv</span> <span class="o">=</span> <span class="n">res</span> <span class="o">@</span> <span class="n">kernel</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">conv</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="n">conv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="n">conv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="n">conv</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fill_value</span>
+    <span class="k">return</span> <span class="n">conv</span>
 
 
-test_unitaire3()
+<span class="k">def</span> <span class="nf">test_unitaire3</span><span class="p">():</span>
+    <span class="n">assert_almost_equal</span><span class="p">(</span>
+        <span class="n">convolve_naive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">convolve_im2col_recursive</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">),</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+
+
+<span class="n">test_unitaire3</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1195,7 +1267,7 @@ test_unitaire3()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
