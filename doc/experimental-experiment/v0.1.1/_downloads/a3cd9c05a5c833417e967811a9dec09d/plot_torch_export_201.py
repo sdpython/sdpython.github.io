@@ -8,15 +8,15 @@ The example evaluates the performance of onnxruntime of a simple
 torch model after it was converted into ONNX through different processes:
 
 * `TorchScript-based ONNX Exporter
-  <https://pytorch.org/docs/stable/onnx.html#torchscript-based-onnx-exporter>`_,
+  <https://docs.pytorch.org/docs/stable/onnx.html#torchscript-based-onnx-exporter>`_,
   let's call it **script**
 * `TorchDynamo-based ONNX Exporter
-  <https://pytorch.org/docs/stable/onnx.html#torchdynamo-based-onnx-exporter>`_,
+  <https://docs.pytorch.org/docs/stable/onnx.html#torchdynamo-based-onnx-exporter>`_,
   let's call it **dynamo**
 * if available, the previous model but optimized, **dynopt**
 * a custom exporter **cus_p0**, this exporter supports a very limited
   set of models, as **dynamo**, it relies on
-  `torch.fx <https://pytorch.org/docs/stable/fx.html>`_ but the design is closer to
+  `torch.fx <https://docs.pytorch.org/docs/stable/fx.html>`_ but the design is closer to
   what tensorflow-onnx does.
 * the same exporter but unused nodes were removed and constants were folded, **cus_p2**
 
@@ -250,7 +250,7 @@ def export_script(filename, model, *args):
     with contextlib.redirect_stdout(io.StringIO()):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            torch.onnx.export(model, *args, filename, input_names=["input"])
+            torch.onnx.export(model, *args, filename, input_names=["input"], dynamo=False)
 
 
 def export_dynamo(filename, model, *args):
@@ -481,7 +481,7 @@ def profile_function(name, export_function, verbose=False):
     with open(f"plot_torch_export_profile_{name}.txt", "w") as f:
         f.write(raw)
 
-    root, nodes = profile2graph(ps, clean_text=clean_text)
+    root, _nodes = profile2graph(ps, clean_text=clean_text)
     text = root.to_text()
     with open(f"plot_torch_export_profile_{name}_h.txt", "w") as f:
         f.write(text)

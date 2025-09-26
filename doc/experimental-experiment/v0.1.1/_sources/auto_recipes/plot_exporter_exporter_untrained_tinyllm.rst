@@ -36,7 +36,7 @@ The first step is to guess the dummy inputs.
 Let's use the true model for that.
 We use the dummy example from the model page.
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-31
+.. GENERATED FROM PYTHON SOURCE LINES 20-32
 
 .. code-block:: Python
 
@@ -45,6 +45,7 @@ We use the dummy example from the model page.
     import packaging.version as pv
     import torch
     import transformers
+    from onnx_diagnostic.helpers import string_type
 
 
     MODEL_NAME = "arnir0/Tiny-LLM"
@@ -58,43 +59,26 @@ We use the dummy example from the model page.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-33
+.. GENERATED FROM PYTHON SOURCE LINES 33-34
 
 We rewrite the forward method to print the cache dimension.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-63
+.. GENERATED FROM PYTHON SOURCE LINES 34-47
 
 .. code-block:: Python
 
-
-
-    def string_inputs(args, kwargs):
-        def _cache(a):
-            if len(a.key_cache):
-                return f"n_caches={len(a.key_cache)}, shape={a.key_cache[0].shape}"
-            return f"n_caches={len(a.key_cache)}"
-
-        for a in args:
-            if isinstance(a, transformers.cache_utils.DynamicCache):
-                return _cache(a)
-        for k, a in kwargs.items():
-            if isinstance(a, transformers.cache_utils.DynamicCache):
-                return f"{k}={_cache(a)}"
-        return "no_cache"
 
 
     def _forward_(*args, _f=None, **kwargs):
         assert _f is not None
         if hasattr(torch.compiler, "is_exporting") and not torch.compiler.is_exporting():
             # torch.compiler.is_exporting requires torch>=2.7
-            print(string_inputs(args, kwargs))
+            print(string_type([args, kwargs], with_shape=True))
         return _f(*args, **kwargs)
 
 
     keep_model_forward = model.forward
-    model.forward = lambda *args, _f=keep_model_forward, **kwargs: _forward_(
-        *args, _f=_f, **kwargs
-    )
+    model.forward = lambda *args, _f=keep_model_forward, **kwargs: _forward_(*args, _f=_f, **kwargs)
 
 
 
@@ -103,11 +87,11 @@ We rewrite the forward method to print the cache dimension.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 Let's run the model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-75
+.. GENERATED FROM PYTHON SOURCE LINES 49-59
 
 .. code-block:: Python
 
@@ -129,17 +113,61 @@ Let's run the model.
 
  .. code-block:: none
 
-    past_key_values=n_caches=0
-    Continue: it rains...
+    #2[(),dict(cache_position:T7s8,past_key_values:DynamicCache(key_cache=#0[], value_cache=#0[]),input_ids:T7s1x8,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96], value_cache=#1[T1s1x1x8x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96], value_cache=#1[T1s1x1x9x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96], value_cache=#1[T1s1x1x10x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x11x96], value_cache=#1[T1s1x1x11x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x12x96], value_cache=#1[T1s1x1x12x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x13x96], value_cache=#1[T1s1x1x13x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x14x96], value_cache=#1[T1s1x1x14x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x15x96], value_cache=#1[T1s1x1x15x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x16x96], value_cache=#1[T1s1x1x16x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x17x96], value_cache=#1[T1s1x1x17x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x18x96], value_cache=#1[T1s1x1x18x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96], value_cache=#1[T1s1x1x19x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96], value_cache=#1[T1s1x1x20x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96], value_cache=#1[T1s1x1x21x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96], value_cache=#1[T1s1x1x22x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96], value_cache=#1[T1s1x1x23x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96], value_cache=#1[T1s1x1x24x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96], value_cache=#1[T1s1x1x25x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96], value_cache=#1[T1s1x1x26x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96], value_cache=#1[T1s1x1x27x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96], value_cache=#1[T1s1x1x28x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96], value_cache=#1[T1s1x1x29x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96], value_cache=#1[T1s1x1x30x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96], value_cache=#1[T1s1x1x31x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96], value_cache=#1[T1s1x1x32x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96], value_cache=#1[T1s1x1x33x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96], value_cache=#1[T1s1x1x34x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96], value_cache=#1[T1s1x1x35x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96], value_cache=#1[T1s1x1x36x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96], value_cache=#1[T1s1x1x37x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96], value_cache=#1[T1s1x1x38x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96], value_cache=#1[T1s1x1x39x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96], value_cache=#1[T1s1x1x40x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96], value_cache=#1[T1s1x1x41x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96], value_cache=#1[T1s1x1x42x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96], value_cache=#1[T1s1x1x43x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96], value_cache=#1[T1s1x1x44x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96], value_cache=#1[T1s1x1x45x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96], value_cache=#1[T1s1x1x46x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    Continue: it rains... A S Awaya - Pump - OB
+    Casuran Charged - Jays
+    JJ.C.J. Williams
+    Judgio, P. CJ.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-77
+.. GENERATED FROM PYTHON SOURCE LINES 60-61
 
 Let's restore the forward as it was.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-79
+.. GENERATED FROM PYTHON SOURCE LINES 61-63
 
 .. code-block:: Python
 
@@ -152,14 +180,14 @@ Let's restore the forward as it was.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-84
+.. GENERATED FROM PYTHON SOURCE LINES 64-68
 
 The model creation
 ++++++++++++++++++
 
 Let's create an untrained model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-211
+.. GENERATED FROM PYTHON SOURCE LINES 68-189
 
 .. code-block:: Python
 
@@ -267,21 +295,15 @@ Let's create an untrained model.
             ],
         }
         inputs = dict(
-            input_ids=torch.randint(0, max_token_id, (batch_size, sequence_length2)).to(
-                torch.int64
-            ),
+            input_ids=torch.randint(0, max_token_id, (batch_size, sequence_length2)).to(torch.int64),
             attention_mask=torch.ones((batch_size, sequence_length + sequence_length2)).to(
                 torch.int64
             ),
             past_key_values=make_dynamic_cache(
                 [
                     (
-                        torch.randn(
-                            batch_size, num_key_value_heads, sequence_length, cache_last_dim
-                        ),
-                        torch.randn(
-                            batch_size, num_key_value_heads, sequence_length, cache_last_dim
-                        ),
+                        torch.randn(batch_size, num_key_value_heads, sequence_length, cache_last_dim),
+                        torch.randn(batch_size, num_key_value_heads, sequence_length, cache_last_dim),
                     )
                     for i in range(n_layers)
                 ]
@@ -297,11 +319,11 @@ Let's create an untrained model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 212-213
+.. GENERATED FROM PYTHON SOURCE LINES 190-191
 
 Let's get the model, inputs and dynamic shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 213-221
+.. GENERATED FROM PYTHON SOURCE LINES 191-199
 
 .. code-block:: Python
 
@@ -320,7 +342,7 @@ Let's get the model, inputs and dynamic shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 222-225
+.. GENERATED FROM PYTHON SOURCE LINES 200-203
 
 .. code-block:: Python
 
@@ -340,14 +362,14 @@ Let's get the model, inputs and dynamic shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-230
+.. GENERATED FROM PYTHON SOURCE LINES 204-208
 
 It works.
 
 ExportedProgram
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 230-240
+.. GENERATED FROM PYTHON SOURCE LINES 208-218
 
 .. code-block:: Python
 
@@ -369,7 +391,10 @@ ExportedProgram
 
  .. code-block:: none
 
-    It failed: The size of tensor a (s2 + s66) must match the size of tensor b (s10) at non-singleton dimension 3)
+    It failed: Cannot associate shape [[{0: Dim('batch', min=1, max=1024), 2: Dim('cache_length', min=1, max=4096)}], [{0: Dim('batch', min=1, max=1024), 2: Dim('cache_length', min=1, max=4096)}]] specified at `dynamic_shapes['past_key_values']` to non-tensor type <class 'transformers.cache_utils.DynamicCache'> at `inputs['past_key_values']` (expected None)
+    For more information about this error, see: https://pytorch.org/docs/main/generated/exportdb/index.html#dynamic-shapes-validation
+
+    The error above occurred when calling torch.export.export. If you would like to view some more information about this error, and get a list of all other errors that may occur in your export call, you can replace your `export()` call with `draft_export()`.
 
 
 
@@ -377,7 +402,7 @@ ExportedProgram
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.621 seconds)
+   **Total running time of the script:** (0 minutes 1.623 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_untrained_tinyllm.py:

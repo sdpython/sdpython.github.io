@@ -66,7 +66,7 @@ We appy loops to the pairwise distances (:class:`torch.nn.PairwiseDistance`).
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=2.118899624647952e-07
+    shape=(3, 5), discrepancies=4.538582114577139e-07
 
 
 
@@ -103,24 +103,21 @@ It works if the input size never change.
         %sum_1 : [num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul, [1]), kwargs = {})
         %sqrt : [num_users=1] = call_function[target=torch.ops.aten.sqrt.default](args = (%sum_1,), kwargs = {})
         %select : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 0), kwargs = {})
-        %slice_2 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select, 0, 0, 9223372036854775807), kwargs = {})
-        %copy_ : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%slice_2, %sqrt), kwargs = {})
-        %slice_3 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 1, 2), kwargs = {})
-        %sub_1 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_3), kwargs = {})
+        %copy_ : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%select, %sqrt), kwargs = {})
+        %slice_2 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 1, 2), kwargs = {})
+        %sub_1 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_2), kwargs = {})
         %mul_1 : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%sub_1, %sub_1), kwargs = {})
         %sum_2 : [num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul_1, [1]), kwargs = {})
         %sqrt_1 : [num_users=1] = call_function[target=torch.ops.aten.sqrt.default](args = (%sum_2,), kwargs = {})
         %select_1 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 1), kwargs = {})
-        %slice_4 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select_1, 0, 0, 9223372036854775807), kwargs = {})
-        %copy__1 : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%slice_4, %sqrt_1), kwargs = {})
-        %slice_5 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 2, 3), kwargs = {})
-        %sub_2 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_5), kwargs = {})
+        %copy__1 : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%select_1, %sqrt_1), kwargs = {})
+        %slice_3 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%x, 0, 2, 3), kwargs = {})
+        %sub_2 : [num_users=1] = call_function[target=torch.ops.aten.sub.Tensor](args = (%y, %slice_3), kwargs = {})
         %mul_2 : [num_users=1] = call_function[target=torch.ops.aten.mul.Tensor](args = (%sub_2, %sub_2), kwargs = {})
         %sum_3 : [num_users=1] = call_function[target=torch.ops.aten.sum.dim_IntList](args = (%mul_2, [1]), kwargs = {})
         %sqrt_2 : [num_users=1] = call_function[target=torch.ops.aten.sqrt.default](args = (%sum_3,), kwargs = {})
         %select_2 : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%empty, 0, 2), kwargs = {})
-        %slice_6 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%select_2, 0, 0, 9223372036854775807), kwargs = {})
-        %copy__2 : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%slice_6, %sqrt_2), kwargs = {})
+        %copy__2 : [num_users=0] = call_function[target=torch.ops.aten.copy_.default](args = (%select_2, %sqrt_2), kwargs = {})
         return (empty,)
 
 
@@ -155,7 +152,7 @@ However, with dynamic shapes, that's another story.
  .. code-block:: none
 
     Constraints violated (x_rows)! For more information, run with TORCH_LOGS="+dynamic".
-      - You marked x_rows as dynamic but your code specialized it to be a constant (3). Either remove the mark_dynamic or use a less strict API such as maybe_mark_dynamic or Dim.AUTO.
+      - You marked x_rows as dynamic but your code specialized it to be a constant (3). If you're using mark_dynamic, either remove it or use maybe_mark_dynamic. If you're using Dim.DYNAMIC, replace it with either Dim.STATIC or Dim.AUTO.
     Suggested fixes:
       x_rows = 3
 
@@ -190,7 +187,7 @@ We need to rewrite the module with function
     class ModuleWithControlFlowLoopScan(torch.nn.Module):
 
         def forward(self, x, y):
-            carry, out = torch.ops.higher_order.scan(dist, [y], [x], additional_inputs=[])
+            _carry, out = torch.ops.higher_order.scan(dist, [y], [x], additional_inputs=[])
             return out
 
 
@@ -206,7 +203,7 @@ We need to rewrite the module with function
 
  .. code-block:: none
 
-    shape=(3, 5), discrepancies=2.118899624647952e-07
+    shape=(3, 5), discrepancies=4.538582114577139e-07
 
 
 
@@ -247,7 +244,7 @@ That works. Let's export again.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.651 seconds)
+   **Total running time of the script:** (0 minutes 0.863 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_scan_pdist.py:

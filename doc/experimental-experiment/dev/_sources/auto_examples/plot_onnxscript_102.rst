@@ -64,13 +64,6 @@ Custom Opset and Local Functions
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /home/xadupre/github/onnxscript/onnxscript/converter.py:816: FutureWarning: 'onnxscript.values.Op.param_schemas' is deprecated in version 0.1 and will be removed in the future. Please use '.op_signature' instead.
-      param_schemas = callee.param_schemas()
-
 
 
 
@@ -129,7 +122,7 @@ Then we export the model into ONNX.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.248 seconds)
+   **Total running time of the script:** (0 minutes 0.081 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_onnxscript_102.py:

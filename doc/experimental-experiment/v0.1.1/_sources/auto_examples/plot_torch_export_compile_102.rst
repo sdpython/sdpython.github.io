@@ -181,7 +181,7 @@ Another graph obtained with torch.compile.
         %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
         return (relu,)
 
-    tensor([[0.3669, 0.3604, 0.3745]], grad_fn=<ReluBackward0>)
+    tensor([[0.4282, 0.5769, 0.3278]], grad_fn=<ReluBackward0>)
 
 
 
@@ -233,9 +233,9 @@ Unflattened
 
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=[1, 5]
-    init: name='GemmTransposePattern--_onx_transpose_p_neuron_linear_weight0' type=float32 shape=(3, 5)-- GraphBuilder.constant_folding.from/fold(_onx_transpose_p_neuron_linear_weight0)##_onx_transpose_p_neuron_linear_weight0/GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight)##p_neuron_linear_weight/DynamoInterpret.placeholder.1/P(neuron.linear.weight)
-    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.19706935, -0.2565106 ,  0.11073593], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
-    Gemm(x, GemmTransposePattern--_onx_transpose_p_neuron_linear_weight0, neuron.linear.bias, transB=1) -> linear
+    init: name='GemmTransposePattern--p_neuron_linear_weight::T10' type=float32 shape=(3, 5)-- GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight::T10)##p_neuron_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight)##p_neuron_linear_weight/DynamoInterpret.placeholder.1/P(neuron.linear.weight)
+    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.4356356 ,  0.41472515,  0.20622815], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+    Gemm(x, GemmTransposePattern--p_neuron_linear_weight::T10, neuron.linear.bias, transB=1) -> linear
       Sigmoid(linear) -> sigmoid
         Relu(sigmoid) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
@@ -266,9 +266,9 @@ Let's preserve the module.
     opset: domain='' version=18
     opset: domain='aten_local_function' version=1
     input: name='x' type=dtype('float32') shape=[1, 5]
-    Constant(value=[-0.197069...) -> bias
-    Constant(value=[[0.007774...) -> GemmTransposePattern--_onx_transpose_weight0
-      Gemm(x, GemmTransposePattern--_onx_transpose_weight0, bias, transB=1) -> linear
+    Constant(value=[-0.435635...) -> bias
+    Constant(value=[[0.045906...) -> GemmTransposePattern--weight::T10
+      Gemm(x, GemmTransposePattern--weight::T10, bias, transB=1) -> linear
         Sigmoid(linear) -> neuron
           Relu(neuron) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
@@ -279,7 +279,7 @@ Let's preserve the module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.150 seconds)
+   **Total running time of the script:** (0 minutes 0.213 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_compile_102.py:

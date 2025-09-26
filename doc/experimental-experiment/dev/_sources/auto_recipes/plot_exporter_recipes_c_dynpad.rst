@@ -149,28 +149,26 @@ Let's defined the dynamic shapes and checks it exports.
 
     ExportedProgram:
         class GraphModule(torch.nn.Module):
-            def forward(self, x: "f32[s35, s16, s90]"):
+            def forward(self, x: "f32[s77, s27, s53]"):
                  # 
-                sym_size_int_3: "Sym(s35)" = torch.ops.aten.sym_size.int(x, 0)
-                sym_size_int_4: "Sym(s16)" = torch.ops.aten.sym_size.int(x, 1)
-                sym_size_int_5: "Sym(s90)" = torch.ops.aten.sym_size.int(x, 2)
-                add_1: "Sym(s16 + 3)" = 3 + sym_size_int_4
-                floordiv_1: "Sym(((s16 + 3)//4))" = add_1 // 4;  add_1 = None
-                mul_1: "Sym(4*(((s16 + 3)//4)))" = 4 * floordiv_1;  floordiv_1 = None
-                le: "Sym(s16 <= 4*(((s16 + 3)//4)))" = sym_size_int_4 <= mul_1
-                _assert_scalar_default = torch.ops.aten._assert_scalar.default(le, "Runtime assertion failed for expression s16 <= 4*(((s16 + 3)//4)) on node 'le'");  le = _assert_scalar_default = None
+                sym_size_int_3: "Sym(s77)" = torch.ops.aten.sym_size.int(x, 0)
+                sym_size_int_4: "Sym(s27)" = torch.ops.aten.sym_size.int(x, 1)
+                sym_size_int_5: "Sym(s53)" = torch.ops.aten.sym_size.int(x, 2)
             
                  # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
-                add: "Sym(s16 + 4)" = sym_size_int_4 + 4;  add = None
+                add: "Sym(s27 + 4)" = sym_size_int_4 + 4
+                sub: "Sym(s27 + 3)" = add - 1;  add = None
+                floordiv: "Sym(((s27 + 3)//4))" = sub // 4;  sub = None
+                mul: "Sym(4*(((s27 + 3)//4)))" = floordiv * 4;  floordiv = None
             
                  # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: to_pad = next_dim - dim
-                sub_1: "Sym(-s16 + 4*(((s16 + 3)//4)))" = mul_1 - sym_size_int_4;  mul_1 = sym_size_int_4 = None
+                sub_1: "Sym(-s27 + 4*(((s27 + 3)//4)))" = mul - sym_size_int_4;  mul = sym_size_int_4 = None
             
                  # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:42 in forward, code: pad = torch.zeros(
-                zeros: "f32[s35, -s16 + 4*(((s16 + 3)//4)), s90]" = torch.ops.aten.zeros.default([sym_size_int_3, sub_1, sym_size_int_5], dtype = torch.float32, device = device(type='cpu'), pin_memory = False);  sym_size_int_3 = sub_1 = sym_size_int_5 = None
+                zeros: "f32[s77, -s27 + 4*(((s27 + 3)//4)), s53]" = torch.ops.aten.zeros.default([sym_size_int_3, sub_1, sym_size_int_5], dtype = torch.float32, device = device(type='cpu'), pin_memory = False);  sym_size_int_3 = sub_1 = sym_size_int_5 = None
             
                  # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:45 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
-                cat: "f32[s35, 4*(((s16 + 3)//4)), s90]" = torch.ops.aten.cat.default([x, zeros], 1);  x = zeros = None
+                cat: "f32[s77, 4*(((s27 + 3)//4)), s53]" = torch.ops.aten.cat.default([x, zeros], 1);  x = zeros = None
                 return (cat,)
             
     Graph signature: 
@@ -180,7 +178,7 @@ Let's defined the dynamic shapes and checks it exports.
         # outputs
         cat: USER_OUTPUT
     
-    Range constraints: {s35: VR[2, int_oo], s16: VR[2, int_oo], s90: VR[2, int_oo]}
+    Range constraints: {s77: VR[2, int_oo], s27: VR[2, int_oo], s53: VR[2, int_oo]}
 
 
 
@@ -208,20 +206,21 @@ We can also inline the local function.
 
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=['batch', 'seq_len', 'num_frames']
-    init: name='init7_s_3' type=int64 shape=() -- array([3])              -- shape_type_compute._cast_inputs.1(add)
-    init: name='init7_s_4' type=int64 shape=() -- array([4])              -- Opset.make_node.1/Shape##shape_type_compute._cast_inputs.1(mul)
+    init: name='init7_s_4' type=int64 shape=() -- array([4])              -- shape_type_compute._cast_inputs.1(add)##Opset.make_node.1/Shape##shape_type_compute._cast_inputs.1(mul)
+    init: name='init7_s_1' type=int64 shape=() -- array([1])              -- shape_type_compute._cast_inputs.0
     init: name='init7_s1_0' type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##Opset.make_node.1/Shape
-    Shape(x, end=1, start=0) -> _shape_x0
-    Shape(x, end=2, start=1) -> _shape_x02
-      Squeeze(_shape_x02) -> sym_size_int_4
-        Add(init7_s_3, sym_size_int_4) -> _onx_add_init7_s_30
-          Div(_onx_add_init7_s_30, init7_s_4) -> _onx_div_add_10
-            Mul(init7_s_4, _onx_div_add_10) -> _onx_mul_init7_s_40
-        Sub(_onx_mul_init7_s_40, sym_size_int_4) -> sub_1
-          Unsqueeze(sub_1, init7_s1_0) -> _onx_unsqueeze_sub_10
-    Shape(x, end=3, start=2) -> _shape_x03
-      Concat(_shape_x0, _onx_unsqueeze_sub_10, _shape_x03, axis=0) -> _onx_concat_unsqueeze_sym_size_int_300
-        ConstantOfShape(_onx_concat_unsqueeze_sym_size_int_300, value=[0.0]) -> zeros
+    Shape(x, end=1, start=0) -> x::Shape:1
+    Shape(x, end=2, start=1) -> x::Shape1:2
+      Squeeze(x::Shape1:2) -> sym_size_int_4
+        Add(sym_size_int_4, init7_s_4) -> _onx_add_sym_size_int_4
+          Sub(_onx_add_sym_size_int_4, init7_s_1) -> sub
+            Div(sub, init7_s_4) -> _onx_div_sub
+              Mul(_onx_div_sub, init7_s_4) -> _onx_mul_floordiv
+        Sub(_onx_mul_floordiv, sym_size_int_4) -> sub_1
+          Unsqueeze(sub_1, init7_s1_0) -> sub_1::UnSq0
+    Shape(x, end=3, start=2) -> x::Shape2:3
+      Concat(x::Shape:1, sub_1::UnSq0, x::Shape2:3, axis=0) -> _onx_concat_sym_size_int_3::UnSq0
+        ConstantOfShape(_onx_concat_sym_size_int_3::UnSq0, value=[0.0]) -> zeros
           Concat(x, zeros, axis=1) -> output_0
     output: name='output_0' type=dtype('float32') shape=['batch', 'seq_len+-seq_len+4*((seq_len+3)//4)', 'num_frames']
 
@@ -312,7 +311,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.314 seconds)
+   **Total running time of the script:** (0 minutes 0.617 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_dynpad.py:

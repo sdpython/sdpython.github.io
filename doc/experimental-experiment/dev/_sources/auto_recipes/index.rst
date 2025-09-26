@@ -26,7 +26,7 @@ pytorch nightly build should be installed, see
 ::
 
     git clone https://github.com/sdpython/experimental-experiment.git
-    pip install onnxruntime-gpu pynvml
+    pip install onnxruntime-gpu nvidia-ml-py
     pip install -r requirements-dev.txt    
     export PYTHONPATH=$PYTHONPATH:<this folder>
 
@@ -47,23 +47,6 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes ensures a model is valid not matter what the dimension value is for a dynamic dimension. torch.export.export is trying to keep track of that information for every intermediate result the model produces. But something it fails. Let&#x27;s see one case.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_lost_dynamic_dimension_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_lost_dynamic_dimension.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">A dynamic dimension lost by torch.export.export</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Every conversion task must be tested on a large scale. One huge source of model is HuggingFace. We focus on the model Tiny-LLM. To avoid downloading any weigths, we write a function creating a random model based on the same architecture.">
 
 .. only:: html
@@ -76,23 +59,6 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Check the exporter on a dummy from HuggingFace</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This continues example l-plot-torch-export-with-dynamic-cache-201.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_inputs_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_inputs.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Do no use Module as inputs!</div>
     </div>
 
 
@@ -149,23 +115,6 @@ Some of them are exposed in the examples. Others may be found at
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We will a class used in many model: transformers.cache_utils.DynamicCache.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_with_dynamic_cache_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_with_dynamic_cache.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Export a model using a custom type as input</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.ops.higher_order.scan.">
 
 .. only:: html
@@ -178,91 +127,6 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Export a model with a loop (scan)</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Dynamic shapes need to be specified to get a model able to cope with different dimensions. Input rank are expected to be the same but the dimension may change. The user has the ability to set them up or to call a function able to infer them from two sets of inputs having different values for the dynamic dimensions.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_infer_ds_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_infer_ds.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Infer dynamic shapes before exporting</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="scikit-learn and torch to train a linear regression.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_lr_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_lr.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Linear Regression and export to ONNX</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="All test cases can be found in module experimental_experiment.torch_interpreter.eval.model_cases. Page l-export-supported-signatures shows the exported program for many of those cases.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_coverage_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_coverage.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Measures the exporter success on many test cases</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Settings the dynamic shapes is not always easy. Here are a few tricks to make it work.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_exporter_dynamic_shapes_auto_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_exporter_dynamic_shapes_auto.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Use DYNAMIC or AUTO when dynamic shapes has constraints</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly. If there is an issue, you can go to the following line: torch/fx/experimental/symbolic_shapes.py#L5965 and look for log.info(&quot;set_replacement %s = %s (%s) %s&quot;, a, tgt, msg, tgt_bound) and add before or after, something like:">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_phi2_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_phi2.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and Phi-2</div>
     </div>
 
 
@@ -297,23 +161,6 @@ Some of them are exposed in the examples. Others may be found at
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">to_onnx and a custom operator registered with a function</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Control flow cannot be exported with a change. The code of the model can be changed or patched to introduce function torch.ops.higher_order.scan.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_scan_pdist_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_scan_pdist.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx and a model with a loop (scan)</div>
     </div>
 
 
@@ -368,125 +215,6 @@ Some of them are exposed in the examples. Others may be found at
     </div>
 
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example given in l-plot-exporter-dynamic_shapes can only be exported with dynamic shapes using torch.export.Dim.AUTO. As a result, the exported onnx models have dynamic dimensions with unpredictable names.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_c_named_ds_auto_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_c_named_ds_auto.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">to_onnx: Rename Dynamic Shapes</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Exports model Phi-2. We use a dummy model. The main difficulty is to set the dynamic shapes properly.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_phi2_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_phi2.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and Phi-2</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator as defined in the tutorial Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_custom_ops_inplace_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_custom_ops_inplace.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a custom operator inplace</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to convert a custom operator, inspired from Python Custom Operators.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_custom_ops_fct_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_custom_ops_fct.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a custom operator registered with a function</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Tests cannot be exported into ONNX unless they refactored to use torch.cond.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_cond_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_cond.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and a model with a test</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a frequent task which does not play well with dynamic shapes. Let&#x27;s see how to avoid using torch.cond.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_dynpad_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_dynpad.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export and padding one dimension to a mulitple of a constant</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example given in l-plot-exporter-dynamic_shapes can only be exported with dynamic shapes using torch.export.Dim.AUTO. As a result, the exported onnx models have dynamic dimensions with unpredictable names.">
-
-.. only:: html
-
-  .. image:: /auto_recipes/images/thumb/sphx_glr_plot_exporter_recipes_oe_named_ds_auto_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_recipes_plot_exporter_recipes_oe_named_ds_auto.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">torch.onnx.export: Rename Dynamic Shapes</div>
-    </div>
-
-
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -497,32 +225,16 @@ Some of them are exposed in the examples. Others may be found at
 .. toctree::
    :hidden:
 
-   /auto_recipes/plot_exporter_exporter_lost_dynamic_dimension
    /auto_recipes/plot_exporter_exporter_untrained_tinyllm
-   /auto_recipes/plot_exporter_exporter_inputs
    /auto_recipes/plot_exporter_exporter_phi35_piece
    /auto_recipes/plot_exporter_exporter_draft_mode
    /auto_recipes/plot_exporter_exporter_reportibility
-   /auto_recipes/plot_exporter_exporter_with_dynamic_cache
    /auto_recipes/plot_exporter_exporter_scan_pdist
-   /auto_recipes/plot_exporter_exporter_infer_ds
-   /auto_recipes/plot_exporter_recipes_oe_lr
-   /auto_recipes/plot_exporter_coverage
-   /auto_recipes/plot_exporter_exporter_dynamic_shapes_auto
-   /auto_recipes/plot_exporter_recipes_c_phi2
    /auto_recipes/plot_exporter_recipes_c_custom_ops_inplace
    /auto_recipes/plot_exporter_recipes_c_custom_ops_fct
-   /auto_recipes/plot_exporter_recipes_c_scan_pdist
    /auto_recipes/plot_exporter_recipes_c_cond
    /auto_recipes/plot_exporter_recipes_c_dynpad
    /auto_recipes/plot_exporter_recipes_c_modules
-   /auto_recipes/plot_exporter_recipes_c_named_ds_auto
-   /auto_recipes/plot_exporter_recipes_oe_phi2
-   /auto_recipes/plot_exporter_recipes_oe_custom_ops_inplace
-   /auto_recipes/plot_exporter_recipes_oe_custom_ops_fct
-   /auto_recipes/plot_exporter_recipes_oe_cond
-   /auto_recipes/plot_exporter_recipes_oe_dynpad
-   /auto_recipes/plot_exporter_recipes_oe_named_ds_auto
 
 
 .. only:: html

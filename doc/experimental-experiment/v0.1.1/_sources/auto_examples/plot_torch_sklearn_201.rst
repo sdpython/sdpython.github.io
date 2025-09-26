@@ -39,7 +39,7 @@ See :func:`sklearn.metrics.pairwise.nan_euclidean_distances`.
 Module
 ++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-95
+.. GENERATED FROM PYTHON SOURCE LINES 23-93
 
 .. code-block:: Python
 
@@ -103,9 +103,7 @@ Module
             present_count = present_X @ present_Y.to(X.dtype).T
             distances[present_count == 0] = torch.nan
             # avoid divide by zero
-            present_count = torch.maximum(
-                torch.tensor([1], dtype=present_count.dtype), present_count
-            )
+            present_count = torch.maximum(torch.tensor([1], dtype=present_count.dtype), present_count)
             distances /= present_count
             distances *= X.shape[1]
 
@@ -122,12 +120,12 @@ Module
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-98
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
 
 Validation
 ++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-135
+.. GENERATED FROM PYTHON SOURCE LINES 96-133
 
 .. code-block:: Python
 
@@ -176,12 +174,12 @@ Validation
 
  .. code-block:: none
 
-    discrepancies: {'abs': 8.809426799416542e-05, 'rel': 0.03632292589905887, 'sum': 8.82134772837162e-05, 'n': 15.0, 'dnan': 0.0, 'argm': (4, 2)}
+    discrepancies: {'abs': 3.129243850708008e-07, 'rel': 1.5257829124453806e-06, 'sum': 6.109476089477539e-07, 'n': 15.0, 'dnan': 0.0, 'argm': (1, 2)}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-145
+.. GENERATED FROM PYTHON SOURCE LINES 134-143
 
 torch implementation of KNNImputer
 ==================================
@@ -193,7 +191,7 @@ and refactored to avoid control flow.
 Module and sub modules
 ++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-516
+.. GENERATED FROM PYTHON SOURCE LINES 143-512
 
 .. code-block:: Python
 
@@ -509,9 +507,7 @@ Module and sub modules
         def _transform_indicator(self, X):
             if self.add_indicator:
                 if not hasattr(self, "indicator_"):
-                    raise ValueError(
-                        "Make sure to call _fit_indicator before _transform_indicator"
-                    )
+                    raise ValueError("Make sure to call _fit_indicator before _transform_indicator")
                 raise NotImplementedError(type(self.indicator_))
                 # return self.indicator_.transform(X)
             return None
@@ -575,14 +571,14 @@ Module and sub modules
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 517-521
+.. GENERATED FROM PYTHON SOURCE LINES 513-517
 
 Validation
 ++++++++++
 
 We need to do that with different sizes of training set.
 
-.. GENERATED FROM PYTHON SOURCE LINES 521-559
+.. GENERATED FROM PYTHON SOURCE LINES 517-555
 
 .. code-block:: Python
 
@@ -632,19 +628,19 @@ We need to do that with different sizes of training set.
 
  .. code-block:: none
 
-    knn discrepancies for size=5: {'abs': 2.9802322387695312e-08, 'rel': 2.4402870642893876e-08, 'sum': 2.0489096641540527e-07, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2)}
-    knn discrepancies for size=5: {'abs': 3.725290298461914e-09, 'rel': 1.2956110063866028e-08, 'sum': 3.725290298461914e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=50: {'abs': 1.3586352876071572e-08, 'rel': 4.962472696898559e-08, 'sum': 8.043887867459354e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (2, 2)}
-    knn discrepancies for size=50: {'abs': 1.210719347000122e-08, 'rel': 4.962472696898559e-08, 'sum': 1.670902266548424e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 1)}
-    knn discrepancies for size=10: {'abs': 9.93410742555767e-09, 'rel': 1.780621247726317e-08, 'sum': 9.93410742555767e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
-    knn discrepancies for size=10: {'abs': 9.93410742555767e-09, 'rel': 1.780621247726317e-08, 'sum': 9.93410742555767e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=11: {'abs': 9.934107536579972e-09, 'rel': 9.201214463939375e-09, 'sum': 9.934107536579972e-09, 'n': 33.0, 'dnan': 0.0, 'argm': (1, 0)}
-    knn discrepancies for size=11: {'abs': 9.934107536579972e-09, 'rel': 9.201214463939375e-09, 'sum': 9.934107536579972e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=5: {'abs': 1.4901161193847656e-08, 'rel': 5.071431142122527e-08, 'sum': 8.940696716308594e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2)}
+    knn discrepancies for size=5: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 5.850897116799203e-08, 'rel': 1.3596535997713728e-07, 'sum': 1.804488848261565e-06, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 5.850897116799203e-08, 'rel': 1.3596535997713728e-07, 'sum': 6.345662234563676e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=10: {'abs': 1.862645149230957e-08, 'rel': 7.243171502876014e-08, 'sum': 1.862645149230957e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
+    knn discrepancies for size=10: {'abs': 1.862645149230957e-08, 'rel': 7.243171502876014e-08, 'sum': 1.862645149230957e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=11: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 33.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=11: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 560-577
+.. GENERATED FROM PYTHON SOURCE LINES 556-573
 
 Export to ONNX
 ==============
@@ -655,8 +651,8 @@ This is case not supported by :func:`torch.export.export`.
 We need to isolate that part before exporting the model.
 It is done by replacing it with a custom op.
 This is automatically done by function
-:func:`experimental_experiment.torch_interpreter.
-piece_by_piece.trace_execution_piece_by_piece`.
+:func:`trace_execution_piece_by_piece
+<experimental_experiment.torch_interpreter.piece_by_piece.trace_execution_piece_by_piece>`.
 
 First step, we create two sets of inputs. A function will use this
 to infer the dynamic shapes.
@@ -664,7 +660,7 @@ to infer the dynamic shapes.
 First step: tracing intermediate outputs
 ++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 577-592
+.. GENERATED FROM PYTHON SOURCE LINES 573-588
 
 .. code-block:: Python
 
@@ -690,7 +686,7 @@ First step: tracing intermediate outputs
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 593-601
+.. GENERATED FROM PYTHON SOURCE LINES 589-597
 
 Then we trace the execution to capture every input and output of every submodule.
 The model implementation was refactored to introduce many tiny one and get
@@ -701,7 +697,7 @@ every submodule receives enough data to guess dynamic shapes and export.
 When the model has control flow, we need more data to make sure every
 piece is used.
 
-.. GENERATED FROM PYTHON SOURCE LINES 601-606
+.. GENERATED FROM PYTHON SOURCE LINES 597-602
 
 .. code-block:: Python
 
@@ -749,11 +745,11 @@ piece is used.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 607-608
+.. GENERATED FROM PYTHON SOURCE LINES 603-604
 
 We need more so let's add more.
 
-.. GENERATED FROM PYTHON SOURCE LINES 608-628
+.. GENERATED FROM PYTHON SOURCE LINES 604-624
 
 .. code-block:: Python
 
@@ -784,11 +780,11 @@ We need more so let's add more.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 629-630
+.. GENERATED FROM PYTHON SOURCE LINES 625-626
 
 Let's try again.
 
-.. GENERATED FROM PYTHON SOURCE LINES 630-636
+.. GENERATED FROM PYTHON SOURCE LINES 626-632
 
 .. code-block:: Python
 
@@ -838,11 +834,11 @@ Let's try again.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 637-638
+.. GENERATED FROM PYTHON SOURCE LINES 633-634
 
 The dynamic shapes for the whole model:
 
-.. GENERATED FROM PYTHON SOURCE LINES 638-641
+.. GENERATED FROM PYTHON SOURCE LINES 634-637
 
 .. code-block:: Python
 
@@ -863,12 +859,12 @@ The dynamic shapes for the whole model:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 642-644
+.. GENERATED FROM PYTHON SOURCE LINES 638-640
 
 The method ``try_export`` cannot infer all links between input shapes and output shapes
 for every submodule. The following function fills this gap.
 
-.. GENERATED FROM PYTHON SOURCE LINES 644-684
+.. GENERATED FROM PYTHON SOURCE LINES 640-680
 
 .. code-block:: Python
 
@@ -919,7 +915,7 @@ for every submodule. The following function fills this gap.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 685-690
+.. GENERATED FROM PYTHON SOURCE LINES 681-686
 
 Then we we try to export piece by piece.
 We capture the standard output to avoid being overwhelmed
@@ -927,7 +923,7 @@ and we use function
 :func:`onnx_diagnostic.torch_export_patches.torch_export_patches`
 to skip some errors with shape checking made by :mod:`torch`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 690-710
+.. GENERATED FROM PYTHON SOURCE LINES 686-706
 
 .. code-block:: Python
 
@@ -990,7 +986,7 @@ to skip some errors with shape checking made by :mod:`torch`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 711-716
+.. GENERATED FROM PYTHON SOURCE LINES 707-712
 
 ``OK`` means the module is exportable. ``OK_CHILDC`` means the module
 can be exported after its submodules are replaced by custom ops.
@@ -998,14 +994,14 @@ It works except for the topk function. ``FAIL`` means
 the submodule cannot be exported at all but that
 module is simple enough and its ONNX conversion can be provided.
 
-.. GENERATED FROM PYTHON SOURCE LINES 718-722
+.. GENERATED FROM PYTHON SOURCE LINES 714-718
 
 Final step
 ++++++++++
 
 We first start by running the decompositions on every exported program.
 
-.. GENERATED FROM PYTHON SOURCE LINES 722-733
+.. GENERATED FROM PYTHON SOURCE LINES 718-729
 
 .. code-block:: Python
 
@@ -1059,13 +1055,13 @@ We first start by running the decompositions on every exported program.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 734-737
+.. GENERATED FROM PYTHON SOURCE LINES 730-733
 
 Let's run the conversion. We also check the conversion into ONNX
 is accurate. It is doable because every intermediate results
 were previously traced.
 
-.. GENERATED FROM PYTHON SOURCE LINES 737-747
+.. GENERATED FROM PYTHON SOURCE LINES 733-743
 
 .. code-block:: Python
 
@@ -1097,62 +1093,62 @@ were previously traced.
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.028980839997529984,7.9434733390808105:A1.8153098032319697N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0,8.132270812988281:A2.0042656383049886N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0874500647187233,6.80252742767334:A1.9661558493971825N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05346177890896797,3.0619149208068848:A1.330015910679803N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.2284390926361084,6.330379009246826:A2.37332763671875],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.2284390926361084,6.330379009246826:A2.37332763671875]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.028980839997529984,7.9434733390808105:A1.8153098032319697N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0,8.132270812988281:A2.0042656383049886N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0874500647187233,6.80252742767334:A1.9661558493971825N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05346177890896797,3.0619149208068848:A1.330015910679803N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.7027118802070618,3.1566286087036133:A1.4538565819913691],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.7027118802070618,3.1566286087036133:A1.4538565819913691]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.2972455620765686,3.3242642879486084:A1.94435024803335],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.2972455620765686,3.3242642879486084:A1.94435024803335]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.028980839997529984,7.9434733390808105:A1.8153098032319697N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0,8.132270812988281:A2.0042656383049886N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.0874500647187233,6.80252742767334:A1.9661558493971825N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05346177890896797,3.0619149208068848:A1.330015910679803N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[1.2284390926361084,6.330379009246826:A2.3733276247978212]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.7027118802070618,3.1566286087036133:A1.453856571154161]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean validation done
     [to_onnx_local] .. M:dist-NanEuclidean - done
@@ -1171,16 +1167,16 @@ were previously traced.
     [to_onnx_local]  M:__main__-TorchKNNImputer - export child 'C_TorchKNNImputer_columns_0_'
     [to_onnx_local] .. M:columns[0]-ColProcessor - to_onnx_local 
     [to_onnx_local] .. M:columns[0]-ColProcessor - export child 'C_TorchKNNImputer_columns_0___calc_impute'
-    The example is broken: _calc_impute:CalcImpute: exporter failed, status=<StatusExportCode.FAIL_CHILDC: 6>, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: --- - Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].[\'Traceback (most recent call last):\\n\', \'  File "/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/piece_by_piece.py", line 1588, in _try_export_no_bypass_export\\n    ep = torch.export.export(\\n         ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 319, in export\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 286, in export\\n    return _export(\\n           ^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1159, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1125, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 123, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2172, in _export\\n    ep = _export_for_training(\\n         ^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1159, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1125, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 123, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2053, in _export_for_training\\n    range_constraints = _get_range_constraints(\\n                        ^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1306, in _get_range_constraints\\n    range_constraints = make_constraints(\\n                        ^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 673, in make_constraints\\n    raise ValueError(prefix + "\\\\n".join(range_violations))\\n\', "ValueError: Found the following conflicts between user-specified ranges and inferred ranges from model tracing:\\n- Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].\\n"]', a custom onnx converter must be provided for 'diag_lib::C_TorchKNNImputer_columns_0___calc_impute', args=(T1s0x17,T7s1,T1s17,T9s17), kwargs={}, outputs=(T1s0,)
+    The example is broken: _calc_impute:CalcImpute: exporter failed, status=<StatusExportCode.FAIL_CHILDC: 6>, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: --- - Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].[\'Traceback (most recent call last):\\n\', \'  File "/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/piece_by_piece.py", line 1571, in _try_export_no_bypass_export\\n    ep = torch.export.export(\\n         ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 315, in export\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 280, in export\\n    return _export(\\n           ^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1173, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1139, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 124, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2275, in _export\\n    ep = _export_for_training(\\n         ^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1173, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1139, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 124, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2109, in _export_for_training\\n    range_constraints = _get_range_constraints(\\n                        ^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1364, in _get_range_constraints\\n    range_constraints = make_constraints(\\n                        ^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 732, in make_constraints\\n    raise ValueError(prefix + "\\\\n".join(range_violations))\\n\', "ValueError: Found the following conflicts between user-specified ranges and inferred ranges from model tracing:\\n- Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].\\n"]', a custom onnx converter must be provided for 'diag_lib::C_TorchKNNImputer_columns_0___calc_impute', args=(T1s0x17,T7s1,T1s17,T9s17), kwargs={}, outputs=(T1s0,)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 748-749
+.. GENERATED FROM PYTHON SOURCE LINES 744-745
 
 Let's save it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 749-752
+.. GENERATED FROM PYTHON SOURCE LINES 745-748
 
 .. code-block:: Python
 
@@ -1194,11 +1190,11 @@ Let's save it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 753-754
+.. GENERATED FROM PYTHON SOURCE LINES 749-750
 
 We can also print it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 754-758
+.. GENERATED FROM PYTHON SOURCE LINES 750-754
 
 .. code-block:: Python
 
@@ -1213,12 +1209,12 @@ We can also print it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 759-761
+.. GENERATED FROM PYTHON SOURCE LINES 755-757
 
 Validation again
 ++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 761-838
+.. GENERATED FROM PYTHON SOURCE LINES 757-834
 
 .. code-block:: Python
 
@@ -1306,11 +1302,11 @@ Validation again
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 839-840
+.. GENERATED FROM PYTHON SOURCE LINES 835-836
 
 This does not work yet.
 
-.. GENERATED FROM PYTHON SOURCE LINES 840-844
+.. GENERATED FROM PYTHON SOURCE LINES 836-840
 
 .. code-block:: Python
 
@@ -1325,7 +1321,7 @@ This does not work yet.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 845-852
+.. GENERATED FROM PYTHON SOURCE LINES 841-848
 
 ModelProto to python Code
 =========================
@@ -1335,7 +1331,7 @@ We finally call function :func:`to_graph_builder_code
 to convert the onnx model into pseudo code if that helps moving that code
 to a converter library (:epkg:`sklearn-onnx`).
 
-.. GENERATED FROM PYTHON SOURCE LINES 852-878
+.. GENERATED FROM PYTHON SOURCE LINES 848-874
 
 .. code-block:: Python
 
@@ -1372,11 +1368,11 @@ to a converter library (:epkg:`sklearn-onnx`).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 879-880
+.. GENERATED FROM PYTHON SOURCE LINES 875-876
 
 Let's finally check it produces the same results.
 
-.. GENERATED FROM PYTHON SOURCE LINES 880-884
+.. GENERATED FROM PYTHON SOURCE LINES 876-880
 
 .. code-block:: Python
 
@@ -1391,7 +1387,7 @@ Let's finally check it produces the same results.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 885-889
+.. GENERATED FROM PYTHON SOURCE LINES 881-885
 
 Let's run it...
 It can be run this way.
@@ -1401,7 +1397,7 @@ It can be run this way.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.508 seconds)
+   **Total running time of the script:** (0 minutes 18.803 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_sklearn_201.py:

@@ -54,7 +54,7 @@ class AttentionBlock(torch.nn.Module):
         self.register_buffer(name="mask", tensor=torch.tril(input=ones))
 
     def forward(self, x):
-        B, T, C = x.size()
+        _B, T, C = x.size()
 
         query = self.query(x)
         key = self.key(x)
@@ -254,9 +254,7 @@ print(pretty_onnx(onx_inlined))
 onx_optimized = to_onnx(
     llm,
     (input_ids,),
-    options=OptimizationOptions(
-        patterns="default+onnxruntime", constant_folding=True, verbose=2
-    ),
+    options=OptimizationOptions(patterns="default+onnxruntime", constant_folding=True, verbose=2),
 )
 print(pretty_onnx(onx_optimized))
 

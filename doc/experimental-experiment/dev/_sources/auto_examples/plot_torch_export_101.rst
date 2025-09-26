@@ -76,7 +76,7 @@ A simple model.
 With an integer as input
 ++++++++++++++++++++++++
 
-As `torch.export.export <https://pytorch.org/docs/stable/export.html>`_
+As `torch.export.export <https://docs.pytorch.org/docs/stable/export.html>`_
 documentation, integer do not show up on the graph.
 An exporter based on :func:`torch.export.export` cannot consider
 the integer as an input.
@@ -115,8 +115,7 @@ the integer as an input.
         %i_input : [num_users=0] = placeholder[target=i_input]
         %linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%x, %p_linear_weight, %p_linear_bias), kwargs = {})
         %sigmoid : [num_users=1] = call_function[target=torch.ops.aten.sigmoid.default](args = (%linear,), kwargs = {})
-        %slice_1 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%sigmoid,), kwargs = {})
-        %select : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%slice_1, 1, 2), kwargs = {})
+        %select : [num_users=1] = call_function[target=torch.ops.aten.select.int](args = (%sigmoid, 1, 2), kwargs = {})
         return (select,)
 
 
@@ -166,8 +165,7 @@ But if the integer is wrapped into a Tensor, it works.
         %i_input : [num_users=1] = placeholder[target=i_input]
         %linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%x, %p_linear_weight, %p_linear_bias), kwargs = {})
         %sigmoid : [num_users=1] = call_function[target=torch.ops.aten.sigmoid.default](args = (%linear,), kwargs = {})
-        %slice_1 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%sigmoid, 0, 0, 9223372036854775807), kwargs = {})
-        %index : [num_users=1] = call_function[target=torch.ops.aten.index.Tensor](args = (%slice_1, [None, %i_input]), kwargs = {})
+        %index : [num_users=1] = call_function[target=torch.ops.aten.index.Tensor](args = (%sigmoid, [None, %i_input]), kwargs = {})
         return (index,)
 
 
@@ -216,8 +214,7 @@ Wrapped, it continues to work.
         %args_1 : [num_users=1] = placeholder[target=args_1]
         %linear : [num_users=1] = call_function[target=torch.ops.aten.linear.default](args = (%args_0, %p_model_linear_weight, %p_model_linear_bias), kwargs = {})
         %sigmoid : [num_users=1] = call_function[target=torch.ops.aten.sigmoid.default](args = (%linear,), kwargs = {})
-        %slice_1 : [num_users=1] = call_function[target=torch.ops.aten.slice.Tensor](args = (%sigmoid, 0, 0, 9223372036854775807), kwargs = {})
-        %index : [num_users=1] = call_function[target=torch.ops.aten.index.Tensor](args = (%slice_1, [None, %args_1]), kwargs = {})
+        %index : [num_users=1] = call_function[target=torch.ops.aten.index.Tensor](args = (%sigmoid, [None, %args_1]), kwargs = {})
         return (index,)
 
 
@@ -270,19 +267,53 @@ The last one does not export. An exporter based on
 
  .. code-block:: none
 
-    -- an error <class 'RuntimeError'> occured:
-    Overloaded torch operator invoked from Python failed to match any schema:
-    aten::slice() Expected a value of type 'Optional[int]' for argument 'end' but instead found type 'FakeTensor'.
-    Position: 3
-    Value: FakeTensor(..., size=(1,), dtype=torch.int32)
-    Declaration: aten::slice.Tensor(Tensor(a) self, int dim=0, SymInt? start=None, SymInt? end=None, SymInt step=1) -> Tensor(a)
-    Cast error details: Unable to cast Python instance of type <class 'torch._subclasses.fake_tensor.FakeTensor'> to C++ type '?' (#define PYBIND11_DETAILED_ERROR_MESSAGES or compile in debug mode for details)
-
-    aten::slice() expected at most 4 argument(s) but received 5 argument(s). Declaration: aten::slice.t(t[] l, int? start=None, int? end=None, int step=1) -> t[]
-
-    aten::slice() expected at most 4 argument(s) but received 5 argument(s). Declaration: aten::slice.str(str string, int? start=None, int? end=None, int step=1) -> str
 
 
+
+    def forward(self, arg0_1: "f32[3, 5]", arg1_1: "f32[3]", arg2_1: "f32[1, 5]", arg3_1: "f32[1, 5]", arg4_1, arg5_1, arg6_1: "f32[1, 5]", arg7_1: "i32[1]"):
+         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
+        mul: "f32[1, 5]" = torch.ops.aten.mul.Tensor(arg3_1, arg6_1);  arg3_1 = arg6_1 = None
+        add: "f32[1, 5]" = torch.ops.aten.add.Tensor(arg2_1, mul);  arg2_1 = mul = None
+    
+         # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        linear: "f32[1, 3]" = torch.ops.aten.linear.default(add, arg0_1, arg1_1);  add = arg0_1 = arg1_1 = None
+    
+         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
+        sigmoid: "f32[1, 3]" = torch.ops.aten.sigmoid.default(linear);  linear = sigmoid = None
+        item: "Sym(u0)" = torch.ops.aten.item.default(arg7_1);  arg7_1 = item = None
+    
+
+
+
+    def forward(self, arg0_1: "f32[3, 5]", arg1_1: "f32[3]", arg2_1: "f32[1, 5]", arg3_1: "f32[1, 5]", arg4_1, arg5_1, arg6_1: "f32[1, 5]", arg7_1: "i32[1]"):
+         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
+        mul: "f32[1, 5]" = torch.ops.aten.mul.Tensor(arg3_1, arg6_1);  arg3_1 = arg6_1 = None
+        add: "f32[1, 5]" = torch.ops.aten.add.Tensor(arg2_1, mul);  arg2_1 = mul = None
+    
+         # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        linear: "f32[1, 3]" = torch.ops.aten.linear.default(add, arg0_1, arg1_1);  add = arg0_1 = arg1_1 = None
+    
+         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
+        sigmoid: "f32[1, 3]" = torch.ops.aten.sigmoid.default(linear);  linear = sigmoid = None
+        item: "Sym(u0)" = torch.ops.aten.item.default(arg7_1);  arg7_1 = item = None
+    
+    -- an error <class 'torch.fx.experimental.symbolic_shapes.GuardOnDataDependentSymNode'> occured:
+    Could not extract specialized integer from data-dependent expression u0 (unhinted: u0).  (Size-like symbols: none)
+
+    Caused by: (_export/non_strict_utils.py:1066 in __torch_function__)
+    For more information, run with TORCH_LOGS="dynamic"
+    For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"
+    If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
+    For more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing
+
+    For C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
+
+    The following call raised this error:
+      File "/home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py", line 115, in forward
+        return torch.sigmoid(z)[:i_input]
+
+
+    The error above occurred when calling torch.export.export. If you would like to view some more information about this error, and get a list of all other errors that may occur in your export call, you can replace your `export()` call with `draft_export()`.
 
 
 
@@ -384,6 +415,8 @@ In that case, the weights are exported as inputs.
  .. code-block:: none
 
     -- training
+    /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:181: FutureWarning: `torch.export.export_for_training` is deprecated and will be removed in PyTorch 2.10. Please use `torch.export.export` instead, which is functionally equivalent.
+      exported_program = torch.export.export_for_training(mod, (torch.randn(1, 5),))
     graph():
         %p_linear_weight : [num_users=1] = placeholder[target=p_linear_weight]
         %p_linear_bias : [num_users=1] = placeholder[target=p_linear_bias]
@@ -528,9 +561,9 @@ And now?
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:872: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:975: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:864: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:967: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
     -- preserved?
     graph():
@@ -562,7 +595,7 @@ and it is a provite API.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.325 seconds)
+   **Total running time of the script:** (0 minutes 0.210 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:

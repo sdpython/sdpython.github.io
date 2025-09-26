@@ -470,27 +470,33 @@ Optimization
 
  .. code-block:: none
 
-    [GraphBuilder-GGU.optimize] start with 214 nodes
-    [GraphBuilder-GGU.optimize] #patterns=48
-    [GraphBuilderPatternOptimization-GGU.optimize] start with 214 nodes, 73 initializers, 48 patterns, priorities=[0, 1, 3]
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 0: 214 nodes, priority=0
-    [GraphBuilderPatternOptimization-GGU.optimize] applies 48 matches, 37*CastPattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.007 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 1: 159 nodes, priority=0
-    [GraphBuilderPatternOptimization-GGU.optimize] increase priority to 1
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 2: 159 nodes, priority=1
-    [GraphBuilderPatternOptimization-GGU.optimize] applies 28 matches, 3*MulMulMulScalarPattern, 3*ReduceReshapePattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*RotaryConcatPartPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.017 | max_time=Sub1MulPattern:0.010
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 3: 131 nodes, priority=1
-    [GraphBuilderPatternOptimization-GGU.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 2*TransposeReshapeMatMulPattern - time=0.006 | max_time=IdentityPattern:0.000
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 4: 123 nodes, priority=1
-    [GraphBuilderPatternOptimization-GGU.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.005 | max_time=SwitchOrderBinaryPattern:0.000
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 5: 123 nodes, priority=1
-    [GraphBuilderPatternOptimization-GGU.optimize] increase priority to 3
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 6: 123 nodes, priority=3
-    [GraphBuilderPatternOptimization-GGU.optimize] applies 3 matches, 3*MatMulAddPattern - time=0.005 | max_time=SwitchOrderBinaryPattern:0.000
-    [GraphBuilderPatternOptimization-GGU.optimize] iteration 7: 120 nodes, priority=3
-    [GraphBuilderPatternOptimization-GGU.optimize] stops current_priority_index=3, priorities=[0, 1, 3]
-    [GraphBuilderPatternOptimization-GGU.optimize] done after 8 iterations with 120 nodes in 0.119
-    [GraphBuilder-GGU.optimize] done with 117 nodes in 0.131
+    [GraphBuilder-EPC.optimize] start with 214 nodes
+    [GraphBuilder-EPC.optimize] #patterns=72
+    [GraphBuilderPatternOptimization-EPC.optimize] start with 214 nodes, 73 initializers, 72 patterns, priorities=[0, 1, 3], max_iter=642
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 0: 214 nodes, priority=0
+    [GraphBuilderPatternOptimization-EPC.optimize] applies 51 matches, 37*CastPattern, 3*ShapeBasedReshapeIsSqueezePattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.008 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 1: 159 nodes, priority=0
+    [GraphBuilderPatternOptimization-EPC.optimize] increase priority to 1
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 2: 159 nodes, priority=1
+    [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -> (2, 1024, 1024)
+    [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -> (2, 1024, 1024)
+    [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -> (2, 1024, 1024)
+    [GraphBuilderPatternOptimization-EPC.optimize] applies 25 matches, 3*MulMulMulScalarPattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.022 | max_time=Sub1MulPattern:0.011
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 3: 137 nodes, priority=1
+    [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -> (2, 1024, 1024)
+    [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -> (2, 1024, 1024)
+    [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -> (2, 1024, 1024)
+    [GraphBuilderPatternOptimization-EPC.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*TransposeReshapeMatMulPattern, 2*RotaryConcatPartPattern - time=0.009 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 4: 123 nodes, priority=1
+    [GraphBuilderPatternOptimization-EPC.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.009 | max_time=GemmTransposePattern:0.001
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 5: 123 nodes, priority=1
+    [GraphBuilderPatternOptimization-EPC.optimize] increase priority to 3
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 6: 123 nodes, priority=3
+    [GraphBuilderPatternOptimization-EPC.optimize] applies 3 matches, 3*MatMulAddPattern - time=0.008 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
+    [GraphBuilderPatternOptimization-EPC.optimize] iteration 7: 120 nodes, priority=3
+    [GraphBuilderPatternOptimization-EPC.optimize] stops current_priority_index=3, priorities=[0, 1, 3]
+    [GraphBuilderPatternOptimization-EPC.optimize] done after 8 iterations with 120 nodes in 0.161
+    [GraphBuilder-EPC.optimize] done with 120 nodes in 0.174
 
 
 .. raw:: html
@@ -515,9 +521,9 @@ Optimization
         <tr style="text-align: right;">
           <th></th>
           <th>pattern</th>
-          <th>time_in</th>
           <th>removed</th>
           <th>added</th>
+          <th>time_in</th>
           <th>iteration</th>
           <th>value</th>
           <th>instances</th>
@@ -527,10 +533,10 @@ Optimization
       <tbody>
         <tr>
           <th>0</th>
-          <td>check_A</td>
-          <td>0.000477</td>
-          <td>NaN</td>
-          <td>NaN</td>
+          <td>dynamic_dimension_naming</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000217</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -538,10 +544,10 @@ Optimization
         </tr>
         <tr>
           <th>1</th>
-          <td>remove_identity_nodes</td>
-          <td>0.001306</td>
-          <td>0.0</td>
-          <td>0.0</td>
+          <td>check_A-dynamic_dimension_naming</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000432</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -549,10 +555,10 @@ Optimization
         </tr>
         <tr>
           <th>2</th>
-          <td>check_B</td>
-          <td>0.001250</td>
+          <td>check_A-opt-sub</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000405</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -560,10 +566,10 @@ Optimization
         </tr>
         <tr>
           <th>3</th>
-          <td>remove_unused</td>
-          <td>0.002095</td>
+          <td>remove_identity_nodes</td>
           <td>0.0</td>
-          <td>NaN</td>
+          <td>0.0</td>
+          <td>0.000959</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -571,10 +577,10 @@ Optimization
         </tr>
         <tr>
           <th>4</th>
-          <td>check_C</td>
-          <td>0.000715</td>
+          <td>check_B-remove-identity</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000488</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -592,55 +598,55 @@ Optimization
           <td>...</td>
         </tr>
         <tr>
-          <th>533</th>
-          <td>apply_constant_folding</td>
-          <td>0.000170</td>
+          <th>722</th>
+          <td>remove_duplicated_initializer</td>
+          <td>18.0</td>
           <td>0.0</td>
+          <td>0.000511</td>
           <td>NaN</td>
-          <td>1.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>534</th>
-          <td>apply_constant_folding_new_inits</td>
+          <th>723</th>
+          <td>check_H-remove-duplicated-initializer</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000223</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>1.0</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>724</th>
+          <td>remove_identity_nodes</td>
+          <td>18.0</td>
           <td>0.0</td>
-          <td>NaN</td>
-          <td>NaN</td>
-        </tr>
-        <tr>
-          <th>535</th>
-          <td>check_Db</td>
-          <td>0.000436</td>
-          <td>NaN</td>
-          <td>NaN</td>
+          <td>0.000740</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>536</th>
+          <th>725</th>
           <td>remove_unused</td>
-          <td>0.000425</td>
           <td>0.0</td>
           <td>NaN</td>
+          <td>0.000558</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>537</th>
-          <td>check_Eb</td>
-          <td>0.000218</td>
+          <th>726</th>
+          <td>check_H-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000232</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -648,7 +654,7 @@ Optimization
         </tr>
       </tbody>
     </table>
-    <p>538 rows × 8 columns</p>
+    <p>727 rows × 8 columns</p>
     </div>
     </div>
     <br />
@@ -687,19 +693,19 @@ Summary
 
                                       time_in  added  removed  iteration  match_index  instances
     pattern                                                                                     
-    apply_CastPattern                0.004156     37       37          0           36         37
-    apply_ExpandBroadcastPattern     0.000246      3        6          3            2          3
-    apply_MatMulAddPattern           0.000272      3        6          6            2          3
-    apply_MatMulReshape2Of3Pattern   0.001779     10       12          3           10          4
-    apply_MulMulMulScalarPattern     0.001567      6        9          2            2          3
+    apply_CastPattern                0.002969     37       37          0           36         37
+    apply_ExpandBroadcastPattern     0.000323      3        6          3            2          3
+    apply_MatMulAddPattern           0.000317      3        6          6            2          3
+    apply_MatMulReshape2Of3Pattern   0.003094     10       12          3            7          4
+    apply_MulMulMulScalarPattern     0.002786      6        9          2            2          3
     ...                                   ...    ...      ...        ...          ...        ...
-    match_UnsqueezeEqualPattern      0.000489      0        0          7           28          0
-    match_UnsqueezeUnsqueezePattern  0.000590      0        0          7           48          0
-    pattern_optimization             0.120413      0       94          0            0          0
-    remove_identity_nodes            0.003222     44       88          2            0          0
-    remove_unused                    0.003749      0        3          0            0          0
+    match_UnsqueezeUnsqueezePattern  0.000694      0        0          7           51          0
+    pattern_optimization             0.162269      0       94          0            0          0
+    remove_duplicated_initializer    0.000511      0       18          0            0          0
+    remove_identity_nodes            0.005098     44      106          2            0          0
+    remove_unused                    0.009851      0        3          7            0          0
 
-    [82 rows x 6 columns]
+    [112 rows x 6 columns]
 
 
 
@@ -725,7 +731,7 @@ The total is:
 
  .. code-block:: none
 
-    number of removed nodes: 191
+    number of removed nodes: 224
 
 
 
@@ -753,7 +759,7 @@ Conversion to onnx.
 
  .. code-block:: none
 
-    number of new nodes: 117
+    number of new nodes: 120
 
 
 
@@ -819,61 +825,44 @@ It gives the following.
     input: name='input38' type=dtype('float32') shape=[2, 2, 1024, 512]
     input: name='input39' type=dtype('float32') shape=[2, 2, 1024, 512]
     init: name='init1_s1_' type=float32 shape=(1,) -- array([3.], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s1_)
-    init: name='init1_s1_2' type=float32 shape=(1,) -- array([3.], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s1_2)
-    init: name='init1_s1_3' type=float32 shape=(1,) -- array([3.], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s1_3)
     init: name='init1_s1_4' type=float32 shape=(1,) -- array([0.], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s1_4)
     init: name='init1_s_' type=float32 shape=() -- array([-0.5], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s_)
     init: name='init1_s_4' type=float32 shape=() -- array([1.], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s_4)
-    init: name='init1_s_5' type=float32 shape=() -- array([-0.5], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s_5)
     init: name='init1_s_8' type=float32 shape=() -- array([22.627417], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s_8)
-    init: name='init1_s_9' type=float32 shape=() -- array([-0.5], dtype=float32)-- GraphBuilder._update_structures_with_proto.1/from(init1_s_9)
     init: name='init7_s1_-1' type=int64 shape=(1,) -- array([-1])         -- GraphBuilder._update_structures_with_proto.1/from(init7_s1_-1)
-    init: name='init7_s1_-12' type=int64 shape=(1,) -- array([-1])        -- GraphBuilder._update_structures_with_proto.1/from(init7_s1_-12)
-    init: name='init7_s1_-13' type=int64 shape=(1,) -- array([-1])        -- GraphBuilder._update_structures_with_proto.1/from(init7_s1_-13)
     init: name='init7_s1_2' type=int64 shape=(1,) -- array([2])           -- GraphBuilder._update_structures_with_proto.1/from(init7_s1_2)
-    init: name='init7_s1_22' type=int64 shape=(1,) -- array([2])          -- GraphBuilder._update_structures_with_proto.1/from(init7_s1_22)
-    init: name='init7_s1_23' type=int64 shape=(1,) -- array([2])          -- GraphBuilder._update_structures_with_proto.1/from(init7_s1_23)
-    init: name='init7_s2_0_1' type=int64 shape=(2,) -- array([0, 1])      -- GraphBuilder._update_structures_with_proto.1/from(init7_s2_0_1)
-    init: name='init7_s2_0_12' type=int64 shape=(2,) -- array([0, 1])     -- GraphBuilder._update_structures_with_proto.1/from(init7_s2_0_12)
-    init: name='init7_s2_0_13' type=int64 shape=(2,) -- array([0, 1])     -- GraphBuilder._update_structures_with_proto.1/from(init7_s2_0_13)
+    init: name='init7_s2_0_1' type=int64 shape=(2,) -- array([0, 1])      -- GraphBuilder._update_structures_with_proto.1/from(init7_s2_0_1)##ReshapeIsSqueezePattern.m1##ReshapeIsSqueezePattern.m1##ReshapeIsSqueezePattern.m1
     init: name='init7_s2_1024_10242' type=int64 shape=(2,) -- array([1024, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_1024_10242)
     init: name='init7_s2_2048_1024' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_1024)##GraphBuilder.compute_constant/from(init7_s2_2048_1024)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_1024)
-    init: name='init7_s2_2048_10242' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10242)##GraphBuilder.compute_constant/from(init7_s2_2048_10242)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10242)
-    init: name='init7_s2_2048_10243' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10243)##GraphBuilder.compute_constant/from(init7_s2_2048_10243)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10243)
-    init: name='init7_s2_2048_10244' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10244)##GraphBuilder.compute_constant/from(init7_s2_2048_10244)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10244)
-    init: name='init7_s2_2048_10245' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10245)##GraphBuilder.compute_constant/from(init7_s2_2048_10245)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10245)
-    init: name='init7_s2_2048_10246' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10246)##GraphBuilder.compute_constant/from(init7_s2_2048_10246)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10246)
-    init: name='init7_s2_2048_10247' type=int64 shape=(2,) -- array([2048, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10247)##GraphBuilder.compute_constant/from(init7_s2_2048_10247)##GraphBuilder._update_structures_with_proto.1/from(init7_s2_2048_10247)
     init: name='init7_s3_2_1024_102413' type=int64 shape=(3,) -- array([   2, 1024, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s3_2_1024_102413)##GraphBuilder.compute_constant/from(init7_s3_2_1024_102413)##GraphBuilder._update_structures_with_proto.1/from(init7_s3_2_1024_102413)
-    init: name='init7_s3_2_1024_10242' type=int64 shape=(3,) -- array([   2, 1024, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s3_2_1024_10242)##GraphBuilder.compute_constant/from(init7_s3_2_1024_10242)##GraphBuilder._update_structures_with_proto.1/from(init7_s3_2_1024_10242)
-    init: name='init7_s3_2_1024_10243' type=int64 shape=(3,) -- array([   2, 1024, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s3_2_1024_10243)##GraphBuilder.compute_constant/from(init7_s3_2_1024_10243)##GraphBuilder._update_structures_with_proto.1/from(init7_s3_2_1024_10243)
     init: name='init7_s4_2_1024_2_512' type=int64 shape=(4,) -- array([   2, 1024,    2,  512])-- GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_1024_2_512)##GraphBuilder.compute_constant/from(init7_s4_2_1024_2_512)##GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_1024_2_512)
+    init: name='init7_s4_2_2_1024_1024' type=int64 shape=(4,) -- array([   2,    2, 1024, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_2_1024_1024)##GraphBuilder.compute_constant/from(init7_s4_2_2_1024_1024)##GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_2_1024_1024)##MatMulReshape2Of3Pattern.apply.shape.1##TransposeReshapeMatMulPattern.apply.shape_name
+    init: name='init7_s4_2_2_1024_5122' type=int64 shape=(4,) -- array([   2,    2, 1024,  512])-- GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_2_1024_5122)##GraphBuilder.compute_constant/from(init7_s4_2_2_1024_5122)##GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_2_1024_5122)##MatMulReshape2Of3Pattern.apply.shape.2##TransposeReshapeMatMulPattern.apply.shape_name##TransposeReshapeMatMulPattern.apply.shape_name
+    init: name='init7_s4_2_2_512_1024' type=int64 shape=(4,) -- array([   2,    2,  512, 1024])-- GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_2_512_1024)##GraphBuilder.compute_constant/from(init7_s4_2_2_512_1024)##GraphBuilder._update_structures_with_proto.1/from(init7_s4_2_2_512_1024)##MatMulReshape2Of3Pattern.apply.shape.1##MatMulReshape2Of3Pattern.apply.shape.2##TransposeReshapeMatMulPattern.apply.shape_name
     init: name='init7_s_-1' type=int64 shape=() -- array([-1])            -- GraphBuilder._update_structures_with_proto.1/from(init7_s_-1)
     init: name='init1_s_12' type=float32 shape=() -- array([0.00195312], dtype=float32)-- MulMulMulScalarPattern.apply.new_cst##MulMulMulScalarPattern.apply.new_cst##MulMulMulScalarPattern.apply.new_cst
-    init: name='init7_s4_2_2_512_10243' type=int64 shape=(4,) -- array([   2,    2,  512, 1024])-- MatMulReshape2Of3Pattern.apply.shape.2##TransposeReshapeMatMulPattern.apply.shape_name
-    init: name='init7_s4_2_2_1024_5123' type=int64 shape=(4,) -- array([   2,    2, 1024,  512])-- MatMulReshape2Of3Pattern.apply.shape.2##TransposeReshapeMatMulPattern.apply.shape_name##TransposeReshapeMatMulPattern.apply.shape_name
     init: name='init7_s2_256_256' type=int64 shape=(2,) -- array([256, 256])-- SlicesSplitPattern.apply.splits##SlicesSplitPattern.apply.splits
-    init: name='init7_s4_2_2_1024_10243' type=int64 shape=(4,) -- array([   2,    2, 1024, 1024])-- TransposeReshapeMatMulPattern.apply.shape_name
     Constant(value_float=0) -> output_11
       Identity(output_11) -> output_12
-    Reshape(input28, init7_s2_2048_10242) -> Reshape2Of3PatternR_input28
+    Reshape(input28, init7_s2_2048_1024) -> Reshape2Of3PatternR_input28
     Mul(input37, input2) -> _onx_mul0
       Mul(_onx_mul0, input34) -> _onx_mul03
         ReduceSum(_onx_mul03, init7_s1_2, keepdims=1) -> sum_2
           Mul(sum_2, init1_s_) -> _onx_mul05
     Mul(input37, input36) -> _onx_mul02
-      ReduceSum(_onx_mul02, init7_s2_0_1, keepdims=0) -> output_2
-    Mul(_onx_mul0, input35) -> _onx_mul04
+      ReduceSum(_onx_mul02, init7_s2_0_1, keepdims=1) -> sum_1
+        Squeeze(sum_1, init7_s2_0_1) -> output_2
+      Mul(_onx_mul0, input35) -> _onx_mul04
     Pow(input35, init1_s1_) -> pow_4
       Mul(_onx_mul05, pow_4) -> _onx_mul06
         Mul(_onx_mul06, init1_s_12) -> mul-_onx_mul06
           Mul(mul-_onx_mul06, input34) -> _onx_mul08
-      Add(_onx_mul04, _onx_mul08) -> add_8
-        Reshape(add_8, init7_s2_2048_1024) -> view_22
-          Gemm(view_22, input32, transA=0, transB=1) -> mm_9
-            Reshape(mm_9, init7_s3_2_1024_10242) -> view_23
-              Mul(view_23, input31) -> _onx_mul010
-          Gemm(view_22, input33, transA=1, transB=0) -> output_10
+        Add(_onx_mul04, _onx_mul08) -> add_8
+          Reshape(add_8, init7_s2_2048_1024) -> view_22
+            Gemm(view_22, input32, transA=0, transB=1) -> mm_9
+              Reshape(mm_9, init7_s3_2_1024_102413) -> view_23
+                Mul(view_23, input31) -> _onx_mul010
+            Gemm(view_22, input33, transA=1, transB=0) -> output_10
       Mul(mm_9, Reshape2Of3PatternR_input28) -> view_24
         Gemm(view_24, input30, transA=1, transB=0) -> output_9
     Sigmoid(input27) -> sigmoid
@@ -882,37 +871,38 @@ It gives the following.
           Add(_onx_mul011, init1_s_4) -> add_9
       Mul(sigmoid, add_9) -> _onx_mul012
         Mul(_onx_mul010, _onx_mul012) -> _onx_mul013
-          Reshape(_onx_mul013, init7_s2_2048_10243) -> view_26
+          Reshape(_onx_mul013, init7_s2_2048_1024) -> view_26
             Gemm(view_26, input25, transA=0, transB=1) -> mm_13
         Gemm(view_24, input29, mm_13, transA=0, transB=1) -> add-mm_11
-          Reshape(add-mm_11, init7_s3_2_1024_10243) -> add_10
+          Reshape(add-mm_11, init7_s3_2_1024_102413) -> add_10
             Mul(add_10, input1) -> _onx_mul014
               Mul(_onx_mul014, input22) -> _onx_mul016
-                ReduceSum(_onx_mul016, init7_s1_22, keepdims=1) -> sum_4
-                  Mul(sum_4, init1_s_5) -> _onx_mul018
+                ReduceSum(_onx_mul016, init7_s1_2, keepdims=1) -> sum_4
+                  Mul(sum_4, init1_s_) -> _onx_mul018
             Gemm(view_26, input26, transA=1, transB=0) -> output_8
     Mul(add_10, input24) -> _onx_mul015
-      ReduceSum(_onx_mul015, init7_s2_0_12, keepdims=0) -> output_1
+      ReduceSum(_onx_mul015, init7_s2_0_1, keepdims=1) -> sum_3
+        Squeeze(sum_3, init7_s2_0_1) -> output_1
     Mul(_onx_mul014, input23) -> _onx_mul017
       Add(add_8, _onx_mul017) -> add_11
-    Pow(input23, init1_s1_2) -> pow_6
+    Pow(input23, init1_s1_) -> pow_6
       Mul(_onx_mul018, pow_6) -> _onx_mul019
         Mul(_onx_mul019, init1_s_12) -> mul-_onx_mul019
           Mul(mul-_onx_mul019, input22) -> _onx_mul021
         Add(add_11, _onx_mul021) -> add_12
-          Reshape(add_12, init7_s2_2048_10244) -> view_29
+          Reshape(add_12, init7_s2_2048_1024) -> view_29
             Gemm(view_29, input20, transA=0, transB=1) -> mm_15
               Reshape(mm_15, init7_s4_2_1024_2_512) -> view_31
                 Transpose(view_31, perm=[0,2,1,3]) -> transpose_5
             Gemm(view_29, input21, transA=1, transB=0) -> output_7
-    Reshape(input18, init7_s4_2_2_1024_10243) -> TransposeReshapeMatMulPatternL_input18
+    Reshape(input18, init7_s4_2_2_1024_1024) -> TransposeReshapeMatMulPatternL_input18
       Transpose(TransposeReshapeMatMulPatternL_input18, perm=[0,1,3,2]) -> MatMulReshape2Of3PatternL_transpose_6
         MatMul(MatMulReshape2Of3PatternL_transpose_6, transpose_5) -> view_32
           Add(input39, view_32) -> add_13
             Transpose(add_13, perm=[0,2,1,3]) -> transpose_11
-              Reshape(transpose_11, init7_s2_2048_10245) -> view_37
+              Reshape(transpose_11, init7_s2_2048_1024) -> view_37
                 Gemm(view_37, input12, transA=1, transB=0) -> output_6
-    Reshape(input19, init7_s4_2_2_1024_5123) -> TransposeReshapeMatMulPatternL_input19
+    Reshape(input19, init7_s4_2_2_1024_5122) -> TransposeReshapeMatMulPatternL_input19
       Transpose(TransposeReshapeMatMulPatternL_input19, perm=[0,1,3,2]) -> MatMulReshape2Of3PatternL__unsafe_view_3
         MatMul(transpose_5, MatMulReshape2Of3PatternL__unsafe_view_3) -> view_33
           Mul(view_33, input17) -> _onx_mul022
@@ -920,7 +910,7 @@ It gives the following.
               Mul(input17, _onx_reducesum0) -> _onx_mul023
             Sub(_onx_mul022, _onx_mul023) -> _softmax_backward_data
               Div(_softmax_backward_data, init1_s_8) -> div_3
-    Reshape(input15, init7_s4_2_2_1024_5123) -> TransposeReshapeMatMulPatternL_input15
+    Reshape(input15, init7_s4_2_2_1024_5122) -> TransposeReshapeMatMulPatternL_input15
       Transpose(TransposeReshapeMatMulPatternL_input15, perm=[0,1,3,2]) -> MatMulReshape2Of3PatternL_transpose_8
         MatMul(MatMulReshape2Of3PatternL_transpose_8, div_3) -> view_35
           Transpose(view_35, perm=[0,1,3,2]) -> transpose_10
@@ -929,7 +919,7 @@ It gives the following.
                 Split(_onx_mul024, init7_s2_256_256, axis=3) -> slice_10, slice_11
                   Neg(slice_10) -> neg_2
                   Concat(slice_11, neg_2, axis=3) -> add_15
-    Reshape(input16, init7_s4_2_2_512_10243) -> TransposeReshapeMatMulPatternL_input16
+    Reshape(input16, init7_s4_2_2_512_1024) -> TransposeReshapeMatMulPatternL_input16
       Transpose(TransposeReshapeMatMulPatternL_input16, perm=[0,1,3,2]) -> MatMulReshape2Of3PatternL_view_34
         MatMul(div_3, MatMulReshape2Of3PatternL_view_34) -> view_36
           Mul(view_36, input14) -> _onx_mul026
@@ -939,34 +929,35 @@ It gives the following.
     Mul(add_14, input13) -> _onx_mul025
       Add(add_15, _onx_mul025) -> add_16
         Transpose(add_16, perm=[0,2,1,3]) -> transpose_12
-          Reshape(transpose_12, init7_s2_2048_10246) -> view_39
+          Reshape(transpose_12, init7_s2_2048_1024) -> view_39
             Gemm(view_39, input9, transA=0, transB=1) -> mm_19
               Gemm(view_37, input11, mm_19, transA=0, transB=1) -> Reshape2Of3PatternL_add_19
           Mul(view_36, input13) -> _onx_mul027
             Add(add_17, _onx_mul027) -> add_18
               Transpose(add_18, perm=[0,2,1,3]) -> transpose_13
-                Reshape(transpose_13, init7_s2_2048_10247) -> view_41
+                Reshape(transpose_13, init7_s2_2048_1024) -> view_41
                   Gemm(view_41, input8, transA=1, transB=0) -> output_4
             Gemm(view_39, input10, transA=1, transB=0) -> output_5
     Gemm(view_41, input7, Reshape2Of3PatternL_add_19, transA=0, transB=1) -> add-Reshape2Of3PatternL_add_19
       Reshape(add-Reshape2Of3PatternL_add_19, init7_s3_2_1024_102413) -> add_20
         Mul(add_20, input0) -> _onx_mul028
           Mul(_onx_mul028, input4) -> _onx_mul030
-            ReduceSum(_onx_mul030, init7_s1_23, keepdims=1) -> sum_6
-              Mul(sum_6, init1_s_9) -> _onx_mul032
+            ReduceSum(_onx_mul030, init7_s1_2, keepdims=1) -> sum_6
+              Mul(sum_6, init1_s_) -> _onx_mul032
         Mul(add_20, input6) -> _onx_mul029
-          ReduceSum(_onx_mul029, init7_s2_0_13, keepdims=0) -> output_0
-    Mul(_onx_mul028, input5) -> _onx_mul031
-      Add(add_12, _onx_mul031) -> add_21
-    Pow(input5, init1_s1_3) -> pow_8
+          ReduceSum(_onx_mul029, init7_s2_0_1, keepdims=1) -> sum_5
+            Squeeze(sum_5, init7_s2_0_1) -> output_0
+          Mul(_onx_mul028, input5) -> _onx_mul031
+          Add(add_12, _onx_mul031) -> add_21
+    Pow(input5, init1_s1_) -> pow_8
       Mul(_onx_mul032, pow_8) -> _onx_mul033
         Mul(_onx_mul033, init1_s_12) -> mul-_onx_mul033
           Mul(mul-_onx_mul033, input4) -> _onx_mul035
-        Add(add_21, _onx_mul035) -> add_22
+            Add(add_21, _onx_mul035) -> add_22
     Equal(input3, init7_s_-1) -> eq_2
-      Unsqueeze(eq_2, init7_s1_-12) -> unsqueeze_6
+      Unsqueeze(eq_2, init7_s1_-1) -> unsqueeze_6
         Where(unsqueeze_6, init1_s1_4, add_22) -> _onx_where0
-    Unsqueeze(input3, init7_s1_-13) -> _onx_unsqueeze0
+    Unsqueeze(input3, init7_s1_-1) -> _onx_unsqueeze0
     ConstantOfShape(init7_s2_1024_10242, value=[0.0]) -> _onx_constantofshape05
       ScatterND(_onx_constantofshape05, _onx_unsqueeze0, _onx_where0, reduction=b'add') -> output_3
     Identity(output_11) -> output_13
@@ -1049,48 +1040,49 @@ Focus on one optimizer
 
  .. code-block:: none
 
-    [GraphBuilder-CMA.optimize] start with 117 nodes
-    [GraphBuilder-CMA.optimize] #patterns=1
-    [GraphBuilderPatternOptimization-CMA.optimize] start with 117 nodes, 36 initializers, 1 patterns, priorities=[1]
-    [GraphBuilderPatternOptimization-CMA.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
-    [GraphBuilderPatternOptimization-CMA.optimize] iteration 0: 117 nodes, priority=1
+    [GraphBuilder-ZKY.optimize] start with 120 nodes
+    [GraphBuilder-ZKY.optimize] #patterns=1
+    [GraphBuilderPatternOptimization-ZKY.optimize] start with 120 nodes, 18 initializers, 1 patterns, priorities=[1], max_iter=120
+    [GraphBuilderPatternOptimization-ZKY.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
+    [GraphBuilderPatternOptimization-ZKY.optimize] iteration 0: 120 nodes, priority=1
     [PatternOptimization.enumerate_matches] start SwitchOrderBinaryPattern with main_opset=18 and min_opset=1
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul5
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul7
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul11
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul15-Cst
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul15-Cst2
-    [SwitchOrderBinaryPattern.match] NONE - line: 194:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul25
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul31
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul33
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor3
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul37
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst2
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor4
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul55
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul57
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor13
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul61
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst2
-    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor14
-    [GraphBuilderPatternOptimization-CMA.optimize] done all: -0 +0 nodes
-    [GraphBuilderPatternOptimization-CMA.optimize] stops current_priority_index=1, priorities=[1]
-    [GraphBuilderPatternOptimization-CMA.optimize] done after 1 iterations with 117 nodes in 0.002
-        STAT build_graph_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.00033824099955381826
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0002243919989268761
-        STAT check_pattern_B0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0001818290002120193
-        STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0006528320009238087
-        STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.00035235999894212
-    --MODEL: 117 nodes, 40 inputs, 15 outputs, 36 initializers--
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul5, inputs=_onx_mul0,input34
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul7, inputs=_onx_mul0,input35
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul11, inputs=_onx_mul05,pow_4
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul15-Cst, inputs=_onx_mul06,init1_s_12
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul15-Cst2, inputs=mul-_onx_mul06,input34
+    [SwitchOrderBinaryPattern.match] NONE - line: 194:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul25, inputs=_onx_mul010,_onx_mul012
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul31, inputs=_onx_mul014,input22
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul33, inputs=_onx_mul014,input23
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor3, inputs=add_8,_onx_mul017
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul37, inputs=_onx_mul018,pow_6
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst, inputs=_onx_mul019,init1_s_12
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul41-Cst2, inputs=mul-_onx_mul019,input22
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor4, inputs=add_11,_onx_mul021
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul55, inputs=_onx_mul028,input4
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul57, inputs=_onx_mul028,input5
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor13, inputs=add_12,_onx_mul031
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul61, inputs=_onx_mul032,pow_8
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst, inputs=_onx_mul033,init1_s_12
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst2, inputs=mul-_onx_mul033,input4
+    [SwitchOrderBinaryPattern.match] NONE - line: 185:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor14, inputs=add_21,_onx_mul035
+    [GraphBuilderPatternOptimization-ZKY.optimize] done all: -0 +0 nodes
+    [GraphBuilderPatternOptimization-ZKY.optimize] stops current_priority_index=1, priorities=[1]
+    [GraphBuilderPatternOptimization-ZKY.optimize] done after 1 iterations with 120 nodes in 0.003
+        STAT build_graph_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0003722359997482272
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00022786899899074342
+        STAT check_pattern_B0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00045356800001172815
+        STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0007326560007641092
+        STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.0004650589999073418
+        STAT remove_unused +0 -0 #it=1 maxmatch=0 i=0 - time=0.0004920729988953099
+    --MODEL: 120 nodes, 40 inputs, 15 outputs, 18 initializers--
              INPUT:  39 x 1t
              INPUT:   1 x 7t
          INPUT-SEQ:  40 x Falset
             OUTPUT:  15 x 1t
         OUTPUT-SEQ:  15 x Falset
-              INIT:  10 x 1t
-              INIT:  26 x 7t
+              INIT:   6 x 1t
+              INIT:  12 x 7t
               NODE:  10 x Add
               NODE:   2 x Concat
               NODE:   1 x Constant
@@ -1108,11 +1100,12 @@ Focus on one optimizer
               NODE:   1 x ScatterND
               NODE:   1 x Sigmoid
               NODE:   2 x Split
+              NODE:   3 x Squeeze
               NODE:   2 x Sub
               NODE:   9 x Transpose
               NODE:   2 x Unsqueeze
               NODE:   1 x Where
-    --MODEL: 117 nodes, 40 inputs, 15 outputs, 36 initializers--DETAILED--
+    --MODEL: 120 nodes, 40 inputs, 15 outputs, 18 initializers--DETAILED--
          INPUT:   3 x 1t[1024]
          INPUT:   7 x 1t[1024x1024]
          INPUT:   2 x 1t[1024x512]
@@ -1128,10 +1121,10 @@ Focus on one optimizer
         OUTPUT:   3 x 1t[1024]
         OUTPUT:   8 x 1t[1024x1024]
         OUTPUT:   4 x 1t[1]
-          INIT:  10 x 1t[1]
-          INIT:   7 x 7t[1]
-          INIT:  12 x 7t[2]
-          INIT:   3 x 7t[3]
+          INIT:   6 x 1t[1]
+          INIT:   3 x 7t[1]
+          INIT:   4 x 7t[2]
+          INIT:   1 x 7t[3]
           INIT:   4 x 7t[4]
           NODE:   1 x Add -SIG- 1t[2x1024x1024], 1t[1]
           NODE:   5 x Add -SIG- 1t[2x1024x1024], 1t[2x1024x1024]
@@ -1173,6 +1166,7 @@ Focus on one optimizer
           NODE:   1 x ScatterND -SIG- 1t[1024x1024], 7t[2x1024x1], 1t[2x1024x1024]
           NODE:   1 x Sigmoid -SIG- 1t[2x1024x1024]
           NODE:   2 x Split -SIG- 1t[2x2x1024x512], 7t[2]
+          NODE:   3 x Squeeze -SIG- 1t[1x1x1024], 7t[2]
           NODE:   1 x Sub -SIG- 1t[2x1024x1024], 1t[2x1024x1024]
           NODE:   1 x Sub -SIG- 1t[2x2x1024x1024], 1t[2x2x1024x1024]
           NODE:   1 x Transpose -SIG- 1t[2x1024x2x512]-perm=0;2;1;3
@@ -1183,7 +1177,7 @@ Focus on one optimizer
           NODE:   1 x Unsqueeze -SIG- 7t[2x1024], 7t[1]
           NODE:   1 x Unsqueeze -SIG- 9t[2x1024], 7t[1]
           NODE:   1 x Where -SIG- 9t[2x1024x1], 1t[1], 1t[2x1024x1024]
-    [GraphBuilder-CMA.optimize] done with 117 nodes in 0.008
+    [GraphBuilder-ZKY.optimize] done with 120 nodes in 0.012
 
 
 .. raw:: html
@@ -1208,9 +1202,9 @@ Focus on one optimizer
         <tr style="text-align: right;">
           <th></th>
           <th>pattern</th>
-          <th>time_in</th>
           <th>removed</th>
           <th>added</th>
+          <th>time_in</th>
           <th>iteration</th>
           <th>value</th>
           <th>instances</th>
@@ -1220,10 +1214,10 @@ Focus on one optimizer
       <tbody>
         <tr>
           <th>0</th>
-          <td>check_A</td>
-          <td>0.000213</td>
-          <td>NaN</td>
-          <td>NaN</td>
+          <td>dynamic_dimension_naming</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000131</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1231,10 +1225,10 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>1</th>
-          <td>remove_identity_nodes</td>
-          <td>0.000336</td>
-          <td>0.0</td>
-          <td>0.0</td>
+          <td>check_A-dynamic_dimension_naming</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000253</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1242,10 +1236,10 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>2</th>
-          <td>check_B</td>
-          <td>0.000241</td>
+          <td>check_A-opt-sub</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000235</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1253,10 +1247,10 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>3</th>
-          <td>remove_unused</td>
-          <td>0.000430</td>
+          <td>remove_identity_nodes</td>
           <td>0.0</td>
-          <td>NaN</td>
+          <td>0.0</td>
+          <td>0.000483</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1264,10 +1258,10 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>4</th>
-          <td>check_C</td>
-          <td>0.000195</td>
+          <td>check_B-remove-identity</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000223</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1275,17 +1269,39 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>5</th>
-          <td>apply_constant_folding</td>
-          <td>0.000097</td>
+          <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.0</td>
+          <td>0.000516</td>
+          <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>6</th>
+          <td>check_C-remove-unused</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000218</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>7</th>
+          <td>apply_constant_folding</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>0.000231</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>8</th>
           <td>apply_constant_folding_new_inits</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1296,33 +1312,11 @@ Focus on one optimizer
           <td>NaN</td>
         </tr>
         <tr>
-          <th>7</th>
-          <td>check_Da</td>
-          <td>0.000188</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-        </tr>
-        <tr>
-          <th>8</th>
-          <td>remove_unused</td>
-          <td>0.000339</td>
-          <td>0.0</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
-        </tr>
-        <tr>
           <th>9</th>
-          <td>check_Ea</td>
-          <td>0.000205</td>
+          <td>check_Da-constant-folding</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000215</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1330,54 +1324,54 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>10</th>
-          <td>check_pattern_00</td>
-          <td>0.000224</td>
+          <td>remove_unused</td>
+          <td>0.0</td>
           <td>NaN</td>
+          <td>0.000524</td>
           <td>NaN</td>
-          <td>-1.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>11</th>
-          <td>match_SwitchOrderBinaryPattern</td>
-          <td>0.000653</td>
+          <td>check_Ea-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.0</td>
+          <td>0.000217</td>
           <td>NaN</td>
-          <td>0.0</td>
-          <td>0.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
         </tr>
         <tr>
           <th>12</th>
-          <td>remove_identity_nodes</td>
-          <td>0.000352</td>
-          <td>0.0</td>
-          <td>0.0</td>
-          <td>0.0</td>
+          <td>check_pattern_00</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000228</td>
+          <td>-1.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>13</th>
-          <td>check_pattern_B0</td>
-          <td>0.000182</td>
+          <td>match_SwitchOrderBinaryPattern</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000733</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
+          <td>0.0</td>
+          <td>0.0</td>
         </tr>
         <tr>
           <th>14</th>
-          <td>build_graph_for_pattern</td>
-          <td>0.000338</td>
-          <td>NaN</td>
-          <td>NaN</td>
+          <td>remove_identity_nodes</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000465</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1385,61 +1379,127 @@ Focus on one optimizer
         </tr>
         <tr>
           <th>15</th>
-          <td>pattern_optimization</td>
-          <td>0.003739</td>
+          <td>check_pattern_B0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000219</td>
           <td>0.0</td>
-          <td>NaN</td>
-          <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>16</th>
-          <td>check_F</td>
-          <td>0.000207</td>
-          <td>NaN</td>
-          <td>NaN</td>
-          <td>NaN</td>
+          <td>remove_unused</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000492</td>
+          <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>17</th>
-          <td>remove_unused</td>
-          <td>0.000354</td>
+          <td>check_pattern_B0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000235</td>
           <td>0.0</td>
-          <td>NaN</td>
-          <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>18</th>
-          <td>check_G</td>
-          <td>0.000198</td>
+          <td>build_graph_for_pattern</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>NaN</td>
+          <td>0.000372</td>
+          <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>19</th>
-          <td>apply_constant_folding</td>
-          <td>0.000164</td>
+          <td>pattern_optimization</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>1.0</td>
+          <td>0.004867</td>
+          <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
           <th>20</th>
+          <td>check_F-patterns</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000253</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>21</th>
+          <td>remove_unused</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>0.000514</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>22</th>
+          <td>check_G-remove-unused</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000223</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>23</th>
+          <td>remove_identity_nodes</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000431</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>24</th>
+          <td>check_G-remove-identity</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000220</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>25</th>
+          <td>apply_constant_folding</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>0.000208</td>
+          <td>1.0</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>26</th>
           <td>apply_constant_folding_new_inits</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1450,33 +1510,88 @@ Focus on one optimizer
           <td>NaN</td>
         </tr>
         <tr>
-          <th>21</th>
-          <td>check_Db</td>
-          <td>0.000208</td>
+          <th>27</th>
+          <td>check_Db-constant-folding</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000239</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>22</th>
+          <th>28</th>
           <td>remove_unused</td>
-          <td>0.000345</td>
           <td>0.0</td>
           <td>NaN</td>
+          <td>0.000524</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
         </tr>
         <tr>
-          <th>23</th>
-          <td>check_Eb</td>
-          <td>0.000194</td>
+          <th>29</th>
+          <td>check_Eb-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
+          <td>0.000221</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>30</th>
+          <td>remove_duplicated_initializer</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000099</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>31</th>
+          <td>check_H-remove-duplicated-initializer</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000214</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>32</th>
+          <td>remove_identity_nodes</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>0.000316</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>33</th>
+          <td>remove_unused</td>
+          <td>0.0</td>
+          <td>NaN</td>
+          <td>0.000474</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>NaN</td>
+        </tr>
+        <tr>
+          <th>34</th>
+          <td>check_H-remove-unused</td>
+          <td>NaN</td>
+          <td>NaN</td>
+          <td>0.000223</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1492,7 +1607,7 @@ Focus on one optimizer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.732 seconds)
+   **Total running time of the script:** (0 minutes 0.938 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:
