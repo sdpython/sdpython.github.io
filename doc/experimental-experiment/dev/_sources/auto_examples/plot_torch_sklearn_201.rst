@@ -174,7 +174,7 @@ Validation
 
  .. code-block:: none
 
-    discrepancies: {'abs': 3.129243850708008e-07, 'rel': 1.5257829124453806e-06, 'sum': 6.109476089477539e-07, 'n': 15.0, 'dnan': 0.0, 'argm': (1, 2)}
+    discrepancies: {'abs': 5.84055669605732e-07, 'rel': 0.000256888884925132, 'sum': 5.84055669605732e-07, 'n': 15.0, 'dnan': 0.0, 'argm': (2, 0)}
 
 
 
@@ -628,12 +628,12 @@ We need to do that with different sizes of training set.
 
  .. code-block:: none
 
-    knn discrepancies for size=5: {'abs': 1.4901161193847656e-08, 'rel': 5.071431142122527e-08, 'sum': 8.940696716308594e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2)}
-    knn discrepancies for size=5: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=50: {'abs': 5.850897116799203e-08, 'rel': 1.3596535997713728e-07, 'sum': 1.804488848261565e-06, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=50: {'abs': 5.850897116799203e-08, 'rel': 1.3596535997713728e-07, 'sum': 6.345662234563676e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=10: {'abs': 1.862645149230957e-08, 'rel': 7.243171502876014e-08, 'sum': 1.862645149230957e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
-    knn discrepancies for size=10: {'abs': 1.862645149230957e-08, 'rel': 7.243171502876014e-08, 'sum': 1.862645149230957e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=5: {'abs': 1.1175870895385742e-08, 'rel': 2.4251985020463055e-08, 'sum': 8.009374141693115e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2)}
+    knn discrepancies for size=5: {'abs': 1.862645149230957e-09, 'rel': 5.623740031948294e-09, 'sum': 1.862645149230957e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 1.4901161193847656e-08, 'rel': 5.218763286175465e-08, 'sum': 6.424961611628532e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 1.4901161193847656e-08, 'rel': 5.218763286175465e-08, 'sum': 2.200249582529068e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=10: {'abs': 4.967053712778835e-09, 'rel': 1.4746064979996582e-08, 'sum': 4.967053712778835e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
+    knn discrepancies for size=10: {'abs': 4.967053712778835e-09, 'rel': 1.4746064979996582e-08, 'sum': 4.967053712778835e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
     knn discrepancies for size=11: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 33.0, 'dnan': 0.0, 'argm': (0, 0)}
     knn discrepancies for size=11: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
 
@@ -854,7 +854,7 @@ The dynamic shapes for the whole model:
  .. code-block:: none
 
     dynamic shapes:
-    (({0: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, {}, {0: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}, {0: _DimHint(type=<_DimHintType.DYNAMIC: 3>, min=None, max=None, _factory=True)}), {})
+    (({0: DimHint(DYNAMIC)}, {}, {0: DimHint(DYNAMIC)}, {0: DimHint(DYNAMIC)}), {})
 
 
 
@@ -958,29 +958,29 @@ to skip some errors with shape checking made by :mod:`torch`.
     __main__                  TorchKNNImputer        OK_CHILDC -- ExportedProgram
     ..dist                    NanEuclidean           OK -- ExportedProgram
     ..columns[0]              ColProcessor           OK_CHILDC -- ExportedProgram
-    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_weights            SubWeightMatrix        FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_donors_idx         SubDonorsIdx           FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_make_new_neights   MakeNewWeights         FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
+    ......_weights            SubWeightMatrix        FAIL -- step=, reason='Guard failed: donors_dist.size()[0] == 1'
+    ......_donors_idx         SubDonorsIdx           FAIL -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
+    ......_make_new_neights   MakeNewWeights         FAIL -- step=, reason='Guard failed: donors_mask.size()[0] == 1'
     ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
-    ......_identity           ColProcessorIdentity   FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_identity           ColProcessorIdentity   FAIL -- step=, reason='Guard failed: dist_subset.size()[0] == 1'
     ..columns[1]              ColProcessor           OK_CHILDC -- ExportedProgram
-    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_weights            SubWeightMatrix        FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_donors_idx         SubDonorsIdx           FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_make_new_neights   MakeNewWeights         FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
+    ......_weights            SubWeightMatrix        FAIL -- step=, reason='Guard failed: donors_dist.size()[0] == 1'
+    ......_donors_idx         SubDonorsIdx           FAIL -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
+    ......_make_new_neights   MakeNewWeights         FAIL -- step=, reason='Guard failed: donors_mask.size()[0] == 1'
     ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
-    ......_identity           ColProcessorIdentity   FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_identity           ColProcessorIdentity   FAIL -- step=, reason='Guard failed: dist_subset.size()[0] == 0'
     ..columns[2]              ColProcessor           OK_CHILDC -- ExportedProgram
-    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_weights            SubWeightMatrix        FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_donors_idx         SubDonorsIdx           FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
-    ......_make_new_neights   MakeNewWeights         FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ...._calc_impute          CalcImpute             FAIL_CHILDC -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
+    ......_weights            SubWeightMatrix        FAIL -- step=, reason='Guard failed: donors_dist.size()[0] == 1'
+    ......_donors_idx         SubDonorsIdx           FAIL -- step=, reason='Guard failed: dist_pot_donors.size()[0] == 1'
+    ......_make_new_neights   MakeNewWeights         FAIL -- step=, reason='Guard failed: donors_mask.size()[0] == 1'
     ...._col_cond             ColProcessorCond       FAIL_CHILDC -- step=EXPORT, reason='Dynamo failed to run FX node with fake tensors: call_function cond(*(s2, GraphModule(), GraphModule(...'
     ......_all_nan            ColProcessorAllNan     OK -- ExportedProgram
-    ......_identity           ColProcessorIdentity   FAIL -- step=EXPORT, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: ...'
+    ......_identity           ColProcessorIdentity   FAIL -- step=, reason='Guard failed: dist_subset.size()[0] == 0'
     .._make_dict_idx_map      MakeDictIdxMap         OK -- ExportedProgram
 
 
@@ -1027,29 +1027,29 @@ We first start by running the decompositions on every exported program.
     [run_decompositions]  M:__main__-TorchKNNImputer
     [run_decompositions] .. M:dist-NanEuclidean
     [run_decompositions] .. M:columns[0]-ColProcessor
-    [run_decompositions] .... M:_calc_impute-CalcImpute - skipped
-    [run_decompositions] ...... M:_weights-SubWeightMatrix - skipped
-    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx - skipped
-    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights - skipped
+    [run_decompositions] .... M:_calc_impute-CalcImpute
+    [run_decompositions] ...... M:_weights-SubWeightMatrix
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
     [run_decompositions] .... M:_col_cond-ColProcessorCond - skipped
     [run_decompositions] ...... M:_all_nan-ColProcessorAllNan
-    [run_decompositions] ...... M:_identity-ColProcessorIdentity - skipped
+    [run_decompositions] ...... M:_identity-ColProcessorIdentity
     [run_decompositions] .. M:columns[1]-ColProcessor
-    [run_decompositions] .... M:_calc_impute-CalcImpute - skipped
-    [run_decompositions] ...... M:_weights-SubWeightMatrix - skipped
-    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx - skipped
-    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights - skipped
+    [run_decompositions] .... M:_calc_impute-CalcImpute
+    [run_decompositions] ...... M:_weights-SubWeightMatrix
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
     [run_decompositions] .... M:_col_cond-ColProcessorCond - skipped
     [run_decompositions] ...... M:_all_nan-ColProcessorAllNan
-    [run_decompositions] ...... M:_identity-ColProcessorIdentity - skipped
+    [run_decompositions] ...... M:_identity-ColProcessorIdentity
     [run_decompositions] .. M:columns[2]-ColProcessor
-    [run_decompositions] .... M:_calc_impute-CalcImpute - skipped
-    [run_decompositions] ...... M:_weights-SubWeightMatrix - skipped
-    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx - skipped
-    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights - skipped
+    [run_decompositions] .... M:_calc_impute-CalcImpute
+    [run_decompositions] ...... M:_weights-SubWeightMatrix
+    [run_decompositions] ...... M:_donors_idx-SubDonorsIdx
+    [run_decompositions] ...... M:_make_new_neights-MakeNewWeights
     [run_decompositions] .... M:_col_cond-ColProcessorCond - skipped
     [run_decompositions] ...... M:_all_nan-ColProcessorAllNan
-    [run_decompositions] ...... M:_identity-ColProcessorIdentity - skipped
+    [run_decompositions] ...... M:_identity-ColProcessorIdentity
     [run_decompositions] .. M:_make_dict_idx_map-MakeDictIdxMap
 
 
@@ -1093,62 +1093,62 @@ were previously traced.
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0,8.132270812988281:A2.0042656383049886N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.00146484375,7.1432366371154785:A1.9270001564780879N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05346177890896797,3.0619149208068848:A1.330015910679803N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05220614746212959,3.937958002090454:A1.792613633634413N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0,8.132270812988281:A2.0042656383049886N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.00146484375,7.1432366371154785:A1.9270001564780879N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05346177890896797,3.0619149208068848:A1.330015910679803N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05220614746212959,3.937958002090454:A1.792613633634413N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.09839383512735367,3.008782148361206:A1.4335352875292302],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.09839383512735367,3.008782148361206:A1.4335352875292302]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.2972455620765686,3.3242642879486084:A1.94435024803335],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.2972455620765686,3.3242642879486084:A1.94435024803335]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.47090399265289307,2.9612090587615967:A1.7413830973885276],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.47090399265289307,2.9612090587615967:A1.7413830973885276]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0,8.132270812988281:A2.0042656383049886N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.00146484375,7.1432366371154785:A1.9270001564780879N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05346177890896797,3.0619149208068848:A1.330015910679803N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05220614746212959,3.937958002090454:A1.792613633634413N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[4.72237491607666,7.697484493255615:A5.953188037872314]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.2972455620765686,3.3242642879486084:A1.9443502263589338]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean validation done
     [to_onnx_local] .. M:dist-NanEuclidean - done
@@ -1167,7 +1167,7 @@ were previously traced.
     [to_onnx_local]  M:__main__-TorchKNNImputer - export child 'C_TorchKNNImputer_columns_0_'
     [to_onnx_local] .. M:columns[0]-ColProcessor - to_onnx_local 
     [to_onnx_local] .. M:columns[0]-ColProcessor - export child 'C_TorchKNNImputer_columns_0___calc_impute'
-    The example is broken: _calc_impute:CalcImpute: exporter failed, status=<StatusExportCode.FAIL_CHILDC: 6>, reason='Found the following conflicts between user-specified ranges and inferred ranges from model tracing: --- - Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].[\'Traceback (most recent call last):\\n\', \'  File "/home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/piece_by_piece.py", line 1571, in _try_export_no_bypass_export\\n    ep = torch.export.export(\\n         ^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 315, in export\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/__init__.py", line 280, in export\\n    return _export(\\n           ^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1173, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1139, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 124, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2275, in _export\\n    ep = _export_for_training(\\n         ^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1173, in wrapper\\n    raise e\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1139, in wrapper\\n    ep = fn(*args, **kwargs)\\n         ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py", line 124, in wrapper\\n    return fn(*args, **kwargs)\\n           ^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 2109, in _export_for_training\\n    range_constraints = _get_range_constraints(\\n                        ^^^^^^^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py", line 1364, in _get_range_constraints\\n    range_constraints = make_constraints(\\n                        ^^^^^^^^^^^^^^^^^\\n\', \'  File "/home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py", line 732, in make_constraints\\n    raise ValueError(prefix + "\\\\n".join(range_violations))\\n\', "ValueError: Found the following conflicts between user-specified ranges and inferred ranges from model tracing:\\n- Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs[\'dist_pot_donors\'].shape[0].\\n"]', a custom onnx converter must be provided for 'diag_lib::C_TorchKNNImputer_columns_0___calc_impute', args=(T1s0x17,T7s1,T1s17,T9s17), kwargs={}, outputs=(T1s0,)
+    The example is broken: _calc_impute:CalcImpute: exporter failed, status=<StatusExportCode.FAIL_CHILDC: 6>, reason='Guard failed: dist_pot_donors.size()[0] == 1', a custom onnx converter must be provided for 'diag_lib::C_TorchKNNImputer_columns_0___calc_impute', args=(T1s0x17,T7s1,T1s17,T9s17), kwargs={}, outputs=(T1s0,)
 
 
 
@@ -1397,7 +1397,7 @@ It can be run this way.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 18.803 seconds)
+   **Total running time of the script:** (0 minutes 14.248 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_sklearn_201.py:

@@ -85,6 +85,19 @@ We define a model with a custom operator.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/library.py:356: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+      Overriding a previously registered kernel for the same operator and the same dispatch key
+      operator: mylib::numpy_sin(Tensor x, Tensor(a1!) output) -> ()
+        registered at /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/custom_ops.py:922
+      dispatch key: ADInplaceOrView
+      previous kernel: no debug info
+           new kernel: registered at /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/custom_ops.py:922 (Triggered internally at /pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+      self.m.impl(
+
 
 
 
@@ -108,7 +121,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.9349,  0.8305, -0.2745]])
+    tensor([[ 0.9795, -0.7488,  0.9797]])
 
 
 
@@ -365,7 +378,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.871 seconds)
+   **Total running time of the script:** (0 minutes 0.588 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py:

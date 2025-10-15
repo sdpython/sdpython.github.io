@@ -16,6 +16,7 @@ API
     torch_models/index
     xbuilder/index
     xoptim/index
+    xshape/index
     torch_dynamo/index
     torch_bench/index
 
@@ -29,6 +30,7 @@ API
     args
     bench_run
     checks
+    export_helpers
     ext_test_case
     helpers
     memory_peak

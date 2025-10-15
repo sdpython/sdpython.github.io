@@ -81,9 +81,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[0.4851],
-            [0.4058],
-            [0.3301]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.2598],
+            [-0.1927],
+            [ 0.2255]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -121,9 +121,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[0.4851],
-            [0.4058],
-            [0.3301]])
+    tensor([[-0.2598],
+            [-0.1927],
+            [ 0.2255]])
 
 
 
@@ -175,9 +175,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[0.4851],
-            [0.4058],
-            [0.3301]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.2598],
+            [-0.1927],
+            [ 0.2255]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -262,13 +262,13 @@ Let's see an iteration loop.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:133: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:133: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7682.9990310668945
-    Loss after epoch 2: 5592.0058670043945
-    Loss after epoch 3: 5369.926807403564
+    Loss after epoch 1: 7405.964988708496
+    Loss after epoch 2: 5608.943984985352
+    Loss after epoch 3: 5277.027348518372
     Training process has finished.
 
     OptimizedModule(
@@ -316,13 +316,13 @@ Let's see what it looks like.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:133: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:133: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7003.95672416687
-    Loss after epoch 2: 5408.0958614349365
-    Loss after epoch 3: 5198.615068435669
+    Loss after epoch 1: 8075.983451843262
+    Loss after epoch 2: 5604.433349609375
+    Loss after epoch 3: 5440.798402786255
     Training process has finished.
     4 were created.
 
@@ -455,11 +455,11 @@ It is needed by pytorch.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:133: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7554.9189376831055
-    Loss after epoch 2: 5582.115116119385
-    Loss after epoch 3: 5333.859474182129
+    Loss after epoch 1: 7482.0546226501465
+    Loss after epoch 2: 5466.2754192352295
+    Loss after epoch 3: 5221.147748947144
     Training process has finished.
     2 were created.
 
@@ -580,7 +580,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.501 seconds)
+   **Total running time of the script:** (0 minutes 17.327 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

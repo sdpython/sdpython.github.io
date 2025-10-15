@@ -196,6 +196,23 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip=" A simple model ==============">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_shape_inference_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_shape_inference.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">201: Better shape inference</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The example evaluates the performance of onnxruntime of a simple torch model after it was converted into ONNX through different processes:">
 
 .. only:: html
@@ -264,6 +281,7 @@ See :ref:`l-pytorch-onnx-examples` for an organized version of this page.
    /auto_examples/plot_onnxscript_102
    /auto_examples/plot_executorch_102
    /auto_examples/plot_torch_export_compile_102
+   /auto_examples/plot_shape_inference
    /auto_examples/plot_torch_export_201
    /auto_examples/plot_torch_sklearn_201
    /auto_examples/plot_model_to_python

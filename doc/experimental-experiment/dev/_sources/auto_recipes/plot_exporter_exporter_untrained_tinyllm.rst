@@ -41,11 +41,11 @@ We use the dummy example from the model page.
 .. code-block:: Python
 
 
-    from typing import Any, Dict, List, Tuple
-    import packaging.version as pv
+    from typing import Any, Dict
     import torch
     import transformers
     from onnx_diagnostic.helpers import string_type
+    from onnx_diagnostic.helpers.cache_helper import make_dynamic_cache
 
 
     MODEL_NAME = "arnir0/Tiny-LLM"
@@ -113,7 +113,10 @@ Let's run the model.
 
  .. code-block:: none
 
-    #2[(),dict(cache_position:T7s8,past_key_values:DynamicCache(key_cache=#0[], value_cache=#0[]),input_ids:T7s1x8,inputs_embeds:None,use_cache:bool,return_dict:bool)]
+    The attention mask and the pad token id were not set. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+    Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+    The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+    #2[(),dict(cache_position:T7s8,input_ids:T7s1x8,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96], value_cache=#1[T1s1x1x8x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96], value_cache=#1[T1s1x1x9x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x10x96], value_cache=#1[T1s1x1x10x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
@@ -155,10 +158,9 @@ Let's run the model.
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96], value_cache=#1[T1s1x1x46x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    Continue: it rains... A S Awaya - Pump - OB
-    Casuran Charged - Jays
-    JJ.C.J. Williams
-    Judgio, P. CJ.
+    Continue: it rains... Continue
+    The Worlds: March 1970. It was in November 11, 2017.
+    This year's course is sponsored by its annual annual event
 
 
 
@@ -187,41 +189,10 @@ The model creation
 
 Let's create an untrained model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-189
+.. GENERATED FROM PYTHON SOURCE LINES 68-158
 
 .. code-block:: Python
 
-
-    if pv.Version(transformers.__version__) > pv.Version("4.49.99999"):
-
-        def make_dynamic_cache(
-            key_value_pairs: List[Tuple[torch.Tensor, torch.Tensor]],
-        ) -> transformers.cache_utils.DynamicCache:
-            """
-            Creates an instance of :class:`transformers.cache_utils.DynamicCache`.
-            This version is valid for ``transformers >= 4.50``.
-
-            :param key_value_pairs: list of pairs of (key, values)
-            :return: :class:`transformers.cache_utils.DynamicCache`
-            """
-            return transformers.cache_utils.DynamicCache(key_value_pairs)
-
-    else:
-
-        def make_dynamic_cache(
-            key_value_pairs: List[Tuple[torch.Tensor, torch.Tensor]],
-        ) -> transformers.cache_utils.DynamicCache:
-            """
-            Creates an instance of :class:`transformers.cache_utils.DynamicCache`.
-            This version is valid for ``transformers < 4.50``.
-
-            :param key_value_pairs: list of pairs of (key, values)
-            :return: :class:`transformers.cache_utils.DynamicCache`
-            """
-            cache = transformers.cache_utils.DynamicCache(len(key_value_pairs))
-            for i, (key, value) in enumerate(key_value_pairs):
-                cache.update(key, value, i)
-            return cache
 
 
     def get_tiny_llm(
@@ -319,11 +290,11 @@ Let's create an untrained model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-191
+.. GENERATED FROM PYTHON SOURCE LINES 159-160
 
 Let's get the model, inputs and dynamic shapes.
 
-.. GENERATED FROM PYTHON SOURCE LINES 191-199
+.. GENERATED FROM PYTHON SOURCE LINES 160-168
 
 .. code-block:: Python
 
@@ -342,7 +313,7 @@ Let's get the model, inputs and dynamic shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-203
+.. GENERATED FROM PYTHON SOURCE LINES 169-172
 
 .. code-block:: Python
 
@@ -362,14 +333,14 @@ Let's get the model, inputs and dynamic shapes.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 204-208
+.. GENERATED FROM PYTHON SOURCE LINES 173-177
 
 It works.
 
 ExportedProgram
 +++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-218
+.. GENERATED FROM PYTHON SOURCE LINES 177-187
 
 .. code-block:: Python
 
@@ -402,7 +373,7 @@ ExportedProgram
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.623 seconds)
+   **Total running time of the script:** (0 minutes 8.644 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_untrained_tinyllm.py:

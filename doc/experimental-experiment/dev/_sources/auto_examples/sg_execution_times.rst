@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:18.803** total execution time for 12 files **from auto_examples**:
+**00:01.612** total execution time for 13 files **from auto_examples**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
-     - 00:18.803
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
+     - 00:01.612
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
      - 00:00.000
@@ -44,13 +44,13 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``plot_rewrite_101.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_shape_inference.py` (``plot_shape_inference.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``plot_torch_custom_backend_101.py``)
@@ -66,5 +66,8 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
      - 00:00.000
      - 0.0

@@ -101,7 +101,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.9879, -0.5553, -0.7225]])
+    tensor([[-0.9996,  0.9998,  0.1734]])
 
 
 
@@ -219,7 +219,7 @@ Let's check it runs again.
  .. code-block:: none
 
 
-    tensor([[-0.9879, -0.5553, -0.7225]])
+    tensor([[-0.9996,  0.9998,  0.1734]])
 
 
 
@@ -378,7 +378,7 @@ The name should be 'mylib.numpy_sin'.
     output: "output_0"
     name: "mylib.numpy_sin"
     op_type: "Sin"
-    doc_string: "#Io2.\n-T1:1x3\nnumpy_sin:1:(1,3)"
+    doc_string: "#Io1.\n-T1:1x3\nnumpy_sin:1:(1,3)"
     domain: ""
 
 
@@ -410,7 +410,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.149 seconds)
+   **Total running time of the script:** (0 minutes 0.159 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py:

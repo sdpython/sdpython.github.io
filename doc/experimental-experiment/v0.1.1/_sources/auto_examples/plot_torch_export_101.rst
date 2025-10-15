@@ -300,7 +300,7 @@ The last one does not export. An exporter based on
     -- an error <class 'torch.fx.experimental.symbolic_shapes.GuardOnDataDependentSymNode'> occured:
     Could not extract specialized integer from data-dependent expression u0 (unhinted: u0).  (Size-like symbols: none)
 
-    Caused by: (_export/non_strict_utils.py:1066 in __torch_function__)
+    Caused by: (_export/non_strict_utils.py:1118 in __torch_function__)
     For more information, run with TORCH_LOGS="dynamic"
     For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"
     If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -561,9 +561,9 @@ And now?
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:975: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:977: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:967: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:969: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
     -- preserved?
     graph():
@@ -595,7 +595,7 @@ and it is a provite API.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.210 seconds)
+   **Total running time of the script:** (0 minutes 0.319 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:
