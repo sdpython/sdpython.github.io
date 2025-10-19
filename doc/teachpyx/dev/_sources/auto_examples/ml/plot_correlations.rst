@@ -103,14 +103,14 @@ Les corrélations avec :epkg:`seaborn`.
  .. code-block:: none
 
 
-    <seaborn.matrix.ClusterGrid object at 0x7f165aa2c520>
+    <seaborn.matrix.ClusterGrid object at 0x72688da1a540>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.096 seconds)
+   **Total running time of the script:** (0 minutes 4.240 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ml_plot_correlations.py:

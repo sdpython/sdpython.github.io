@@ -61,7 +61,7 @@ temps avec celui que cela prendrait en parallèle.
  .. code-block:: none
 
 
-    0.5237360110004374
+    0.3475509130003047
 
 
 
@@ -95,7 +95,7 @@ et deux appels à la même fonction.
  .. code-block:: none
 
 
-    1.4210679520001577
+    1.5233818489978148
 
 
 
@@ -136,7 +136,7 @@ qui ne fait rien qu'attendre. Donc le *GIL* n'est pas impliqué.
  .. code-block:: none
 
 
-    0.917306548999477
+    0.9342183890003071
 
 
 
@@ -164,7 +164,7 @@ qui ne fait rien qu'attendre. Donc le *GIL* n'est pas impliqué.
  .. code-block:: none
 
 
-    1.1038838470003611
+    1.3061988989975362
 
 
 
@@ -176,7 +176,7 @@ significativement inférieur à la somme des deux attentes.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.969 seconds)
+   **Total running time of the script:** (0 minutes 4.117 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_gil_example.py:

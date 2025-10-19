@@ -822,7 +822,7 @@ les clauses jusqu'à ce qu'il ne puisse plus continuer :
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.919 seconds)
+   **Total running time of the script:** (0 minutes 0.499 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_einstein_riddle.py:

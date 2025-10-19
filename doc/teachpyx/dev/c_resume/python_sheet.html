@@ -8,10 +8,10 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>Cheat sheet: Python - Documentation teachpyx 0.5.0</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -492,7 +492,10 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../practice/years/2025/index.html">2025 : notebooks créés en séances</a><input aria-label="Toggle navigation of 2025 : notebooks créés en séances" class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../practice/years/2025/seance1_point2d.html">Introduction aux classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../practice/years/2025/seance4_algo.html">Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2025/seance4_algo.html">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2025/seance5_algo2.html">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2025/seance6_regex.html">Séance 6 - epressions régulières</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../practice/years/2025/seance7_postier_chinois.html">Séance 7 - postier chinois</a></li>
 </ul>
 </li>
 </ul>
@@ -637,13 +640,13 @@
 <p>Ce document résume en quelques pages les éléments essentiels de la syntaxe du langage python.
 Quelques lignes suffisent pour découvrir la version installée :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">3.12.9</span> <span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">Feb</span>  <span class="mi">5</span> <span class="mi">2025</span><span class="p">,</span> <span class="mi">08</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mi">00</span><span class="p">)</span> <span class="p">[</span><span class="n">GCC</span> <span class="mf">11.4.0</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">3.12.3</span> <span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">Aug</span> <span class="mi">14</span> <span class="mi">2025</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">21</span><span class="p">)</span> <span class="p">[</span><span class="n">GCC</span> <span class="mf">13.3.0</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Avec la version <em>3.x</em>, le langage a introduit quelques changements importants qui seront précisés.
@@ -674,7 +677,7 @@ une méthode du programme, cette aide correspond à une chaîne de caractères
 encadrée par trois <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>. Ce message d’aide peut s’étaler sur plusieurs lignes.</p></li>
 </ul>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fonction</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;fonction de</span>
 <span class="sd">    démonstration&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mi">0</span>
@@ -884,13 +887,13 @@ Pour ces deux types, <strong>il faut faire attention à chaque affectation</stro
 elle ne fait que créer un second nom pour nommer la même liste.
 Pour copier une liste ou un dictionnaire, il faut utiliser :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>ou, si la liste inclut également d’autres listes ou dictionnaires :</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1156,7 +1159,7 @@ soit renseigné, auquel cas, ce sera ce paramètre qui sera retourné.</p></td>
 <section id="tableaux-numeriques">
 <h3>Tableaux numériques<a class="headerlink" href="#tableaux-numeriques" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce type ne fait pas partie du langage python standard mais il est couramment utilisé.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -1282,7 +1285,7 @@ qui retourne chaque élément et sa position dans l’ensemble :</p>
 boucle avec la fonction <a class="reference external" href="https://docs.python.org/3/library/functions.html#map">map</a>.
 Elle applique une fonction à chaque élément d’un ensemble.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fonction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span>
 
 
@@ -1299,7 +1302,7 @@ Elle applique une fonction à chaque élément d’un ensemble.</p>
 sauf si on utilise la fonction <a class="reference external" href="https://docs.python.org/3/library/functions.html#filter">filter</a>.
 L’exemple suivant affiche tous les nombres pairs.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fonction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
@@ -1337,7 +1340,7 @@ réduit la taille du code. C’est le cas des fichiers.</p>
 avoir à recopier le code informatique plusieurs fois dans le programme.
 Elles acceptent plusieurs paramètres ou aucun, elles peuvent retourner
 plusieurs résultats ou aucun. Leur déclaration suit le schéma suivant :</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">)</span> <span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">)</span> <span class="p">:</span>
     <span class="c1"># code de la fonction</span>
     <span class="k">return</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
 
@@ -1350,7 +1353,7 @@ fonction ne sera exécutée après l’exécution de la première
 instruction <code class="docutils literal notranslate"><span class="pre">return</span></code> rencontrée lors de l’exécution de la fonction.
 Les fonctions peuvent être récursives et inclure des paramètres par défaut :
 ces paramètres reçoivent une valeur même si celle-ci n’est pas précisée lors de l’appel.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">p3</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">p3</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
     <span class="c1"># code de la fonction</span>
     <span class="k">return</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
 
@@ -1362,7 +1365,7 @@ ces paramètres reçoivent une valeur même si celle-ci n’est pas précisée l
 </div>
 <p>Les paramètres par défaut doivent tous être mis en fin de
 déclaration, l’exemple suivant n’est pas correct :</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">p3</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">p3</span><span class="p">):</span>
     <span class="c1"># code de la fonction</span>
     <span class="k">return</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
 <span class="c1"># affiche le message d&#39;erreur : SyntaxError: non-default argument follows default argument</span>
@@ -1372,7 +1375,7 @@ déclaration, l’exemple suivant n’est pas correct :</p>
 sont passés par valeur (une modification à l’intérieur de la fonction
 n’a pas de répercution à l’extérieur).</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">):</span>
     <span class="n">p1</span> <span class="o">=</span> <span class="mi">3</span>
 
 
@@ -1388,7 +1391,7 @@ n’a pas de répercution à l’extérieur).</p>
 <p>Les paramètres de type modifiable sont passés par référence (une modification
 à l’intérieur de la fonction a des répercutions à l’extérieur).</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">exemple_fonction</span><span class="p">(</span><span class="n">p1</span><span class="p">):</span>
     <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
 
 
@@ -1406,7 +1409,7 @@ n’a pas de répercution à l’extérieur).</p>
 <h3>mot-clé <code class="docutils literal notranslate"><span class="pre">lambda</span></code><a class="headerlink" href="#mot-cle-lambda" title="Lien vers cette rubrique">¶</a></h3>
 <p>Le mot-clé <code class="docutils literal notranslate"><span class="pre">lambda</span></code> permet de définir des fonctions au sein d’une expression.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fonction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span>
 
 
@@ -1448,7 +1451,7 @@ n’a pas de répercution à l’extérieur).</p>
 <p>La programmation fonctionnelle est de plus en plus utilisée.
 En python, elle se décline sous la forme d’itérateur.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">iterate_double_on_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">iterate_double_on_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 
@@ -1457,12 +1460,12 @@ En python, elle se décline sous la forme d’itérateur.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">run_python_script_136339621943360</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">iterate_double_on_list</span> <span class="n">at</span> <span class="mh">0x7c000ad2bc60</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">run_python_script_136448048580608</span><span class="o">.&lt;</span><span class="nb">locals</span><span class="o">&gt;.</span><span class="n">iterate_double_on_list</span> <span class="n">at</span> <span class="mh">0x7c1947cc4fb0</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>La fonction itère sur un ensemble mais ne fait rien tant qu’on ne parcourt pas l’ensemble qu’elle génère :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">iterate_double_on_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">iterate_double_on_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 
@@ -1494,8 +1497,8 @@ construire.</p>
 <h3>Déclaration d’une classe<a class="headerlink" href="#declaration-d-une-classe" title="Lien vers cette rubrique">¶</a></h3>
 <p>Pour déclarer une classe, on procède comme suit :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>
@@ -1524,14 +1527,14 @@ Le constructeur comme toutes les autres méthodes possède comme
 premier paramètre <code class="docutils literal notranslate"><span class="pre">self</span></code> qui permet d’accéder aux attributs
 et aux méthodes de la classe. Le programme suivant est équivalent au premier.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcule4</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">calcule4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calcule4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">att3</span>
 
 
@@ -1566,14 +1569,14 @@ attributs. Elles acceptent également la récursivité et les paramètres
 par défaut à l’exception du premier. Chaque instance de classe est
 également munie d’un dictionnaire <code class="docutils literal notranslate"><span class="pre">__dict__</span></code> qui recense tous les attributs.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>  <span class="c1"># attribut</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>  <span class="c1"># attribut</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>  <span class="c1"># attribut</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att4</span> <span class="o">=</span> <span class="n">att1</span> <span class="o">*</span> <span class="n">att2</span> <span class="o">*</span> <span class="n">att3</span>  <span class="c1"># attribut</span>
 
-    <span class="k">def</span> <span class="nf">calcule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>  <span class="c1"># méthode</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calcule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>  <span class="c1"># méthode</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">*</span> <span class="n">x</span>
 
 
@@ -1595,13 +1598,13 @@ par défaut à l’exception du premier. Chaque instance de classe est
 <p>Les méthodes statiques sont comme des fonctions : elle ne nécessite
 pas d’instance d’un object pour être appelée.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
         <span class="c1"># ...</span>
         <span class="k">pass</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">calcule_static</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># méthode statique</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calcule_static</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># méthode statique</span>
         <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
 
 
@@ -1618,14 +1621,14 @@ pas d’instance d’un object pour être appelée.</p>
 <p>Les opérateurs sont des méthodes qui permettent une manipulation
 plus simple des objets. Leur nom est fixé par convention par
 le langage python, ils commencent et terminent par <code class="docutils literal notranslate"><span class="pre">__</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span> <span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">)</span> <span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">)</span> <span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att4</span> <span class="o">=</span> <span class="n">att1</span> <span class="o">*</span> <span class="n">att2</span> <span class="o">*</span> <span class="n">att3</span>
 
-    <span class="k">def</span> <span class="fm">__add__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="p">:</span>
          <span class="k">return</span> <span class="n">ma_classe</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">att1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">att2</span><span class="p">,</span>
                            <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">att3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">att4</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">att4</span><span class="p">)</span>
 
@@ -1647,8 +1650,8 @@ instances de la classe d’être comparées et triées par une liste.</p>
 une simple affectation ne signifie pas une copie mais un second nom pour
 désigner le même objet.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>
@@ -1669,8 +1672,8 @@ désigner le même objet.</p>
 </div>
 <p>Il faut donc copier explicitement l’instance pour obtenir le résultat souhaité.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>
@@ -1678,7 +1681,7 @@ désigner le même objet.</p>
 
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">ma_classe</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 <span class="n">b</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="n">b</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">16</span>
@@ -1700,14 +1703,14 @@ il faut utiliser la fonction <code class="docutils literal notranslate"><span cl
 orientée objet. Lorsqu’une classe hérite d’une autre, elle hérite
 de ses attributs et de ses méthodes. Le simple fait d’hériter
 crée donc une classe équivalente.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span> <span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">)</span> <span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">,</span> <span class="n">att2</span><span class="p">,</span> <span class="n">att3</span><span class="p">)</span> <span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="n">att2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att3</span> <span class="o">=</span> <span class="n">att3</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att4</span> <span class="o">=</span> <span class="n">att1</span> <span class="o">*</span> <span class="n">att2</span> <span class="o">*</span> <span class="n">att3</span>
 
-<span class="k">class</span> <span class="nc">ma_classe2</span> <span class="p">(</span><span class="n">ma_classe</span><span class="p">)</span> <span class="p">:</span>      <span class="c1"># héritage simple</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ma_classe2</span> <span class="p">(</span><span class="n">ma_classe</span><span class="p">)</span> <span class="p">:</span>      <span class="c1"># héritage simple</span>
     <span class="k">pass</span>                            <span class="c1"># pour dire que la classe est vide</span>
 </pre></div>
 </div>
@@ -1717,17 +1720,17 @@ crée donc une classe équivalente.</p>
 <li><p>modifier le comportement d’une méthode existante</p></li>
 </ol>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ma_classe</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ma_classe</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">att1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att1</span> <span class="o">=</span> <span class="n">att1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">att2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcul</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">calcul</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calcul</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">att1</span><span class="o">**</span><span class="mi">2</span>
 
 
-<span class="k">class</span> <span class="nc">ma_classe2</span><span class="p">(</span><span class="n">ma_classe</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">calcul</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ma_classe2</span><span class="p">(</span><span class="n">ma_classe</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calcul</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># dans cette méthode, on change le comportement</span>
         <span class="c1"># de la méthode calcul tout en se servant de celui</span>
         <span class="c1"># de la classe mère</span>
@@ -1751,15 +1754,15 @@ crée donc une classe équivalente.</p>
 <p>Le langage python permet quelques simplifications de code avec
 les décorateurs comme dans l’exemple suivant :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">makebold</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">makebold</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">():</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;b&gt;&quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&lt;/b&gt;&quot;</span>
 
     <span class="k">return</span> <span class="n">wrapped</span>
 
 
-<span class="k">def</span> <span class="nf">makeitalic</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">makeitalic</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">():</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;i&gt;&quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&lt;/i&gt;&quot;</span>
 
     <span class="k">return</span> <span class="n">wrapped</span>
@@ -1767,7 +1770,7 @@ les décorateurs comme dans l’exemple suivant :</p>
 
 <span class="nd">@makebold</span>
 <span class="nd">@makeitalic</span>
-<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">():</span>
     <span class="k">return</span> <span class="s2">&quot;hello world&quot;</span>
 
 
@@ -1782,16 +1785,16 @@ les décorateurs comme dans l’exemple suivant :</p>
 Cela permet de séparer l’affectation de l’accès à un membre d’une
 classe sans changer la notation :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span>
 
     <span class="nd">@p</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="mi">2</span>
 
 
@@ -1924,14 +1927,14 @@ permettant de l’installer. Les seconds sont écrits dans le même répertoire 
 principal. On enregistre le module suivant sous le nom <code class="docutils literal notranslate"><span class="pre">geometrie.py</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># définition du module geometrie.py</span>
 
-<span class="k">def</span> <span class="nf">carre</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">carre</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">:</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
 
-<span class="k">class</span> <span class="nc">point</span> <span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">point</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
 
-    <span class="k">def</span> <span class="nf">norme</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">norme</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
 </pre></div>
 </div>
@@ -1939,14 +1942,14 @@ principal. On enregistre le module suivant sous le nom <code class="docutils lit
 <code class="docutils literal notranslate"><span class="pre">geometrie.py</span></code>, on utilise une des syntaxes suivantes :</p>
 <ul>
 <li><p>Première syntaxe :</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geometrie</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geometrie</span>
 <span class="nb">print</span> <span class="p">(</span><span class="n">geometrie</span><span class="o">.</span><span class="n">carre</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">geometrie</span><span class="o">.</span><span class="n">point</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p>Deuxième syntaxe :</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geometrie</span> <span class="k">as</span> <span class="nn">GEO</span>  <span class="c1"># on donne un pseudonyme au module geometrie</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geometrie</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">GEO</span>  <span class="c1"># on donne un pseudonyme au module geometrie</span>
 <span class="nb">print</span> <span class="p">(</span><span class="n">GEO</span><span class="o">.</span><span class="n">carre</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">GEO</span><span class="o">.</span><span class="n">point</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1956,7 +1959,7 @@ principal. On enregistre le module suivant sous le nom <code class="docutils lit
 est trop long, il faut néanmoins s’assurer que les modules importés
 de cette même manière n’incluent pas des fonctions ou classes
 portant des noms identiques. Dans ce cas, c’est toujours le dernier qui gagne.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span>  <span class="nn">geometrie</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w">  </span><span class="nn">geometrie</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="nb">print</span> <span class="p">(</span><span class="n">carre</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">point</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1983,7 +1986,7 @@ module est le programme principal et non un module.</p>
 <section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Lien vers cette rubrique">¶</a></h2>
 <p>Le petit programme suivant déclenche une erreur parce qu’il effectue une division par zéro.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span> <span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">inverse</span> <span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">y</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">inverse</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -2001,7 +2004,7 @@ ZeroDivisionError: float division
 les erreurs, de détecter qu’une erreur s’est produite et d’agir
 en conséquence afin que le programme ne s’arrête pas :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">y</span>
 
@@ -2022,7 +2025,7 @@ et <code class="docutils literal notranslate"><span class="pre">except</span></c
 une erreur, le programme passe immédiatement à ce qui suit l’instruction
 <code class="docutils literal notranslate"><span class="pre">except</span></code>. On peut même récupérer le message d’erreur correspondant :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">inverse</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">y</span>
 
@@ -2049,7 +2052,7 @@ est de type <code class="docutils literal notranslate"><span class="pre">ZeroDiv
 Pour un autre type d’erreur, il regarde s’il y a d’autres instructions
 <code class="docutils literal notranslate"><span class="pre">except</span></code> qui s’y rapportent. S’il y en a une, il exécute les
 lignes qui la suivent, sinon, le programme s’arrête et déclenche une erreur.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inverse</span> <span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">inverse</span> <span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">y</span>
 <span class="k">try</span> <span class="p">:</span>
@@ -2070,23 +2073,23 @@ avec l’instruction <code class="docutils literal notranslate"><span class="pre
 en créant une classe héritant d’une classe d’exception.
 L’exemple suivant regroupe tous ces cas.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AucunChiffre</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AucunChiffre</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;chaîne de caractères contenant</span>
 <span class="sd">    aussi autre chose que des chiffres&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;exception AucunChiffre, lancée depuis la fonction </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="si">}</span><span class="s2"> &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;avec le paramètre </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">conversion</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">conversion</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;conversion d&#39;une chaîne de caractères en entier&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">AucunChiffre</span><span class="p">,</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;conversion&quot;</span><span class="p">)</span>
@@ -2227,7 +2230,7 @@ d’utiliser quand même <code class="docutils literal notranslate"><span class=
 de la fonction <code class="docutils literal notranslate"><span class="pre">calcul3</span></code> serait utilisé par une autre
 fonction, <code class="docutils literal notranslate"><span class="pre">calcul4</span></code> par exemple.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calcul1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calcul1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">3</span>
 
 
@@ -2241,9 +2244,9 @@ fonction, <code class="docutils literal notranslate"><span class="pre">calcul4</
 </pre></div>
 </div>
 <p>Cela peut provoquer des erreurs lorsqu’on essaye d’utiliser ce résultat dans un calcul par la suite.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calcul1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calcul1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="nb">print</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">calcul2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calcul2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">calcul1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">5</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">calcul2</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>     <span class="c1"># affiche l&#39;erreur</span>
 </pre></div>
@@ -2293,10 +2296,10 @@ toujours même après les avoir modifiées.</p>
 <p>L’exemple suivant considère une fonction qui doit retourner
 une somme réelle même si les éléments de la liste sont
 entiers. On écrit la fonction qui vérifie cela.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">somme_double</span><span class="p">(</span><span class="n">liste</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">somme_double</span><span class="p">(</span><span class="n">liste</span><span class="p">):</span>
     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_somme_double</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_somme_double</span><span class="p">():</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">somme_double</span><span class="p">([</span> <span class="mi">1</span> <span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;valeur &gt; 0 attendue&quot;</span><span class="p">)</span>

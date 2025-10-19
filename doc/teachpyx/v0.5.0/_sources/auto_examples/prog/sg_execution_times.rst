@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.041** total execution time for 14 files **from auto_examples/prog**:
+**00:00.030** total execution time for 14 files **from auto_examples/prog**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_prog_plot_serialisation_examples.py` (``plot_serialisation_examples.py``)
-     - 00:00.041
+     - 00:00.030
      - 0.0
    * - :ref:`sphx_glr_auto_examples_prog_plot_burrows_wheeler.py` (``plot_burrows_wheeler.py``)
      - 00:00.000

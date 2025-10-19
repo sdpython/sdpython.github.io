@@ -8,10 +8,10 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>Threads - Documentation teachpyx 0.5.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -492,7 +492,10 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../practice/years/2025/index.html">2025 : notebooks créés en séances</a><input aria-label="Toggle navigation of 2025 : notebooks créés en séances" class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance1_point2d.html">Introduction aux classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance4_algo.html">Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance4_algo.html">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance5_algo2.html">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance6_regex.html">Séance 6 - epressions régulières</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance7_postier_chinois.html">Séance 7 - postier chinois</a></li>
 </ul>
 </li>
 </ul>
@@ -696,16 +699,16 @@ En résumé, il faut retenir les éléments suivants :</p>
 </ol>
 <p>Le programme principal est appelé le thread principal. Voici ce que cela donne dans un exemple :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span><span class="o">,</span> <span class="nn">time</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 
-<span class="k">class</span> <span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">):</span>  <span class="c1"># jusqua = donnée supplémentaire</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">):</span>  <span class="c1"># jusqua = donnée supplémentaire</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># ne pas oublier cette ligne</span>
         <span class="c1"># (appel au constructeur de la classe mère)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span> <span class="o">=</span> <span class="n">jusqua</span>  <span class="c1"># donnée supplémentaire ajoutée à la classe</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;thread &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.08</span><span class="p">)</span>  <span class="c1"># attend 100 millisecondes sans rien faire</span>
@@ -752,16 +755,16 @@ thread secondaire dont les affichages diffèrent.</p>
 en plus du thread principal. Les lignes modifiées
 par rapport au programme précédent sont commentées.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span><span class="o">,</span> <span class="nn">time</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 
-<span class="k">class</span> <span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span> <span class="o">=</span> <span class="n">jusqua</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;thread &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot; : &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.09</span><span class="p">)</span>
@@ -788,17 +791,17 @@ par rapport au programme précédent sont commentées.</p>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">2</span>
     <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">2</span>
     <span class="n">programme</span>  <span class="mi">2</span>
-    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">3</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">3</span>
+    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">3</span>
     <span class="n">programme</span>  <span class="mi">3</span>
-    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">4</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">4</span>
+    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">4</span>
     <span class="n">programme</span>  <span class="mi">4</span>
-    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">5</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">5</span>
+    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">5</span>
     <span class="n">programme</span>  <span class="mi">5</span>
-    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">6</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">6</span>
+    <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">6</span>
     <span class="n">programme</span>  <span class="mi">6</span>
     <span class="n">thread</span>  <span class="n">A</span>  <span class="p">:</span>  <span class="mi">7</span>
     <span class="n">thread</span>  <span class="n">B</span>  <span class="p">:</span>  <span class="mi">7</span>
@@ -844,17 +847,17 @@ l’ordinateur par la répétition inutile de la même action un trop grand nomb
 de fois. Ici, le thread principal vérifie l’état du thread secondaire
 tous les 100 millisecondes. Cette durée dépend de ce que fait le thread secondaire.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span><span class="o">,</span> <span class="nn">time</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 
-<span class="k">class</span> <span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">):</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span> <span class="o">=</span> <span class="n">jusqua</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">etat</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># l&#39;état du thread est soit False (à l&#39;arrêt)</span>
         <span class="c1"># soit True (en marche)</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">etat</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># on passe en mode marche</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;thread itération &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -903,16 +906,16 @@ objets <a class="reference external" href="https://docs.python.org/3/library/thr
 et <a class="reference external" href="https://docs.python.org/3/library/threading.html?highlight=event#threading.Event">Event</a>.
 Ces deux objets permettent d’éviter l’utilisation de la méthode <a class="reference external" href="https://docs.python.org/3/library/time.html#time.sleep">sleep</a>.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span><span class="o">,</span> <span class="nn">time</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 
-<span class="k">class</span> <span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>  <span class="c1"># event = objet Event</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jusqua</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>  <span class="c1"># event = objet Event</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1">#       = donnée supplémentaire</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span> <span class="o">=</span> <span class="n">jusqua</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">event</span>  <span class="c1"># on garde un accès à l&#39;objet Event</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jusqua</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;thread itération &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
@@ -1162,16 +1165,16 @@ mais par le programme lui-même - dans cet exemple <code class="docutils literal
 Les symboles <code class="docutils literal notranslate"><span class="pre">&lt;&lt;&gt;&gt;</span></code> au début et à la fin du nom de l’événement sont la seule contrainte.
 La méthode <code class="docutils literal notranslate"><span class="pre">event_generate</span></code> permet d’insérer un message dans la boucle de
 messages de façon à ce que celui-ci soit traité au même titre qu’un clic de souris, la pression d’une touche, …</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">copy</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">copy</span>
 
 <span class="c1"># définition du thread</span>
-<span class="k">class</span> <span class="nc">MonThread</span> <span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">)</span> <span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">win</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonThread</span> <span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">win</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span> <span class="p">:</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="n">win</span>  <span class="c1"># on mémorise une référence sur la fenêtre</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">res</span>
 
-    <span class="k">def</span> <span class="nf">run</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;thread &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
@@ -1190,7 +1193,7 @@ messages de façon à ce que celui-ci soit traité au même titre qu’un clic d
 
 <span class="n">thread_resultat</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="k">def</span> <span class="nf">lance_thread</span> <span class="p">()</span> <span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lance_thread</span> <span class="p">()</span> <span class="p">:</span>
     <span class="k">global</span> <span class="n">thread_resultat</span>
       <span class="c1"># fonction appelée lors de la pression du bouton</span>
       <span class="c1"># on change la légnde de la zone de texte</span>
@@ -1202,7 +1205,7 @@ messages de façon à ce que celui-ci soit traité au même titre qu’un clic d
     <span class="n">m</span> <span class="o">=</span> <span class="n">MonThread</span> <span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">thread_resultat</span><span class="p">)</span>
     <span class="n">m</span><span class="o">.</span><span class="n">start</span> <span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">thread_fini_fonction</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">thread_fini_fonction</span> <span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">:</span>
     <span class="k">global</span> <span class="n">thread_resultat</span>
       <span class="c1"># fonction appelée lorsque le thread est fini</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;la fenêtre sait que le thread est fini&quot;</span><span class="p">)</span>
@@ -1212,7 +1215,7 @@ messages de façon à ce que celui-ci soit traité au même titre qu’un clic d
       <span class="c1"># on réactive le bouton de façon à pouvoir lancer un autre thread</span>
     <span class="n">bouton</span><span class="o">.</span><span class="n">config</span> <span class="p">(</span><span class="n">state</span> <span class="o">=</span> <span class="n">TK</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">TK</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">TK</span>
 
 <span class="c1"># on crée la fenêtre</span>
 <span class="n">root</span>   <span class="o">=</span> <span class="n">TK</span><span class="o">.</span><span class="n">Tk</span> <span class="p">()</span>
@@ -1330,14 +1333,14 @@ qui essaye de découvrir le nombre que l’autre joueur a tiré au hasard.
 A chaque essai, un joueur envoie un message de type <code class="docutils literal notranslate"><span class="pre">(&quot;essai&quot;,</span> <span class="pre">n)</span></code>
 à l’autre joueur pour dire qu’il joue le nombre <code class="docutils literal notranslate"><span class="pre">n</span></code>. Ce joueur lui répond
 avec des messages de type <code class="docutils literal notranslate"><span class="pre">(&quot;dessous&quot;,</span> <span class="pre">n)</span></code>, <code class="docutils literal notranslate"><span class="pre">(&quot;dessus&quot;,</span> <span class="pre">n)</span></code>, <code class="docutils literal notranslate"><span class="pre">(&quot;gagne&quot;,</span> <span class="pre">n)</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
-    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">9</span> <span class="p">)</span>
-    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">8</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
-    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">8</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
-    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">0</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">4</span> <span class="p">)</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">joue</span> <span class="p">(</span> <span class="mi">6</span> <span class="p">)</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">2</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">A</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">6</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">0</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">je</span> <span class="n">tente</span>  <span class="mi">4</span>  <span class="n">écart</span>  <span class="mi">10</span>  <span class="n">à</span> <span class="n">traiter</span>  <span class="mi">1</span>
     <span class="n">A</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai perdu après  2  essais</span>
     <span class="n">A</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;arrête</span>
-    <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai gagné en  1  essais, solution  0</span>
+    <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;ai gagné en  1  essais, solution  4</span>
     <span class="n">B</span>  <span class="p">:</span> <span class="n">j</span><span class="s1">&#39;arrête</span>
 </pre></div>
 </div>
@@ -1350,10 +1353,10 @@ l’affichage à l’aide d’un verrou.</p>
 a beaucoup été utilisé mais d’autres modules ont été ajoutés à la
 distribution standard de python.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">concurrent.futures</span></code></a> :
+<li><p><a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">concurrent.futures</span></code></a> :
 le module propose une interface similaire pour paralléliser avec des threads ou des processus.
 La création des threads s’écrit plus rapidement.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a> : ce module fonctionne avec les mots-clés
+<li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a> : ce module fonctionne avec les mots-clés
 <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#example-hello-world-coroutine">async, await</a>
 et il est particulièrement adapté à la parallélisation à des accès aux ressources.</p></li>
 </ul>
@@ -1362,23 +1365,23 @@ le second est particulière utile pour écrire des applications non bloquantes
 qui gère pas mal d’accès à Internet.</p>
 <section id="concurrent-futures">
 <h3>concurrent.futures<a class="headerlink" href="#concurrent-futures" title="Lien vers cette rubrique">¶</a></h3>
-<p>Le module <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">concurrent.futures</span></code></a>
-implémente une classe <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor" title="(disponible dans Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.Executor</span></code></a>
+<p>Le module <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">concurrent.futures</span></code></a>
+implémente une classe <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.Executor</span></code></a>
 qui définit une interface pour l’exécution en parallèle. On peut soit :</p>
 <ul class="simple">
 <li><p>soumettre l’exécution d’une fonction avec
-<a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor.submit" title="(disponible dans Python v3.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">concurrent.futures.Executor.submit()</span></code></a></p></li>
+<a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor.submit" title="(disponible dans Python v3.14)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">concurrent.futures.Executor.submit()</span></code></a></p></li>
 <li><p>ou soumettre l’exécution de la même fonction appliquée à séquence de jeux de paramètres
-avec <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor.map" title="(disponible dans Python v3.13)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">concurrent.futures.Executor.map()</span></code></a></p></li>
+avec <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor.map" title="(disponible dans Python v3.14)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">concurrent.futures.Executor.map()</span></code></a></p></li>
 </ul>
 <p>Cette classe est dérivée en un
-<a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="(disponible dans Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.ThreadPoolExecutor</span></code></a>
+<a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.ThreadPoolExecutor</span></code></a>
 dont le principal argument <em>max_works</em> définit le nombre de threads à exécuter en parallèle.
 Je reproduis ici l”<a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor-example">exemple</a>
 de la documentation de <em>Python</em> qui détermine si un nombre est premier.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">concurrent.futures</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="n">PRIMES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="mi">112272535095293</span><span class="p">,</span>
@@ -1390,7 +1393,7 @@ de la documentation de <em>Python</em> qui détermine si un nombre est premier.<
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -1401,7 +1404,7 @@ de la documentation de <em>Python</em> qui détermine si un nombre est premier.<
     <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">prime</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">PRIMES</span><span class="p">,</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">PRIMES</span><span class="p">)):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> is prime: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">prime</span><span class="p">))</span>
@@ -1423,8 +1426,8 @@ de la documentation de <em>Python</em> qui détermine si un nombre est premier.<
 et les instructions <em>print</em> si elles sont insérées dans la fonction parallélisée produisent
 des résultats indéchiffrables.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">concurrent.futures</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="n">PRIMES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="mi">112272535095293</span><span class="p">,</span>
@@ -1436,7 +1439,7 @@ des résultats indéchiffrables.</p>
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -1449,7 +1452,7 @@ des résultats indéchiffrables.</p>
     <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">prime</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">PRIMES</span><span class="p">,</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">PRIMES</span><span class="p">)):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> is prime: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">prime</span><span class="p">))</span>
@@ -1482,16 +1485,16 @@ des résultats indéchiffrables.</p>
 (voir aussi <a class="reference external" href="http://sametmax.com/ecrire-des-logs-en-python/">Ecrire des logs en Python</a>).
 L’exemple suivant construit un <em>logger</em> par thread</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">concurrent.futures</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">threading</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 
 <span class="n">loggers</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">loggers</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">loggers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -1525,7 +1528,7 @@ L’exemple suivant construit un <em>logger</em> par thread</p>
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">current_thread</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;start </span><span class="si">{}</span><span class="s2">*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1541,7 +1544,7 @@ L’exemple suivant construit un <em>logger</em> par thread</p>
     <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;thread&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">prime</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">PRIMES</span><span class="p">,</span> <span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">PRIMES</span><span class="p">)):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> is prime: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">prime</span><span class="p">))</span>
@@ -1568,20 +1571,20 @@ L’exemple suivant construit un <em>logger</em> par thread</p>
     <span class="mi">115797848077099</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">True</span>
     <span class="mi">1099726899285419</span> <span class="ow">is</span> <span class="n">prime</span><span class="p">:</span> <span class="kc">False</span>
     <span class="o">-----</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span><span class="mi">434</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span><span class="mi">896</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span><span class="mi">901</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="mi">391</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="mi">397</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115797848077099</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="mi">690</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115797848077099</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">154</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">705</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">711</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">290</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112272535095293</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">290</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115797848077099</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">731</span> <span class="o">-</span> <span class="n">thread_0</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115797848077099</span><span class="o">*</span>
     
     <span class="o">-----</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span><span class="mi">435</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112582705942171</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span><span class="mi">901</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112582705942171</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">44</span><span class="p">,</span><span class="mi">901</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115280095190773</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="mi">399</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115280095190773</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="mi">400</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">1099726899285419</span><span class="o">*</span>
-    <span class="mi">2025</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">11</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span><span class="mi">528</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end2</span> <span class="mi">1099726899285419</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">176</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">112582705942171</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">724</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">112582705942171</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">724</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">115280095190773</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">304</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end3</span> <span class="mi">115280095190773</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">304</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">start</span> <span class="mi">1099726899285419</span><span class="o">*</span>
+    <span class="mi">2025</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">19</span> <span class="mi">11</span><span class="p">:</span><span class="mi">48</span><span class="p">:</span><span class="mi">53</span><span class="p">,</span><span class="mi">509</span> <span class="o">-</span> <span class="n">thread_1</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">end2</span> <span class="mi">1099726899285419</span><span class="o">*</span>
 </pre></div>
 </div>
 </section>
@@ -1601,9 +1604,9 @@ Il y a deux objets <em>futures</em> en Python qui sont produits par différents
 jeux de fonctions. On ne créé jamais un <em>futures</em>, c’est toujours une fonction
 qui le fait.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(disponible dans Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.Future</span></code></a> : ils sont créés par le module <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">concurrent.futures</span></code></a>.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">concurrent.futures.Future</span></code></a> : ils sont créés par le module <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">concurrent.futures</span></code></a>.</p></li>
 <li><p><a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#future">asyncio.future</a> :
-ils sont créés par le module <a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a>.</p></li>
+ils sont créés par le module <a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a>.</p></li>
 </ul>
 <p>Les deux objets possèdent la même interface et sont presque compatibles.
 Cela dit, il vaut mieux éviter de les mélanger. Je cite la documentation :</p>
@@ -1625,11 +1628,11 @@ mais dans plusieurs fils d’exécution parallèles.</p>
 <p>La fonction distribue le calcul de la somme des éléments d’un tableau.
 et elle est récursive.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">import</span> <span class="nn">concurrent.futures</span> <span class="k">as</span> <span class="nn">cf</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cf</span>
 
 
-<span class="k">def</span> <span class="nf">parallel_numpy_dot</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parallel_numpy_dot</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">cf</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">va</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="n">f1</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">,</span> <span class="n">va</span><span class="p">[:</span><span class="n">m</span><span class="p">],</span> <span class="n">vb</span><span class="p">[:</span><span class="n">m</span><span class="p">])</span>
@@ -1643,7 +1646,7 @@ et elle est récursive.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">289.7473497345917</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">346.1046610634424</span>
 </pre></div>
 </div>
 <p>Il faut voir l’objet <em>executor</em> comme un objet qui empile les fonctions

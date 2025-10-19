@@ -120,7 +120,7 @@ le site de :epkg:`protobuf` ou sur Linux (Ubuntu/Debian)
  .. code-block:: none
 
 
-    '5.28.0'
+    '6.33.0'
 
 
 
@@ -188,7 +188,7 @@ Un fichier a été généré.
  .. code-block:: none
 
 
-    ['plot_pandas_groupby.py', 'plot_serialisation_examples.py', 'plot_tarabiscote.py', 'plot_serialisation_protobuf.py', 'plot_einstein_riddle.py', 'plot_hypercube.py', 'plot_float_and_double_rouding.py', 'plot_tsp.py', 'plot_lambda_function.py', 'plot_partie_dame.py', 'plot_numpy_tricks.py', 'plot_matador.py', 'plot_gil_example.py']
+    ['plot_serialisation_protobuf.py', 'plot_numpy_tricks.py', 'plot_burrows_wheeler.py', 'plot_tsp.py', 'plot_einstein_riddle.py', 'plot_hypercube.py', 'plot_matador.py', 'plot_float_and_double_rouding.py', 'plot_serialisation_examples.py', 'plot_partie_dame.py', 'plot_lambda_function.py', 'plot_tarabiscote.py', 'plot_pandas_groupby.py', 'plot_gil_example.py']
 
 
 
@@ -582,7 +582,7 @@ Sérialisation JSON
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.093 seconds)
+   **Total running time of the script:** (0 minutes 0.191 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_serialisation_protobuf.py:

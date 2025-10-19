@@ -77,7 +77,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    (23.0, 23.0)
+    (np.float64(23.0), np.float64(23.0))
 
 
 
@@ -98,7 +98,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    1.330699979007477e-05
+    3.9325001125689596e-05
 
 
 
@@ -119,7 +119,7 @@ accéder à un élément en particulier
  .. code-block:: none
 
 
-    2.441400010866346e-05
+    5.30460019945167e-05
 
 
 
@@ -152,7 +152,7 @@ Les éléments ne sont pas recopiés mais un objet intermédiaire est créé.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.003 seconds)
+   **Total running time of the script:** (0 minutes 0.006 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_numpy_tricks.py:

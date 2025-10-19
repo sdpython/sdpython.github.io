@@ -1,0 +1,1617 @@
+<!doctype html>
+<html class="no-js" lang="fr" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Recherche" href="../../../search.html"><link rel="next" title="Séance 6 - epressions régulières" href="seance6_regex.html"><link rel="prev" title="Algorithmes" href="seance4_algo.html">
+        <link rel="prefetch" href="../../../_static/project_ico.png" as="image">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+        <title>Algorithmes - Documentation teachpyx 0.5.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">Documentation teachpyx 0.5.0</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/project_ico.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Documentation teachpyx 0.5.0</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Recherche" name="q" aria-label="Recherche">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Lectures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../py/index.html">Le langage Python</a><input aria-label="Toggle navigation of Le langage Python" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_lang/index.html">Variables et fonctions</a><input aria-label="Toggle navigation of Variables et fonctions" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_lang/types.html">Types et variables du langage python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_lang/syntaxe.html">Syntaxe du langage Python (boucles, tests, fonctions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_lang/constructions.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_lang/collections.html">Constructions classiques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_lang/dates.html">Dates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_lang/encoding.html">Encoding et jeux de caractères</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_classes/index.html">Classes</a><input aria-label="Toggle navigation of Classes" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_classes/classes.html">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_classes/questions.html">Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_exception/index.html">Exceptions</a><input aria-label="Toggle navigation of Exceptions" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_exception/exception.html">Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_exception/exception_ext.html">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_exception/warning.html">Warning et logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_module/index.html">Entrées, Sorties, Modules</a><input aria-label="Toggle navigation of Entrées, Sorties, Modules" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_module/files.html">Fichiers</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../py/c_module/serialization.html">Sérialisation</a><input aria-label="Toggle navigation of Sérialisation" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_module/module.html">Module ou extension</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_regex/index.html">Expressions régulières</a><input aria-label="Toggle navigation of Expressions régulières" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_regex/regex.html">Expressions régulières</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_parallelisation/index.html">Parallélisation</a><input aria-label="Toggle navigation of Parallélisation" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_parallelisation/thread.html">Threads</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../py/c_gui/index.html">Interfaces graphiques</a><input aria-label="Toggle navigation of Interfaces graphiques" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../py/c_gui/tkinter.html">tkinter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../c_data/index.html">Matrices et DataFrames</a><input aria-label="Toggle navigation of Matrices et DataFrames" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../c_data/matrices.html">Calcul matriciel</a><input aria-label="Toggle navigation of Calcul matriciel" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/nb_array.html">Calcul Matriciel, Optimisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/nb_numpy.html">Calcul matriciel avec numpy (exercices)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/numpy_broadcast.html">Numpy et tableau de contingence</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../c_data/dataframes.html">Dataframes</a><input aria-label="Toggle navigation of Dataframes" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/nb_dataframe.html">DataFrame et Graphes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/nb_pandas.html">Manipulation de données avec pandas (exercices)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/nb_pandas_cube.html">Cube de données et pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/nb_dataframe_matrix_speed.html">Mesures de vitesse sur les dataframes</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../c_data/graphes.html">Graphes</a><input aria-label="Toggle navigation of Graphes" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_data/enedis_cartes.html">Tracer une carte en Python</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../c_ml/index.html">Machine Learning</a><input aria-label="Toggle navigation of Machine Learning" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_ml/rappel.html">Quelques rappels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_ml/regclass.html">Classification et régression</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../c_resume/index.html">Précis</a><input aria-label="Toggle navigation of Précis" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_resume/python_sheet.html">Cheat sheet: Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_resume/conseil_programmes.html">Quelques conseils pour écrire un programme</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../c_resume/cheat_sheet.html">Cheat Sheets</a><input aria-label="Toggle navigation of Cheat Sheets" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_resume/git.html">Cheat Sheet on Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_resume/linux.html">Cheat Sheet on Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../c_resume/jenkins.html">Cheat Sheet on Jenkins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../articles/index.html">Collections d’articles périssables</a><input aria-label="Toggle navigation of Collections d’articles périssables" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2025/2025-11-31-route2025.html">2025-11-31 : rappel feuille de route 2025</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2025/2025-09-03-ensae.html">2025-09-03 : ENSAE, Introduction et Attendus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2025/2025-04-01-route2025.html">2025-04-01 : feuille de route 2025 - avril</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2025/2025-03-01-route2025.html">2025-03-01 : feuille de route 2025 - mars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2025/2025-01-31-local_llm.html">2025-01-31 : local LLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2024/2024-11-31-route2024.html">2024-11-31 : rappel feuille de route 2024</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2024/2024-09-04-ensae.html">2024-09-04 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2024/2024-03-01-route2024.html">2024-03-01 : feuille de route 2024</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2024/2024-01-18-wsl.html">2024-01-18 : WSL - nettoyage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2023/2023-11-31-route2023.html">2023-11-31 : rappel feuille de route 2023</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2023/2023-09-06-ensae.html">2023-09-06 : ENSAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2023/2023-08-09-hermionne.html">2023-08-09 : l’énigme d’Hermionne</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2023/2023-08-03-code-jam.html">2023-08-03 : Code Jam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2022/2022-12-07-cartopy.html">2022-12-07 : Utilisation de cartopy sous Windows (sous WSL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2022/2022-11-31-route2022.html">2022-11-31 : rappel feuille de route 2022</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../articles/2022/2022-01-01-assurance.html">2022 - Assurance auto</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercices</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_python.html">Exercices sur le langage python</a><input aria-label="Toggle navigation of Exercices sur le langage python" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/code_liste_tuple.html">Liste, tuple, ensemble, dictionnaire, liste chaînée, coût des opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/nbheap.html">Heap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/structures_donnees_conversion.html">D’une structure de données à l’autre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/recherche_dichotomique.html">Recherche dichotomique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/exercice_hash.html">Répartition, table de hashage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classes_metro.html">Un bref aperçu des classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classes_2048.html">2048 et les classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classe_de.html">Jeu de dé, rotation sur un circuit (classes)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classe_permutation.html">Classe Permutation et décomposition en transitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classe_tree.html">Une classe pour représenter un arbre</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classe_iterateur.html">Itérateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/classe_user_p.html">Classe, Héritage, calcule d’une distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/pivot_gauss.html">Pivot de gauss avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/coloriage_carre.html">Jeux de coloriage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/code_multinomial.html">Simuler une loi multinomiale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/tableau_contingence.html">Calculer un chi 2 sur un tableau de contingence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/tri_nlnd.html">Tri plus rapide que prévu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/histogramme_rapide.html">Histogramme et dictionnaire</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/exercice_pi.html">Calculs de surface et autres calculs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/de_rotation.html">Jeu de dé, rotation sur un circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/dame_prise.html">Exercices autour des dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/profiling_example.html">Exemple de profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/profile_gini.html">Profiling la fonction Gini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/profiling_conv.html">Profiling, application à la convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/exercice_regex.html">Expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/exercice_json_xml.html">JSON - XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/exercice_serialisation_json.html">Sérialisation avec JSON, XML, pickle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/tests_unitaires.html">Tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../py-base/scrapping.html">Web-Scraping - pokemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/premiers_pas.html">Premiers pas en Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/variable_boucle_tests.html">Variables, boucles, tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/dictionnaire_vigenere.html">Dictionnaires, fonctions, code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/module_file_regex.html">Modules, fichiers, expressions régulières</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/integrale_rectangle.html">Intégrale et la méthode des rectangles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/j2048.html">2048 - stratégie gagnante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/texte_langue.html">Deviner la langue d’un texte</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/pyramide_bigarree.html">Tracer une pyramide bigarrée</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/classes_carre_magique.html">Classes, méthodes, attributs, opérateurs et carré magique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/classes_heritage.html">Classes, héritage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/trie.html">Arbre et Trie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/premiers_pas_correction.html">Premiers pas en Python (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/variable_boucle_tests_correction.html">Variables, boucles, tests (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/dictionnaire_vigenere_correction.html">Dictionnaires, fonctions, code de Vigenère (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/module_file_regex_correction.html">Modules, fichiers, expressions régulières (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/integrale_rectangle_correction.html">Intégrale et la méthode des rectangles - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/j2048_correction.html">2048 - stratégie gagnante - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/texte_langue_correction.html">Deviner la langue d’un texte (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/pyramide_bigarree_correction.html">Tracer une pyramide bigarrée - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/classes_carre_magique_correction.html">Classes, méthodes, attributs, opérateurs et carré magique (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/classes_heritage_correction.html">Classes, héritage (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-base/trie_correction.html">Arbre et Trie (correction)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_algo.html">Algorithmes</a><input aria-label="Toggle navigation of Algorithmes" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/matrix_dictionary.html">Produit matriciel avec une matrice creuse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_echelle.html">Calculer le nombre de façons de monter une échelle.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_plus_grande_somme.html">La sous-séquence de plus grande somme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_xn.html">Calculer x**n le plus rapidement possible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_topk.html">Les k premiers éléments (top k)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_suffix.html">Jeux de dictionnaires, plus grand suffixe commun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/BJKST.html">Algorithmes de streaming, BJKST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_editdist.html">Distance entre deux mots de même longueur et tests unitaires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_edit_distance.html">Distance d’édition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_ordonnancement.html">Problème d’ordonnancement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_tsp.html">TSP - Traveling Salesman Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/tsp_simplifie.html">Plus court chemin passant par tous les noeuds d’un graphe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/tsp_aparte.html">Aparté sur le voyageur de commerce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_compose_connexe.html">Graphe et Composantes connexes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_random_graph.html">Graphes aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_simulation_covid_simple.html">Modèle épidémiologique (SIRD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-base/exercice_simulation_covid.html">Simulation COVID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-compose/paris_parcours.html">Parcourir les rues de Paris</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-compose/vigenere.html">Casser le code de Vigenère</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../algo-compose/exercice_morse.html">Décoder du Morse sans espaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/gentry_integer_encryption.html">Cryptage homomorphic de Craig Gentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/knn_high_dimension.html">Plus proches voisins en grande dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/puzzle_algo_1.html">Puzzles algorithmiques (1)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/puzzle_algo_2.html">Puzzles algorithmiques (2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/plus_court_chemin.html">Programmation dynamique et plus court chemin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/decorrelation.html">Décorrélation de variables aléatoires</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/graph_spectral_clustering.html">Spectral Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/gentry_integer_encryption_correction.html">Cryptage homomorphic de Craig Gentry - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/knn_high_dimension_correction.html">Plus proches voisins en grande dimension - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/puzzle_algo_1_correction.html">Puzzles algorithmes (1) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/puzzle_algo_2_correction.html">Puzzles algorithmes (2) - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/plus_court_chemin_correction.html">Programmation dynamique et plus court chemin (correction)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/decorrelation_correction.html">Décorrélation de variables aléatoires - correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tds-algo/graph_spectral_clustering_correction.html">Spectral Clustering - correction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_exam.html">Séances minutées</a><input aria-label="Toggle navigation of Séances minutées" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../exams.html">Exercices minutés</a><input aria-label="Toggle navigation of Exercices minutés" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2013_coloriage_correction.html">1A.e - TD noté, 27 novembre 2012 (coloriage, correction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2013_bout_de_code_coloriage.html">1A.e - TD noté, 27 novembre 2012 (éléments de code pour le coloriage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2015.html">1A.e - TD noté, 5 décembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2015_rattrapage_enonce.html">1A.e - TD noté 2015 rattrapage (énoncé, écrit et oral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2016.html">1A.e - TD noté, 11 décembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2017.html">1A.e - TD noté, 16 décembre 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2017_2.html">1A.e - TD noté, 21 février 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2018_1.html">1A.e - Enoncé 12 décembre 2017 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2018_2.html">1A.e - Enoncé 12 décembre 2017 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2019_1.html">1A.e - Enoncé 23 octobre 2018 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2019_2.html">1A.e - Enoncé 23 octobre 2018 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2020_1.html">1A.e - Enoncé 22 octobre 2019 (1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2020_2.html">1A.e - Enoncé 22 octobre 2019 (2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2021.html">1A - Enoncé 24 novembre 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2022.html">1A - Enoncé 3 novembre 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2022_rattrapage.html">1A - Enoncé 15 novembre 2021 - rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2022_rattrapage2.html">1A - Enoncé 3 mars 2022- rattrapage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2023.html">1A - Enoncé 26 octobre 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2023-2024.html">1A - Enoncé 8 novembre 2023-2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2023-2024_rattrapage.html">1A - Enoncé 2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/td_note_2024.html">1A - Enoncé 6 novembre 2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/interro_rapide_20_minutes_2014_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/interro_rapide_20_minutes_2014_10.html">1A.e - Correction de l’interrogation écrite du 10 octobre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/interro_rapide_20_minutes_2014_11.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/interro_rapide_20_minutes_2014_12.html">1A.e - Correction de l’interrogation écrite du 14 novembre 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/interro_rapide_20_minutes_2015_09.html">1A.e - Correction de l’interrogation écrite du 26 septembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/interro_rapide_20_minutes_2015_11.html">1A.e - Correction de l’interrogation écrite du 6 novembre 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/enonce_ml_2017.html">Evaluation Python / Machine Learning année 2017 - énoncé</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../exams/enonce_ml_2017_correction.html">Evaluation Python / Machine Learning année 2017 - solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_data.html">Numpy / Pandas</a><input aria-label="Toggle navigation of Numpy / Pandas" class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../index_ml.html">Machine Learning</a><input aria-label="Toggle navigation of Machine Learning" class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/ml_features_model.html">Features ou modèle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/wines_acp.html">ACP - projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_knn_split.html">Base d’apprentissage et de test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_knn_split_strat.html">Découpage stratifié apprentissage / test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_knn_cross_val.html">Validation croisée (cross-validation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_knn_hyper.html">Sélection des hyper-paramètres</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/ml_a_tree_overfitting.html">Tree, hyperparamètres, overfitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/gradient_boosting.html">Gradient Boosting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/ridge_lasso.html">Régression Ridge, Lasso et nouvel estimateur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_reg.html">Prédiction de la note des vins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_reg_poly.html">Régression polynômiale et pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_knn.html">Plus proches voisins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesr_knn_eval.html">Plus proches voisins - évaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesc_color.html">Régression logistique et courbe ROC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesc_color_line.html">Régression logistique en 2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesc_color_linear.html">Plusieurs modèles, données disjointes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesc_color_roc.html">Classifications et courbes ROC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesc_multi.html">Classification multi-classe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/winesc_multi_stacking.html">Classification multi-classe et stacking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/artificiel_multiclass.html">Classification multi-classe et jeu mal balancé</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/custom_estimator.html">Un nouvel estimateur basé sur scikit-learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/timeseries_ssa.html">Single Spectrum Analysis (SSA)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/timeseries_seasonal.html">Décomposition d’une série temporelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/pretraitement_cat.html">Prétraitement des catégories ou des dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/pretraitement_image.html">Prétraitement d’une image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/pretraitement_son.html">Prétraitement du son</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ml/pretraitement_texte.html">Prétraitement du texte</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Compléments</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Notebooks écrits durant les séances</a><input aria-label="Toggle navigation of Notebooks écrits durant les séances" checked="" class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../2023/index.html">2023</a><input aria-label="Toggle navigation of 2023" class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../2023/editdist.html">Distance d’édition (4 octobre)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2023/pivot_gauss.html">Pivot de Gauss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2023/prefix_search.html">Recherche de préfixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../2023/bareme_note_optimisation.html">Optimiser la note moyenne</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">2025 : notebooks créés en séances</a><input aria-label="Toggle navigation of 2025 : notebooks créés en séances" checked="" class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="seance1_point2d.html">Introduction aux classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seance4_algo.html">Algorithmes</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seance6_regex.html">Séance 6 - epressions régulières</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seance7_postier_chinois.html">Séance 7 - postier chinois</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../algorithm_culture.html">Survol algorithmique</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../c_expose/index.html">Exposés</a><input aria-label="Toggle navigation of Exposés" class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_expose/finance/finance_autostrat.html">Stratégie automatique de trading en finance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_expose/tsp/tsp_kohonen.html">Circuit hamiltonien et Kohonen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../c_expose/tsp/tsp_kruskal.html">Circuit hamiltonien et Kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../i_index.html">En diagonal</a><input aria-label="Toggle navigation of En diagonal" class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebook_gallery.html">Tous les notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/index.html">Gallerie d’exemples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../auto_examples/index.html#gallerie-d-exemples-sur-le-machine-learning">Gallerie d’exemples sur le machine learning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../auto_examples/index.html#gallerie-d-exemples-sur-la-programmation">Gallerie d’exemples sur la programmation</a><input aria-label="Toggle navigation of Gallerie d’exemples sur la programmation" class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../auto_examples/ml/index.html">Gallerie d’exemples sur le machine learning</a><input aria-label="Toggle navigation of Gallerie d’exemples sur le machine learning" class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/ml/plot_correlations.html">Corrélations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/ml/plot_roc.html">Receiver Operating Characteristic (ROC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../auto_examples/prog/index.html">Gallerie d’exemples sur la programmation</a><input aria-label="Toggle navigation of Gallerie d’exemples sur la programmation" class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_pandas_groupby.html">Pandas et groupby</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_numpy_tricks.html">Points d’implémentation avec numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_lambda_function.html">Astuces avec les lambda functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_gil_example.html">Le GIL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_burrows_wheeler.html">Transformée de Burrows Wheeler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_matador.html">Mathador, énigme à 4 opérations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_float_and_double_rouding.html">Float Conversion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_partie_dame.html">Parties de dames</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_serialisation_protobuf.html">Sérialisation avec protobuf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_hypercube.html">Hypercube et autres exercices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_serialisation_examples.html">Sérialisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_tarabiscote.html">Exercices expliqués de programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_tsp.html">Réflexions autour du voyage de commerce (TSP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../auto_examples/prog/plot_einstein_riddle.html">L’énigme d’Einstein et sa résolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/index.html">teachpyx</a><input aria-label="Toggle navigation of teachpyx" class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/examples/index.html">teachpyx.examples</a><input aria-label="Toggle navigation of teachpyx.examples" class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/examples/classiques.html">teachpyx.examples.classiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/examples/construction_classique.html">teachpyx.examples.construction_classique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/examples/numpysex.html">teachpyx.examples.numpysex</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/video/index.html">teachpyx.video</a><input aria-label="Toggle navigation of teachpyx.video" class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/video/tsp_kohonen_pygame.html">teachpyx.video.tsp_kohonen_pygame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/video/tsp_kruskal_pygame.html">teachpyx.video.tsp_kruskal_pygame</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/tools/index.html">teachpyx.tools</a><input aria-label="Toggle navigation of teachpyx.tools" class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" role="switch" type="checkbox"/><label for="toctree-checkbox-35"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../api/tools/display/index.html">teachpyx.tools.display</a><input aria-label="Toggle navigation of teachpyx.tools.display" class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" role="switch" type="checkbox"/><label for="toctree-checkbox-36"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../api/tools/display/pygame_helper.html">teachpyx.tools.display.pygame_helper</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../api/tools/display/video_helper.html">teachpyx.tools.display.video_helper</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/tools/data_helper.html">teachpyx.tools.data_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/tools/graphviz_helper.html">teachpyx.tools.graphviz_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/tools/helpers.html">teachpyx.tools.helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/tools/profiling.html">teachpyx.tools.profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/faq/index.html">teachpyx.faq</a><input aria-label="Toggle navigation of teachpyx.faq" class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/faq/faq_exception.html">teachpyx.faq.faq_exception</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/faq/faq_geo.html">teachpyx.faq.faq_geo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/faq/faq_numpy.html">teachpyx.faq.faq_numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/faq/faq_python.html">teachpyx.faq.faq_python</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/practice/index.html">teachpyx.practice</a><input aria-label="Toggle navigation of teachpyx.practice" class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/practice/ml_skl.html">teachpyx.practice.ml_skl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/practice/rues_paris.html">teachpyx.practice.rues_paris</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/practice/tsp_bresenham.html">teachpyx.practice.tsp_bresenham</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/practice/tsp_kohonen.html">teachpyx.practice.tsp_kohonen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/practice/tsp_kruskal.html">teachpyx.practice.tsp_kruskal</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../api/datasets/index.html">teachpyx.datasets</a><input aria-label="Toggle navigation of teachpyx.datasets" class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" role="switch" type="checkbox"/><label for="toctree-checkbox-39"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/data/index.html">teachpyx.datasets.data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/data_helper.html">teachpyx.datasets.data_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/data_ts.html">teachpyx.datasets.data_ts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/documentation.html">teachpyx.datasets.documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/enedis.html">teachpyx.datasets.enedis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/gpd_helper.html">teachpyx.datasets.gpd_helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/datasets/wines.html">teachpyx.datasets.wines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/ext_test_case.html">teachpyx.ext_test_case</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../i_ex.html">Syntaxes et définitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../i_faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../py-modindex.html">Index du module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../search.html">Page de recherche</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/practice/years/2025/seance5_algo2.ipynb" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="Algorithmes">
+<h1>Algorithmes<a class="headerlink" href="#Algorithmes" title="Lien vers cette rubrique">¶</a></h1>
+<section id="Mesurer-le-temps">
+<h2>Mesurer le temps<a class="headerlink" href="#Mesurer-le-temps" title="Lien vers cette rubrique">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fonction1</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;stop&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fonction2</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">fonction1</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fonction3</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">fonction2</span><span class="p">()</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">fonction3</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">([</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;class &#39;RuntimeError&#39;&gt;, RuntimeError(&#39;stop&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">recherche_list</span><span class="p">(</span><span class="n">ensemble</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ensemble</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">recherche_set</span><span class="p">(</span><span class="n">ensemble</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ensemble</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">recherche_dict</span><span class="p">(</span><span class="n">ensemble</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ensemble</span>
+
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">list_entier</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="n">set_entier</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+<span class="n">dict_entier</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)}</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">recherche_list</span><span class="p">(</span><span class="n">list_entier</span><span class="p">,</span> <span class="mi">9000</span><span class="p">)</span>
+<span class="n">duree</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="n">duree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+list 0.00920867919921875
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">el</span> <span class="o">=</span> <span class="mi">9999</span>
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">recherche_list</span><span class="p">(</span><span class="n">list_entier</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+<span class="n">duree</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="n">duree</span><span class="p">)</span>
+
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">recherche_set</span><span class="p">(</span><span class="n">set_entier</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+<span class="n">duree</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;set&quot;</span><span class="p">,</span> <span class="n">duree</span><span class="p">)</span>
+
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">recherche_dict</span><span class="p">(</span><span class="n">dict_entier</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+<span class="n">duree</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dict&quot;</span><span class="p">,</span> <span class="n">duree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+list 0.6168732643127441
+set 0.0010602474212646484
+dict 0.0015003681182861328
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+
+<span class="c1"># Texte à hacher</span>
+<span class="n">texte</span> <span class="o">=</span> <span class="s2">&quot;Bonjour le mondesdナルト&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">texte</span><span class="p">)</span>
+
+<span class="c1"># Création du hash SHA-256</span>
+<span class="n">hash_obj</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">texte</span><span class="p">)</span>
+<span class="n">hash_hex</span> <span class="o">=</span> <span class="n">hash_obj</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">hash_hex</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+b&#39;Bonjour le mondesd\xe3\x83\x8a\xe3\x83\xab\xe3\x83\x88&#39;
+9b158061cd
+</pre></div></div>
+</div>
+</section>
+<section id="Profiling">
+<h2>Profiling<a class="headerlink" href="#Profiling" title="Lien vers cette rubrique">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">recherche_list</span><span class="p">(</span><span class="n">list_entier</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+        <span class="n">recherche_set</span><span class="p">(</span><span class="n">set_entier</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+        <span class="n">recherche_dict</span><span class="p">(</span><span class="n">dict_entier</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyinstrument</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profiler</span>
+
+<span class="n">profiler</span> <span class="o">=</span> <span class="n">Profiler</span><span class="p">()</span>
+<span class="n">profiler</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1"># Code à profiler</span>
+<span class="n">f</span><span class="p">()</span>
+
+<span class="n">profiler</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">profiler</span><span class="o">.</span><span class="n">output_text</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+  _     ._   __/__   _ _  _  _ _/_   Recorded: 22:16:49  Samples:  643
+ /_//_/// /_\ / //_// / //_&#39;/ //     Duration: 0.664     CPU time: 0.669
+/   _/                      v5.1.1
+
+Profile at /tmp/ipykernel_231901/1337574655.py:4
+
+0.663 ZMQInteractiveShell.run_ast_nodes  IPython/core/interactiveshell.py:3418
+`- 0.662 &lt;module&gt;  /tmp/ipykernel_231901/1337574655.py:1
+   `- 0.662 f  /tmp/ipykernel_231901/2115577803.py:1
+      |- 0.648 recherche_list  /tmp/ipykernel_231901/3550779215.py:1
+      `- 0.012 [self]  /tmp/ipykernel_231901/2115577803.py
+
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">prun</span> f()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+          30757 function calls (30742 primitive calls) in 0.667 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    10000    0.638    0.000    0.638    0.000 3550779215.py:1(recherche_list)
+        1    0.007    0.007    0.459    0.459 2115577803.py:1(f)
+      6/4    0.007    0.001    0.007    0.002 events.py:86(_run)
+      2/1    0.005    0.003    0.459    0.459 &lt;string&gt;:1(&lt;module&gt;)
+      3/1    0.003    0.001    0.000    0.000 selectors.py:451(select)
+    10000    0.002    0.000    0.002    0.000 3550779215.py:4(recherche_set)
+    10000    0.002    0.000    0.002    0.000 3550779215.py:7(recherche_dict)
+       14    0.001    0.000    0.001    0.000 socket.py:626(send)
+        1    0.000    0.000    0.020    0.020 history.py:833(_writeout_input_cache)
+      3/1    0.000    0.000    0.000    0.000 {method &#39;poll&#39; of &#39;select.epoll&#39; objects}
+        2    0.000    0.000    0.006    0.003 socket.py:703(send_multipart)
+        1    0.000    0.000    0.000    0.000 {method &#39;disable&#39; of &#39;_lsprof.Profiler&#39; objects}
+        1    0.000    0.000    0.027    0.027 history.py:55(only_when_enabled)
+        2    0.000    0.000    0.000    0.000 {method &#39;recv&#39; of &#39;_socket.socket&#39; objects}
+        2    0.000    0.000    0.000    0.000 {method &#39;__exit__&#39; of &#39;sqlite3.Connection&#39; objects}
+        2    0.000    0.000    0.000    0.000 socket.py:774(recv_multipart)
+        4    0.000    0.000    0.171    0.043 base_events.py:1922(_run_once)
+        5    0.000    0.000    0.000    0.000 attrsettr.py:66(_get_attr_opt)
+       72    0.000    0.000    0.000    0.000 enum.py:1538(_get_value)
+      2/1    0.000    0.000    0.650    0.650 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method &#39;execute&#39; of &#39;sqlite3.Connection&#39; objects}
+  152/148    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+       16    0.000    0.000    0.000    0.000 enum.py:1545(__or__)
+        1    0.000    0.000    0.000    0.000 poll.py:80(poll)
+        5    0.000    0.000    0.000    0.000 attrsettr.py:43(__getattr__)
+      2/1    0.000    0.000    0.027    0.027 decorator.py:229(fun)
+       31    0.000    0.000    0.000    0.000 enum.py:720(__call__)
+        1    0.000    0.000    0.000    0.000 {method &#39;send&#39; of &#39;_socket.socket&#39; objects}
+        1    0.000    0.000    0.000    0.000 inspect.py:3133(_bind)
+        8    0.000    0.000    0.000    0.000 enum.py:1556(__and__)
+      6/4    0.000    0.000    0.001    0.000 {method &#39;run&#39; of &#39;_contextvars.Context&#39; objects}
+        1    0.000    0.000    0.000    0.000 kernelbase.py:302(poll_control_queue)
+       31    0.000    0.000    0.000    0.000 enum.py:1123(__new__)
+        6    0.000    0.000    0.000    0.000 typing.py:392(inner)
+        2    0.000    0.000    0.006    0.003 iostream.py:278(_really_send)
+        1    0.000    0.000    0.020    0.020 history.py:845(writeout_cache)
+        2    0.000    0.000    0.007    0.003 zmqstream.py:583(_handle_events)
+        1    0.000    0.000    0.000    0.000 selector_events.py:129(_read_from_self)
+        1    0.000    0.000    0.000    0.000 traitlets.py:1527(_notify_observers)
+        8    0.000    0.000    0.000    0.000 traitlets.py:676(__get__)
+        3    0.000    0.000    0.000    0.000 zmqstream.py:686(_update_handler)
+        3    0.000    0.000    0.000    0.000 ioloop.py:742(_run_callback)
+        2    0.000    0.000    0.000    0.000 typing.py:1492(__subclasscheck__)
+        1    0.000    0.000    0.000    0.000 decorator.py:199(fix)
+        3    0.000    0.000    0.000    0.000 zmqstream.py:663(_rebuild_io_state)
+        2    0.000    0.000    0.006    0.003 iostream.py:157(_handle_event)
+        2    0.000    0.000    0.006    0.003 zmqstream.py:556(_run_callback)
+        1    0.000    0.000    0.000    0.000 kernelbase.py:324(_flush)
+        2    0.000    0.000    0.000    0.000 traitlets.py:3631(set)
+        4    0.000    0.000    0.000    0.000 queue.py:97(empty)
+        7    0.000    0.000    0.000    0.000 base_events.py:738(time)
+        2    0.000    0.000    0.006    0.003 zmqstream.py:624(_handle_recv)
+        1    0.000    0.000    0.000    0.000 queues.py:225(get)
+        8    0.000    0.000    0.000    0.000 traitlets.py:629(get)
+        3    0.000    0.000    0.000    0.000 base_events.py:818(_call_soon)
+       25    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 zmqstream.py:427(flush)
+        4    0.000    0.000    0.000    0.000 typing.py:1285(__hash__)
+        2    0.000    0.000    0.000    0.000 traitlets.py:708(__set__)
+        1    0.000    0.000    0.000    0.000 asyncio.py:225(add_callback)
+        5    0.000    0.000    0.000    0.000 selector_events.py:750(_process_events)
+        2    0.000    0.000    0.006    0.003 iostream.py:276(&lt;lambda&gt;)
+        1    0.000    0.000    0.000    0.000 _base.py:537(set_result)
+        1    0.000    0.000    0.000    0.000 iostream.py:718(_rotate_buffers)
+        1    0.000    0.000    0.000    0.000 iostream.py:616(_flush)
+        2    0.000    0.000    0.000    0.000 traitlets.py:689(set)
+        2    0.000    0.000    0.000    0.000 traitlets.py:718(_validate)
+        5    0.000    0.000    0.000    0.000 &lt;frozen importlib._bootstrap&gt;:1390(_handle_fromlist)
+        1    0.000    0.000    0.000    0.000 threading.py:311(_acquire_restore)
+        1    0.000    0.000    0.000    0.000 inspect.py:2949(apply_defaults)
+        2    0.000    0.000    0.000    0.000 typing.py:1221(__instancecheck__)
+        5    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        1    0.000    0.000    0.000    0.000 inspect.py:3272(bind)
+        3    0.000    0.000    0.000    0.000 threading.py:299(__enter__)
+        2    0.000    0.000    0.000    0.000 base_events.py:1907(_add_callback)
+       10    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+        2    0.000    0.000    0.000    0.000 traitlets.py:3474(validate)
+        1    0.000    0.000    0.000    0.000 iostream.py:710(_flush_buffers)
+        1    0.000    0.000    0.000    0.000 queues.py:209(put_nowait)
+        2    0.000    0.000    0.000    0.000 traitlets.py:3624(validate_elements)
+        7    0.000    0.000    0.000    0.000 {built-in method time.monotonic}
+        1    0.000    0.000    0.000    0.000 queues.py:186(put)
+        3    0.000    0.000    0.000    0.000 events.py:36(__init__)
+        1    0.000    0.000    0.000    0.000 zmqstream.py:468(update_flag)
+        2    0.000    0.000    0.000    0.000 traitlets.py:727(_cross_validate)
+        7    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+        3    0.000    0.000    0.000    0.000 threading.py:302(__exit__)
+        1    0.000    0.000    0.000    0.000 traitlets.py:1512(_notify_trait)
+       10    0.000    0.000    0.000    0.000 {method &#39;popleft&#39; of &#39;collections.deque&#39; objects}
+        1    0.000    0.000    0.000    0.000 inspect.py:2896(args)
+        1    0.000    0.000    0.000    0.000 inspect.py:2919(kwargs)
+        2    0.000    0.000    0.000    0.000 traitlets.py:2304(validate)
+        2    0.000    0.000    0.000    0.000 base_events.py:789(call_soon)
+        8    0.000    0.000    0.000    0.000 {method &#39;__exit__&#39; of &#39;_thread.lock&#39; objects}
+        1    0.000    0.000    0.000    0.000 traitlets.py:1523(notify_change)
+        9    0.000    0.000    0.000    0.000 {method &#39;append&#39; of &#39;collections.deque&#39; objects}
+        2    0.000    0.000    0.000    0.000 iostream.py:213(_is_master_process)
+        1    0.000    0.000    0.000    0.000 queues.py:256(get_nowait)
+        1    0.000    0.000    0.006    0.006 asyncio.py:200(_handle_events)
+        1    0.000    0.000    0.000    0.000 futures.py:396(_call_set_state)
+        1    0.000    0.000    0.000    0.000 threading.py:424(notify_all)
+        2    0.000    0.000    0.000    0.000 queues.py:322(_consume_expired)
+        1    0.000    0.000    0.000    0.000 threading.py:627(clear)
+       28    0.000    0.000    0.000    0.000 typing.py:2187(cast)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+        4    0.000    0.000    0.000    0.000 zmqstream.py:542(sending)
+        5    0.000    0.000    0.000    0.000 {method &#39;upper&#39; of &#39;str&#39; objects}
+        2    0.000    0.000    0.000    0.000 &lt;frozen abc&gt;:121(__subclasscheck__)
+        6    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+        2    0.000    0.000    0.000    0.000 {built-in method _abc._abc_subclasscheck}
+        1    0.000    0.000    0.000    0.000 base_events.py:842(call_soon_threadsafe)
+        6    0.000    0.000    0.000    0.000 {method &#39;append&#39; of &#39;list&#39; objects}
+        2    0.000    0.000    0.000    0.000 {method &#39;set_result&#39; of &#39;_asyncio.Future&#39; objects}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        3    0.000    0.000    0.000    0.000 {method &#39;acquire&#39; of &#39;_thread.lock&#39; objects}
+        2    0.000    0.000    0.000    0.000 iostream.py:216(_check_mp_mode)
+        1    0.000    0.000    0.000    0.000 history.py:839(_writeout_output_cache)
+        1    0.000    0.000    0.000    0.000 selector_events.py:141(_write_to_self)
+        2    0.000    0.000    0.000    0.000 {built-in method math.ceil}
+        1    0.000    0.000    0.000    0.000 concurrent.py:182(future_set_result_unless_cancelled)
+        1    0.000    0.000    0.000    0.000 _base.py:337(_invoke_callbacks)
+        3    0.000    0.000    0.000    0.000 {method &#39;items&#39; of &#39;mappingproxy&#39; objects}
+        1    0.000    0.000    0.000    0.000 queues.py:317(__put_internal)
+        2    0.000    0.000    0.000    0.000 selectors.py:275(_key_from_fd)
+        4    0.000    0.000    0.000    0.000 queue.py:209(_qsize)
+        1    0.000    0.000    0.000    0.000 threading.py:308(_release_save)
+        2    0.000    0.000    0.000    0.000 {built-in method _contextvars.copy_context}
+        1    0.000    0.000    0.000    0.000 {built-in method _asyncio.get_running_loop}
+        1    0.000    0.000    0.000    0.000 threading.py:394(notify)
+        2    0.000    0.000    0.000    0.000 {built-in method posix.getpid}
+        4    0.000    0.000    0.000    0.000 {method &#39;get&#39; of &#39;dict&#39; objects}
+        1    0.000    0.000    0.000    0.000 {built-in method _heapq.heappop}
+        1    0.000    0.000    0.000    0.000 {method &#39;values&#39; of &#39;mappingproxy&#39; objects}
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+        1    0.000    0.000    0.000    0.000 {method &#39;__enter__&#39; of &#39;_thread.RLock&#39; objects}
+       10    0.000    0.000    0.000    0.000 inspect.py:2808(kind)
+        1    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        1    0.000    0.000    0.000    0.000 unix_events.py:81(_process_self_data)
+        2    0.000    0.000    0.000    0.000 traitlets.py:3486(validate_elements)
+        2    0.000    0.000    0.000    0.000 {method &#39;__enter__&#39; of &#39;_thread.lock&#39; objects}
+        5    0.000    0.000    0.000    0.000 zmqstream.py:538(receiving)
+        1    0.000    0.000    0.000    0.000 queues.py:173(qsize)
+        1    0.000    0.000    0.000    0.000 poll.py:31(register)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.iter}
+        2    0.000    0.000    0.000    0.000 {method &#39;__exit__&#39; of &#39;_thread.RLock&#39; objects}
+        1    0.000    0.000    0.000    0.000 zmqstream.py:694(&lt;lambda&gt;)
+        3    0.000    0.000    0.000    0.000 base_events.py:543(_check_closed)
+        5    0.000    0.000    0.000    0.000 base_events.py:2017(get_debug)
+        2    0.000    0.000    0.000    0.000 iostream.py:255(closed)
+        4    0.000    0.000    0.000    0.000 inspect.py:2796(name)
+        1    0.000    0.000    0.000    0.000 {method &#39;items&#39; of &#39;dict&#39; objects}
+        2    0.000    0.000    0.000    0.000 {method &#39;cancelled&#39; of &#39;_asyncio.Future&#39; objects}
+        1    0.000    0.000    0.000    0.000 queues.py:309(_get)
+        1    0.000    0.000    0.000    0.000 zmqstream.py:659(_check_closed)
+        1    0.000    0.000    0.000    0.000 queues.py:312(_put)
+        4    0.000    0.000    0.000    0.000 inspect.py:3089(parameters)
+        2    0.000    0.000    0.000    0.000 {method &#39;extend&#39; of &#39;list&#39; objects}
+        1    0.000    0.000    0.000    0.000 threading.py:314(_is_owned)
+        1    0.000    0.000    0.000    0.000 queues.py:177(empty)
+        1    0.000    0.000    0.000    0.000 {method &#39;_is_owned&#39; of &#39;_thread.RLock&#39; objects}
+        1    0.000    0.000    0.000    0.000 {method &#39;done&#39; of &#39;_asyncio.Future&#39; objects}
+        1    0.000    0.000    0.000    0.000 base_events.py:724(is_closed)
+        1    0.000    0.000    0.000    0.000 queues.py:59(_set_timeout)
+        1    0.000    0.000    0.000    0.000 {method &#39;release&#39; of &#39;_thread.lock&#39; objects}
+        1    0.000    0.000    0.000    0.000 locks.py:224(clear)
+        1    0.000    0.000    0.000    0.000 inspect.py:2888(__init__)
+</pre></div></div>
+</div>
+</section>
+<section id="Optimisation-d'un-programme">
+<h2>Optimisation d’un programme<a class="headerlink" href="#Optimisation-d'un-programme" title="Lien vers cette rubrique">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>  <span class="c1"># v1= np.array([0, 1]), v2= ....</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="c1"># return ((v1[0] - v2[0]) ** 2 + (v1[1] - v2[1]) ** 2) ** 0.5</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plus_proche_non_visitee</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">chemin</span><span class="p">):</span>
+    <span class="n">depart</span> <span class="o">=</span> <span class="n">chemin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dmin</span><span class="p">,</span> <span class="n">imin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chemin</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">depart</span><span class="p">],</span> <span class="n">villes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">dmin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">dmin</span><span class="p">:</span>
+                <span class="n">dmin</span><span class="p">,</span> <span class="n">imin</span> <span class="o">=</span> <span class="n">d</span><span class="p">,</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">imin</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">algo_proche_en_proche</span><span class="p">(</span><span class="n">villes</span><span class="p">):</span>
+    <span class="n">chemin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">chemin</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="c1"># trouver la ville la plus proche non visitée de la dernière</span>
+        <span class="c1"># ville visitée et l&#39;ajouter au chemin</span>
+        <span class="n">inext</span> <span class="o">=</span> <span class="n">plus_proche_non_visitee</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">chemin</span><span class="p">)</span>
+        <span class="n">chemin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chemin</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">elimine_croisements</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">chemin</span><span class="p">):</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">chemin</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">mieux</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="o">-</span><span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span>
+                    <span class="o">-</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">]],</span> <span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span>
+                    <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">]])</span>
+                    <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">villes</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]])</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">mieux</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">chemin</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">chemin</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">i</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">chemin</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">chemin</span><span class="p">[</span><span class="n">j</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mieux</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+
+
+<span class="n">villes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">chemin</span> <span class="o">=</span> <span class="n">algo_proche_en_proche</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+<span class="n">elimine_croisements</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">chemin</span><span class="p">)</span>
+<span class="n">villes</span><span class="p">[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">chemin</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(array([[0.02609378, 0.47304915],
+        [0.11827469, 0.76657083],
+        [0.827706  , 0.26337121],
+        [0.56057621, 0.53610594],
+        [0.22134542, 0.73108227]]),
+ [7, 19, 0, 9, 18, 8, 17, 15, 5, 14, 2, 13, 11, 12, 6, 16, 10, 1, 4, 3])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">problem</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;t=&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;N=&quot;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+        <span class="n">villes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">chemin</span> <span class="o">=</span> <span class="n">algo_proche_en_proche</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+        <span class="n">elimine_croisements</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">chemin</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chemin</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">problem</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+t= 0 N= 100
+[75, 51, 15, 20, 73, 40, 82, 38, 59, 94, 36, 54, 88, 26, 97, 44, 81, 13, 96, 99, 28, 9, 14, 78, 46, 85, 83, 22, 93, 52, 2, 56, 42, 27, 49, 25, 62, 39, 5, 92, 34, 21, 66, 16, 30, 37, 70, 57, 76, 86, 63, 33, 19, 58, 43, 23, 65, 3, 45, 72, 77, 0, 60, 32, 89, 4, 61, 71, 84, 79, 18, 87, 67, 31, 24, 74, 50, 10, 91, 68, 98, 1, 64, 41, 48, 95, 80, 69, 29, 55, 12, 47, 6, 11, 35, 90, 17, 7, 53, 8]
+</pre></div></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cProfile</span><span class="o">,</span><span class="w"> </span><span class="nn">pstats</span><span class="o">,</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pstats</span><span class="w"> </span><span class="kn">import</span> <span class="n">SortKey</span>
+<span class="n">pr</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="n">problem</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">pr</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">sortby</span> <span class="o">=</span> <span class="n">SortKey</span><span class="o">.</span><span class="n">CUMULATIVE</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span>
+<span class="n">ps</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;ipython-input-&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;nb&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="Optimisation-de-la-fonction-distance">
+<h2>Optimisation de la fonction distance<a class="headerlink" href="#Optimisation-de-la-fonction-distance" title="Lien vers cette rubrique">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">distance1</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>  <span class="c1"># v1= np.array([0, 1]), v2= ....</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">distance2</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">distance3</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">distance1</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;duree&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span>
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">distance2</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;duree&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span>
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">distance3</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;duree&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+duree 0.2855997085571289
+duree 0.14869189262390137
+duree 0.22153949737548828
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">delta</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="n">j2</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">-</span><span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="n">villes</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span>
+        <span class="o">-</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">j1</span><span class="p">],</span> <span class="n">villes</span><span class="p">[</span><span class="n">j2</span><span class="p">])</span>
+        <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="n">villes</span><span class="p">[</span><span class="n">j1</span><span class="p">])</span>
+        <span class="o">+</span> <span class="n">distance</span><span class="p">(</span><span class="n">villes</span><span class="p">[</span><span class="n">i2</span><span class="p">],</span> <span class="n">villes</span><span class="p">[</span><span class="n">j2</span><span class="p">])</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">delta2</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="n">j2</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">villes</span><span class="p">[(</span><span class="n">i1</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">),</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">villes</span><span class="p">[(</span><span class="n">i2</span><span class="p">,</span> <span class="n">j2</span><span class="p">,</span> <span class="n">j1</span><span class="p">,</span> <span class="n">j2</span><span class="p">),</span> <span class="p">:]</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">d2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+
+<span class="n">villes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">delta</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">delta2</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(np.float64(0.0054706211079842415), np.float64(0.0054706211079842415))
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">delta</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;duree&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span>
+<span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">delta2</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;duree&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+duree 1.044642686843872
+duree 0.844332218170166
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">elimine_croisements2</span><span class="p">(</span><span class="n">villes</span><span class="p">,</span> <span class="n">chemin</span><span class="p">):</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">villes</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">chemin</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">mieux</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">villes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="o">-</span><span class="n">distances</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+                    <span class="o">-</span> <span class="n">distances</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+                    <span class="o">+</span> <span class="n">distances</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+                    <span class="o">+</span> <span class="n">distances</span><span class="p">[</span><span class="n">C</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">C</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">mieux</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mieux&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">chemin</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">chemin</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">i</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="c1"># c&#39;est mieux... on retourne les villes du chemin</span>
+                    <span class="c1"># entre i+1 et j inclus</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">chemin</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">chemin</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">i</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">chemin</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">chemin</span><span class="p">[</span><span class="n">j</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mieux</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Préfixes">
+<h2>Préfixes<a class="headerlink" href="#Préfixes" title="Lien vers cette rubrique">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">casse_liste</span><span class="p">(</span><span class="n">liste</span><span class="p">):</span>
+    <span class="n">premiere_lettre</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mot</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">mot</span> <span class="ow">in</span> <span class="n">liste</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">premiere_lettre</span><span class="p">:</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">mot</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">mot</span> <span class="ow">in</span> <span class="n">liste</span> <span class="k">if</span> <span class="n">mot</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="n">liste</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AB&quot;</span><span class="p">,</span> <span class="s2">&quot;ABC&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span> <span class="s2">&quot;BCA&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;EE&quot;</span><span class="p">,</span> <span class="s2">&quot;EF&quot;</span><span class="p">,</span> <span class="s2">&quot;EG&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+<span class="n">casse_liste</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;&#39;: [&#39;&#39;], &#39;B&#39;: [&#39;A&#39;, &#39;CA&#39;, &#39;&#39;], &#39;E&#39;: [&#39;E&#39;, &#39;F&#39;, &#39;G&#39;], &#39;A&#39;: [&#39;B&#39;, &#39;BC&#39;]}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">casse_liste_rec</span><span class="p">(</span><span class="n">liste</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">liste</span> <span class="ow">or</span> <span class="n">liste</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="n">premiere_lettre</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mot</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">mot</span> <span class="ow">in</span> <span class="n">liste</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">premiere_lettre</span><span class="p">:</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">casse_liste_rec</span><span class="p">([</span><span class="n">mot</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">mot</span> <span class="ow">in</span> <span class="n">liste</span> <span class="k">if</span> <span class="n">mot</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">p</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="n">liste</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AB&quot;</span><span class="p">,</span> <span class="s2">&quot;ABC&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span> <span class="s2">&quot;BCA&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;EE&quot;</span><span class="p">,</span> <span class="s2">&quot;EF&quot;</span><span class="p">,</span> <span class="s2">&quot;EG&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+<span class="n">casse_liste_rec</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;&#39;: {},
+ &#39;B&#39;: {&#39;C&#39;: {&#39;A&#39;: {}}, &#39;&#39;: {}, &#39;A&#39;: {}},
+ &#39;E&#39;: {&#39;E&#39;: {}, &#39;F&#39;: {}, &#39;G&#39;: {}},
+ &#39;A&#39;: {&#39;B&#39;: {&#39;&#39;: {}, &#39;C&#39;: {}}}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">casse_liste_rec</span><span class="p">(</span><span class="n">liste</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;&#39;: {},
+ &#39;A&#39;: {&#39;B&#39;: {&#39;&#39;: {}, &#39;C&#39;: {}}},
+ &#39;B&#39;: {&#39;&#39;: {}, &#39;A&#39;: {}, &#39;C&#39;: {&#39;A&#39;: {}}},
+ &#39;E&#39;: {&#39;E&#39;: {}, &#39;F&#39;: {}, &#39;G&#39;: {}}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">reconstruit_liste</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="n">prefixe</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">mots</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">lettre</span><span class="p">,</span> <span class="n">sous_trie</span> <span class="ow">in</span> <span class="n">trie</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">nouveau_prefixe</span> <span class="o">=</span> <span class="n">prefixe</span> <span class="o">+</span> <span class="n">lettre</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sous_trie</span><span class="p">:</span>  <span class="c1"># Si le sous-trie est vide, c&#39;est la fin d&#39;un mot</span>
+            <span class="n">mots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nouveau_prefixe</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mots</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">reconstruit_liste</span><span class="p">(</span><span class="n">sous_trie</span><span class="p">,</span> <span class="n">nouveau_prefixe</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mots</span>
+
+
+<span class="n">liste</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AB&quot;</span><span class="p">,</span> <span class="s2">&quot;ABC&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span> <span class="s2">&quot;BCA&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;EE&quot;</span><span class="p">,</span> <span class="s2">&quot;EF&quot;</span><span class="p">,</span> <span class="s2">&quot;EG&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+<span class="n">trie</span> <span class="o">=</span> <span class="n">casse_liste_rec</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span>
+<span class="n">liste_reconstruite</span> <span class="o">=</span> <span class="n">reconstruit_liste</span><span class="p">(</span><span class="n">trie</span><span class="p">)</span>
+<span class="n">liste_reconstruite</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;&#39;, &#39;BCA&#39;, &#39;B&#39;, &#39;BA&#39;, &#39;EE&#39;, &#39;EF&#39;, &#39;EG&#39;, &#39;AB&#39;, &#39;ABC&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">search_trie</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="n">mot</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">mot</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># Mot vide, considéré comme présent</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">trie</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Trie vide, mot absent</span>
+    <span class="n">premiere_lettre</span> <span class="o">=</span> <span class="n">mot</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">premiere_lettre</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trie</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">search_trie</span><span class="p">(</span><span class="n">trie</span><span class="p">[</span><span class="n">premiere_lettre</span><span class="p">],</span> <span class="n">mot</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+
+<span class="n">search_trie</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">search_trie</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="s2">&quot;BC&quot;</span><span class="p">),</span> <span class="n">search_trie</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(True, True, False)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">search_trie2</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="n">mot</span><span class="p">):</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">trie</span>
+    <span class="k">for</span> <span class="n">lettre</span> <span class="ow">in</span> <span class="n">mot</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">lettre</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">lettre</span><span class="p">]</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="n">search_trie2</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">search_trie2</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="s2">&quot;BC&quot;</span><span class="p">),</span> <span class="n">search_trie2</span><span class="p">(</span><span class="n">trie</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(True, True, False)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">intersection_tries_naive</span><span class="p">(</span><span class="n">trie1</span><span class="p">,</span> <span class="n">trie2</span><span class="p">):</span>
+    <span class="n">liste</span> <span class="o">=</span> <span class="n">reconstruit_liste</span><span class="p">(</span><span class="n">trie1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">mot</span> <span class="k">for</span> <span class="n">mot</span> <span class="ow">in</span> <span class="n">liste</span> <span class="k">if</span> <span class="n">search_trie2</span><span class="p">(</span><span class="n">trie2</span><span class="p">,</span> <span class="n">mot</span><span class="p">)]</span>
+
+
+<span class="n">liste1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AB&quot;</span><span class="p">,</span> <span class="s2">&quot;ABC&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span> <span class="s2">&quot;BCA&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;EE&quot;</span><span class="p">,</span> <span class="s2">&quot;EF&quot;</span><span class="p">,</span> <span class="s2">&quot;EG&quot;</span><span class="p">]</span>
+<span class="n">trie1</span> <span class="o">=</span> <span class="n">casse_liste_rec</span><span class="p">(</span><span class="n">liste1</span><span class="p">)</span>
+<span class="n">liste2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AB&quot;</span><span class="p">,</span> <span class="s2">&quot;BA&quot;</span><span class="p">,</span> <span class="s2">&quot;BCA&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;EE&quot;</span><span class="p">,</span> <span class="s2">&quot;EF&quot;</span><span class="p">,</span> <span class="s2">&quot;EG&quot;</span><span class="p">,</span> <span class="s2">&quot;EH&quot;</span><span class="p">]</span>
+<span class="n">trie2</span> <span class="o">=</span> <span class="n">casse_liste_rec</span><span class="p">(</span><span class="n">liste2</span><span class="p">)</span>
+<span class="n">intersection_tries_naive</span><span class="p">(</span><span class="n">trie1</span><span class="p">,</span> <span class="n">trie2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;BCA&#39;, &#39;B&#39;, &#39;BA&#39;, &#39;EE&#39;, &#39;EF&#39;, &#39;EG&#39;, &#39;AB&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">intersection_tries</span><span class="p">(</span><span class="n">trie1</span><span class="p">,</span> <span class="n">trie2</span><span class="p">,</span> <span class="n">prefixe</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="n">mots</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Parcourir les clés communes aux deux tries</span>
+    <span class="k">for</span> <span class="n">lettre</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">trie1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">trie2</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">nouveau_prefixe</span> <span class="o">=</span> <span class="n">prefixe</span> <span class="o">+</span> <span class="n">lettre</span>
+        <span class="c1"># Si les deux sous-tries sont vides, c&#39;est un mot commun</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">trie1</span><span class="p">[</span><span class="n">lettre</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trie2</span><span class="p">[</span><span class="n">lettre</span><span class="p">]:</span>
+            <span class="n">mots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nouveau_prefixe</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Sinon, continuer récursivement</span>
+            <span class="n">mots</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">intersection_tries</span><span class="p">(</span><span class="n">trie1</span><span class="p">[</span><span class="n">lettre</span><span class="p">],</span> <span class="n">trie2</span><span class="p">[</span><span class="n">lettre</span><span class="p">],</span> <span class="n">nouveau_prefixe</span><span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">mots</span>
+
+
+<span class="n">intersection_tries</span><span class="p">(</span><span class="n">trie1</span><span class="p">,</span> <span class="n">trie2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;BCA&#39;, &#39;B&#39;, &#39;BA&#39;, &#39;EE&#39;, &#39;EF&#39;, &#39;EG&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<p><a class="reference external" href="https://github.com/sdpython/teachpyx/tree/main/_doc/practice/years/2025/seance5_algo2.ipynb">Notebook on github</a></p>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="seance6_regex.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Séance 6 - epressions régulières</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="seance4_algo.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Algorithmes</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2016-2025, Xavier Dupré
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Algorithmes</a><ul>
+<li><a class="reference internal" href="#Mesurer-le-temps">Mesurer le temps</a></li>
+<li><a class="reference internal" href="#Profiling">Profiling</a></li>
+<li><a class="reference internal" href="#Optimisation-d'un-programme">Optimisation d’un programme</a></li>
+<li><a class="reference internal" href="#Optimisation-de-la-fonction-distance">Optimisation de la fonction distance</a></li>
+<li><a class="reference internal" href="#Préfixes">Préfixes</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=0886690b"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/translations.js?v=e6b791cb"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

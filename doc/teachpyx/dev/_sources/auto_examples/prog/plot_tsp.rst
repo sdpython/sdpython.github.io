@@ -68,7 +68,7 @@ Des villes tirées au hasard
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f1656d65f30>]
+    [<matplotlib.lines.Line2D object at 0x7267dfc48200>]
 
 
 
@@ -99,7 +99,7 @@ donnera quelque chose de très éloigné de la solution optimale :
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f1656eeb790>]
+    [<matplotlib.lines.Line2D object at 0x7267dfc72570>]
 
 
 
@@ -144,7 +144,7 @@ C'est ce qui est implémenté ci-dessous.
 
  .. code-block:: none
 
-    longueur initiale 14.91269497734147
+    longueur initiale 10.30408999030914
 
 
 
@@ -198,12 +198,13 @@ Permutations.
 
  .. code-block:: none
 
-    iteration 2 d= 14.91269497734147
-    iteration 3 d= 1.894733251314698
-    iteration 4 d= 1.1505425678208463
-    longueur min 1.1505425678208463
+    iteration 2 d= 10.30408999030914
+    iteration 3 d= 1.7332618169352088
+    iteration 4 d= 1.2415486996123526
+    iteration 5 d= 1.1482116251492283
+    longueur min 1.1482116251492283
 
-    [<matplotlib.lines.Line2D object at 0x7f1656e938e0>]
+    [<matplotlib.lines.Line2D object at 0x7267dfba6810>]
 
 
 
@@ -242,7 +243,7 @@ arc qui boucle le chemin du dernier noeud au premier.
 
  .. code-block:: none
 
-    longueur initiale 14.5243974398092
+    longueur initiale 10.051165479082176
 
 
 
@@ -276,13 +277,13 @@ Et graphiquement.
 
  .. code-block:: none
 
-    iteration 2 d= 14.5243974398092
-    iteration 3 d= 1.9995757669673988
-    iteration 4 d= 1.2410515230048507
-    iteration 5 d= 0.9736242549096641
-    longueur min 0.9736242549096641
+    iteration 2 d= 10.051165479082176
+    iteration 3 d= 1.577553415973726
+    iteration 4 d= 1.1960488579751223
+    iteration 5 d= 1.0533402775396394
+    longueur min 1.0533402775396394
 
-    [<matplotlib.lines.Line2D object at 0x7f1656daad70>]
+    [<matplotlib.lines.Line2D object at 0x7267dfc70920>]
 
 
 
@@ -363,15 +364,14 @@ première position ne change rien et puis inverser une moitié, c'est
 
  .. code-block:: none
 
-    longueur initiale 14.91269497734147
-    iteration 2 d= 14.91269497734147 ordre[0] 0
-    iteration 3 d= 2.077889706406841 ordre[0] 0
-    iteration 4 d= 1.557709976715826 ordre[0] 0
-    iteration 5 d= 1.5334228975595479 ordre[0] 0
-    iteration 6 d= 1.468370187175025 ordre[0] 0
-    longueur min 1.468370187175025
+    longueur initiale 10.30408999030914
+    iteration 2 d= 10.30408999030914 ordre[0] 0
+    iteration 3 d= 1.6329815361151536 ordre[0] 0
+    iteration 4 d= 1.4496523205497671 ordre[0] 0
+    iteration 5 d= 1.3748064953628787 ordre[0] 0
+    longueur min 1.3748064953628787
 
-    Text(0.20532653905670506, 0.8995663628712134, 'N-1')
+    Text(0.4956274975376094, 0.023022278257650686, 'N-1')
 
 
 
@@ -441,14 +441,14 @@ jamais ! On s'empresse de corriger cela.
 
  .. code-block:: none
 
-    longueur initiale 14.91269497734147
-    iteration 2 d= 14.91269497734147 ordre[0] 0
-    iteration 3 d= 1.6971761891807808 ordre[0] 0
-    iteration 4 d= 1.369750488848831 ordre[0] 0
-    iteration 5 d= 1.3677535436827313 ordre[0] 0
-    longueur min 1.3677535436827313
+    longueur initiale 10.30408999030914
+    iteration 2 d= 10.30408999030914 ordre[0] 0
+    iteration 3 d= 1.9879903839893633 ordre[0] 0
+    iteration 4 d= 1.0633623877373592 ordre[0] 0
+    iteration 5 d= 1.063362387737359 ordre[0] 0
+    longueur min 1.063362387737359
 
-    Text(0.6111875421879536, 0.5006744970860402, 'N-1')
+    Text(0.6804311442916652, 0.6498690413854012, 'N-1')
 
 
 
@@ -524,16 +524,15 @@ Un peu d'aléa devrait l'aider à trouver de meilleures solutions après quelque
 
  .. code-block:: none
 
-    longueur initiale 14.91269497734147
-    iteration 2 d= 14.91269497734147 ordre[0] 0
-    iteration 3 d= 2.627065975295549 ordre[0] 0
-    iteration 4 d= 1.536520971217867 ordre[0] 0
-    iteration 5 d= 0.9623191029236963 ordre[0] 0
-    iteration 6 d= 0.9122504386213736 ordre[0] 0
-    iteration 7 d= 0.9122504386213734 ordre[0] 0
-    longueur min 0.9122504386213734
+    longueur initiale 10.30408999030914
+    iteration 2 d= 10.30408999030914 ordre[0] 0
+    iteration 3 d= 1.772812161964937 ordre[0] 0
+    iteration 4 d= 1.4764997214835205 ordre[0] 0
+    iteration 5 d= 1.321234753945295 ordre[0] 0
+    iteration 6 d= 1.0647567400724298 ordre[0] 0
+    longueur min 1.0647567400724298
 
-    Text(0.6111875421879536, 0.5006744970860402, 'N-1')
+    Text(0.9109370516066633, 0.36696425312789427, 'N-1')
 
 
 
@@ -571,14 +570,14 @@ Par conséquent, il peut rester des croisements :
 
  .. code-block:: none
 
-    iteration 2 d= 14.91269497734147 ordre[0] 0
-    iteration 3 d= 2.2394258574070736 ordre[0] 0
-    iteration 4 d= 1.303078406102993 ordre[0] 0
-    iteration 5 d= 1.2114301747106504 ordre[0] 0
-    iteration 6 d= 1.0156569956328851 ordre[0] 0
-    longueur min 1.0156569956328851
+    iteration 2 d= 10.30408999030914 ordre[0] 0
+    iteration 3 d= 1.8514436107134233 ordre[0] 0
+    iteration 4 d= 1.4961621716307751 ordre[0] 0
+    iteration 5 d= 1.2526826250358791 ordre[0] 0
+    iteration 6 d= 1.2526826250358787 ordre[0] 0
+    longueur min 1.2526826250358787
 
-    Text(0.5458694997601479, 0.35302704677952035, 'N-1')
+    Text(0.8271991721743198, 0.7253945008811771, 'N-1')
 
 
 
@@ -655,7 +654,7 @@ La distance initiale.
 
  .. code-block:: none
 
-    longueur initiale 14.91269497734147
+    longueur initiale 10.30408999030914
 
 
 
@@ -692,36 +691,36 @@ La longueur obtenue.
 
  .. code-block:: none
 
-    iteration 0 d= 14.91269497734147
-    iteration 1 d= 0.9122504386213734
-    iteration 2 d= 0.9122504386213734
-    iteration 3 d= 0.9122504386213734
-    iteration 4 d= 0.9122504386213734
-    iteration 5 d= 0.9122504386213734
-    iteration 6 d= 0.9122504386213734
-    iteration 7 d= 0.9122504386213734
-    iteration 8 d= 0.9122504386213734
-    iteration 9 d= 0.9122504386213734
-    iteration 10 d= 0.9122504386213734
-    iteration 11 d= 0.9122504386213734
-    iteration 12 d= 0.9122504386213734
-    iteration 13 d= 0.9122504386213734
-    iteration 14 d= 0.9122504386213734
-    iteration 15 d= 0.9122504386213734
-    iteration 16 d= 0.9122504386213734
-    iteration 17 d= 0.9122504386213734
-    iteration 18 d= 0.9122504386213734
-    iteration 19 d= 0.9122504386213734
-    longueur min 0.9122504386213734
+    iteration 0 d= 10.30408999030914
+    iteration 1 d= 0.9205631171121537
+    iteration 2 d= 0.9205631171121537
+    iteration 3 d= 0.9063759511026203
+    iteration 4 d= 0.9063759511026203
+    iteration 5 d= 0.9063759511026203
+    iteration 6 d= 0.9063759511026203
+    iteration 7 d= 0.9063759511026203
+    iteration 8 d= 0.9063759511026203
+    iteration 9 d= 0.9063759511026203
+    iteration 10 d= 0.9063759511026203
+    iteration 11 d= 0.9063759511026203
+    iteration 12 d= 0.9063759511026203
+    iteration 13 d= 0.9063759511026203
+    iteration 14 d= 0.9063759511026203
+    iteration 15 d= 0.9063759511026203
+    iteration 16 d= 0.9063759511026203
+    iteration 17 d= 0.9063759511026203
+    iteration 18 d= 0.9063759511026203
+    iteration 19 d= 0.9063759511026203
+    longueur min 0.9063759511026203
 
-    Text(0.22390804280377918, 0.9675233757051863, 'N-1')
+    Text(0.0029518595420675586, 0.9531251807206456, 'N-1')
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.935 seconds)
+   **Total running time of the script:** (0 minutes 1.778 seconds)
 
 
 .. _sphx_glr_download_auto_examples_prog_plot_tsp.py:

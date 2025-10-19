@@ -8,10 +8,10 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>Warning et logging - Documentation teachpyx 0.5.0</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -492,7 +492,10 @@
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../practice/years/2025/index.html">2025 : notebooks créés en séances</a><input aria-label="Toggle navigation of 2025 : notebooks créés en séances" class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance1_point2d.html">Introduction aux classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance4_algo.html">Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance4_algo.html">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance5_algo2.html">Algorithmes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance6_regex.html">Séance 6 - epressions régulières</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../practice/years/2025/seance7_postier_chinois.html">Séance 7 - postier chinois</a></li>
 </ul>
 </li>
 </ul>
@@ -651,9 +654,9 @@ finalement supprimée. Tout code s’appuyant encore sur cette fonction
 provoquera une erreur.</p>
 <section id="generer-un-warning">
 <h3>Générer un warning<a class="headerlink" href="#generer-un-warning" title="Lien vers cette rubrique">¶</a></h3>
-<p>Le module <a class="reference external" href="https://docs.python.org/3/library/warnings.html#module-warnings" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">warnings</span></code></a> permet de lancer un <em>warning</em> comme ceci :</p>
+<p>Le module <a class="reference external" href="https://docs.python.org/3/library/warnings.html#module-warnings" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">warnings</span></code></a> permet de lancer un <em>warning</em> comme ceci :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Warning lancé !&quot;</span><span class="p">)</span>
 </pre></div>
@@ -667,7 +670,7 @@ provoquera une erreur.</p>
 il s’expose sans avoir à lire le message, voire plus tard de
 les trier.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Warning d&#39;un certain lancé !&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
 </pre></div>
@@ -688,10 +691,10 @@ Il est difficile de corriger cette erreur immédiatement
 pas souhaitable voire impossible si ce module est écrit en <a class="reference external" href="https://fr.wikipedia.org/wiki/C%2B%2B">C++</a>.
 Le plus simple reste de les intercepter.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
-<span class="k">def</span> <span class="nf">fxn</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fxn</span><span class="p">():</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deprecated&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
 
@@ -708,10 +711,10 @@ Le plus simple reste de les intercepter.</p>
 de <em>warning</em>, c’est le rôle de la classe
 <a class="reference external" href="https://docs.python.org/3/library/warnings.html#warnings.catch_warnings">catch_warnings</a> :</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
-<span class="k">def</span> <span class="nf">fxn</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fxn</span><span class="p">():</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deprecated&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
 
@@ -743,10 +746,10 @@ de <em>warning</em>, c’est le rôle de la classe
 programme, c’est nécessaire principalement lorsqu’on écrit
 des tests unitaires.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
-<span class="k">def</span> <span class="nf">fxn</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fxn</span><span class="p">():</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deprecated&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
 
@@ -771,10 +774,10 @@ des tests unitaires.</p>
 <p>Comme pour les exceptions, il est possible de définir ses propres
 <em>warning</em> en héritant d’un <em>warning</em> en particulier.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 
-<span class="k">class</span> <span class="nc">MonWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
     <span class="k">pass</span>
 
 
@@ -804,7 +807,7 @@ peut activer les logs et les transmettre à celui qui peut les comprendre.
 Les logs sont indispensables à tout site web. Ils enregistrent toutes les
 connexions et permettent vérifier rapidement si un site est attaqué ou pas.</p>
 <p>Les logs sont une fonctionnalité présente dans la plupart des langages.
-En python, c’est le module <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(disponible dans Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> qui l’implémente.</p>
+En python, c’est le module <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(disponible dans Python v3.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">logging</span></code></a> qui l’implémente.</p>
 </section>
 </section>
 
