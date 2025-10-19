@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter._aten_methods - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,20 +547,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter._aten_methods</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
-<span class="kn">from</span> <span class="nn">..xshape._shape_helper</span> <span class="kn">import</span> <span class="n">all_int</span>
-<span class="kn">from</span> <span class="nn">..xbuilder.graph_builder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span>
-<span class="kn">from</span> <span class="nn">..xshape.shape_type_compute</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xshape._shape_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_int</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder.graph_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xshape.shape_type_compute</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">,</span>
     <span class="n">set_type_shape_binary_op</span><span class="p">,</span>
     <span class="n">set_type_shape_unary_op</span><span class="p">,</span>
     <span class="n">set_type_shape_reduce_op</span><span class="p">,</span>
     <span class="n">set_type_shape_reshape</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">aten_clamp_max</span><span class="p">,</span>
     <span class="n">aten_clamp_min</span><span class="p">,</span>
     <span class="n">aten_cos</span><span class="p">,</span>
@@ -573,9 +576,9 @@
 
 <div class="viewcode-block" id="aten_meth_bool">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_bool">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_bool</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_bool</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;cast&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">return</span> <span class="n">aten_meth_to</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span></div>
 
@@ -583,7 +586,7 @@
 
 <div class="viewcode-block" id="aten_meth_clamp_max">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_clamp_max">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_clamp_max</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_clamp_max</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -598,7 +601,7 @@
 
 <div class="viewcode-block" id="aten_meth_clamp_min">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_clamp_min">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_clamp_min</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_clamp_min</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -613,7 +616,7 @@
 
 <div class="viewcode-block" id="aten_meth_clone">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_clone">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_clone</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_clone</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;identity&quot;</span>
@@ -626,7 +629,7 @@
 
 <div class="viewcode-block" id="aten_meth_contiguous">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_contiguous">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_contiguous</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_contiguous</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;identity&quot;</span>
@@ -636,7 +639,7 @@
 
 <div class="viewcode-block" id="aten_meth_cos">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_cos">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_cos</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_cos</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;cos&quot;</span>
     <span class="k">return</span> <span class="n">aten_cos</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.cos&quot;</span><span class="p">)</span></div>
 
@@ -644,7 +647,7 @@
 
 <div class="viewcode-block" id="aten_meth_cpu">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_cpu">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_cpu</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_cpu</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;identity&quot;</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span><span class="s2">&quot;Identity&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span></div>
 
@@ -652,7 +655,7 @@
 
 <div class="viewcode-block" id="aten_meth_detach">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_detach">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_detach</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_detach</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;identity&quot;</span>
@@ -662,7 +665,7 @@
 
 <div class="viewcode-block" id="aten_meth_eq">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_eq">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_eq</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_eq</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -677,7 +680,7 @@
 
 <div class="viewcode-block" id="aten_meth___eq__">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth___eq__">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth___eq__</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth___eq__</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -692,7 +695,7 @@
 
 <div class="viewcode-block" id="aten_meth_expand">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_expand">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_expand</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_expand</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -706,11 +709,11 @@
 
 <div class="viewcode-block" id="aten_meth_float">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_float">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_float</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_float</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;cast&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">return</span> <span class="n">aten_meth_to</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span></div>
 
@@ -718,7 +721,7 @@
 
 <div class="viewcode-block" id="aten_meth_item">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_item">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_item</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_item</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -749,7 +752,7 @@
 
 <div class="viewcode-block" id="aten_meth_expand_as">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_expand_as">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_expand_as</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_expand_as</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -773,7 +776,7 @@
 
 <div class="viewcode-block" id="aten_meth_masked_fill">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_masked_fill">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_masked_fill</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_masked_fill</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -817,7 +820,7 @@
 
 <div class="viewcode-block" id="aten_meth_masked_fill_">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_masked_fill_">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_masked_fill_</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_masked_fill_</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -835,7 +838,7 @@
 
 <div class="viewcode-block" id="aten_meth_mean">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_mean">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_mean</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_mean</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -869,7 +872,7 @@
 
 <div class="viewcode-block" id="aten_meth_numel">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_numel">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_numel</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_numel</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -887,7 +890,7 @@
 
 <div class="viewcode-block" id="aten_meth_pow">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_pow">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_pow</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_pow</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -924,7 +927,7 @@
 
 <div class="viewcode-block" id="aten_meth_repeat">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_repeat">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_repeat</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_repeat</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -938,7 +941,7 @@
 
 <div class="viewcode-block" id="aten_meth_reshape">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_reshape">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_reshape</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_reshape</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -969,7 +972,7 @@
 
 <div class="viewcode-block" id="aten_meth_sin">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_sin">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_sin</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_sin</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;sin&quot;</span>
     <span class="k">return</span> <span class="n">aten_sin</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.sin&quot;</span><span class="p">)</span></div>
 
@@ -977,7 +980,7 @@
 
 <div class="viewcode-block" id="aten_meth_size">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_size">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_size</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_size</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1006,7 +1009,7 @@
 
 <div class="viewcode-block" id="aten_meth_sum">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_sum">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_sum</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_sum</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1041,7 +1044,7 @@
 
 <div class="viewcode-block" id="aten_meth_t">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_t">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_t</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_t</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;transpose&quot;</span>
     <span class="k">return</span> <span class="n">aten_t</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.t&quot;</span><span class="p">)</span></div>
 
@@ -1049,7 +1052,7 @@
 
 <div class="viewcode-block" id="aten_meth_to">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_to">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_to</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_to</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1059,7 +1062,7 @@
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;cast&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="n">dtype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">device</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -1097,7 +1100,7 @@
 
 <div class="viewcode-block" id="aten_meth_transpose">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_transpose">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_transpose</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_transpose</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1129,7 +1132,7 @@
 
 <div class="viewcode-block" id="aten_meth_unsqueeze">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_unsqueeze">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_unsqueeze</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_unsqueeze</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1157,7 +1160,7 @@
 
 <div class="viewcode-block" id="aten_meth_view">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_aten_methods.html#experimental_experiment.torch_interpreter._aten_methods.aten_meth_view">[docs]</a>
-<span class="k">def</span> <span class="nf">aten_meth_view</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aten_meth_view</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>

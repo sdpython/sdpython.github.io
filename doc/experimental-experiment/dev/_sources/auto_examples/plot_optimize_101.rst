@@ -470,34 +470,34 @@ Optimization
 
  .. code-block:: none
 
-    [GraphBuilder-UQQ.optimize] start with 214 nodes
-    [GraphBuilder-UQQ.optimize] #patterns=78
-    [GraphBuilderPatternOptimization-UQQ.optimize] start with 214 nodes, 73 initializers, 78 patterns, priorities=[0, 1, 3], max_iter=642
-    [GraphBuilderPatternOptimization-UQQ.optimize] same children={'SameChildrenFromInputPattern', 'SameChildrenPattern'}
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 0: 214 nodes, priority=0
-    [GraphBuilderPatternOptimization-UQQ.optimize] applies 51 matches, 37*CastPattern, 3*ShapeBasedReshapeIsSqueezePattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.010 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 1: 159 nodes, priority=0
-    [GraphBuilderPatternOptimization-UQQ.optimize] increase priority to 1
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 2: 159 nodes, priority=1
+    [GraphBuilder-IFG.optimize] start with 214 nodes
+    [GraphBuilder-IFG.optimize] #patterns=79
+    [GraphBuilderPatternOptimization-IFG.optimize] start with 214 nodes, 73 initializers, 79 patterns, priorities=[0, 1, 3], max_iter=642
+    [GraphBuilderPatternOptimization-IFG.optimize] same children={'SameChildrenPattern', 'SameChildrenFromInputPattern'}
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 0: 214 nodes, priority=0
+    [GraphBuilderPatternOptimization-IFG.optimize] applies 51 matches, 37*CastPattern, 3*ShapeBasedReshapeIsSqueezePattern, 4*ReshapeReshapePattern, 7*TransposeTransposePattern - time=0.012 | max_time=SoftmaxCrossEntropyLossCastPattern:0.002
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 1: 159 nodes, priority=0
+    [GraphBuilderPatternOptimization-IFG.optimize] increase priority to 1
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 2: 159 nodes, priority=1
     [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -> (2, 1024, 1024)
     [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -> (2, 1024, 1024)
     [ShapeBasedExpandSwapPattern.match.1] (2, 1024, 1) Div () -> (2, 1024, 1024)
-    [GraphBuilderPatternOptimization-UQQ.optimize] applies 25 matches, 3*MulMulMulScalarPattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.021 | max_time=Sub1MulPattern:0.009
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 3: 137 nodes, priority=1
+    [GraphBuilderPatternOptimization-IFG.optimize] applies 25 matches, 3*MulMulMulScalarPattern, 2*Reshape2Of3Pattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*SlicesSplitPattern, 1*Sub1MulPattern, 14*TransposeMatMulPattern - time=0.041 | max_time=Sub1MulPattern:0.013
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 3: 137 nodes, priority=1
     [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -> (2, 1024, 1024)
     [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -> (2, 1024, 1024)
     [ShapeBasedExpandBroadcastPattern.match] (2, 1024, 1) Mul (2, 1024, 1024) -> (2, 1024, 1024)
-    [GraphBuilderPatternOptimization-UQQ.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*TransposeReshapeMatMulPattern, 2*RotaryConcatPartPattern - time=0.010 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 4: 123 nodes, priority=1
-    [GraphBuilderPatternOptimization-UQQ.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.008 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 5: 123 nodes, priority=1
-    [GraphBuilderPatternOptimization-UQQ.optimize] increase priority to 3
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 6: 123 nodes, priority=3
-    [GraphBuilderPatternOptimization-UQQ.optimize] applies 3 matches, 3*MatMulAddPattern - time=0.008 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
-    [GraphBuilderPatternOptimization-UQQ.optimize] iteration 7: 120 nodes, priority=3
-    [GraphBuilderPatternOptimization-UQQ.optimize] stops current_priority_index=3, priorities=[0, 1, 3]
-    [GraphBuilderPatternOptimization-UQQ.optimize] done after 8 iterations with 120 nodes in 0.163
-    [GraphBuilder-UQQ.optimize] done with 120 nodes in 0.176
+    [GraphBuilderPatternOptimization-IFG.optimize] applies 10 matches, 3*ExpandBroadcastPattern, 1*ReshapeReshapeBinaryPattern, 2*MatMulReshape2Of3Pattern, 2*TransposeReshapeMatMulPattern, 2*RotaryConcatPartPattern - time=0.014 | max_time=ShapeBasedEditDistanceReshapePattern:0.001
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 4: 123 nodes, priority=1
+    [GraphBuilderPatternOptimization-IFG.optimize] applies 5 matches, 3*SwitchOrderBinaryPattern, 2*TransposeReshapeMatMulPattern - time=0.016 | max_time=IdentityPattern:0.001
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 5: 123 nodes, priority=1
+    [GraphBuilderPatternOptimization-IFG.optimize] increase priority to 3
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 6: 123 nodes, priority=3
+    [GraphBuilderPatternOptimization-IFG.optimize] applies 3 matches, 3*MatMulAddPattern - time=0.015 | max_time=SwitchOrderBinaryPattern:0.001
+    [GraphBuilderPatternOptimization-IFG.optimize] iteration 7: 120 nodes, priority=3
+    [GraphBuilderPatternOptimization-IFG.optimize] stops current_priority_index=3, priorities=[0, 1, 3]
+    [GraphBuilderPatternOptimization-IFG.optimize] done after 8 iterations with 120 nodes in 0.277
+    [GraphBuilder-IFG.optimize] done with 120 nodes in 0.295
 
 
 .. raw:: html
@@ -538,7 +538,7 @@ Optimization
           <td>dynamic_dimension_naming</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000304</td>
+          <td>0.000303</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -550,7 +550,7 @@ Optimization
           <td>check_A-dynamic_dimension_naming</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000416</td>
+          <td>0.000593</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -562,7 +562,7 @@ Optimization
           <td>check_A-opt-sub</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000380</td>
+          <td>0.000581</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -574,7 +574,7 @@ Optimization
           <td>remove_identity_nodes</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.001016</td>
+          <td>0.001469</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -586,7 +586,7 @@ Optimization
           <td>check_B-remove-identity</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000359</td>
+          <td>0.000579</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -606,11 +606,11 @@ Optimization
           <td>...</td>
         </tr>
         <tr>
-          <th>890</th>
+          <th>898</th>
           <td>remove_duplicated_initializer</td>
           <td>18.0</td>
           <td>0.0</td>
-          <td>0.000484</td>
+          <td>0.000775</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -618,11 +618,11 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>891</th>
+          <th>899</th>
           <td>check_H-remove-duplicated-initializer</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000228</td>
+          <td>0.000334</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -630,11 +630,11 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>892</th>
+          <th>900</th>
           <td>remove_identity_nodes</td>
           <td>18.0</td>
           <td>0.0</td>
-          <td>0.000716</td>
+          <td>0.001116</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -642,11 +642,11 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>893</th>
+          <th>901</th>
           <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000479</td>
+          <td>0.000842</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -654,11 +654,11 @@ Optimization
           <td>NaN</td>
         </tr>
         <tr>
-          <th>894</th>
+          <th>902</th>
           <td>check_H-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000215</td>
+          <td>0.000345</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -667,7 +667,7 @@ Optimization
         </tr>
       </tbody>
     </table>
-    <p>895 rows × 9 columns</p>
+    <p>903 rows × 9 columns</p>
     </div>
     </div>
     <br />
@@ -706,21 +706,21 @@ Summary
 
  .. code-block:: none
 
-                                     time_in  added  removed  iteration  match_index  instances
-    pattern                                                                                    
-    apply_CastPattern               0.002782     37       37          0           36         37
-    apply_ExpandBroadcastPattern    0.000294      3        6          3            2          3
-    apply_MatMulAddPattern          0.000268      3        6          6            2          3
-    apply_MatMulReshape2Of3Pattern  0.002995     10       12          3            7          4
-    apply_MulMulMulScalarPattern    0.002565      6        9          2            2          3
-    ...                                  ...    ...      ...        ...          ...        ...
-    pattern_optimization            0.163775      0       94          0            0          0
-    remove_duplicated_initializer   0.000484      0       18          0            0          0
-    remove_duplicated_shape         0.000106      0        0          7            0          0
-    remove_identity_nodes           0.007696     44      106          7            0          0
-    remove_unused                   0.010348      0        3          7            0          0
+                                     time_in  added  ...  match_index  instances
+    pattern                                          ...                        
+    apply_CastPattern               0.004185     37  ...           36         37
+    apply_ExpandBroadcastPattern    0.000386      3  ...            2          3
+    apply_MatMulAddPattern          0.000662      3  ...            2          3
+    apply_MatMulReshape2Of3Pattern  0.004362     10  ...            7          4
+    apply_MulMulMulScalarPattern    0.003743      6  ...            2          3
+    ...                                  ...    ...  ...          ...        ...
+    pattern_optimization            0.277917      0  ...            0          0
+    remove_duplicated_initializer   0.000775      0  ...            0          0
+    remove_duplicated_shape         0.000188      0  ...            0          0
+    remove_identity_nodes           0.014065     44  ...            0          0
+    remove_unused                   0.016706      0  ...            0          0
 
-    [120 rows x 6 columns]
+    [121 rows x 6 columns]
 
 
 
@@ -1055,12 +1055,12 @@ Focus on one optimizer
 
  .. code-block:: none
 
-    [GraphBuilder-MQQ.optimize] start with 120 nodes
-    [GraphBuilder-MQQ.optimize] #patterns=1
-    [GraphBuilderPatternOptimization-MQQ.optimize] start with 120 nodes, 18 initializers, 1 patterns, priorities=[1], max_iter=120
-    [GraphBuilderPatternOptimization-MQQ.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
-    [GraphBuilderPatternOptimization-MQQ.optimize] iteration 0: 120 nodes, priority=1
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0 - matching_step
+    [GraphBuilder-WAQ.optimize] start with 120 nodes
+    [GraphBuilder-WAQ.optimize] #patterns=1
+    [GraphBuilderPatternOptimization-WAQ.optimize] start with 120 nodes, 18 initializers, 1 patterns, priorities=[1], max_iter=120
+    [GraphBuilderPatternOptimization-WAQ.optimize] use pattern   1/1 - P1 - SwitchOrderBinaryPattern()
+    [GraphBuilderPatternOptimization-WAQ.optimize] iteration 0: 120 nodes, priority=1
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0 - matching_step
     [PatternOptimization.enumerate_matches] start SwitchOrderBinaryPattern with main_opset=18 and min_opset=1
     [SwitchOrderBinaryPattern.match] NONE - line: 183:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul5, inputs=_onx_mul0,input34
     [SwitchOrderBinaryPattern.match] NONE - line: 183:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=mul7, inputs=_onx_mul0,input35
@@ -1082,25 +1082,25 @@ Focus on one optimizer
     [SwitchOrderBinaryPattern.match] NONE - line: 183:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst, inputs=_onx_mul033,init1_s_12
     [SwitchOrderBinaryPattern.match] NONE - line: 183:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Mul, name=SwitchOrderBinaryPattern--MulMulMulScalarPattern--mul65-Cst2, inputs=mul-_onx_mul033,input4
     [SwitchOrderBinaryPattern.match] NONE - line: 183:experimental_experiment.xoptim.patterns.onnx_mul, op_type=Add, name=add_Tensor14, inputs=add_21,_onx_mul035
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0 - matching_step done 0
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - apply_step with 0 matches
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - done with 0 applied patterns
-    [GraphBuilderPatternOptimization-MQQ.optimize] done all: -0 +0 nodes
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - remove_duplicated_shape
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - remove_duplicated_shape done -0 +0 nodes
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - remove_identity
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - remove_identity done -0 +0 nodes
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - remove_unused
-    [GraphBuilderPatternOptimization-MQQ.optimize] it=0C0F0 - remove_unused done -0 +0 nodes
-    [GraphBuilderPatternOptimization-MQQ.optimize] stops current_priority_index=1, priorities=[1]
-    [GraphBuilderPatternOptimization-MQQ.optimize] done after 1 iterations with 120 nodes in 0.003
-        STAT build_graph_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.00034355500065430533
-        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00021656799981428776
-        STAT check_pattern_B0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0006596109997190069
-        STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0006782759992347565
-        STAT remove_duplicated_shape +0 -0 #it=1 maxmatch=0 i=0 - time=1.1368000741640572e-05
-        STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.0004793939997398411
-        STAT remove_unused +0 -0 #it=1 maxmatch=0 i=0 - time=0.0004917569995086524
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0 - matching_step done 0
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - apply_step with 0 matches
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - done with 0 applied patterns
+    [GraphBuilderPatternOptimization-WAQ.optimize] done all: -0 +0 nodes
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - remove_duplicated_shape
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - remove_duplicated_shape done -0 +0 nodes
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - remove_identity
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - remove_identity done -0 +0 nodes
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - remove_unused
+    [GraphBuilderPatternOptimization-WAQ.optimize] it=0C0F0 - remove_unused done -0 +0 nodes
+    [GraphBuilderPatternOptimization-WAQ.optimize] stops current_priority_index=1, priorities=[1]
+    [GraphBuilderPatternOptimization-WAQ.optimize] done after 1 iterations with 120 nodes in 0.005
+        STAT build_graph_for_pattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0005082269999547862
+        STAT check_pattern_00 +0 -0 #it=1 maxmatch=0 i=0 - time=0.00031085400041774847
+        STAT check_pattern_B0 +0 -0 #it=1 maxmatch=0 i=0 - time=0.0009522859982098453
+        STAT match_SwitchOrderBinaryPattern +0 -0 #it=1 maxmatch=0 i=0 - time=0.0009903299978759605
+        STAT remove_duplicated_shape +0 -0 #it=1 maxmatch=0 i=0 - time=1.80000024556648e-05
+        STAT remove_identity_nodes +0 -0 #it=1 maxmatch=0 i=0 - time=0.0006787250022171065
+        STAT remove_unused +0 -0 #it=1 maxmatch=0 i=0 - time=0.0007701670001551975
     --MODEL: 120 nodes, 40 inputs, 15 outputs, 18 initializers--
              INPUT:  39 x 1t
              INPUT:   1 x 7t
@@ -1203,7 +1203,7 @@ Focus on one optimizer
           NODE:   1 x Unsqueeze -SIG- 7t[2x1024], 7t[1]
           NODE:   1 x Unsqueeze -SIG- 9t[2x1024], 7t[1]
           NODE:   1 x Where -SIG- 9t[2x1024x1], 1t[1], 1t[2x1024x1024]
-    [GraphBuilder-MQQ.optimize] done with 120 nodes in 0.012
+    [GraphBuilder-WAQ.optimize] done with 120 nodes in 0.019
 
 
 .. raw:: html
@@ -1243,7 +1243,7 @@ Focus on one optimizer
           <td>dynamic_dimension_naming</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000117</td>
+          <td>0.000184</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1254,7 +1254,7 @@ Focus on one optimizer
           <td>check_A-dynamic_dimension_naming</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000234</td>
+          <td>0.000351</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1265,7 +1265,7 @@ Focus on one optimizer
           <td>check_A-opt-sub</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000220</td>
+          <td>0.000325</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1276,7 +1276,7 @@ Focus on one optimizer
           <td>remove_identity_nodes</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000471</td>
+          <td>0.000736</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1287,7 +1287,7 @@ Focus on one optimizer
           <td>check_B-remove-identity</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000232</td>
+          <td>0.000417</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1298,7 +1298,7 @@ Focus on one optimizer
           <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000558</td>
+          <td>0.000816</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1309,7 +1309,7 @@ Focus on one optimizer
           <td>check_C-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000211</td>
+          <td>0.000342</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1320,7 +1320,7 @@ Focus on one optimizer
           <td>apply_constant_folding</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000207</td>
+          <td>0.000344</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1342,7 +1342,7 @@ Focus on one optimizer
           <td>check_Da-constant-folding</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000206</td>
+          <td>0.000308</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1353,7 +1353,7 @@ Focus on one optimizer
           <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000491</td>
+          <td>0.000690</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1364,7 +1364,7 @@ Focus on one optimizer
           <td>check_Ea-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000208</td>
+          <td>0.000308</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1375,7 +1375,7 @@ Focus on one optimizer
           <td>check_pattern_00</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000217</td>
+          <td>0.000311</td>
           <td>-1.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1386,7 +1386,7 @@ Focus on one optimizer
           <td>match_SwitchOrderBinaryPattern</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000678</td>
+          <td>0.000990</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>0.0</td>
@@ -1397,7 +1397,7 @@ Focus on one optimizer
           <td>remove_duplicated_shape</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000011</td>
+          <td>0.000018</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1408,7 +1408,7 @@ Focus on one optimizer
           <td>check_pattern_B0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000232</td>
+          <td>0.000348</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1419,7 +1419,7 @@ Focus on one optimizer
           <td>remove_identity_nodes</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000479</td>
+          <td>0.000679</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1430,7 +1430,7 @@ Focus on one optimizer
           <td>check_pattern_B0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000219</td>
+          <td>0.000302</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1441,7 +1441,7 @@ Focus on one optimizer
           <td>remove_unused</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000492</td>
+          <td>0.000770</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1452,7 +1452,7 @@ Focus on one optimizer
           <td>check_pattern_B0</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000208</td>
+          <td>0.000303</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1463,7 +1463,7 @@ Focus on one optimizer
           <td>build_graph_for_pattern</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000344</td>
+          <td>0.000508</td>
           <td>0.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1474,7 +1474,7 @@ Focus on one optimizer
           <td>pattern_optimization</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.005107</td>
+          <td>0.007747</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1485,7 +1485,7 @@ Focus on one optimizer
           <td>check_F-patterns</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000225</td>
+          <td>0.000318</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1496,7 +1496,7 @@ Focus on one optimizer
           <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000539</td>
+          <td>0.000764</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1507,7 +1507,7 @@ Focus on one optimizer
           <td>check_G-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000217</td>
+          <td>0.000305</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1518,7 +1518,7 @@ Focus on one optimizer
           <td>remove_identity_nodes</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000502</td>
+          <td>0.000600</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1529,7 +1529,7 @@ Focus on one optimizer
           <td>check_G-remove-identity</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000217</td>
+          <td>0.000299</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1540,7 +1540,7 @@ Focus on one optimizer
           <td>apply_constant_folding</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000209</td>
+          <td>0.000302</td>
           <td>1.0</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1562,7 +1562,7 @@ Focus on one optimizer
           <td>check_Db-constant-folding</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000211</td>
+          <td>0.000340</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1573,7 +1573,7 @@ Focus on one optimizer
           <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000501</td>
+          <td>0.000727</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1584,7 +1584,7 @@ Focus on one optimizer
           <td>check_Eb-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000216</td>
+          <td>0.000297</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1595,7 +1595,7 @@ Focus on one optimizer
           <td>remove_duplicated_initializer</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000102</td>
+          <td>0.000141</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1606,7 +1606,7 @@ Focus on one optimizer
           <td>check_H-remove-duplicated-initializer</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000209</td>
+          <td>0.000291</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1617,7 +1617,7 @@ Focus on one optimizer
           <td>remove_identity_nodes</td>
           <td>0.0</td>
           <td>0.0</td>
-          <td>0.000314</td>
+          <td>0.000437</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1628,7 +1628,7 @@ Focus on one optimizer
           <td>remove_unused</td>
           <td>0.0</td>
           <td>NaN</td>
-          <td>0.000467</td>
+          <td>0.000862</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1639,7 +1639,7 @@ Focus on one optimizer
           <td>check_H-remove-unused</td>
           <td>NaN</td>
           <td>NaN</td>
-          <td>0.000210</td>
+          <td>0.000307</td>
           <td>NaN</td>
           <td>NaN</td>
           <td>NaN</td>
@@ -1655,7 +1655,7 @@ Focus on one optimizer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.612 seconds)
+   **Total running time of the script:** (0 minutes 1.464 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_optimize_101.py:

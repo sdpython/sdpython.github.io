@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench.export_model_helper - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,14 +547,14 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench.export_model_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">onnx</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">max_diff</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">max_diff</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AttributeProto</span><span class="p">,</span>
     <span class="n">FunctionProto</span><span class="p">,</span>
     <span class="n">GraphProto</span><span class="p">,</span>
@@ -559,11 +562,11 @@
     <span class="n">NodeProto</span><span class="p">,</span>
     <span class="n">TensorProto</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..convert.convert_helper</span> <span class="kn">import</span> <span class="n">optimize_model_proto_oxs</span>
-<span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..convert.convert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize_model_proto_oxs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
 
 
-<span class="k">def</span> <span class="nf">size_type</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">size_type</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="c1"># It is a TensorProto.DATATYPE</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">}:</span>
@@ -581,7 +584,7 @@
             <span class="k">return</span> <span class="mi">1</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to return the element size for type </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">}:</span>
         <span class="k">return</span> <span class="mi">8</span>
@@ -606,8 +609,8 @@
     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected dtype=</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">obj_size</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">obj_size</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_sparse</span><span class="p">,</span> <span class="s2">&quot;Sparse tensors not supported yet.&quot;</span>
@@ -634,7 +637,7 @@
     <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;MambaCache&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">obj_size</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">conv_states</span><span class="p">)</span> <span class="o">+</span> <span class="n">obj_size</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">ssm_states</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">CacheKeyValue</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheKeyValue</span>
 
         <span class="n">kv</span> <span class="o">=</span> <span class="n">CacheKeyValue</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj_size</span><span class="p">(</span><span class="n">kv</span><span class="o">.</span><span class="n">key_cache</span><span class="p">)</span> <span class="o">+</span> <span class="n">obj_size</span><span class="p">(</span><span class="n">kv</span><span class="o">.</span><span class="n">value_cache</span><span class="p">)</span>
@@ -645,7 +648,7 @@
 
 <div class="viewcode-block" id="compute_weight_size">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.compute_weight_size">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_weight_size</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_weight_size</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the model size for a torch model or an onnx model.</span>
 <span class="sd">    That includes the weights.</span>
@@ -692,7 +695,7 @@
         <span class="k">return</span> <span class="n">size</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
         <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
@@ -711,7 +714,7 @@
 
 <div class="viewcode-block" id="common_export">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.common_export">[docs]</a>
-<span class="k">def</span> <span class="nf">common_export</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">common_export</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
     <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
@@ -750,7 +753,7 @@
 <span class="sd">    :param order: optimize order</span>
 <span class="sd">    :returns: onnx proto</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch.onnx</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch.onnx</span>
 
     <span class="k">if</span> <span class="n">folder</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">folder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
@@ -788,9 +791,9 @@
             <span class="n">dynamo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">exporter</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;custom-fallback&quot;</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">to_onnx</span>
-        <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
-        <span class="kn">from</span> <span class="nn">..xoptim</span> <span class="kn">import</span> <span class="n">get_pattern_list</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..xoptim</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pattern_list</span>
 
         <span class="n">patterns</span> <span class="o">=</span> <span class="n">get_pattern_list</span><span class="p">(</span><span class="n">enable_pattern</span><span class="p">,</span> <span class="n">disable_pattern</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="n">onx</span> <span class="o">=</span> <span class="n">to_onnx</span><span class="p">(</span>
@@ -840,7 +843,7 @@
         <span class="n">output</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.opt.onnx&quot;</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[common_export] onnxruntime optimize in </span><span class="si">{</span><span class="n">output</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="kn">from</span> <span class="nn">..convert.convert_helper</span> <span class="kn">import</span> <span class="n">ort_optimize</span> <span class="k">as</span> <span class="n">fopt</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..convert.convert_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">ort_optimize</span> <span class="k">as</span> <span class="n">fopt</span>
 
         <span class="n">is_cuda</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">is_cuda</span>
         <span class="k">if</span> <span class="n">is_cuda</span><span class="p">:</span>
@@ -862,7 +865,7 @@
 
 <div class="viewcode-block" id="run_inference">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.run_inference">[docs]</a>
-<span class="k">def</span> <span class="nf">run_inference</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_inference</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">example_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
@@ -921,22 +924,22 @@
 
 <div class="viewcode-block" id="WrapForTorch">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.WrapForTorch">[docs]</a>
-<span class="k">class</span> <span class="nc">WrapForTorch</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WrapForTorch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps a torch model.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">torch_model</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">torch_model</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">torch_model</span><span class="p">,</span> <span class="s2">&quot;graph_module&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch_model</span><span class="o">.</span><span class="n">graph_module</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch_model</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span>
@@ -947,18 +950,18 @@
 
 <div class="viewcode-block" id="WrapExecutorchForTorch">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.WrapExecutorchForTorch">[docs]</a>
-<span class="k">class</span> <span class="nc">WrapExecutorchForTorch</span><span class="p">(</span><span class="n">WrapForTorch</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WrapExecutorchForTorch</span><span class="p">(</span><span class="n">WrapForTorch</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps a executorch model.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">forward_method</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">forward_method</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">forward_method</span> <span class="o">=</span> <span class="n">forward_method</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_method</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not implemented yet </span><span class="si">{</span><span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
@@ -970,18 +973,18 @@
 
 <div class="viewcode-block" id="WrapInferenceSessionForTorch">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.WrapInferenceSessionForTorch">[docs]</a>
-<span class="k">class</span> <span class="nc">WrapInferenceSessionForTorch</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WrapInferenceSessionForTorch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps an `onnxruntime.InferenceSession` to overload method `run`</span>
 <span class="sd">    to support :class:`torch.Tensor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sess</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">nvtx</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sess</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">nvtx</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="c1"># onnxruntime is importing when needed as it takes a</span>
         <span class="c1"># couple of seconds if it contains CUDA EP.</span>
-        <span class="kn">import</span> <span class="nn">onnxruntime</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>  <span class="c1"># noqa: N812</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi</span><span class="w"> </span><span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>  <span class="c1"># noqa: N812</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sess</span> <span class="o">=</span> <span class="n">sess</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sess</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()]</span>
@@ -1029,7 +1032,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">DEVICES</span> <span class="o">=</span> <span class="n">DEVICES</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_run</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_ortvalues_from_torch_tensors</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_ortvalues_from_torch_tensors</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tensors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># tuple[&quot;torch.Tensor&quot;, ...],</span>
         <span class="n">n_outputs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1071,14 +1074,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">nvtx</span><span class="o">.</span><span class="n">range_pop</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">ortvalues</span><span class="p">,</span> <span class="n">output_devices</span>
 
-    <span class="k">def</span> <span class="nf">_ortvalues_to_torch_tensor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ortvalues_to_torch_tensor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ortvalues</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1">#  &quot;onnxruntime.OrtValueVector&quot;,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>  <span class="c1"># tuple[&quot;torch.Tensor&quot;, ...]:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ortvalues</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">()</span>
 
-        <span class="kn">from</span> <span class="nn">torch._C</span> <span class="kn">import</span> <span class="n">_from_dlpack</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">torch._C</span><span class="w"> </span><span class="kn">import</span> <span class="n">_from_dlpack</span>
 
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">ortvalues</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">has_value</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ortvalues</span><span class="p">))):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvtx</span><span class="p">:</span>
@@ -1098,7 +1101,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">nvtx</span><span class="o">.</span><span class="n">range_pop</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">feeds</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_names</span><span class="p">,</span> <span class="n">feeds</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_run</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">output_names</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">feeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_names</span><span class="p">]</span>
@@ -1106,7 +1109,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_dlpack</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="n">output_names</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_ort_inference</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_bind_torch_tensors</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bind_torch_tensors</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tensors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># tuple[&quot;torch.Tensor&quot;, ...],</span>
         <span class="n">output_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1140,7 +1143,7 @@
             <span class="n">bind</span><span class="o">.</span><span class="n">bind_output</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bind</span>
 
-    <span class="k">def</span> <span class="nf">run_ort_inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_ort_inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">output_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">output_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_names</span>
 
@@ -1165,7 +1168,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">nvtx</span><span class="o">.</span><span class="n">range_pop</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">ort_outputs</span>
 
-    <span class="k">def</span> <span class="nf">run_dlpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_dlpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">output_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">output_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_names</span>
         <span class="n">ortvalues</span><span class="p">,</span> <span class="n">output_devices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ortvalues_from_torch_tensors</span><span class="p">(</span>
@@ -1195,7 +1198,7 @@
 
 <div class="viewcode-block" id="run_onnx_inference">
 <a class="viewcode-back" href="../../../api/torch_bench/export_model_helper.html#experimental_experiment.torch_bench.export_model_helper.run_onnx_inference">[docs]</a>
-<span class="k">def</span> <span class="nf">run_onnx_inference</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_onnx_inference</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span>
     <span class="n">example_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
@@ -1233,7 +1236,7 @@
     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
     <span class="c1"># onnxruntime is importing when needed as it</span>
     <span class="c1"># takes a couple of seconds if it contains CUDA EP.</span>
-    <span class="kn">import</span> <span class="nn">onnxruntime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
     <span class="n">so</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">ort_optimize</span><span class="p">:</span>
@@ -1295,12 +1298,12 @@
 
 
 
-<span class="k">def</span> <span class="nf">str_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">str_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span>
 
 
-<span class="k">def</span> <span class="nf">str_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">str_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;torch.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 </pre></div>

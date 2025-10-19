@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_models.llm_model_helper - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,10 +547,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_models.llm_model_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">assert_found</span>
-<span class="kn">from</span> <span class="nn">.llm_model_setup</span> <span class="kn">import</span> <span class="n">LLMInputKind</span><span class="p">,</span> <span class="n">finalize_llm_setup</span><span class="p">,</span> <span class="n">finalize_llm_vision_setup</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">assert_found</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.llm_model_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMInputKind</span><span class="p">,</span> <span class="n">finalize_llm_setup</span><span class="p">,</span> <span class="n">finalize_llm_vision_setup</span>
 
 
 <span class="c1">############</span>
@@ -557,7 +560,7 @@
 
 <div class="viewcode-block" id="get_phi2">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_phi2">[docs]</a>
-<span class="k">def</span> <span class="nf">get_phi2</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_phi2</span><span class="p">(</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -577,7 +580,7 @@
 <span class="sd">    See `Phi-2/config.json</span>
 <span class="sd">    &lt;https://huggingface.co/microsoft/phi-2/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;_name_or_path&quot;</span><span class="p">:</span> <span class="s2">&quot;microsoft/phi-2&quot;</span><span class="p">,</span>
@@ -627,7 +630,7 @@
 
 <div class="viewcode-block" id="get_phi35_mini_instruct">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_phi35_mini_instruct">[docs]</a>
-<span class="k">def</span> <span class="nf">get_phi35_mini_instruct</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_phi35_mini_instruct</span><span class="p">(</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -647,7 +650,7 @@
 <span class="sd">    See `Phi-3.5-mini-instruct/config.json</span>
 <span class="sd">    &lt;https://huggingface.co/microsoft/Phi-3.5-mini-instruct/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;_name_or_path&quot;</span><span class="p">:</span> <span class="s2">&quot;Phi-3.5-mini-instruct&quot;</span><span class="p">,</span>
@@ -804,7 +807,7 @@
 
 <div class="viewcode-block" id="get_phi3_vision_128k_instruct">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_phi3_vision_128k_instruct">[docs]</a>
-<span class="k">def</span> <span class="nf">get_phi3_vision_128k_instruct</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_phi3_vision_128k_instruct</span><span class="p">(</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">input_kind</span><span class="p">:</span> <span class="n">LLMInputKind</span> <span class="o">=</span> <span class="n">LLMInputKind</span><span class="o">.</span><span class="n">input_ids</span><span class="p">,</span>
@@ -824,8 +827,8 @@
 <span class="sd">    See `Phi-3-vision-128k-instruct/config.json</span>
 <span class="sd">    &lt;https://huggingface.co/microsoft/Phi-3-vision-128k-instruct/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.configuration_phi3_v</span> <span class="kn">import</span> <span class="n">Phi3VConfig</span>
-    <span class="kn">from</span> <span class="nn">.modeling_phi3_v</span> <span class="kn">import</span> <span class="n">Phi3VForCausalLM</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.configuration_phi3_v</span><span class="w"> </span><span class="kn">import</span> <span class="n">Phi3VConfig</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.modeling_phi3_v</span><span class="w"> </span><span class="kn">import</span> <span class="n">Phi3VForCausalLM</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;_name_or_path&quot;</span><span class="p">:</span> <span class="s2">&quot;Phi-3-vision-128k-instruct&quot;</span><span class="p">,</span>
@@ -1011,7 +1014,7 @@
 
 <div class="viewcode-block" id="get_phi4">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_phi4">[docs]</a>
-<span class="k">def</span> <span class="nf">get_phi4</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_phi4</span><span class="p">(</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -1031,7 +1034,7 @@
 <span class="sd">    See `Phi-4/config.json</span>
 <span class="sd">    &lt;https://huggingface.co/microsoft/phi-4/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;_name_or_path&quot;</span><span class="p">:</span> <span class="s2">&quot;microsoft/phi-4&quot;</span><span class="p">,</span>
@@ -1090,7 +1093,7 @@
 
 <div class="viewcode-block" id="get_ai21_jamba_15_mini">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_ai21_jamba_15_mini">[docs]</a>
-<span class="k">def</span> <span class="nf">get_ai21_jamba_15_mini</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ai21_jamba_15_mini</span><span class="p">(</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -1111,8 +1114,8 @@
 <span class="sd">    See `ai21labs/AI21-Jamba-1.5-Mini/config.json</span>
 <span class="sd">    &lt;https://huggingface.co/ai21labs/AI21-Jamba-1.5-Mini/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;architectures&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;JambaForCausalLM&quot;</span><span class="p">],</span>
@@ -1192,7 +1195,7 @@
 
 <div class="viewcode-block" id="get_falcon_mamba_7b">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_falcon_mamba_7b">[docs]</a>
-<span class="k">def</span> <span class="nf">get_falcon_mamba_7b</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_falcon_mamba_7b</span><span class="p">(</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1214,8 +1217,8 @@
 <span class="sd">    See `flacon-mamba-7b/config.json</span>
 <span class="sd">    &lt;https://huggingface.co/tiiuae/falcon-mamba-7b/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;_name_or_path&quot;</span><span class="p">:</span> <span class="s2">&quot;./&quot;</span><span class="p">,</span>
@@ -1297,7 +1300,7 @@
 
 <div class="viewcode-block" id="get_smollm_1_7b">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_smollm_1_7b">[docs]</a>
-<span class="k">def</span> <span class="nf">get_smollm_1_7b</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_smollm_1_7b</span><span class="p">(</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1317,7 +1320,7 @@
 <span class="sd">    See `SmolLM-1.7B</span>
 <span class="sd">    &lt;https://huggingface.co/HuggingFaceTB/SmolLM-1.7B/blob/main/config.json&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;_name_or_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/fsx/loubna/checkpoints/cosmo2_1T/500000&quot;</span><span class="p">,</span>
@@ -1376,7 +1379,7 @@
 
 <div class="viewcode-block" id="get_llama32_9b_vision">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_llama32_9b_vision">[docs]</a>
-<span class="k">def</span> <span class="nf">get_llama32_9b_vision</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_llama32_9b_vision</span><span class="p">(</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">common_dynamic_shapes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1390,8 +1393,8 @@
 <span class="sd">    See `MLlama</span>
 <span class="sd">    &lt;https://huggingface.co/docs/transformers/main/en/model_doc/mllama&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">common_dynamic_shapes</span><span class="p">,</span> <span class="s2">&quot;dynamic shapes are not implemented&quot;</span>
 
@@ -1422,7 +1425,7 @@
 
 <div class="viewcode-block" id="get_tiny_llm">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_helper.html#experimental_experiment.torch_models.llm_model_helper.get_tiny_llm">[docs]</a>
-<span class="k">def</span> <span class="nf">get_tiny_llm</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_tiny_llm</span><span class="p">(</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">input_cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">inputs_as_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1444,7 +1447,7 @@
 <span class="sd">    See `arnir0/Tiny-LLM</span>
 <span class="sd">    &lt;https://huggingface.co/arnir0/Tiny-LLM&gt;`_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;architectures&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;LlamaForCausalLM&quot;</span><span class="p">],</span>

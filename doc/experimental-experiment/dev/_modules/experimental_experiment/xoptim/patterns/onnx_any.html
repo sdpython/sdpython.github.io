@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim.patterns.onnx_any - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -544,20 +547,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_any</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">...helpers</span> <span class="kn">import</span> <span class="n">make_idn</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_idn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
 <div class="viewcode-block" id="SameChildrenPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">SameChildrenPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SameChildrenPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks there is no duplicated node doing the same than another one beside.&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_cmp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">n2</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cmp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">n2</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="s2">&quot;Compares two nodes and say if they are the same.&quot;</span>
         <span class="k">assert</span> <span class="n">make_idn</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">!=</span> <span class="n">make_idn</span><span class="p">(</span><span class="n">n2</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Two nodes are the same not identical copies </span><span class="si">{</span><span class="n">n1</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">n1</span><span class="o">.</span><span class="n">input</span> <span class="o">!=</span> <span class="n">n2</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
@@ -575,12 +578,12 @@
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SameChildrenPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -596,7 +599,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_match_with_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">next_nodes</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_match_with_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">next_nodes</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">next_nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">next_nodes</span>
             <span class="k">if</span> <span class="n">n1</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="n">n2</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">or</span> <span class="n">n1</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="s2">&quot;Identity&quot;</span><span class="p">:</span>
@@ -656,7 +659,7 @@
 
 <div class="viewcode-block" id="SameChildrenPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -689,7 +692,7 @@
 
 <div class="viewcode-block" id="SameChildrenFromInputPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenFromInputPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">SameChildrenFromInputPattern</span><span class="p">(</span><span class="n">SameChildrenPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SameChildrenFromInputPattern</span><span class="p">(</span><span class="n">SameChildrenPattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks there is no duplicated node doing the same than another</span>
 <span class="sd">    one beside and taking a model input as input.</span>
@@ -697,7 +700,7 @@
 
 <div class="viewcode-block" id="SameChildrenFromInputPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SameChildrenFromInputPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -718,7 +721,7 @@
 
 <div class="viewcode-block" id="ShapeBasedSameChildrenPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedSameChildrenPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedSameChildrenPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedSameChildrenPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks there is no duplicated node doing the same than another one beside.</span>
 <span class="sd">    :class:`experimental_experiment.xoptim.patterns.onnx_any.SameChildrenPattern`</span>
@@ -727,12 +730,12 @@
 <span class="sd">    expand (X, sh1) = expand(X, sh2) if the output shapes are the same.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ShapeBasedSameChildrenPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedSameChildrenPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -765,7 +768,7 @@
 
 <div class="viewcode-block" id="ShapeBasedSameChildrenPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedSameChildrenPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -793,7 +796,7 @@
 
 <div class="viewcode-block" id="IdentityPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.IdentityPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">IdentityPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IdentityPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces operator such as</span>
 <span class="sd">    Div(X, 1), Mul(X, 1), Add(X, 0), Sub(X, 0), Transpose(X, [0, 1, 2, ...])</span>
@@ -801,22 +804,22 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_any_value_to_scalar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cst</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_any_value_to_scalar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cst</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">complex</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_has_unique_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cst</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_has_unique_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cst</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cst</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">==</span> <span class="n">cst</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="IdentityPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.IdentityPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -955,7 +958,7 @@
 
 <div class="viewcode-block" id="IdentityPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.IdentityPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -983,18 +986,18 @@
 
 <div class="viewcode-block" id="ShapeBasedIdentityPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedIdentityPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedIdentityPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedIdentityPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    If a slice leads to the same shape and the step is 1 then it is identity.</span>
 <span class="sd">    In some cases, just known the same is enough to replace them.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ShapeBasedIdentityPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedIdentityPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1026,7 +1029,7 @@
 
 <div class="viewcode-block" id="ShapeBasedIdentityPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.ShapeBasedIdentityPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>

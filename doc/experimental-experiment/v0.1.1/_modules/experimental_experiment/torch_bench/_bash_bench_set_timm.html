@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench._bash_bench_set_timm - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,16 +547,16 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench._bash_bench_set_timm</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">importlib</span>
-<span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">textwrap</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch._dynamo.testing</span> <span class="kn">import</span> <span class="n">reduce_to_scalar_loss</span>
-<span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
-<span class="kn">from</span> <span class="nn">._bash_bench_benchmark_runner</span> <span class="kn">import</span> <span class="n">BenchmarkRunner</span>
-<span class="kn">from</span> <span class="nn">._bash_bench_model_runner</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch._dynamo.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce_to_scalar_loss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._bash_bench_benchmark_runner</span><span class="w"> </span><span class="kn">import</span> <span class="n">BenchmarkRunner</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._bash_bench_model_runner</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">MakeConfig</span><span class="p">,</span>
     <span class="n">ModelRunner</span><span class="p">,</span>
     <span class="n">_rand_int_tensor</span><span class="p">,</span>
@@ -563,7 +566,7 @@
 
 <div class="viewcode-block" id="TimmRunner">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_set_timm.html#experimental_experiment.torch_bench._bash_bench_set_timm.TimmRunner">[docs]</a>
-<span class="k">class</span> <span class="nc">TimmRunner</span><span class="p">(</span><span class="n">BenchmarkRunner</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimmRunner</span><span class="p">(</span><span class="n">BenchmarkRunner</span><span class="p">):</span>
     <span class="n">SUITE</span> <span class="o">=</span> <span class="s2">&quot;Timm&quot;</span>
     <span class="n">MODELS_FILENAME</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -767,10 +770,10 @@
     <span class="n">TIMM_MODELS</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">refresh_model_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">timm</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh_model_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">timm</span>
 
-        <span class="k">def</span> <span class="nf">get_family_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">get_family_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="n">known_families</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="s2">&quot;darknet&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;densenet&quot;</span><span class="p">,</span>
@@ -800,7 +803,7 @@
                 <span class="k">return</span> <span class="s2">&quot;gluon_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">def</span> <span class="nf">populate_family</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">populate_family</span><span class="p">(</span><span class="n">models</span><span class="p">):</span>
             <span class="n">family</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
                 <span class="n">family_name</span> <span class="o">=</span> <span class="n">get_family_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
@@ -817,9 +820,9 @@
 
 <div class="viewcode-block" id="TimmRunner.initialize">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_set_timm.html#experimental_experiment.torch_bench._bash_bench_set_timm.TimmRunner.initialize">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Steps to run before running the benchmark.&quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">timm</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">timm</span>
 
         <span class="n">models</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">timm</span><span class="o">.</span><span class="n">list_models</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_filters</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*in21k&quot;</span><span class="p">]))</span>
         <span class="n">models</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">models</span><span class="p">}</span>
@@ -848,14 +851,14 @@
 
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_module_cls_by_model_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_cls_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_module_cls_by_model_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_cls_name</span><span class="p">):</span>
         <span class="n">_module_by_model_name</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">module_name</span> <span class="o">=</span> <span class="n">_module_by_model_name</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model_cls_name</span><span class="p">,</span> <span class="s2">&quot;torchbenchmark&quot;</span><span class="p">)</span>
         <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">model_cls_name</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_sequence_length</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_cls</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_sequence_length</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_cls</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;Blenderbot&quot;</span><span class="p">,)):</span>
             <span class="n">seq_length</span> <span class="o">=</span> <span class="mi">128</span>
         <span class="k">elif</span> <span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;GPT2&quot;</span><span class="p">,</span> <span class="s2">&quot;Bart&quot;</span><span class="p">,</span> <span class="s2">&quot;T5&quot;</span><span class="p">,</span> <span class="s2">&quot;PLBart&quot;</span><span class="p">,</span> <span class="s2">&quot;MBart&quot;</span><span class="p">)):</span>
@@ -895,13 +898,13 @@
         <span class="k">return</span> <span class="n">seq_length</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_generate_inputs_for_model</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_inputs_for_model</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">model_cls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">include_loss_args</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;_get_random_inputs&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">_get_random_inputs</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="kn">import</span> <span class="nn">transformers</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
         <span class="n">num_choices</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">num_visual_features</span> <span class="o">=</span> <span class="mi">42</span>
@@ -996,7 +999,7 @@
 
         <span class="k">return</span> <span class="n">input_dict</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">partition_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -1036,9 +1039,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span>
 
-    <span class="k">def</span> <span class="nf">_get_model_cls_and_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_cls_and_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXTRA_MODELS</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">transformers</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
             <span class="n">model_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_module_cls_by_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
             <span class="n">config_cls</span> <span class="o">=</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">config_class</span>
@@ -1064,12 +1067,12 @@
         <span class="k">return</span> <span class="n">model_cls</span><span class="p">,</span> <span class="n">config</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_gen_target</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gen_target</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,),</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span><span class="o">.</span><span class="n">random_</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)</span>
 
     <span class="nd">@download_retry_decorator</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_download_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">timm.models</span> <span class="kn">import</span> <span class="n">create_model</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_download_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">timm.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_model</span>
 
         <span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span>
             <span class="n">model_name</span><span class="p">,</span>
@@ -1087,11 +1090,11 @@
             <span class="n">model</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">MakeConfig</span><span class="p">(</span><span class="n">to_tuple</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">model</span>
 
-    <span class="k">def</span> <span class="nf">scaled_compute_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scaled_compute_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
         <span class="c1"># Loss values need zoom out further.</span>
         <span class="k">return</span> <span class="n">reduce_to_scalar_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span>
 
-    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1115,7 +1118,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">num_classes</span>
 
-        <span class="kn">from</span> <span class="nn">timm.data</span> <span class="kn">import</span> <span class="n">resolve_data_config</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">timm.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_data_config</span>
 
         <span class="c1"># see https://github.com/huggingface/pytorch-image-models/blob/main/timm/data/config.py</span>
         <span class="n">data_config</span> <span class="o">=</span> <span class="n">resolve_data_config</span><span class="p">(</span>
@@ -1173,7 +1176,7 @@
             <span class="n">attn_impl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attn_impl</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">iter_model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># for model_name in list_models(pretrained=True, exclude_filters=[&quot;*in21k&quot;]):</span>
         <span class="n">model_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TIMM_MODELS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_benchmark_indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_names</span><span class="p">))</span>

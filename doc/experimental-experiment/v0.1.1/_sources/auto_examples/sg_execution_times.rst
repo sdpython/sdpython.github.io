@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.612** total execution time for 13 files **from auto_examples**:
+**01:37.596** total execution time for 13 files **from auto_examples**:
 
 .. container::
 
@@ -32,16 +32,22 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
-     - 00:01.612
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
+     - 01:15.211
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
+     - 00:22.377
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_model_to_python.py` (``plot_model_to_python.py``)
+     - 00:00.008
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_model_to_python.py` (``plot_model_to_python.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
@@ -59,15 +65,9 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``plot_torch_export_101.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``plot_torch_export_compile_102.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
      - 00:00.000
      - 0.0

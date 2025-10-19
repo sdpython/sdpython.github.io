@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.reference.ort_evaluator - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,9 +547,9 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.reference.ort_evaluator</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">GraphProto</span><span class="p">,</span>
     <span class="n">FunctionProto</span><span class="p">,</span>
     <span class="n">ModelProto</span><span class="p">,</span>
@@ -556,13 +559,13 @@
     <span class="n">helper</span> <span class="k">as</span> <span class="n">oh</span><span class="p">,</span>
     <span class="n">load</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">to_array</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">pretty_onnx</span><span class="p">,</span> <span class="n">np_dtype_to_tensor_dtype</span><span class="p">,</span> <span class="n">make_idn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span><span class="p">,</span> <span class="n">np_dtype_to_tensor_dtype</span><span class="p">,</span> <span class="n">make_idn</span>
 
 
 <div class="viewcode-block" id="OrtEval">
 <a class="viewcode-back" href="../../../api/reference/ort_evaluator.html#experimental_experiment.reference.ort_evaluator.OrtEval">[docs]</a>
-<span class="k">class</span> <span class="nc">OrtEval</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OrtEval</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class loads an onnx model and the executes one by one the nodes</span>
 <span class="sd">    with onnxruntime. This class is mostly meant for debugging.</span>
@@ -579,7 +582,7 @@
 <span class="sd">    :param local_functions: additional local functions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">],</span>
         <span class="n">providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -592,13 +595,13 @@
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session_options</span> <span class="o">=</span> <span class="n">options</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">onnxruntime</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">session_options</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">SessionOptions</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">optimized_model_filepath</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">session_options</span><span class="o">.</span><span class="n">optimized_model_filepath</span> <span class="o">=</span> <span class="n">optimized_model_filepath</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">onnxruntime</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">session_options</span><span class="o">.</span><span class="n">log_severity_level</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">session_options</span><span class="o">.</span><span class="n">log_verbosity_level</span> <span class="o">=</span> <span class="mi">0</span>
@@ -606,7 +609,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_options</span><span class="o">.</span><span class="n">log_severity_level</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_options</span><span class="o">.</span><span class="n">log_verbosity_level</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">onnxruntime</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">run_options</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">RunOptions</span><span class="p">()</span>
 
@@ -654,7 +657,7 @@
         <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">torch</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">return</span>
 
@@ -685,7 +688,7 @@
         <span class="p">}</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="s2">&quot;Returns input names.&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
@@ -695,7 +698,7 @@
         <span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="s2">&quot;Returns output names.&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
@@ -704,7 +707,7 @@
             <span class="p">)</span>
         <span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_get_torch_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_torch_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span>
         <span class="k">if</span> <span class="n">dt</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
@@ -715,7 +718,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">dt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_get_itype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_itype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">dt</span>
         <span class="k">if</span> <span class="n">dt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TORCH_DTYPE_TO_ONNX_DTYPE</span><span class="p">:</span>
@@ -732,12 +735,12 @@
             <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span>
         <span class="k">return</span> <span class="n">np_dtype_to_tensor_dtype</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="n">new_args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_arg</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">pattern</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_args</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_log_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_log_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">a</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&quot;detach&quot;</span><span class="p">):</span>
@@ -757,17 +760,17 @@
             <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_arg</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">a</span>
 
-    <span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="n">new_args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_log_arg</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">pattern</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_args</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">_is_local_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_local_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_functions</span>
 
 <div class="viewcode-block" id="OrtEval.run">
 <a class="viewcode-back" href="../../../api/reference/ort_evaluator.html#experimental_experiment.reference.ort_evaluator.OrtEval.run">[docs]</a>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">feed_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -787,7 +790,7 @@
             <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
                 <span class="n">sess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">onnxruntime</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
                 <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span>
@@ -843,11 +846,11 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">output_names</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_sess_incremental</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_sess_incremental</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="s2">&quot;onnxruntime.InferenceSession&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
-        <span class="kn">import</span> <span class="nn">onnxruntime</span>
-        <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
 
         <span class="n">builder</span> <span class="o">=</span> <span class="n">GraphBuilder</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="p">,</span> <span class="n">optimization_options</span><span class="o">=</span><span class="n">OptimizationOptions</span><span class="p">(</span><span class="n">patterns</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -861,16 +864,16 @@
         <span class="k">except</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">capi</span><span class="o">.</span><span class="n">onnxruntime_pybind11_state</span><span class="o">.</span><span class="n">Fail</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Cannot create a session for node</span><span class="se">\n</span><span class="s2">-----</span><span class="se">\n</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="se">\n</span><span class="s2">----------</span><span class="se">\n</span><span class="si">{</span><span class="n">onx</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">sess</span>
 
-    <span class="k">def</span> <span class="nf">_get_sess</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_sess</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="s2">&quot;onnxruntime.InferenceSession&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sess_incremental</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-        <span class="kn">import</span> <span class="nn">onnxruntime</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
         <span class="n">unique_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">vinputs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -899,10 +902,10 @@
             <span class="n">onnxruntime</span><span class="o">.</span><span class="n">capi</span><span class="o">.</span><span class="n">onnxruntime_pybind11_state</span><span class="o">.</span><span class="n">Fail</span><span class="p">,</span>
             <span class="n">onnxruntime</span><span class="o">.</span><span class="n">capi</span><span class="o">.</span><span class="n">onnxruntime_pybind11_state</span><span class="o">.</span><span class="n">InvalidGraph</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to infer a session due to </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to infer a session due to </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">sess</span>
 
-    <span class="k">def</span> <span class="nf">_get_sess_if</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_sess_if</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">context</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="s2">&quot;onnxruntime.InferenceSession&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">assert</span> <span class="p">(</span>
@@ -947,7 +950,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">sess</span>
 
-    <span class="k">def</span> <span class="nf">_get_sess_local</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_sess_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ModelProto</span><span class="p">,</span> <span class="s2">&quot;onnxruntime.InferenceSession&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;incremental=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="si">}</span><span class="s2"> not yet implemented&quot;</span>
@@ -962,7 +965,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">onx</span><span class="p">,</span> <span class="n">sess</span>
 
-    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs a node.&quot;&quot;&quot;</span>
         <span class="n">types</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">make_idn</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="o">*</span><span class="n">types</span><span class="p">)</span>
@@ -984,7 +987,7 @@
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">,</span> <span class="n">run_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run_options</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">outputs</span>
 
-    <span class="k">def</span> <span class="nf">_run_if</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run_if</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs a node if.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;run_if not implemented when incremental=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">feeds</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">))</span>
@@ -1003,7 +1006,7 @@
         <span class="n">outputs</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">outputs</span>
 
-    <span class="k">def</span> <span class="nf">_run_local</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs a node.&quot;&quot;&quot;</span>
@@ -1035,7 +1038,7 @@
 
 <div class="viewcode-block" id="OrtEval.run_dlpack">
 <a class="viewcode-back" href="../../../api/reference/ort_evaluator.html#experimental_experiment.reference.ort_evaluator.OrtEval.run_dlpack">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_dlpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">feed_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_dlpack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">feed_inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Runs the model using :epkg:`run_with_ortvaluevector`.</span>
 <span class="sd">        It only works with :class:`torch.Tensor`.</span>
@@ -1045,12 +1048,12 @@
 <span class="sd">        :return: outputs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">whole</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi</span><span class="w"> </span><span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
 
             <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span>
                 <span class="n">sess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">onnxruntime</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
                 <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span>
@@ -1082,9 +1085,9 @@
         <span class="k">if</span> <span class="n">outputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_names</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;rt_inits_torch_&quot;</span><span class="p">):</span>
-            <span class="kn">import</span> <span class="nn">torch</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-            <span class="k">def</span> <span class="nf">torch_Tensor</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">torch_Tensor</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">vv</span> <span class="o">=</span> <span class="n">torch_Tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
                     <span class="k">return</span> <span class="n">vv</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
@@ -1094,7 +1097,7 @@
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Unable to convert </span><span class="si">{</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="si">}</span><span class="s2"> (type=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;dtype=</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) into a torch Tensor.&quot;</span>
-                    <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">rt_inits_torch_</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">k</span><span class="p">:</span> <span class="n">torch_Tensor</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_torch_dtype</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
@@ -1144,14 +1147,14 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">output_names</span><span class="p">]</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_ortvalues_from_torch_tensors</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_ortvalues_from_torch_tensors</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tensors</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
         <span class="n">n_outputs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">log_set</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;OrtDevice&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi</span><span class="w"> </span><span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
 
         <span class="n">DEVICES</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="p">(</span><span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">ORTC</span><span class="o">.</span><span class="n">OrtDevice</span><span class="o">.</span><span class="n">default_memory</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)}</span>
 
@@ -1207,14 +1210,14 @@
 
         <span class="k">return</span> <span class="n">ortvalues</span><span class="p">,</span> <span class="n">output_devices</span>
 
-    <span class="k">def</span> <span class="nf">_ortvalues_to_torch_tensor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ortvalues_to_torch_tensor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ortvalues</span><span class="p">:</span> <span class="s2">&quot;onnxruntime.OrtValueVector&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ortvalues</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">()</span>
 
-        <span class="kn">from</span> <span class="nn">torch._C</span> <span class="kn">import</span> <span class="n">_from_dlpack</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">torch._C</span><span class="w"> </span><span class="kn">import</span> <span class="n">_from_dlpack</span>
 
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">ortvalues</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">has_value</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ortvalues</span><span class="p">))):</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">ortvalues</span><span class="o">.</span><span class="n">to_dlpacks</span><span class="p">(</span><span class="n">_from_dlpack</span><span class="p">)</span>
@@ -1227,13 +1230,13 @@
                     <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_run_dlpack</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run_dlpack</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Runs a node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi</span><span class="w"> </span><span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">ORTC</span>
 
         <span class="n">types</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
         <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">make_idn</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="o">*</span><span class="n">types</span><span class="p">)</span>

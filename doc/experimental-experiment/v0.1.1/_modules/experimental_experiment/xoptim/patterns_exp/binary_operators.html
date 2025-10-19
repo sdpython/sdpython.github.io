@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim.patterns_exp.binary_operators - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -544,24 +547,24 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns_exp.binary_operators</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
-<span class="k">class</span> <span class="nc">_common</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_common</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">broadcast</span> <span class="o">=</span> <span class="n">broadcast</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadcast</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(broadcast=True)&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">()&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_same_shape</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_same_shape</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">name1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -599,7 +602,7 @@
 
 <div class="viewcode-block" id="AddAddMulMulPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddAddMulMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddAddMulMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add + Add by AddAdd or Mul + Mul by MulMul</span>
 <span class="sd">    if they operate on the same shape.</span>
@@ -607,13 +610,13 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">PatternOptimization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
         <span class="n">_common</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AddAddMulMulPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -651,7 +654,7 @@
 
 <div class="viewcode-block" id="AddAddMulMulPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -688,7 +691,7 @@
 
 <div class="viewcode-block" id="AddAddMulMulBroadcastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddAddMulMulBroadcastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddAddMulMulBroadcastPattern</span><span class="p">(</span><span class="n">AddAddMulMulPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddAddMulMulBroadcastPattern</span><span class="p">(</span><span class="n">AddAddMulMulPattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add + Add by AddAdd or Mul + Mul by MulMul</span>
 <span class="sd">    if they operate on the same shape.</span>
@@ -696,14 +699,14 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">AddAddMulMulPattern</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="AddMulPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add + Mul by AddMul or Mul + Add by MulAdd</span>
 <span class="sd">    if they operate on the same shape.</span>
@@ -711,13 +714,13 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">PatternOptimization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
         <span class="n">_common</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AddMulPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -758,7 +761,7 @@
 
 <div class="viewcode-block" id="AddMulPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -792,7 +795,7 @@
 
 <div class="viewcode-block" id="AddMulBroadcastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulBroadcastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddMulBroadcastPattern</span><span class="p">(</span><span class="n">AddMulPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddMulBroadcastPattern</span><span class="p">(</span><span class="n">AddMulPattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add + Mul by AddMul or Mul + Add by MulAdd</span>
 <span class="sd">    if they operate on the same shape.</span>
@@ -800,14 +803,14 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">AddMulPattern</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="MulSigmoidPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">MulSigmoidPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MulSigmoidPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Mul + Sigmoid by MulSigmoid</span>
 <span class="sd">    if they operate on the same input.</span>
@@ -815,7 +818,7 @@
 
 <div class="viewcode-block" id="MulSigmoidPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -844,7 +847,7 @@
 
 <div class="viewcode-block" id="MulSigmoidPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.MulSigmoidPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node_sigmoid</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -864,7 +867,7 @@
 
 <div class="viewcode-block" id="NegXplus1Pattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern">[docs]</a>
-<span class="k">class</span> <span class="nc">NegXplus1Pattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NegXplus1Pattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces 1 - X by NegXplus1</span>
 <span class="sd">    if they operate on the same input.</span>
@@ -872,7 +875,7 @@
 
 <div class="viewcode-block" id="NegXplus1Pattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -898,7 +901,7 @@
 
 <div class="viewcode-block" id="NegXplus1Pattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.NegXplus1Pattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -917,7 +920,7 @@
 
 <div class="viewcode-block" id="SubMulPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.SubMulPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">SubMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SubMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Sub + Mul by AddMul or Mul + Add by MulAdd</span>
 <span class="sd">    if they operate on the same shape.</span>
@@ -925,13 +928,13 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">PatternOptimization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
         <span class="n">_common</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SubMulPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.SubMulPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -971,7 +974,7 @@
 
 <div class="viewcode-block" id="SubMulPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.SubMulPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1011,7 +1014,7 @@
 
 <div class="viewcode-block" id="SubMulBroadcastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.SubMulBroadcastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">SubMulBroadcastPattern</span><span class="p">(</span><span class="n">SubMulPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SubMulBroadcastPattern</span><span class="p">(</span><span class="n">SubMulPattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add + Mul by AddMul or Mul + Add by MulAdd</span>
 <span class="sd">    if they operate on the same shape.</span>
@@ -1019,14 +1022,14 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">SubMulPattern</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="AddMulSharedInputPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddMulSharedInputPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddMulSharedInputPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">_common</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add(A, B) and Add(A, C) by AddSharedInput(A, B, C)</span>
 <span class="sd">    if they operate on the same shape. Does the same for</span>
@@ -1035,13 +1038,13 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">PatternOptimization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
         <span class="n">_common</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AddMulSharedInputPattern.can_fuse">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputPattern.can_fuse">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_fuse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_fuse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks that one node if not using the output of another.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1073,7 +1076,7 @@
 
 <div class="viewcode-block" id="AddMulSharedInputPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1113,7 +1116,7 @@
 
 <div class="viewcode-block" id="AddMulSharedInputPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="o">*</span><span class="n">nodes</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1146,7 +1149,7 @@
 
 <div class="viewcode-block" id="AddMulSharedInputBroadcastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulSharedInputBroadcastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddMulSharedInputBroadcastPattern</span><span class="p">(</span><span class="n">AddMulSharedInputPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddMulSharedInputBroadcastPattern</span><span class="p">(</span><span class="n">AddMulSharedInputPattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Add(A, B) and Add(A, C) by AddSharedInput(A, B, C)</span>
 <span class="sd">    if they operate on the same shape. Does the same for</span>
@@ -1155,14 +1158,14 @@
 <span class="sd">    :param broadcast: allow broadcast on the first dimensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">AddMulSharedInputPattern</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">broadcast</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="AddMulTransposePattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulTransposePattern">[docs]</a>
-<span class="k">class</span> <span class="nc">AddMulTransposePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AddMulTransposePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces (AddMul|MulAdd) + Transpose by (AddMul|MulAdd)(., transposeMiddle=1)</span>
 <span class="sd">    if it is possible.</span>
@@ -1170,7 +1173,7 @@
 
 <div class="viewcode-block" id="AddMulTransposePattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulTransposePattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1200,7 +1203,7 @@
 
 <div class="viewcode-block" id="AddMulTransposePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_exp/binary_operators.html#experimental_experiment.xoptim.patterns_exp.binary_operators.AddMulTransposePattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>

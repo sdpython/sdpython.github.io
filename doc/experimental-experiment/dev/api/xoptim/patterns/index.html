@@ -8,7 +8,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>.xoptim.patterns - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -386,9 +386,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -511,6 +513,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -646,8 +649,8 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Returns a default list of optimization patterns.
 It is equal to the following list.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">experimental_experiment.xoptim.patterns_api</span> <span class="kn">import</span> <span class="n">pattern_table_doc</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.xoptim.patterns</span> <span class="kn">import</span> <span class="n">get_default_patterns</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.xoptim.patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">pattern_table_doc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.xoptim.patterns</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_patterns</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">pattern_table_doc</span><span class="p">(</span><span class="n">get_default_patterns</span><span class="p">(),</span> <span class="n">as_rst</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
@@ -1085,48 +1088,54 @@ It is equal to the following list.</p>
 <td><p>Replaces the sequence R -&gt; Equal -&gt; Unsqueeze, R -&gt; Unsqueeze,     into R -&gt; Unsqueeze -&gt; Equal.</p></td>
 </tr>
 <tr class="row-even"><td><p>70</p></td>
+<td><p>UnsqueezeReshapePattern</p></td>
+<td><p>UnsqueezeReshape</p></td>
+<td><p>0</p></td>
+<td><p>Unsqueeze + Reshape into Unsqueeze at a different place if possible.</p></td>
+</tr>
+<tr class="row-odd"><td><p>71</p></td>
 <td><p>UnsqueezeUnsqueezePattern</p></td>
 <td><p>UnsqueezeUnsqueeze</p></td>
 <td><p>0</p></td>
 <td><p>Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.</p></td>
 </tr>
-<tr class="row-odd"><td><p>71</p></td>
+<tr class="row-even"><td><p>72</p></td>
 <td><p>RotaryConcatPartPattern</p></td>
 <td><p>RotaryConcatPart</p></td>
 <td><p>1</p></td>
 <td><p>Optimizes the following pattern      .. plot</p></td>
 </tr>
-<tr class="row-even"><td><p>72</p></td>
+<tr class="row-odd"><td><p>73</p></td>
 <td><p>FunctionAttentionPattern</p></td>
 <td><p>FunctionAttention</p></td>
 <td><p>0</p></td>
 <td><p>Merges Attention nodes into a local funtcion.</p></td>
 </tr>
-<tr class="row-odd"><td><p>73</p></td>
+<tr class="row-even"><td><p>74</p></td>
 <td><p>FunctionCausalMaskPattern</p></td>
 <td><p>FunctionCausalMask</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching CausalMask into a local function.      .. runpython</p></td>
 </tr>
-<tr class="row-even"><td><p>74</p></td>
+<tr class="row-odd"><td><p>75</p></td>
 <td><p>FunctionCausalMaskMulAddPattern</p></td>
 <td><p>FunctionCausalMaskMulAdd</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching CausalMask into a local function.      .. runpython</p></td>
 </tr>
-<tr class="row-odd"><td><p>75</p></td>
+<tr class="row-even"><td><p>76</p></td>
 <td><p>FunctionCosSinCachePattern</p></td>
 <td><p>FunctionCosSinCache</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes to simplify the creation of cos/sin caches in LLM.      .. runpython</p></td>
 </tr>
-<tr class="row-even"><td><p>76</p></td>
+<tr class="row-odd"><td><p>77</p></td>
 <td><p>FunctionHalfRotaryEmbeddingPattern</p></td>
 <td><p>FunctionHalfRotaryEmbedding</p></td>
 <td><p>1</p></td>
 <td><p>Fuses nodes matching half RotaryEmbedding(23) into a local function.      .. runpython</p></td>
 </tr>
-<tr class="row-odd"><td><p>77</p></td>
+<tr class="row-even"><td><p>78</p></td>
 <td><p>RMSNormalizationPattern</p></td>
 <td><p>RMSNormalization</p></td>
 <td><p>1</p></td>

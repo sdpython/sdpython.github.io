@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,20 +547,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">zipfile</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zipfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">BOOLEAN_VALUES</span>
-<span class="kn">from</span> <span class="nn">._bash_bench_benchmark_runner_agg_helper</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">BOOLEAN_VALUES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._bash_bench_benchmark_runner_agg_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">SELECTED_FEATURES</span><span class="p">,</span>
     <span class="n">_apply_excel_style</span><span class="p">,</span>
     <span class="n">_compute_correlations</span><span class="p">,</span>
@@ -576,7 +579,7 @@
 
 <div class="viewcode-block" id="enumerate_csv_files">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_benchmark_runner_agg.html#experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg.enumerate_csv_files">[docs]</a>
-<span class="k">def</span> <span class="nf">enumerate_csv_files</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">enumerate_csv_files</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
         <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
     <span class="p">],</span>
@@ -653,7 +656,7 @@
 
 <div class="viewcode-block" id="open_dataframe">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_benchmark_runner_agg.html#experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg.open_dataframe">[docs]</a>
-<span class="k">def</span> <span class="nf">open_dataframe</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">open_dataframe</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -687,7 +690,7 @@
 
 <div class="viewcode-block" id="merge_benchmark_reports">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_benchmark_runner_agg.html#experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg.merge_benchmark_reports">[docs]</a>
-<span class="k">def</span> <span class="nf">merge_benchmark_reports</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_benchmark_reports</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">model</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;suite&quot;</span><span class="p">,</span> <span class="s2">&quot;model_task&quot;</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">),</span>
     <span class="n">keys</span><span class="o">=</span><span class="p">(</span>
@@ -890,7 +893,7 @@
                         <span class="sa">f</span><span class="s2">&quot;Unable to convert to float column </span><span class="si">{</span><span class="n">c</span><span class="si">!r}</span><span class="s2"> from file &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dname</span><span class="si">!r}</span><span class="s2">, values</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="s2">&quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;_index&#39;</span><span class="p">],</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]))))</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
                 <span class="n">updates</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 
         <span class="k">if</span> <span class="n">updates</span><span class="p">:</span>
@@ -1140,7 +1143,7 @@
 
     <span class="n">main</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_applies_subset</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">filter_fct</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_applies_subset</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">filter_fct</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">excel_output</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;excel_output=</span><span class="si">{</span><span class="n">excel_output</span><span class="si">}</span><span class="s2"> must be specified if broken=</span><span class="si">{</span><span class="n">broken</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="n">unique_exporters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;exporter&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span>
         <span class="n">excel</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">excel_output</span><span class="p">)</span>
@@ -1290,7 +1293,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_build_aggregated_document</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_aggregated_document</span><span class="p">(</span>
     <span class="n">base_dfs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">main</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
@@ -1324,7 +1327,7 @@
                     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Unable to deal with index=</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">, columns=</span><span class="si">{</span><span class="n">new_keys</span><span class="si">}</span><span class="s2">, &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;values=</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">, dfc=</span><span class="si">{</span><span class="n">dfc</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
                 <span class="n">under</span> <span class="o">=</span> <span class="n">under</span><span class="p">[</span><span class="n">under</span><span class="p">[</span><span class="s2">&quot;__C__&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
                 <span class="k">if</span> <span class="s2">&quot;RAWFILENAME&quot;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                     <span class="n">filenames</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="o">*</span><span class="n">cc</span><span class="p">,</span> <span class="s2">&quot;RAWFILENAME&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span>
@@ -1341,7 +1344,7 @@
                     <span class="sa">f</span><span class="s2">&quot;Ambiguities for columns </span><span class="si">{</span><span class="n">cc</span><span class="si">}</span><span class="s2">, model=</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s2">, &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;new_keys=</span><span class="si">{</span><span class="n">new_keys</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">under</span><span class="si">}</span><span class="se">\n</span><span class="s2">-----</span><span class="se">\n</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pivot</span> <span class="o">=</span> <span class="n">dfc</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
         <span class="n">res</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">pivot</span>
@@ -1371,7 +1374,7 @@
 
     <span class="c1"># final fusion</span>
 
-    <span class="k">def</span> <span class="nf">_merge</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">merge</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_merge</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">merge</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">m</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">merge</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
@@ -1401,7 +1404,7 @@
                     <span class="sa">f</span><span class="s2">&quot;Unable to join for name=</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">, df.index=</span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="s2">, &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;m.index=</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">names</span><span class="si">}</span><span class="s2"> e=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">----</span><span class="se">\n</span><span class="s2">+ m0.index</span><span class="se">\n</span><span class="si">{</span><span class="n">m0</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="s2">+ df.index</span><span class="se">\n</span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
             <span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">m0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Something is going wrong for prefix </span><span class="si">{</span><span class="n">prefix</span><span class="si">!r}</span><span class="s2"> &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;(probably a same experiment reported twice), &quot;</span>
@@ -1694,7 +1697,7 @@
 
     <span class="k">if</span> <span class="n">base_dfs</span><span class="p">:</span>
 
-        <span class="k">def</span> <span class="nf">_float_</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_float_</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
                 <span class="k">return</span> <span class="n">x</span>
             <span class="k">try</span><span class="p">:</span>

@@ -8,7 +8,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>.torch_interpreter.oxs_dispatcher - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -386,9 +386,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -511,6 +513,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -567,11 +570,11 @@ it is working.</p>
 </dl>
 <p>The class can be used the following way.</p>
 <p>&lt;&lt;&lt;</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_models.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_model</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_interpreter</span> <span class="kn">import</span> <span class="n">to_onnx</span>
-<span class="kn">from</span> <span class="nn">experimental_experiment.torch_interpreter.oxs_dispatcher</span> <span class="kn">import</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_models.llama_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llama_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_interpreter.oxs_dispatcher</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">OxsDebugDispatcher</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -592,6 +595,8 @@ it is working.</p>
 <p>&gt;&gt;&gt;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    
     [runpythonerror]
+    ~/vv/this312/lib/python3.12/site-packages/torch/cuda/__init__.py:64: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+      import pynvml  # type: ignore[import]
     Traceback (most recent call last):
       File &quot;&lt;stdin&gt;&quot;, line 19, in &lt;module&gt;
       File &quot;~/github/experimental-experiment/experimental_experiment/torch_interpreter/onnx_export.py&quot;, line 1068, in to_onnx
@@ -607,7 +612,7 @@ it is working.</p>
     Node(type=&lt;class &#39;torch._higher_order_ops.flat_apply._ConstantFunction&#39;&gt;, leaves=0)
     --
     --DEBUG--
-    [GraphBuilder-ZYE] Message starts, there are 24 initializers, 2 nodes, 2 inputs, 2 outputs.
+    [GraphBuilder-CYY] Message starts, there are 24 initializers, 2 nodes, 2 inputs, 2 outputs.
     --SHAPE--
     _dynamic_examples=
     dynamic_objects=
@@ -753,20 +758,20 @@ it is working.</p>
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, p_model_embed_tokens_weight: &quot;f32[1024, 16]&quot;, p_model_layers_0_self_attn_q_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_self_attn_k_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_self_attn_v_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_self_attn_o_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_mlp_gate_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_mlp_up_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_mlp_down_proj_weight: &quot;f32[16, 16]&quot;, p_model_layers_0_input_layernorm_weight: &quot;f32[16]&quot;, p_model_layers_0_post_attention_layernorm_weight: &quot;f32[16]&quot;, p_model_norm_weight: &quot;f32[16]&quot;, b_model_rotary_emb_inv_freq: &quot;f32[4]&quot;, c_model_lifted_tensor_0: &quot;f32[]&quot;, input_ids: &quot;i64[2, 8]&quot;, attention_mask: &quot;f32[2, 8]&quot;):
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:380 in forward, code: causal_mask = create_causal_mask(
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:409 in forward, code: causal_mask = create_causal_mask(
                 function_const_func_spec0 = self.function_const_func_spec0
                 torch__dynamo__trace_wrapped_higher_order_op_mod_index0 = self.torch__dynamo__trace_wrapped_higher_order_op_ModIndex0
                 
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/sparse.py:192 in forward, code: return F.embedding(
                 embedding: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.embedding.default(p_model_embed_tokens_weight, input_ids);  p_model_embed_tokens_weight = input_ids = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:373 in forward, code: cache_position: torch.Tensor = torch.arange(
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:402 in forward, code: cache_position: torch.Tensor = torch.arange(
                 arange: &quot;i64[8]&quot; = torch.ops.aten.arange.start(0, 8, device = device(type=&#39;cpu&#39;), pin_memory = False)
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:378 in forward, code: position_ids = cache_position.unsqueeze(0)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:407 in forward, code: position_ids = cache_position.unsqueeze(0)
                 unsqueeze: &quot;i64[1, 8]&quot; = torch.ops.aten.unsqueeze.default(arange, 0)
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:380 in forward, code: causal_mask = create_causal_mask(
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:409 in forward, code: causal_mask = create_causal_mask(
                 to: &quot;b8[2, 8]&quot; = torch.ops.aten.to.device(attention_mask, device(type=&#39;cpu&#39;), torch.bool);  attention_mask = None
                 arange_1: &quot;i64[8]&quot; = torch.ops.aten.arange.default(8, device = device(type=&#39;cpu&#39;), pin_memory = False)
                 add_: &quot;i64[8]&quot; = torch.ops.aten.add_.Tensor(arange_1, 0);  arange_1 = None
@@ -789,14 +794,14 @@ it is working.</p>
                 detach_: &quot;f32[]&quot; = torch.ops.aten.detach_.default(lift_fresh_copy);  lift_fresh_copy = None
                 where: &quot;f32[2, 1, 8, 8]&quot; = torch.ops.aten.where.ScalarOther(_remove_batch_dim_3, detach_, -3.4028234663852886e+38);  _remove_batch_dim_3 = detach_ = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:96 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:125 in forward, code: inv_freq_expanded = self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)
                 unsqueeze_1: &quot;f32[1, 4]&quot; = torch.ops.aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0);  b_model_rotary_emb_inv_freq = None
                 unsqueeze_2: &quot;f32[1, 4, 1]&quot; = torch.ops.aten.unsqueeze.default(unsqueeze_1, 2);  unsqueeze_1 = None
                 to_3: &quot;f32[1, 4, 1]&quot; = torch.ops.aten.to.dtype(unsqueeze_2, torch.float32);  unsqueeze_2 = None
                 expand_1: &quot;f32[1, 4, 1]&quot; = torch.ops.aten.expand.default(to_3, [1, -1, 1]);  to_3 = None
                 to_4: &quot;f32[1, 4, 1]&quot; = torch.ops.aten.to.dtype_layout(expand_1, dtype = torch.float32, layout = torch.strided, device = device(type=&#39;cpu&#39;));  expand_1 = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:97 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:126 in forward, code: position_ids_expanded = position_ids[:, None, :].float()
                 unsqueeze_3: &quot;i64[1, 1, 8]&quot; = torch.ops.aten.unsqueeze.default(unsqueeze, 1);  unsqueeze = None
                 to_5: &quot;f32[1, 1, 8]&quot; = torch.ops.aten.to.dtype(unsqueeze_3, torch.float32);  unsqueeze_3 = None
                 
@@ -804,13 +809,13 @@ it is working.</p>
                 submod_3 = self.submod_1
                 wrap_with_autocast = torch.ops.higher_order.wrap_with_autocast(&#39;cpu&#39;, torch.bfloat16, False, False, submod_3, to_4, to_5);  submod_3 = to_4 = to_5 = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:103 in forward, code: cos = emb.cos() * self.attention_scaling
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:132 in forward, code: cos = emb.cos() * self.attention_scaling
                 mul: &quot;f32[1, 8, 8]&quot; = wrap_with_autocast[0]
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:104 in forward, code: sin = emb.sin() * self.attention_scaling
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: sin = emb.sin() * self.attention_scaling
                 mul_1: &quot;f32[1, 8, 8]&quot; = wrap_with_autocast[1];  wrap_with_autocast = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:106 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:135 in forward, code: return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
                 to_8: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.to.dtype(mul, torch.float32);  mul = None
                 to_9: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.to.dtype(mul_1, torch.float32);  mul_1 = None
                 
@@ -833,25 +838,25 @@ it is working.</p>
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_q_proj_weight);  p_model_layers_0_self_attn_q_proj_weight = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:235 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:264 in forward, code: query_states = self.q_proj(hidden_states).view(hidden_shape).transpose(1, 2)
                 view: &quot;f32[2, 8, 2, 8]&quot; = torch.ops.aten.view.default(linear, [2, 8, -1, 8]);  linear = None
                 transpose_1: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.transpose.int(view, 1, 2);  view = None
                 
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_1: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_k_proj_weight);  p_model_layers_0_self_attn_k_proj_weight = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:236 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:265 in forward, code: key_states = self.k_proj(hidden_states).view(hidden_shape).transpose(1, 2)
                 view_1: &quot;f32[2, 8, 2, 8]&quot; = torch.ops.aten.view.default(linear_1, [2, 8, -1, 8]);  linear_1 = None
                 transpose_2: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.transpose.int(view_1, 1, 2);  view_1 = None
                 
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_2: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.linear.default(mul_3, p_model_layers_0_self_attn_v_proj_weight);  mul_3 = p_model_layers_0_self_attn_v_proj_weight = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:237 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:266 in forward, code: value_states = self.v_proj(hidden_states).view(hidden_shape).transpose(1, 2)
                 view_2: &quot;f32[2, 8, 2, 8]&quot; = torch.ops.aten.view.default(linear_2, [2, 8, -1, 8]);  linear_2 = None
                 transpose_3: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:240 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:269 in forward, code: query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
                 unsqueeze_4: &quot;f32[1, 1, 8, 8]&quot; = torch.ops.aten.unsqueeze.default(to_8, 1);  to_8 = None
                 unsqueeze_5: &quot;f32[1, 1, 8, 8]&quot; = torch.ops.aten.unsqueeze.default(to_9, 1);  to_9 = None
                 mul_4: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.mul.Tensor(transpose_1, unsqueeze_4)
@@ -869,7 +874,7 @@ it is working.</p>
                 mul_7: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.mul.Tensor(cat_2, unsqueeze_5);  cat_2 = unsqueeze_5 = None
                 add_2: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.add.Tensor(mul_6, mul_7);  mul_6 = mul_7 = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:251 in forward, code: attn_output, attn_weights = attention_interface(
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:280 in forward, code: attn_output, attn_weights = attention_interface(
                 transpose_4: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.transpose.int(add_2, 2, 3);  add_2 = None
                 matmul_1: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.matmul.default(add_1, transpose_4);  add_1 = transpose_4 = None
                 mul_8: &quot;f32[2, 2, 8, 8]&quot; = torch.ops.aten.mul.Tensor(matmul_1, 0.3535533905932738);  matmul_1 = None
@@ -882,13 +887,13 @@ it is working.</p>
                 transpose_5: &quot;f32[2, 8, 2, 8]&quot; = torch.ops.aten.transpose.int(matmul_2, 1, 2);  matmul_2 = None
                 contiguous: &quot;f32[2, 8, 2, 8]&quot; = torch.ops.aten.contiguous.default(transpose_5);  transpose_5 = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:262 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:291 in forward, code: attn_output = attn_output.reshape(*input_shape, -1).contiguous()
                 reshape: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.reshape.default(contiguous, [2, 8, -1]);  contiguous = None
                 
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_3: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.linear.default(reshape, p_model_layers_0_self_attn_o_proj_weight);  reshape = p_model_layers_0_self_attn_o_proj_weight = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:302 in forward, code: hidden_states = residual + hidden_states
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:331 in forward, code: hidden_states = residual + hidden_states
                 add_4: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.add.Tensor(to_10, linear_3);  to_10 = linear_3 = None
                 
                  # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:64 in forward, code: hidden_states = hidden_states.to(torch.float32)
@@ -916,13 +921,13 @@ it is working.</p>
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_5: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.linear.default(mul_10, p_model_layers_0_mlp_up_proj_weight);  mul_10 = p_model_layers_0_mlp_up_proj_weight = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:155 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:184 in forward, code: down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
                 mul_11: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
                 
                  # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
                 linear_6: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.linear.default(mul_11, p_model_layers_0_mlp_down_proj_weight);  mul_11 = p_model_layers_0_mlp_down_proj_weight = None
                 
-                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:308 in forward, code: hidden_states = residual + hidden_states
+                 # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:337 in forward, code: hidden_states = residual + hidden_states
                 add_6: &quot;f32[2, 8, 16]&quot; = torch.ops.aten.add.Tensor(to_13, linear_6);  to_13 = linear_6 = None
                 
                  # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:64 in forward, code: hidden_states = hidden_states.to(torch.float32)
@@ -944,7 +949,7 @@ it is working.</p>
                 
             class submod_1(torch.nn.Module):
                 def forward(self, to_4: &quot;f32[1, 4, 1]&quot;, to_5: &quot;f32[1, 1, 8]&quot;):
-                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:101 in forward, code: freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:130 in forward, code: freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
                     _assert_tensor_metadata_default_6 = torch.ops.aten._assert_tensor_metadata.default(to_4, dtype = torch.float32, device = device(type=&#39;cpu&#39;), layout = torch.strided);  _assert_tensor_metadata_default_6 = None
                     to_6: &quot;f32[1, 4, 1]&quot; = torch.ops.aten.to.dtype(to_4, torch.float32);  to_4 = None
                     _assert_tensor_metadata_default_7 = torch.ops.aten._assert_tensor_metadata.default(to_5, dtype = torch.float32, device = device(type=&#39;cpu&#39;), layout = torch.strided);  _assert_tensor_metadata_default_7 = None
@@ -952,14 +957,14 @@ it is working.</p>
                     matmul: &quot;f32[1, 4, 8]&quot; = torch.ops.aten.matmul.default(to_6, to_7);  to_6 = to_7 = None
                     transpose: &quot;f32[1, 8, 4]&quot; = torch.ops.aten.transpose.int(matmul, 1, 2);  matmul = None
                     
-                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:102 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:131 in forward, code: emb = torch.cat((freqs, freqs), dim=-1)
                     cat: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.cat.default([transpose, transpose], -1);  transpose = None
                     
-                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:103 in forward, code: cos = emb.cos() * self.attention_scaling
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:132 in forward, code: cos = emb.cos() * self.attention_scaling
                     cos: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.cos.default(cat)
                     mul: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.mul.Tensor(cos, 1.0);  cos = None
                     
-                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:104 in forward, code: sin = emb.sin() * self.attention_scaling
+                     # File: ~/github/transformers/src/transformers/models/llama/modeling_llama.py:133 in forward, code: sin = emb.sin() * self.attention_scaling
                     sin: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.sin.default(cat);  cat = None
                     mul_1: &quot;f32[1, 8, 8]&quot; = torch.ops.aten.mul.Tensor(sin, 1.0);  sin = None
                     return (mul, mul_1)
@@ -1118,37 +1123,37 @@ it is working.</p>
     -- process.progress --
     node 15/124 target=function_const_func_spec0
     -- 2 INPUTS
-    [GraphBuilder-ZYE.make_tensor_input] input0[7:2x8]
-    [GraphBuilder-ZYE.make_tensor_input] input1[1:2x8]
+    [GraphBuilder-CYY.make_tensor_input] input0[7:2x8]
+    [GraphBuilder-CYY.make_tensor_input] input1[1:2x8]
     -- 24 INITIALIZERS
-    [GraphBuilder-ZYE.make_initializer] p_model_embed_tokens_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.embed_tokens.weight)
-    [GraphBuilder-ZYE.make_initializer] model.embed_tokens.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.embed_tokens.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_self_attn_q_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.q_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.self_attn.q_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.q_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_self_attn_k_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.k_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.self_attn.k_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.k_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_self_attn_v_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.v_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.self_attn.v_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.v_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_self_attn_o_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.o_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.self_attn.o_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.o_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_mlp_gate_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.gate_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.mlp.gate_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.gate_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_mlp_up_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.up_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.mlp.up_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.up_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_mlp_down_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.down_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.mlp.down_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.down_proj.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_input_layernorm_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.input_layernorm.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.input_layernorm.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.input_layernorm.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_layers_0_post_attention_layernorm_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.post_attention_layernorm.weight)
-    [GraphBuilder-ZYE.make_initializer] model.layers.0.post_attention_layernorm.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.post_attention_layernorm.weight)
-    [GraphBuilder-ZYE.make_initializer] p_model_norm_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.norm.weight)
-    [GraphBuilder-ZYE.make_initializer] model.norm.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.norm.weight)
-    [GraphBuilder-ZYE.make_initializer] b_model_rotary_emb_inv_freq[torch.float32:torch.float32:[1.0, 0.10000000149011612, 0.009999999776482582, 0.0010000000474974513]] - SOURCE: DynamoInterpret.placeholder.0
-    [GraphBuilder-ZYE.make_initializer] c_model_lifted_tensor_0[torch.float32:torch.float32:[0.0]] - SOURCE: DynamoInterpret.placeholder.0
-    [GraphBuilder-ZYE.make_node] make_tensor_input_id [#:#   ] Identity:[&#39;input0&#39;]-&gt;[&#39;input_ids&#39;]
-    [GraphBuilder-ZYE.make_node] make_tensor_input_id2 [#:#   ] Identity:[&#39;input1&#39;]-&gt;[&#39;attention_mask&#39;]
+    [GraphBuilder-CYY.make_initializer] p_model_embed_tokens_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.embed_tokens.weight)
+    [GraphBuilder-CYY.make_initializer] model.embed_tokens.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.embed_tokens.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_self_attn_q_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.q_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.self_attn.q_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.q_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_self_attn_k_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.k_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.self_attn.k_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.k_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_self_attn_v_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.v_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.self_attn.v_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.v_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_self_attn_o_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.o_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.self_attn.o_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.self_attn.o_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_mlp_gate_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.gate_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.mlp.gate_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.gate_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_mlp_up_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.up_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.mlp.up_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.up_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_mlp_down_proj_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.down_proj.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.mlp.down_proj.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.mlp.down_proj.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_input_layernorm_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.input_layernorm.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.input_layernorm.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.input_layernorm.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_layers_0_post_attention_layernorm_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.post_attention_layernorm.weight)
+    [GraphBuilder-CYY.make_initializer] model.layers.0.post_attention_layernorm.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.layers.0.post_attention_layernorm.weight)
+    [GraphBuilder-CYY.make_initializer] p_model_norm_weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.norm.weight)
+    [GraphBuilder-CYY.make_initializer] model.norm.weight[torch.float32:torch.float32] - SOURCE: DynamoInterpret.placeholder.1/P(model.norm.weight)
+    [GraphBuilder-CYY.make_initializer] b_model_rotary_emb_inv_freq[torch.float32:torch.float32:[1.0, 0.10000000149011612, 0.009999999776482582, 0.0010000000474974513]] - SOURCE: DynamoInterpret.placeholder.0
+    [GraphBuilder-CYY.make_initializer] c_model_lifted_tensor_0[torch.float32:torch.float32:[0.0]] - SOURCE: DynamoInterpret.placeholder.0
+    [GraphBuilder-CYY.make_node] make_tensor_input_id [#:#   ] Identity:[&#39;input0&#39;]-&gt;[&#39;input_ids&#39;]
+    [GraphBuilder-CYY.make_node] make_tensor_input_id2 [#:#   ] Identity:[&#39;input1&#39;]-&gt;[&#39;attention_mask&#39;]
     -- 0 OUTPUTS
-    [GraphBuilder-ZYE] Message completed, there are 24 initializers, 2 nodes, 2 inputs, 2 outputs.
+    [GraphBuilder-CYY] Message completed, there are 24 initializers, 2 nodes, 2 inputs, 2 outputs.
 </pre></div>
 </div>
 <dl class="py method">

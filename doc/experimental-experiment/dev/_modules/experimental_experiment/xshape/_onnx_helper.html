@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xshape._onnx_helper - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,14 +547,14 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xshape._onnx_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">onnx</span>
-<span class="kn">import</span> <span class="nn">onnx.helper</span> <span class="k">as</span> <span class="nn">oh</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
 
 
 <div class="viewcode-block" id="element_wise_binary_op_types">
 <a class="viewcode-back" href="../../../api/xshape/_onnx_helper.html#experimental_experiment.xshape._onnx_helper.element_wise_binary_op_types">[docs]</a>
-<span class="k">def</span> <span class="nf">element_wise_binary_op_types</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">element_wise_binary_op_types</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the list of element-wise operators.</span>
 
@@ -579,7 +582,7 @@
 
 <div class="viewcode-block" id="element_wise_op_cmp_types">
 <a class="viewcode-back" href="../../../api/xshape/_onnx_helper.html#experimental_experiment.xshape._onnx_helper.element_wise_op_cmp_types">[docs]</a>
-<span class="k">def</span> <span class="nf">element_wise_op_cmp_types</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">element_wise_op_cmp_types</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the list of element-wise operators</span>
 <span class="sd">    doing comparisons.</span>
@@ -603,7 +606,7 @@
 
 <div class="viewcode-block" id="unary_like_op_types">
 <a class="viewcode-back" href="../../../api/xshape/_onnx_helper.html#experimental_experiment.xshape._onnx_helper.unary_like_op_types">[docs]</a>
-<span class="k">def</span> <span class="nf">unary_like_op_types</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unary_like_op_types</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the list of unary *like* operators.</span>
 <span class="sd">    They do not change the shape. They may change the type.</span>
@@ -665,7 +668,7 @@
 
 <div class="viewcode-block" id="str_tensor_proto_type">
 <a class="viewcode-back" href="../../../api/xshape/_onnx_helper.html#experimental_experiment.xshape._onnx_helper.str_tensor_proto_type">[docs]</a>
-<span class="k">def</span> <span class="nf">str_tensor_proto_type</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">str_tensor_proto_type</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the following string:</span>
 
@@ -688,7 +691,7 @@
 
 <div class="viewcode-block" id="enumerate_subgraphs">
 <a class="viewcode-back" href="../../../api/xshape/_onnx_helper.html#experimental_experiment.xshape._onnx_helper.enumerate_subgraphs">[docs]</a>
-<span class="k">def</span> <span class="nf">enumerate_subgraphs</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">enumerate_subgraphs</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enumerates all inputs from a node including all the hidden inputs</span>
 <span class="sd">    from subgraphs.</span>
@@ -702,7 +705,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_rewrite_info</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ValueInfoProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rewrite_info</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ValueInfoProto</span><span class="p">):</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">dim</span><span class="o">.</span><span class="n">dim_param</span><span class="p">:</span>
@@ -715,7 +718,7 @@
 
 <div class="viewcode-block" id="overwrite_shape_in_model_proto">
 <a class="viewcode-back" href="../../../api/xshape/_onnx_helper.html#experimental_experiment.xshape._onnx_helper.overwrite_shape_in_model_proto">[docs]</a>
-<span class="k">def</span> <span class="nf">overwrite_shape_in_model_proto</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">overwrite_shape_in_model_proto</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">n_in</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

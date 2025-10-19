@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter._prims_functions - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,12 +547,12 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter._prims_functions</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span> <span class="n">torch_dtype_to_onnx_dtype</span>
-<span class="kn">from</span> <span class="nn">..xshape._shape_helper</span> <span class="kn">import</span> <span class="n">all_int</span>
-<span class="kn">from</span> <span class="nn">..xbuilder.graph_builder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span>
-<span class="kn">from</span> <span class="nn">..xshape.shape_type_compute</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span> <span class="n">torch_dtype_to_onnx_dtype</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xshape._shape_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_int</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder.graph_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xshape.shape_type_compute</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">broadcast_shape</span><span class="p">,</span>
     <span class="n">set_type_shape_unary_op</span><span class="p">,</span>
     <span class="n">set_type_shape_reduce_op</span><span class="p">,</span>
@@ -561,7 +564,7 @@
 
 <div class="viewcode-block" id="prims_add">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_add">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_add</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_add</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -570,7 +573,7 @@
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_add&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;add&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_add</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_add</span>
 
     <span class="k">return</span> <span class="n">aten_add</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -578,7 +581,7 @@
 
 <div class="viewcode-block" id="prims_amax">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_amax">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_amax</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_amax</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -618,7 +621,7 @@
 
 <div class="viewcode-block" id="prims_broadcast_in_dim">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_broadcast_in_dim">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_broadcast_in_dim</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_broadcast_in_dim</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -677,7 +680,7 @@
 
 <div class="viewcode-block" id="prims_cat">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_cat">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_cat</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_cat</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -686,7 +689,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_cat&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;concat&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_cat</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_cat</span>
 
     <span class="k">return</span> <span class="n">aten_cat</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">tensors</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -694,7 +697,7 @@
 
 <div class="viewcode-block" id="prims_clone">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_clone">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_clone</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_clone</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -702,7 +705,7 @@
     <span class="n">memory_format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;identity&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_clone</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_clone</span>
 
     <span class="k">return</span> <span class="n">aten_clone</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">memory_format</span><span class="o">=</span><span class="n">memory_format</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_clone&quot;</span><span class="p">)</span></div>
 
@@ -710,7 +713,7 @@
 
 <div class="viewcode-block" id="prims_convert_element_type">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_convert_element_type">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_convert_element_type</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_convert_element_type</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -732,7 +735,7 @@
 
 <div class="viewcode-block" id="prims_collapse_view">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_collapse_view">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_collapse_view</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_collapse_view</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -767,7 +770,7 @@
 
 <div class="viewcode-block" id="prims_cos">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_cos">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_cos</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_cos</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -775,7 +778,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_cos&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;cos&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_cos</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_cos</span>
 
     <span class="k">return</span> <span class="n">aten_cos</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -783,7 +786,7 @@
 
 <div class="viewcode-block" id="prims_div">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_div">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_div</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_div</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -792,7 +795,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_div&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;div&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_div</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_div</span>
 
     <span class="k">return</span> <span class="n">aten_div</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -800,7 +803,7 @@
 
 <div class="viewcode-block" id="prims_empty_strided">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_empty_strided">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_empty_strided</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_empty_strided</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -814,7 +817,7 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;constantofshape&quot;</span>
     <span class="c1"># strided is unused.</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_empty_strided</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_empty_strided</span>
 
     <span class="k">return</span> <span class="n">aten_empty_strided</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span>
@@ -833,7 +836,7 @@
 
 <div class="viewcode-block" id="prims_eq">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_eq">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_eq</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_eq</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -842,7 +845,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_eq&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;equal&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_eq</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_eq</span>
 
     <span class="k">return</span> <span class="n">aten_eq</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -850,7 +853,7 @@
 
 <div class="viewcode-block" id="prims_exp">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_exp">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_exp</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_exp</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -858,7 +861,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_exp&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;exp&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_exp</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_exp</span>
 
     <span class="k">return</span> <span class="n">aten_exp</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -866,7 +869,7 @@
 
 <div class="viewcode-block" id="prims_ge">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_ge">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_ge</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_ge</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -875,7 +878,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_ge&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;less&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_ge</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_ge</span>
 
     <span class="k">return</span> <span class="n">aten_ge</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -883,7 +886,7 @@
 
 <div class="viewcode-block" id="prims_gt">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_gt">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_gt</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_gt</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -892,7 +895,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_gt&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;greater&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_gt</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_gt</span>
 
     <span class="k">return</span> <span class="n">aten_gt</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -900,7 +903,7 @@
 
 <div class="viewcode-block" id="prims_iota">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_iota">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_iota</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_iota</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -916,7 +919,7 @@
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when start=</span><span class="si">{</span><span class="n">start</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;not implemented when step=</span><span class="si">{</span><span class="n">step</span><span class="si">!r}{</span><span class="n">g</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span> <span class="o">*</span> <span class="n">step</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_arange</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_arange</span>
 
     <span class="k">return</span> <span class="n">aten_arange</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span>
@@ -935,7 +938,7 @@
 
 <div class="viewcode-block" id="prims_lt">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_lt">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_lt</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_lt</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -944,7 +947,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_lt&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;less&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_lt</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_lt</span>
 
     <span class="k">return</span> <span class="n">aten_lt</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -952,7 +955,7 @@
 
 <div class="viewcode-block" id="prims_mul">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_mul">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_mul</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_mul</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -961,7 +964,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_mul&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;mul&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_mul</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_mul</span>
 
     <span class="k">return</span> <span class="n">aten_mul</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -969,7 +972,7 @@
 
 <div class="viewcode-block" id="prims_neg">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_neg">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_neg</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_neg</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -977,7 +980,7 @@
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_neg&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;neg&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_neg</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_neg</span>
 
     <span class="k">return</span> <span class="n">aten_neg</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -985,7 +988,7 @@
 
 <div class="viewcode-block" id="prims_pow">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_pow">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_pow</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_pow</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -994,7 +997,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_pow&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;pow&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_pow_Tensor_Tensor</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_pow_Tensor_Tensor</span>
 
     <span class="k">return</span> <span class="n">aten_pow_Tensor_Tensor</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -1002,7 +1005,7 @@
 
 <div class="viewcode-block" id="prims_rsqrt">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_rsqrt">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_rsqrt</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_rsqrt</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1019,7 +1022,7 @@
 
 <div class="viewcode-block" id="prims_sin">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_sin">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_sin</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_sin</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1027,7 +1030,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_sin&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;sim&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_sin</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_sin</span>
 
     <span class="k">return</span> <span class="n">aten_sin</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -1035,7 +1038,7 @@
 
 <div class="viewcode-block" id="prims_split_dim">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_split_dim">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_split_dim</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_split_dim</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1069,7 +1072,7 @@
 
 <div class="viewcode-block" id="prims_sub">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_sub">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_sub</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_sub</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1078,7 +1081,7 @@
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;prims_sub&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;sub&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_sub</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_sub</span>
 
     <span class="k">return</span> <span class="n">aten_sub</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
@@ -1086,7 +1089,7 @@
 
 <div class="viewcode-block" id="prims_sum">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_sum">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_sum</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_sum</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1096,7 +1099,7 @@
     <span class="n">output_dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;reducesum&quot;</span>
-    <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">aten_sum</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_sum</span>
 
     <span class="k">return</span> <span class="n">aten_sum</span><span class="p">(</span>
         <span class="n">g</span><span class="p">,</span> <span class="n">sts</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="n">keepdim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">output_dtype</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_sum&quot;</span>
@@ -1106,7 +1109,7 @@
 
 <div class="viewcode-block" id="prims_transpose">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_transpose">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_transpose</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_transpose</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1132,7 +1135,7 @@
 
 <div class="viewcode-block" id="prims_view_of">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_view_of">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_view_of</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_view_of</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
     <span class="s2">&quot;identity&quot;</span>
     <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;prims_view_of&quot;</span><span class="p">)</span></div>
 
@@ -1140,7 +1143,7 @@
 
 <div class="viewcode-block" id="prims_where">
 <a class="viewcode-back" href="../../../api/torch_interpreter/_prims_functions.html#experimental_experiment.torch_interpreter._prims_functions.prims_where">[docs]</a>
-<span class="k">def</span> <span class="nf">prims_where</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prims_where</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
     <span class="n">sts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>

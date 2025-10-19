@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -544,15 +547,15 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">._exceptions</span> <span class="kn">import</span> <span class="n">FunctionNotFoundError</span>
-<span class="kn">from</span> <span class="nn">.export_options</span> <span class="kn">import</span> <span class="n">ExportOptions</span>
-<span class="kn">from</span> <span class="nn">.onnx_export</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">._exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionNotFoundError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.export_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExportOptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_export</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">to_onnx</span><span class="p">,</span>
     <span class="n">match_input_parameters</span><span class="p">,</span>
     <span class="n">FunctionOptions</span><span class="p">,</span>
     <span class="n">get_default_aten_as_function</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.dispatcher</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">ForceDispatcher</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.dispatcher</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">ForceDispatcher</span>
 
 <span class="n">LOCAL_DOMAIN</span> <span class="o">=</span> <span class="s2">&quot;aten_local_function&quot;</span>
 <span class="n">DEFAULT_TARGET_OPSET</span> <span class="o">=</span> <span class="mi">18</span>
@@ -560,7 +563,7 @@
 
 <div class="viewcode-block" id="TorchOpOverload">
 <a class="viewcode-back" href="../../api/torch_interpreter/index.html#experimental_experiment.torch_interpreter.TorchOpOverload">[docs]</a>
-<span class="k">class</span> <span class="nc">TorchOpOverload</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorchOpOverload</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The class is unused only to bypass a documentation warning.</span>
 <span class="sd">    The alias ``TorchOpOverload`` refers to ``torch._ops.Overload``.</span>
@@ -572,7 +575,7 @@
 
 <div class="viewcode-block" id="make_undefined_dimension">
 <a class="viewcode-back" href="../../api/torch_interpreter/index.html#experimental_experiment.torch_interpreter.make_undefined_dimension">[docs]</a>
-<span class="k">def</span> <span class="nf">make_undefined_dimension</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.SymInt&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_undefined_dimension</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.SymInt&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Uses for a custom op when a new dimension must be introduced to bypass</span>
 <span class="sd">    some verficiation. The following function creates a dummy output</span>
@@ -587,7 +590,7 @@
 <span class="sd">            )</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,))</span>
     <span class="n">t</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>

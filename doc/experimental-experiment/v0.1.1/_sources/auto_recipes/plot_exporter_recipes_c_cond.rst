@@ -108,7 +108,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-2.6263]], grad_fn=<MulBackward0>)
+    tensor([[-0.8315]], grad_fn=<MulBackward0>)
 
 
 
@@ -363,9 +363,9 @@ Let's export again.
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='GemmTransposePattern--p_mlp_0_weight::T10' type=float32 shape=(2, 3)-- GraphBuilder.constant_folding.from/fold(p_mlp_0_weight::T10)##p_mlp_0_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_0_weight)##p_mlp_0_weight/DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([ 0.56610274, -0.31680688], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.22522055,  0.47932085], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.31986287], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([0.28598186, 0.00799349], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([ 0.54115295, -0.14847556], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.3214531], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, GemmTransposePattern--p_mlp_0_weight::T10, mlp.0.bias, transB=1) -> linear
       Gemm(linear, GemmTransposePattern--p_mlp_1_weight::T10, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -411,9 +411,9 @@ We can also inline the local function.
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init1_s_' type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
     init: name='GemmTransposePattern--p_mlp_0_weight::T10' type=float32 shape=(2, 3)-- GraphBuilder.constant_folding.from/fold(p_mlp_0_weight::T10)##p_mlp_0_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_0_weight)##p_mlp_0_weight/DynamoInterpret.placeholder.1/P(mlp.0.weight)
-    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([ 0.56610274, -0.31680688], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
-    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([-0.22522055,  0.47932085], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.31986287], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+    init: name='GemmTransposePattern--p_mlp_1_weight::T10' type=float32 shape=(1, 2) -- array([0.28598186, 0.00799349], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
+    init: name='mlp.0.bias' type=float32 shape=(2,) -- array([ 0.54115295, -0.14847556], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+    init: name='mlp.1.bias' type=float32 shape=(1,) -- array([-0.3214531], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
     Gemm(x, GemmTransposePattern--p_mlp_0_weight::T10, mlp.0.bias, transB=1) -> linear
       Gemm(linear, GemmTransposePattern--p_mlp_1_weight::T10, mlp.1.bias, transB=1) -> linear_1
         ReduceSum(linear_1, keepdims=0) -> sum_1
@@ -456,7 +456,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.730 seconds)
+   **Total running time of the script:** (0 minutes 1.085 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_cond.py:

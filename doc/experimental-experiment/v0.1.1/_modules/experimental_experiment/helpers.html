@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.helpers - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -544,14 +547,14 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.helpers</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">ml_dtypes</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AttributeProto</span><span class="p">,</span>
     <span class="n">FunctionProto</span><span class="p">,</span>
     <span class="n">GraphProto</span><span class="p">,</span>
@@ -561,14 +564,14 @@
     <span class="n">ValueInfoProto</span><span class="p">,</span>
     <span class="n">load</span> <span class="k">as</span> <span class="n">onnx_load</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">onnx.helper</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">np_dtype_to_tensor_dtype</span> <span class="k">as</span> <span class="n">onnx_np_dtype_to_tensor_dtype</span><span class="p">,</span>
     <span class="n">tensor_dtype_to_np_dtype</span> <span class="k">as</span> <span class="n">onnx_tensor_dtype_to_np_dtype</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">onnx.numpy_helper</span> <span class="kn">import</span> <span class="n">from_array</span> <span class="k">as</span> <span class="n">onnx_from_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_array</span> <span class="k">as</span> <span class="n">onnx_from_array</span>
 
 
-<span class="k">def</span> <span class="nf">is_integer_type</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_integer_type</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">itype</span> <span class="ow">in</span> <span class="p">{</span>
         <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
         <span class="n">TensorProto</span><span class="o">.</span><span class="n">UINT64</span><span class="p">,</span>
@@ -582,7 +585,7 @@
     <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">is_float_type</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_float_type</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">itype</span> <span class="ow">in</span> <span class="p">{</span>
         <span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
         <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
@@ -593,7 +596,7 @@
 
 <div class="viewcode-block" id="size_type">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.size_type">[docs]</a>
-<span class="k">def</span> <span class="nf">size_type</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">size_type</span><span class="p">(</span><span class="n">dtype</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the element size for an element type.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="c1"># It is a TensorProto.DATATYPE</span>
@@ -636,7 +639,7 @@
         <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">2</span>
 
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">{</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">}:</span>
         <span class="k">return</span> <span class="mi">8</span>
@@ -660,7 +663,7 @@
 
 <div class="viewcode-block" id="tensor_dtype_to_np_dtype">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.tensor_dtype_to_np_dtype">[docs]</a>
-<span class="k">def</span> <span class="nf">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">tensor_dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">tensor_dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a TensorProto&#39;s data_type to corresponding numpy dtype.</span>
 <span class="sd">    It can be used while making tensor.</span>
@@ -670,13 +673,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">tensor_dtype</span> <span class="o">&gt;=</span> <span class="mi">16</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">ml_dtypes</span>  <span class="c1"># noqa: F401</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>  <span class="c1"># noqa: F401</span>
         <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Unsupported value for tensor_dtype, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;numpy does not support onnx type </span><span class="si">{</span><span class="n">tensor_dtype</span><span class="si">}</span><span class="s2">. &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;ml_dtypes can be used.&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span><span class="p">:</span> <span class="n">ml_dtypes</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">,</span>
@@ -696,7 +699,7 @@
 
 <div class="viewcode-block" id="string_type">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.string_type">[docs]</a>
-<span class="k">def</span> <span class="nf">string_type</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">string_type</span><span class="p">(</span>
     <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">with_shape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">with_min_max</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -720,7 +723,7 @@
 <span class="sd">        from experimental_experiment.helpers import string_type</span>
 <span class="sd">        print(string_type((1, [&quot;r&quot;, 6.6])))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">string_type</span> <span class="k">as</span> <span class="n">string_type2</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span> <span class="k">as</span> <span class="n">string_type2</span>
 
     <span class="k">return</span> <span class="n">string_type2</span><span class="p">(</span>
         <span class="n">obj</span><span class="p">,</span>
@@ -735,10 +738,10 @@
 
 <div class="viewcode-block" id="string_signature">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.string_signature">[docs]</a>
-<span class="k">def</span> <span class="nf">string_signature</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">string_signature</span><span class="p">(</span><span class="n">sig</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Displays the signature of a functions.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_k</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_k</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">kind</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">name</span>
@@ -766,7 +769,7 @@
 
 <div class="viewcode-block" id="get_sig_kwargs">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.get_sig_kwargs">[docs]</a>
-<span class="k">def</span> <span class="nf">get_sig_kwargs</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_sig_kwargs</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns updated attributes.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fct</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="fm">__init__</span>
@@ -792,7 +795,7 @@
 
 <div class="viewcode-block" id="string_sig">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.string_sig">[docs]</a>
-<span class="k">def</span> <span class="nf">string_sig</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">string_sig</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Displays the signature of a function. Parameters are displayed</span>
 <span class="sd">    if the given value is different from the default one.</span>
@@ -829,7 +832,7 @@
 <div class="viewcode-block" id="onnx_dtype_name">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.onnx_dtype_name">[docs]</a>
 <span class="nd">@functools</span><span class="o">.</span><span class="n">cache</span>
-<span class="k">def</span> <span class="nf">onnx_dtype_name</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">onnx_dtype_name</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the ONNX name for a specific element type.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">TensorProto</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -841,7 +844,7 @@
 
 <div class="viewcode-block" id="pretty_onnx">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.pretty_onnx">[docs]</a>
-<span class="k">def</span> <span class="nf">pretty_onnx</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pretty_onnx</span><span class="p">(</span>
     <span class="n">onx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">ValueInfoProto</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">with_attributes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">highlight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -878,7 +881,7 @@
         <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">s</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">TENSOR</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">.reference</span> <span class="kn">import</span> <span class="n">to_array_extended</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_array_extended</span>
 
             <span class="n">v</span> <span class="o">=</span> <span class="n">to_array_extended</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
             <span class="n">vf</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
@@ -893,7 +896,7 @@
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">):</span>
 
-        <span class="k">def</span> <span class="nf">_high</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_high</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">highlight</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">highlight</span><span class="p">:</span>
                 <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;**</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">**&quot;</span>
             <span class="k">return</span> <span class="n">n</span>
@@ -919,7 +922,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TensorProto:</span><span class="si">{</span><span class="n">onx</span><span class="o">.</span><span class="n">data_type</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">onx</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx_array_api.plotting.text_plot</span> <span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_array_api.plotting.text_plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">onnx_simple_text_plot</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">FunctionProto</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span>
@@ -928,7 +931,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">onnx_simple_text_plot</span><span class="p">(</span><span class="n">onx</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx.printer</span> <span class="kn">import</span> <span class="n">to_text</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.printer</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_text</span>
 
         <span class="k">return</span> <span class="n">to_text</span><span class="p">(</span><span class="n">onx</span><span class="p">)</span></div>
 
@@ -936,7 +939,7 @@
 
 <div class="viewcode-block" id="make_hash">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.make_hash">[docs]</a>
-<span class="k">def</span> <span class="nf">make_hash</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_hash</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a simple hash of ``id(obj)`` in four letters.&quot;&quot;&quot;</span>
     <span class="n">aa</span> <span class="o">=</span> <span class="nb">id</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">26</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">aa</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="mi">26</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">aa</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">aa</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">26</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
@@ -945,7 +948,7 @@
 
 <div class="viewcode-block" id="get_onnx_signature">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.get_onnx_signature">[docs]</a>
-<span class="k">def</span> <span class="nf">get_onnx_signature</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_onnx_signature</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Produces a tuple of tuples correspinding to the signatures.</span>
 
@@ -973,7 +976,7 @@
 
 <div class="viewcode-block" id="convert_endian">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.convert_endian">[docs]</a>
-<span class="k">def</span> <span class="nf">convert_endian</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">TensorProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_endian</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">TensorProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calls to convert endianness of raw data in tensor.</span>
 
@@ -988,7 +991,7 @@
 
 <div class="viewcode-block" id="from_array_ml_dtypes">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.from_array_ml_dtypes">[docs]</a>
-<span class="k">def</span> <span class="nf">from_array_ml_dtypes</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_array_ml_dtypes</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a numpy array to a tensor def assuming the dtype</span>
 <span class="sd">    is defined in ml_dtypes.</span>
@@ -1000,7 +1003,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        TensorProto: the converted tensor def.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">ml_dtypes</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;arr must be of type np.ndarray, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -1031,7 +1034,7 @@
 
 <div class="viewcode-block" id="from_array_extended">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.from_array_extended">[docs]</a>
-<span class="k">def</span> <span class="nf">from_array_extended</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_array_extended</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TensorProto</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an array into a TensorProto.</span>
 
@@ -1040,7 +1043,7 @@
 <span class="sd">    :return: TensorProto</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx.reference.ops.op_cast</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.reference.ops.op_cast</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
             <span class="n">bfloat16</span><span class="p">,</span>
             <span class="n">float8e4m3fn</span><span class="p">,</span>
             <span class="n">float8e4m3fnuz</span><span class="p">,</span>
@@ -1068,7 +1071,7 @@
         <span class="n">dt_to</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">ml_dtypes</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="n">ml_dtypes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">ml_dtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
@@ -1089,14 +1092,14 @@
 
 <div class="viewcode-block" id="onnx_dtype_to_torch_dtype">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.onnx_dtype_to_torch_dtype">[docs]</a>
-<span class="k">def</span> <span class="nf">onnx_dtype_to_torch_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">onnx_dtype_to_torch_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts an onnx type into a torch dtype.</span>
 
 <span class="sd">    :param to: onnx dtype</span>
 <span class="sd">    :return: torch dtype</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">itype</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
@@ -1134,14 +1137,14 @@
 
 <div class="viewcode-block" id="torch_dtype_to_onnx_dtype">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.torch_dtype_to_onnx_dtype">[docs]</a>
-<span class="k">def</span> <span class="nf">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">torch_dtype_to_onnx_dtype</span><span class="p">(</span><span class="n">to</span><span class="p">:</span> <span class="s2">&quot;torch.dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a torch dtype into a onnx element type.</span>
 
 <span class="sd">    :param to: torch dtype</span>
 <span class="sd">    :return: onnx type</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span>
@@ -1173,7 +1176,7 @@
 
 <div class="viewcode-block" id="dtype_to_tensor_dtype">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.dtype_to_tensor_dtype">[docs]</a>
-<span class="k">def</span> <span class="nf">dtype_to_tensor_dtype</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dtype_to_tensor_dtype</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a torch dtype or numpy dtype into a onnx element type.</span>
 
@@ -1190,7 +1193,7 @@
 
 <div class="viewcode-block" id="np_dtype_to_tensor_dtype">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.np_dtype_to_tensor_dtype">[docs]</a>
-<span class="k">def</span> <span class="nf">np_dtype_to_tensor_dtype</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">np_dtype_to_tensor_dtype</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a numpy dtype into a onnx element type.</span>
 
@@ -1201,7 +1204,7 @@
         <span class="k">return</span> <span class="n">onnx_np_dtype_to_tensor_dtype</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">ml_dtypes</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="n">ml_dtypes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">ml_dtypes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1221,7 +1224,7 @@
 
 <div class="viewcode-block" id="flatten_object">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.flatten_object">[docs]</a>
-<span class="k">def</span> <span class="nf">flatten_object</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">drop_keys</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flatten_object</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">drop_keys</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Flattens the object.</span>
 <span class="sd">    It accepts some common classes used in deep learning.</span>
@@ -1248,7 +1251,7 @@
         <span class="k">return</span> <span class="n">flatten_object</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span> <span class="n">drop_keys</span><span class="o">=</span><span class="n">drop_keys</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">CacheKeyValue</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheKeyValue</span>
 
         <span class="n">x</span> <span class="o">=</span> <span class="n">CacheKeyValue</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">flatten_object</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">key_cache</span><span class="p">)</span> <span class="o">+</span> <span class="n">flatten_object</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value_cache</span><span class="p">)</span>
@@ -1275,7 +1278,7 @@
 
 <div class="viewcode-block" id="string_diff">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.string_diff">[docs]</a>
-<span class="k">def</span> <span class="nf">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">string_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Renders discrepancies return by :func:`onnx_diagnostic.helpers.max_diff`</span>
 <span class="sd">    into one string.</span>
@@ -1293,7 +1296,7 @@
 
 <div class="viewcode-block" id="type_info">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.type_info">[docs]</a>
-<span class="k">def</span> <span class="nf">type_info</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">att</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">type_info</span><span class="p">(</span><span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">att</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the minimum or maximum value for a type.</span>
 
@@ -1305,7 +1308,7 @@
         <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
         <span class="n">fi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">itype</span> <span class="o">==</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">BFLOAT16</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">ml_dtypes</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">ml_dtypes</span>
 
         <span class="n">dtype</span> <span class="o">=</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">(</span><span class="n">itype</span><span class="p">)</span>
         <span class="n">fi</span> <span class="o">=</span> <span class="n">ml_dtypes</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
@@ -1322,7 +1325,7 @@
 
 <div class="viewcode-block" id="make_idn">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.make_idn">[docs]</a>
-<span class="k">def</span> <span class="nf">make_idn</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_idn</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a unique id for a node hoping collision cannot happen.</span>
 <span class="sd">    onnx may reuse sometimes the nodes, ``id(node)`` may not be enough sometimes.</span>
@@ -1335,7 +1338,7 @@
 
 <div class="viewcode-block" id="make_idg">
 <a class="viewcode-back" href="../../api/helpers.html#experimental_experiment.helpers.make_idg">[docs]</a>
-<span class="k">def</span> <span class="nf">make_idg</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_idg</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">GraphProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a unique id for a graph hoping collision cannot happen.</span>
 <span class="sd">    onnx may reuse sometimes the nodes, ``id(node)`` may not be enough sometimes.</span>

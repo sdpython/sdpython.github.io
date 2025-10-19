@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim.patterns.onnx_layer_normalization - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -544,22 +547,22 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_layer_normalization</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">...helpers</span> <span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span> <span class="n">from_array_extended</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span> <span class="n">from_array_extended</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
 <div class="viewcode-block" id="LayerNormalizationPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">LayerNormalizationPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LayerNormalizationPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fuses nodes of a LayerNormalization.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="LayerNormalizationPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -653,7 +656,7 @@
 
 <div class="viewcode-block" id="LayerNormalizationPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">red</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -743,12 +746,12 @@
 
 <div class="viewcode-block" id="LayerNormalizationScalePattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern">[docs]</a>
-<span class="k">class</span> <span class="nc">LayerNormalizationScalePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LayerNormalizationScalePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fused LayerNormalization, scale, bias just after.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="LayerNormalizationScalePattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -795,7 +798,7 @@
 
 <div class="viewcode-block" id="LayerNormalizationScalePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.LayerNormalizationScalePattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">ln_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -893,12 +896,12 @@
 
 <div class="viewcode-block" id="CastLayerNormalizationCastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">CastLayerNormalizationCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CastLayerNormalizationCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that a Cast is really needed around LayerNormalization.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CastLayerNormalizationCastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -944,7 +947,7 @@
 
 <div class="viewcode-block" id="CastLayerNormalizationCastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.CastLayerNormalizationCastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cast_before</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -983,15 +986,15 @@
 
 <div class="viewcode-block" id="BatchNormalizationPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">BatchNormalizationPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchNormalizationPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that a BatchNormalization is really needed.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BatchNormalizationPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1050,7 +1053,7 @@
 
 <div class="viewcode-block" id="BatchNormalizationPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1069,15 +1072,15 @@
 
 <div class="viewcode-block" id="BatchNormalizationTrainingPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationTrainingPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">BatchNormalizationTrainingPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchNormalizationTrainingPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that a BatchNormalization in training mode can be avoided.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BatchNormalizationTrainingPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationTrainingPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1113,7 +1116,7 @@
 
 <div class="viewcode-block" id="BatchNormalizationTrainingPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.BatchNormalizationTrainingPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1193,12 +1196,12 @@
 
 <div class="viewcode-block" id="RMSNormalizationPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">RMSNormalizationPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RMSNormalizationPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Fuses the nodes equivalent to RMSNormalization(23).&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="RMSNormalizationPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1293,7 +1296,7 @@
 
 <div class="viewcode-block" id="RMSNormalizationPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_layer_normalization.html#experimental_experiment.xoptim.patterns.onnx_layer_normalization.RMSNormalizationPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cast_1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>

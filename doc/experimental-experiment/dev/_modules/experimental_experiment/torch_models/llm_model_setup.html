@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_models.llm_model_setup - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,13 +547,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_models.llm_model_setup</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 
 
 <div class="viewcode-block" id="LLMInputKind">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_setup.html#experimental_experiment.torch_models.llm_model_setup.LLMInputKind">[docs]</a>
-<span class="k">class</span> <span class="nc">LLMInputKind</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LLMInputKind</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines the dummy inputs which can be generated for a LLM vision model.</span>
 
@@ -587,7 +590,7 @@
 
 <div class="viewcode-block" id="get_input_cache">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_setup.html#experimental_experiment.torch_models.llm_model_setup.get_input_cache">[docs]</a>
-<span class="k">def</span> <span class="nf">get_input_cache</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_input_cache</span><span class="p">(</span>
     <span class="n">num_hidden_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">num_key_value_heads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -599,9 +602,9 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a random cache.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
-    <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">make_dynamic_cache</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_dynamic_cache</span>
 
     <span class="k">if</span> <span class="n">input_cache_class</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">input_cache_class</span> <span class="ow">is</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span><span class="p">:</span>
         <span class="n">cache</span> <span class="o">=</span> <span class="n">make_dynamic_cache</span><span class="p">(</span>
@@ -621,8 +624,8 @@
 
     <span class="k">if</span> <span class="n">input_cache_class</span> <span class="ow">is</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">MambaCache</span><span class="p">:</span>
 
-        <span class="k">class</span> <span class="nc">_config</span><span class="p">:</span>
-            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">class</span><span class="w"> </span><span class="nc">_config</span><span class="p">:</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">intermediate_size</span> <span class="o">=</span> <span class="mi">8192</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span> <span class="o">=</span> <span class="mi">16</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">conv_kernel</span> <span class="o">=</span> <span class="mi">4</span>
@@ -667,7 +670,7 @@
 
 <div class="viewcode-block" id="finalize_llm_setup">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_setup.html#experimental_experiment.torch_models.llm_model_setup.finalize_llm_setup">[docs]</a>
-<span class="k">def</span> <span class="nf">finalize_llm_setup</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">finalize_llm_setup</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">max_token_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50285</span><span class="p">,</span>
@@ -688,7 +691,7 @@
 <span class="sd">    Creates dummy inputs for a model ran as if it were the second iteration.</span>
 <span class="sd">    Inputs contains cache.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
     <span class="n">seq_length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">Dim</span><span class="p">(</span><span class="s2">&quot;seq_length&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
@@ -770,7 +773,7 @@
             <span class="p">}</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">input_cache_class</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">input_cache_class</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">CacheKeyValue</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheKeyValue</span>
 
             <span class="n">ca</span> <span class="o">=</span> <span class="n">CacheKeyValue</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ca</span><span class="o">.</span><span class="n">key_cache</span><span class="p">)</span>
@@ -812,7 +815,7 @@
 
 <div class="viewcode-block" id="finalize_llm_vision_setup">
 <a class="viewcode-back" href="../../../api/torch_models/llm_model_setup.html#experimental_experiment.torch_models.llm_model_setup.finalize_llm_vision_setup">[docs]</a>
-<span class="k">def</span> <span class="nf">finalize_llm_vision_setup</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">finalize_llm_vision_setup</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">input_kind</span><span class="p">:</span> <span class="n">LLMInputKind</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -827,7 +830,7 @@
 <span class="sd">    Creates dummy inputs for a model ran as if it were the second iteration.</span>
 <span class="sd">    Inputs contains cache.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">input_kind</span> <span class="o">==</span> <span class="n">LLMInputKind</span><span class="o">.</span><span class="n">input_ids</span><span class="p">:</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>

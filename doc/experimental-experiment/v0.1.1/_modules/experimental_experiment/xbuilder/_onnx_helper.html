@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xbuilder._onnx_helper - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,9 +547,9 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xbuilder._onnx_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AttributeProto</span><span class="p">,</span>
     <span class="n">FunctionProto</span><span class="p">,</span>
     <span class="n">GraphProto</span><span class="p">,</span>
@@ -554,10 +557,10 @@
     <span class="n">NodeProto</span><span class="p">,</span>
     <span class="n">TensorShapeProto</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">onnx.defs</span> <span class="kn">import</span> <span class="n">onnx_opset_version</span><span class="p">,</span> <span class="n">get_all_schemas_with_history</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.defs</span><span class="w"> </span><span class="kn">import</span> <span class="n">onnx_opset_version</span><span class="p">,</span> <span class="n">get_all_schemas_with_history</span>
 
 
-<span class="k">def</span> <span class="nf">_default_OPSET_TO_IR_VERSION</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_default_OPSET_TO_IR_VERSION</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the dictionary mapping the main opset</span>
 <span class="sd">    to the corresponding `ir_version`.</span>
@@ -595,7 +598,7 @@
 
 <div class="viewcode-block" id="enumerate_subgraphs">
 <a class="viewcode-back" href="../../../api/xbuilder/_onnx_helper.html#experimental_experiment.xbuilder._onnx_helper.enumerate_subgraphs">[docs]</a>
-<span class="k">def</span> <span class="nf">enumerate_subgraphs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">enumerate_subgraphs</span><span class="p">(</span>
     <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">],</span> <span class="o">...</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -615,7 +618,7 @@
 <span class="n">_history</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">_nice_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">TensorShapeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_nice_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">TensorShapeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">els</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">sh</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span>
         <span class="n">els</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sh</span><span class="o">.</span><span class="n">dim_value</span><span class="p">)</span> <span class="k">if</span> <span class="n">sh</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;dim_value&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">sh</span><span class="o">.</span><span class="n">dim_param</span><span class="p">)</span>
@@ -624,7 +627,7 @@
 
 <div class="viewcode-block" id="compatible_opsets">
 <a class="viewcode-back" href="../../../api/xbuilder/_onnx_helper.html#experimental_experiment.xbuilder._onnx_helper.compatible_opsets">[docs]</a>
-<span class="k">def</span> <span class="nf">compatible_opsets</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compatible_opsets</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tells if two opset version for a particular operator type</span>
 <span class="sd">    means the same version of it.</span>
@@ -668,7 +671,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_get_default_opset_for_domain</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">main_opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_default_opset_for_domain</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">main_opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the associated for a domain given the main opset.</span>
 
@@ -693,7 +696,7 @@
 
 <div class="viewcode-block" id="choose_consistent_domain_opset">
 <a class="viewcode-back" href="../../../api/xbuilder/_onnx_helper.html#experimental_experiment.xbuilder._onnx_helper.choose_consistent_domain_opset">[docs]</a>
-<span class="k">def</span> <span class="nf">choose_consistent_domain_opset</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">choose_consistent_domain_opset</span><span class="p">(</span><span class="n">domain</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">opsets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Chooses a compatible opset for a particular domain given</span>
 <span class="sd">    this existing one. Only works for `ai.onnx.ml`,</span>
@@ -720,7 +723,7 @@
 
 <div class="viewcode-block" id="same_function_proto">
 <a class="viewcode-back" href="../../../api/xbuilder/_onnx_helper.html#experimental_experiment.xbuilder._onnx_helper.same_function_proto">[docs]</a>
-<span class="k">def</span> <span class="nf">same_function_proto</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">same_function_proto</span><span class="p">(</span>
     <span class="n">f1</span><span class="p">:</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">f2</span><span class="p">:</span> <span class="n">FunctionProto</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -790,7 +793,7 @@
 
 <div class="viewcode-block" id="clean_shapes">
 <a class="viewcode-back" href="../../../api/xbuilder/_onnx_helper.html#experimental_experiment.xbuilder._onnx_helper.clean_shapes">[docs]</a>
-<span class="k">def</span> <span class="nf">clean_shapes</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">GraphProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">]):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_shapes</span><span class="p">(</span><span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">GraphProto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Cleans all shapes inplace.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">ModelProto</span><span class="p">):</span>
         <span class="n">clean_shapes</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench._bash_bench_untrained - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,16 +547,16 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench._bash_bench_untrained</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">from</span> <span class="nn">torch._dynamo.testing</span> <span class="kn">import</span> <span class="n">reset_rng_state</span>
-<span class="kn">from</span> <span class="nn">._bash_bench_benchmark_runner</span> <span class="kn">import</span> <span class="n">BenchmarkRunner</span>
-<span class="kn">from</span> <span class="nn">._bash_bench_model_runner</span> <span class="kn">import</span> <span class="n">ModelRunner</span>
-<span class="kn">from</span> <span class="nn">._bash_bench_models_helper</span> <span class="kn">import</span> <span class="n">get_llama_model_layer</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
-<span class="kn">from</span> <span class="nn">..torch_models.diffusion_model_helper</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch._dynamo.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">reset_rng_state</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._bash_bench_benchmark_runner</span><span class="w"> </span><span class="kn">import</span> <span class="n">BenchmarkRunner</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._bash_bench_model_runner</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRunner</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._bash_bench_models_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llama_model_layer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.diffusion_model_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_stable_diffusion_2_unet</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..torch_models.llm_model_helper</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.llm_model_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_ai21_jamba_15_mini</span><span class="p">,</span>
     <span class="n">get_falcon_mamba_7b</span><span class="p">,</span>
     <span class="n">get_llama32_9b_vision</span><span class="p">,</span>
@@ -563,12 +566,12 @@
     <span class="n">get_smollm_1_7b</span><span class="p">,</span>
     <span class="n">get_tiny_llm</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..torch_models.chronos_model_helper</span> <span class="kn">import</span> <span class="n">get_chronos_t5_tiny</span>
-<span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.chronos_model_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_chronos_t5_tiny</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
 
 
-<span class="k">def</span> <span class="nf">get_untrained_model_inputs</span><span class="p">(</span><span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attn_implementation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_models.hghub</span> <span class="kn">import</span> <span class="n">get_untrained_model_with_inputs</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_untrained_model_inputs</span><span class="p">(</span><span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attn_implementation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.torch_models.hghub</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_untrained_model_with_inputs</span>
 
     <span class="n">model_kwargs</span> <span class="o">=</span> <span class="p">(</span>
         <span class="kc">None</span>
@@ -594,7 +597,7 @@
 
 <div class="viewcode-block" id="UntrainedRunner">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_untrained.html#experimental_experiment.torch_bench._bash_bench_untrained.UntrainedRunner">[docs]</a>
-<span class="k">class</span> <span class="nc">UntrainedRunner</span><span class="p">(</span><span class="n">BenchmarkRunner</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UntrainedRunner</span><span class="p">(</span><span class="n">BenchmarkRunner</span><span class="p">):</span>
     <span class="n">SUITE</span> <span class="o">=</span> <span class="s2">&quot;Untrained&quot;</span>
     <span class="n">MODELS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">MODEL_IDS</span> <span class="o">=</span> <span class="p">[</span>
@@ -629,7 +632,7 @@
 
 <div class="viewcode-block" id="UntrainedRunner.initialize">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_untrained.html#experimental_experiment.torch_bench._bash_bench_untrained.UntrainedRunner.initialize">[docs]</a>
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Steps to run before running the benchmark.&quot;&quot;&quot;</span>
         <span class="n">model_ids</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">k</span><span class="p">:</span> <span class="p">(</span>
@@ -898,7 +901,7 @@
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">partition_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -936,13 +939,13 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_get_model_cls_and_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_cls_and_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">model_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODELS</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unable to find </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MODELS</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODELS</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1019,7 +1022,7 @@
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">iter_model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">model_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MODELS</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">model_names</span><span class="p">,</span> <span class="s2">&quot;Empty list of models&quot;</span>
         <span class="n">model_names</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>

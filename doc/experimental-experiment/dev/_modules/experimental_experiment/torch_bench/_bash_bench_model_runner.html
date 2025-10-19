@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench._bash_bench_model_runner - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,34 +547,34 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench._bash_bench_model_runner</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">onnx</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">CacheKeyValue</span><span class="p">,</span> <span class="n">make_dynamic_cache</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.torch_helper</span> <span class="kn">import</span> <span class="n">to_any</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches</span> <span class="kn">import</span> <span class="n">torch_export_patches</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span> <span class="kn">import</span> <span class="n">code_needing_rewriting</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheKeyValue</span><span class="p">,</span> <span class="n">make_dynamic_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.torch_export_patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_export_patches</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.torch_export_patches.patch_module_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">code_needing_rewriting</span>
 
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.torch_helper</span> <span class="kn">import</span> <span class="n">torch_deepcopy</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_deepcopy</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.torch_test_helper</span> <span class="kn">import</span> <span class="n">torch_deepcopy</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
-<span class="kn">from</span> <span class="nn">.export_model_helper</span> <span class="kn">import</span> <span class="n">compute_weight_size</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.torch_test_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.export_model_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_weight_size</span>
 
 
 <div class="viewcode-block" id="UseDefaultValue">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.UseDefaultValue">[docs]</a>
-<span class="k">class</span> <span class="nc">UseDefaultValue</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UseDefaultValue</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines if the exporter may use the default value.</span>
 
@@ -588,16 +591,16 @@
 
 <div class="viewcode-block" id="MakeConfig">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.MakeConfig">[docs]</a>
-<span class="k">class</span> <span class="nc">MakeConfig</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MakeConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a dictionary where keys are attributes.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">_rand_int_tensor</span><span class="p">(</span><span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rand_int_tensor</span><span class="p">(</span><span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a random input integer tensor.</span>
 
 <span class="sd">    :param device: device</span>
@@ -618,7 +621,7 @@
 
 <div class="viewcode-block" id="download_retry_decorator">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.download_retry_decorator">[docs]</a>
-<span class="k">def</span> <span class="nf">download_retry_decorator</span><span class="p">(</span><span class="n">retry</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>  <span class="c1"># type: ignore[arg-type]</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_retry_decorator</span><span class="p">(</span><span class="n">retry</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>  <span class="c1"># type: ignore[arg-type]</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator function for applying retry logic to a download function.</span>
 
@@ -639,8 +642,8 @@
 <span class="sd">            # ...</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">download_fn</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">download_fn</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
             <span class="n">tries</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">total_allowed_tries</span> <span class="o">=</span> <span class="n">retry</span>
             <span class="k">while</span> <span class="n">tries</span> <span class="o">&lt;=</span> <span class="n">total_allowed_tries</span><span class="p">:</span>
@@ -667,7 +670,7 @@
 
 <div class="viewcode-block" id="get_dynamo_stats">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.get_dynamo_stats">[docs]</a>
-<span class="k">def</span> <span class="nf">get_dynamo_stats</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dynamo_stats</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns statistics on memory as a dictionary.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span>
         <span class="p">{</span>
@@ -686,7 +689,7 @@
 
 <div class="viewcode-block" id="get_peak_memory">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.get_peak_memory">[docs]</a>
-<span class="k">def</span> <span class="nf">get_peak_memory</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_peak_memory</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retuns the memory peak.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">max_memory_allocated</span><span class="p">()</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span></div>
 
@@ -694,24 +697,24 @@
 
 <div class="viewcode-block" id="WrappedModelBase">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.WrappedModelBase">[docs]</a>
-<span class="k">class</span> <span class="nc">WrappedModelBase</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WrappedModelBase</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper around a module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 
 <div class="viewcode-block" id="WrappedModelBase.forward">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.WrappedModelBase.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="WrappedModelBase.parameters">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.WrappedModelBase.parameters">[docs]</a>
-    <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span></div>
 </div>
 
@@ -719,18 +722,18 @@
 
 <div class="viewcode-block" id="WrappedModelToTuple">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.WrappedModelToTuple">[docs]</a>
-<span class="k">class</span> <span class="nc">WrappedModelToTuple</span><span class="p">(</span><span class="n">WrappedModelBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">WrappedModelToTuple</span><span class="p">(</span><span class="n">WrappedModelBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper around a module, flattens inputs and outputs so that every</span>
 <span class="sd">    exporter can use it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
 <div class="viewcode-block" id="WrappedModelToTuple.forward">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.WrappedModelToTuple.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">to_tuple</span><span class="p">()</span></div>
 </div>
@@ -739,7 +742,7 @@
 
 <div class="viewcode-block" id="ModelRunner">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner">[docs]</a>
-<span class="k">class</span> <span class="nc">ModelRunner</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelRunner</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrappers around a model.</span>
 <span class="sd">    Makes it easier to load, run inference.</span>
@@ -770,7 +773,7 @@
 <div class="viewcode-block" id="ModelRunner.allowed_configuration">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.allowed_configuration">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">allowed_configuration</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allowed_configuration</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optimization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Defines the allowed configurations.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">optimization</span> <span class="ow">or</span> <span class="n">optimization</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
             <span class="c1"># Always allowed if no optimization</span>
@@ -787,11 +790,11 @@
 
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">isinstance_namedtuple</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">isinstance_namedtuple</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;_fields&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_to_type_or_device</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">dtype_or_device</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_type_or_device</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">dtype_or_device</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">dtype_or_device</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">o</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">o</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -825,7 +828,7 @@
                         <span class="sa">f</span><span class="s2">&quot;and shape=</span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dtype_or_device</span><span class="si">!r}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;This error may be solved by setting PYTORCH_NVML_BASED_CUDA_CHECK=1.&quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
             <span class="k">return</span> <span class="n">o</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
@@ -918,10 +921,10 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Unable to convert class </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dtype_or_device</span><span class="si">}</span><span class="s2"> &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;(namedtuple=</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">isinstance_namedtuple</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="si">}</span><span class="s2">), o=</span><span class="si">{</span><span class="n">o</span><span class="si">}</span><span class="s2">)&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_pre_process_inputs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">kw_inputs</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pre_process_inputs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">kw_inputs</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cvt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">o</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_to_type_or_device</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>  <span class="c1"># noqa: E731</span>
         <span class="k">else</span><span class="p">:</span>
@@ -953,7 +956,7 @@
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">kw_inputs</span><span class="p">,</span> <span class="s2">&quot;Keyword inputs are not yet implemented.&quot;</span>
         <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">kw_inputs</span><span class="p">,</span> <span class="n">cvt</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -1077,7 +1080,7 @@
 
 <div class="viewcode-block" id="ModelRunner.get_devices">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.get_devices">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the devices.&quot;&quot;&quot;</span>
         <span class="n">devices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
@@ -1119,12 +1122,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_input_names</span>
 
 <div class="viewcode-block" id="ModelRunner.is_lm">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.is_lm">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_lm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_lm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns True if the model is a language model.</span>
 <span class="sd">        In that case, the dynamic dimensions with the two first ones.</span>
@@ -1137,7 +1140,7 @@
 
 <div class="viewcode-block" id="ModelRunner.dump_std">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.dump_std">[docs]</a>
-    <span class="k">def</span> <span class="nf">dump_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dump_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Dumps some information in the given filename.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">std_to_dump</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -1146,14 +1149,14 @@
 
 <div class="viewcode-block" id="ModelRunner.get_inputs_with_copied_dynamic_cache">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.get_inputs_with_copied_dynamic_cache">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_inputs_with_copied_dynamic_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_inputs_with_copied_dynamic_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;LLM modifies the cache. It needs to be copied first.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">inputs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
         <span class="k">return</span> <span class="n">torch_deepcopy</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_inputs_with_copied_dynamic_cache</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autocast</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvtx</span><span class="p">:</span>
@@ -1176,7 +1179,7 @@
             <span class="k">return</span> <span class="n">r</span>
         <span class="k">return</span> <span class="n">res</span>
 
-    <span class="k">def</span> <span class="nf">run_dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="n">dynamic_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_dynamic_inputs</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autocast</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvtx</span><span class="p">:</span>
@@ -1199,14 +1202,14 @@
 
 <div class="viewcode-block" id="ModelRunner.compute_weight_size">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.compute_weight_size">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_weight_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_weight_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the weight size.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">compute_weight_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ModelRunner.parameters_dtype">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.parameters_dtype">[docs]</a>
-    <span class="k">def</span> <span class="nf">parameters_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parameters_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the unique dtypes of all parameters.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;parameters&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
@@ -1217,7 +1220,7 @@
 
 <div class="viewcode-block" id="ModelRunner.export_as">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.export_as">[docs]</a>
-    <span class="k">def</span> <span class="nf">export_as</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_as</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1471,7 +1474,7 @@
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exporter </span><span class="si">{</span><span class="n">exporter</span><span class="si">!r}</span><span class="s2"> is not implemented.&quot;</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_patch_patch_options</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_patch_patch_options</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dynamic</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">patch</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the patch options.</span>
@@ -1489,7 +1492,7 @@
             <span class="n">options</span><span class="p">[</span><span class="s2">&quot;rewrite&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_needing_rewriting</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">options</span>
 
-    <span class="k">def</span> <span class="nf">_to_onnx_custom</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_onnx_custom</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -1503,8 +1506,8 @@
     <span class="p">):</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">fake_tensor</span><span class="p">,</span> <span class="s2">&quot;fake_tensor not implemented.&quot;</span>
         <span class="k">assert</span> <span class="n">no_grad</span><span class="p">,</span> <span class="s2">&quot;no_grad false not implemented yet&quot;</span>
-        <span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">ExportOptions</span><span class="p">,</span> <span class="n">get_default_aten_as_function</span>
-        <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">ExportOptions</span><span class="p">,</span> <span class="n">get_default_aten_as_function</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>
 
         <span class="k">if</span> <span class="n">optimization</span> <span class="ow">and</span> <span class="n">optimization</span> <span class="o">!=</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
             <span class="c1"># cuda = any(m.is_cuda for m in self.model.parameters())</span>
@@ -1616,7 +1619,7 @@
 
         <span class="k">return</span> <span class="n">onx</span><span class="o">.</span><span class="n">model_proto</span><span class="p">,</span> <span class="n">stats</span>
 
-    <span class="k">def</span> <span class="nf">_to_cort</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_cort</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -1630,8 +1633,8 @@
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">fake_tensor</span><span class="p">,</span> <span class="s2">&quot;fake_tensor not implemented.&quot;</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">dynamic</span><span class="p">,</span> <span class="s2">&quot;dynamic true not implemented yet&quot;</span>
         <span class="k">assert</span> <span class="n">no_grad</span><span class="p">,</span> <span class="s2">&quot;no_grad true not implemented yet&quot;</span>
-        <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
-        <span class="kn">from</span> <span class="nn">..torch_dynamo</span> <span class="kn">import</span> <span class="n">onnx_custom_backend</span><span class="p">,</span> <span class="n">get_decomposition_table</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_dynamo</span><span class="w"> </span><span class="kn">import</span> <span class="n">onnx_custom_backend</span><span class="p">,</span> <span class="n">get_decomposition_table</span>
 
         <span class="k">if</span> <span class="n">optimization</span><span class="p">:</span>
             <span class="c1"># cuda = any(m.is_cuda for m in self.model.parameters())</span>
@@ -1654,7 +1657,7 @@
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">autograd</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">torch._dynamo.backends.common</span> <span class="kn">import</span> <span class="n">aot_autograd</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">torch._dynamo.backends.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">aot_autograd</span>
 
             <span class="n">cbf</span> <span class="o">=</span> <span class="n">aot_autograd</span><span class="p">(</span><span class="n">fw_compiler</span><span class="o">=</span><span class="n">cbff</span><span class="p">,</span> <span class="n">decompositions</span><span class="o">=</span><span class="n">get_decomposition_table</span><span class="p">())</span>
 
@@ -1672,7 +1675,7 @@
                     <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">cbff</span><span class="p">,</span> <span class="n">fullgraph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_optimize_rewrite</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_optimize_rewrite</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optimization</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1687,8 +1690,8 @@
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
                 <span class="c1"># from onnx.inliner import inline_local_functions</span>
-                <span class="kn">from</span> <span class="nn">onnxscript.optimizer</span> <span class="kn">import</span> <span class="n">optimize</span>
-                <span class="kn">from</span> <span class="nn">onnxscript.rewriter</span> <span class="kn">import</span> <span class="n">rewrite</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">onnxscript.optimizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">onnxscript.rewriter</span><span class="w"> </span><span class="kn">import</span> <span class="n">rewrite</span>
 
                 <span class="n">first_model_proto</span> <span class="o">=</span> <span class="n">model_proto</span>
                 <span class="n">model_proto</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span>
@@ -1706,7 +1709,7 @@
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;llm&quot;</span><span class="p">:</span>
-                <span class="kn">from</span> <span class="nn">onnxscript.rewriter.llama_rule_sets</span> <span class="kn">import</span> <span class="n">llama_p0_rule_set</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">onnxscript.rewriter.llama_rule_sets</span><span class="w"> </span><span class="kn">import</span> <span class="n">llama_p0_rule_set</span>
 
                 <span class="n">rule_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">llama_p0_rule_set</span><span class="p">)</span>
                 <span class="k">continue</span>
@@ -1714,7 +1717,7 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected value for optimization=</span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">rule_sets</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">onnxscript</span> <span class="kn">import</span> <span class="n">ir</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">onnxscript</span><span class="w"> </span><span class="kn">import</span> <span class="n">ir</span>
 
             <span class="n">begin_pat</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
             <span class="n">ir_model</span> <span class="o">=</span> <span class="n">ir</span><span class="o">.</span><span class="n">serde</span><span class="o">.</span><span class="n">deserialize_model</span><span class="p">(</span><span class="n">model_proto</span><span class="p">)</span>
@@ -1728,7 +1731,7 @@
         <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;time_export_optimization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
         <span class="k">return</span> <span class="n">model_proto</span><span class="p">,</span> <span class="n">stats</span>
 
-    <span class="k">def</span> <span class="nf">_to_torchscript</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_torchscript</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -1846,7 +1849,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optimize_rewrite</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">optimization</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">load_external_data</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_onnx_dynamo</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_onnx_dynamo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -1938,7 +1941,7 @@
                     <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;time_export_optimization&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;ort&quot;</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">onnxscript.rewriter.ort_fusions</span> <span class="kn">import</span> <span class="n">optimize_for_ort</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">onnxscript.rewriter.ort_fusions</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize_for_ort</span>
 
                     <span class="k">if</span> <span class="n">stats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1958,7 +1961,7 @@
             <span class="n">onnx_program</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">external_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">load_external_data</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">stats</span>
 
-    <span class="k">def</span> <span class="nf">_to_modelbuilder</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_modelbuilder</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1970,7 +1973,7 @@
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;configuration must be stored in </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> for ModelBuilder&quot;</span>
-        <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.model_builder_helper</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.model_builder_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
             <span class="n">create_model_builder</span><span class="p">,</span>
             <span class="n">save_model_builder</span><span class="p">,</span>
         <span class="p">)</span>
@@ -2004,7 +2007,7 @@
         <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
         <span class="k">return</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">load_external_data</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;time_export&quot;</span><span class="p">:</span> <span class="n">duration</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_to_export</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_export</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2021,7 +2024,7 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="n">optimization</span> <span class="ow">or</span> <span class="n">optimization</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;optimization </span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2"> not compatible with export&quot;</span>
-        <span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">ExportOptions</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExportOptions</span>
 
         <span class="n">export_inputs</span><span class="p">,</span> <span class="n">export_kw_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_export_inputs</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
         <span class="n">dynamic_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dynamic_shapes</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
@@ -2074,7 +2077,7 @@
 
         <span class="k">return</span> <span class="n">exported_mod</span><span class="o">.</span><span class="n">module</span><span class="p">(),</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_executorch</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_executorch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2092,10 +2095,10 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="n">optimization</span> <span class="ow">or</span> <span class="n">optimization</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;optimization </span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2"> not compatible with export&quot;</span>
-        <span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">ExportOptions</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExportOptions</span>
 
         <span class="c1"># Avoid heavy dependencies of an exporter</span>
-        <span class="kn">from</span> <span class="nn">executorch.exir</span> <span class="kn">import</span> <span class="n">ExecutorchBackendConfig</span><span class="p">,</span> <span class="n">to_edge</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">executorch.exir</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExecutorchBackendConfig</span><span class="p">,</span> <span class="n">to_edge</span>
 
         <span class="n">export_inputs</span><span class="p">,</span> <span class="n">export_kw_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_export_inputs</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
         <span class="n">dynamic_shapes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dynamic_shapes</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
@@ -2156,7 +2159,7 @@
 
         <span class="k">return</span> <span class="n">executorch_program</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_eager</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_eager</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2173,7 +2176,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_flaggems</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_flaggems</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2190,7 +2193,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_ortmodule</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_ortmodule</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2206,11 +2209,11 @@
         <span class="k">assert</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="n">optimization</span> <span class="ow">or</span> <span class="n">optimization</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;optimization </span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2"> not compatible with eager&quot;</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.training.ortmodule</span> <span class="kn">import</span> <span class="n">ORTModule</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.training.ortmodule</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORTModule</span>
 
         <span class="k">return</span> <span class="n">ORTModule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">),</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_compile</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_compile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2225,7 +2228,7 @@
             <span class="ow">not</span> <span class="n">optimization</span> <span class="ow">or</span> <span class="n">optimization</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;optimization </span><span class="si">{</span><span class="n">optimization</span><span class="si">!r}</span><span class="s2"> not compatible with compile&quot;</span>
 
-        <span class="k">def</span> <span class="nf">custom_backend</span><span class="p">(</span><span class="n">gm</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">,</span> <span class="n">example_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">custom_backend</span><span class="p">(</span><span class="n">gm</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">,</span> <span class="n">example_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_to_compile] fx_graph]&quot;</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">gm</span><span class="p">)</span>
@@ -2245,7 +2248,7 @@
                 <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">fullgraph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">custom_backend</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_inductor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_inductor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2269,7 +2272,7 @@
                 <span class="n">res</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;inductor&quot;</span><span class="p">,</span> <span class="n">fullgraph</span><span class="o">=</span><span class="n">fullgraph</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_to_dort</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_dort</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2296,7 +2299,7 @@
 
 <div class="viewcode-block" id="ModelRunner.get_dynamic_shapes">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.get_dynamic_shapes">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_dynamic_shapes</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_dynamic_shapes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">input_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2350,7 +2353,7 @@
                 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tries</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">x</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span>
@@ -2384,7 +2387,7 @@
         <span class="k">return</span> <span class="n">final</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_make_export_new_dynamic_shape</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_export_new_dynamic_shape</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
         <span class="n">dyn_shape</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -2413,7 +2416,7 @@
 
 <div class="viewcode-block" id="ModelRunner.make_export_inputs">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.make_export_inputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">make_export_inputs</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_export_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">inputs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2543,7 +2546,7 @@
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">inp</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span>
@@ -2568,7 +2571,7 @@
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;MambaCache&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">inp</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span>
@@ -2591,7 +2594,7 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dyn_inputs</span><span class="p">),</span> <span class="kc">None</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_input_shape_tensor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_input_shape_tensor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">export</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">input_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
@@ -2626,7 +2629,7 @@
 
 <div class="viewcode-block" id="ModelRunner.get_input_shapes">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.get_input_shapes">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_input_shapes</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_input_shapes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">export</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2709,7 +2712,7 @@
 
             <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
                 <span class="c1"># Cache is not dynamic</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">inp</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span>
@@ -2755,7 +2758,7 @@
 
             <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;BaseModelOutput&quot;</span><span class="p">:</span>
                 <span class="c1"># Cache is not dynamic</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">inp</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">modeling_outputs</span><span class="o">.</span><span class="n">BaseModelOutput</span>
@@ -2787,9 +2790,9 @@
             <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;MambaCache&quot;</span><span class="p">:</span>
                 <span class="c1"># Cache is not dynamic</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">transformers.models.mamba.modeling_mamba</span> <span class="kn">import</span> <span class="n">MambaCache</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">transformers.models.mamba.modeling_mamba</span><span class="w"> </span><span class="kn">import</span> <span class="n">MambaCache</span>
                 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">MambaCache</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">transformers.cache_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">MambaCache</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">MambaCache</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -2823,7 +2826,7 @@
 
             <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;EncoderDecoderCache&quot;</span><span class="p">:</span>
                 <span class="c1"># Cache is not dynamic</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">inp</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">EncoderDecoderCache</span>
@@ -2916,7 +2919,7 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dyn_input_shapes</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_make_dynamic_inputs_tensor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_dynamic_inputs_tensor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">,</span> <span class="n">dyn_shape</span><span class="p">,</span> <span class="n">dyn_values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">i</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
         <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2944,7 +2947,7 @@
 
 <div class="viewcode-block" id="ModelRunner.make_dynamic_inputs">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.make_dynamic_inputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">make_dynamic_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_dynamic_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates dynamic inputs based on the static ones by changing the dynamic</span>
 <span class="sd">        according to the definition of the dynamic_shapes.</span>
@@ -3044,7 +3047,7 @@
 
 <div class="viewcode-block" id="ModelRunner.make_feeds">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_model_runner.html#experimental_experiment.torch_bench._bash_bench_model_runner.ModelRunner.make_feeds">[docs]</a>
-    <span class="k">def</span> <span class="nf">make_feeds</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_feeds</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3148,7 +3151,7 @@
                     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to process input type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="si">}</span><span class="s2"> in input list&quot;</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">i</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span>
@@ -3158,7 +3161,7 @@
                 <span class="n">new_inputs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">value_cache</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;EncoderDecoderCache&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">i</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">EncoderDecoderCache</span>
@@ -3171,7 +3174,7 @@
                 <span class="n">new_inputs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ec2</span><span class="o">.</span><span class="n">value_cache</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;BaseModelOutput&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">i</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">modeling_outputs</span><span class="o">.</span><span class="n">BaseModelOutput</span>
@@ -3180,9 +3183,9 @@
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;MambaCache&quot;</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">transformers.models.mamba.modeling_mamba</span> <span class="kn">import</span> <span class="n">MambaCache</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">transformers.models.mamba.modeling_mamba</span><span class="w"> </span><span class="kn">import</span> <span class="n">MambaCache</span>
                 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">transformers.cache_utils</span> <span class="kn">import</span> <span class="n">MambaCache</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">transformers.cache_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">MambaCache</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">MambaCache</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">conv_states</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>

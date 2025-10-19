@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter.interpreter - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,36 +547,36 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter.interpreter</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">operator</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">types</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.helper</span> <span class="kn">import</span> <span class="n">flatten_object</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">operator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">flatten_object</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">string_type</span><span class="p">,</span>
     <span class="n">make_hash</span><span class="p">,</span>
     <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">,</span>
     <span class="n">onnx_dtype_to_torch_dtype</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">VirtualTensor</span>
-<span class="kn">from</span> <span class="nn">..xshape._shape_helper</span> <span class="kn">import</span> <span class="n">all_int</span><span class="p">,</span> <span class="n">DYNAMIC_SHAPE</span>
-<span class="kn">from</span> <span class="nn">..xbuilder.model_container</span> <span class="kn">import</span> <span class="n">_get_type</span>
-<span class="kn">from</span> <span class="nn">..xshape.rename_expressions</span> <span class="kn">import</span> <span class="n">parse_expression_tokens</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">LOCAL_DOMAIN</span>
-<span class="kn">from</span> <span class="nn">.export_options</span> <span class="kn">import</span> <span class="n">ExportOptions</span>
-<span class="kn">from</span> <span class="nn">._exceptions</span> <span class="kn">import</span> <span class="n">FunctionNotFoundError</span>
-<span class="kn">from</span> <span class="nn">.aten_functions</span> <span class="kn">import</span> <span class="n">find_function</span>
-<span class="kn">from</span> <span class="nn">.aten_methods</span> <span class="kn">import</span> <span class="n">find_method</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">VirtualTensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xshape._shape_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_int</span><span class="p">,</span> <span class="n">DYNAMIC_SHAPE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder.model_container</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xshape.rename_expressions</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_expression_tokens</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOCAL_DOMAIN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.export_options</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExportOptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionNotFoundError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.aten_methods</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_method</span>
 
 
 <div class="viewcode-block" id="DynamoInterpreter">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter">[docs]</a>
-<span class="k">class</span> <span class="nc">DynamoInterpreter</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DynamoInterpreter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Interprets a torch graph into an ONNX graph.</span>
 <span class="sd">    Dispatches every node to the appropriate converting function.</span>
@@ -592,10 +595,10 @@
 <span class="sd">    :param exe_path: gives information on how the :class:`torch.fx.Graph` was obtained</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">make_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">graph_builder</span><span class="p">:</span> <span class="n">GraphBuilder</span><span class="p">,</span>
         <span class="n">retriever</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
@@ -610,8 +613,8 @@
         <span class="n">default_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exe_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
-        <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">FunctionOptions</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionOptions</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">torch</span> <span class="o">=</span> <span class="n">torch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">builder</span> <span class="o">=</span> <span class="n">graph_builder</span>
@@ -670,7 +673,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.register_named_modules">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.register_named_modules">[docs]</a>
-    <span class="k">def</span> <span class="nf">register_named_modules</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_named_modules</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parent_interpreter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;DynamoInterpreter&quot;</span><span class="p">],</span>
         <span class="n">preserved_modules</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">]]],</span>  <span class="c1"># noqa: F821</span>
@@ -699,7 +702,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.flatten_inputs">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.flatten_inputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">flatten_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flatten_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Flatten inputs.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">x</span>
@@ -726,7 +729,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.run_node">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.run_node">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs a node: call the approrpiate method based on the node type.&quot;&quot;&quot;</span>
         <span class="n">example_value</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;example_value&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
@@ -825,7 +828,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.get_attr">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.get_attr">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves an attribute.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[DynamoInterpreter-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_attr][</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
@@ -846,7 +849,7 @@
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">parameters=&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">([</span><span class="n">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">node</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">owning_module</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">()])</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">node.__dict__=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="vm">__dict__</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">callable</span><span class="p">(</span><span class="n">init</span><span class="p">):</span>
             <span class="c1"># This function is meant to be used later.</span>
@@ -883,7 +886,7 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">TreeSpec</span><span class="p">):</span>
 
-            <span class="k">def</span> <span class="nf">print_treespec</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">print_treespec</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
                 <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;  &quot;</span> <span class="o">*</span> <span class="n">indent</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">Node(type=</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">, leaves=</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">num_leaves</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="s2">&quot;children_specs&quot;</span><span class="p">,</span> <span class="p">[]):</span>
@@ -924,13 +927,13 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.make_nn_module_with_callable">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.make_nn_module_with_callable">[docs]</a>
-    <span class="k">def</span> <span class="nf">make_nn_module_with_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_nn_module_with_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.nn.Module&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wraps a function into a nn Module to export it.&quot;&quot;&quot;</span>
         <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
 
-            <span class="k">class</span> <span class="nc">LocalFunction3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-                <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+            <span class="k">class</span><span class="w"> </span><span class="nc">LocalFunction3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">LocalFunction3</span>
@@ -940,7 +943,7 @@
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_make_tensor_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fake_tensor</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">users</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_tensor_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fake_tensor</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">users</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="n">fake_tensor</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">example_inputs_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -984,7 +987,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_make_tensor_input</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_tensor_input</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">elem_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -1009,7 +1012,7 @@
             <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;DynamoInterpreter._make_tensor_input&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_make_list_input</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_list_input</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">example_value</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
@@ -1047,7 +1050,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.placeholder">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.placeholder">[docs]</a>
-    <span class="k">def</span> <span class="nf">placeholder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">placeholder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        placeholder for an input. The interpreter adds an Identity node</span>
 <span class="sd">        between the input names he wants and the name it has in the graph module.</span>
@@ -1125,7 +1128,7 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_list_input</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">example_value</span><span class="p">,</span> <span class="n">users</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">users</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">example_value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;DynamicCache&quot;</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">transformers</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">example_value</span><span class="p">,</span> <span class="n">transformers</span><span class="o">.</span><span class="n">cache_utils</span><span class="o">.</span><span class="n">DynamicCache</span><span class="p">),</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">example_value</span><span class="p">)</span><span class="si">}</span><span class="s2"> for an input&quot;</span>
@@ -1248,7 +1251,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.output">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.output">[docs]</a>
-    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds an output to the graph.&quot;&quot;&quot;</span>
         <span class="n">output_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -1396,7 +1399,7 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected output type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_fill_in_default_kwargs</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fill_in_default_kwargs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -1435,7 +1438,7 @@
 
         <span class="k">return</span> <span class="n">complete_args</span><span class="p">,</span> <span class="n">complete_kwargs</span>
 
-    <span class="k">def</span> <span class="nf">_get_aten_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_aten_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span> <span class="ow">in</span> <span class="p">{</span><span class="n">operator</span><span class="o">.</span><span class="n">getitem</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">or_</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">and_</span><span class="p">}:</span>
             <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="n">operator</span><span class="o">.</span><span class="n">getitem</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;getitem&quot;</span>
@@ -1467,7 +1470,7 @@
             <span class="sa">f</span><span class="s2">&quot;node.target=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s2">, type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_getitem_slice</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_getitem_slice</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1671,7 +1674,7 @@
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 
-    <span class="k">def</span> <span class="nf">_getitem_int1</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_getitem_int1</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1681,7 +1684,7 @@
         <span class="n">expand_axes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_getitem_int1&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">._aten_functions</span> <span class="kn">import</span> <span class="n">_aten_tensor_int1</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">._aten_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">_aten_tensor_int1</span>
 
         <span class="k">return</span> <span class="n">_aten_tensor_int1</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">,</span>
@@ -1696,7 +1699,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.getitem">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.getitem">[docs]</a>
-    <span class="k">def</span> <span class="nf">getitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called when the brackets ``something[...]`` appears.</span>
 <span class="sd">        The index may be another variable, an integer, a slice,</span>
@@ -1905,7 +1908,7 @@
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_verify_new_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_verify_new_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">axis</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">SymInt</span><span class="p">):</span>
                 <span class="n">sdim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_torch_sym_int_to_str</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
@@ -1921,7 +1924,7 @@
                         <span class="k">else</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">dynamic_dimensions_source</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_process_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">aten_name</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">aten_name</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1959,7 +1962,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.call_function">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.call_function">[docs]</a>
-    <span class="k">def</span> <span class="nf">call_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called for a function.&quot;&quot;&quot;</span>
         <span class="n">aten_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_aten_name</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="n">fx_args</span><span class="p">,</span> <span class="n">fx_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_in_default_kwargs</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
@@ -2135,7 +2138,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.call_method">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.call_method">[docs]</a>
-    <span class="k">def</span> <span class="nf">call_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called for a method.&quot;&quot;&quot;</span>
         <span class="n">method_name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -2185,7 +2188,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.add_aten_as_function">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.add_aten_as_function">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_aten_as_function</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_aten_as_function</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name_fct</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
@@ -2227,7 +2230,7 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;The conversion of operator </span><span class="si">{</span><span class="n">name_fct</span><span class="si">!r}</span><span class="s2"> into a local function</span><span class="se">\n</span><span class="s2">--ERROR--</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">res</span> <span class="o">==</span> <span class="n">output_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="n">res</span> <span class="o">==</span> <span class="n">output_names</span><span class="p">,</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Mismatch issue res=</span><span class="si">{</span><span class="n">res</span><span class="si">!r}</span><span class="s2">, output_names=</span><span class="si">{</span><span class="n">output_names</span><span class="si">!r}</span><span class="s2"> &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;for function </span><span class="si">{</span><span class="n">name_fct</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2289,7 +2292,7 @@
         <span class="k">return</span> <span class="n">output_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">output_names</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># noqa: F821</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">n_outputs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
@@ -2301,7 +2304,7 @@
             <span class="n">output_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">output_names</span>
 
-    <span class="k">def</span> <span class="nf">_check_output_name</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_output_name</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">res</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
@@ -2356,7 +2359,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 
-    <span class="k">def</span> <span class="nf">_can_set_shape_and_type</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_can_set_shape_and_type</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2368,7 +2371,7 @@
             <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="n">dtype</span><span class="p">}</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_get_node_output_type</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_node_output_type</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.dtype&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]:</span>  <span class="c1"># noqa: F821</span>
@@ -2376,7 +2379,7 @@
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
                 <span class="c1"># Type list comes from SplitToSequence.</span>
-                <span class="kn">import</span> <span class="nn">torch</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
                 <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
                     <span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
@@ -2400,7 +2403,7 @@
             <span class="k">return</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_set_shape_and_type</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_and_type</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">res</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
@@ -2572,10 +2575,10 @@
         <span class="k">if</span> <span class="n">last_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">description</span><span class="p">:</span>
             <span class="n">last_node</span><span class="o">.</span><span class="n">doc_string</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_interpret_sub_module</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_interpret_sub_module</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">sub_module</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">source_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local_domain</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">.onnx_export</span> <span class="kn">import</span> <span class="n">_make_builder_interpreter</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.onnx_export</span><span class="w"> </span><span class="kn">import</span> <span class="n">_make_builder_interpreter</span>
 
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">,</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;This functionality is not implemented kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2759,7 +2762,7 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.get_submodule_name">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.get_submodule_name">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_submodule_name</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_submodule_name</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="s2">&quot;torch.nn.Module&quot;</span>  <span class="c1"># noqa: F821</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets a submodule name, simple but unique.&quot;&quot;&quot;</span>
@@ -2770,10 +2773,10 @@
 
 <div class="viewcode-block" id="DynamoInterpreter.call_module">
 <a class="viewcode-back" href="../../../api/torch_interpreter/interpreter.html#experimental_experiment.torch_interpreter.interpreter.DynamoInterpreter.call_module">[docs]</a>
-    <span class="k">def</span> <span class="nf">call_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s2">&quot;torch.fx.Node&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called for a module.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">raise_msg</span><span class="p">():</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">raise_msg</span><span class="p">():</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;node=</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="s2">node.__dict__=</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="si">{</span><span class="nb">dir</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>

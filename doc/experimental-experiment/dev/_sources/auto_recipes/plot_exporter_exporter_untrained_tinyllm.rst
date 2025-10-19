@@ -113,9 +113,6 @@ Let's run the model.
 
  .. code-block:: none
 
-    The attention mask and the pad token id were not set. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
-    Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
-    The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
     #2[(),dict(cache_position:T7s8,input_ids:T7s1x8,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x8x96], value_cache=#1[T1s1x1x8x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x9x96], value_cache=#1[T1s1x1x9x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
@@ -159,8 +156,8 @@ Let's run the model.
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     Continue: it rains... Continue
-    The Worlds: March 1970. It was in November 11, 2017.
-    This year's course is sponsored by its annual annual event
+    - "Battlewater.
+    Feb: Kroger: S.D.A.M. 51994.467-48-016
 
 
 
@@ -373,7 +370,7 @@ ExportedProgram
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.644 seconds)
+   **Total running time of the script:** (0 minutes 1.927 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_untrained_tinyllm.py:

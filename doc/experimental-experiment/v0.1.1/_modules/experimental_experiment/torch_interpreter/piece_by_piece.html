@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter.piece_by_piece - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,27 +547,27 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter.piece_by_piece</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">textwrap</span>
-<span class="kn">import</span> <span class="nn">traceback</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">onnx</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">max_diff</span><span class="p">,</span> <span class="n">string_diff</span><span class="p">,</span> <span class="n">string_type</span><span class="p">,</span> <span class="n">string_sig</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">CacheKeyValue</span>
-<span class="kn">from</span> <span class="nn">..export_helpers</span> <span class="kn">import</span> <span class="n">torch_export</span>
-<span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">OptimizationOptions</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">ExportOptions</span>
-<span class="kn">from</span> <span class="nn">._torch_helper</span> <span class="kn">import</span> <span class="n">make_copy</span>
-<span class="kn">from</span> <span class="nn">.piece_by_piece_serialize</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">max_diff</span><span class="p">,</span> <span class="n">string_diff</span><span class="p">,</span> <span class="n">string_type</span><span class="p">,</span> <span class="n">string_sig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheKeyValue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..export_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_export</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span><span class="p">,</span> <span class="n">FunctionOptions</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">ExportOptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._torch_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.piece_by_piece_serialize</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">choose_kwargs_for_dynamic_shapes</span><span class="p">,</span>
     <span class="n">deserialize_args</span><span class="p">,</span>
     <span class="n">deserialize_args_kwargs</span><span class="p">,</span>
@@ -575,7 +578,7 @@
 
 <div class="viewcode-block" id="CustomOpStrategy">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.CustomOpStrategy">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomOpStrategy</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomOpStrategy</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines when to switch to CustomOp to see if the module successfully</span>
 <span class="sd">    exports with none of its children.</span>
@@ -596,7 +599,7 @@
 
 <div class="viewcode-block" id="StatusExportCode">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.StatusExportCode">[docs]</a>
-<span class="k">class</span> <span class="nc">StatusExportCode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StatusExportCode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines the the exporter status.</span>
 
@@ -625,29 +628,29 @@
     <span class="n">FAIL_DISC</span> <span class="o">=</span> <span class="mi">18</span>
     <span class="n">FAIL_NOINPUT</span> <span class="o">=</span> <span class="mi">34</span>
 
-    <span class="k">def</span> <span class="nf">__not__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__not__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="s2">&quot;Compose..&quot;</span>
         <span class="k">return</span> <span class="n">StatusExportCode</span><span class="p">(</span><span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">:</span>
         <span class="s2">&quot;Compose..&quot;</span>
         <span class="k">return</span> <span class="n">StatusExportCode</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">|</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="fm">__ior__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__ior__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">):</span>
         <span class="s2">&quot;Compose..&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;use |&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">:</span>
         <span class="s2">&quot;Compose..&quot;</span>
         <span class="k">return</span> <span class="n">StatusExportCode</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">|</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="fm">__iand__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iand__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">):</span>
         <span class="s2">&quot;Compose..&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;use &amp;&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="StatusExportCode.remove">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.StatusExportCode.remove">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StatusExportCode&quot;</span><span class="p">:</span>
         <span class="s2">&quot;Compose..&quot;</span>
         <span class="k">return</span> <span class="n">StatusExportCode</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">))</span></div>
 </div>
@@ -656,7 +659,7 @@
 
 <div class="viewcode-block" id="StatusExport">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.StatusExport">[docs]</a>
-<span class="k">class</span> <span class="nc">StatusExport</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StatusExport</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines the the exporter status.</span>
 
@@ -669,7 +672,7 @@
 <span class="sd">    :param skwargs: information on named arguments used to export</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">status</span><span class="p">:</span> <span class="n">StatusExportCode</span><span class="p">,</span>
         <span class="n">step</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -689,7 +692,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">skwargs</span> <span class="o">=</span> <span class="n">skwargs</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">short_reason</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">short_reason</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;Shortened reason&quot;</span>
         <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reason</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
@@ -698,18 +701,18 @@
 
 <div class="viewcode-block" id="StatusExport.is_ok">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.StatusExport.is_ok">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="s2">&quot;Returns True if the export succeeds.&quot;</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">int</span><span class="p">(</span><span class="n">StatusExportCode</span><span class="o">.</span><span class="n">OK</span><span class="p">))</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;usual&quot;</span>
         <span class="k">return</span> <span class="n">string_sig</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="StatusExport.pretty_text">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.StatusExport.pretty_text">[docs]</a>
-    <span class="k">def</span> <span class="nf">pretty_text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;pretty text&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ok</span><span class="p">():</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">exported</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -723,7 +726,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput">[docs]</a>
-<span class="k">class</span> <span class="nc">ModelDiagnoseOutput</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelDiagnoseOutput</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Contains inputs and outputs, traced results when tracing</span>
 <span class="sd">    intermediate results. An instance of this class is produced</span>
@@ -778,7 +781,7 @@
 <span class="sd">      ``*args`` in their signature. It is better to keep them empty.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ModelDiagnoseOutput&quot;</span><span class="p">],</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -826,7 +829,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_print_status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DIAGPRINTSTATUS&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_print_export</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DIAGPRINTEXPORT&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates on all the nodes in the graph.&quot;&quot;&quot;</span>
         <span class="k">yield</span> <span class="bp">self</span>
         <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
@@ -834,9 +837,9 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.get_debug_msg">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.get_debug_msg">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_debug_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_debug_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns information about this instances to help debugging.&quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">sys</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
         <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismodule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
             <span class="n">module_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span>
@@ -870,7 +873,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.pretty_text">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.pretty_text">[docs]</a>
-    <span class="k">def</span> <span class="nf">pretty_text</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_text</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">with_dynamic_shape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">with_shape</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -924,12 +927,12 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;usual&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(~</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">~)&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">true_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">true_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Returns class name or module name.&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
@@ -938,17 +941,17 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Returns a name and class name.&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">true_model_name</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">true_model_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">custom_op_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">custom_op_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Returns a name and class name.&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_clean_</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_clean_</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
@@ -960,7 +963,7 @@
         <span class="k">return</span> <span class="n">_clean_</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">custom_op_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dot_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dot_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Returns a kind of indented name.&quot;</span>
         <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;M:&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;f:&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
@@ -971,7 +974,7 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">module_name_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">module_name_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;Returns name and module type.&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;type(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">true_model_name</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -979,7 +982,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.add_inputs">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.add_inputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores used inputs. Makes a copy.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_kwargs</span> <span class="ow">or</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_parameter_names</span><span class="p">,</span> <span class="p">(</span>
@@ -995,7 +998,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.add_outputs">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.add_outputs">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores returned outputs. Makes a copy.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">args</span><span class="p">,)</span>
@@ -1004,14 +1007,14 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.add_child">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.add_child">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diag</span><span class="p">:</span> <span class="s2">&quot;ModelDiagnoseOutput&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diag</span><span class="p">:</span> <span class="s2">&quot;ModelDiagnoseOutput&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a submodule.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.guess_dynamic_dimensions">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.guess_dynamic_dimensions">[docs]</a>
-    <span class="k">def</span> <span class="nf">guess_dynamic_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">guess_dynamic_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">tensors</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Infers the dynamic dimension from multiple shapes.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
@@ -1039,7 +1042,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.guess_dynamic_shape_object">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.guess_dynamic_shape_object">[docs]</a>
-    <span class="k">def</span> <span class="nf">guess_dynamic_shape_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">guess_dynamic_shape_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Guesses the dynamic shapes for one argument.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to infer shapes with only one object </span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">set_types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">)</span>
@@ -1108,7 +1111,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.guess_dynamic_shapes">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.guess_dynamic_shapes">[docs]</a>
-    <span class="k">def</span> <span class="nf">guess_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">guess_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Guesses the dynamic shapes for that module from two execution.</span>
 <span class="sd">        If there is only one execution, then that would be static dimensions.</span>
@@ -1149,7 +1152,7 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="n">kwargs</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_move_to_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_move_to_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses the signatures to move unnamed arguments (args) to named arguments (kwargs)</span>
 <span class="sd">        with the corresponding dynamic shapes.</span>
@@ -1198,7 +1201,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(),</span> <span class="n">kw_dyn</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_do_replace_by_custom_op</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_do_replace_by_custom_op</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">replace_by_custom_op</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">CustomOpStrategy</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CustomOpStrategy</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CustomOpStrategy</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if a module must be replaced by a custom op.&quot;&quot;&quot;</span>
@@ -1217,7 +1220,7 @@
                 <span class="k">return</span> <span class="n">replace_by_custom_op</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">_annotation_from_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_annotation_from_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
             <span class="k">return</span> <span class="s2">&quot;Tensor&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">):</span>
@@ -1254,7 +1257,7 @@
         <span class="n">flat</span><span class="p">,</span> <span class="n">_spec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">tree_flatten</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;Tensor&quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">flat</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_annotated_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_annotated_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">o</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
@@ -1273,7 +1276,7 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">annotated</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">annotated</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">annotated</span><span class="p">)</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">annotated</span><span class="p">)])</span>
 
-    <span class="k">def</span> <span class="nf">_annotated_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_annotated_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">annotated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_annotation_from_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
@@ -1292,7 +1295,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.build_c_schema">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.build_c_schema">[docs]</a>
-    <span class="k">def</span> <span class="nf">build_c_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_c_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a schema for the C function.&quot;&quot;&quot;</span>
         <span class="c1"># schema_str = return f&quot;({&#39;, &#39;.join(params)}) -&gt; {ret}&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1304,7 +1307,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">) -&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_annotated_output</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_register</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_register</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">fct_shape</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">namespace</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">):</span>
         <span class="n">schema_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_c_schema</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
@@ -1325,7 +1328,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.build_shape_mapping_indices">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.build_shape_mapping_indices">[docs]</a>
-    <span class="k">def</span> <span class="nf">build_shape_mapping_indices</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_shape_mapping_indices</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">shape_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1364,7 +1367,7 @@
 
         <span class="n">indices_map</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_outputs</span><span class="p">)]</span>
 
-        <span class="k">def</span> <span class="nf">_msg_</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_msg_</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">: shape inconsistencies for output i=</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;the new shape cannot be automatically determined.&quot;</span>
@@ -1441,7 +1444,7 @@
 
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_find_sub_shape</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sub_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_sub_shape</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sub_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds a subshape into another one. Example::</span>
 
@@ -1456,7 +1459,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.determine_shape_fct">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.determine_shape_fct">[docs]</a>
-    <span class="k">def</span> <span class="nf">determine_shape_fct</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">determine_shape_fct</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">flattened_inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
@@ -1514,11 +1517,11 @@
 
                 <span class="k">return</span> <span class="n">fct</span>
 
-        <span class="k">def</span> <span class="nf">list_indices</span><span class="p">(</span><span class="n">flat</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">list_indices</span><span class="p">(</span><span class="n">flat</span><span class="p">):</span>
             <span class="k">yield from</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">yield from</span> <span class="n">flat</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">get_input</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">get_input</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">flat</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">flat</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
@@ -1554,7 +1557,7 @@
             <span class="p">)</span>
 
             <span class="c1"># functions</span>
-            <span class="k">def</span> <span class="nf">_modifiy_</span><span class="p">(</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">_modifiy_</span><span class="p">(</span>
                 <span class="o">*</span><span class="n">args</span><span class="p">,</span>
                 <span class="n">_unsqueeze_dims</span><span class="o">=</span><span class="n">unsqueeze_dims</span><span class="p">,</span>
                 <span class="n">_expand_shape</span><span class="o">=</span><span class="n">expand_shape</span><span class="p">,</span>
@@ -1601,7 +1604,7 @@
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_symbolic_function_for_forward_shape</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_symbolic_function_for_forward_shape</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">shape_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1633,13 +1636,13 @@
                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">inp_args</span><span class="p">,</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
 
-                    <span class="k">def</span> <span class="nf">_symbolic_forward_tensor_1_tensor_like_first_input</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                    <span class="k">def</span><span class="w"> </span><span class="nf">_symbolic_forward_tensor_1_tensor_like_first_input</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
                         <span class="c1"># TODO: change this</span>
                         <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
                     <span class="k">return</span> <span class="n">_symbolic_forward_tensor_1_tensor_like_first_input</span>
 
-                <span class="k">def</span> <span class="nf">_symbolic_forward_tensor_n_tensor_like_first_input</span><span class="p">(</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">_symbolic_forward_tensor_n_tensor_like_first_input</span><span class="p">(</span>
                     <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_n_outputs</span><span class="o">=</span><span class="n">n_outputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
                 <span class="p">):</span>
                     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_n_outputs</span><span class="p">))</span>
@@ -1662,7 +1665,7 @@
                     <span class="sa">f</span><span class="s2">&quot;-- </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">, len(indices_map)=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">indices_map</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
-            <span class="k">def</span> <span class="nf">_symbolic_forward_tensor_mapped_io_shapes</span><span class="p">(</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">_symbolic_forward_tensor_mapped_io_shapes</span><span class="p">(</span>
                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_indices_map</span><span class="o">=</span><span class="n">indices_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
             <span class="p">):</span>
                 <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1689,7 +1692,7 @@
             <span class="sa">f</span><span class="s2">&quot;output_types=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_put_custom_op_inplace_tensor</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_put_custom_op_inplace_tensor</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">shape_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1699,7 +1702,7 @@
 <span class="sd">        or deserialization to support.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_rewrite_forward_tensor_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_diag</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_rewrite_forward_tensor_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_diag</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">is_compiling</span><span class="p">()</span> <span class="ow">and</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;[_rewrite_forward_tensor_] </span><span class="si">{</span><span class="n">_diag</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">: IN: &quot;</span>
@@ -1759,7 +1762,7 @@
             <span class="p">)</span>
 
         <span class="c1"># Apparently, we need a function with the exact same signature.</span>
-        <span class="k">def</span> <span class="nf">_replaced_forward_tensor_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_replaced_forward_tensor_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">fct</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">diag_lib</span><span class="p">,</span> <span class="n">name_fct</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">is_compiling</span><span class="p">()</span> <span class="ow">and</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
@@ -1784,7 +1787,7 @@
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="n">_replaced_forward_tensor_</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cusdef</span>
 
-    <span class="k">def</span> <span class="nf">_put_custom_op_inplace_any</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_put_custom_op_inplace_any</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">shape_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1795,7 +1798,7 @@
 <span class="sd">        serialization and deserialization are needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_rewrite_forward_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_diag</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_rewrite_forward_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_diag</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">is_compiling</span><span class="p">()</span> <span class="ow">and</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;[_rewrite_forward_] </span><span class="si">{</span><span class="n">_diag</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">-SERIALIZE_IN: &quot;</span>
@@ -1908,7 +1911,7 @@
             <span class="p">)</span>
 
         <span class="c1"># Apparently, we need a function with the exact same signature.</span>
-        <span class="k">def</span> <span class="nf">_replaced_forward_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_replaced_forward_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">fct</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">diag_lib</span><span class="p">,</span> <span class="n">name_fct</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">is_compiling</span><span class="p">()</span> <span class="ow">and</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
@@ -1975,7 +1978,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.put_custom_op_inplace">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.put_custom_op_inplace">[docs]</a>
-    <span class="k">def</span> <span class="nf">put_custom_op_inplace</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">put_custom_op_inplace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">shape_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2005,7 +2008,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.remove_custom_op_inplace">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.remove_custom_op_inplace">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_custom_op_inplace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_custom_op_inplace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Just replaces the forward, hoping the registration does not have to</span>
 <span class="sd">        be removed.</span>
@@ -2022,7 +2025,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.is_customized">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.is_customized">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_customized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_customized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells of this module was bypassed.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;forward_calling_custom_op&quot;</span><span class="p">)</span>
@@ -2030,7 +2033,7 @@
         <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_post_process_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_post_process_dynamic_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">forward_kwargs</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_args</span><span class="p">):</span>
             <span class="c1"># The export should change dynamic shapes to have only named arguments.</span>
             <span class="k">if</span> <span class="n">debug</span> <span class="ow">or</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -2055,7 +2058,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">ds</span>
 
-    <span class="k">def</span> <span class="nf">_index_best_input_to_export</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_index_best_input_to_export</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Selects the best input to export with. 0-shape should be excluded.&quot;&quot;&quot;</span>
@@ -2080,7 +2083,7 @@
             <span class="sa">f</span><span class="s2">&quot;shapes. This might be on purpose but the export may fail in that case.</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_try_export_no_bypass_export</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_try_export_no_bypass_export</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">export_inputs</span><span class="p">,</span>
         <span class="n">exporter_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2152,12 +2155,12 @@
 
         <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismodule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">):</span>
             <span class="c1"># The function needs to be wrapped into a module before being exported.</span>
-            <span class="k">class</span> <span class="nc">LocalModuleCallingAFunction</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-                <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_f</span><span class="p">):</span>
+            <span class="k">class</span><span class="w"> </span><span class="nc">LocalModuleCallingAFunction</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_f</span><span class="p">):</span>
                     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">local_f</span> <span class="o">=</span> <span class="n">local_f</span>
 
-                <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
@@ -2266,7 +2269,7 @@
             <span class="p">)</span>
         <span class="n">mod</span> <span class="o">=</span> <span class="n">ep</span><span class="o">.</span><span class="n">module</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">_call_model_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_mod</span><span class="o">=</span><span class="n">mod</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_call_model_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_mod</span><span class="o">=</span><span class="n">mod</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;[try-export-FX] call module </span><span class="si">{</span><span class="n">mod</span><span class="si">!r}</span><span class="s2"> with &quot;</span>
@@ -2283,7 +2286,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exporter_status</span><span class="p">,</span> <span class="n">_call_model_</span>
 
-    <span class="k">def</span> <span class="nf">_try_export_no_bypass</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_try_export_no_bypass</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">modificator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;fx&quot;</span><span class="p">,</span>
@@ -2446,7 +2449,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">remove_custom_op_inplace</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">exported</span><span class="p">,</span> <span class="n">fct</span>
 
-    <span class="k">def</span> <span class="nf">_try_export</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_try_export</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;fx&quot;</span><span class="p">,</span>
         <span class="n">exporter_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2491,7 +2494,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.verifies">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.verifies">[docs]</a>
-    <span class="k">def</span> <span class="nf">verifies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">verifies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Does some verifications. Raises an exception if it fails.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
@@ -2522,7 +2525,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.try_export">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.try_export">[docs]</a>
-    <span class="k">def</span> <span class="nf">try_export</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">try_export</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;fx&quot;</span><span class="p">,</span>
         <span class="n">exporter_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2803,7 +2806,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.get_export_report">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.get_export_report">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_export_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fx</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_export_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fx</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a report status on the conversion.</span>
 
@@ -2812,15 +2815,15 @@
 <span class="sd">        :return: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_suffix</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_suffix</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
             <span class="k">return</span> <span class="s2">&quot;::func&quot;</span> <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismodule</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">model</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_report</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_report</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;may-need-more&quot;</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">iter_status</span><span class="p">(</span><span class="n">here</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">iter_status</span><span class="p">(</span><span class="n">here</span><span class="p">):</span>
             <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">here</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">here</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">iter_status</span><span class="p">(</span><span class="n">child</span><span class="p">))</span>
@@ -2883,7 +2886,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.draft_export_local">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.draft_export_local">[docs]</a>
-    <span class="k">def</span> <span class="nf">draft_export_local</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draft_export_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">use_dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exporter_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2913,7 +2916,7 @@
             <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">dynamic_shapes</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span>
         <span class="p">)</span>
 
-        <span class="kn">import</span> <span class="nn">torch.export._draft_export</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch.export._draft_export</span>
 
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
@@ -2947,7 +2950,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.export_local">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.export_local">[docs]</a>
-    <span class="k">def</span> <span class="nf">export_local</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">use_dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exporter_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3009,7 +3012,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.to_onnx_local">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.to_onnx_local">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_onnx_local</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_onnx_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">target_opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">as_function</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -3184,7 +3187,7 @@
 
 <div class="viewcode-block" id="ModelDiagnoseOutput.compute_onnx_discrepancies">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.ModelDiagnoseOutput.compute_onnx_discrepancies">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_onnx_discrepancies</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_onnx_discrepancies</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">onx</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">FunctionProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">],</span>
         <span class="n">check_conversion_cls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">type</span><span class="p">],</span>
@@ -3311,10 +3314,10 @@
                     <span class="c1"># exported program can be saved but not necessarily restored without</span>
                     <span class="c1"># the custom ops registered so run some verification here.</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[onnx_run_disc] </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dot_name</span><span class="si">}</span><span class="s2"> run_aligned&quot;</span><span class="p">)</span>
-                    <span class="kn">from</span> <span class="nn">experimental_experiment.torch_interpreter.investigate_helper</span> <span class="kn">import</span> <span class="p">(</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_interpreter.investigate_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                         <span class="n">run_aligned</span><span class="p">,</span>
                     <span class="p">)</span>
-                    <span class="kn">from</span> <span class="nn">experimental_experiment.reference</span> <span class="kn">import</span> <span class="n">ExtendedReferenceEvaluator</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedReferenceEvaluator</span>
 
                     <span class="n">diffs</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">for</span> <span class="n">di</span> <span class="ow">in</span> <span class="n">run_aligned</span><span class="p">(</span>
@@ -3345,7 +3348,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_rewrite_forward</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rewrite_forward</span><span class="p">(</span>
     <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_diag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelDiagnoseOutput</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">is_compiling</span><span class="p">()</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
@@ -3392,7 +3395,7 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
-<span class="k">def</span> <span class="nf">_flatten_module_containes</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_flatten_module_containes</span><span class="p">(</span>
     <span class="n">mod</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleDict</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">]]:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">):</span>
@@ -3407,7 +3410,7 @@
         <span class="k">yield</span> <span class="nb">tuple</span><span class="p">(),</span> <span class="n">mod</span>
 
 
-<span class="k">def</span> <span class="nf">_trace_forward_execution</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_trace_forward_execution</span><span class="p">(</span>
     <span class="n">parent</span><span class="p">:</span> <span class="n">ModelDiagnoseOutput</span><span class="p">,</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;__main__&quot;</span><span class="p">,</span>
@@ -3536,7 +3539,7 @@
     <span class="k">return</span> <span class="n">diag</span>
 
 
-<span class="k">def</span> <span class="nf">_untrace_forward_execution</span><span class="p">(</span><span class="n">diag</span><span class="p">:</span> <span class="n">ModelDiagnoseOutput</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_untrace_forward_execution</span><span class="p">(</span><span class="n">diag</span><span class="p">:</span> <span class="n">ModelDiagnoseOutput</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[_untrace_forward_execution] </span><span class="si">{</span><span class="n">diag</span><span class="o">.</span><span class="n">dot_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># diag.model.forward = diag.forward</span>
@@ -3547,7 +3550,7 @@
 
 <div class="viewcode-block" id="traced_cond">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.traced_cond">[docs]</a>
-<span class="k">def</span> <span class="nf">traced_cond</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">traced_cond</span><span class="p">(</span>
     <span class="n">pred</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
     <span class="n">true_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">false_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
@@ -3570,7 +3573,7 @@
 <div class="viewcode-block" id="trace_forward_execution">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.trace_forward_execution">[docs]</a>
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-<span class="k">def</span> <span class="nf">trace_forward_execution</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace_forward_execution</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">traced_method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3608,7 +3611,7 @@
 
 <div class="viewcode-block" id="trace_execution_piece_by_piece">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece.html#experimental_experiment.torch_interpreter.piece_by_piece.trace_execution_piece_by_piece">[docs]</a>
-<span class="k">def</span> <span class="nf">trace_execution_piece_by_piece</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trace_execution_piece_by_piece</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
     <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim.patterns.onnx_cast - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -544,24 +547,24 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_cast</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">...helpers</span> <span class="kn">import</span> <span class="n">size_type</span><span class="p">,</span> <span class="n">is_float_type</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">size_type</span><span class="p">,</span> <span class="n">is_float_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
 <div class="viewcode-block" id="CastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">CastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that a Cast is really needed.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -587,7 +590,7 @@
 
 <div class="viewcode-block" id="CastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -606,13 +609,13 @@
 
 <div class="viewcode-block" id="CastCastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">CastCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CastCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that two consecutive cast can be avoided.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_one_cast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t3</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_one_cast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">t3</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">t1</span> <span class="o">==</span> <span class="n">t3</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">t2</span> <span class="o">==</span> <span class="n">t1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">t1</span>
@@ -627,7 +630,7 @@
 
 <div class="viewcode-block" id="CastCastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -655,7 +658,7 @@
 
 <div class="viewcode-block" id="CastCastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cast1</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -694,7 +697,7 @@
 
 <div class="viewcode-block" id="CastCastBinaryPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastBinaryPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">CastCastBinaryPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CastCastBinaryPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves two cast operators beyond a binary operator</span>
 <span class="sd">    The cast must cast from a float type to another float type.</span>
@@ -709,7 +712,7 @@
 
 <div class="viewcode-block" id="CastCastBinaryPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastBinaryPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -759,7 +762,7 @@
 
 <div class="viewcode-block" id="CastCastBinaryPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastBinaryPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -788,7 +791,7 @@
 
 <div class="viewcode-block" id="CastOpCastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastOpCastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">CastOpCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CastOpCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes two cast surrounding another operator.&quot;&quot;&quot;</span>
 
     <span class="n">_dtypes_allowed</span> <span class="o">=</span> <span class="p">{</span>
@@ -804,7 +807,7 @@
 
 <div class="viewcode-block" id="CastOpCastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastOpCastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -890,7 +893,7 @@
 
 <div class="viewcode-block" id="CastOpCastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastOpCastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">cast_in_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -960,7 +963,7 @@
 
 <div class="viewcode-block" id="ComputationCastOpCastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.ComputationCastOpCastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ComputationCastOpCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ComputationCastOpCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Changes the computation type to make it faster if one of the inputs</span>
 <span class="sd">    was just casted before.</span>
@@ -977,7 +980,7 @@
 
 <div class="viewcode-block" id="ComputationCastOpCastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.ComputationCastOpCastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1024,7 +1027,7 @@
 
 <div class="viewcode-block" id="ComputationCastOpCastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.ComputationCastOpCastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node_left</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>

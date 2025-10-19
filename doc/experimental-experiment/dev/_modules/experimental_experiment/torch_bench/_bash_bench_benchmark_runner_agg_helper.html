@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg_helper - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,14 +547,14 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span>
-<span class="kn">from</span> <span class="nn">pandas.errors</span> <span class="kn">import</span> <span class="n">PerformanceWarning</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">PerformanceWarning</span>
 
 <span class="n">BUCKET_SCALES</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
 <span class="n">BUCKETS</span> <span class="o">=</span> <span class="p">[</span>
@@ -587,7 +590,7 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_SELECTED_FEATURES</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_SELECTED_FEATURES</span><span class="p">():</span>
     <span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
         <span class="nb">dict</span><span class="p">(</span>
             <span class="n">cat</span><span class="o">=</span><span class="s2">&quot;status&quot;</span><span class="p">,</span>
@@ -1045,11 +1048,11 @@
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">_nonone_</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_nonone_</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
     <span class="k">return</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">names</span>
 
 
-<span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_key</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1059,11 +1062,11 @@
     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected type for v=</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">, type is </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">sort_index_key</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sort_index_key</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">_key</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">index</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1074,7 +1077,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_isinf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_isinf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1085,7 +1088,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_column_name</span><span class="p">(</span><span class="n">ci</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_column_name</span><span class="p">(</span><span class="n">ci</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">ci</span> <span class="o">&lt;</span> <span class="mi">26</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">65</span> <span class="o">+</span> <span class="n">ci</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">ci</span> <span class="o">//</span> <span class="mi">26</span>
@@ -1093,7 +1096,7 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="o">+</span><span class="n">a</span><span class="p">)</span><span class="si">}{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">65</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_format_excel_cells</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_excel_cells</span><span class="p">(</span>
     <span class="n">sheets</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
     <span class="n">writer</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -1103,8 +1106,8 @@
             <span class="n">_format_excel_cells</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="k">return</span>
 
-    <span class="kn">from</span> <span class="nn">openpyxl.styles</span> <span class="kn">import</span> <span class="n">Alignment</span><span class="p">,</span> <span class="n">Font</span>
-    <span class="kn">from</span> <span class="nn">openpyxl.utils</span> <span class="kn">import</span> <span class="n">get_column_letter</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">openpyxl.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">Alignment</span><span class="p">,</span> <span class="n">Font</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">openpyxl.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_column_letter</span>
 
     <span class="n">bold_font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">left</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">horizontal</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
@@ -1161,12 +1164,12 @@
                     <span class="n">cell</span><span class="o">.</span><span class="n">number_format</span> <span class="o">=</span> <span class="s2">&quot;0.000000&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_excel_style</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_excel_style</span><span class="p">(</span>
     <span class="n">res</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
     <span class="n">writer</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">openpyxl.styles</span> <span class="kn">import</span> <span class="n">Alignment</span><span class="p">,</span> <span class="n">Font</span><span class="p">,</span> <span class="n">PatternFill</span><span class="p">,</span> <span class="n">numbers</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">openpyxl.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">Alignment</span><span class="p">,</span> <span class="n">Font</span><span class="p">,</span> <span class="n">PatternFill</span><span class="p">,</span> <span class="n">numbers</span>
 
     <span class="n">bold_font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">horizontal</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
@@ -1526,7 +1529,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[_apply_excel_style] done&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_reorder_columns_level</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reorder_columns_level</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">first_level</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1552,7 +1555,7 @@
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_sort_index_level</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_sort_index_level</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">debug</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -1577,7 +1580,7 @@
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_reorder_index_level</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reorder_index_level</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">first_level</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1604,7 +1607,7 @@
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_add_level</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_level</span><span class="p">(</span>
     <span class="n">index</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">MultiIndex</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1625,7 +1628,7 @@
     <span class="k">return</span> <span class="n">new_index</span>
 
 
-<span class="k">def</span> <span class="nf">_create_aggregation_figures</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_aggregation_figures</span><span class="p">(</span>
     <span class="n">final_res</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">skip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1674,16 +1677,16 @@
                 <span class="sa">f</span><span class="s2">&quot;Unable to grouby by key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;shape=</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> v.columns=</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;values=</span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="si">}</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
-        <span class="k">def</span> <span class="nf">_geo_mean</span><span class="p">(</span><span class="n">serie</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_geo_mean</span><span class="p">(</span><span class="n">serie</span><span class="p">):</span>
             <span class="n">nonan</span> <span class="o">=</span> <span class="n">serie</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nonan</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">nonan</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
             <span class="k">return</span> <span class="n">res</span>
 
-        <span class="k">def</span> <span class="nf">_propnan</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">is_nan</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_propnan</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">is_nan</span><span class="p">):</span>
             <span class="n">df</span><span class="p">[</span><span class="n">is_nan</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">return</span> <span class="n">df</span>
 
@@ -1709,7 +1712,7 @@
                 <span class="n">geo_mean</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">_geo_mean</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fails for geo_mean, k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, v=</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fails for geo_mean, k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, v=</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
                 <span class="n">geo_mean</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">geo_mean</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stats</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;GEO-MEAN&quot;</span><span class="p">,</span> <span class="n">geo_mean</span><span class="p">))</span>
@@ -1829,7 +1832,7 @@
     <span class="k">return</span> <span class="n">dfs</span><span class="p">,</span> <span class="n">keep_columns</span>
 
 
-<span class="k">def</span> <span class="nf">_reverse_column_names_order</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_reverse_column_names_order</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>  <span class="c1"># :</span>
     <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>  <span class="c1"># :</span>
@@ -1840,7 +1843,7 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_select_metrics</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_select_metrics</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">select</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
     <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1864,7 +1867,7 @@
     <span class="n">dfi</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">has_suite</span> <span class="o">=</span> <span class="s2">&quot;suite&quot;</span> <span class="ow">in</span> <span class="n">dfi</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">names</span> <span class="ow">and</span> <span class="s2">&quot;exporter&quot;</span> <span class="ow">in</span> <span class="n">dfi</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">names</span>
 
-    <span class="k">def</span> <span class="nf">_mk</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_mk</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">has_suite</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">c</span>
         <span class="n">cc</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1903,7 +1906,7 @@
     <span class="n">dfi</span> <span class="o">=</span> <span class="n">dfi</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">cols</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">prefix</span> <span class="o">==</span> <span class="s2">&quot;SIMPLE&quot;</span><span class="p">:</span>
         <span class="c1"># flat table</span>
-        <span class="kn">import</span> <span class="nn">pandas</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
 
         <span class="n">col_suites</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dfi</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">suites</span><span class="p">]</span>
         <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1922,7 +1925,7 @@
     <span class="k">return</span> <span class="n">dfi</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">suites</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_data</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_data</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">filter_in</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">filter_out</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1939,7 +1942,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_in</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">filter_out</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">df</span>
 
-    <span class="k">def</span> <span class="nf">_f</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_f</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span>
         <span class="n">cond</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">cols</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
@@ -1979,12 +1982,12 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_select_model_metrics</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_select_model_metrics</span><span class="p">(</span>
     <span class="n">res</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
     <span class="n">select</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
     <span class="n">stack_levels</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">pandas</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
 
     <span class="n">concat</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">select</span><span class="p">):</span>
@@ -2026,7 +2029,7 @@
     <span class="k">return</span> <span class="n">df</span>
 
 
-<span class="k">def</span> <span class="nf">_compute_correlations</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_correlations</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">model_column</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">exporter_column</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -2169,7 +2172,7 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
-<span class="k">def</span> <span class="nf">_fix_report_piv</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_fix_report_piv</span><span class="p">(</span>
     <span class="n">piv</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">agg</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">agg</span><span class="p">:</span>
@@ -2198,7 +2201,7 @@
     <span class="k">return</span> <span class="n">piv</span><span class="p">,</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">_process_formulas</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_process_formulas</span><span class="p">(</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">formulas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">column_keys</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -2599,7 +2602,7 @@
 
         <span class="k">if</span> <span class="n">expr</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">_filter</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">_filter</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
                 <span class="n">lines</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
@@ -2617,7 +2620,7 @@
                     <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
                 <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_lines</span><span class="p">)</span>
 
-            <span class="k">def</span> <span class="nf">_text_rows</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">err_cols</span><span class="p">,</span> <span class="n">disc_name</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">_text_rows</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">err_cols</span><span class="p">,</span> <span class="n">disc_name</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">disc_name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">disc_name</span><span class="p">]):</span>
                     <span class="k">return</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span>
@@ -2696,7 +2699,7 @@
 
         <span class="k">if</span> <span class="n">expr</span> <span class="o">==</span> <span class="s2">&quot;export&quot;</span><span class="p">:</span>
             <span class="c1"># guess the export time, for some exporter it is the first iteration.</span>
-            <span class="k">def</span> <span class="nf">unbiased_export</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">unbiased_export</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
                 <span class="n">exporter</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;exporter&quot;</span><span class="p">]</span>
                 <span class="n">time_export_success</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;time_export_success&quot;</span><span class="p">]</span>
                 <span class="n">time_warmup_first_iteration</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;time_warmup_first_iteration&quot;</span><span class="p">]</span>
@@ -2739,7 +2742,7 @@
 
 <div class="viewcode-block" id="build_historical_report">
 <a class="viewcode-back" href="../../../api/torch_bench/_bash_bench_benchmark_runner_agg_helper.html#experimental_experiment.torch_bench._bash_bench_benchmark_runner_agg_helper.build_historical_report">[docs]</a>
-<span class="k">def</span> <span class="nf">build_historical_report</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_historical_report</span><span class="p">(</span>
     <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">input_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -2871,7 +2874,7 @@
                 <span class="n">dg</span><span class="p">[</span><span class="s2">&quot;__C__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="n">under</span> <span class="o">=</span> <span class="n">dg</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[[</span><span class="s2">&quot;__C__&quot;</span><span class="p">]]</span>
                 <span class="n">under</span> <span class="o">=</span> <span class="n">under</span><span class="p">[</span><span class="n">under</span><span class="p">[</span><span class="s2">&quot;__C__&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ambiguities for columns </span><span class="si">{</span><span class="n">cc</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">under</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ambiguities for columns </span><span class="si">{</span><span class="n">cc</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">under</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
             <span class="n">subset</span> <span class="o">=</span> <span class="n">piv</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">subset</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.convert.ort_helper - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,13 +547,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.convert.ort_helper</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelProto</span>
 
 
 <div class="viewcode-block" id="append_custom_libraries">
 <a class="viewcode-back" href="../../../api/convert/ort_helper.html#experimental_experiment.convert.ort_helper.append_custom_libraries">[docs]</a>
-<span class="k">def</span> <span class="nf">append_custom_libraries</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">append_custom_libraries</span><span class="p">(</span>
     <span class="n">onx</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span>
     <span class="n">options</span><span class="p">:</span> <span class="s2">&quot;onnxruntime.SessionOptions&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
 <span class="p">):</span>
@@ -564,14 +567,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">domains</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">domain</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">onx</span><span class="o">.</span><span class="n">opset_import</span><span class="p">)</span>
     <span class="k">if</span> <span class="s2">&quot;onnx_extended.ortops.optim.cuda&quot;</span> <span class="ow">in</span> <span class="n">domains</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx_extended.ortops.optim.cuda</span> <span class="kn">import</span> <span class="n">get_ort_ext_libs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_extended.ortops.optim.cuda</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ort_ext_libs</span>
 
         <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="n">get_ort_ext_libs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unable to find library </span><span class="si">{</span><span class="n">get_ort_ext_libs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="si">!r}</span><span class="s2">.&quot;</span>
         <span class="n">options</span><span class="o">.</span><span class="n">register_custom_ops_library</span><span class="p">(</span><span class="n">get_ort_ext_libs</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">elif</span> <span class="s2">&quot;onnx_extended.ortops.optim.cpu&quot;</span> <span class="ow">in</span> <span class="n">domains</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnx_extended.ortops.optim.cpu</span> <span class="kn">import</span> <span class="n">get_ort_ext_libs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_extended.ortops.optim.cpu</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ort_ext_libs</span>
 
         <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
             <span class="n">get_ort_ext_libs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>

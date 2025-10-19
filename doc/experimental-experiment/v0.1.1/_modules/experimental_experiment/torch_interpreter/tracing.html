@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter.tracing - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,30 +547,30 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter.tracing</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">operator</span>
-<span class="kn">import</span> <span class="nn">types</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.fx</span> <span class="kn">import</span> <span class="n">Node</span>
-<span class="kn">from</span> <span class="nn">torch.fx.proxy</span> <span class="kn">import</span> <span class="n">TracerBase</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">operator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.proxy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TracerBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
 
 <span class="n">_torch_cat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span>
 
 
 <div class="viewcode-block" id="LEAVE_INPLACE">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.LEAVE_INPLACE">[docs]</a>
-<span class="k">class</span> <span class="nc">LEAVE_INPLACE</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LEAVE_INPLACE</span><span class="p">:</span>
     <span class="s2">&quot;Constant indicating inplace removal failed.&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="setitem_with_transformation">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.setitem_with_transformation">[docs]</a>
-<span class="k">def</span> <span class="nf">setitem_with_transformation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">transformations</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setitem_with_transformation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">transformations</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extended version of setitem to deal with inplace modification.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -584,7 +587,7 @@
 
 <div class="viewcode-block" id="CustomProxy">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxy">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomProxy</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">proxy</span><span class="o">.</span><span class="n">Proxy</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomProxy</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">proxy</span><span class="o">.</span><span class="n">Proxy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a custom proxy to trace the execution of a model</span>
 <span class="sd">    and converts it into a fx graph.</span>
@@ -592,26 +595,26 @@
 <span class="sd">    &lt;experimental_experiment.torch_interpreter.tracing.CustomTracer&gt;`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">tracer</span><span class="p">:</span> <span class="s2">&quot;Optional[TracerBase]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">tracer</span><span class="p">:</span> <span class="s2">&quot;Optional[TracerBase]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">tracer</span><span class="o">=</span><span class="n">tracer</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="p">,</span> <span class="n">CustomTracer</span>
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="p">)</span><span class="si">}</span><span class="s2"> for the tracer.&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_custom_fx_repr_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_custom_fx_repr_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;To avoid bugs.&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;CustomProxy(%</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CustomAttribute&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CustomAttribute&quot;</span><span class="p">:</span>
         <span class="c1"># note: not added to the graph yet, if this is a method call</span>
         <span class="c1"># we peephole optimize to the method invocation</span>
         <span class="k">return</span> <span class="n">CustomAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">__torch_function__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">orig_method</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__torch_function__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">orig_method</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orig_method</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">_ops</span><span class="o">.</span><span class="n">HigherOrderOperator</span><span class="p">):</span>
             <span class="c1"># not implemented by torch</span>
             <span class="k">if</span> <span class="n">orig_method</span> <span class="ow">is</span> <span class="n">torch</span><span class="o">.</span><span class="n">cond</span><span class="p">:</span>
@@ -644,7 +647,7 @@
             <span class="n">orig_method</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected not empty kwargs=</span><span class="si">{</span><span class="n">kwargs</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected number of args=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">indices</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">args</span>
@@ -659,14 +662,14 @@
         <span class="c1"># node_to_replace = self.node</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="o">.</span><span class="n">proxy</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="s2">&quot;len(.) expects an integer, len needs to be replaced. You should use _len.&quot;</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="CustomProxy.length">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxy.length">[docs]</a>
-    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a proxy for the length.&quot;&quot;&quot;</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="s2">&quot;call_method&quot;</span><span class="p">,</span> <span class="s2">&quot;__len__&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">,),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{})</span>
         <span class="n">tt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="o">.</span><span class="n">proxy</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">CustomProxyInt</span><span class="p">)</span>
@@ -675,7 +678,7 @@
 
 <div class="viewcode-block" id="CustomProxy.instanceof">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxy.instanceof">[docs]</a>
-    <span class="k">def</span> <span class="nf">instanceof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">instanceof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if this proxy represents a specific class.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to know if cls is from type </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
@@ -683,7 +686,7 @@
 <div class="viewcode-block" id="CustomProxy.cat">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxy.cat">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">cat</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cat</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">tensors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;CustomProxy&quot;</span><span class="p">],</span>
         <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -706,7 +709,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_len</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CustomProxy</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_len</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CustomProxy</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overloads `len` to return a proxy if the input is the proxy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -715,7 +718,7 @@
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overloads `isinstance` to deal with CustomProxy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -726,12 +729,12 @@
 
 <div class="viewcode-block" id="CustomProxyInt">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxyInt">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomProxyInt</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomProxyInt</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
     <span class="s2">&quot;A proxy for an integer.&quot;</span>
 
 <div class="viewcode-block" id="CustomProxyInt.instanceof">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxyInt.instanceof">[docs]</a>
-    <span class="k">def</span> <span class="nf">instanceof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">instanceof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;isinstance&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">{</span><span class="n">CustomProxyInt</span><span class="p">,</span> <span class="n">CustomProxy</span><span class="p">,</span> <span class="nb">int</span><span class="p">}</span></div>
 </div>
@@ -740,12 +743,12 @@
 
 <div class="viewcode-block" id="CustomProxyFloat">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxyFloat">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomProxyFloat</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomProxyFloat</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
     <span class="s2">&quot;A proxy for a float.&quot;</span>
 
 <div class="viewcode-block" id="CustomProxyFloat.instanceof">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomProxyFloat.instanceof">[docs]</a>
-    <span class="k">def</span> <span class="nf">instanceof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">instanceof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;isinstance&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">{</span><span class="n">CustomProxyInt</span><span class="p">,</span> <span class="n">CustomProxy</span><span class="p">,</span> <span class="nb">float</span><span class="p">}</span></div>
 </div>
@@ -754,19 +757,19 @@
 
 <div class="viewcode-block" id="CustomAttribute">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomAttribute">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomAttribute</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomAttribute</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    To trace attributes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">CustomProxy</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">CustomProxy</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">tracer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># the node for attributes is added lazily, since most will just be method calls</span>
         <span class="c1"># which do not rely on the getitem call</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -775,64 +778,64 @@
             <span class="p">)</span><span class="o">.</span><span class="n">node</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracer</span><span class="o">.</span><span class="n">create_proxy</span><span class="p">(</span><span class="s2">&quot;call_method&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">),</span> <span class="n">kwargs</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="CustomParameterProxy">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomParameterProxy">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomParameterProxy</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomParameterProxy</span><span class="p">(</span><span class="n">CustomProxy</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A special proxy which lets &quot;shape&quot;, &quot;size&quot;, &quot;dim&quot;, and a few other</span>
 <span class="sd">    attribute accesses pass through to the underlying  module parameter object,</span>
 <span class="sd">    so that conditional tests on these attributes will not throw exception during tracing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracer</span><span class="p">:</span> <span class="n">TracerBase</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracer</span><span class="p">:</span> <span class="n">TracerBase</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">tracer</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">param</span> <span class="o">=</span> <span class="n">param</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ndim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ndim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">ndim</span>
 
-    <span class="k">def</span> <span class="nf">numel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">numel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">nelement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nelement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="CondCCOp">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CondCCOp">[docs]</a>
-<span class="k">class</span> <span class="nc">CondCCOp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">_ops</span><span class="o">.</span><span class="n">HigherOrderOperator</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CondCCOp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">_ops</span><span class="o">.</span><span class="n">HigherOrderOperator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cannot be imported from torch.ops.higher_order.cond</span>
 <span class="sd">    (function cond overwrite submodule cond).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># we cannot use &quot;cond&quot; to avoid confusion with the existing cond</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;condcc&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">true_fn</span><span class="p">,</span> <span class="n">false_fn</span><span class="p">,</span> <span class="n">operands</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">true_fn</span><span class="p">,</span> <span class="n">false_fn</span><span class="p">,</span> <span class="n">operands</span><span class="p">):</span>
         <span class="c1"># torch._higher_order_ops.utils.validate_subgraph_args_types(operands)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">true_fn</span><span class="p">,</span> <span class="n">false_fn</span><span class="p">,</span> <span class="n">operands</span><span class="p">)</span></div>
 
@@ -841,7 +844,7 @@
 <div class="viewcode-block" id="replace_problematic_function_before_tracing">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.replace_problematic_function_before_tracing">[docs]</a>
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-<span class="k">def</span> <span class="nf">replace_problematic_function_before_tracing</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_problematic_function_before_tracing</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces function that cannot be traced with the default tracer</span>
 <span class="sd">    such as :func:`torch.cat`.</span>
@@ -874,7 +877,7 @@
 
 <div class="viewcode-block" id="CustomTracer">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomTracer</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Tracer</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomTracer</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Tracer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines a custom tracer to trace the execution of a model</span>
 <span class="sd">    and converts it into a fx graph.</span>
@@ -887,7 +890,7 @@
 <span class="sd">        graph = CustomTracer().trace(model)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">autowrap_modules</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;ModuleType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="p">,),</span>  <span class="c1"># noqa: F821</span>
         <span class="n">autowrap_functions</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
@@ -902,7 +905,7 @@
 
 <div class="viewcode-block" id="CustomTracer.register_callable">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.register_callable">[docs]</a>
-    <span class="k">def</span> <span class="nf">register_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_callable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Registers a function and return a unique name.</span>
 
@@ -923,7 +926,7 @@
 
 <div class="viewcode-block" id="CustomTracer.proxy">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.proxy">[docs]</a>
-    <span class="k">def</span> <span class="nf">proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">CustomProxy</span><span class="p">]</span> <span class="o">=</span> <span class="n">CustomProxy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Proxy</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">CustomProxy</span><span class="p">]</span> <span class="o">=</span> <span class="n">CustomProxy</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Proxy</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overwrites this method to replace the default Proxy by CustomProxy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -932,7 +935,7 @@
 
 <div class="viewcode-block" id="CustomTracer.create_arg">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.create_arg">[docs]</a>
-    <span class="k">def</span> <span class="nf">create_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Argument&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Argument&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overwrites this method to deal with more argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -949,12 +952,12 @@
 
 <div class="viewcode-block" id="CustomTracer.getattr">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.getattr">[docs]</a>
-    <span class="k">def</span> <span class="nf">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attr_val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">parameter_proxy_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attr_val</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">parameter_proxy_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        See :meth:`torch.fx.Tracer.getattr`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">maybe_get_proxy_for_attr</span><span class="p">(</span><span class="n">attr_val</span><span class="p">,</span> <span class="n">collection_to_search</span><span class="p">,</span> <span class="n">parameter_proxy_cache</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">maybe_get_proxy_for_attr</span><span class="p">(</span><span class="n">attr_val</span><span class="p">,</span> <span class="n">collection_to_search</span><span class="p">,</span> <span class="n">parameter_proxy_cache</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">collection_to_search</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">attr_val</span> <span class="ow">is</span> <span class="n">p</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parameter_proxy_cache</span><span class="p">:</span>
@@ -991,7 +994,7 @@
 
 <div class="viewcode-block" id="CustomTracer.trace">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.trace">[docs]</a>
-    <span class="k">def</span> <span class="nf">trace</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">concrete_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1042,7 +1045,7 @@
 
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_replace_problematic_functions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_replace_problematic_functions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The tracing introduced some problematic functions which need to be replaced.</span>
 
@@ -1064,7 +1067,7 @@
         <span class="k">return</span> <span class="n">n</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_aten_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_aten_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the aten name for the target as a string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1104,11 +1107,11 @@
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_is_trully_inplace</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_trully_inplace</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_inplace_nodes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_inplace_nodes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the position and the node involved in inplace modifications.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
@@ -1136,7 +1139,7 @@
         <span class="p">]</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_replace_meth_setitem</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_replace_meth_setitem</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The execution of ``op=&quot;call_method&quot;, target=&quot;__setitem__&quot; `` returns None</span>
 <span class="sd">        We replace it by ``op=&quot;call_function&quot;, target=&quot;operator.setitem&quot;``.</span>
@@ -1152,7 +1155,7 @@
         <span class="k">return</span> <span class="n">n</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_replace_getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_replace_getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Nodes such as</span>
 <span class="sd">        ``%_tensor_constant0_1 : [num_users=1] = get_attr[target=_tensor_constant0]``</span>
@@ -1179,7 +1182,7 @@
 <div class="viewcode-block" id="CustomTracer.remove_unnecessary_slices">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.remove_unnecessary_slices">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">remove_unnecessary_slices</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_unnecessary_slices</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes unnecessary slices and other nodes doing nothing.</span>
 
@@ -1265,7 +1268,7 @@
 <div class="viewcode-block" id="CustomTracer.graph_erase_node">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.graph_erase_node">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">graph_erase_node</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">graph_erase_node</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes a node and all predecessors with are only consumed by this one.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1284,7 +1287,7 @@
 
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_modify_graph_clone_copy_</span><span class="p">(</span>  <span class="c1"># != _modify_graph_clone_index_copy_</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_modify_graph_clone_copy_</span><span class="p">(</span>  <span class="c1"># != _modify_graph_clone_index_copy_</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span>
@@ -1326,7 +1329,7 @@
             <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--graph</span><span class="se">\n</span><span class="si">{</span><span class="n">exported_program</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">graph</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes_to_leave</span>
 
         <span class="c1"># class Node can be used as a key</span>
@@ -1362,7 +1365,7 @@
         <span class="k">return</span> <span class="mi">1</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_modify_graph_clone_index_copy_</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_modify_graph_clone_index_copy_</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">,</span>
@@ -1497,15 +1500,15 @@
                 <span class="n">unprocessed</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span>
                 <span class="n">known</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">new_users</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_str</span><span class="p">(</span><span class="n">pos_node</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_str</span><span class="p">(</span><span class="n">pos_node</span><span class="p">):</span>
             <span class="n">pos</span><span class="p">,</span> <span class="n">node</span> <span class="o">=</span> <span class="n">pos_node</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;-- </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> -- with </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="c1"># Let&#39;s reorder according to existing nodes</span>
-        <span class="k">def</span> <span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes_to_leave</span>
 
-        <span class="k">def</span> <span class="nf">_macro_assert_index_</span><span class="p">(</span><span class="n">is_getitem</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_macro_assert_index_</span><span class="p">(</span><span class="n">is_getitem</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="ow">not</span> <span class="n">inplace_functions</span>
             <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected inplace_functions=</span><span class="si">{</span><span class="n">inplace_functions</span><span class="si">}</span><span class="s2"> before </span><span class="si">{</span><span class="n">n</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1524,7 +1527,7 @@
                 <span class="sa">f</span><span class="s2">&quot;-----</span><span class="se">\n</span><span class="s2">seen_nodes=</span><span class="si">{</span><span class="n">seen_nodes</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_macro_get_axis_</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">set_item_args</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="n">exc</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_macro_get_axis_</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">set_item_args</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="n">exc</span><span class="p">):</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">set_item_args</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="ow">not</span> <span class="n">exc</span><span class="p">,</span> <span class="p">(</span>
@@ -1537,7 +1540,7 @@
                 <span class="k">return</span> <span class="n">LEAVE_INPLACE</span>
             <span class="k">return</span> <span class="n">axis</span>
 
-        <span class="k">def</span> <span class="nf">_macro_new_node_</span><span class="p">(</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_macro_new_node_</span><span class="p">(</span>
             <span class="n">n</span><span class="p">,</span> <span class="n">current_remove</span><span class="p">,</span> <span class="n">set_item_args</span><span class="p">,</span> <span class="n">inplace_functions</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
         <span class="p">):</span>
             <span class="c1"># We need to replace all the nodes in seen_nodes</span>
@@ -1719,7 +1722,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">to_remove</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_node_target_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_node_target_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
@@ -1742,7 +1745,7 @@
         <span class="k">return</span> <span class="n">res</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_remove_inplace</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_remove_inplace</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">exported_program</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">,</span>
@@ -1756,7 +1759,7 @@
         <span class="k">if</span> <span class="n">n_inplace</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
 
-        <span class="k">def</span> <span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes_to_leave</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">err_graph</span><span class="p">:</span>
@@ -2023,7 +2026,7 @@
 <div class="viewcode-block" id="CustomTracer.remove_inplace">
 <a class="viewcode-back" href="../../../api/torch_interpreter/tracing.html#experimental_experiment.torch_interpreter.tracing.CustomTracer.remove_inplace">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">remove_inplace</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_inplace</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
         <span class="n">exported_program</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2086,7 +2089,7 @@
             <span class="c1"># No inplace.</span>
             <span class="k">return</span> <span class="mi">0</span>
 
-        <span class="k">def</span> <span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">delete_user_cb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nodes_to_leave</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nodes_to_leave</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>

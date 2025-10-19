@@ -174,7 +174,7 @@ Validation
 
  .. code-block:: none
 
-    discrepancies: {'abs': 5.84055669605732e-07, 'rel': 0.000256888884925132, 'sum': 5.84055669605732e-07, 'n': 15.0, 'dnan': 0.0, 'argm': (2, 0)}
+    discrepancies: {'abs': 5.960464477539063e-08, 'rel': 7.783446936799147e-08, 'sum': 1.1920928955078125e-07, 'n': 15.0, 'dnan': 0.0, 'argm': (0, 1)}
 
 
 
@@ -628,14 +628,14 @@ We need to do that with different sizes of training set.
 
  .. code-block:: none
 
-    knn discrepancies for size=5: {'abs': 1.1175870895385742e-08, 'rel': 2.4251985020463055e-08, 'sum': 8.009374141693115e-08, 'n': 30.0, 'dnan': 0.0, 'argm': (2, 2)}
-    knn discrepancies for size=5: {'abs': 1.862645149230957e-09, 'rel': 5.623740031948294e-09, 'sum': 1.862645149230957e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=50: {'abs': 1.4901161193847656e-08, 'rel': 5.218763286175465e-08, 'sum': 6.424961611628532e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=50: {'abs': 1.4901161193847656e-08, 'rel': 5.218763286175465e-08, 'sum': 2.200249582529068e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=10: {'abs': 4.967053712778835e-09, 'rel': 1.4746064979996582e-08, 'sum': 4.967053712778835e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
-    knn discrepancies for size=10: {'abs': 4.967053712778835e-09, 'rel': 1.4746064979996582e-08, 'sum': 4.967053712778835e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=11: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 33.0, 'dnan': 0.0, 'argm': (0, 0)}
-    knn discrepancies for size=11: {'abs': 0.0, 'rel': 0.0, 'sum': 0.0, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=5: {'abs': 2.9802322387695312e-08, 'rel': 4.4889014405915013e-08, 'sum': 2.086162567138672e-07, 'n': 30.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=5: {'abs': 2.9802322387695312e-08, 'rel': 4.4889014405915013e-08, 'sum': 2.9802322387695312e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 1.9283855678953188e-08, 'rel': 1.524557979816584e-07, 'sum': 7.964862407949802e-07, 'n': 120.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=50: {'abs': 1.9283855678953188e-08, 'rel': 1.524557979816584e-07, 'sum': 2.6967266919530886e-08, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=10: {'abs': 7.450580596923828e-09, 'rel': 1.0231282360411968e-08, 'sum': 7.450580596923828e-09, 'n': 30.0, 'dnan': 0.0, 'argm': (1, 0)}
+    knn discrepancies for size=10: {'abs': 7.450580596923828e-09, 'rel': 1.0231282360411968e-08, 'sum': 7.450580596923828e-09, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
+    knn discrepancies for size=11: {'abs': 3.1044085878340066e-10, 'rel': 2.0143651071730713e-08, 'sum': 3.1044085878340066e-10, 'n': 33.0, 'dnan': 0.0, 'argm': (1, 0)}
+    knn discrepancies for size=11: {'abs': 3.1044085878340066e-10, 'rel': 2.0143651071730713e-08, 'sum': 3.1044085878340066e-10, 'n': 3.0, 'dnan': 0.0, 'argm': (0, 0)}
 
 
 
@@ -1093,62 +1093,62 @@ were previously traced.
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.00146484375,7.1432366371154785:A1.9270001564780879N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0010351263917982578,8.343807220458984:A1.7502780473095363N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05220614746212959,3.937958002090454:A1.792613633634413N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.1333671659231186,5.31119441986084:A2.0532798100920284N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.47610461711883545,2.9702396392822266:A1.6078503608703614],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.47610461711883545,2.9702396392822266:A1.6078503608703614]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.4167894423007965,4.4962053298950195:A2.2720501991835507],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.4167894423007965,4.4962053298950195:A2.2720501991835507]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.00146484375,7.1432366371154785:A1.9270001564780879N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0010351263917982578,8.343807220458984:A1.7502780473095363N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05220614746212959,3.937958002090454:A1.792613633634413N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.1333671659231186,5.31119441986084:A2.0532798100920284N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.09839383512735367,3.008782148361206:A1.4335352875292302],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.09839383512735367,3.008782148361206:A1.4335352875292302]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.47610461711883545,2.9702396392822266:A1.6078503847122192],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.47610461711883545,2.9702396392822266:A1.6078503847122192]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.47090399265289307,2.9612090587615967:A1.7413830973885276],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.47090399265289307,2.9612090587615967:A1.7413830973885276]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.4167898893356323,4.4962053298950195:A2.272050228985873],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.4167898893356323,4.4962053298950195:A2.272050228985873]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s40x3,T1s50x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s40x3[nan,nan:AnanN80nans],T1s50x3[nan,nan:AnanN100nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s40x50[nan,nan:AnanN1333nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.00146484375,7.1432366371154785:A1.9270001564780879N1333nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s40x50[0.0010351263917982578,8.343807220458984:A1.7502780473095363N1333nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s10x3,T1s5x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s10x3[nan,nan:AnanN20nans],T1s5x3[nan,nan:AnanN10nans]),{})
     [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s10x5[nan,nan:AnanN33nans],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.05220614746212959,3.937958002090454:A1.792613633634413N33nans]
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s10x5[0.1333671659231186,5.31119441986084:A2.0532798100920284N33nans]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s10x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s10x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.09839383512735367,3.008782148361206:A1.4335352994501591]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x10[0.47610461711883545,2.9702396392822266:A1.6078503608703614],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x10[0.47610461711883545,2.9702396392822266:A1.6078503608703614]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean run with ((T1s1x3,T1s11x3),{})
     [onnx_run_disc] .. M:dist-NanEuclidean flattened into ((T1s1x3[nan,nan:AnanN1nans],T1s11x3[nan,nan:AnanN1nans]),{})
-    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903],)
-    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.47090399265289307,2.9612090587615967:A1.741383064876903]
+    [onnx_run_disc] .. M:dist-NanEuclidean expecting (T1s1x11[0.4167894423007965,4.496205806732178:A2.272050242532383],)
+    [onnx_run_disc] .. M:dist-NanEuclidean computing A1s1x11[0.4167894423007965,4.496205806732178:A2.272050242532383]
     [onnx_run_disc] .. M:dist-NanEuclidean diff=abs=0.0, rel=0.0,amax=0,0
     [onnx_run_disc] .. M:dist-NanEuclidean validation done
     [to_onnx_local] .. M:dist-NanEuclidean - done
@@ -1397,7 +1397,7 @@ It can be run this way.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.248 seconds)
+   **Total running time of the script:** (0 minutes 22.377 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_sklearn_201.py:

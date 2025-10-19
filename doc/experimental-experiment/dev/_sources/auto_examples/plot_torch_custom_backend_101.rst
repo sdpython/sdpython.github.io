@@ -81,9 +81,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[-0.2598],
-            [-0.1927],
-            [ 0.2255]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.2208],
+            [-0.2646],
+            [-0.2818]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -121,9 +121,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[-0.2598],
-            [-0.1927],
-            [ 0.2255]])
+    tensor([[-0.2208],
+            [-0.2646],
+            [-0.2818]])
 
 
 
@@ -175,9 +175,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[-0.2598],
-            [-0.1927],
-            [ 0.2255]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.2208],
+            [-0.2646],
+            [-0.2818]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -266,9 +266,9 @@ Let's see an iteration loop.
       warnings.warn(
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7405.964988708496
-    Loss after epoch 2: 5608.943984985352
-    Loss after epoch 3: 5277.027348518372
+    Loss after epoch 1: 7306.994941711426
+    Loss after epoch 2: 5580.023973464966
+    Loss after epoch 3: 5281.798318862915
     Training process has finished.
 
     OptimizedModule(
@@ -320,9 +320,9 @@ Let's see what it looks like.
       warnings.warn(
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 8075.983451843262
-    Loss after epoch 2: 5604.433349609375
-    Loss after epoch 3: 5440.798402786255
+    Loss after epoch 1: 7108.009580612183
+    Loss after epoch 2: 5408.215156555176
+    Loss after epoch 3: 5116.7608642578125
     Training process has finished.
     4 were created.
 
@@ -359,8 +359,8 @@ Let's see what it looks like.
     Reshape(input3, init7_s2_1_-1) -> t_3
       MatMul(t_3, input1) -> output_3
     ReduceSum(input3, init7_s1_0, keepdims=0) -> output_4
-    LessOrEqual(input1, init1_s1_) -> _onx_lessorequal_detach_3
-      Where(_onx_lessorequal_detach_3, init1_s1_, mm) -> threshold_backward
+    LessOrEqual(input1, init1_s1_) -> _onx_lessorequal_detach_1
+      Where(_onx_lessorequal_detach_1, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input0, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=1) -> sum_2
       Squeeze(sum_2, init7_s1_0) -> output_1
@@ -457,9 +457,9 @@ It is needed by pytorch.
 
     /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/utils.py:135: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       warnings.warn(
-    Loss after epoch 1: 7482.0546226501465
-    Loss after epoch 2: 5466.2754192352295
-    Loss after epoch 3: 5221.147748947144
+    Loss after epoch 1: 7310.519912719727
+    Loss after epoch 2: 5484.374839782715
+    Loss after epoch 3: 5237.334095001221
     Training process has finished.
     2 were created.
 
@@ -503,8 +503,8 @@ It is needed by pytorch.
     Reshape(input4, init7_s2_1_-1) -> t_3
       MatMul(t_3, input2) -> output_4
     ReduceSum(input4, init7_s1_0, keepdims=0) -> output_5
-    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal_detach_3
-      Where(_onx_lessorequal_detach_3, init1_s1_, mm) -> threshold_backward
+    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal_detach_1
+      Where(_onx_lessorequal_detach_1, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=1) -> sum_2
       Squeeze(sum_2, init7_s1_0) -> output_1
@@ -580,7 +580,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.327 seconds)
+   **Total running time of the script:** (0 minutes 25.538 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

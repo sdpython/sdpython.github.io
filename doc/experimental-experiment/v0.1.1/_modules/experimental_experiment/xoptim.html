@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -544,22 +547,22 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">ModelProto</span>
-<span class="kn">from</span> <span class="nn">.graph_builder_optim</span> <span class="kn">import</span> <span class="n">GraphBuilderPatternOptimization</span>
-<span class="kn">from</span> <span class="nn">.patterns_api</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.graph_builder_optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilderPatternOptimization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">MatchResult</span><span class="p">,</span>
     <span class="n">PatternOptimization</span><span class="p">,</span>
     <span class="n">EasyPatternOptimization</span><span class="p">,</span>
     <span class="n">make_pattern_from_onnx</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.order_optim</span> <span class="kn">import</span> <span class="n">OrderAlgorithm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.order_optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderAlgorithm</span>
 
 
 <div class="viewcode-block" id="get_pattern">
 <a class="viewcode-back" href="../../api/xoptim/index.html#experimental_experiment.xoptim.get_pattern">[docs]</a>
-<span class="k">def</span> <span class="nf">get_pattern</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pattern</span><span class="p">(</span>
     <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PatternOptimization</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">as_list</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PatternOptimization</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -568,12 +571,12 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PatternOptimization</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="p">]</span> <span class="k">if</span> <span class="n">as_list</span> <span class="k">else</span> <span class="n">obj</span>
 
-    <span class="kn">from</span> <span class="nn">.patterns</span> <span class="kn">import</span> <span class="n">get_default_patterns</span>
-    <span class="kn">from</span> <span class="nn">.patterns_ort</span> <span class="kn">import</span> <span class="n">get_onnxruntime_patterns</span>
-    <span class="kn">from</span> <span class="nn">.patterns_exp</span> <span class="kn">import</span> <span class="n">get_experimental_patterns</span>
-    <span class="kn">from</span> <span class="nn">.patterns_fix</span> <span class="kn">import</span> <span class="n">get_fix_patterns</span>
-    <span class="kn">from</span> <span class="nn">.patterns_investigation</span> <span class="kn">import</span> <span class="n">get_investigation_patterns</span>
-    <span class="kn">from</span> <span class="nn">.patterns_ml</span> <span class="kn">import</span> <span class="n">get_ml_patterns</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_patterns</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns_ort</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_onnxruntime_patterns</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns_exp</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_experimental_patterns</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns_fix</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_fix_patterns</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns_investigation</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_investigation_patterns</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns_ml</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ml_patterns</span>
 
     <span class="n">_pattern</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="n">get_default_patterns</span><span class="p">,</span>
@@ -649,7 +652,7 @@
 
 <div class="viewcode-block" id="get_pattern_list">
 <a class="viewcode-back" href="../../api/xoptim/index.html#experimental_experiment.xoptim.get_pattern_list">[docs]</a>
-<span class="k">def</span> <span class="nf">get_pattern_list</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pattern_list</span><span class="p">(</span>
     <span class="n">positive_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]]]]</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
     <span class="n">negative_list</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -685,10 +688,10 @@
 
 <div class="viewcode-block" id="remove_constants_for_initializers">
 <a class="viewcode-back" href="../../api/xoptim/index.html#experimental_experiment.xoptim.remove_constants_for_initializers">[docs]</a>
-<span class="k">def</span> <span class="nf">remove_constants_for_initializers</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_constants_for_initializers</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">ModelProto</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces nodes Constant by initializers.&quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.patterns</span> <span class="kn">import</span> <span class="n">ConstantToInitializerPattern</span>
-    <span class="kn">from</span> <span class="nn">..xbuilder</span> <span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patterns</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConstantToInitializerPattern</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphBuilder</span><span class="p">,</span> <span class="n">OptimizationOptions</span>
 
     <span class="n">gr</span> <span class="o">=</span> <span class="n">GraphBuilder</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span>

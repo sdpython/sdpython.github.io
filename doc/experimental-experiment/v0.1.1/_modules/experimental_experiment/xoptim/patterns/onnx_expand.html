@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim.patterns.onnx_expand - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -544,30 +547,30 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns.onnx_expand</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">...xshape._onnx_helper</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...xshape._onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">element_wise_binary_op_types</span><span class="p">,</span>
     <span class="n">element_wise_op_cmp_types</span><span class="p">,</span>
     <span class="n">unary_like_op_types</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">...xshape._shape_helper</span> <span class="kn">import</span> <span class="n">all_int</span><span class="p">,</span> <span class="n">DYNAMIC_SHAPE</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...xshape._shape_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">all_int</span><span class="p">,</span> <span class="n">DYNAMIC_SHAPE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
 <div class="viewcode-block" id="ExpandPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ExpandPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpandPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that a Expand is really needed.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ExpandPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -595,7 +598,7 @@
 
 <div class="viewcode-block" id="ExpandPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -614,7 +617,7 @@
 
 <div class="viewcode-block" id="ExpandBroadcastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ExpandBroadcastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpandBroadcastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks that a Expand is really needed before an element wise operator.</span>
 <span class="sd">    The objective is to save one allocation and let the next operator</span>
@@ -625,7 +628,7 @@
 
 <div class="viewcode-block" id="ExpandBroadcastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -680,7 +683,7 @@
 
 <div class="viewcode-block" id="ExpandBroadcastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -705,7 +708,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandBroadcastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedExpandBroadcastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedExpandBroadcastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to</span>
 <span class="sd">    :class:`experimental_experiment.xoptim.patterns.onnx_expand.ExpandBroadcastPattern`,</span>
@@ -717,7 +720,7 @@
     <span class="n">_op_types</span> <span class="o">=</span> <span class="n">element_wise_binary_op_types</span><span class="p">()</span> <span class="o">|</span> <span class="n">element_wise_op_cmp_types</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_is_compatible_shapes_for_expand</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_compatible_shapes_for_expand</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">shape_left</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
         <span class="n">shape_right</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -776,7 +779,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandBroadcastPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -826,7 +829,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandBroadcastPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">expand_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -860,7 +863,7 @@
 
 <div class="viewcode-block" id="ExpandSwapPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandSwapPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ExpandSwapPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExpandSwapPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tries to move a node Expand forward in the graph.</span>
 <span class="sd">    Expand + Exp can be changed into Exp + Expand.</span>
@@ -872,7 +875,7 @@
 
 <div class="viewcode-block" id="ExpandSwapPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandSwapPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -906,7 +909,7 @@
 
 <div class="viewcode-block" id="ExpandSwapPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ExpandSwapPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -939,17 +942,17 @@
 
 <div class="viewcode-block" id="ShapeBasedStaticExpandPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedStaticExpandPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedStaticExpandPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compares input and output shapes to tell if the expand</span>
 <span class="sd">    can uses a constant as a second input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_find_expand_shape</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_expand_shape</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">sh1</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="n">sh2</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
         <span class="n">expand_shape</span> <span class="o">=</span> <span class="p">[]</span>
@@ -964,7 +967,7 @@
 
 <div class="viewcode-block" id="ShapeBasedStaticExpandPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -993,7 +996,7 @@
 
 <div class="viewcode-block" id="ShapeBasedStaticExpandPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedStaticExpandPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">reshape</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1021,7 +1024,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandSwapPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandSwapPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedExpandSwapPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedExpandSwapPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Tries to move a node Expand forward in the graph</span>
 <span class="sd">    for a binary operator. The code is similar to</span>
@@ -1031,7 +1034,7 @@
     <span class="n">_op_types</span> <span class="o">=</span> <span class="n">element_wise_binary_op_types</span><span class="p">()</span> <span class="o">|</span> <span class="n">element_wise_op_cmp_types</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_broadcast_shape</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_broadcast_shape</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">before_expand_shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
         <span class="n">other_term_shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -1066,7 +1069,7 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_compatible_expand_shape_for_expand_swap</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_compatible_expand_shape_for_expand_swap</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">before_expand_shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
         <span class="n">expanded_shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -1131,7 +1134,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandSwapPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandSwapPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1213,7 +1216,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandSwapPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandSwapPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">expand_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1262,7 +1265,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandBroadcastMatMulPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastMatMulPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedExpandBroadcastMatMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedExpandBroadcastMatMulPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to</span>
 <span class="sd">    :class:`experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastPattern`,</span>
@@ -1270,7 +1273,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_is_compatible_shapes_for_expand</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_compatible_shapes_for_expand</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">shape_left</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
         <span class="n">shape_right</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -1290,7 +1293,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandBroadcastMatMulPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastMatMulPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1340,7 +1343,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandBroadcastMatMulPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandBroadcastMatMulPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">expand_left</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1374,11 +1377,11 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandCastWhereSwapPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandCastWhereSwapPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedExpandCastWhereSwapPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedExpandCastWhereSwapPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrites Where(Cast(X), X, cond).&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_compatible_shapes</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compatible_shapes</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">cond</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
         <span class="n">cst</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -1398,7 +1401,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandCastWhereSwapPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandCastWhereSwapPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1444,7 +1447,7 @@
 
 <div class="viewcode-block" id="ShapeBasedExpandCastWhereSwapPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedExpandCastWhereSwapPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">expand_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1489,11 +1492,11 @@
 
 <div class="viewcode-block" id="ShapeBasedConcatExpandPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedConcatExpandPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">ShapeBasedConcatExpandPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeBasedConcatExpandPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrites Expand(X, concat(...)) if possible.&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_compatible_shapes</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compatible_shapes</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
@@ -1514,7 +1517,7 @@
 
 <div class="viewcode-block" id="ShapeBasedConcatExpandPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedConcatExpandPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1550,7 +1553,7 @@
 
 <div class="viewcode-block" id="ShapeBasedConcatExpandPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.ShapeBasedConcatExpandPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">concat_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1589,15 +1592,15 @@
 
 <div class="viewcode-block" id="SwapExpandReshapePattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.SwapExpandReshapePattern">[docs]</a>
-<span class="k">class</span> <span class="nc">SwapExpandReshapePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SwapExpandReshapePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if Expand + Reshape can be swapped.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SwapExpandReshapePattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.SwapExpandReshapePattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -1628,7 +1631,7 @@
 
 <div class="viewcode-block" id="SwapExpandReshapePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_expand.html#experimental_experiment.xoptim.patterns.onnx_expand.SwapExpandReshapePattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">expand_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>

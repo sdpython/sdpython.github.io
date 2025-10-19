@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_interpreter.piece_by_piece_serialize - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,20 +547,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_interpreter.piece_by_piece_serialize</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">zlib</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers.cache_helper</span> <span class="kn">import</span> <span class="n">make_dynamic_cache</span><span class="p">,</span> <span class="n">CacheKeyValue</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers.cache_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_dynamic_cache</span><span class="p">,</span> <span class="n">CacheKeyValue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
 
 
 <div class="viewcode-block" id="extract_names_from_schema">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.extract_names_from_schema">[docs]</a>
-<span class="k">def</span> <span class="nf">extract_names_from_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_names_from_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts name from a C++ schema produced by ``infer_schema``.</span>
 <span class="sd">    Example: ``(Tensor x, Tensor y) -&gt; Tensor`` returns [&quot;x&quot;, &quot;y&quot;].</span>
@@ -570,7 +573,7 @@
 
 <div class="viewcode-block" id="choose_kwargs_for_dynamic_shapes">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.choose_kwargs_for_dynamic_shapes">[docs]</a>
-<span class="k">def</span> <span class="nf">choose_kwargs_for_dynamic_shapes</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">choose_kwargs_for_dynamic_shapes</span><span class="p">(</span>
     <span class="n">ds_args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
     <span class="n">ds_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">forward_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -598,7 +601,7 @@
 
 <div class="viewcode-block" id="serialize_one">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.serialize_one">[docs]</a>
-<span class="k">def</span> <span class="nf">serialize_one</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">serialize_one</span><span class="p">(</span>
     <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -627,7 +630,7 @@
 
 <div class="viewcode-block" id="serialize_args">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.serialize_args">[docs]</a>
-<span class="k">def</span> <span class="nf">serialize_args</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">serialize_args</span><span class="p">(</span>
     <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
     <span class="n">kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -719,7 +722,7 @@
 
 <div class="viewcode-block" id="type_as_str_with_info">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.type_as_str_with_info">[docs]</a>
-<span class="k">def</span> <span class="nf">type_as_str_with_info</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">type_as_str_with_info</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a string with information about how to deserialize.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;Tensor&quot;</span>
@@ -747,7 +750,7 @@
 
 <div class="viewcode-block" id="deserialize_args">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.deserialize_args">[docs]</a>
-<span class="k">def</span> <span class="nf">deserialize_args</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deserialize_args</span><span class="p">(</span>
     <span class="n">res</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
     <span class="n">expected_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">clone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -881,7 +884,7 @@
 
 <div class="viewcode-block" id="deserialize_args_kwargs">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.deserialize_args_kwargs">[docs]</a>
-<span class="k">def</span> <span class="nf">deserialize_args_kwargs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deserialize_args_kwargs</span><span class="p">(</span>
     <span class="n">args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
     <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">expected_types</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
@@ -969,7 +972,7 @@
 
 <div class="viewcode-block" id="tree_spec_as_name">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.tree_spec_as_name">[docs]</a>
-<span class="k">def</span> <span class="nf">tree_spec_as_name</span><span class="p">(</span><span class="n">tree_spec</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">TreeSpec</span><span class="p">,</span> <span class="n">n_elements</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tree_spec_as_name</span><span class="p">(</span><span class="n">tree_spec</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">TreeSpec</span><span class="p">,</span> <span class="n">n_elements</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a string containing all the information needed to code</span>
 <span class="sd">    an instance of TreeSpec in a string.</span>
@@ -990,7 +993,7 @@
 
 <div class="viewcode-block" id="tree_spec_from_name">
 <a class="viewcode-back" href="../../../api/torch_interpreter/piece_by_piece_serialize.html#experimental_experiment.torch_interpreter.piece_by_piece_serialize.tree_spec_from_name">[docs]</a>
-<span class="k">def</span> <span class="nf">tree_spec_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">TreeSpec</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tree_spec_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_pytree</span><span class="o">.</span><span class="n">TreeSpec</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Restores the instance of TreeSpec converted into a name by</span>
 <span class="sd">    function :func:`tree_spec_as_name`.</span>

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xshape.shape_type_compute - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,28 +547,28 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xshape.shape_type_compute</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">tensor_dtype_to_np_dtype</span><span class="p">,</span>
     <span class="n">np_dtype_to_tensor_dtype</span><span class="p">,</span>
     <span class="n">dtype_to_tensor_dtype</span><span class="p">,</span>
     <span class="n">torch_dtype_to_onnx_dtype</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._shape_helper</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._shape_helper</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
     <span class="n">is_static_shape</span><span class="p">,</span>
     <span class="n">all_int</span><span class="p">,</span>
     <span class="n">all_int_or_str</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.simplify_expressions</span> <span class="kn">import</span> <span class="n">simplify_expression</span>
-<span class="kn">from</span> <span class="nn">.shape_builder</span> <span class="kn">import</span> <span class="n">ShapeBuilder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.simplify_expressions</span><span class="w"> </span><span class="kn">import</span> <span class="n">simplify_expression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.shape_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeBuilder</span>
 
 
 <div class="viewcode-block" id="broadcast_shape">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.broadcast_shape">[docs]</a>
-<span class="k">def</span> <span class="nf">broadcast_shape</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">broadcast_shape</span><span class="p">(</span>
     <span class="n">sh1</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
     <span class="n">sh2</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span>
     <span class="n">graph_builder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ShapeBuilder</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -639,7 +642,7 @@
 
 <div class="viewcode-block" id="set_type_shape_reshape">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_reshape">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_reshape</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_reshape</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -676,7 +679,7 @@
 
 <div class="viewcode-block" id="set_type_shape_unary_op">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_unary_op">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_unary_op</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_unary_op</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -698,7 +701,7 @@
 
 <div class="viewcode-block" id="set_type_shape_unary_op_abs">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_unary_op_abs">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_unary_op_abs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_unary_op_abs</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">input_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -740,7 +743,7 @@
 
 <div class="viewcode-block" id="set_type_shape_binary_op">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_binary_op">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_binary_op</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_binary_op</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="n">input_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -808,7 +811,7 @@
 
 <div class="viewcode-block" id="set_type_shape_matmul">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_matmul">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_matmul</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_matmul</span><span class="p">(</span><span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="s2">&quot;Sets the output shape for node type MatMul.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="k">return</span>
@@ -853,7 +856,7 @@
 
 <div class="viewcode-block" id="set_type_shape_gemm">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_gemm">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_gemm</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_gemm</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -881,7 +884,7 @@
 
 <div class="viewcode-block" id="set_type_shape_reduce_op">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_type_shape_reduce_op">[docs]</a>
-<span class="k">def</span> <span class="nf">set_type_shape_reduce_op</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_reduce_op</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -916,7 +919,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_get_input_type</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_input_type</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">python_default</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -939,7 +942,7 @@
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to guess type from </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_compute_type</span><span class="p">(</span><span class="n">dtypes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_compute_type</span><span class="p">(</span><span class="n">dtypes</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="n">order</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">TensorProto</span><span class="o">.</span><span class="n">COMPLEX128</span><span class="p">,</span>
         <span class="n">TensorProto</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
@@ -964,7 +967,7 @@
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to guess compute type </span><span class="si">{</span><span class="n">dtypes</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_cast_inputs</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_cast_inputs</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">a</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">itype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1001,7 +1004,7 @@
 
 <div class="viewcode-block" id="prepare_inputs_homogeneous_operator">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.prepare_inputs_homogeneous_operator">[docs]</a>
-<span class="k">def</span> <span class="nf">prepare_inputs_homogeneous_operator</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prepare_inputs_homogeneous_operator</span><span class="p">(</span>
     <span class="n">g</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1117,7 +1120,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_adjust_attributes_of_max_pool</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_adjust_attributes_of_max_pool</span><span class="p">(</span>
     <span class="n">expand_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">kernel_size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">stride</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
@@ -1165,7 +1168,7 @@
 <span class="c1">########################################</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_batch_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_batch_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type BatchNormalization.&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -1176,7 +1179,7 @@
     <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="kc">None</span><span class="p">}</span> <span class="k">else</span> <span class="n">res</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_layer_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_layer_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type LayerNormalization.&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -1187,7 +1190,7 @@
     <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="kc">None</span><span class="p">}</span> <span class="k">else</span> <span class="n">res</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_cast</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_cast</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Cast.&quot;</span>
     <span class="k">return</span> <span class="n">set_type_shape_unary_op</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1197,19 +1200,19 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_rotary_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_rotary_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Cast.&quot;</span>
     <span class="k">return</span> <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_castlike</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_castlike</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type CastLike.&quot;</span>
     <span class="k">return</span> <span class="n">set_type_shape_unary_op</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">itype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_concat</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_concat</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Concat.&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -1244,7 +1247,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_conv_max_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_conv_max_pool</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets the output shape for node types Conv, MaxPool.</span>
 
@@ -1413,7 +1416,7 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_gather</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_gather</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Gather.&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -1446,7 +1449,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_gather_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_gather_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type GatherElements.&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -1468,7 +1471,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_gemm</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_gemm</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Gemm.&quot;</span>
     <span class="n">transA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;transA&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">transB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;transB&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1484,7 +1487,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_matmul</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_matmul</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type MatMul.&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">set_type_shape_matmul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_shape_missing</span><span class="p">,</span> <span class="p">(</span>
@@ -1494,7 +1497,7 @@
     <span class="k">return</span> <span class="n">r</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_non_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_non_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type NonZro.&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">INT64</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -1507,7 +1510,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Pad.&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -1554,7 +1557,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_range</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_range</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for for node type Range.&quot;</span>
     <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
     <span class="k">assert</span> <span class="n">types</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">types</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
@@ -1591,7 +1594,7 @@
     <span class="k">return</span> <span class="n">new_shape</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for Reduce node type.&quot;</span>
     <span class="n">keepdim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;keepdims&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">axes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;axes&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1641,7 +1644,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_reshape</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_reshape</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Reshape.&quot;</span>
     <span class="n">k</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -1674,7 +1677,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Reshape.&quot;</span>
     <span class="n">k</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -1708,12 +1711,12 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Sign.&quot;</span>
     <span class="k">return</span> <span class="n">set_type_shape_unary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Slice.&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -1725,7 +1728,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_split</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_split</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Split.&quot;</span>
     <span class="n">num_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;num_outputs&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">num_outputs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">num_outputs</span><span class="o">.</span><span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
@@ -1788,7 +1791,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_scatternd</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_scatternd</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type ScatterND.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="c1"># the main type is missing, cannot continue</span>
@@ -1811,7 +1814,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Transpose.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="c1"># the main type is missing, cannot continue</span>
@@ -1844,7 +1847,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_tile</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_tile</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Tile.&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -1856,7 +1859,7 @@
     <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_topk</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_topk</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type TopK.&quot;</span>
     <span class="n">is_scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">is_scalar</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -1900,7 +1903,7 @@
         <span class="k">return</span> <span class="n">ret_shapes</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_unsqueeze</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_unsqueeze</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Unsqueeze.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="c1"># the main type is missing, cannot continue</span>
@@ -1961,7 +1964,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_squeeze</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_squeeze</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Squeeze.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="c1"># the main type is missing, cannot continue</span>
@@ -2030,7 +2033,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_where</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_where</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="s2">&quot;Sets the output shape for node type Where.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_shape_missing</span><span class="p">,</span> <span class="p">(</span>
@@ -2062,7 +2065,7 @@
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_set_shape_type_op_any_unary</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_shape_type_op_any_unary</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span>
     <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
     <span class="n">itype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2106,7 +2109,7 @@
 
 <div class="viewcode-block" id="set_shape_type_op_any">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_shape_type_op_any">[docs]</a>
-<span class="k">def</span> <span class="nf">set_shape_type_op_any</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_shape_type_op_any</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets the shape and type if it can.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Reduce&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_set_shape_type_op_any_reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
@@ -2175,7 +2178,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_fused_matmul</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_fused_matmul</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">transA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;transA&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2207,7 +2210,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_tree_ensemble</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_tree_ensemble</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="n">n_targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;n_targets&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">n_targets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="p">(</span>
@@ -2223,7 +2226,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_to_complex</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_to_complex</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
@@ -2243,7 +2246,7 @@
     <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_complex_module</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_complex_module</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
@@ -2261,14 +2264,14 @@
     <span class="k">return</span> <span class="kc">True</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_shared_input</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_shared_input</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="n">r1</span> <span class="o">=</span> <span class="n">set_type_shape_binary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
     <span class="n">r2</span> <span class="o">=</span> <span class="n">set_type_shape_binary_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[::</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">r1</span> <span class="ow">or</span> <span class="n">r2</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_scatter_nd_of_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_scatter_nd_of_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -2277,7 +2280,7 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_tri_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_tri_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -2287,7 +2290,7 @@
         <span class="k">return</span> <span class="n">tvalue</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_transpose_2d_cast_fp16</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_transpose_2d_cast_fp16</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -2295,7 +2298,7 @@
         <span class="k">return</span> <span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_transpose_2d_cast_fp32</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_transpose_2d_cast_fp32</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TensorProto</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -2303,7 +2306,7 @@
         <span class="k">return</span> <span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">set_type_shape_multi_head_attention</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_type_shape_multi_head_attention</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>
     <span class="n">itype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">itype</span><span class="p">)</span>
@@ -2381,7 +2384,7 @@
 
 <div class="viewcode-block" id="set_shape_type_custom">
 <a class="viewcode-back" href="../../../api/xshape/shape_type_compute.html#experimental_experiment.xshape.shape_type_compute.set_shape_type_custom">[docs]</a>
-<span class="k">def</span> <span class="nf">set_shape_type_custom</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_shape_type_custom</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets the shape and type if it can.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">==</span> <span class="s2">&quot;ai.onnx.ml&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;TreeEnsembleRegressor&quot;</span><span class="p">,</span> <span class="s2">&quot;TreeEnsemble&quot;</span><span class="p">):</span>

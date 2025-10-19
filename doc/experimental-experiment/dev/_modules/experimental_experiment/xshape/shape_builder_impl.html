@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xshape.shape_builder_impl - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,29 +547,29 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xshape.shape_builder_impl</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">onnx</span>
-<span class="kn">import</span> <span class="nn">onnx.helper</span> <span class="k">as</span> <span class="nn">oh</span>
-<span class="kn">import</span> <span class="nn">onnx.numpy_helper</span> <span class="k">as</span> <span class="nn">onh</span>
-<span class="kn">from</span> <span class="nn">onnx.external_data_helper</span> <span class="kn">import</span> <span class="n">uses_external_data</span>
-<span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
-<span class="kn">from</span> <span class="nn">onnx.reference</span> <span class="kn">import</span> <span class="n">ReferenceEvaluator</span>
-<span class="kn">from</span> <span class="nn">._shape_helper</span> <span class="kn">import</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">is_static_shape</span>
-<span class="kn">from</span> <span class="nn">._builder_runtime</span> <span class="kn">import</span> <span class="n">_BuilderRuntime</span>
-<span class="kn">from</span> <span class="nn">._shape_runtime</span> <span class="kn">import</span> <span class="n">_ShapeRuntime</span>
-<span class="kn">from</span> <span class="nn">._inference_runtime</span> <span class="kn">import</span> <span class="n">_InferenceRuntime</span>
-<span class="kn">from</span> <span class="nn">.rename_expressions</span> <span class="kn">import</span> <span class="n">parse_expression_tokens</span>
-<span class="kn">from</span> <span class="nn">.simplify_expressions</span> <span class="kn">import</span> <span class="n">simplify_expression</span>
-<span class="kn">from</span> <span class="nn">._onnx_helper</span> <span class="kn">import</span> <span class="n">str_tensor_proto_type</span>
-<span class="kn">from</span> <span class="nn">.shape_builder</span> <span class="kn">import</span> <span class="n">ShapeBuilder</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.external_data_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">uses_external_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx.reference</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReferenceEvaluator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._shape_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">is_static_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._builder_runtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">_BuilderRuntime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._shape_runtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ShapeRuntime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._inference_runtime</span><span class="w"> </span><span class="kn">import</span> <span class="n">_InferenceRuntime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.rename_expressions</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_expression_tokens</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.simplify_expressions</span><span class="w"> </span><span class="kn">import</span> <span class="n">simplify_expression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">str_tensor_proto_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.shape_builder</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeBuilder</span>
 
 
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-<span class="k">def</span> <span class="nf">_maybe_disable_fake_tensor_mode</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_maybe_disable_fake_tensor_mode</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
     <span class="k">finally</span><span class="p">:</span>
@@ -575,7 +578,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder">[docs]</a>
-<span class="k">class</span> <span class="nc">BasicShapeBuilder</span><span class="p">(</span><span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">_BuilderRuntime</span><span class="p">,</span> <span class="n">_ShapeRuntime</span><span class="p">,</span> <span class="n">_InferenceRuntime</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BasicShapeBuilder</span><span class="p">(</span><span class="n">ShapeBuilder</span><span class="p">,</span> <span class="n">_BuilderRuntime</span><span class="p">,</span> <span class="n">_ShapeRuntime</span><span class="p">,</span> <span class="n">_InferenceRuntime</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements a basic class doing shape inference in an ONNX model.</span>
 
@@ -589,7 +592,7 @@
 <span class="sd">    * ``ONNXSTOPVALUESHAPE=&lt;name&gt;``: more information in function dealing with shapes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">opset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_names</span> <span class="o">=</span> <span class="p">[]</span>
@@ -619,23 +622,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">time_evaluation_constants_</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_names</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_names</span>
 
 <div class="viewcode-block" id="BasicShapeBuilder.is_constant">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.is_constant">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if a result is a constant.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span></div>
 
 
 <div class="viewcode-block" id="BasicShapeBuilder.get_constant">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.get_constant">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_constant</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_constant</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -755,7 +758,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.set_constant">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.set_constant">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">TensorProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if a result is a constant.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span>
@@ -787,7 +790,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.set_value_shape">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.set_value_shape">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_value_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">equal_to</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_value_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">equal_to</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the value for a shape result.</span>
 
@@ -875,7 +878,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.has_type">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.has_type">[docs]</a>
-    <span class="k">def</span> <span class="nf">has_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if a result has a type. This should be always true.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_types</span><span class="p">:</span>
@@ -886,7 +889,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.get_type">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.get_type">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the type of a result.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
         <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_types</span><span class="p">,</span> <span class="p">(</span>
@@ -898,7 +901,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.set_type">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.set_type">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the shape for a result. It is exists, it checks the new shape</span>
 <span class="sd">        is equal to the existing one.</span>
@@ -944,7 +947,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.has_rank">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.has_rank">[docs]</a>
-    <span class="k">def</span> <span class="nf">has_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tells if a result has a rank.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
         <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_ranks</span></div>
@@ -952,7 +955,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.get_rank">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.get_rank">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the rank of a result.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
         <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_ranks</span><span class="p">,</span> <span class="p">(</span>
@@ -965,7 +968,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.set_rank">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.set_rank">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_rank</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the rank for a result.</span>
 
@@ -995,7 +998,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.has_shape">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.has_shape">[docs]</a>
-    <span class="k">def</span> <span class="nf">has_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tells if a result has a shape.</span>
 <span class="sd">        If *full* is True, it returns True if the shape exists and if it</span>
@@ -1012,7 +1015,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.get_shape">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.get_shape">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the shape of a result.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> for name.&quot;</span>
         <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_shapes</span><span class="p">,</span> <span class="p">(</span>
@@ -1024,7 +1027,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.register_dynamic_objects_from_dim">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.register_dynamic_objects_from_dim">[docs]</a>
-    <span class="k">def</span> <span class="nf">register_dynamic_objects_from_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_dynamic_objects_from_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Registers all the dynamic objects required in a dimension.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot; &quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dim</span> <span class="ow">and</span> <span class="n">dim</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">dim</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">),</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;type(dim)=</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span><span class="si">}</span><span class="s2"> must be a str and should not contain &quot;</span>
@@ -1038,7 +1041,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.add_dynamic_dimension">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.add_dynamic_dimension">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_dynamic_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dynamic_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a dynamic dimension.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_dimensions_</span>
@@ -1048,7 +1051,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.set_shape">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.set_shape">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">DYNAMIC_SHAPE</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the shape for a result. It is exists, it checks the new shape</span>
 <span class="sd">        is equal to the existing one.</span>
@@ -1095,7 +1098,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.value_as_shape">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.value_as_shape">[docs]</a>
-    <span class="k">def</span> <span class="nf">value_as_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">value_as_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value of a result if it is a shape.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_value_shape</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
@@ -1113,7 +1116,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.get_debug_msg">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.get_debug_msg">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_debug_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_debug_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a string providing as much information as possible</span>
 <span class="sd">        to help the developper understand why a conversion failed.</span>
@@ -1121,35 +1124,35 @@
 <span class="sd">        :param limit: limit the string if the model is big</span>
 <span class="sd">        :return: many pieces of informations about the on going conversion</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">onnx.numpy_helper</span> <span class="k">as</span> <span class="nn">onh</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnx.numpy_helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">onh</span>
 
-        <span class="k">def</span> <span class="nf">assert_sorted</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">assert_sorted</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_align</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_align</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
                 <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">s</span>
 
-        <span class="k">def</span> <span class="nf">_dtype</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_dtype</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">dtype</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;data_type&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">data_type</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dtype unknown for type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_shape</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_shape</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">dtype</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;dims&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dtype unknown for type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_size</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_size</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;numel&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">):</span>
@@ -1158,11 +1161,11 @@
                 <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dims</span><span class="p">))</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Size unknown for type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">_values</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_values</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;detach&quot;</span><span class="p">):</span>
 
-                <span class="k">def</span> <span class="nf">is_allow_non_fake_inputs_enabled</span><span class="p">():</span>
-                    <span class="kn">from</span> <span class="nn">torch._guards</span> <span class="kn">import</span> <span class="n">detect_fake_mode</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">is_allow_non_fake_inputs_enabled</span><span class="p">():</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">torch._guards</span><span class="w"> </span><span class="kn">import</span> <span class="n">detect_fake_mode</span>
 
                     <span class="k">return</span> <span class="n">detect_fake_mode</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
@@ -1214,7 +1217,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.run_node">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.run_node">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Uses shapes availables in the ShapeBuilder to infer the output shapes</span>
 <span class="sd">        and types.</span>
@@ -1240,7 +1243,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.run_value_info">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.run_value_info">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_value_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ValueInfoProto</span><span class="p">,</span> <span class="n">is_input</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_value_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="n">onnx</span><span class="o">.</span><span class="n">ValueInfoProto</span><span class="p">,</span> <span class="n">is_input</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fills ShapeBuilder with information coming from an input or output.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">info</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tensor_type</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;info is not a tensor type: </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">is_input</span><span class="p">:</span>
@@ -1255,7 +1258,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.run_model">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.run_model">[docs]</a>
-    <span class="k">def</span> <span class="nf">run_model</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_model</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">onnx</span><span class="o">.</span><span class="n">ModelProto</span><span class="p">,</span> <span class="n">onnx</span><span class="o">.</span><span class="n">GraphProto</span><span class="p">],</span>
         <span class="n">functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">onnx</span><span class="o">.</span><span class="n">FunctionProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1288,7 +1291,7 @@
 
 <div class="viewcode-block" id="BasicShapeBuilder.register_constraint_dimension">
 <a class="viewcode-back" href="../../../api/xshape/shape_builder_impl.html#experimental_experiment.xshape.shape_builder_impl.BasicShapeBuilder.register_constraint_dimension">[docs]</a>
-    <span class="k">def</span> <span class="nf">register_constraint_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">register_constraint_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Registers a constraint on a dimension.</span>
 

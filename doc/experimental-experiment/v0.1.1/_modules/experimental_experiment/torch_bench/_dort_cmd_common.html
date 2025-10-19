@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.torch_bench._dort_cmd_common - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
 </ul>
 
@@ -544,30 +547,30 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.torch_bench._dort_cmd_common</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">TensorProto</span>
-<span class="kn">from</span> <span class="nn">..export_helpers</span> <span class="kn">import</span> <span class="n">torch_export</span>
-<span class="kn">from</span> <span class="nn">._dort_cmd_common_models</span> <span class="kn">import</span> <span class="p">(</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..export_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">torch_export</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._dort_cmd_common_models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_create_configuration_for_benchmark_llama</span><span class="p">,</span>
     <span class="n">_create_configuration_for_benchmark_mistral</span><span class="p">,</span>
     <span class="n">_create_configuration_for_benchmark_phi</span><span class="p">,</span>
     <span class="n">_create_configuration_for_benchmark_phi3</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEFAULT_TARGET_OPSET</span>
 
 
 <div class="viewcode-block" id="get_fused_aten_ops_dispatcher">
 <a class="viewcode-back" href="../../../api/torch_bench/_dort_cmd_common.html#experimental_experiment.torch_bench._dort_cmd_common.get_fused_aten_ops_dispatcher">[docs]</a>
-<span class="k">def</span> <span class="nf">get_fused_aten_ops_dispatcher</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_fused_aten_ops_dispatcher</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a dispatcher with additional converting function to</span>
 <span class="sd">    convert fused operators into ATen ops onnxruntime can call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">..torch_interpreter</span> <span class="kn">import</span> <span class="n">Dispatcher</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dispatcher</span>
 
-    <span class="k">def</span> <span class="nf">onnx_scaled_dot_product_efficient_attention</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">onnx_scaled_dot_product_efficient_attention</span><span class="p">(</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -653,7 +656,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">onnx_scaled_dot_product_attention_backward</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">onnx_scaled_dot_product_attention_backward</span><span class="p">(</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">sts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -739,7 +742,7 @@
 
 <div class="viewcode-block" id="create_compiled_model">
 <a class="viewcode-back" href="../../../api/torch_bench/_dort_cmd_common.html#experimental_experiment.torch_bench._dort_cmd_common.create_compiled_model">[docs]</a>
-<span class="k">def</span> <span class="nf">create_compiled_model</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_compiled_model</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">target_opset</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -781,10 +784,10 @@
 <span class="sd">        none by default</span>
 <span class="sd">    :return: compiled model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
-    <span class="kn">from</span> <span class="nn">torch._dynamo.backends.common</span> <span class="kn">import</span> <span class="n">aot_autograd</span>
-    <span class="kn">from</span> <span class="nn">experimental_experiment.torch_models.training_helper</span> <span class="kn">import</span> <span class="n">make_aot_ort</span>
-    <span class="kn">from</span> <span class="nn">experimental_experiment.torch_dynamo</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torch._dynamo.backends.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">aot_autograd</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_models.training_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_aot_ort</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_dynamo</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
         <span class="n">get_decomposition_table</span><span class="p">,</span>
         <span class="n">get_decomposition_table_dynamo</span><span class="p">,</span>
         <span class="n">dynger_backend</span><span class="p">,</span>
@@ -808,8 +811,8 @@
         <span class="s2">&quot;plug&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ort+&quot;</span><span class="p">,</span>
     <span class="p">}:</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.training.ortmodule.torch_cpp_extensions</span> <span class="kn">import</span> <span class="n">aten_op_executor</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.capi</span> <span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">_C</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.training.ortmodule.torch_cpp_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">aten_op_executor</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi</span><span class="w"> </span><span class="kn">import</span> <span class="n">_pybind_state</span> <span class="k">as</span> <span class="n">_C</span>
 
         <span class="n">_C</span><span class="o">.</span><span class="n">register_aten_op_executor</span><span class="p">(</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">aten_op_executor</span><span class="o">.</span><span class="n">is_tensor_argument_address</span><span class="p">()),</span>
@@ -875,14 +878,14 @@
         <span class="c1"># TODO: create a specific backend,</span>
         <span class="c1"># https://github.com/pytorch/TensorRT/blob/main/py/torch_tensorrt/dynamo/_compiler.py#L44</span>
 
-        <span class="kn">import</span> <span class="nn">torch_tensorrt</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch_tensorrt</span>
 
-        <span class="k">class</span> <span class="nc">trt_backend</span><span class="p">:</span>
-            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="k">class</span><span class="w"> </span><span class="nc">trt_backend</span><span class="p">:</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">trt</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[create_compiled_model] run torch.export.export&quot;</span><span class="p">)</span>
@@ -999,7 +1002,7 @@
         <span class="k">return</span> <span class="n">cc</span>
 
     <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;ortmodule&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime.training.ortmodule</span> <span class="kn">import</span> <span class="n">ORTModule</span><span class="p">,</span> <span class="n">DebugOptions</span><span class="p">,</span> <span class="n">LogLevel</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.training.ortmodule</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORTModule</span><span class="p">,</span> <span class="n">DebugOptions</span><span class="p">,</span> <span class="n">LogLevel</span>
 
         <span class="k">if</span> <span class="n">dump_prefix</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ORTMODULE_CACHE_DIR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dump_prefix</span><span class="p">)</span>
@@ -1019,8 +1022,8 @@
 
 
 
-<span class="k">def</span> <span class="nf">dort_args</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">experimental_experiment.args</span> <span class="kn">import</span> <span class="n">get_parsed_args</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dort_args</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.args</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_parsed_args</span>
 
     <span class="n">args</span> <span class="o">=</span> <span class="n">get_parsed_args</span><span class="p">(</span>
         <span class="n">name</span><span class="p">,</span>
@@ -1071,8 +1074,8 @@
     <span class="k">return</span> <span class="n">args</span>
 
 
-<span class="k">def</span> <span class="nf">export_args</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">experimental_experiment.args</span> <span class="kn">import</span> <span class="n">get_parsed_args</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_args</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.args</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_parsed_args</span>
 
     <span class="n">args</span> <span class="o">=</span> <span class="n">get_parsed_args</span><span class="p">(</span>
         <span class="n">name</span><span class="p">,</span>
@@ -1114,7 +1117,7 @@
 
 <div class="viewcode-block" id="create_configuration_for_benchmark">
 <a class="viewcode-back" href="../../../api/torch_bench/_dort_cmd_common.html#experimental_experiment.torch_bench._dort_cmd_common.create_configuration_for_benchmark">[docs]</a>
-<span class="k">def</span> <span class="nf">create_configuration_for_benchmark</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_configuration_for_benchmark</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;llama&quot;</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;small&quot;</span><span class="p">,</span>
     <span class="n">repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
@@ -1164,7 +1167,7 @@
 
 <div class="viewcode-block" id="create_model">
 <a class="viewcode-back" href="../../../api/torch_bench/_dort_cmd_common.html#experimental_experiment.torch_bench._dort_cmd_common.create_model">[docs]</a>
-<span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span>
     <span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">config_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span>
@@ -1178,7 +1181,7 @@
 <span class="sd">    :return: model, list of inputs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">torch</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
         <span class="n">res</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">torch_dtype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">torch</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
@@ -1192,22 +1195,22 @@
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;llama&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">..torch_models.llama_helper</span> <span class="kn">import</span> <span class="n">get_llama_model</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.llama_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llama_model</span>
 
         <span class="k">return</span> <span class="n">get_llama_model</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;mistral&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">..torch_models.mistral_helper</span> <span class="kn">import</span> <span class="n">get_mistral_model</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.mistral_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_mistral_model</span>
 
         <span class="k">return</span> <span class="n">get_mistral_model</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;phi&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">..torch_models.phi_helper</span> <span class="kn">import</span> <span class="n">get_phi_model</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.phi_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_phi_model</span>
 
         <span class="k">return</span> <span class="n">get_phi_model</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;phi3&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">..torch_models.phi3_helper</span> <span class="kn">import</span> <span class="n">get_phi3_model</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..torch_models.phi3_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_phi3_model</span>
 
         <span class="k">return</span> <span class="n">get_phi3_model</span><span class="p">(</span><span class="o">**</span><span class="n">config_dict</span><span class="p">)</span>
 

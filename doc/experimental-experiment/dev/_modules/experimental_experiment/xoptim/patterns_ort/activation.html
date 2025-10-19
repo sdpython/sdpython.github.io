@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.xoptim.patterns_ort.activation - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../license.html">License</a></li>
 </ul>
 
@@ -544,16 +547,16 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for experimental_experiment.xoptim.patterns_ort.activation</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">onnx</span> <span class="kn">import</span> <span class="n">NodeProto</span>
-<span class="kn">from</span> <span class="nn">..patterns_api</span> <span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">EasyPatternOptimization</span>
-<span class="kn">from</span> <span class="nn">..patterns.onnx_functions</span> <span class="kn">import</span> <span class="n">GeluPattern</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span><span class="p">,</span> <span class="n">EasyPatternOptimization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..patterns.onnx_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeluPattern</span>
 
 
 <div class="viewcode-block" id="BiasGeluPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.BiasGeluPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">BiasGeluPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BiasGeluPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces by ``y = BiasGelu(x, B)``::</span>
 
@@ -563,7 +566,7 @@
 
 <div class="viewcode-block" id="BiasGeluPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.BiasGeluPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -626,7 +629,7 @@
 
 <div class="viewcode-block" id="BiasGeluPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.BiasGeluPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">add_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -652,7 +655,7 @@
 
 <div class="viewcode-block" id="GeluOrtPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.GeluOrtPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">GeluOrtPattern</span><span class="p">(</span><span class="n">GeluPattern</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GeluOrtPattern</span><span class="p">(</span><span class="n">GeluPattern</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detects the decomposed version of Gelu with Tanh</span>
 
@@ -662,7 +665,7 @@
 <span class="sd">        (x + 0.044715 * x^3)\\right)\\right)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -676,17 +679,17 @@
 
 <div class="viewcode-block" id="GeluErfPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">GeluErfPattern</span><span class="p">(</span><span class="n">EasyPatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GeluErfPattern</span><span class="p">(</span><span class="n">EasyPatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detects the decomposed version of Gelu with Erf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_opset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">min_opset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">,</span> <span class="n">min_opset</span><span class="o">=</span><span class="n">min_opset</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GeluErfPattern.match_pattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.match_pattern">[docs]</a>
-    <span class="k">def</span> <span class="nf">match_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="n">c05</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="n">c05</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
         <span class="n">xd</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">)</span>  <span class="c1"># 1.4140625</span>
         <span class="n">exd</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Erf</span><span class="p">(</span><span class="n">xd</span><span class="p">)</span>
         <span class="n">aexd</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">exd</span><span class="p">,</span> <span class="n">one</span><span class="p">)</span>  <span class="c1"># 1</span>
@@ -696,13 +699,13 @@
 
 <div class="viewcode-block" id="GeluErfPattern.apply_pattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.apply_pattern">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="n">c05</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cst2</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="n">c05</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
         <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">anyop</span><span class="o">.</span><span class="n">Gelu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;com.microsoft&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GeluErfPattern.validate_mapping">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.GeluErfPattern.validate_mapping">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_mapping</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_mapping</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">deleted_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">],</span>
@@ -730,14 +733,14 @@
 
 <div class="viewcode-block" id="FastGeluPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">FastGeluPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FastGeluPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Gelu by FastGelu.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FastGeluPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -750,7 +753,7 @@
 
 <div class="viewcode-block" id="FastGeluPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.FastGeluPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">gelu_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -771,14 +774,14 @@
 
 <div class="viewcode-block" id="BiasSoftmaxPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">BiasSoftmaxPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BiasSoftmaxPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Softmax(Add(x,y), axis=-1) by BiasSoftmax(x,y,axis=-1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BiasSoftmaxPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -801,7 +804,7 @@
 
 <div class="viewcode-block" id="BiasSoftmaxPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.BiasSoftmaxPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">add_node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -825,14 +828,14 @@
 
 <div class="viewcode-block" id="QuickGeluPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern">[docs]</a>
-<span class="k">class</span> <span class="nc">QuickGeluPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QuickGeluPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replaces Mul(x, Sigmoid(x)) by QuickGelu(x, alpha=1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="QuickGeluPattern.match">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern.match">[docs]</a>
-    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
@@ -853,7 +856,7 @@
 
 <div class="viewcode-block" id="QuickGeluPattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns_ort/activation.html#experimental_experiment.xoptim.patterns_ort.activation.QuickGeluPattern.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
         <span class="n">sigmoid</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
         <title>experimental_experiment.ext_test_case - experimental-experiment 0.1.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -385,9 +385,11 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_builder_runtime.html">.xshape._builder_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_inference_runtime.html">.xshape._inference_runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_runtime.html">.xshape._shape_runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xbuilder._shape_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_shape_helper.html">.xshape._shape_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/_onnx_helper.html">.xshape._onnx_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder.html">.xshape.shape_builder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/shape_builder_impl.html">.xshape.shape_builder_impl</a></li>
@@ -510,6 +512,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
@@ -549,51 +552,51 @@
 <span class="sd">specific functionalities to this project.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">import</span> <span class="nn">importlib</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">unittest</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">redirect_stderr</span><span class="p">,</span> <span class="n">redirect_stdout</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
-<span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">Timer</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_allclose</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">unittest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">redirect_stderr</span><span class="p">,</span> <span class="n">redirect_stdout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">timeit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">assert_allclose</span>
 
 <span class="n">BOOLEAN_VALUES</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;TRUE&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="is_azure">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.is_azure">[docs]</a>
-<span class="k">def</span> <span class="nf">is_azure</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_azure</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tells if the job is running on Azure DevOps.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_HTTP_USER_AGENT&quot;</span><span class="p">,</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;undefined&quot;</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">is_windows</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_windows</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">is_apple</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_apple</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;darwin&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">is_linux</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_linux</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;linux&quot;</span>
 
 
 <div class="viewcode-block" id="skipif_transformers">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.skipif_transformers">[docs]</a>
-<span class="k">def</span> <span class="nf">skipif_transformers</span><span class="p">(</span><span class="n">version_to_skip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">skipif_transformers</span><span class="p">(</span><span class="n">version_to_skip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if transformers has a specific version.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">version_to_skip</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">version_to_skip</span> <span class="o">=</span> <span class="p">{</span><span class="n">version_to_skip</span><span class="p">}</span>
-    <span class="kn">import</span> <span class="nn">transformers</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
 
     <span class="k">if</span> <span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span> <span class="ow">in</span> <span class="n">version_to_skip</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unstable test. </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -604,7 +607,7 @@
 
 <div class="viewcode-block" id="skipif_not_onnxrt">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.skipif_not_onnxrt">[docs]</a>
-<span class="k">def</span> <span class="nf">skipif_not_onnxrt</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">skipif_not_onnxrt</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="n">UNITTEST_ONNXRT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;UNITTEST_ONNXRT&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
     <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">UNITTEST_ONNXRT</span><span class="p">)</span>
@@ -617,7 +620,7 @@
 
 <div class="viewcode-block" id="skipif_ci_windows">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.skipif_ci_windows">[docs]</a>
-<span class="k">def</span> <span class="nf">skipif_ci_windows</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">skipif_ci_windows</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_windows</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_azure</span><span class="p">():</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Test does not work on azure pipeline (Windows). </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -628,7 +631,7 @@
 
 <div class="viewcode-block" id="skipif_ci_linux">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.skipif_ci_linux">[docs]</a>
-<span class="k">def</span> <span class="nf">skipif_ci_linux</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">skipif_ci_linux</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Linux`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_linux</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_azure</span><span class="p">():</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Takes too long (Linux). </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -639,7 +642,7 @@
 
 <div class="viewcode-block" id="skipif_ci_apple">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.skipif_ci_apple">[docs]</a>
-<span class="k">def</span> <span class="nf">skipif_ci_apple</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">skipif_ci_apple</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_apple</span><span class="p">()</span> <span class="ow">and</span> <span class="n">is_azure</span><span class="p">():</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Test does not work on azure pipeline (Apple). </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -650,11 +653,11 @@
 
 <div class="viewcode-block" id="with_path_append">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.with_path_append">[docs]</a>
-<span class="k">def</span> <span class="nf">with_path_append</span><span class="p">(</span><span class="n">path_to_add</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">with_path_append</span><span class="p">(</span><span class="n">path_to_add</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds a path to sys.path to check.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">path_to_add</span><span class="o">=</span><span class="n">path_to_add</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_add</span><span class="o">=</span><span class="n">path_to_add</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">path_to_add</span><span class="o">=</span><span class="n">path_to_add</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_add</span><span class="o">=</span><span class="n">path_to_add</span><span class="p">):</span>
             <span class="n">cpy</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">path_to_add</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_to_add</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -671,7 +674,7 @@
 
 <div class="viewcode-block" id="unit_test_going">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.unit_test_going">[docs]</a>
-<span class="k">def</span> <span class="nf">unit_test_going</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unit_test_going</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enables a flag telling the script is running while testing it.</span>
 <span class="sd">    Avois unit tests to be very long.</span>
@@ -683,7 +686,7 @@
 
 <div class="viewcode-block" id="ignore_warnings">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ignore_warnings">[docs]</a>
-<span class="k">def</span> <span class="nf">ignore_warnings</span><span class="p">(</span><span class="n">warns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="ne">Warning</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ignore_warnings</span><span class="p">(</span><span class="n">warns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="ne">Warning</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Catches warnings.</span>
 
@@ -694,18 +697,18 @@
     <span class="n">new_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">warns</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">w</span> <span class="o">==</span> <span class="s2">&quot;TracerWarning&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">torch.jit</span> <span class="kn">import</span> <span class="n">TracerWarning</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">torch.jit</span><span class="w"> </span><span class="kn">import</span> <span class="n">TracerWarning</span>
 
             <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TracerWarning</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
     <span class="n">warns</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">fct</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">fct</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">warns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;warns cannot be None for &#39;</span><span class="si">{</span><span class="n">fct</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">call_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">call_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">warns</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">fct</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -722,7 +725,7 @@
 
 <div class="viewcode-block" id="hide_stdout">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.hide_stdout">[docs]</a>
-<span class="k">def</span> <span class="nf">hide_stdout</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hide_stdout</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Catches warnings, hides standard output.</span>
 <span class="sd">    The function may be disabled by setting ``UNHIDE=1``</span>
@@ -731,8 +734,8 @@
 <span class="sd">    :param f: the function is called with the stdout as an argument</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">fct</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">call_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">fct</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">call_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;UNHIDE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
                 <span class="n">fct</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
                 <span class="k">return</span>
@@ -761,7 +764,7 @@
 
 <div class="viewcode-block" id="long_test">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.long_test">[docs]</a>
-<span class="k">def</span> <span class="nf">long_test</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">long_test</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if it runs on :epkg:`azure pipeline` on :epkg:`Windows`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LONGTEST&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Skipped (set LONGTEST=1 to run it. </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -772,7 +775,7 @@
 
 <div class="viewcode-block" id="never_test">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.never_test">[docs]</a>
-<span class="k">def</span> <span class="nf">never_test</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">never_test</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NEVERTEST&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Skipped (set NEVERTEST=1 to run it. </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -783,7 +786,7 @@
 
 <div class="viewcode-block" id="measure_time">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.measure_time">[docs]</a>
-<span class="k">def</span> <span class="nf">measure_time</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_time</span><span class="p">(</span>
     <span class="n">stmt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span>
     <span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">repeat</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -905,7 +908,7 @@
 
 <div class="viewcode-block" id="ExtTestCase">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase">[docs]</a>
-<span class="k">class</span> <span class="nc">ExtTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExtTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inherits from :class:`unittest.TestCase` and adds specific comprison</span>
 <span class="sd">    functions and other helpers.</span>
@@ -917,7 +920,7 @@
 <div class="viewcode-block" id="ExtTestCase.setUpClass">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.setUpClass">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;onnxscript.optimizer.constant_folding&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
         <span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="o">.</span><span class="n">setUpClass</span><span class="p">()</span></div>
@@ -926,7 +929,7 @@
 <div class="viewcode-block" id="ExtTestCase.tearDownClass">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.tearDownClass">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_warns</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="n">w</span><span class="si">!s}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_todos</span><span class="p">:</span>
@@ -938,32 +941,32 @@
 <div class="viewcode-block" id="ExtTestCase.todo">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.todo">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">todo</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">todo</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="s2">&quot;Adds a todo printed when all test are run.&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">_todos</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ExtTestCase.print_model">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.print_model">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
         <span class="s2">&quot;Prints a ModelProto&quot;</span>
-        <span class="kn">from</span> <span class="nn">experimental_experiment.helpers</span> <span class="kn">import</span> <span class="n">pretty_onnx</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ExtTestCase.print_onnx">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.print_onnx">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_onnx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_onnx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
         <span class="s2">&quot;Prints a ModelProto&quot;</span>
-        <span class="kn">from</span> <span class="nn">experimental_experiment.helpers</span> <span class="kn">import</span> <span class="n">pretty_onnx</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">pretty_onnx</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">model</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ExtTestCase.get_dump_file">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.get_dump_file">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_dump_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_dump_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a filename to dump a model.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;dump_test&quot;</span>
@@ -974,7 +977,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.dump_onnx">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.dump_onnx">[docs]</a>
-    <span class="k">def</span> <span class="nf">dump_onnx</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dump_onnx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">proto</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -989,7 +992,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertExists">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertExists">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks the existing of a file.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File or folder </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> does not exists.&quot;</span><span class="p">)</span></div>
@@ -997,13 +1000,13 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertGreaterOrEqual">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertGreaterOrEqual">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertGreaterOrEqual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertGreaterOrEqual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">:</span>
             <span class="k">return</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">, a not greater or equal than b</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">assertInOr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tofind</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertInOr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tofind</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">tof</span> <span class="ow">in</span> <span class="n">tofind</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tof</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
                 <span class="k">return</span>
@@ -1013,7 +1016,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertIn">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertIn">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tofind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertIn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tofind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">tofind</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
@@ -1023,7 +1026,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertSetContained">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertSetContained">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertSetContained</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertSetContained</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">):</span>
         <span class="s2">&quot;Checks that ``set1`` is contained in ``set2``.&quot;</span>
         <span class="n">set1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span>
         <span class="n">set2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">set2</span><span class="p">)</span>
@@ -1033,7 +1036,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertEqualArrays">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertEqualArrays">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertEqualArrays</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqualArrays</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
@@ -1049,7 +1052,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertEqualOr">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertEqualOr">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertEqualOr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqualOr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if value is one or the expected values.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expected</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="n">expected</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
@@ -1057,7 +1060,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertEqualArray">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertEqualArray">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertEqualArray</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqualArray</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -1071,16 +1074,16 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-            <span class="kn">import</span> <span class="nn">torch</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_close</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span>
@@ -1095,7 +1098,7 @@
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>  <span class="c1"># noqa: B904</span>
             <span class="k">return</span>
 
-        <span class="kn">from</span> <span class="nn">.torch_test_helper</span> <span class="kn">import</span> <span class="n">to_numpy</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.torch_test_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_numpy</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="s2">&quot;detach&quot;</span><span class="p">):</span>
             <span class="n">expected</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
@@ -1105,11 +1108,11 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -1128,14 +1131,14 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>  <span class="c1"># noqa: B904</span></div>
 
 
-    <span class="k">def</span> <span class="nf">assertEqualTrue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqualTrue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;value is not True: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ExtTestCase.assertEqual">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertEqual">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Overwrites the error message to get a more explicit message about what is what.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
@@ -1148,7 +1151,7 @@
                 <span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">assertEqualAny</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqualAny</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
@@ -1181,7 +1184,7 @@
                 <span class="sa">f</span><span class="s2">&quot;Comparison not implemented for types </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">assertEqualArrayAny</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEqualArrayAny</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
@@ -1222,7 +1225,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertAlmostEqual">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertAlmostEqual">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertAlmostEqual</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertAlmostEqual</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">expected</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -1237,14 +1240,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqualArray</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">check_ort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onx</span><span class="p">:</span> <span class="s2">&quot;onnx.ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">InferenceSession</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_ort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onx</span><span class="p">:</span> <span class="s2">&quot;onnx.ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">InferenceSession</span>
 
         <span class="k">return</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="ExtTestCase.assertRaise">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertRaise">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertRaise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertRaise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fct</span><span class="p">()</span>
@@ -1259,7 +1262,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertEmpty">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertEmpty">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -1270,7 +1273,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertNotEmpty">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertNotEmpty">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertNotEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertNotEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;value is empty: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
@@ -1281,7 +1284,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.assertStartsWith">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.assertStartsWith">[docs]</a>
-    <span class="k">def</span> <span class="nf">assertStartsWith</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">assertStartsWith</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In the name&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">full</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;prefix=</span><span class="si">{</span><span class="n">prefix</span><span class="si">!r}</span><span class="s2"> does not start string  </span><span class="si">{</span><span class="n">full</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
@@ -1289,7 +1292,7 @@
 
 <div class="viewcode-block" id="ExtTestCase.capture">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.capture">[docs]</a>
-    <span class="k">def</span> <span class="nf">capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">capture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Runs a function and capture standard output and error.</span>
 
@@ -1305,13 +1308,13 @@
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;function </span><span class="si">{</span><span class="n">fct</span><span class="si">}</span><span class="s2"> failed, stdout=&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">sout</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="s2">stderr=</span><span class="se">\n</span><span class="si">{</span><span class="n">serr</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
         <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">sout</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span> <span class="n">serr</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="ExtTestCase.tryCall">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.ExtTestCase.tryCall">[docs]</a>
-    <span class="k">def</span> <span class="nf">tryCall</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tryCall</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">none_if</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1329,18 +1332,18 @@
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span></div>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
 
 
-    <span class="k">def</span> <span class="nf">make_inference_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;InferenceSession&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
-        <span class="kn">import</span> <span class="nn">onnxruntime</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_inference_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;InferenceSession&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
         <span class="k">return</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
             <span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">string_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">onnx_diagnostic.helpers</span> <span class="kn">import</span> <span class="n">string_type</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">string_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
 
         <span class="k">return</span> <span class="n">string_type</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -1348,7 +1351,7 @@
 
 <div class="viewcode-block" id="get_figure">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.get_figure">[docs]</a>
-<span class="k">def</span> <span class="nf">get_figure</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_figure</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the figure of a matplotlib figure.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;get_figure&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
@@ -1364,14 +1367,14 @@
 
 <div class="viewcode-block" id="dump_dort_onnx">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.dump_dort_onnx">[docs]</a>
-<span class="k">def</span> <span class="nf">dump_dort_onnx</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dump_dort_onnx</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager to dump onnx model created by dort.&quot;&quot;&quot;</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;tests_dump&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXRT_DUMP_PATH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;ONNXRT_DUMP_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -1384,9 +1387,9 @@
 
 <div class="viewcode-block" id="has_cuda">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_cuda">[docs]</a>
-<span class="k">def</span> <span class="nf">has_cuda</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_cuda</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns ``torch.cuda.device_count() &gt; 0``.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
@@ -1394,7 +1397,7 @@
 
 <div class="viewcode-block" id="requires_cuda">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_cuda">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_cuda</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">memory</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_cuda</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">memory</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Skips a test if cuda is not available.</span>
 
@@ -1402,13 +1405,13 @@
 <span class="sd">    :param version: minimum version</span>
 <span class="sd">    :param memory: minimun number of Gb to run the test</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;only runs on CUDA but torch does not have it&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;cuda not installed&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">version</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">packaging.versions</span> <span class="k">as</span> <span class="nn">pv</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.versions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
         <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">cuda</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;CUDA older than </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1426,7 +1429,7 @@
 
 <div class="viewcode-block" id="requires_zoo">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_zoo">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_zoo</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_zoo</span><span class="p">(</span><span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if environment variable ZOO is not equal to 1.&quot;&quot;&quot;</span>
     <span class="n">var</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ZOO&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">BOOLEAN_VALUES</span>
 
@@ -1439,13 +1442,13 @@
 
 <div class="viewcode-block" id="has_executorch">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_executorch">[docs]</a>
-<span class="k">def</span> <span class="nf">has_executorch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_executorch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tells if :epkg:`ExecuTorch` is installed.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">version</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;executorch&quot;</span><span class="p">)</span>
 
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">executorch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">executorch</span>
 
     <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">executorch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">)</span></div>
 
@@ -1453,10 +1456,10 @@
 
 <div class="viewcode-block" id="requires_sklearn">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_sklearn">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_sklearn</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_sklearn</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`scikit-learn` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">sklearn</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span>
 
     <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;scikit-learn version </span><span class="si">{</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1467,10 +1470,10 @@
 
 <div class="viewcode-block" id="has_torch">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_torch">[docs]</a>
-<span class="k">def</span> <span class="nf">has_torch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_torch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="s2">&quot;Returns True if torch verions is higher.&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">)</span></div>
 
@@ -1478,12 +1481,12 @@
 
 <div class="viewcode-block" id="has_onnx_diagnostic">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_onnx_diagnostic">[docs]</a>
-<span class="k">def</span> <span class="nf">has_onnx_diagnostic</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_onnx_diagnostic</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="s2">&quot;Returns True if torch verions is higher.&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">onnx_diagnostic</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnx_diagnostic</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -1493,12 +1496,12 @@
 
 <div class="viewcode-block" id="requires_onnx_diagnostic">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnx_diagnostic">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnx_diagnostic</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnx_diagnostic</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnx-diagnostic` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">onnx_diagnostic</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnx_diagnostic</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;onnx-diagnostic missing: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1512,10 +1515,10 @@
 
 <div class="viewcode-block" id="requires_torch">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_torch">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_torch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_torch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`pytorch` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
     <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;torch version </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1526,14 +1529,14 @@
 
 <div class="viewcode-block" id="requires_executorch">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_executorch">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_executorch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_executorch</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`executorch` is not recent enough.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">has_executorch</span><span class="p">():</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;executorch is not installed: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">executorch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">executorch</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">executorch</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">executorch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span>
         <span class="n">version</span>
@@ -1546,12 +1549,12 @@
 
 <div class="viewcode-block" id="requires_monai">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_monai">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_monai</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_monai</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`monai` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">monai</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">monai</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;monai is not installed&quot;</span><span class="p">)</span>
 
@@ -1563,12 +1566,12 @@
 
 <div class="viewcode-block" id="requires_vocos">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_vocos">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_vocos</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_vocos</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`vocos` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">vocos</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">vocos</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;vocos not installed&quot;</span><span class="p">)</span>
 
@@ -1581,12 +1584,12 @@
 
 <div class="viewcode-block" id="requires_pyinstrument">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_pyinstrument">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_pyinstrument</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_pyinstrument</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`pyinstrument` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">pyinstrument</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyinstrument</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;pyinstrument is not installed&quot;</span><span class="p">)</span>
 
@@ -1599,10 +1602,10 @@
 
 <div class="viewcode-block" id="requires_numpy">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_numpy">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_numpy</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_numpy</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`numpy` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">numpy</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
     <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;numpy version </span><span class="si">{</span><span class="n">numpy</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1613,14 +1616,14 @@
 
 <div class="viewcode-block" id="requires_transformers">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_transformers">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_transformers</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_transformers</span><span class="p">(</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">or_older_than</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`transformers` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">transformers</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;diffusers not installed </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1641,14 +1644,14 @@
 
 <div class="viewcode-block" id="requires_diffusers">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_diffusers">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_diffusers</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_diffusers</span><span class="p">(</span>
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">or_older_than</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`transformers` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">diffusers</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">diffusers</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;diffusers not installed </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1666,10 +1669,10 @@
 
 <div class="viewcode-block" id="requires_onnxscript">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnxscript">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnxscript</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnxscript</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxscript` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnxscript</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnxscript</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnxscript</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">):</span>
         <span class="c1"># development version</span>
@@ -1684,10 +1687,10 @@
 
 <div class="viewcode-block" id="requires_onnxir">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnxir">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnxir</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnxir</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnx-ir` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnx_ir</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnx_ir</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnx_ir</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">):</span>
         <span class="c1"># development version</span>
@@ -1702,10 +1705,10 @@
 
 <div class="viewcode-block" id="has_onnxscript">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_onnxscript">[docs]</a>
-<span class="k">def</span> <span class="nf">has_onnxscript</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_onnxscript</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxscript` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnxscript</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnxscript</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnxscript</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">):</span>
         <span class="c1"># development version</span>
@@ -1720,10 +1723,10 @@
 
 <div class="viewcode-block" id="has_onnxruntime">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_onnxruntime">[docs]</a>
-<span class="k">def</span> <span class="nf">has_onnxruntime</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_onnxruntime</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxruntime` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnxruntime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">onnxruntime</span><span class="p">,</span> <span class="s2">&quot;__version__&quot;</span><span class="p">):</span>
         <span class="c1"># development version</span>
@@ -1738,10 +1741,10 @@
 
 <div class="viewcode-block" id="requires_onnxruntime">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnxruntime">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnxruntime</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnxruntime</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxruntime` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnxruntime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
     <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;onnxruntime version </span><span class="si">{</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1752,10 +1755,10 @@
 
 <div class="viewcode-block" id="has_onnxruntime_training">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.has_onnxruntime_training">[docs]</a>
-<span class="k">def</span> <span class="nf">has_onnxruntime_training</span><span class="p">(</span><span class="n">push_back_batch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">has_onnxruntime_training</span><span class="p">(</span><span class="n">push_back_batch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tells if onnxruntime_training is installed.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">training</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">training</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="c1"># onnxruntime not training</span>
         <span class="n">training</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1764,7 +1767,7 @@
 
     <span class="k">if</span> <span class="n">push_back_batch</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">onnxruntime.capi.onnxruntime_pybind11_state</span> <span class="kn">import</span> <span class="n">OrtValueVector</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi.onnxruntime_pybind11_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrtValueVector</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -1776,12 +1779,12 @@
 
 <div class="viewcode-block" id="requires_onnxruntime_training">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnxruntime_training">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnxruntime_training</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnxruntime_training</span><span class="p">(</span>
     <span class="n">push_back_batch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ortmodule</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnxruntime` is not onnxruntime_training.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">training</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">training</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="c1"># onnxruntime not training</span>
         <span class="n">training</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1791,7 +1794,7 @@
 
     <span class="k">if</span> <span class="n">push_back_batch</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">onnxruntime.capi.onnxruntime_pybind11_state</span> <span class="kn">import</span> <span class="n">OrtValueVector</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime.capi.onnxruntime_pybind11_state</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrtValueVector</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;OrtValue has no method push_back_batch&quot;</span>
             <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1801,7 +1804,7 @@
             <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ortmodule</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">onnxruntime.training.ortmodule</span>  <span class="c1"># noqa: F401</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime.training.ortmodule</span>  <span class="c1"># noqa: F401</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">):</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="ow">or</span> <span class="s2">&quot;ortmodule is missing in onnxruntime-training&quot;</span>
             <span class="k">return</span> <span class="n">unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1811,10 +1814,10 @@
 
 <div class="viewcode-block" id="requires_onnx">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnx">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnx</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnx</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnx` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnx</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 
     <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">onnx</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;onnx version </span><span class="si">{</span><span class="n">onnx</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1825,10 +1828,10 @@
 
 <div class="viewcode-block" id="requires_onnx_array_api">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.requires_onnx_array_api">[docs]</a>
-<span class="k">def</span> <span class="nf">requires_onnx_array_api</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_onnx_array_api</span><span class="p">(</span><span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Skips a unit test if :epkg:`onnx-array-api` is not recent enough.&quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">packaging.version</span> <span class="k">as</span> <span class="nn">pv</span>
-    <span class="kn">import</span> <span class="nn">onnx_array_api</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnx_array_api</span>
 
     <span class="k">if</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">onnx_array_api</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">pv</span><span class="o">.</span><span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;onnx-array-api version </span><span class="si">{</span><span class="n">onnx_array_api</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1839,7 +1842,7 @@
 
 <div class="viewcode-block" id="statistics_on_file">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.statistics_on_file">[docs]</a>
-<span class="k">def</span> <span class="nf">statistics_on_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">statistics_on_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes statistics on a file.</span>
 
@@ -1880,7 +1883,7 @@
 
 <div class="viewcode-block" id="statistics_on_folder">
 <a class="viewcode-back" href="../../api/ext_test_case.html#experimental_experiment.ext_test_case.statistics_on_folder">[docs]</a>
-<span class="k">def</span> <span class="nf">statistics_on_folder</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">statistics_on_folder</span><span class="p">(</span>
     <span class="n">folder</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
     <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.*[.]((py|rst))$&quot;</span><span class="p">,</span>
     <span class="n">aggregation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
