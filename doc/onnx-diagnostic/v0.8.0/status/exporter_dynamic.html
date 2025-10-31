@@ -208,6 +208,7 @@
 <li class="toctree-l3"><a class="reference internal" href="exported_program_dynamic.html">Exported Programs with Dynamic Shapes</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Exported ONNX with Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="patches_coverage.html">Coverage of the Patches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="patches_diff.html">Patches Diff</a></li>
 </ul>
 </li>
 </ul>
@@ -316,6 +317,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../api/torch_export_patches/patch_details.html">onnx_diagnostic.torch_export_patches.patch_details</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
@@ -597,7 +599,7 @@ to the original model.</p>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The implementation is still incorrect, x=&#39;x&#39;, shape=(&#39;batch&#39;, 2, 8, 8), size=[2, 2, 8, 4], stride=[128, 8, 16, 1], storage_offset=None
 --DEBUG--
-[GraphBuilder-DSA] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-MDS] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 --CONSTRAINTS--
     batch = {&#39;s77&#39;}
     s77 = {&#39;batch&#39;}
@@ -659,10 +661,10 @@ set()
 -- process.progress --
 node 1/3 target=aten.as_strided.default
 -- 1 INPUTS
-[GraphBuilder-DSA.make_tensor_input] x[1:batchx2x8x8]
+[GraphBuilder-MDS.make_tensor_input] x[1:batchx2x8x8]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-DSA] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-MDS] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -897,7 +899,7 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 <section id="id12">
 <h3>dynamo-ir<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x78aad525cf50&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x78aad525f740&gt;&#39;]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x7a92c63d5340&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x7a92c63d4980&gt;&#39;]
 </pre></div>
 </div>
 </section>
@@ -3537,7 +3539,7 @@ output: name=&#39;_to_copy_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batc
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret function &lt;class &#39;str&#39;&gt;: &#39;aten__add_batch_dim&#39;, searched for [&#39;aten__add_batch_dim&#39;] and attributes [], args=(x, 0, 1), kwargs={}, dispatcher=None
 --DEBUG--
-[GraphBuilder-KTC] Message starts, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-RKI] Message starts, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs.
 --CONSTRAINTS--
     DYN0 = {&#39;s77&#39;}
     DYN1 = {&#39;s17&#39;}
@@ -3629,15 +3631,15 @@ graph():
 -- process.inputs_to_remove --
 set()
 -- process.progress --
-node 3/9 target=&lt;function _add_batch_dim at 0x78abeffc74c0&gt;
+node 3/9 target=&lt;function _add_batch_dim at 0x7a939a7e34c0&gt;
 -- 2 INPUTS
-[GraphBuilder-KTC.make_tensor_input] x[1:DYN0]
-[GraphBuilder-KTC.make_tensor_input] y[1:DYN1]
+[GraphBuilder-RKI.make_tensor_input] x[1:DYN0]
+[GraphBuilder-RKI.make_tensor_input] y[1:DYN1]
 -- 0 INITIALIZERS
-[GraphBuilder-KTC.make_node] sym_size_int    [#:#   ] Shape:[&#39;y&#39;]-&gt;[&#39;y::Shape:1&#39;]
-[GraphBuilder-KTC.make_node] sym_size_int2   [#:#   ] Squeeze:[&#39;y::Shape:1&#39;]-&gt;[&#39;sym_size_int_3&#39;]
+[GraphBuilder-RKI.make_node] sym_size_int    [#:#   ] Shape:[&#39;y&#39;]-&gt;[&#39;y::Shape:1&#39;]
+[GraphBuilder-RKI.make_node] sym_size_int2   [#:#   ] Squeeze:[&#39;y::Shape:1&#39;]-&gt;[&#39;sym_size_int_3&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-KTC] Message completed, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs., 
+[GraphBuilder-RKI] Message completed, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs., 
 </pre></div>
 </div>
 </section>
@@ -3673,7 +3675,7 @@ output: name=&#39;add_2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s17&#39;]
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret function &lt;class &#39;torch._ops.OpOverload&#39;&gt;: &lt;OpOverload(op=&#39;aten.movedim&#39;, overload=&#39;int&#39;)&gt;, searched for [&#39;aten::movedim_int&#39;, &#39;movedim_int&#39;] and attributes [&#39;__qualname__&#39;, &#39;__name__&#39;], args=(x, 0, 0), kwargs={}, dispatcher=None
 --DEBUG--
-[GraphBuilder-EJW] Message starts, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-LJC] Message starts, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs.
 --CONSTRAINTS--
     DYN0 = {&#39;s77&#39;}
     DYN1 = {&#39;s17&#39;}
@@ -3763,11 +3765,11 @@ set()
 -- process.progress --
 node 2/8 target=aten.movedim.int
 -- 2 INPUTS
-[GraphBuilder-EJW.make_tensor_input] x[1:DYN0]
-[GraphBuilder-EJW.make_tensor_input] y[1:DYN1]
+[GraphBuilder-LJC.make_tensor_input] x[1:DYN0]
+[GraphBuilder-LJC.make_tensor_input] y[1:DYN1]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-EJW] Message completed, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs., 
+[GraphBuilder-LJC] Message completed, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs., 
 </pre></div>
 </div>
 </section>

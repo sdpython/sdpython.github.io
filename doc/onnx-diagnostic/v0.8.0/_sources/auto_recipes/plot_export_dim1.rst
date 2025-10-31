@@ -29,13 +29,15 @@ has 0 or 1 for dimension declared as dynamic dimension.
 Simple model, no dimension with 0 or 1
 ++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-35
+.. GENERATED FROM PYTHON SOURCE LINES 13-40
 
 .. code-block:: Python
 
 
     import torch
     from onnx_diagnostic import doc
+    from onnx_diagnostic.helpers import string_type
+    from onnx_diagnostic.torch_export_patches import torch_export_patches
 
 
     class Model(torch.nn.Module):
@@ -52,8 +54,11 @@ Simple model, no dimension with 0 or 1
     DYN = torch.export.Dim.DYNAMIC
     ds = {0: DYN, 1: DYN}
 
+    print("-- export shape:", string_type((x, y, z), with_shape=True))
+    print("-- dynamic shapes:", string_type((ds, ds, ds)))
+
     ep = torch.export.export(model, (x, y, z), dynamic_shapes=(ds, ds, ds))
-    print(ep.graph)
+    print(ep)
 
 
 
@@ -63,25 +68,40 @@ Simple model, no dimension with 0 or 1
 
  .. code-block:: none
 
-    graph():
-        %x : [num_users=1] = placeholder[target=x]
-        %y : [num_users=1] = placeholder[target=y]
-        %z : [num_users=1] = placeholder[target=z]
-        %cat : [num_users=1] = call_function[target=torch.ops.aten.cat.default](args = ([%x, %y], 1), kwargs = {})
-        %add : [num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%cat, %z), kwargs = {})
-        return (add,)
+    -- export shape: (T1s2x3,T1s2x5,T1s2x8)
+    -- dynamic shapes: ({0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC})
+    ExportedProgram:
+        class GraphModule(torch.nn.Module):
+            def forward(self, x: "f32[s17, s27]", y: "f32[s17, s94]", z: "f32[s17, s27 + s94]"):
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_export_dim1.py:22 in forward, code: return torch.cat((x, y), axis=1) + z
+                cat: "f32[s17, s27 + s94]" = torch.ops.aten.cat.default([x, y], 1);  x = y = None
+                add: "f32[s17, s27 + s94]" = torch.ops.aten.add.Tensor(cat, z);  cat = z = None
+                return (add,)
+            
+    Graph signature: 
+        # inputs
+        x: USER_INPUT
+        y: USER_INPUT
+        z: USER_INPUT
+    
+        # outputs
+        add: USER_OUTPUT
+    
+    Range constraints: {s17: VR[2, int_oo], s27: VR[2, int_oo], s94: VR[2, int_oo], s27 + s94: VR[4, int_oo]}
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+
+.. GENERATED FROM PYTHON SOURCE LINES 41-43
 
 Same model, a dynamic dimension = 1
 +++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-50
+.. GENERATED FROM PYTHON SOURCE LINES 43-59
 
 .. code-block:: Python
+
 
 
     z = z[:1]
@@ -89,9 +109,12 @@ Same model, a dynamic dimension = 1
     DYN = torch.export.Dim.DYNAMIC
     ds = {0: DYN, 1: DYN}
 
+    print("-- export shape:", string_type((x, y, z), with_shape=True))
+    print("-- dynamic shapes:", string_type((ds, ds, ds)))
+
     try:
         ep = torch.export.export(model, (x, y, z), dynamic_shapes=(ds, ds, ds))
-        print(ep.graph)
+        print(ep)
     except Exception as e:
         print("ERROR", e)
 
@@ -103,31 +126,38 @@ Same model, a dynamic dimension = 1
 
  .. code-block:: none
 
-    ERROR The size of tensor a (s17) must match the size of tensor b (s68) at non-singleton dimension 0)
+    -- export shape: (T1s2x3,T1s2x5,T1s1x8)
+    -- dynamic shapes: ({0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC})
+    ERROR Found the following conflicts between user-specified ranges and inferred ranges from model tracing:
+    - Received user-specified dim hint Dim.DYNAMIC(min=None, max=None), but export 0/1 specialized due to hint of 1 for dimension inputs['z'].shape[0].
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 60-61
 
 It failed. Let's try a little trick.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 63-65
 
 Same model, a dynamic dimension = 1 and backed_size_oblivious=True
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-64
+.. GENERATED FROM PYTHON SOURCE LINES 65-77
 
 .. code-block:: Python
 
 
+    print("-- export shape:", string_type((x, y, z), with_shape=True))
+    print("-- dynamic shapes:", string_type((ds, ds, ds)))
+
     try:
         with torch.fx.experimental._config.patch(backed_size_oblivious=True):
             ep = torch.export.export(model, (x, y, z), dynamic_shapes=(ds, ds, ds))
-            print(ep.graph)
+            print(ep)
     except RuntimeError as e:
         print("ERROR", e)
+
 
 
 
@@ -137,16 +167,72 @@ Same model, a dynamic dimension = 1 and backed_size_oblivious=True
 
  .. code-block:: none
 
+    -- export shape: (T1s2x3,T1s2x5,T1s1x8)
+    -- dynamic shapes: ({0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC})
     ERROR The size of tensor a (s17) must match the size of tensor b (s68) at non-singleton dimension 0)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-66
+.. GENERATED FROM PYTHON SOURCE LINES 78-80
 
-It worked.
+Final try with patches...
++++++++++++++++++++++++++
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 80-91
+
+.. code-block:: Python
+
+
+    print("-- export shape:", string_type((x, y, z), with_shape=True))
+    print("-- dynamic shapes:", string_type((ds, ds, ds)))
+
+    with torch_export_patches(patch_torch=1):
+        try:
+            ep = torch.export.export(model, (x, y, z), dynamic_shapes=(ds, ds, ds))
+            print(ep)
+        except RuntimeError as e:
+            print("ERROR", e)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    -- export shape: (T1s2x3,T1s2x5,T1s1x8)
+    -- dynamic shapes: ({0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC},{0:DYNAMIC,1:DYNAMIC})
+    ExportedProgram:
+        class GraphModule(torch.nn.Module):
+            def forward(self, x: "f32[s17, s27]", y: "f32[s17, s94]", z: "f32[1, s27 + s94]"):
+                 # File: /home/xadupre/github/onnx-diagnostic/_doc/recipes/plot_export_dim1.py:22 in forward, code: return torch.cat((x, y), axis=1) + z
+                cat: "f32[s17, s27 + s94]" = torch.ops.aten.cat.default([x, y], 1);  x = y = None
+                add: "f32[s17, s27 + s94]" = torch.ops.aten.add.Tensor(cat, z);  cat = z = None
+                return (add,)
+            
+    Graph signature: 
+        # inputs
+        x: USER_INPUT
+        y: USER_INPUT
+        z: USER_INPUT
+    
+        # outputs
+        add: USER_OUTPUT
+    
+    Range constraints: {s17: VR[2, int_oo], s27: VR[2, int_oo], s94: VR[2, int_oo], s27 + s94: VR[4, int_oo]}
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 92-94
+
+It is difficult to find the good option. It is possible on a simple model
+but sometimes impossible on a bigger model mixing different shapes.
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-96
 
 .. code-block:: Python
 
@@ -167,7 +253,7 @@ It worked.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.224 seconds)
+   **Total running time of the script:** (0 minutes 6.053 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_export_dim1.py:

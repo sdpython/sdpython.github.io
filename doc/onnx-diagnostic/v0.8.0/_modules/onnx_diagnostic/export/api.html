@@ -207,6 +207,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../status/exported_program_dynamic.html">Exported Programs with Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../status/exporter_dynamic.html">Exported ONNX with Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../status/patches_coverage.html">Coverage of the Patches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../status/patches_diff.html">Patches Diff</a></li>
 </ul>
 </li>
 </ul>
@@ -315,6 +316,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_details.html">onnx_diagnostic.torch_export_patches.patch_details</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
@@ -444,7 +446,38 @@
     <span class="n">output_dynamic_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exporter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;onnx-dynamo&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Common API for exporters.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Common API for exporters. By default, the models are optimized to use the</span>
+<span class="sd">    most efficient kernels implemented in :epkg:`onnxruntime`.</span>
+
+<span class="sd">    :param mod: torch model</span>
+<span class="sd">    :param args: unnamed arguments</span>
+<span class="sd">    :param kwargs: named arguments</span>
+<span class="sd">    :param input_names: input names for the onnx model (optional)</span>
+<span class="sd">    :param target_opset: opset to target, if not specified, each converter</span>
+<span class="sd">        keeps its default value</span>
+<span class="sd">    :param verbose: verbosity level</span>
+<span class="sd">    :param dynamic_shapes: dynamic shapes, usually a nested structure</span>
+<span class="sd">        included a dictionary for each tensor</span>
+<span class="sd">    :param filename: output filename</span>
+<span class="sd">    :param output_names: to change the output of the onnx model</span>
+<span class="sd">    :param output_dynamic_shapes: to overwrite the dynamic shapes names</span>
+<span class="sd">    :param exporter: exporter to use (``onnx-dynamo``, ``modelbuilder``, ``custom``)</span>
+<span class="sd">    :return: the output of the selected exporter, usually a structure including</span>
+<span class="sd">        an onnx model</span>
+
+<span class="sd">    A simple example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        to_onnx(</span>
+<span class="sd">            model,</span>
+<span class="sd">            kwargs=inputs,</span>
+<span class="sd">            dynamic_shapes=ds,</span>
+<span class="sd">            exporter=exporter,</span>
+<span class="sd">            filename=filename,</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">exporter</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.torch_interpreter</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_onnx</span> <span class="k">as</span> <span class="n">_to_onnx</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">experimental_experiment.xbuilder</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationOptions</span>

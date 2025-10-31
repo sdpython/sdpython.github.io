@@ -207,6 +207,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../status/exported_program_dynamic.html">Exported Programs with Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../status/exporter_dynamic.html">Exported ONNX with Dynamic Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../status/patches_coverage.html">Coverage of the Patches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../status/patches_diff.html">Patches Diff</a></li>
 </ul>
 </li>
 </ul>
@@ -315,6 +316,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/torch_export_patches/patches/patch_transformers.html">onnx_diagnostic.torch_export_patches.patches.patch_transformers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_details.html">onnx_diagnostic.torch_export_patches.patch_details</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_expressions.html">onnx_diagnostic.torch_export_patches.patch_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_inputs.html">onnx_diagnostic.torch_export_patches.patch_inputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_export_patches/patch_module.html">onnx_diagnostic.torch_export_patches.patch_module</a></li>
@@ -493,6 +495,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
 
+<span class="n">patch_sdpa_is_causal</span> <span class="o">=</span> <span class="n">_has_transformers</span><span class="p">(</span><span class="s2">&quot;4.55&quot;</span><span class="p">)</span>
 <span class="n">patch_is_initialized</span> <span class="o">=</span> <span class="n">_has_transformers</span><span class="p">(</span><span class="s2">&quot;4.56.99&quot;</span><span class="p">)</span>
 
 
@@ -587,6 +590,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;manual patch for function ``transformers.masking_utils.eager_mask``.&quot;&quot;&quot;</span>
         <span class="c1"># The masks for eager attention are simply boolean mask from sdpa, casted to 0 and -inf</span>
         <span class="n">_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;allow_is_causal_skip&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;allow_is_bidirectional_skip&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="c1"># PATCHED: this line called the patched version of sdpa_mask</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">patched_sdpa_mask_recent_torch</span><span class="p">(</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
@@ -596,6 +600,7 @@
             <span class="n">mask_function</span><span class="o">=</span><span class="n">mask_function</span><span class="p">,</span>
             <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
             <span class="n">allow_is_causal_skip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">allow_is_bidirectional_skip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">allow_torch_fix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
@@ -1812,6 +1817,21 @@
         <span class="s2">&quot;`sdpa` attention does not support `output_attentions=True`.&quot;</span>
         <span class="s2">&quot; Please set your attention to `eager` if you want any of these features.&quot;</span>
     <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+        <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;broadcast issue query (1): </span><span class="si">{</span><span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, key: </span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;value: </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;broadcast issue query (2): </span><span class="si">{</span><span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, key: </span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;value: </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
     <span class="n">sdpa_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;num_key_value_groups&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">transformers</span><span class="o">.</span><span class="n">integrations</span><span class="o">.</span><span class="n">sdpa_attention</span><span class="o">.</span><span class="n">use_gqa_in_sdpa</span><span class="p">(</span><span class="n">attention_mask</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -1827,45 +1847,56 @@
     <span class="k">if</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
         <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">attention_mask</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]]</span>
 
-    <span class="n">is_causal</span> <span class="o">=</span> <span class="n">is_causal</span> <span class="k">if</span> <span class="n">is_causal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;is_causal&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="c1"># PATCHED: remove the test query.shape[2] &gt; 1</span>
-    <span class="c1"># is_causal = query.shape[2] &gt; 1 and attention_mask is None and is_causal</span>
-    <span class="n">is_causal</span> <span class="o">=</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">is_causal</span>
-
     <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
         <span class="n">attention_mask</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">attention_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-        <span class="s2">&quot;Attention mask shape incompatible with key shape.&quot;</span><span class="p">,</span>
+        <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;Attention mask shape incompatible with key shape.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;broadcast issue query (1): </span><span class="si">{</span><span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, key: </span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;value: </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span>
-        <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="k">lambda</span><span class="p">:</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;broadcast issue query (2): </span><span class="si">{</span><span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, key: </span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;value: </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_causal</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">scaled_dot_product_attention</span><span class="p">(</span>
-                <span class="n">query</span><span class="p">,</span>
-                <span class="n">key</span><span class="p">,</span>
-                <span class="n">value</span><span class="p">,</span>
-                <span class="n">attn_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
-                <span class="n">dropout_p</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
-                <span class="n">scale</span><span class="o">=</span><span class="n">scaling</span><span class="p">,</span>
-                <span class="n">is_causal</span><span class="o">=</span><span class="n">is_causal</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">sdpa_kwargs</span><span class="p">,</span>
+
+    <span class="k">if</span> <span class="n">patch_sdpa_is_causal</span><span class="p">:</span>
+        <span class="c1"># transformers&gt;=4.55</span>
+        <span class="n">is_causal</span> <span class="o">=</span> <span class="n">is_causal</span> <span class="k">if</span> <span class="n">is_causal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;is_causal&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># PATCHED: remove the test query.shape[2] &gt; 1</span>
+        <span class="c1"># is_causal = query.shape[2] &gt; 1 and attention_mask is None and is_causal</span>
+        <span class="c1"># and we split the test to keep the minimum in torch.cond</span>
+        <span class="n">is_causal</span> <span class="o">=</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">is_causal</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_causal</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">scaled_dot_product_attention</span><span class="p">(</span>
+                    <span class="n">query</span><span class="p">,</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">attn_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+                    <span class="n">dropout_p</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
+                    <span class="n">scale</span><span class="o">=</span><span class="n">scaling</span><span class="p">,</span>
+                    <span class="n">is_causal</span><span class="o">=</span><span class="n">is_causal</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">sdpa_kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+                <span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
-            <span class="kc">None</span><span class="p">,</span>
-        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># transformers&lt;4.55</span>
+        <span class="k">if</span> <span class="n">is_causal</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">attention_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">is_causal</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">is_causal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">scaled_dot_product_attention</span><span class="p">(</span>
+                    <span class="n">query</span><span class="p">,</span>
+                    <span class="n">key</span><span class="p">,</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="n">attn_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+                    <span class="n">dropout_p</span><span class="o">=</span><span class="n">dropout</span><span class="p">,</span>
+                    <span class="n">scale</span><span class="o">=</span><span class="n">scaling</span><span class="p">,</span>
+                    <span class="n">is_causal</span><span class="o">=</span><span class="n">is_causal</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">sdpa_kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+                <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="c1"># To avoid the following errors:</span>
     <span class="c1"># is_causal=query.shape[2] &gt; 1</span>
