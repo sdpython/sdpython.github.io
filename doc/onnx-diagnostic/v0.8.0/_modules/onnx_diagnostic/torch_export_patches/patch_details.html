@@ -482,14 +482,14 @@
 <a class="viewcode-back" href="../../../api/torch_export_patches/patch_details.html#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PatchInfo</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Stores informations about patches.</span>
+<span class="sd">    Stores information about patches.</span>
 
-<span class="sd">    :param function_to_patch: function to pathc</span>
+<span class="sd">    :param function_to_patch: function to patch</span>
 <span class="sd">    :param patch: function patched</span>
 <span class="sd">    :param family: a category, anything to classify the patch</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;family&quot;</span><span class="p">,</span> <span class="s2">&quot;function_to_patch&quot;</span><span class="p">,</span> <span class="s2">&quot;patch&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;depends_on&quot;</span><span class="p">,</span> <span class="s2">&quot;family&quot;</span><span class="p">,</span> <span class="s2">&quot;function_to_patch&quot;</span><span class="p">,</span> <span class="s2">&quot;patch&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">function_to_patch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span> <span class="n">patch</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">family</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -498,12 +498,23 @@
             <span class="sa">f</span><span class="s2">&quot;function_to_patch is not a function but </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">function_to_patch</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">function_to_patch</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span>
-            <span class="n">patch</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;function_to_patch is not a function but </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">patch</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">patch</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;function_to_patch is not a function but </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">patch</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">patch</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;function_to_patch=</span><span class="si">{</span><span class="n">function_to_patch</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">function_to_patch</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">function_to_patch</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+            <span class="s2">&quot;patched_&quot;</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;A patch was probably not removed because function_to_patch=&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function_to_patch</span><span class="si">!r}</span><span class="s2"> and patch=</span><span class="si">{</span><span class="n">patch</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="o">=</span> <span class="n">family</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">function_to_patch</span> <span class="o">=</span> <span class="n">function_to_patch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">patch</span> <span class="o">=</span> <span class="n">patch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depends_on</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PatchInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patch_info</span><span class="p">:</span> <span class="s2">&quot;PatchInfo&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depends_on</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch_info</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="s2">&quot;usual&quot;</span>
@@ -538,7 +549,14 @@
             <span class="k">return</span> <span class="n">clean_code_with_black</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patch</span><span class="p">))</span>
         <span class="n">src1</span> <span class="o">=</span> <span class="n">clean_code_with_black</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">function_to_patch</span><span class="p">))</span>
         <span class="n">src2</span> <span class="o">=</span> <span class="n">clean_code_with_black</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patch</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">make_diff_code</span><span class="p">(</span><span class="n">src1</span><span class="p">,</span> <span class="n">src2</span><span class="p">)</span></div>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">make_diff_code</span><span class="p">(</span><span class="n">src1</span><span class="p">,</span> <span class="n">src2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">depends_on</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">diff</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">diff</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">depends_on</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">make_diff</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
     <span class="nd">@classmethod</span>
@@ -632,18 +650,37 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">patched</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="PatchDetails.find">
+<a class="viewcode-back" href="../../../api/torch_export_patches/patch_details.html#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.find">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PatchInfo</span><span class="p">]:</span>
+        <span class="s2">&quot;Finds a patch by name.&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_cache</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">patched</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">find_cache</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+                <span class="k">return</span> <span class="n">p</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
 
 <div class="viewcode-block" id="PatchDetails.append">
 <a class="viewcode-back" href="../../../api/torch_export_patches/patch_details.html#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.append">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">family</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">function_to_patch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span> <span class="n">patch</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">family</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">function_to_patch</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span> <span class="n">patch</span><span class="p">:</span> <span class="n">Callable</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PatchInfo</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stores a patch.</span>
 
 <span class="sd">        :param family: a category, anything to classify the patch</span>
-<span class="sd">        :param function_to_patch: function to pathc</span>
+<span class="sd">        :param function_to_patch: function to patch</span>
 <span class="sd">        :param patch: function patched</span>
+<span class="sd">        :return: instance of PatchInfo</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">patched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PatchInfo</span><span class="p">(</span><span class="n">function_to_patch</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">family</span><span class="p">))</span></div>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">PatchInfo</span><span class="p">(</span><span class="n">function_to_patch</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="n">family</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">p</span></div>
 
 
     <span class="nd">@property</span>
@@ -723,7 +760,7 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--</span><span class="se">\n</span><span class="si">{</span><span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># type: ignore[var-annotated]</span>
         <span class="k">for</span> <span class="n">patch</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">patch_node</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">patch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
                 <span class="n">res</span><span class="p">[</span><span class="n">patch</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -763,7 +800,7 @@
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patch</span><span class="o">.</span><span class="n">format_diff</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="nb">format</span><span class="p">))</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;rst&quot;</span><span class="p">:</span>
-                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;**impacted nodes**&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;.. code-block:: raw&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">])</span>
+                <span class="n">rows</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;**impacted nodes**&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;.. code-block::&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
                 <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">))</span><span class="si">}</span><span class="s2">) -&gt; </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>

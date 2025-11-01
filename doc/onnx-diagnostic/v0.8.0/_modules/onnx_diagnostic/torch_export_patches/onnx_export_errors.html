@@ -429,6 +429,7 @@
           <h1>Source code for onnx_diagnostic.torch_export_patches.onnx_export_errors</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
@@ -519,6 +520,10 @@
             <span class="n">keep</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">original</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="s2">&quot;module&quot;</span><span class="p">]</span>
             <span class="n">f</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;patched_&quot;</span><span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The function </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2"> was already patched or the patch was not removed, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;original=</span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
             <span class="n">res</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[patch_module_or_classes] function: </span><span class="si">{</span><span class="n">original</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -536,9 +541,16 @@
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">list_name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;@patched_dynamic_rope_update&quot;</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">)):</span>
+                    <span class="c1"># a tweak to include that patch.</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="n">patch_details</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;patched_dynamic_rope_update&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">p</span><span class="o">.</span><span class="n">add_dependency</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="n">res</span><span class="p">[</span><span class="bp">cls</span><span class="p">]</span> <span class="o">=</span> <span class="n">keep</span>
 
@@ -612,6 +624,628 @@
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">unregister_cache_serialization</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_patch_sympy</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">patch_details</span><span class="p">:</span> <span class="n">PatchDetails</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span>
+
+    <span class="n">f_sympy_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] sympy.__version__=</span><span class="si">{</span><span class="n">sympy</span><span class="o">.</span><span class="n">__version__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patch sympy&quot;</span><span class="p">)</span>
+
+    <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;IntCst</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;sympy&quot;</span><span class="p">,</span>
+            <span class="n">f_sympy_name</span> <span class="ow">or</span> <span class="s2">&quot;sympy.core.numbers.IntegerConstant.name&quot;</span><span class="p">,</span>
+            <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">f_sympy_name</span><span class="p">,)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unpatch_sympy</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">f_sympy_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]):</span>
+    <span class="c1"># tracked by https://github.com/pytorch/pytorch/issues/143494</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span>
+
+    <span class="k">if</span> <span class="n">f_sympy_name</span><span class="p">:</span>
+        <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">f_sympy_name</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">delattr</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored sympy functions&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_patch_torch</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">patch_details</span><span class="p">:</span> <span class="n">PatchDetails</span><span class="p">,</span>
+    <span class="n">patch_torch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">catch_constraints</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">stop_if_static</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch.jit</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch._export.non_strict_utils</span>  <span class="c1"># produce_guards_and_solve_constraints</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeEnv</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.patches.patch_torch</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">patched_infer_size</span><span class="p">,</span>
+        <span class="n">patched_vmap</span><span class="p">,</span>
+        <span class="n">patched__broadcast_shapes</span><span class="p">,</span>
+        <span class="n">patched__constrain_user_specified_dimhint_range</span><span class="p">,</span>
+        <span class="n">_catch_produce_guards_and_solve_constraints</span><span class="p">,</span>
+        <span class="n">patch__check_input_constraints_for_graph</span><span class="p">,</span>
+        <span class="n">patched__broadcast_in_dim_meta</span><span class="p">,</span>
+        <span class="n">patched__broadcast_in_dim_meta_level_2</span><span class="p">,</span>
+        <span class="n">patched__maybe_broadcast</span><span class="p">,</span>
+        <span class="n">patched_ShapeEnv</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">f___constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f__broadcast_in_dim_meta</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f__broadcast_shapes</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f__check_input_constraints_for_graph</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f__maybe_broadcast</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_broadcast_in_dim</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_infer_size</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_jit_isinstance</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_mark_static_address</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_shape_env__check_frozen</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_shape_env__evaluate_expr</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_shape_env__log_guard</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_shape_env__set_replacement</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_vmap</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] torch.__version__=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] stop_if_static=</span><span class="si">{</span><span class="n">stop_if_static</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patch pytorch&quot;</span><span class="p">)</span>
+
+    <span class="c1"># torch.vmap</span>
+    <span class="n">f_vmap</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span> <span class="o">=</span> <span class="n">patched_vmap</span>
+
+    <span class="c1"># torch.jit.isinstance</span>
+    <span class="n">f_jit_isinstance</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span> <span class="o">=</span> <span class="nb">isinstance</span>
+
+    <span class="c1"># torch._dynamo.mark_static_address</span>
+    <span class="n">f_mark_static_address</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="o">**</span><span class="n">y_</span><span class="p">:</span> <span class="kc">None</span>
+
+    <span class="c1"># torch._subclasses.fake_impls.infer_size</span>
+    <span class="n">f_infer_size</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">patched_infer_size</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_infer_size</span><span class="p">,</span> <span class="n">patched_infer_size</span><span class="p">)</span>
+
+    <span class="c1"># torch._refs._broadcast_shapes</span>
+    <span class="n">f__broadcast_shapes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_meta_registrations</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f__broadcast_shapes</span><span class="p">,</span> <span class="n">patched__broadcast_shapes</span><span class="p">)</span>
+
+    <span class="c1"># torch._export.non_strict_utils._constrain_user_specified_dimhint_range</span>
+    <span class="n">f___constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">_constrain_user_specified_dimhint_range</span>
+    <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">_constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">patched__constrain_user_specified_dimhint_range</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;torch&quot;</span><span class="p">,</span>
+            <span class="n">f___constrain_user_specified_dimhint_range</span><span class="p">,</span>
+            <span class="n">patched__constrain_user_specified_dimhint_range</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># torch._prims._broadcast_in_dim_meta</span>
+    <span class="n">f_broadcast_in_dim</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">broadcast_in_dim</span>
+    <span class="n">f__broadcast_in_dim_meta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">_broadcast_in_dim_meta</span>
+    <span class="n">_patched_dim_f</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">patched__broadcast_in_dim_meta_level_2</span>
+        <span class="k">if</span> <span class="n">patch_torch</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">else</span> <span class="n">patched__broadcast_in_dim_meta</span>
+    <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">_broadcast_in_dim_meta</span> <span class="o">=</span> <span class="n">_patched_dim_f</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">broadcast_in_dim</span> <span class="o">=</span> <span class="n">_patched_dim_f</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f__broadcast_in_dim_meta</span><span class="p">,</span> <span class="n">_patched_dim_f</span><span class="p">)</span>
+
+    <span class="c1"># torch._refs._maybe_broadcast</span>
+    <span class="n">f__maybe_broadcast</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_maybe_broadcast</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_maybe_broadcast</span> <span class="o">=</span> <span class="n">patched__maybe_broadcast</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f__maybe_broadcast</span><span class="p">,</span> <span class="n">patched__maybe_broadcast</span><span class="p">)</span>
+
+    <span class="c1"># ShapeEnv</span>
+    <span class="n">f_shape_env__evaluate_expr</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span>
+    <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span>
+    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__evaluate_expr</span><span class="p">,</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span>
+        <span class="p">)</span>
+
+    <span class="c1"># torch._export.non_strict_utils.produce_guards_and_solve_constraints</span>
+    <span class="k">if</span> <span class="n">catch_constraints</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] modifies shape constraints&quot;</span><span class="p">)</span>
+        <span class="n">f_produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span>
+        <span class="p">)</span>
+        <span class="n">f__check_input_constraints_for_graph</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_check_input_constraints_for_graph</span>
+        <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">_catch_produce_guards_and_solve_constraints</span><span class="p">(</span>
+                <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_check_input_constraints_for_graph</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">patch__check_input_constraints_for_graph</span><span class="p">(</span>
+                <span class="n">f__check_input_constraints_for_graph</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">stop_if_static</span><span class="p">:</span>
+        <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard_remember</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] assert when a dynamic dimension turns static&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] replaces ShapeEnv._set_replacement&quot;</span><span class="p">)</span>
+
+        <span class="n">f_shape_env__set_replacement</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span>
+        <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span>
+        <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+            <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__set_replacement</span><span class="p">,</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] replaces ShapeEnv._log_guard&quot;</span><span class="p">)</span>
+        <span class="n">f_shape_env__log_guard</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
+        <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
+        <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+            <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__log_guard</span><span class="p">,</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">stop_if_static</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] replaces ShapeEnv._check_frozen&quot;</span><span class="p">)</span>
+            <span class="n">f_shape_env__check_frozen</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span>
+            <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span>
+            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__check_frozen</span><span class="p">,</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">f___constrain_user_specified_dimhint_range</span><span class="p">,</span>
+        <span class="n">f__broadcast_in_dim_meta</span><span class="p">,</span>
+        <span class="n">f__broadcast_shapes</span><span class="p">,</span>
+        <span class="n">f__check_input_constraints_for_graph</span><span class="p">,</span>
+        <span class="n">f__maybe_broadcast</span><span class="p">,</span>
+        <span class="n">f_broadcast_in_dim</span><span class="p">,</span>
+        <span class="n">f_infer_size</span><span class="p">,</span>
+        <span class="n">f_jit_isinstance</span><span class="p">,</span>
+        <span class="n">f_mark_static_address</span><span class="p">,</span>
+        <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">,</span>
+        <span class="n">f_shape_env__check_frozen</span><span class="p">,</span>
+        <span class="n">f_shape_env__evaluate_expr</span><span class="p">,</span>
+        <span class="n">f_shape_env__log_guard</span><span class="p">,</span>
+        <span class="n">f_shape_env__set_replacement</span><span class="p">,</span>
+        <span class="n">f_vmap</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unpatch_torch</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">_patch_details</span><span class="p">:</span> <span class="n">PatchDetails</span><span class="p">,</span>
+    <span class="n">patch_torch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">catch_constraints</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">stop_if_static</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">f___constrain_user_specified_dimhint_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f__broadcast_in_dim_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f__broadcast_shapes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f__check_input_constraints_for_graph</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f__maybe_broadcast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_broadcast_in_dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_infer_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_jit_isinstance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_mark_static_address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_shape_env__check_frozen</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_shape_env__evaluate_expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_shape_env__log_guard</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_shape_env__set_replacement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_vmap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+<span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch.jit</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch._export.non_strict_utils</span>  <span class="c1"># produce_guards_and_solve_constraints</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeEnv</span>
+
+    <span class="c1"># this should disappear when torch.jit is removed</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span> <span class="o">=</span> <span class="n">f_vmap</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span> <span class="o">=</span> <span class="n">f_jit_isinstance</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span> <span class="o">=</span> <span class="n">f_mark_static_address</span>
+    <span class="c1"># tracked by https://github.com/pytorch/pytorch/issues/143495</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">f_infer_size</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">f__broadcast_shapes</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_meta_registrations</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">f__broadcast_shapes</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">_constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">f___constrain_user_specified_dimhint_range</span>
+    <span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">_broadcast_in_dim_meta</span> <span class="o">=</span> <span class="n">f__broadcast_in_dim_meta</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">broadcast_in_dim</span> <span class="o">=</span> <span class="n">f_broadcast_in_dim</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_maybe_broadcast</span> <span class="o">=</span> <span class="n">f__maybe_broadcast</span>
+    <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span> <span class="o">=</span> <span class="n">f_shape_env__evaluate_expr</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored pytorch functions&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">stop_if_static</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored ShapeEnv._set_replacement&quot;</span><span class="p">)</span>
+
+        <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span> <span class="o">=</span> <span class="n">f_shape_env__set_replacement</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored ShapeEnv._log_guard&quot;</span><span class="p">)</span>
+
+        <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span> <span class="o">=</span> <span class="n">f_shape_env__log_guard</span>
+
+        <span class="k">if</span> <span class="n">stop_if_static</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored ShapeEnv._check_frozen&quot;</span><span class="p">)</span>
+            <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span> <span class="o">=</span> <span class="n">f_shape_env__check_frozen</span>
+
+    <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">catch_constraints</span><span class="p">:</span>
+        <span class="c1"># to catch or skip dynamic_shapes issues</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">f_produce_guards_and_solve_constraints</span>
+        <span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_check_input_constraints_for_graph</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">f__check_input_constraints_for_graph</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored shape constraints&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_patch_transformers</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">patch_details</span><span class="p">:</span> <span class="n">PatchDetails</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.masking_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">masking_utils</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">masking_utils</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.integrations.sdpa_attention</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sdpa_attention</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">sdpa_attention</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.modeling_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">modeling_utils</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">modeling_utils</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.modeling_rope_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">modeling_rope_utils</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">modeling_rope_utils</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">patch_details</span>
+        <span class="ow">and</span> <span class="n">modeling_rope_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">modeling_rope_utils</span><span class="p">,</span> <span class="s2">&quot;dynamic_rope_update&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="s2">&quot;patch_transformers&quot;</span><span class="p">,</span>
+            <span class="n">modeling_rope_utils</span><span class="o">.</span><span class="n">dynamic_rope_update</span><span class="p">,</span>
+            <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_dynamic_rope_update</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] transformers.__version__=</span><span class="si">{</span><span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;patched_&quot;</span><span class="p">),</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Function &#39;sdpa_attention.sdpa_attention_forward&#39; is already patched, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;sdpa_attention.sdpa_attention_forward=</span><span class="si">{</span><span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">f_transformers__vmap_for_bhqkv</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_transformers_eager_mask</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_transformers_sdpa_attention_forward</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_transformers_sdpa_mask</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">f_transformers_sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># vmap</span>
+        <span class="n">masking_utils</span>
+        <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;_vmap_for_bhqkv&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patches transformers.masking_utils._vmap_for_bhqkv&quot;</span><span class="p">)</span>
+        <span class="n">f_transformers__vmap_for_bhqkv</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">_vmap_for_bhqkv</span>
+        <span class="n">masking_utils</span><span class="o">.</span><span class="n">_vmap_for_bhqkv</span> <span class="o">=</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched__vmap_for_bhqkv</span>
+        <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+            <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
+                <span class="n">f_transformers__vmap_for_bhqkv</span><span class="p">,</span>
+                <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched__vmap_for_bhqkv</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
+                <span class="s2">&quot;transformers.masking_utils.sdpa_mask_recent_torch&quot;</span>
+            <span class="p">)</span>
+        <span class="n">f_transformers_sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask_recent_torch</span>
+        <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+            <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
+                <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">,</span>
+                <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span> <span class="o">==</span> <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patches transformers.masking_utils.sdpa_mask&quot;</span><span class="p">)</span>
+            <span class="n">f_transformers_sdpa_mask</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span>
+            <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span> <span class="o">=</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
+            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
+                    <span class="n">f_transformers_sdpa_mask</span><span class="p">,</span>
+                    <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f_transformers_sdpa_mask</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># eager_mask</span>
+        <span class="n">masking_utils</span>
+        <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patches transformers.masking_utils.eager_mask&quot;</span><span class="p">)</span>
+        <span class="n">f_transformers_eager_mask</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span>
+        <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span> <span class="o">=</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span>
+        <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+            <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
+                <span class="n">f_transformers_eager_mask</span><span class="p">,</span>
+                <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;eager&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
+            <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span>
+            <span class="o">==</span> <span class="n">f_transformers_eager_mask</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
+                    <span class="s2">&quot;transformers.masking_utils.eager_mask &quot;</span>
+                    <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
+                <span class="p">)</span>
+            <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_mask</span>
+        <span class="n">masking_utils</span>
+        <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;sdpa_mask&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">f_transformers_sdpa_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
+                <span class="s2">&quot;transformers.masking_utils.sdpa_mask &quot;</span>
+                <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;sdpa&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
+            <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">f_transformers_sdpa_mask</span>
+        <span class="p">):</span>
+            <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_attention_forward</span>
+        <span class="n">sdpa_attention</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">modeling_utils</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;sdpa_attention_forward&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;use_gqa_in_sdpa&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">modeling_utils</span><span class="p">,</span> <span class="s2">&quot;AttentionInterface&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
+                <span class="s2">&quot;transformers.integrations.sdpa_attention.sdpa_attention_forward&quot;</span>
+            <span class="p">)</span>
+        <span class="n">f_transformers_sdpa_attention_forward</span> <span class="o">=</span> <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">f_transformers_sdpa_attention_forward</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;patched_&quot;</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Function &#39;sdpa_attention.sdpa_attention_forward&#39; is already patched, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;sdpa_attention.sdpa_attention_forward=</span><span class="si">{</span><span class="n">f_transformers_sdpa_attention_forward</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span>
+        <span class="p">)</span>
+        <span class="n">modeling_utils</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span>
+        <span class="p">)</span>
+        <span class="n">modeling_utils</span><span class="o">.</span><span class="n">AttentionInterface</span><span class="o">.</span><span class="n">_global_mapping</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
+            <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
+                <span class="n">f_transformers_sdpa_attention_forward</span><span class="p">,</span>
+                <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">revert_patches_info</span> <span class="o">=</span> <span class="n">patch_module_or_classes</span><span class="p">(</span>
+        <span class="n">patch_transformers_list</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">patch_details</span><span class="o">=</span><span class="n">patch_details</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">f_transformers__vmap_for_bhqkv</span><span class="p">,</span>
+        <span class="n">f_transformers_eager_mask</span><span class="p">,</span>
+        <span class="n">f_transformers_sdpa_attention_forward</span><span class="p">,</span>
+        <span class="n">f_transformers_sdpa_mask</span><span class="p">,</span>
+        <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">,</span>
+        <span class="n">revert_patches_info</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unpatch_transformers</span><span class="p">(</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">_patch_details</span><span class="p">:</span> <span class="n">PatchDetails</span><span class="p">,</span>
+    <span class="n">f_transformers__vmap_for_bhqkv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_transformers_eager_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_transformers_sdpa_attention_forward</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_transformers_sdpa_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+    <span class="n">revert_patches_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">],</span>
+<span class="p">):</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.masking_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">masking_utils</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">masking_utils</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.integrations.sdpa_attention</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sdpa_attention</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">sdpa_attention</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.modeling_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">modeling_utils</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">modeling_utils</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.masking_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">masking_utils</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">masking_utils</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] unpatches transformers&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># vmap</span>
+        <span class="n">masking_utils</span>
+        <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;_vmap_for_bhqkv&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="n">f_transformers__vmap_for_bhqkv</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;_vmap_for_bhqkv&quot;</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;_vmap_for_bhqkv&#39;, its name is &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers__vmap_for_bhqkv</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">masking_utils</span><span class="o">.</span><span class="n">_vmap_for_bhqkv</span> <span class="o">=</span> <span class="n">f_transformers__vmap_for_bhqkv</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored transformers.masking_utils._vmap_for_bhqkv&quot;</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;sdpa_mask_recent_torch&quot;</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;sdpa_mask_recent_torch&#39;, its name is &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="n">f_transformers_sdpa_mask_recent_torch</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
+                <span class="s2">&quot;transformers.masking_utils.sdpa_mask_recent_torch&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">f_transformers_sdpa_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">f_transformers_sdpa_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="s2">&quot;sdpa_mask&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;sdpa_mask_recent_torch&quot;</span><span class="p">,</span>
+            <span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;sdpa_mask&#39;, its name is &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers_sdpa_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span> <span class="o">=</span> <span class="n">f_transformers_sdpa_mask</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored transformers.masking_utils.sdpa_mask&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># eager_mask</span>
+        <span class="n">masking_utils</span>
+        <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="n">f_transformers_eager_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;eager_mask&#39;, its name is &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers_eager_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span> <span class="o">=</span> <span class="n">f_transformers_eager_mask</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored transformers.masking_utils.eager_mask&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;eager_mask&#39;, its name is &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;eager&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
+            <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span>
+            <span class="o">==</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span>
+        <span class="p">):</span>
+            <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f_transformers_eager_mask</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
+                    <span class="s2">&quot;transformers.masking_utils.eager_mask &quot;</span>
+                    <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
+                <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">,</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;eager_mask&#39;, its name is &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_mask</span>
+        <span class="n">masking_utils</span>
+        <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;sdpa_mask&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">&quot;sdpa&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
+            <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span>
+            <span class="o">==</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
+        <span class="p">):</span>
+            <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f_transformers_sdpa_mask</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
+                    <span class="s2">&quot;transformers.masking_utils.sdpa_mask &quot;</span>
+                    <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
+                <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_attention_forward</span>
+        <span class="n">sdpa_attention</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">modeling_utils</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;sdpa_attention_forward&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;use_gqa_in_sdpa&quot;</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">modeling_utils</span><span class="p">,</span> <span class="s2">&quot;AttentionInterface&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="n">f_transformers_sdpa_attention_forward</span>
+        <span class="n">modeling_utils</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="n">f_transformers_sdpa_attention_forward</span>
+        <span class="n">modeling_utils</span><span class="o">.</span><span class="n">AttentionInterface</span><span class="o">.</span><span class="n">_global_mapping</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">f_transformers_sdpa_attention_forward</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
+                <span class="s2">&quot;transformers.integrations.sdpa_attention.&quot;</span>
+                <span class="s2">&quot;sdpa_attention_forward&quot;</span>
+            <span class="p">)</span>
+
+    <span class="n">unpatch_module_or_classes</span><span class="p">(</span><span class="n">patch_transformers_list</span><span class="p">,</span> <span class="n">revert_patches_info</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="torch_export_patches">
@@ -765,19 +1399,13 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">unregister_cache_serialization</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">torch._export.non_strict_utils</span>  <span class="c1"># produce_guards_and_solve_constraints</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">torch.jit</span>
-
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="s2">&quot;[torch_export_patches] replace torch.jit.isinstance, &quot;</span>
                 <span class="s2">&quot;torch._dynamo.mark_static_address&quot;</span>
             <span class="p">)</span>
 
-        <span class="c1">########</span>
         <span class="c1"># caches</span>
-        <span class="c1">########</span>
 
         <span class="n">cache_done</span> <span class="o">=</span> <span class="n">register_cache_serialization</span><span class="p">(</span>
             <span class="n">patch_transformers</span><span class="o">=</span><span class="n">patch_transformers</span><span class="p">,</span>
@@ -785,337 +1413,41 @@
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1">#############</span>
-        <span class="c1"># patch sympy</span>
-        <span class="c1">#############</span>
+        <span class="c1"># patches</span>
 
         <span class="k">if</span> <span class="n">patch_sympy</span><span class="p">:</span>
-            <span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span>
-
-            <span class="n">f_sympy_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] sympy.__version__=</span><span class="si">{</span><span class="n">sympy</span><span class="o">.</span><span class="n">__version__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patch sympy&quot;</span><span class="p">)</span>
-
-            <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;IntCst</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="s2">&quot;sympy&quot;</span><span class="p">,</span>
-                    <span class="n">f_sympy_name</span> <span class="ow">or</span> <span class="s2">&quot;sympy.core.numbers.IntegerConstant.name&quot;</span><span class="p">,</span>
-                    <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="p">)</span>
-
-        <span class="c1">###############</span>
-        <span class="c1"># patch pytorch</span>
-        <span class="c1">###############</span>
+            <span class="p">(</span><span class="n">f_sympy_name</span><span class="p">,)</span> <span class="o">=</span> <span class="n">_patch_sympy</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">patch_details</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">patch_torch</span><span class="p">:</span>
-            <span class="kn">from</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShapeEnv</span>
-            <span class="kn">from</span><span class="w"> </span><span class="nn">.patches.patch_torch</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-                <span class="n">patched_infer_size</span><span class="p">,</span>
-                <span class="n">patched_vmap</span><span class="p">,</span>
-                <span class="n">patched__broadcast_shapes</span><span class="p">,</span>
-                <span class="n">patched__constrain_user_specified_dimhint_range</span><span class="p">,</span>
-                <span class="n">_catch_produce_guards_and_solve_constraints</span><span class="p">,</span>
-                <span class="n">patch__check_input_constraints_for_graph</span><span class="p">,</span>
-                <span class="n">patched__broadcast_in_dim_meta</span><span class="p">,</span>
-                <span class="n">patched__broadcast_in_dim_meta_level_2</span><span class="p">,</span>
-                <span class="n">patched__maybe_broadcast</span><span class="p">,</span>
-                <span class="n">patched_ShapeEnv</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">f___constrain_user_specified_dimhint_range</span><span class="p">,</span>
+                <span class="n">f__broadcast_in_dim_meta</span><span class="p">,</span>
+                <span class="n">f__broadcast_shapes</span><span class="p">,</span>
+                <span class="n">f__check_input_constraints_for_graph</span><span class="p">,</span>
+                <span class="n">f__maybe_broadcast</span><span class="p">,</span>
+                <span class="n">f_broadcast_in_dim</span><span class="p">,</span>
+                <span class="n">f_infer_size</span><span class="p">,</span>
+                <span class="n">f_jit_isinstance</span><span class="p">,</span>
+                <span class="n">f_mark_static_address</span><span class="p">,</span>
+                <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">,</span>
+                <span class="n">f_shape_env__check_frozen</span><span class="p">,</span>
+                <span class="n">f_shape_env__evaluate_expr</span><span class="p">,</span>
+                <span class="n">f_shape_env__log_guard</span><span class="p">,</span>
+                <span class="n">f_shape_env__set_replacement</span><span class="p">,</span>
+                <span class="n">f_vmap</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_patch_torch</span><span class="p">(</span>
+                <span class="n">verbose</span><span class="p">,</span> <span class="n">patch_details</span><span class="p">,</span> <span class="n">patch_torch</span><span class="p">,</span> <span class="n">catch_constraints</span><span class="p">,</span> <span class="n">stop_if_static</span>
             <span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] torch.__version__=</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export_patches] stop_if_static=</span><span class="si">{</span><span class="n">stop_if_static</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] patch pytorch&quot;</span><span class="p">)</span>
-
-            <span class="c1"># torch.vmap</span>
-            <span class="n">f_vmap</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span> <span class="o">=</span> <span class="n">patched_vmap</span>
-
-            <span class="c1"># torch.jit.isinstance</span>
-            <span class="n">f_jit_isinstance</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span> <span class="o">=</span> <span class="nb">isinstance</span>
-
-            <span class="c1"># torch._dynamo.mark_static_address</span>
-            <span class="n">f_mark_static_address</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="o">**</span><span class="n">y_</span><span class="p">:</span> <span class="kc">None</span>
-
-            <span class="c1"># torch._subclasses.fake_impls.infer_size</span>
-            <span class="n">f_infer_size</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">patched_infer_size</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_infer_size</span><span class="p">,</span> <span class="n">patched_infer_size</span><span class="p">)</span>
-
-            <span class="c1"># torch._refs._broadcast_shapes</span>
-            <span class="n">f__broadcast_shapes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_meta_registrations</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">patched__broadcast_shapes</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f__broadcast_shapes</span><span class="p">,</span> <span class="n">patched__broadcast_shapes</span><span class="p">)</span>
-
-            <span class="c1"># torch._export.non_strict_utils._constrain_user_specified_dimhint_range</span>
-            <span class="n">f___constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">_constrain_user_specified_dimhint_range</span>
-            <span class="p">)</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">_constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">patched__constrain_user_specified_dimhint_range</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="s2">&quot;torch&quot;</span><span class="p">,</span>
-                    <span class="n">f___constrain_user_specified_dimhint_range</span><span class="p">,</span>
-                    <span class="n">patched__constrain_user_specified_dimhint_range</span><span class="p">,</span>
-                <span class="p">)</span>
-
-            <span class="c1"># torch._prims._broadcast_in_dim_meta</span>
-            <span class="n">f_broadcast_in_dim</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">broadcast_in_dim</span>
-            <span class="n">f__broadcast_in_dim_meta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">_broadcast_in_dim_meta</span>
-            <span class="n">_patched_dim_f</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">patched__broadcast_in_dim_meta_level_2</span>
-                <span class="k">if</span> <span class="n">patch_torch</span> <span class="o">==</span> <span class="mi">2</span>
-                <span class="k">else</span> <span class="n">patched__broadcast_in_dim_meta</span>
-            <span class="p">)</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">_broadcast_in_dim_meta</span> <span class="o">=</span> <span class="n">_patched_dim_f</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">broadcast_in_dim</span> <span class="o">=</span> <span class="n">_patched_dim_f</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f__broadcast_in_dim_meta</span><span class="p">,</span> <span class="n">_patched_dim_f</span><span class="p">)</span>
-
-            <span class="c1"># torch._refs._maybe_broadcast</span>
-            <span class="n">f__maybe_broadcast</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_maybe_broadcast</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_maybe_broadcast</span> <span class="o">=</span> <span class="n">patched__maybe_broadcast</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f__maybe_broadcast</span><span class="p">,</span> <span class="n">patched__maybe_broadcast</span><span class="p">)</span>
-
-            <span class="c1"># ShapeEnv</span>
-            <span class="n">f_shape_env__evaluate_expr</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span>
-            <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__evaluate_expr</span><span class="p">,</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span>
-                <span class="p">)</span>
-
-        <span class="c1"># torch._export.non_strict_utils.produce_guards_and_solve_constraints</span>
-        <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">catch_constraints</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] modifies shape constraints&quot;</span><span class="p">)</span>
-            <span class="n">f_produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span>
-            <span class="p">)</span>
-            <span class="n">f__check_input_constraints_for_graph</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_check_input_constraints_for_graph</span>
-            <span class="p">)</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">_catch_produce_guards_and_solve_constraints</span><span class="p">(</span>
-                    <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_check_input_constraints_for_graph</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">patch__check_input_constraints_for_graph</span><span class="p">(</span>
-                    <span class="n">f__check_input_constraints_for_graph</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">stop_if_static</span><span class="p">:</span>
-            <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard_remember</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
-
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] assert when a dynamic dimension turns static&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] replaces ShapeEnv._set_replacement&quot;</span><span class="p">)</span>
-
-            <span class="n">f_shape_env__set_replacement</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span>
-            <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__set_replacement</span><span class="p">,</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] replaces ShapeEnv._log_guard&quot;</span><span class="p">)</span>
-            <span class="n">f_shape_env__log_guard</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
-            <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
-            <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__log_guard</span><span class="p">,</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">stop_if_static</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] replaces ShapeEnv._check_frozen&quot;</span><span class="p">)</span>
-                <span class="n">f_shape_env__check_frozen</span> <span class="o">=</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span>
-                <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span> <span class="o">=</span> <span class="n">patched_ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span>
-                <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="s2">&quot;torch&quot;</span><span class="p">,</span> <span class="n">f_shape_env__check_frozen</span><span class="p">,</span> <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span>
-                    <span class="p">)</span>
-
-        <span class="c1">####################</span>
-        <span class="c1"># patch transformers</span>
-        <span class="c1">####################</span>
 
         <span class="k">if</span> <span class="n">patch_transformers</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.masking_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">masking_utils</span>
-            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                <span class="n">masking_utils</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.integrations.sdpa_attention</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sdpa_attention</span>
-            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                <span class="n">sdpa_attention</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.modeling_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">modeling_utils</span>
-            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                <span class="n">modeling_utils</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="kn">import</span><span class="w"> </span><span class="nn">transformers</span>
-
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;[torch_export_patches] transformers.__version__=&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">transformers</span><span class="o">.</span><span class="n">__version__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="n">revert_patches_info</span> <span class="o">=</span> <span class="n">patch_module_or_classes</span><span class="p">(</span>
-                <span class="n">patch_transformers_list</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">patch_details</span><span class="o">=</span><span class="n">patch_details</span>
-            <span class="p">)</span>
-
-            <span class="k">if</span> <span class="p">(</span>  <span class="c1"># vmap</span>
-                <span class="n">masking_utils</span>
-                <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
-                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;_vmap_for_bhqkv&quot;</span><span class="p">)</span>
-            <span class="p">):</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                        <span class="s2">&quot;transformers.masking_utils._vmap_for_bhqkv&quot;</span>
-                    <span class="p">)</span>
-                <span class="n">f_transformers__vmap_for_bhqkv</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">_vmap_for_bhqkv</span>
-                <span class="n">masking_utils</span><span class="o">.</span><span class="n">_vmap_for_bhqkv</span> <span class="o">=</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched__vmap_for_bhqkv</span>
-                <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
-                        <span class="n">f_transformers__vmap_for_bhqkv</span><span class="p">,</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched__vmap_for_bhqkv</span><span class="p">,</span>
-                    <span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                        <span class="s2">&quot;transformers.masking_utils.sdpa_mask_recent_torch&quot;</span>
-                    <span class="p">)</span>
-                <span class="n">f_transformers_sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask_recent_torch</span>
-                <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
-                        <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">,</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="k">if</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span> <span class="o">==</span> <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                            <span class="s2">&quot;transformers.masking_utils.sdpa_mask&quot;</span>
-                        <span class="p">)</span>
-                    <span class="n">f_transformers_sdpa_mask</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span>
-                    <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                        <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
-                            <span class="n">f_transformers_sdpa_mask</span><span class="p">,</span>
-                            <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span><span class="p">,</span>
-                        <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">f_transformers_sdpa_mask</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="k">if</span> <span class="p">(</span>  <span class="c1"># eager_mask</span>
-                <span class="n">masking_utils</span>
-                <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
-                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">)</span>
-            <span class="p">):</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                        <span class="s2">&quot;transformers.masking_utils.eager_mask&quot;</span>
-                    <span class="p">)</span>
-                <span class="n">f_transformers_eager_mask</span> <span class="o">=</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span>
-                <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span> <span class="o">=</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span>
-                <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
-                        <span class="n">f_transformers_eager_mask</span><span class="p">,</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="s2">&quot;eager&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
-                    <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span>
-                    <span class="o">==</span> <span class="n">f_transformers_eager_mask</span>
-                <span class="p">):</span>
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                            <span class="s2">&quot;transformers.masking_utils.eager_mask &quot;</span>
-                            <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
-                        <span class="p">)</span>
-                    <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span>
-                    <span class="p">)</span>
-
-            <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_mask</span>
-                <span class="n">masking_utils</span>
-                <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
-                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;sdpa_mask&quot;</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="n">f_transformers_sdpa_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="p">):</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                        <span class="s2">&quot;transformers.masking_utils.sdpa_mask &quot;</span>
-                        <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
-                    <span class="p">)</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="s2">&quot;sdpa&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
-                    <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span>
-                    <span class="o">==</span> <span class="n">f_transformers_sdpa_mask</span>
-                <span class="p">):</span>
-                    <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
-                    <span class="p">)</span>
-
-            <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_attention_forward</span>
-                <span class="n">sdpa_attention</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="n">modeling_utils</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;sdpa_attention_forward&quot;</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;use_gqa_in_sdpa&quot;</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">modeling_utils</span><span class="p">,</span> <span class="s2">&quot;AttentionInterface&quot;</span><span class="p">)</span>
-            <span class="p">):</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span>
-                        <span class="s2">&quot;[torch_export_patches] patches &quot;</span>
-                        <span class="s2">&quot;transformers.integrations.sdpa_attention.sdpa_attention_forward&quot;</span>
-                    <span class="p">)</span>
-                <span class="n">f_sdpa_attention_forward</span> <span class="o">=</span> <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span>
-                <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span>
-                <span class="p">)</span>
-                <span class="n">modeling_utils</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span>
-                <span class="p">)</span>
-                <span class="n">modeling_utils</span><span class="o">.</span><span class="n">AttentionInterface</span><span class="o">.</span><span class="n">_global_mapping</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">patch_details</span><span class="p">:</span>
-                    <span class="n">patch_details</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="s2">&quot;transformers&quot;</span><span class="p">,</span>
-                        <span class="n">f_sdpa_attention_forward</span><span class="p">,</span>
-                        <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_attention_forward</span><span class="p">,</span>
-                    <span class="p">)</span>
+            <span class="p">(</span>
+                <span class="n">f_transformers__vmap_for_bhqkv</span><span class="p">,</span>
+                <span class="n">f_transformers_eager_mask</span><span class="p">,</span>
+                <span class="n">f_transformers_sdpa_attention_forward</span><span class="p">,</span>
+                <span class="n">f_transformers_sdpa_mask</span><span class="p">,</span>
+                <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">,</span>
+                <span class="n">revert_patches_info</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_patch_transformers</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">patch_details</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">custom_patches</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -1124,9 +1456,7 @@
                 <span class="n">custom_patches</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">patch_details</span><span class="o">=</span><span class="n">patch_details</span>
             <span class="p">)</span>
 
-        <span class="c1">########</span>
         <span class="c1"># export</span>
-        <span class="c1">########</span>
 
         <span class="n">fct_callable</span> <span class="o">=</span> <span class="n">replacement_before_exporting</span> <span class="k">if</span> <span class="n">patch_transformers</span> <span class="k">else</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
 
@@ -1136,73 +1466,50 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">fct_callable</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="c1">#######</span>
-            <span class="c1"># sympy</span>
-            <span class="c1">#######</span>
+
+            <span class="c1"># unpatch</span>
 
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] remove patches&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">patch_sympy</span><span class="p">:</span>
-                <span class="c1"># tracked by https://github.com/pytorch/pytorch/issues/143494</span>
-                <span class="k">if</span> <span class="n">f_sympy_name</span><span class="p">:</span>
-                    <span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">f_sympy_name</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">delattr</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">numbers</span><span class="o">.</span><span class="n">IntegerConstant</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored sympy functions&quot;</span><span class="p">)</span>
-
-            <span class="c1">#######</span>
-            <span class="c1"># torch</span>
-            <span class="c1">#######</span>
+                <span class="n">_unpatch_sympy</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">f_sympy_name</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">patch_torch</span><span class="p">:</span>
-                <span class="c1"># this should disappear when torch.jit is removed</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">vmap</span> <span class="o">=</span> <span class="n">f_vmap</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">isinstance</span> <span class="o">=</span> <span class="n">f_jit_isinstance</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_dynamo</span><span class="o">.</span><span class="n">mark_static_address</span> <span class="o">=</span> <span class="n">f_mark_static_address</span>
-                <span class="c1"># tracked by https://github.com/pytorch/pytorch/issues/143495</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_subclasses</span><span class="o">.</span><span class="n">fake_impls</span><span class="o">.</span><span class="n">infer_size</span> <span class="o">=</span> <span class="n">f_infer_size</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">f__broadcast_shapes</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_meta_registrations</span><span class="o">.</span><span class="n">_broadcast_shapes</span> <span class="o">=</span> <span class="n">f__broadcast_shapes</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">_constrain_user_specified_dimhint_range</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">f___constrain_user_specified_dimhint_range</span>
+                <span class="n">_unpatch_torch</span><span class="p">(</span>
+                    <span class="n">verbose</span><span class="p">,</span>
+                    <span class="n">patch_details</span><span class="p">,</span>
+                    <span class="n">patch_torch</span><span class="p">,</span>
+                    <span class="n">catch_constraints</span><span class="p">,</span>
+                    <span class="n">stop_if_static</span><span class="p">,</span>
+                    <span class="n">f___constrain_user_specified_dimhint_range</span><span class="p">,</span>
+                    <span class="n">f__broadcast_in_dim_meta</span><span class="p">,</span>
+                    <span class="n">f__broadcast_shapes</span><span class="p">,</span>
+                    <span class="n">f__check_input_constraints_for_graph</span><span class="p">,</span>
+                    <span class="n">f__maybe_broadcast</span><span class="p">,</span>
+                    <span class="n">f_broadcast_in_dim</span><span class="p">,</span>
+                    <span class="n">f_infer_size</span><span class="p">,</span>
+                    <span class="n">f_jit_isinstance</span><span class="p">,</span>
+                    <span class="n">f_mark_static_address</span><span class="p">,</span>
+                    <span class="n">f_produce_guards_and_solve_constraints</span><span class="p">,</span>
+                    <span class="n">f_shape_env__check_frozen</span><span class="p">,</span>
+                    <span class="n">f_shape_env__evaluate_expr</span><span class="p">,</span>
+                    <span class="n">f_shape_env__log_guard</span><span class="p">,</span>
+                    <span class="n">f_shape_env__set_replacement</span><span class="p">,</span>
+                    <span class="n">f_vmap</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">_broadcast_in_dim_meta</span> <span class="o">=</span> <span class="n">f__broadcast_in_dim_meta</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_prims</span><span class="o">.</span><span class="n">broadcast_in_dim</span> <span class="o">=</span> <span class="n">f_broadcast_in_dim</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_refs</span><span class="o">.</span><span class="n">_maybe_broadcast</span> <span class="o">=</span> <span class="n">f__maybe_broadcast</span>
-                <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_evaluate_expr</span> <span class="o">=</span> <span class="n">f_shape_env__evaluate_expr</span>
 
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored pytorch functions&quot;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">stop_if_static</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored ShapeEnv._set_replacement&quot;</span><span class="p">)</span>
-
-                <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_set_replacement</span> <span class="o">=</span> <span class="n">f_shape_env__set_replacement</span>
-
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored ShapeEnv._log_guard&quot;</span><span class="p">)</span>
-
-                <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_log_guard</span> <span class="o">=</span> <span class="n">f_shape_env__log_guard</span>
-
-                <span class="k">if</span> <span class="n">stop_if_static</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored ShapeEnv._check_frozen&quot;</span><span class="p">)</span>
-                    <span class="n">ShapeEnv</span><span class="o">.</span><span class="n">_check_frozen</span> <span class="o">=</span> <span class="n">f_shape_env__check_frozen</span>
-
-            <span class="k">if</span> <span class="n">patch_torch</span> <span class="ow">and</span> <span class="n">catch_constraints</span><span class="p">:</span>
-                <span class="c1"># to catch or skip dynamic_shapes issues</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">non_strict_utils</span><span class="o">.</span><span class="n">produce_guards_and_solve_constraints</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">f_produce_guards_and_solve_constraints</span>
+            <span class="k">if</span> <span class="n">patch_transformers</span><span class="p">:</span>
+                <span class="n">_unpatch_transformers</span><span class="p">(</span>
+                    <span class="n">verbose</span><span class="p">,</span>
+                    <span class="n">patch_details</span><span class="p">,</span>
+                    <span class="n">f_transformers__vmap_for_bhqkv</span><span class="p">,</span>
+                    <span class="n">f_transformers_eager_mask</span><span class="p">,</span>
+                    <span class="n">f_transformers_sdpa_attention_forward</span><span class="p">,</span>
+                    <span class="n">f_transformers_sdpa_mask</span><span class="p">,</span>
+                    <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="p">,</span>
+                    <span class="n">revert_patches_info</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">torch</span><span class="o">.</span><span class="n">_export</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_check_input_constraints_for_graph</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">f__check_input_constraints_for_graph</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] restored shape constraints&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">custom_patches</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -1210,147 +1517,6 @@
                 <span class="n">unpatch_module_or_classes</span><span class="p">(</span>
                     <span class="n">custom_patches</span><span class="p">,</span> <span class="n">revert_custom_patches_info</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
                 <span class="p">)</span>
-
-            <span class="c1">##############</span>
-            <span class="c1"># transformers</span>
-            <span class="c1">##############</span>
-
-            <span class="k">if</span> <span class="n">patch_transformers</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="kn">import</span><span class="w"> </span><span class="nn">transformers.masking_utils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">masking_utils</span>
-                <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                    <span class="n">masking_utils</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[torch_export_patches] unpatches transformers&quot;</span><span class="p">)</span>
-                <span class="n">unpatch_module_or_classes</span><span class="p">(</span>
-                    <span class="n">patch_transformers_list</span><span class="p">,</span> <span class="n">revert_patches_info</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
-                <span class="p">)</span>
-
-                <span class="k">if</span> <span class="p">(</span>  <span class="c1"># vmap</span>
-                    <span class="n">masking_utils</span>
-                    <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;_vmap_for_bhqkv&quot;</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="k">assert</span> <span class="n">f_transformers__vmap_for_bhqkv</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;_vmap_for_bhqkv&quot;</span><span class="p">,</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;_vmap_for_bhqkv&#39;, its name is &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers__vmap_for_bhqkv</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-                    <span class="n">masking_utils</span><span class="o">.</span><span class="n">_vmap_for_bhqkv</span> <span class="o">=</span> <span class="n">f_transformers__vmap_for_bhqkv</span>
-
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                            <span class="s2">&quot;transformers.masking_utils._vmap_for_bhqkv&quot;</span>
-                        <span class="p">)</span>
-
-                    <span class="k">assert</span> <span class="p">(</span>
-                        <span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="o">.</span><span class="vm">__name__</span>
-                        <span class="o">==</span> <span class="s2">&quot;sdpa_mask_recent_torch&quot;</span>
-                    <span class="p">),</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;sdpa_mask_recent_torch&#39;, its name is &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers_sdpa_mask_recent_torch</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-                    <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask_recent_torch</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">f_transformers_sdpa_mask_recent_torch</span>
-                    <span class="p">)</span>
-
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                            <span class="s2">&quot;transformers.masking_utils.sdpa_mask_recent_torch&quot;</span>
-                        <span class="p">)</span>
-
-                    <span class="k">if</span> <span class="n">f_transformers_sdpa_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">assert</span> <span class="n">f_transformers_sdpa_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="p">(</span>
-                            <span class="s2">&quot;sdpa_mask&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;sdpa_mask_recent_torch&quot;</span><span class="p">,</span>
-                        <span class="p">),</span> <span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;sdpa_mask&#39;, its name is &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers_sdpa_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                        <span class="p">)</span>
-                        <span class="n">masking_utils</span><span class="o">.</span><span class="n">sdpa_mask</span> <span class="o">=</span> <span class="n">f_transformers_sdpa_mask</span>
-                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                            <span class="nb">print</span><span class="p">(</span>
-                                <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                                <span class="s2">&quot;transformers.masking_utils.sdpa_mask&quot;</span>
-                            <span class="p">)</span>
-
-                <span class="k">if</span> <span class="p">(</span>  <span class="c1"># eager_mask</span>
-                    <span class="n">masking_utils</span>
-                    <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="k">assert</span> <span class="n">f_transformers_eager_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">,</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;eager_mask&#39;, its name is &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f_transformers_eager_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-                    <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span> <span class="o">=</span> <span class="n">f_transformers_eager_mask</span>
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                            <span class="s2">&quot;transformers.masking_utils.eager_mask&quot;</span>
-                        <span class="p">)</span>
-                    <span class="k">assert</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">,</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;eager_mask&#39;, its name is &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="p">(</span>
-                        <span class="s2">&quot;eager&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
-                        <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span>
-                        <span class="o">==</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_eager_mask</span>
-                    <span class="p">):</span>
-                        <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;eager&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">f_transformers_eager_mask</span>
-                        <span class="p">)</span>
-                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                            <span class="nb">print</span><span class="p">(</span>
-                                <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                                <span class="s2">&quot;transformers.masking_utils.eager_mask &quot;</span>
-                                <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
-                            <span class="p">)</span>
-                    <span class="k">assert</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;eager_mask&quot;</span><span class="p">,</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;corrupted function &#39;eager_mask&#39;, its name is &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">masking_utils</span><span class="o">.</span><span class="n">eager_mask</span><span class="o">.</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-
-                <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_mask</span>
-                    <span class="n">masking_utils</span>
-                    <span class="ow">and</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patch_masking_utils</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">masking_utils</span><span class="p">,</span> <span class="s2">&quot;sdpa_mask&quot;</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="k">if</span> <span class="p">(</span>
-                        <span class="s2">&quot;sdpa&quot;</span> <span class="ow">in</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span>
-                        <span class="ow">and</span> <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span>
-                        <span class="o">==</span> <span class="n">patch_transformers_list</span><span class="o">.</span><span class="n">patched_sdpa_mask_recent_torch</span>
-                    <span class="p">):</span>
-                        <span class="n">masking_utils</span><span class="o">.</span><span class="n">ALL_MASK_ATTENTION_FUNCTIONS</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="n">f_transformers_sdpa_mask</span>
-                        <span class="p">)</span>
-                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                            <span class="nb">print</span><span class="p">(</span>
-                                <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                                <span class="s2">&quot;transformers.masking_utils.sdpa_mask &quot;</span>
-                                <span class="s2">&quot;in ALL_MASK_ATTENTION_FUNCTIONS&quot;</span>
-                            <span class="p">)</span>
-
-                <span class="k">if</span> <span class="p">(</span>  <span class="c1"># sdpa_attention_forward</span>
-                    <span class="n">sdpa_attention</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                    <span class="ow">and</span> <span class="n">modeling_utils</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;sdpa_attention_forward&quot;</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sdpa_attention</span><span class="p">,</span> <span class="s2">&quot;use_gqa_in_sdpa&quot;</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">modeling_utils</span><span class="p">,</span> <span class="s2">&quot;AttentionInterface&quot;</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="n">sdpa_attention</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="n">f_sdpa_attention_forward</span>
-                    <span class="n">modeling_utils</span><span class="o">.</span><span class="n">sdpa_attention_forward</span> <span class="o">=</span> <span class="n">f_sdpa_attention_forward</span>
-                    <span class="n">modeling_utils</span><span class="o">.</span><span class="n">AttentionInterface</span><span class="o">.</span><span class="n">_global_mapping</span><span class="p">[</span><span class="s2">&quot;sdpa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">f_sdpa_attention_forward</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span>
-                            <span class="s2">&quot;[torch_export_patches] restored &quot;</span>
-                            <span class="s2">&quot;transformers.integrations.sdpa_attention.&quot;</span>
-                            <span class="s2">&quot;sdpa_attention_forward&quot;</span>
-                        <span class="p">)</span>
 
             <span class="c1">########</span>
             <span class="c1"># caches</span>

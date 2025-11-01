@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:06.053** total execution time for 26 files **from all galleries**:
+**00:00.000** total execution time for 26 files **from all galleries**:
 
 .. container::
 
@@ -32,9 +32,6 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_recipes_plot_export_dim1.py` (``recipes/plot_export_dim1.py``)
-     - 00:06.053
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_dump_intermediate_results.py` (``examples/plot_dump_intermediate_results.py``)
      - 00:00.000
      - 0.0
@@ -93,6 +90,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_export_cond.py` (``recipes/plot_export_cond.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_recipes_plot_export_dim1.py` (``recipes/plot_export_dim1.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_recipes_plot_export_with_dynamic.py` (``recipes/plot_export_with_dynamic.py``)

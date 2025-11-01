@@ -437,7 +437,7 @@
 <span id="onnx-diagnostic-torch-export-patches-patch-details"></span><h1>onnx_diagnostic.torch_export_patches.patch_details<a class="headerlink" href="#module-onnx_diagnostic.torch_export_patches.patch_details" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">PatchDetails</span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L150"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">PatchDetails</span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L168"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails" title="Link to this definition">¶</a></dt>
 <dd><p>This class is used to store patching information.
 This helps understanding which rewriting was applied to which
 method of functions. Page <a class="reference internal" href="../../status/patches_diff.html#l-patch-diff"><span class="std std-ref">Patches Diff</span></a> contains all the
@@ -466,87 +466,363 @@ diff for all the implemented patches.</p>
 <p>&gt;&gt;&gt;</p>
 <section id="auto-patch-transformers-llamarotaryembedding-forward-common-rotaryembedding-forward">
 <h2>auto/patch_transformers: LlamaRotaryEmbedding.forward -&gt; common_RotaryEmbedding.forward<a class="headerlink" href="#auto-patch-transformers-llamarotaryembedding-forward-common-rotaryembedding-forward" title="Link to this heading">¶</a></h2>
-<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gd">--- original</span>
-<span class="linenos"> 2</span><span class="gi">+++ rewritten</span>
-<span class="linenos"> 3</span><span class="gu">@@ -1,8 +1,16 @@</span>
-<span class="linenos"> 4</span><span class="gd">-@torch.no_grad()</span>
-<span class="linenos"> 5</span><span class="gd">-@dynamic_rope_update  # power user: used with advanced RoPE types (e.g. dynamic rope)</span>
-<span class="linenos"> 6</span><span class="gd">-def forward(self, x, position_ids):</span>
-<span class="linenos"> 7</span><span class="gi">+@patched_dynamic_rope_update</span>
-<span class="linenos"> 8</span><span class="gi">+def forward(self, x, position_ids, layer_type=None):</span>
-<span class="linenos"> 9</span><span class="gi">+    if layer_type is not None:</span>
-<span class="linenos">10</span><span class="gi">+        # transformers&gt;=5.0</span>
-<span class="linenos">11</span><span class="gi">+        inv_freq = getattr(self, f&quot;{layer_type}_inv_freq&quot;)</span>
-<span class="linenos">12</span><span class="gi">+        attention_scaling = getattr(self, f&quot;{layer_type}_attention_scaling&quot;)</span>
-<span class="linenos">13</span><span class="gi">+    else:</span>
-<span class="linenos">14</span><span class="gi">+        # transformers&lt;5.0</span>
-<span class="linenos">15</span><span class="gi">+        inv_freq = self.inv_freq</span>
-<span class="linenos">16</span><span class="gi">+        attention_scaling = self.attention_scaling</span>
-<span class="linenos">17</span><span class="gi">+</span>
-<span class="linenos">18</span><span class="w"> </span>    inv_freq_expanded = (
-<span class="linenos">19</span><span class="gd">-        self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)</span>
-<span class="linenos">20</span><span class="gi">+        inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)</span>
-<span class="linenos">21</span><span class="w"> </span>    )
-<span class="linenos">22</span><span class="w"> </span>    position_ids_expanded = position_ids[:, None, :].float()
-<span class="linenos">23</span>
-<span class="linenos">24</span><span class="gu">@@ -12,7 +20,7 @@</span>
-<span class="linenos">25</span><span class="w"> </span>    with torch.autocast(device_type=device_type, enabled=False):  # Force float32
-<span class="linenos">26</span><span class="w"> </span>        freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
-<span class="linenos">27</span><span class="w"> </span>        emb = torch.cat((freqs, freqs), dim=-1)
-<span class="linenos">28</span><span class="gd">-        cos = emb.cos() * self.attention_scaling</span>
-<span class="linenos">29</span><span class="gd">-        sin = emb.sin() * self.attention_scaling</span>
-<span class="linenos">30</span><span class="gi">+        cos = emb.cos() * attention_scaling</span>
-<span class="linenos">31</span><span class="gi">+        sin = emb.sin() * attention_scaling</span>
-<span class="linenos">32</span>
-<span class="linenos">33</span><span class="w"> </span>    return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="gd">--- original</span>
+<span class="linenos">  2</span><span class="gi">+++ rewritten</span>
+<span class="linenos">  3</span><span class="gu">@@ -1,8 +1,16 @@</span>
+<span class="linenos">  4</span><span class="gd">-@torch.no_grad()</span>
+<span class="linenos">  5</span><span class="gd">-@dynamic_rope_update  # power user: used with advanced RoPE types (e.g. dynamic rope)</span>
+<span class="linenos">  6</span><span class="gd">-def forward(self, x, position_ids):</span>
+<span class="linenos">  7</span><span class="gi">+@patched_dynamic_rope_update</span>
+<span class="linenos">  8</span><span class="gi">+def forward(self, x, position_ids, layer_type=None):</span>
+<span class="linenos">  9</span><span class="gi">+    if layer_type is not None:</span>
+<span class="linenos"> 10</span><span class="gi">+        # transformers&gt;=5.0</span>
+<span class="linenos"> 11</span><span class="gi">+        inv_freq = getattr(self, f&quot;{layer_type}_inv_freq&quot;)</span>
+<span class="linenos"> 12</span><span class="gi">+        attention_scaling = getattr(self, f&quot;{layer_type}_attention_scaling&quot;)</span>
+<span class="linenos"> 13</span><span class="gi">+    else:</span>
+<span class="linenos"> 14</span><span class="gi">+        # transformers&lt;5.0</span>
+<span class="linenos"> 15</span><span class="gi">+        inv_freq = self.inv_freq</span>
+<span class="linenos"> 16</span><span class="gi">+        attention_scaling = self.attention_scaling</span>
+<span class="linenos"> 17</span><span class="gi">+</span>
+<span class="linenos"> 18</span><span class="w"> </span>    inv_freq_expanded = (
+<span class="linenos"> 19</span><span class="gd">-        self.inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)</span>
+<span class="linenos"> 20</span><span class="gi">+        inv_freq[None, :, None].float().expand(position_ids.shape[0], -1, 1).to(x.device)</span>
+<span class="linenos"> 21</span><span class="w"> </span>    )
+<span class="linenos"> 22</span><span class="w"> </span>    position_ids_expanded = position_ids[:, None, :].float()
+<span class="linenos"> 23</span>
+<span class="linenos"> 24</span><span class="gu">@@ -12,7 +20,7 @@</span>
+<span class="linenos"> 25</span><span class="w"> </span>    with torch.autocast(device_type=device_type, enabled=False):  # Force float32
+<span class="linenos"> 26</span><span class="w"> </span>        freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
+<span class="linenos"> 27</span><span class="w"> </span>        emb = torch.cat((freqs, freqs), dim=-1)
+<span class="linenos"> 28</span><span class="gd">-        cos = emb.cos() * self.attention_scaling</span>
+<span class="linenos"> 29</span><span class="gd">-        sin = emb.sin() * self.attention_scaling</span>
+<span class="linenos"> 30</span><span class="gi">+        cos = emb.cos() * attention_scaling</span>
+<span class="linenos"> 31</span><span class="gi">+        sin = emb.sin() * attention_scaling</span>
+<span class="linenos"> 32</span>
+<span class="linenos"> 33</span><span class="w"> </span>    return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+<span class="linenos"> 34</span>
+<span class="linenos"> 35</span><span class="gd">--- original</span>
+<span class="linenos"> 36</span><span class="gi">+++ rewritten</span>
+<span class="linenos"> 37</span><span class="gu">@@ -1,99 +1,193 @@</span>
+<span class="linenos"> 38</span><span class="gd">-def dynamic_rope_update(rope_forward):</span>
+<span class="linenos"> 39</span><span class="gd">-    &quot;&quot;&quot;</span>
+<span class="linenos"> 40</span><span class="gd">-    Decorator function to update the RoPE parameters in the forward pass, if the model is using a dynamic RoPE</span>
+<span class="linenos"> 41</span><span class="gd">-    (i.e. a RoPE implementation that may recompute its frequencies in the forward pass).</span>
+<span class="linenos"> 42</span><span class="gi">+def patched_dynamic_rope_update(rope_forward):</span>
+<span class="linenos"> 43</span><span class="gi">+    &quot;&quot;&quot;manual patch: ``[patch:transformers.modeling_rope_utils.dynamic_rope_update]``</span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span><span class="gd">-    Args:</span>
+<span class="linenos"> 46</span><span class="gd">-        rope_forward (Callable):</span>
+<span class="linenos"> 47</span><span class="gd">-            The forward pass of the RoPE implementation.</span>
+<span class="linenos"> 48</span><span class="gi">+    ``rope_type`` is determined in the constructor of class</span>
+<span class="linenos"> 49</span><span class="gi">+    :class:`transformers.models.phi3.modeling_phi3.Phi3RotaryEmbedding`.</span>
+<span class="linenos"> 50</span>
+<span class="linenos"> 51</span><span class="gd">-    Returns:</span>
+<span class="linenos"> 52</span><span class="gd">-        The decorated forward pass.</span>
+<span class="linenos"> 53</span><span class="gi">+    .. code-block:: python</span>
+<span class="linenos"> 54</span><span class="gi">+</span>
+<span class="linenos"> 55</span><span class="gi">+        if hasattr(config, &quot;rope_scaling&quot;) and config.rope_scaling is not None:</span>
+<span class="linenos"> 56</span><span class="gi">+            self.rope_type = config.rope_scaling.get(</span>
+<span class="linenos"> 57</span><span class="gi">+                &quot;rope_type&quot;, config.rope_scaling.get(&quot;type&quot;))</span>
+<span class="linenos"> 58</span><span class="gi">+        else:</span>
+<span class="linenos"> 59</span><span class="gi">+            self.rope_type = &quot;default&quot;</span>
+<span class="linenos"> 60</span><span class="gi">+</span>
+<span class="linenos"> 61</span><span class="gi">+    The original code of the patched function:</span>
+<span class="linenos"> 62</span><span class="gi">+</span>
+<span class="linenos"> 63</span><span class="gi">+    .. code-block:: python</span>
+<span class="linenos"> 64</span><span class="gi">+</span>
+<span class="linenos"> 65</span><span class="gi">+        def dynamic_rope_update(rope_forward):</span>
+<span class="linenos"> 66</span><span class="gi">+            def longrope_frequency_update(self, position_ids, device):</span>
+<span class="linenos"> 67</span><span class="gi">+                seq_len = torch.max(position_ids) + 1</span>
+<span class="linenos"> 68</span><span class="gi">+                if hasattr(self.config, &quot;original_max_position_embeddings&quot;):</span>
+<span class="linenos"> 69</span><span class="gi">+                    original_max_position_embeddings =</span>
+<span class="linenos"> 70</span><span class="gi">+                        self.config.original_max_position_embeddings</span>
+<span class="linenos"> 71</span><span class="gi">+                else:</span>
+<span class="linenos"> 72</span><span class="gi">+                    original_max_position_embeddings =</span>
+<span class="linenos"> 73</span><span class="gi">+                        self.config.max_position_embeddings</span>
+<span class="linenos"> 74</span><span class="gi">+                if seq_len &gt; original_max_position_embeddings:</span>
+<span class="linenos"> 75</span><span class="gi">+                    if not hasattr(self, &quot;long_inv_freq&quot;):</span>
+<span class="linenos"> 76</span><span class="gi">+                        self.long_inv_freq, _ = self.rope_init_fn(</span>
+<span class="linenos"> 77</span><span class="gi">+                            self.config, device, seq_len=original_max_position_embeddings + 1</span>
+<span class="linenos"> 78</span><span class="gi">+                        )</span>
+<span class="linenos"> 79</span><span class="gi">+                    self.register_buffer(&quot;inv_freq&quot;, self.long_inv_freq, persistent=False)</span>
+<span class="linenos"> 80</span><span class="gi">+                else:</span>
+<span class="linenos"> 81</span><span class="gi">+                    self.original_inv_freq = self.original_inv_freq.to(device)</span>
+<span class="linenos"> 82</span><span class="gi">+                    self.register_buffer(&quot;inv_freq&quot;, self.original_inv_freq, persistent=False)</span>
+<span class="linenos"> 83</span><span class="gi">+</span>
+<span class="linenos"> 84</span><span class="gi">+            def dynamic_frequency_update(self, position_ids, device):</span>
+<span class="linenos"> 85</span><span class="gi">+                seq_len = torch.max(position_ids) + 1</span>
+<span class="linenos"> 86</span><span class="gi">+                if seq_len &gt; self.max_seq_len_cached:  # growth</span>
+<span class="linenos"> 87</span><span class="gi">+                    inv_freq, self.attention_scaling = self.rope_init_fn(</span>
+<span class="linenos"> 88</span><span class="gi">+                        self.config, device, seq_len=seq_len)</span>
+<span class="linenos"> 89</span><span class="gi">+                    self.register_buffer(&quot;inv_freq&quot;, inv_freq, persistent=False)</span>
+<span class="linenos"> 90</span><span class="gi">+                    self.max_seq_len_cached = seq_len</span>
+<span class="linenos"> 91</span><span class="gi">+</span>
+<span class="linenos"> 92</span><span class="gi">+                if seq_len &lt; self.original_max_seq_len and</span>
+<span class="linenos"> 93</span><span class="gi">+                        self.max_seq_len_cached &gt; self.original_max_seq_len:</span>
+<span class="linenos"> 94</span><span class="gi">+                    self.original_inv_freq = self.original_inv_freq.to(device)</span>
+<span class="linenos"> 95</span><span class="gi">+                    self.register_buffer(&quot;inv_freq&quot;, self.original_inv_freq, persistent=False)</span>
+<span class="linenos"> 96</span><span class="gi">+                    self.max_seq_len_cached = self.original_max_seq_len</span>
+<span class="linenos"> 97</span><span class="gi">+</span>
+<span class="linenos"> 98</span><span class="gi">+            @wraps(rope_forward)</span>
+<span class="linenos"> 99</span><span class="gi">+            def wrapper(self, x, position_ids):</span>
+<span class="linenos">100</span><span class="gi">+                if &quot;dynamic&quot; in self.rope_type:</span>
+<span class="linenos">101</span><span class="gi">+                    dynamic_frequency_update(self, position_ids, device=x.device)</span>
+<span class="linenos">102</span><span class="gi">+                elif self.rope_type == &quot;longrope&quot;:</span>
+<span class="linenos">103</span><span class="gi">+                    longrope_frequency_update(self, position_ids, device=x.device)</span>
+<span class="linenos">104</span><span class="gi">+                return rope_forward(self, x, position_ids)</span>
+<span class="linenos">105</span><span class="gi">+</span>
+<span class="linenos">106</span><span class="gi">+            return wrapper</span>
+<span class="linenos">107</span><span class="gi">+</span>
+<span class="linenos">108</span><span class="w"> </span>    &quot;&quot;&quot;
+<span class="linenos">109</span>
+<span class="linenos">110</span><span class="w"> </span>    def longrope_frequency_update(self, position_ids, device, layer_type=None):
+<span class="linenos">111</span><span class="gd">-        &quot;&quot;&quot;Longrope uses long factor if sequence is larger than original pretraining length, short otherwise.&quot;&quot;&quot;</span>
+<span class="linenos">112</span><span class="gi">+        # It is no use to patch the function after the model is created</span>
+<span class="linenos">113</span><span class="gi">+        # as rope_init_fn is an attribute set to one function when the model</span>
+<span class="linenos">114</span><span class="gi">+        # is created and when no patch is applied yet.</span>
+<span class="linenos">115</span><span class="gi">+        # So we select the patched version here.</span>
+<span class="linenos">116</span><span class="gi">+        rope_init_fn = _get_rope_init_fn(self, layer_type=layer_type)</span>
+<span class="linenos">117</span><span class="w"> </span>        seq_len = torch.max(position_ids) + 1
+<span class="linenos">118</span><span class="gd">-        original_max_position_embeddings = getattr(</span>
+<span class="linenos">119</span><span class="gd">-            self.config, &quot;original_max_position_embeddings&quot;, self.config.max_position_embeddings</span>
+<span class="linenos">120</span><span class="gd">-        )</span>
+<span class="linenos">121</span><span class="gi">+        if hasattr(self.config, &quot;original_max_position_embeddings&quot;):</span>
+<span class="linenos">122</span><span class="gi">+            original_max_position_embeddings = self.config.original_max_position_embeddings</span>
+<span class="linenos">123</span><span class="gi">+        else:</span>
+<span class="linenos">124</span><span class="gi">+            original_max_position_embeddings = self.config.max_position_embeddings</span>
+<span class="linenos">125</span><span class="gi">+</span>
+<span class="linenos">126</span><span class="w"> </span>        if layer_type is None:
+<span class="linenos">127</span><span class="gd">-            rope_type = self.rope_type</span>
+<span class="linenos">128</span><span class="gi">+            # rope_type = self.rope_type</span>
+<span class="linenos">129</span><span class="w"> </span>            original_inv_freq = self.original_inv_freq
+<span class="linenos">130</span><span class="w"> </span>            prefix = &quot;&quot;
+<span class="linenos">131</span><span class="w"> </span>        else:
+<span class="linenos">132</span><span class="gd">-            rope_type = self.rope_type[layer_type]</span>
+<span class="linenos">133</span><span class="gi">+            # rope_type = self.rope_type[layer_type]</span>
+<span class="linenos">134</span><span class="w"> </span>            original_inv_freq = getattr(self, f&quot;{layer_type}_original_inv_freq&quot;)
+<span class="linenos">135</span><span class="w"> </span>            prefix = f&quot;{layer_type}_&quot;
+<span class="linenos">136</span>
+<span class="linenos">137</span><span class="gd">-        if seq_len &gt; original_max_position_embeddings:</span>
+<span class="linenos">138</span><span class="gd">-            if not hasattr(self, f&quot;{layer_type}_long_inv_freq&quot;):</span>
+<span class="linenos">139</span><span class="gd">-                rope_init_fn = ROPE_INIT_FUNCTIONS[rope_type]</span>
+<span class="linenos">140</span><span class="gd">-                long_inv_freq, _ = rope_init_fn(</span>
+<span class="linenos">141</span><span class="gd">-                    self.config,</span>
+<span class="linenos">142</span><span class="gd">-                    device,</span>
+<span class="linenos">143</span><span class="gd">-                    seq_len=original_max_position_embeddings + 1,</span>
+<span class="linenos">144</span><span class="gd">-                    layer_type=layer_type,</span>
+<span class="linenos">145</span><span class="gd">-                )</span>
+<span class="linenos">146</span><span class="gd">-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, long_inv_freq, persistent=False)</span>
+<span class="linenos">147</span><span class="gd">-            setattr(self, f&quot;{prefix}long_inv_freq&quot;, long_inv_freq)</span>
+<span class="linenos">148</span><span class="gd">-        else:</span>
+<span class="linenos">149</span><span class="gd">-            # This .to() is needed if the model has been moved to a device after being initialized (because</span>
+<span class="linenos">150</span><span class="gd">-            # the buffer is automatically moved, but not the original copy)</span>
+<span class="linenos">151</span><span class="gd">-            original_inv_freq = original_inv_freq.to(device)</span>
+<span class="linenos">152</span><span class="gd">-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, original_inv_freq, persistent=False)</span>
+<span class="linenos">153</span><span class="gd">-            setattr(self, f&quot;{prefix}original_inv_freq&quot;, original_inv_freq)</span>
+<span class="linenos">154</span><span class="gi">+        # At export time, seq_len is unknown.</span>
+<span class="linenos">155</span><span class="gi">+        long_inv_freq, _ = rope_init_fn(</span>
+<span class="linenos">156</span><span class="gi">+            self.config, device, seq_len=original_max_position_embeddings + 1</span>
+<span class="linenos">157</span><span class="gi">+        )</span>
+<span class="linenos">158</span><span class="gi">+        original_inv_freq = self.original_inv_freq.to(device)</span>
+<span class="linenos">159</span><span class="gi">+</span>
+<span class="linenos">160</span><span class="gi">+        # PATCHED: uses torch.cond instead of a test</span>
+<span class="linenos">161</span><span class="gi">+        cond = (seq_len &gt; original_max_position_embeddings).item()</span>
+<span class="linenos">162</span><span class="gi">+        inv_freq = torch.cond(</span>
+<span class="linenos">163</span><span class="gi">+            cond,</span>
+<span class="linenos">164</span><span class="gi">+            (lambda x, y: x.clone()),</span>
+<span class="linenos">165</span><span class="gi">+            (lambda x, y: y.clone()),</span>
+<span class="linenos">166</span><span class="gi">+            [long_inv_freq, original_inv_freq],</span>
+<span class="linenos">167</span><span class="gi">+        )</span>
+<span class="linenos">168</span><span class="gi">+        setattr(self, f&quot;{prefix}inv_freq&quot;, inv_freq)</span>
+<span class="linenos">169</span><span class="gi">+        # if seq_len &gt; original_max_position_embeddings:</span>
+<span class="linenos">170</span><span class="gi">+        #    self.inv_freq = self.long_inv_freq</span>
+<span class="linenos">171</span><span class="gi">+        # else:</span>
+<span class="linenos">172</span><span class="gi">+        #    self.inv_freq = self.original_inv_freq</span>
+<span class="linenos">173</span>
+<span class="linenos">174</span><span class="w"> </span>    def dynamic_frequency_update(self, position_ids, device, layer_type=None):
+<span class="linenos">175</span><span class="gd">-        &quot;&quot;&quot;</span>
+<span class="linenos">176</span><span class="gd">-        dynamic RoPE layers should recompute `inv_freq` in the following situations:</span>
+<span class="linenos">177</span><span class="gd">-        1 - growing beyond the cached sequence length (allow scaling)</span>
+<span class="linenos">178</span><span class="gd">-        2 - the current sequence length is in the original scale (avoid losing precision with small sequences)</span>
+<span class="linenos">179</span><span class="gd">-        &quot;&quot;&quot;</span>
+<span class="linenos">180</span><span class="gi">+        # constructor:</span>
+<span class="linenos">181</span><span class="gi">+        # - self.max_seq_len_cached = config.max_position_embeddings</span>
+<span class="linenos">182</span><span class="gi">+        # - self.original_max_seq_len = config.max_position_embeddings</span>
+<span class="linenos">183</span><span class="gi">+        # - inv_freq, self.attention_scaling = self.rope_init_fn(self.config, device)</span>
+<span class="linenos">184</span><span class="gi">+</span>
+<span class="linenos">185</span><span class="gi">+        # It is no use to patch the function after the model is created</span>
+<span class="linenos">186</span><span class="gi">+        # as rope_init_fn is an attribute set to one function when the model</span>
+<span class="linenos">187</span><span class="gi">+        # is created and when no patch is applied yet.</span>
+<span class="linenos">188</span><span class="gi">+        # So we select the patched version here.</span>
+<span class="linenos">189</span><span class="gi">+        rope_init_fn = _get_rope_init_fn(self, layer_type=layer_type)</span>
+<span class="linenos">190</span><span class="gi">+</span>
+<span class="linenos">191</span><span class="gi">+        # This behaviour is difficult to translate.</span>
+<span class="linenos">192</span><span class="gi">+        # The sequence always grows.</span>
+<span class="linenos">193</span><span class="gi">+        # The test should always True.</span>
+<span class="linenos">194</span><span class="gi">+        # So:  self.max_seq_len_cached = max(self.max_seq_len_cached, seq_len) --&gt; seq_len</span>
+<span class="linenos">195</span><span class="gi">+        #</span>
+<span class="linenos">196</span><span class="gi">+        # if seq_len &gt; self.max_seq_len_cached:  # growth</span>
+<span class="linenos">197</span><span class="gi">+        #    inv_freq, self.attention_scaling = self.rope_init_fn(</span>
+<span class="linenos">198</span><span class="gi">+        #        self.config, device, seq_len=seq_len</span>
+<span class="linenos">199</span><span class="gi">+        #    )</span>
+<span class="linenos">200</span><span class="gi">+        #    self.register_buffer(&quot;inv_freq&quot;, inv_freq, persistent=False)</span>
+<span class="linenos">201</span><span class="gi">+        #    self.max_seq_len_cached = seq_len</span>
+<span class="linenos">202</span><span class="gi">+        #</span>
+<span class="linenos">203</span><span class="gi">+        # So we should not need what follows.</span>
+<span class="linenos">204</span><span class="gi">+        #</span>
+<span class="linenos">205</span><span class="gi">+        # cond = (seq_len &gt; self.max_seq_len_cached).item()</span>
+<span class="linenos">206</span><span class="gi">+        # self.attention_scaling = torch.cond(</span>
+<span class="linenos">207</span><span class="gi">+        #    cond,</span>
+<span class="linenos">208</span><span class="gi">+        #    (lambda x, y: x.clone()),</span>
+<span class="linenos">209</span><span class="gi">+        #    (lambda x, y: y.clone()),</span>
+<span class="linenos">210</span><span class="gi">+        #    [attention_scaling, self.attention_scaling],</span>
+<span class="linenos">211</span><span class="gi">+        # )</span>
+<span class="linenos">212</span><span class="gi">+</span>
+<span class="linenos">213</span><span class="w"> </span>        seq_len = torch.max(position_ids) + 1
+<span class="linenos">214</span><span class="gi">+        long_inv_freq, self.attention_scaling = rope_init_fn(self.config, device, seq_len=seq_len)</span>
+<span class="linenos">215</span><span class="gi">+</span>
+<span class="linenos">216</span><span class="w"> </span>        if layer_type is None:
+<span class="linenos">217</span><span class="gd">-            rope_type = self.rope_type</span>
+<span class="linenos">218</span><span class="gd">-            max_seq_len_cached = self.max_seq_len_cached</span>
+<span class="linenos">219</span><span class="gi">+            # rope_type = self.rope_type</span>
+<span class="linenos">220</span><span class="gi">+            # max_seq_len_cached = self.max_seq_len_cached</span>
+<span class="linenos">221</span><span class="w"> </span>            original_inv_freq = self.original_inv_freq
+<span class="linenos">222</span><span class="w"> </span>            prefix = &quot;&quot;
+<span class="linenos">223</span><span class="w"> </span>        else:
+<span class="linenos">224</span><span class="gd">-            rope_type = self.rope_type[layer_type]</span>
+<span class="linenos">225</span><span class="gd">-            max_seq_len_cached = getattr(</span>
+<span class="linenos">226</span><span class="gd">-                self, f&quot;{layer_type}_max_seq_len_cached&quot;, self.max_seq_len_cached</span>
+<span class="linenos">227</span><span class="gd">-            )</span>
+<span class="linenos">228</span><span class="gi">+            # rope_type = self.rope_type[layer_type]</span>
+<span class="linenos">229</span><span class="gi">+            # max_seq_len_cached = getattr(</span>
+<span class="linenos">230</span><span class="gi">+            #     self, f&quot;{layer_type}_max_seq_len_cached&quot;, self.max_seq_len_cached</span>
+<span class="linenos">231</span><span class="gi">+            # )</span>
+<span class="linenos">232</span><span class="w"> </span>            original_inv_freq = getattr(self, f&quot;{layer_type}_original_inv_freq&quot;)
+<span class="linenos">233</span><span class="w"> </span>            prefix = f&quot;{layer_type}_&quot;
+<span class="linenos">234</span>
+<span class="linenos">235</span><span class="gd">-        if seq_len &gt; max_seq_len_cached:  # growth</span>
+<span class="linenos">236</span><span class="gd">-            rope_init_fn = ROPE_INIT_FUNCTIONS[rope_type]</span>
+<span class="linenos">237</span><span class="gd">-            inv_freq, self.attention_scaling = rope_init_fn(</span>
+<span class="linenos">238</span><span class="gd">-                self.config,</span>
+<span class="linenos">239</span><span class="gd">-                device,</span>
+<span class="linenos">240</span><span class="gd">-                seq_len=seq_len,</span>
+<span class="linenos">241</span><span class="gd">-                layer_type=layer_type,</span>
+<span class="linenos">242</span><span class="gd">-            )</span>
+<span class="linenos">243</span><span class="gd">-            # TODO joao: may break with compilation</span>
+<span class="linenos">244</span><span class="gd">-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, inv_freq, persistent=False)</span>
+<span class="linenos">245</span><span class="gd">-            setattr(self, f&quot;{layer_type}_max_seq_len_cached&quot;, seq_len)</span>
+<span class="linenos">246</span><span class="gi">+        # Second test to translate.</span>
+<span class="linenos">247</span><span class="gi">+        # Let&#39;s keep in mind, self.max_seq_len_cached = seq_len is likely to be True.</span>
+<span class="linenos">248</span><span class="gi">+        # But in that case the following condition is a way to restore the original cache.</span>
+<span class="linenos">249</span>
+<span class="linenos">250</span><span class="gd">-        if (</span>
+<span class="linenos">251</span><span class="gd">-            seq_len &lt; self.original_max_seq_len and max_seq_len_cached &gt; self.original_max_seq_len</span>
+<span class="linenos">252</span><span class="gd">-        ):  # reset</span>
+<span class="linenos">253</span><span class="gd">-            # This .to() is needed if the model has been moved to a device after being initialized (because</span>
+<span class="linenos">254</span><span class="gd">-            # the buffer is automatically moved, but not the original copy)</span>
+<span class="linenos">255</span><span class="gd">-            original_inv_freq = original_inv_freq.to(device)</span>
+<span class="linenos">256</span><span class="gd">-            self.register_buffer(f&quot;{prefix}inv_freq&quot;, original_inv_freq, persistent=False)</span>
+<span class="linenos">257</span><span class="gd">-            setattr(self, f&quot;{prefix}original_inv_freq&quot;, original_inv_freq)</span>
+<span class="linenos">258</span><span class="gd">-            setattr(self, f&quot;{layer_type}_max_seq_len_cached&quot;, self.original_max_seq_len)</span>
+<span class="linenos">259</span><span class="gi">+        # if (</span>
+<span class="linenos">260</span><span class="gi">+        #    seq_len &lt; self.original_max_seq_len</span>
+<span class="linenos">261</span><span class="gi">+        #    and self.max_seq_len_cached &gt; self.original_max_seq_len</span>
+<span class="linenos">262</span><span class="gi">+        # ):</span>
+<span class="linenos">263</span><span class="gi">+        #    self.original_inv_freq = self.original_inv_freq.to(device)</span>
+<span class="linenos">264</span><span class="gi">+        #    self.register_buffer(&quot;inv_freq&quot;, self.original_inv_freq, persistent=False)</span>
+<span class="linenos">265</span><span class="gi">+        #    self.max_seq_len_cached = self.original_max_seq_len</span>
+<span class="linenos">266</span><span class="gi">+</span>
+<span class="linenos">267</span><span class="gi">+        original_inv_freq = self.original_inv_freq.to(device)</span>
+<span class="linenos">268</span><span class="gi">+        cond = (seq_len &gt;= self.original_max_seq_len).item()</span>
+<span class="linenos">269</span><span class="gi">+        # PATCHED: uses torch.cond instead of a test</span>
+<span class="linenos">270</span><span class="gi">+        inv_freq = torch.cond(</span>
+<span class="linenos">271</span><span class="gi">+            cond,</span>
+<span class="linenos">272</span><span class="gi">+            (lambda x, y: x.clone()),</span>
+<span class="linenos">273</span><span class="gi">+            (lambda x, y: y.clone()),</span>
+<span class="linenos">274</span><span class="gi">+            [long_inv_freq, original_inv_freq],</span>
+<span class="linenos">275</span><span class="gi">+        )</span>
+<span class="linenos">276</span><span class="gi">+        setattr(self, f&quot;{prefix}inv_freq&quot;, inv_freq)</span>
+<span class="linenos">277</span>
+<span class="linenos">278</span><span class="w"> </span>    @wraps(rope_forward)
+<span class="linenos">279</span><span class="w"> </span>    def wrapper(self, x, position_ids, layer_type=None):
+<span class="linenos">280</span><span class="gd">-        rope_type = self.rope_type if layer_type is None else self.rope_type[layer_type]</span>
+<span class="linenos">281</span><span class="gd">-        kwargs = {&quot;layer_type&quot;: layer_type} if layer_type is not None else {}</span>
+<span class="linenos">282</span><span class="gd">-        if &quot;dynamic&quot; in rope_type:</span>
+<span class="linenos">283</span><span class="gd">-            dynamic_frequency_update(self, position_ids, device=x.device, **kwargs)</span>
+<span class="linenos">284</span><span class="gd">-        elif rope_type == &quot;longrope&quot;:</span>
+<span class="linenos">285</span><span class="gd">-            longrope_frequency_update(self, position_ids, device=x.device, **kwargs)</span>
+<span class="linenos">286</span><span class="gd">-        return rope_forward(self, x, position_ids, **kwargs)</span>
+<span class="linenos">287</span><span class="gi">+        if layer_type is None:</span>
+<span class="linenos">288</span><span class="gi">+            if &quot;dynamic&quot; in self.rope_type:</span>
+<span class="linenos">289</span><span class="gi">+                dynamic_frequency_update(self, position_ids, device=x.device)</span>
+<span class="linenos">290</span><span class="gi">+            elif self.rope_type == &quot;longrope&quot;:</span>
+<span class="linenos">291</span><span class="gi">+                longrope_frequency_update(self, position_ids, device=x.device)</span>
+<span class="linenos">292</span><span class="gi">+            return rope_forward(self, x, position_ids)</span>
+<span class="linenos">293</span><span class="gi">+</span>
+<span class="linenos">294</span><span class="gi">+        if &quot;dynamic&quot; in self.rope_type:</span>
+<span class="linenos">295</span><span class="gi">+            dynamic_frequency_update(self, position_ids, device=x.device, layer_type=layer_type)</span>
+<span class="linenos">296</span><span class="gi">+        elif self.rope_type == &quot;longrope&quot;:</span>
+<span class="linenos">297</span><span class="gi">+            longrope_frequency_update(self, position_ids, device=x.device, layer_type=layer_type)</span>
+<span class="linenos">298</span><span class="gi">+        return rope_forward(self, x, position_ids, layer_type=layer_type)</span>
+<span class="linenos">299</span>
+<span class="linenos">300</span><span class="w"> </span>    return wrapper
 </pre></div>
 </div>
 <p><strong>impacted nodes</strong></p>
-<div class="highlight-raw notranslate"><div class="highlight"><pre><span></span>aten.unsqueeze.default(b_model_rotary_emb_inv_freq, 0) -&gt; unsqueeze
-aten.unsqueeze.default(unsqueeze, 2) -&gt; unsqueeze_1
-aten._assert_tensor_metadata.default(unsqueeze_1) -&gt; _assert_tensor_metadata_default_3
-aten.to.dtype(unsqueeze_1, torch.float32) -&gt; to_3
-aten.expand.default(to_3, [sym_size_int_19, -1, 1]) -&gt; expand_4
-aten._assert_tensor_metadata.default(expand_4) -&gt; _assert_tensor_metadata_default_4
-aten.to.dtype_layout(expand_4) -&gt; to_4
-aten.slice.Tensor(position_ids, 0, 0, 9223372036854775807) -&gt; slice_1
-aten.unsqueeze.default(slice_1, 1) -&gt; unsqueeze_2
-aten.slice.Tensor(unsqueeze_2, 2, 0, 9223372036854775807) -&gt; slice_2
-aten._assert_tensor_metadata.default(slice_2) -&gt; _assert_tensor_metadata_default_5
-aten.to.dtype(slice_2, torch.float32) -&gt; to_5
-&lt;built-in function getitem&gt;(wrap_with_autocast, 0) -&gt; mul
-&lt;built-in function getitem&gt;(wrap_with_autocast, 1) -&gt; mul_1
-aten._assert_tensor_metadata.default(mul) -&gt; _assert_tensor_metadata_default_8
-aten.to.dtype(mul, torch.float32) -&gt; to_8
-aten._assert_tensor_metadata.default(mul_1) -&gt; _assert_tensor_metadata_default_9
-aten.to.dtype(mul_1, torch.float32) -&gt; to_9
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aten</span><span class="o">.</span><span class="n">unsqueeze</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">b_model_rotary_emb_inv_freq</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">unsqueeze</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">unsqueeze</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">unsqueeze</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">unsqueeze_1</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">_assert_tensor_metadata</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">unsqueeze_1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_assert_tensor_metadata_default_3</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">unsqueeze_1</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">to_3</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">expand</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">to_3</span><span class="p">,</span> <span class="p">[</span><span class="n">sym_size_int_19</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">expand_4</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">_assert_tensor_metadata</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">expand_4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_assert_tensor_metadata_default_4</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">dtype_layout</span><span class="p">(</span><span class="n">expand_4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">to_4</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">slice</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">position_ids</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9223372036854775807</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">slice_1</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">unsqueeze</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">slice_1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">unsqueeze_2</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">slice</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">unsqueeze_2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9223372036854775807</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">slice_2</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">_assert_tensor_metadata</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">slice_2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_assert_tensor_metadata_default_5</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">slice_2</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">to_5</span>
+<span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">getitem</span><span class="o">&gt;</span><span class="p">(</span><span class="n">wrap_with_autocast</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mul</span>
+<span class="o">&lt;</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">function</span> <span class="n">getitem</span><span class="o">&gt;</span><span class="p">(</span><span class="n">wrap_with_autocast</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mul_1</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">_assert_tensor_metadata</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">mul</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_assert_tensor_metadata_default_8</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">to_8</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">_assert_tensor_metadata</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">mul_1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_assert_tensor_metadata_default_9</span>
+<span class="n">aten</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">mul_1</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">to_9</span>
 </pre></div>
 </div>
 </section>
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.append">
-<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_to_patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L184"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.append" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_to_patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L213"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.append" title="Link to this definition">¶</a></dt>
 <dd><p>Stores a patch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>family</strong> – a category, anything to classify the patch</p></li>
-<li><p><strong>function_to_patch</strong> – function to pathc</p></li>
+<li><p><strong>function_to_patch</strong> – function to patch</p></li>
 <li><p><strong>patch</strong> – function patched</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instance of PatchInfo</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.data">
-<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L200"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.data" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L234"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.data" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the data for a dataframe.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L203"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.find" title="Link to this definition">¶</a></dt>
+<dd><p>Finds a patch by name.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.make_report">
-<span class="sig-name descname"><span class="pre">make_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Node</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'raw'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L283"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.make_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.make_report" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">make_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Node</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'raw'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L317"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.make_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.make_report" title="Link to this definition">¶</a></dt>
 <dd><p>Creates a report based on the involved patches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -563,7 +839,7 @@ aten.to.dtype(mul_1, torch.float32) -&gt; to_9
 
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.matching_pair">
-<span class="sig-name descname"><span class="pre">matching_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Node</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L273"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.matching_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.matching_pair" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">matching_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Node</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L307"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.matching_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.matching_pair" title="Link to this definition">¶</a></dt>
 <dd><p>Last validation for a pair. RotaryEmbedding has many rewriting
 and they all end up in the same code line.</p>
 </dd></dl>
@@ -576,7 +852,7 @@ and they all end up in the same code line.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.patches_involded_in_graph">
-<span class="sig-name descname"><span class="pre">patches_involded_in_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Graph</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Node</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L204"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.patches_involded_in_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.patches_involded_in_graph" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">patches_involded_in_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Graph</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo"><span class="pre">PatchInfo</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Node" title="(in PyTorch v2.9)"><span class="pre">torch.fx.Node</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L238"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchDetails.patches_involded_in_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.patches_involded_in_graph" title="Link to this definition">¶</a></dt>
 <dd><p>Enumerates all patches impacting a graph.
 The function goes through the graph node (only the main graph) and
 looks into the metadata to determine if a listed patch was involved.</p>
@@ -594,12 +870,12 @@ looks into the metadata to determine if a listed patch was involved.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">PatchInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_to_patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L46"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="Link to this definition">¶</a></dt>
-<dd><p>Stores informations about patches.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">PatchInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_to_patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L46"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Stores information about patches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>function_to_patch</strong> – function to pathc</p></li>
+<li><p><strong>function_to_patch</strong> – function to patch</p></li>
 <li><p><strong>patch</strong> – function patched</p></li>
 <li><p><strong>family</strong> – a category, anything to classify the patch</p></li>
 </ul>
@@ -607,7 +883,7 @@ looks into the metadata to determine if a listed patch was involved.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.format_diff">
-<span class="sig-name descname"><span class="pre">format_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'raw'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L102"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.format_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.format_diff" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">format_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'raw'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L120"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.format_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.format_diff" title="Link to this definition">¶</a></dt>
 <dd><p>Format a diff between two function as a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -696,19 +972,19 @@ looks into the metadata to determine if a listed patch was involved.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.make_diff">
-<span class="sig-name descname"><span class="pre">make_diff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L90"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.make_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.make_diff" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">make_diff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L101"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.make_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.make_diff" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a diff as a string.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L86"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.to_dict" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L97"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.to_dict" title="Link to this definition">¶</a></dt>
 <dd><p>usual</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.to_tuple">
-<span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.to_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.to_tuple" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L93"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#PatchInfo.to_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchInfo.to_tuple" title="Link to this definition">¶</a></dt>
 <dd><p>usual</p>
 </dd></dl>
 
@@ -716,13 +992,13 @@ looks into the metadata to determine if a listed patch was involved.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.clean_code_with_black">
-<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">clean_code_with_black</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#clean_code_with_black"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.clean_code_with_black" title="Link to this definition">¶</a></dt>
-<dd><p>Changes the code style with <a href="#id1"><span class="problematic" id="id2">:epkg:`black`</span></a> if available.</p>
+<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">clean_code_with_black</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L9"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#clean_code_with_black"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.clean_code_with_black" title="Link to this definition">¶</a></dt>
+<dd><p>Changes the code style with <a class="reference external" href="https://github.com/psf/black">black</a> if available.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="onnx_diagnostic.torch_export_patches.patch_details.make_diff_code">
-<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">make_diff_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">code2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/319ec3a/onnx_diagnostic/torch_export_patches/patch_details.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#make_diff_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.make_diff_code" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">onnx_diagnostic.torch_export_patches.patch_details.</span></span><span class="sig-name descname"><span class="pre">make_diff_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">code2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference external" href="https://github.com/sdpython/onnx-diagnostic/blob/200869a/onnx_diagnostic/torch_export_patches/patch_details.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="reference internal" href="../../_modules/onnx_diagnostic/torch_export_patches/patch_details.html#make_diff_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#onnx_diagnostic.torch_export_patches.patch_details.make_diff_code" title="Link to this definition">¶</a></dt>
 <dd><p>Creates a diff between two codes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -799,6 +1075,7 @@ looks into the metadata to determine if a listed patch was involved.</p>
 <li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails"><code class="docutils literal notranslate"><span class="pre">PatchDetails</span></code></a><ul>
 <li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.append"><code class="docutils literal notranslate"><span class="pre">PatchDetails.append()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.data"><code class="docutils literal notranslate"><span class="pre">PatchDetails.data()</span></code></a></li>
+<li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.find"><code class="docutils literal notranslate"><span class="pre">PatchDetails.find()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.make_report"><code class="docutils literal notranslate"><span class="pre">PatchDetails.make_report()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.matching_pair"><code class="docutils literal notranslate"><span class="pre">PatchDetails.matching_pair()</span></code></a></li>
 <li><a class="reference internal" href="#onnx_diagnostic.torch_export_patches.patch_details.PatchDetails.n_patches"><code class="docutils literal notranslate"><span class="pre">PatchDetails.n_patches</span></code></a></li>
