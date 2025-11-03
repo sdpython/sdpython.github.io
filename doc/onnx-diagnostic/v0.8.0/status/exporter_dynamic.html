@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image">
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
-        <title>Exported ONNX with Dynamic Shapes - onnx-diagnostic 0.8.dev documentation</title>
+        <title>Exported ONNX with Dynamic Shapes - onnx-diagnostic 0.8.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
@@ -169,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">onnx-diagnostic 0.8.dev documentation</div></a>
+      <a href="../index.html"><div class="brand">onnx-diagnostic 0.8.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -193,7 +193,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">onnx-diagnostic 0.8.dev documentation</span>
+  <span class="sidebar-brand-text">onnx-diagnostic 0.8.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -599,7 +599,7 @@ to the original model.</p>
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The implementation is still incorrect, x=&#39;x&#39;, shape=(&#39;batch&#39;, 2, 8, 8), size=[2, 2, 8, 4], stride=[128, 8, 16, 1], storage_offset=None
 --DEBUG--
-[GraphBuilder-SGM] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-LUM] Message starts, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 --CONSTRAINTS--
     batch = {&#39;s77&#39;}
     s77 = {&#39;batch&#39;}
@@ -661,10 +661,10 @@ set()
 -- process.progress --
 node 1/3 target=aten.as_strided.default
 -- 1 INPUTS
-[GraphBuilder-SGM.make_tensor_input] x[1:batchx2x8x8]
+[GraphBuilder-LUM.make_tensor_input] x[1:batchx2x8x8]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-SGM] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
+[GraphBuilder-LUM] Message completed, there are 0 initializers, 0 nodes, 1 inputs, 1 outputs.
 </pre></div>
 </div>
 </section>
@@ -899,7 +899,7 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batch&
 <section id="id12">
 <h3>dynamo-ir<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <p><strong>FAILED</strong></p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x72c9f3612e10&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x72c9f3612db0&gt;&#39;]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>An error occurred when running the &#39;&lt;onnx_ir.passes.PassManager object at 0x75035e1e6b70&gt;&#39; pass after the following passes: [&#39;&lt;onnx_ir.passes.common.inliner.InlinePass object at 0x75035e1e6a80&gt;&#39;]
 </pre></div>
 </div>
 </section>
@@ -3539,7 +3539,7 @@ output: name=&#39;_to_copy_1&#39; type=dtype(&#39;float32&#39;) shape=[&#39;batc
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret function &lt;class &#39;str&#39;&gt;: &#39;aten__add_batch_dim&#39;, searched for [&#39;aten__add_batch_dim&#39;] and attributes [], args=(x, 0, 1), kwargs={}, dispatcher=None
 --DEBUG--
-[GraphBuilder-JKQ] Message starts, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-OPK] Message starts, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs.
 --CONSTRAINTS--
     DYN0 = {&#39;s77&#39;}
     DYN1 = {&#39;s17&#39;}
@@ -3583,7 +3583,7 @@ _parameter_renaming=
     _add_batch_dim -&gt; {mul}
     sym_size_int_3 -&gt; {_remove_batch_dim}
     x -&gt; {_add_batch_dim}
-    y -&gt; {_add_batch_dim_1, sym_size_int_3}
+    y -&gt; {sym_size_int_3, _add_batch_dim_1}
 --TORCH-SHAPES--
     x: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([s17])))) --- 1:1:(&#39;DYN0&#39;,):
     y: (&#39;run_node&#39;, (&#39;&#39;, (&#39;val&#39;, torch.float32, torch.Size([s17])))) --- 1:1:(&#39;DYN1&#39;,):
@@ -3631,15 +3631,15 @@ graph():
 -- process.inputs_to_remove --
 set()
 -- process.progress --
-node 3/9 target=&lt;function _add_batch_dim at 0x72ca7a9c74c0&gt;
+node 3/9 target=&lt;function _add_batch_dim at 0x7504375c74c0&gt;
 -- 2 INPUTS
-[GraphBuilder-JKQ.make_tensor_input] x[1:DYN0]
-[GraphBuilder-JKQ.make_tensor_input] y[1:DYN1]
+[GraphBuilder-OPK.make_tensor_input] x[1:DYN0]
+[GraphBuilder-OPK.make_tensor_input] y[1:DYN1]
 -- 0 INITIALIZERS
-[GraphBuilder-JKQ.make_node] sym_size_int    [#:#   ] Shape:[&#39;y&#39;]-&gt;[&#39;y::Shape:1&#39;]
-[GraphBuilder-JKQ.make_node] sym_size_int2   [#:#   ] Squeeze:[&#39;y::Shape:1&#39;]-&gt;[&#39;sym_size_int_3&#39;]
+[GraphBuilder-OPK.make_node] sym_size_int    [#:#   ] Shape:[&#39;y&#39;]-&gt;[&#39;y::Shape:1&#39;]
+[GraphBuilder-OPK.make_node] sym_size_int2   [#:#   ] Squeeze:[&#39;y::Shape:1&#39;]-&gt;[&#39;sym_size_int_3&#39;]
 -- 0 OUTPUTS
-[GraphBuilder-JKQ] Message completed, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs., 
+[GraphBuilder-OPK] Message completed, there are 0 initializers, 2 nodes, 2 inputs, 2 outputs., 
 </pre></div>
 </div>
 </section>
@@ -3675,7 +3675,7 @@ output: name=&#39;add_2&#39; type=dtype(&#39;float32&#39;) shape=[&#39;s17&#39;]
 <p><strong>FAILED</strong></p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Unable to interpret function &lt;class &#39;torch._ops.OpOverload&#39;&gt;: &lt;OpOverload(op=&#39;aten.movedim&#39;, overload=&#39;int&#39;)&gt;, searched for [&#39;aten::movedim_int&#39;, &#39;movedim_int&#39;] and attributes [&#39;__qualname__&#39;, &#39;__name__&#39;], args=(x, 0, 0), kwargs={}, dispatcher=None
 --DEBUG--
-[GraphBuilder-LGY] Message starts, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs.
+[GraphBuilder-SKE] Message starts, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs.
 --CONSTRAINTS--
     DYN0 = {&#39;s77&#39;}
     DYN1 = {&#39;s17&#39;}
@@ -3765,11 +3765,11 @@ set()
 -- process.progress --
 node 2/8 target=aten.movedim.int
 -- 2 INPUTS
-[GraphBuilder-LGY.make_tensor_input] x[1:DYN0]
-[GraphBuilder-LGY.make_tensor_input] y[1:DYN1]
+[GraphBuilder-SKE.make_tensor_input] x[1:DYN0]
+[GraphBuilder-SKE.make_tensor_input] y[1:DYN1]
 -- 0 INITIALIZERS
 -- 0 OUTPUTS
-[GraphBuilder-LGY] Message completed, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs., 
+[GraphBuilder-SKE] Message completed, there are 0 initializers, 0 nodes, 2 inputs, 2 outputs., 
 </pre></div>
 </div>
 </section>
@@ -4061,7 +4061,7 @@ output: name=&#39;add_scan_combine_graph_0&#39; type=dtype(&#39;float32&#39;) sh
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=49f109a6"></script>
+</div><script src="../_static/documentation_options.js?v=d6acfc83"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
