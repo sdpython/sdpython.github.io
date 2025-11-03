@@ -123,12 +123,12 @@ Vector Add
 
  .. code-block:: none
 
-      0%|          | 0/3 [00:00<?, ?it/s]     67%|██████▋   | 2/3 [00:00<00:00,  2.89it/s]    100%|██████████| 3/3 [00:01<00:00,  1.50it/s]    100%|██████████| 3/3 [00:01<00:00,  1.66it/s]
+      0%|          | 0/3 [00:00<?, ?it/s]     33%|███▎      | 1/3 [00:01<00:02,  1.27s/it]     67%|██████▋   | 2/3 [00:02<00:01,  1.33s/it]    100%|██████████| 3/3 [00:03<00:00,  1.32s/it]    100%|██████████| 3/3 [00:03<00:00,  1.32s/it]
     fct              CUDA   CUDA-stream
     dim                                
-    1024     9.244778e-07  1.500088e-06
-    32768    4.042578e-08  5.798027e-08
-    1048576  5.730957e-09  4.799859e-09
+    1024     4.850350e-06  5.337401e-06
+    32768    1.234465e-07  1.848561e-07
+    1048576  1.771046e-08  1.865589e-08
 
 
 
@@ -182,7 +182,7 @@ CUDA parallelizes everything and takes all the computing power.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.841 seconds)
+   **Total running time of the script:** (0 minutes 5.009 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_bench_cuda_vector_add_stream.py:

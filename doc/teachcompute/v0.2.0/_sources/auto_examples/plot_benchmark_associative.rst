@@ -84,24 +84,24 @@ First try
 
     (100, 100)
     (100, 100) (100, 100)
-    {'average': np.float64(2.515817200019228e-05),
+    {'average': np.float64(3.503701720183017e-05),
      'context_size': 64,
-     'deviation': np.float64(1.0374499508539192e-05),
-     'max_exec': np.float64(6.011991999912425e-05),
-     'min_exec': np.float64(1.861647999703564e-05),
+     'deviation': np.float64(6.037630913287454e-06),
+     'max_exec': np.float64(6.074122000427451e-05),
+     'min_exec': np.float64(2.5633659970480948e-05),
      'number': 50,
      'repeat': 50,
-     'ttime': np.float64(0.001257908600009614),
-     'warmup_time': 6.163200009723369e-05}
-    {'average': np.float64(4.436903639980301e-05),
+     'ttime': np.float64(0.0017518508600915083),
+     'warmup_time': 0.00014419999934034422}
+    {'average': np.float64(6.91557203987031e-05),
      'context_size': 64,
-     'deviation': np.float64(2.7618504378496756e-06),
-     'max_exec': np.float64(6.0102739998910694e-05),
-     'min_exec': np.float64(4.262303999894357e-05),
+     'deviation': np.float64(7.830799947975338e-06),
+     'max_exec': np.float64(8.901838002202567e-05),
+     'min_exec': np.float64(5.513349999091588e-05),
      'number': 50,
      'repeat': 50,
-     'ttime': np.float64(0.00221845181999015),
-     'warmup_time': 7.618800009367988e-05}
+     'ttime': np.float64(0.0034577860199351555),
+     'warmup_time': 0.00013411899999482557}
 
 
 
@@ -147,7 +147,7 @@ With different sizes
 
  .. code-block:: none
 
-      0%|          | 0/6 [00:00<?, ?it/s]     33%|███▎      | 2/6 [00:00<00:00,  9.44it/s]     50%|█████     | 3/6 [00:00<00:00,  5.12it/s]     67%|██████▋   | 4/6 [00:01<00:00,  3.22it/s]     83%|████████▎ | 5/6 [00:04<00:01,  1.56s/it]    100%|██████████| 6/6 [00:09<00:00,  2.41s/it]    100%|██████████| 6/6 [00:09<00:00,  1.51s/it]
+      0%|          | 0/6 [00:00<?, ?it/s]     33%|███▎      | 2/6 [00:00<00:00,  6.97it/s]     50%|█████     | 3/6 [00:00<00:00,  4.34it/s]     67%|██████▋   | 4/6 [00:01<00:00,  2.80it/s]     83%|████████▎ | 5/6 [00:07<00:02,  2.32s/it]    100%|██████████| 6/6 [00:17<00:00,  5.02s/it]    100%|██████████| 6/6 [00:17<00:00,  2.95s/it]
 
 
 .. raw:: html
@@ -183,33 +183,33 @@ With different sizes
       <tbody>
         <tr>
           <th>50</th>
-          <td>0.000007</td>
-          <td>0.000013</td>
+          <td>0.000009</td>
+          <td>0.000016</td>
         </tr>
         <tr>
           <th>100</th>
-          <td>0.000019</td>
-          <td>0.000045</td>
+          <td>0.000030</td>
+          <td>0.000060</td>
         </tr>
         <tr>
           <th>125</th>
-          <td>0.000029</td>
-          <td>0.000096</td>
+          <td>0.000047</td>
+          <td>0.000093</td>
         </tr>
         <tr>
           <th>150</th>
-          <td>0.000048</td>
-          <td>0.000151</td>
+          <td>0.000059</td>
+          <td>0.000167</td>
         </tr>
         <tr>
           <th>175</th>
-          <td>0.000054</td>
-          <td>0.001508</td>
+          <td>0.000089</td>
+          <td>0.002301</td>
         </tr>
         <tr>
           <th>200</th>
-          <td>0.000079</td>
-          <td>0.001558</td>
+          <td>0.000117</td>
+          <td>0.004287</td>
         </tr>
       </tbody>
     </table>
@@ -258,7 +258,7 @@ Graph
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.466 seconds)
+   **Total running time of the script:** (0 minutes 18.377 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_associative.py:

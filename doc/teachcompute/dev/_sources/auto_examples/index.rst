@@ -303,6 +303,23 @@ Gallerie d'exemples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="It is not exactly GEMM but MatMul with transpose attributes.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_bench_cuda_gemm_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_bench_cuda_gemm.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Comparing GEMM implementation</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="numpy has a very fast implementation of matrix multiplication. There are many ways to be slower.">
 
 .. only:: html
@@ -362,6 +379,7 @@ Gallerie d'exemples
    /auto_examples/plot_benchmark_dot_cython
    /auto_examples/plot_bench_cpu_vector_sum_avx_parallel
    /auto_examples/plot_export_model_onnx
+   /auto_examples/plot_bench_cuda_gemm
    /auto_examples/plot_benchmark_dot_mul
    /auto_examples/plot_serialisation_examples
 

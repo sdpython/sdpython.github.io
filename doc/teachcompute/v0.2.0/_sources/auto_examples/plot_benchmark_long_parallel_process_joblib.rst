@@ -85,7 +85,7 @@ We check that it returns the same values.
 
  .. code-block:: none
 
-    -11.369683125857563 -11.369683125857561
+    -6.80852588166648 -6.80852588166648
 
 
 
@@ -132,11 +132,11 @@ Let's benchmark.
 
  .. code-block:: none
 
-      0%|          | 0/2 [00:00<?, ?it/s]     50%|█████     | 1/2 [00:00<00:00,  1.66it/s]    100%|██████████| 2/2 [00:01<00:00,  1.66it/s]    100%|██████████| 2/2 [00:01<00:00,  1.66it/s]
+      0%|          | 0/2 [00:00<?, ?it/s]     50%|█████     | 1/2 [00:00<00:00,  1.60it/s]    100%|██████████| 2/2 [00:01<00:00,  1.62it/s]    100%|██████████| 2/2 [00:01<00:00,  1.62it/s]
           numpy.dot    joblib
     N                        
-    1000   0.000001  0.011793
-    2000   0.000001  0.011764
+    1000   0.000002  0.012166
+    2000   0.000001  0.011954
 
     Text(0.5, 1.0, 'Parallel / numpy dot')
 
@@ -149,7 +149,7 @@ The parallelisation is inefficient.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.032 seconds)
+   **Total running time of the script:** (0 minutes 2.996 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_benchmark_long_parallel_process_joblib.py:
