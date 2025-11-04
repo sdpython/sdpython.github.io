@@ -212,7 +212,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input aria-label="Toggle navigation of Collections d’articles périssables" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives et spark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives, spark …</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025-05-31-route2025.html">2025-05-31: Feuille de route 2024-2025 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-06-01-gemm-gpu.html">2024-06-01: GEMM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-05-31-route2024-gpu.html">2024-05-31: Feuille de route 2023-2024 (3A)</a></li>
@@ -637,12 +637,14 @@ dtype: object
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-your 131072x1 screen size is bogus. expect trouble
-24/11/11 15:04:11 WARN Utils: Your hostname, xavier2024 resolves to a loopback address: 127.0.1.1; using 10.255.255.254 instead (on interface lo)
-24/11/11 15:04:11 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark&#39;s default log4j profile: org/apache/spark/log4j2-defaults.properties
+25/11/04 22:02:21 WARN Utils: Your hostname, xadupre2025, resolves to a loopback address: 127.0.1.1; using 172.17.197.78 instead (on interface eth0)
+25/11/04 22:02:21 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Using Spark&#39;s default log4j profile: org/apache/spark/log4j2-defaults.properties
 Setting default log level to &#34;WARN&#34;.
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-24/11/11 15:04:11 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/11/04 22:02:23 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -761,8 +763,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-24/11/11 15:04:26 WARN Instrumentation: [4427c4d8] Initial coefficients will be ignored! Its dimensions (1, 6) did not match the expected size (1, 6)
-24/11/11 15:04:26 WARN InstanceBuilder: Failed to load implementation from:dev.ludovic.netlib.blas.JNIBLAS
+25/11/04 22:02:59 WARN Instrumentation: [3c23724c] Initial coefficients will be ignored! Its dimensions (1}, 6) did not match the expected size (1, 6)
+25/11/04 22:03:00 WARN InstanceBuilder: Failed to load implementation from:dev.ludovic.netlib.blas.JNIBLAS
 </pre></div></div>
 </div>
 <p>Pendant que ça tourne, il faut regarder la fenêtre terminal qui affiche les messages du serveur de notebook.</p>
@@ -944,8 +946,8 @@ Training Error = 0.20217438039372254
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 == Physical Plan ==
-*(1) Project [age#89L, fnlwgt#91L, education_num#93L, capital_gain#99L, capital_loss#100L, hours_per_week#101L, cast((target#103 =  &lt;=50K) as float) AS Y#136, UDF(struct(age_double_VectorAssembler_5cbe6d4fd991, cast(age#89L as double), fnlwgt_double_VectorAssembler_5cbe6d4fd991, cast(fnlwgt#91L as double), education_num_double_VectorAssembler_5cbe6d4fd991, cast(education_num#93L as double), capital_gain_double_VectorAssembler_5cbe6d4fd991, cast(capital_gain#99L as double), capital_loss_double_VectorAssembler_5cbe6d4fd991, cast(capital_loss#100L as double), hours_per_week_double_VectorAssembler_5cbe6d4fd991, cast(hours_per_week#101L as double))) AS features#167]
-+- *(1) Scan ExistingRDD[age#89L,workclass#90,fnlwgt#91L,education#92,education_num#93L,marital_status#94,occupation#95,relationship#96,race#97,sex#98,capital_gain#99L,capital_loss#100L,hours_per_week#101L,native_country#102,target#103]
+*(1) Project [age#84L, fnlwgt#86L, education_num#88L, capital_gain#94L, capital_loss#95L, hours_per_week#96L, cast((target#98 =  &lt;=50K) as float) AS Y#100, UDF(struct(age_double_VectorAssembler_299aed11487b, cast(age#84L as double), fnlwgt_double_VectorAssembler_299aed11487b, cast(fnlwgt#86L as double), education_num_double_VectorAssembler_299aed11487b, cast(education_num#88L as double), capital_gain_double_VectorAssembler_299aed11487b, cast(capital_gain#94L as double), capital_loss_double_VectorAssembler_299aed11487b, cast(capital_loss#95L as double), hours_per_week_double_VectorAssembler_299aed11487b, cast(hours_per_week#96L as double))) AS features#108]
++- *(1) Scan ExistingRDD[age#84L,workclass#85,fnlwgt#86L,education#87,education_num#88L,marital_status#89,occupation#90,relationship#91,race#92,sex#93,capital_gain#94L,capital_loss#95L,hours_per_week#96L,native_country#97,target#98]
 
 
 </pre></div></div>
@@ -1036,6 +1038,14 @@ StructType([StructField(&#39;age&#39;, LongType(), True), StructField(&#39;fnlwg
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
@@ -1072,6 +1082,14 @@ Intercept: 1.1482462553407051
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

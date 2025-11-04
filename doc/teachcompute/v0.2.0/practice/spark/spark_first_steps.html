@@ -212,7 +212,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input aria-label="Toggle navigation of Collections d’articles périssables" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives et spark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives, spark …</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025-05-31-route2025.html">2025-05-31: Feuille de route 2024-2025 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-06-01-gemm-gpu.html">2024-06-01: GEMM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-05-31-route2024-gpu.html">2024-05-31: Feuille de route 2023-2024 (3A)</a></li>
@@ -370,7 +370,7 @@
 <h1>Premiers pas avec Spark<a class="headerlink" href="#Premiers-pas-avec-Spark" title="Lien vers cette rubrique">¶</a></h1>
 <p>Introduction à <a class="reference external" href="https://spark.apache.org/">Spark</a> et aux <a class="reference external" href="https://www.cs.cmu.edu/~pavlo/courses/fall2013/static/slides/spark.pdf">RDD</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -423,7 +423,7 @@ Voir également <a class="reference external" href="https://spark.apache.org/doc
 <h3>Vérifier que Spark en local fonctionne<a class="headerlink" href="#Vérifier-que-Spark-en-local-fonctionne" title="Lien vers cette rubrique">¶</a></h3>
 <p>On essaye le <em>« hello world »</em> en <em>Spark</em> qui consiste à compter les mots dans un fichier. On prend le fichier du notebook.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
@@ -439,16 +439,18 @@ Voir également <a class="reference external" href="https://spark.apache.org/doc
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-your 131072x1 screen size is bogus. expect trouble
-24/11/11 14:58:33 WARN Utils: Your hostname, xavier2024 resolves to a loopback address: 127.0.1.1; using 10.255.255.254 instead (on interface lo)
-24/11/11 14:58:33 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark&#39;s default log4j profile: org/apache/spark/log4j2-defaults.properties
+25/11/04 21:55:43 WARN Utils: Your hostname, xadupre2025, resolves to a loopback address: 127.0.1.1; using 172.17.197.78 instead (on interface eth0)
+25/11/04 21:55:43 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Using Spark&#39;s default log4j profile: org/apache/spark/log4j2-defaults.properties
 Setting default log level to &#34;WARN&#34;.
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-24/11/11 14:58:33 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/11/04 21:55:46 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text_file</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;spark_first_steps.ipynb&quot;</span><span class="p">)</span>
@@ -470,7 +472,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -480,17 +482,17 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 [&#39;_SUCCESS&#39;,
+ &#39;.part-00000.crc&#39;,
  &#39;part-00000&#39;,
- &#39;part-00001&#39;,
- &#39;.part-00001.crc&#39;,
  &#39;._SUCCESS.crc&#39;,
- &#39;.part-00000.crc&#39;]
+ &#39;part-00001&#39;,
+ &#39;.part-00001.crc&#39;]
 </pre></div></div>
 </div>
 </section>
@@ -506,7 +508,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 internet. Chaque ligne est en fait un gros JSON.</p>
 <p>On utilise un jeu de données de machine learning <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/Adult">Adult</a> légèrement pré-traités.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -526,7 +528,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
@@ -537,7 +539,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -673,7 +675,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 <p>On enlève le nom des colonnes.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;adult.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -681,7 +683,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;adult.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -709,7 +711,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 <h3>déclaration d’un RDD<a class="headerlink" href="#déclaration-d'un-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <p>La déclaration déclare l’existence d’un <em>RDD</em> comme on déclare un fichier. Pour l’instant aucune manipulation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">&quot;adult.txt&quot;</span><span class="p">)</span>
@@ -720,7 +722,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 <section id="enregistrement-d'un-RDD">
 <h3>enregistrement d’un RDD<a class="headerlink" href="#enregistrement-d'un-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -731,7 +733,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;out/copy_adult.txt&quot;</span><span class="p">):</span>
@@ -741,7 +743,7 @@ internet. Chaque ligne est en fait un gros JSON.</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span><span class="w"> </span>ls<span class="w"> </span>out/copy_adult.txt
@@ -757,7 +759,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;out/copy_adult.txt/part-00000&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -786,7 +788,7 @@ _SUCCESS  part-00000  part-00001
 <h3>lecture locale d’un RDD avec pandas<a class="headerlink" href="#lecture-locale-d'un-RDD-avec-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <p>On lit chaque morceaux avant de les concaténer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
@@ -817,7 +819,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -902,7 +904,7 @@ _SUCCESS  part-00000  part-00001
 <h3>collect<a class="headerlink" href="#collect" title="Lien vers cette rubrique">¶</a></h3>
 <p>Cette opération regroupe les deux précédentes en une seule. Il faut toute de même faire attention de ne pas l’exécuter sur un grand fichier sous peine de faire exploser la mémoire.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
@@ -910,7 +912,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
@@ -918,7 +920,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -928,7 +930,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
@@ -939,7 +941,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1024,7 +1026,7 @@ _SUCCESS  part-00000  part-00001
 <h3>map<a class="headerlink" href="#map" title="Lien vers cette rubrique">¶</a></h3>
 <p>Transformer une ligne en une autre ligne. Chaque ligne est traitée indépendemment des autres.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_column</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
@@ -1038,7 +1040,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1051,7 +1053,7 @@ _SUCCESS  part-00000  part-00001
 <h3>filter<a class="headerlink" href="#filter" title="Lien vers cette rubrique">¶</a></h3>
 <p>Garder ou jeter une ligne. Chaque ligne est traitée indépendemment des autres.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">filter_column</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1065,7 +1067,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1076,7 +1078,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 <p>On combine souvent les deux :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">filter_column_split</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1091,7 +1093,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1105,7 +1107,7 @@ _SUCCESS  part-00000  part-00001
 <h3>flatMap<a class="headerlink" href="#flatMap" title="Lien vers cette rubrique">¶</a></h3>
 <p>C’est la principale différence avec SQL. Une ligne peut devenir un nombre variable de lignes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_column_and_multiply_row</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
@@ -1119,7 +1121,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1176,7 +1178,7 @@ _SUCCESS  part-00000  part-00001
 <h3>group / reduce + mapValues<a class="headerlink" href="#group-/-reduce-+-mapValues" title="Lien vers cette rubrique">¶</a></h3>
 <p>Petite moyenne ?</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">extract_age_rich</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
@@ -1198,7 +1200,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1215,7 +1217,7 @@ _SUCCESS  part-00000  part-00001
 <h3>join<a class="headerlink" href="#join" title="Lien vers cette rubrique">¶</a></h3>
 <p>Et on remet la moyenne dans le stream initial. Il vaut mieux regarder la documentation de la méthode <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.join">join</a> avant de commencer à lire le code qui suit.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_key</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">row</span><span class="p">))</span>
@@ -1225,7 +1227,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1272,7 +1274,7 @@ _SUCCESS  part-00000  part-00001
 <h3>le choix existentiel du join : le petit join<a class="headerlink" href="#le-choix-existentiel-du-join-:-le-petit-join" title="Lien vers cette rubrique">¶</a></h3>
 <p>On fait souvent une opération qui consiste à garder les lignes pour lesquelles une certaine valeur appartient à un ensemble. On peut faire un join classique ou alors l’ensemble est petit, traiter ce join comme un map. On broadcaste l’ensemble à chaque processus exécutant le map.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ages</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">broadcast</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
@@ -1281,7 +1283,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1290,7 +1292,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">ages</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -1299,7 +1301,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1313,7 +1315,7 @@ _SUCCESS  part-00000  part-00001
 <h3>les trucs qui servent parfois parce que … à l’usage ça sert<a class="headerlink" href="#les-trucs-qui-servent-parfois-parce-que-...-à-l'usage-ça-sert" title="Lien vers cette rubrique">¶</a></h3>
 <p>Ce que font les méthodes associées aux <a class="reference external" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD">RDD</a>, un peu comme les itérateurs, n’est pas toujours intuitif, mais il est à peu près sûr qu’elles vous serviront un jour (peut-être après avoir googlé ou bingé comme des fous).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
@@ -1322,7 +1324,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1331,7 +1333,7 @@ _SUCCESS  part-00000  part-00001
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_rdd</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
@@ -1339,7 +1341,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1365,7 +1367,7 @@ _SUCCESS  part-00000  part-00001
 <p><a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL</a></p>
 <p>Au début, ça commence par… créer un dataframe. Et comme pour pandas, ces objets retienennt les noms et les types.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
@@ -1376,7 +1378,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1457,7 +1459,7 @@ _SUCCESS  part-00000  part-00001
 </div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sdf = spark.createDataFrame(data)  # ça marche</span>
@@ -1466,7 +1468,7 @@ _SUCCESS  part-00000  part-00001
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1503,13 +1505,12 @@ _SUCCESS  part-00000  part-00001
 | 38|          Private| 28887|         11th|            7|  Married-civ-spouse|             Sales|       Husband|              White|   Male|           0|           0|            50| United-States| &lt;=50K|
 +---+-----------------+------+-------------+-------------+--------------------+------------------+--------------+-------------------+-------+------------+------------+--------------+--------------+------+
 only showing top 20 rows
-
 </pre></div></div>
 </div>
 <section id="Conversion-à-pandas">
 <h3>Conversion à pandas<a class="headerlink" href="#Conversion-à-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sdf</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span>
@@ -1517,7 +1518,7 @@ only showing top 20 rows
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1525,7 +1526,7 @@ only showing top 20 rows
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1663,7 +1664,7 @@ only showing top 20 rows
 <section id="Retour-aux-RDD">
 <h3>Retour aux RDD<a class="headerlink" href="#Retour-aux-RDD" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">rdd</span>
@@ -1671,19 +1672,19 @@ only showing top 20 rows
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-MapPartitionsRDD[54] at javaToPython at NativeMethodAccessorImpl.java:0
+MapPartitionsRDD[53] at javaToPython at NativeMethodAccessorImpl.java:0
 </pre></div></div>
 </div>
 </section>
 <section id="Récuperer-le-schéma">
 <h3>Récuperer le schéma<a class="headerlink" href="#Récuperer-le-schéma" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">schema</span>
@@ -1691,7 +1692,7 @@ MapPartitionsRDD[54] at javaToPython at NativeMethodAccessorImpl.java:0
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1700,7 +1701,7 @@ StructType([StructField(&#39;_c0&#39;, StringType(), True), StructField(&#39;_c1
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1736,7 +1737,7 @@ root
 <h3>Utiliser pandas pour spécifer le format<a class="headerlink" href="#Utiliser-pandas-pour-spécifer-le-format" title="Lien vers cette rubrique">¶</a></h3>
 <p>On utilise pandas sur une partie du stream.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
@@ -1747,7 +1748,7 @@ root
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1828,7 +1829,7 @@ root
 </div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -1836,7 +1837,7 @@ root
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1868,7 +1869,7 @@ root
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullsdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">sdf</span><span class="o">.</span><span class="n">rdd</span><span class="p">,</span> <span class="n">sdf</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
@@ -1876,7 +1877,7 @@ root
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullsdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -1911,7 +1912,7 @@ root
 <section id="Enregistrement-au-format-parquet">
 <h3>Enregistrement au format parquet<a class="headerlink" href="#Enregistrement-au-format-parquet" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullsdf</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;data_adult.schema.parquet&quot;</span><span class="p">)</span>
@@ -1923,55 +1924,55 @@ root
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 95.00% for 8 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 84.44% for 9 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 76.00% for 10 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 69.09% for 11 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 63.33% for 12 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 58.46% for 13 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 54.29% for 14 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 50.67% for 15 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 47.50% for 16 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 44.71% for 17 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 42.22% for 18 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 40.00% for 19 writers
-24/11/11 14:58:51 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 38.00% for 20 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 40.00% for 19 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 42.22% for 18 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 44.71% for 17 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 47.50% for 16 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 50.67% for 15 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 54.29% for 14 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 58.46% for 13 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 63.33% for 12 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 69.09% for 11 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 76.00% for 10 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 84.44% for 9 writers
-24/11/11 14:58:52 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
+25/11/04 21:56:12 WARN MemoryManager: Total allocation exceeds 95.00% (1,020,054,720 bytes) of heap memory
 Scaling row group sizes to 95.00% for 8 writers
 
 </pre></div></div>
@@ -1980,7 +1981,7 @@ Scaling row group sizes to 95.00% for 8 writers
 <section id="Relecture-du-format-parquet">
 <h3>Relecture du format parquet<a class="headerlink" href="#Relecture-du-format-parquet" title="Lien vers cette rubrique">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;data_adult.schema.parquet/&quot;</span><span class="p">)</span>
@@ -1988,7 +1989,7 @@ Scaling row group sizes to 95.00% for 8 writers
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newsdf</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
@@ -2024,7 +2025,7 @@ root
 <h3>Dataframe Spark VS Dataframe pandas<a class="headerlink" href="#Dataframe-Spark-VS-Dataframe-pandas" title="Lien vers cette rubrique">¶</a></h3>
 <p>Spark a reproduit la même interface que pandas pour ses dataframes excepté que le résultat n’est pas calculé tant qu’on ne choisit pas de sauvegarder le résultat.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fifty</span> <span class="o">=</span> <span class="n">fullsdf</span><span class="p">[</span><span class="n">fullsdf</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">]</span>
@@ -2032,7 +2033,7 @@ root
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fifty</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -2069,7 +2070,6 @@ root
 | 56|     Self-emp-inc|303090| Some-college|           10| Married-civ-spouse|             Sales|        Husband|              White|   Male|           0|           0|            50| United-States| &lt;=50K|
 +---+-----------------+------+-------------+-------------+-------------------+------------------+---------------+-------------------+-------+------------+------------+--------------+--------------+------+
 only showing top 20 rows
-
 </pre></div></div>
 </div>
 </section>
@@ -2077,7 +2077,7 @@ only showing top 20 rows
 <section id="Fin">
 <h2>Fin<a class="headerlink" href="#Fin" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>

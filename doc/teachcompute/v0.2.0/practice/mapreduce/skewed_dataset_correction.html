@@ -212,7 +212,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input aria-label="Toggle navigation of Collections d’articles périssables" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives et spark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives, spark …</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025-05-31-route2025.html">2025-05-31: Feuille de route 2024-2025 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-06-01-gemm-gpu.html">2024-06-01: GEMM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-05-31-route2024-gpu.html">2024-05-31: Feuille de route 2023-2024 (3A)</a></li>
@@ -536,7 +536,7 @@ comparer devient <img class="math" src="../../_images/math/7bb9a815882a3b771fb1c
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 len(set1) = 650 len(set2) = 650
-len(pairs) = 21678 len(res) = 634
+len(pairs) = 21293 len(res) = 628
 </pre></div></div>
 </div>
 <p>L’appariement n’est ni optimal ni complet (voir <a class="reference external" href="https://fr.wikipedia.org/wiki/Graphe_biparti">couplage optimal dans un graphe bi-parti</a>). Mais l’objectif n’est pas là. Il s’agit de distribuer cette méthode simple.</p>
@@ -553,7 +553,7 @@ len(pairs) = 21678 len(res) = 634
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-23.1 ms ± 5.23 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+17.6 ms ± 592 μs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div></div>
 </div>
 </section>
@@ -635,7 +635,7 @@ len(pairs) = 21678 len(res) = 634
 <h2>Exercice 4 : données antipathiques<a class="headerlink" href="#Exercice-4-:-données-antipathiques" title="Lien vers cette rubrique">¶</a></h2>
 <p>Utiliser une grille pour réduire le nombre de paires à évaluer. Cela fonctionne bien si le nuage est à peu près dense de la même façon partout. Mais si on imagine un nuage de points beaucoup plus dense dans une certaine région, la grille sera moins efficace.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
@@ -669,7 +669,7 @@ len(pairs) = 21678 len(res) = 634
 <p>On appelle ce genre de dataset un <a class="reference external" href="http://www.mathsisfun.com/data/skewness.html">skewed dataset</a>. Le problème est décrit ici : <a class="reference external" href="https://cwiki.apache.org/confluence/display/Hive/Skewed+Join+Optimization">Skewed Join Optimization</a>. La fonction <code class="docutils literal notranslate"><span class="pre">tableau_iterateur</span></code> réalise une opérateur <code class="docutils literal notranslate"><span class="pre">JOIN</span></code> qui s’opère sur les coordonnées de la case : la clé. On peut distribuer les clés mais pas les observations rattachées à la même clé. Lorsque des clés aggrègent beaucoup d’observations, il devient
 plus difficile de les distribuer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">H</span> <span class="o">=</span> <span class="mi">1</span>
@@ -702,7 +702,7 @@ plus difficile de les distribuer.</p>
 <h2>Exercice 5 : comment distribuer malgré tout ?<a class="headerlink" href="#Exercice-5-:-comment-distribuer-malgré-tout-?" title="Lien vers cette rubrique">¶</a></h2>
 <p>Oublions le problème initial. On a deux datasets qu’on doit fusionner (<em>JOIN</em>). Une des clés est partagée par plus de 10% des deux bases. Comment distribuer ce <em>JOIN</em> sur plusieurs machines ? On écrit la solution d’abord en Python. On réduit l’étude des paires de points qui se trouvent dans la même case.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">tableau_iterateur</span><span class="p">(</span><span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">):</span>
@@ -734,12 +734,12 @@ plus difficile de les distribuer.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-len(l) = 16920 len(set1_00) * len(set2_00) = 16920
+len(l) = 15070 len(set1_00) * len(set2_00) = 15070
 </pre></div></div>
 </div>
 <p>En suppose que le <em>JOIN</em> sera distribué sur 10 machines, l’idée est d’envoyer un ensemble <code class="docutils literal notranslate"><span class="pre">set1</span></code> sur les 10 machines et un dixième de l’autre sur les 10 machines.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">tableau_iterateur_split</span><span class="p">(</span><span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">):</span>
@@ -768,7 +768,7 @@ len(l) = 16920 len(set1_00) * len(set2_00) = 16920
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-len(l) = 16920 len(set1_spl) * len(set2_spl) = 169200
+len(l) = 15070 len(set1_spl) * len(set2_spl) = 150700
 </pre></div></div>
 </div>
 <p>On obtient le même nombre de paires à la fin. Qu’a-t-on gagné ? C’est difficile à dire. Certes, le calcul a été distribué mais il a fallu envoyer une des deux tables à toutes les machines. Le coût de transmission peut se révéler assez fort à moins que le coût de la fonction <code class="docutils literal notranslate"><span class="pre">distance</span></code> le fasse oublier.</p>

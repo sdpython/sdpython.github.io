@@ -212,7 +212,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../articles/index.html">Collections d’articles périssables</a><input aria-label="Toggle navigation of Collections d’articles périssables" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives et spark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../articles/2025-11-05-spark-3a.html">2025-11-05 : données massives, spark …</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2025-05-31-route2025.html">2025-05-31: Feuille de route 2024-2025 (3A)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-06-01-gemm-gpu.html">2024-06-01: GEMM</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../articles/2024-05-31-route2024-gpu.html">2024-05-31: Feuille de route 2023-2024 (3A)</a></li>
@@ -387,7 +387,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">teachcompute.fctmr</span><span class="w"> </span><span class="kn">import</span> <span class="n">mapper</span>
@@ -398,17 +398,17 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;map at 0x7f0e1b597fd0&gt;
+&lt;map at 0x71d74ee664d0&gt;
 </pre></div></div>
 </div>
 <p>Le résultat n’existe pas tant qu’on ne demande explicitement que le calcul soit faut. Il faut parcourir le résultat.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream1</span><span class="p">)</span>
@@ -416,7 +416,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -426,7 +426,7 @@
 </div>
 <p>Et on ne peut le parcourir qu’une fois :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream1</span><span class="p">)</span>
@@ -434,7 +434,7 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -447,7 +447,7 @@
 <h2>Coût du premier élément<a class="headerlink" href="#Coût-du-premier-élément" title="Lien vers cette rubrique">¶</a></h2>
 <p>Quand on a une infinité d’éléments à traiter, il est important de pouvoir regarder ce qu’un traitement donne sur les premiers éléments. Avec un mapper, cela correspond au coût d’un seul map.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">teachcompute.fctmr</span><span class="w"> </span><span class="kn">import</span> <span class="n">take</span>
@@ -458,7 +458,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 list(mapper(lambda el: (el[0], el[1]+1), big_ens))
@@ -470,11 +470,11 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-45.5 µs ± 13.1 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+37.1 μs ± 6.53 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 first(mapper(lambda el: (el[0], el[1]+1), big_ens))
@@ -486,7 +486,8 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-834 ns ± 574 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+The slowest run took 6.00 times longer than the fastest. This could mean that an intermediate result is being cached.
+947 ns ± 643 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 </section>
@@ -495,7 +496,7 @@
 <p>Un vrai <em>reducer</em> réduit les éléments d’un ensemble, il ne répartit pas les données. En pratique, on réduit rarement un ensemble qu’on n’a pas distribué au préalable, comme avec un <em>groupby</em>. On ne réduit pas toujours non plus un ensemble à une seule ligne. On empile les opérations de streaming, on repousse également le moment d’évaluer. La distribution s’effectue selon une clé qui est hashée (voir <a class="reference external" href="https://sdpython.github.io/doc/teachcompute/dev/practice/expose/hash_distribution.html">Hash et
 distribution</a>). La première lambda fonction décrit ce qu’est cette clé, le premier élément du couple dans ce cas.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">teachcompute.fctmr</span><span class="w"> </span><span class="kn">import</span> <span class="n">reducer</span>
@@ -507,16 +508,16 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;generator object reducer at 0x7f0e1b5dba70&gt;
+&lt;generator object reducer at 0x71d74f7b6d40&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream2</span><span class="p">)</span>
@@ -524,7 +525,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -534,7 +535,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <p>Dans cet exemple, le <em>reducer</em> réduit chaque groupe à un seul résultat qui est l’ensemble des éléments. Quel est le coup du premier élément…</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test2</span><span class="p">(</span><span class="n">ens</span><span class="p">,</span> <span class="n">one</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -552,11 +553,11 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2.35 µs ± 841 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+1.24 μs ± 354 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 test2(big_ens, one=True)
@@ -568,7 +569,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-186 µs ± 30.9 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+186 μs ± 8.17 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>C’est plus court mais pas significativement plus court. Cela correspond au coût d’un tri de l’ensemble des observations et du coût de la construction du premier groupe.</p>
@@ -577,7 +578,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 <h2>Reducer et tri<a class="headerlink" href="#Reducer-et-tri" title="Lien vers cette rubrique">¶</a></h2>
 <p>Un stream est infini en théorie. En pratique il est fini mais on ne sait pas si un ou plusieurs groupes entiers tiendraient en mémoire. Une façon de faire est de limiter la présence des données en mémoire à un seul groupe et pour cela, il faut d’abord trier les données selon les clés. Ce n’est pas indispensable mais dans le pire des cas, c’est une bonne option. On pourrait avoir un stream comme suit :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pas_cool</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="mi">96</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">11111111</span><span class="o">**</span><span class="mi">2</span><span class="p">))]</span>
@@ -586,7 +587,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -614,7 +615,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 <h2>Un autre map<a class="headerlink" href="#Un-autre-map" title="Lien vers cette rubrique">¶</a></h2>
 <p>On ajoute un dernier map qui fait la somme des éléments de chaque groupe.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sum_gr</span><span class="p">(</span><span class="n">key_gr</span><span class="p">):</span>
@@ -630,16 +631,16 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;map at 0x7f0e1b597580&gt;
+&lt;map at 0x71d74ee91420&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">stream3</span><span class="p">)</span>
@@ -647,7 +648,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -660,7 +661,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 <h2>Combiner ou join<a class="headerlink" href="#Combiner-ou-join" title="Lien vers cette rubrique">¶</a></h2>
 <p>Un <em>combiner</em> ou <em>join</em> permet de fusionner deux bases de données qui ont en commun une clé.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">teachcompute.fctmr</span><span class="w"> </span><span class="kn">import</span> <span class="n">combiner</span>
@@ -675,16 +676,16 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;generator object combiner at 0x7f0e1b5dba00&gt;
+&lt;generator object combiner at 0x71d76c1bb4c0&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">comb</span><span class="p">)</span>
@@ -692,7 +693,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -705,7 +706,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <p>Le coût du premier élément est un peu plus compliqué à inférer, cela dépend beaucoup des données.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">job</span><span class="p">(</span><span class="n">ens</span><span class="p">,</span> <span class="n">ens2</span><span class="p">,</span> <span class="n">one</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sens</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -729,11 +730,12 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-3.72 µs ± 1.26 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+The slowest run took 4.59 times longer than the fastest. This could mean that an intermediate result is being cached.
+2.6 μs ± 1.85 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool, sens=False)
@@ -745,11 +747,11 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-4.41 µs ± 1.82 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+2.52 μs ± 953 ns per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool, one=True)
@@ -761,11 +763,11 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-247 µs ± 35.3 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+205 μs ± 8.92 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> -n 1000 job(big_ens, pas_cool, one=True, sens=False)
@@ -777,7 +779,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-220 µs ± 22.5 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+204 μs ± 5.03 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>Il y a différentes façons de coder un <em>combiner</em>, l’une d’elle consiste à réduire chacun des deux streams puis à faire le produit croisé de chaque groupe assemblé.</p>
@@ -786,7 +788,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 <h2>Reducers récursifs<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h2>
 <p>C’est pas loin d’être un abus de langage, disons que cela réduit la dépendance au tri. Un exemple.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sum_gr</span><span class="p">(</span><span class="n">key_gr</span><span class="p">):</span>
@@ -805,7 +807,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -815,7 +817,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <p>Et maintenant, on coupe en deux :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
@@ -824,7 +826,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -833,7 +835,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:])</span>
@@ -841,7 +843,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -851,7 +853,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <p>Et maintenant :</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_recursif</span><span class="p">(</span><span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span> <span class="o">+</span> <span class="n">job_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span>
@@ -859,7 +861,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -869,7 +871,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 <p>Le job ainsi écrit est associatif en quelque sorte. Cela laisse plus de liberté pour la distribution car on peut maintenant distribuer des clés identiques sur des machines différentes puis réappliquer le <em>reducer</em> sur les résultats de la première salve. C’est d’autant plus efficace que le <em>reducer</em> réduit beaucoup les données. Il reste à voir le cas d’un <em>reducer</em> <strong>non récursif</strong>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">ens</span><span class="p">):</span>
@@ -895,7 +897,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -904,7 +906,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ens</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
@@ -913,7 +915,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -922,7 +924,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:])</span>
@@ -930,7 +932,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -939,7 +941,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_non_recursif</span><span class="p">(</span><span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span> <span class="o">+</span> <span class="n">job_non_recursif</span><span class="p">(</span><span class="n">ens</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span>
@@ -947,7 +949,7 @@ distribution</a>). La première lambda fonction décrit ce qu’est cette clé, 
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
