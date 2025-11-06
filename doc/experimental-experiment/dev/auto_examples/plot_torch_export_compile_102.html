@@ -296,14 +296,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -623,7 +616,9 @@ graph():
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="torch.fx.Graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="torch.fx.Graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="torch.fx.Graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="torch.fx.Graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.Graph" title="torch.fx.Graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ep</span><span class="o">.</span><span class="n">graph</span></a></a></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>-- unflatten &lt;class &#39;torch.fx.graph.Graph&#39;&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+-- unflatten &lt;class &#39;torch.fx.graph.Graph&#39;&gt;
 graph():
     %x : [num_users=1] = placeholder[target=x]
     %neuron : [num_users=1] = call_module[target=neuron](args = (%x,), kwargs = {})
@@ -652,7 +647,7 @@ graph():
     %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
     return (relu,)
 
-tensor([[0.4641, 0.8519, 0.2874]], grad_fn=&lt;ReluBackward0&gt;)
+tensor([[0.6363, 0.4127, 0.4576]], grad_fn=&lt;ReluBackward0&gt;)
 </pre></div>
 </div>
 </section>
@@ -689,7 +684,7 @@ tensor([[0.4641, 0.8519, 0.2874]], grad_fn=&lt;ReluBackward0&gt;)
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=18
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[1, 5]
 init: name=&#39;GemmTransposePattern--p_neuron_linear_weight::T10&#39; type=float32 shape=(3, 5)-- GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight::T10)##p_neuron_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight)##p_neuron_linear_weight/DynamoInterpret.placeholder.1/P(neuron.linear.weight)
-init: name=&#39;neuron.linear.bias&#39; type=float32 shape=(3,) -- array([0.07122821, 0.3616364 , 0.4167766 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+init: name=&#39;neuron.linear.bias&#39; type=float32 shape=(3,) -- array([-0.15997688, -0.40011814,  0.32918683], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
 Gemm(x, GemmTransposePattern--p_neuron_linear_weight::T10, neuron.linear.bias, transB=1) -&gt; linear
   Sigmoid(linear) -&gt; sigmoid
     Relu(sigmoid) -&gt; output_0
@@ -701,18 +696,20 @@ output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[1, 3]
 <span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><span class="n">pretty_onnx</span></a></a></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a></a></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>opset: domain=&#39;&#39; version=18
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+opset: domain=&#39;&#39; version=18
 opset: domain=&#39;aten_local_function&#39; version=1
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[1, 5]
-Constant(value=[0.0712282...) -&gt; bias
-Constant(value=[[0.343692...) -&gt; GemmTransposePattern--weight::T10
+Constant(value=[-0.159976...) -&gt; bias
+Constant(value=[[0.120958...) -&gt; GemmTransposePattern--weight::T10
   Gemm(x, GemmTransposePattern--weight::T10, bias, transB=1) -&gt; linear
     Sigmoid(linear) -&gt; neuron
       Relu(neuron) -&gt; output_0
 output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[1, 3]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.279 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.164 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-torch-export-compile-102-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/57e3261285a49fa37cee7fa9bef625cc/plot_torch_export_compile_102.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_torch_export_compile_102.ipynb</span></code></a></p>

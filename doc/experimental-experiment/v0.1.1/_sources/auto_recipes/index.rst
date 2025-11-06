@@ -12,8 +12,6 @@ The conversion is a necessary step to be able to use
 ONNX. Next examples shows some recurrent code patterns and
 ways to rewrite them so that the exporter works.
 
-See :ref:`l-exporter-recipes` for an organized version of this gallery.
-
 A couple of examples to illustrate different implementation
 of dot product (see also :epkg:`sphinx-gallery`).
 
@@ -30,11 +28,6 @@ pytorch nightly build should be installed, see
     pip install -r requirements-dev.txt    
     export PYTHONPATH=$PYTHONPATH:<this folder>
 
-Common Errors
-+++++++++++++
-
-Some of them are exposed in the examples. Others may be found at
-:ref:`l-frequent-exporter-errors`.
 
 
 

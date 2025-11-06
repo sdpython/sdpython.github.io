@@ -295,14 +295,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -586,7 +579,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant_scalar</span><span class="p">(</span><span class="n">node_pow</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
-        <span class="n">node_add</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_node</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">nodes_add</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes_add</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">node_add</span> <span class="o">=</span> <span class="n">nodes_add</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">node_add</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Add&quot;</span> <span class="ow">or</span> <span class="n">node_add</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
 
@@ -658,8 +654,8 @@
         <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
             <span class="c1"># a constant</span>
             <span class="n">scale</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
-                <span class="s2">&quot;ONES&quot;</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+                <span class="sa">f</span><span class="s2">&quot;ONES</span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
                 <span class="n">source</span><span class="o">=</span><span class="s2">&quot;SimplifiedLayerNormalizationPattern.apply.scale.1&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>

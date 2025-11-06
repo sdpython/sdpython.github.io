@@ -295,14 +295,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -2042,7 +2035,12 @@
         <span class="c1"># Builds the name of the local function.</span>
         <span class="n">to</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">cos_cast</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">sin_cast</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">g</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">cos_cast</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">i</span>
         <span class="n">cst_position_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">unsq_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operator_name</span> <span class="k">if</span> <span class="n">to</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_operator_name</span><span class="si">}</span><span class="s2">_to</span><span class="si">{</span><span class="n">to</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">with_range</span> <span class="o">=</span> <span class="s2">&quot;WithRange&quot;</span> <span class="k">if</span> <span class="n">range_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_operator_name</span><span class="si">}{</span><span class="n">with_range</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">to</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_operator_name</span><span class="si">}{</span><span class="n">with_range</span><span class="si">}</span><span class="s2">_to</span><span class="si">{</span><span class="n">to</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">cst_position_ids</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">cst_position_ids</span><span class="p">))</span>
             <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_p</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span>

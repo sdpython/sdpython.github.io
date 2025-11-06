@@ -295,14 +295,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -676,6 +669,8 @@
             <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
             <span class="k">for</span> <span class="n">o1</span><span class="p">,</span> <span class="n">o2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">o1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">o2</span><span class="p">:</span>
+                    <span class="k">continue</span>
                 <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
                         <span class="s2">&quot;Identity&quot;</span><span class="p">,</span>
@@ -870,7 +865,8 @@
             <span class="n">value</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_computed_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-            <span class="n">unique</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">maybe_disable_fake_tensor_mode</span><span class="p">():</span>
+                <span class="n">unique</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">unique</span> <span class="o">!=</span> <span class="p">{</span><span class="mi">1</span><span class="p">}:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>

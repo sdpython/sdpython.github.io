@@ -296,14 +296,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -601,7 +594,7 @@ to introduce function <a class="reference external" href="https://docs.pytorch.o
 <span class="n">model</span><span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a></a></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.8315]], grad_fn=&lt;MulBackward0&gt;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([[-0.7235]], grad_fn=&lt;MulBackward0&gt;)
 </pre></div>
 </div>
 <p>As expected, it does not export.</p>
@@ -613,11 +606,11 @@ to introduce function <a class="reference external" href="https://docs.pytorch.o
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>def forward(self, arg0_1: &quot;f32[2, 3]&quot;, arg1_1: &quot;f32[2]&quot;, arg2_1: &quot;f32[1, 2]&quot;, arg3_1: &quot;f32[1]&quot;, arg4_1: &quot;f32[1, 3]&quot;):
-     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+    # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[1, 2]&quot; = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
     linear_1: &quot;f32[1, 1]&quot; = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
 
-     # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
+    # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
     sum_1: &quot;f32[]&quot; = torch.ops.aten.sum.default(linear_1);  linear_1 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
@@ -626,18 +619,19 @@ to introduce function <a class="reference external" href="https://docs.pytorch.o
 
 
 def forward(self, arg0_1: &quot;f32[2, 3]&quot;, arg1_1: &quot;f32[2]&quot;, arg2_1: &quot;f32[1, 2]&quot;, arg3_1: &quot;f32[1]&quot;, arg4_1: &quot;f32[1, 3]&quot;):
-     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+    # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[1, 2]&quot; = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
     linear_1: &quot;f32[1, 1]&quot; = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
 
-     # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
+    # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
     sum_1: &quot;f32[]&quot; = torch.ops.aten.sum.default(linear_1);  linear_1 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
 
 Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
-consider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_trueCaused by: (_export/non_strict_utils.py:1118 in __torch_function__)
+consider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.
+Caused by: (_export/non_strict_utils.py:1118 in __torch_function__)
 For more information, run with TORCH_LOGS=&quot;dynamic&quot;
 For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL=&quot;u0&quot;
 If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -661,11 +655,11 @@ The error above occurred when calling torch.export.export. If you would like to 
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>def forward(self, arg0_1: &quot;f32[2, 3]&quot;, arg1_1: &quot;f32[2]&quot;, arg2_1: &quot;f32[1, 2]&quot;, arg3_1: &quot;f32[1]&quot;, arg4_1: &quot;f32[1, 3]&quot;):
-     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+    # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[1, 2]&quot; = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
     linear_1: &quot;f32[1, 1]&quot; = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
 
-     # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
+    # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
     sum_1: &quot;f32[]&quot; = torch.ops.aten.sum.default(linear_1);  linear_1 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
@@ -674,18 +668,19 @@ The error above occurred when calling torch.export.export. If you would like to 
 
 
 def forward(self, arg0_1: &quot;f32[2, 3]&quot;, arg1_1: &quot;f32[2]&quot;, arg2_1: &quot;f32[1, 2]&quot;, arg3_1: &quot;f32[1]&quot;, arg4_1: &quot;f32[1, 3]&quot;):
-     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+    # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[1, 2]&quot; = torch.ops.aten.linear.default(arg4_1, arg0_1, arg1_1);  arg4_1 = arg0_1 = arg1_1 = None
     linear_1: &quot;f32[1, 1]&quot; = torch.ops.aten.linear.default(linear, arg2_1, arg3_1);  linear = arg2_1 = arg3_1 = None
 
-     # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
+    # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_cond.py:27 in forward, code: if x.sum():
     sum_1: &quot;f32[]&quot; = torch.ops.aten.sum.default(linear_1);  linear_1 = None
     ne: &quot;b8[]&quot; = torch.ops.aten.ne.Scalar(sum_1, 0);  sum_1 = None
     item: &quot;Sym(Eq(u0, 1))&quot; = torch.ops.aten.item.default(ne);  ne = item = None
 
 Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)
 
-consider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_trueCaused by: (_export/non_strict_utils.py:1118 in __torch_function__)
+consider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.
+Caused by: (_export/non_strict_utils.py:1118 in __torch_function__)
 For more information, run with TORCH_LOGS=&quot;dynamic&quot;
 For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL=&quot;u0&quot;
 If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -734,8 +729,10 @@ mlp.2 &lt;class &#39;__main__.ForwardWithControlFlowTest&#39;&gt;
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><a href="https://docs.pytorch.org/docs/stable/export/api_reference.html#torch.export.export" title="torch.export.export" class="sphx-glr-backref-module-torch-export sphx-glr-backref-type-py-function"><span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span></a></a></a></a></a><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://docs.pytorch.org/docs/stable/tensors.html#torch.Tensor" title="torch.Tensor" class="sphx-glr-backref-module-torch sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">x</span></a></a></a></a></a><span class="p">,))</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/__init__.py:2641: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py:221: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
+  return torch.compile(_cond_op_wrapper, backend=backend, fullgraph=True)(
+~/vv/this312/lib/python3.12/site-packages/torch/distributed/tensor/experimental/_context_parallel/_attention.py:1035: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
+  _compiled_create_block_mask = torch.compile(
 graph():
     %p_mlp_0_weight : [num_users=1] = placeholder[target=p_mlp_0_weight]
     %p_mlp_0_bias : [num_users=1] = placeholder[target=p_mlp_0_bias]
@@ -758,16 +755,16 @@ graph():
 <span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><span class="n">pretty_onnx</span></a></a></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a></a></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/__init__.py:2641: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py:221: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
+  return torch.compile(_cond_op_wrapper, backend=backend, fullgraph=True)(
 opset: domain=&#39;&#39; version=18
 opset: domain=&#39;local_functions&#39; version=1
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[1, 3]
 init: name=&#39;init1_s_&#39; type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
 init: name=&#39;GemmTransposePattern--p_mlp_0_weight::T10&#39; type=float32 shape=(2, 3)-- GraphBuilder.constant_folding.from/fold(p_mlp_0_weight::T10)##p_mlp_0_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_0_weight)##p_mlp_0_weight/DynamoInterpret.placeholder.1/P(mlp.0.weight)
-init: name=&#39;GemmTransposePattern--p_mlp_1_weight::T10&#39; type=float32 shape=(1, 2) -- array([0.28598186, 0.00799349], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([ 0.54115295, -0.14847556], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([-0.3214531], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+init: name=&#39;GemmTransposePattern--p_mlp_1_weight::T10&#39; type=float32 shape=(1, 2) -- array([-0.12125876,  0.61314946], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([ 0.12662098, -0.45438206], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([0.07496905], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
 Gemm(x, GemmTransposePattern--p_mlp_0_weight::T10, mlp.0.bias, transB=1) -&gt; linear
   Gemm(linear, GemmTransposePattern--p_mlp_1_weight::T10, mlp.1.bias, transB=1) -&gt; linear_1
     ReduceSum(linear_1, keepdims=0) -&gt; sum_1
@@ -788,16 +785,16 @@ output: name=&#39;cond#0&#39; type=&#39;NOTENSOR&#39; shape=None
 <span class="nb">print</span><span class="p">(</span><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/experimental-experiment/dev/api/helpers.html#experimental_experiment.helpers.pretty_onnx" title="experimental_experiment.helpers.pretty_onnx" class="sphx-glr-backref-module-experimental_experiment-helpers sphx-glr-backref-type-py-function"><span class="n">pretty_onnx</span></a></a></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a></a></a><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/__init__.py:2641: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/cond.py:221: UserWarning: You are calling torch.compile inside torch.export region. To capture an useful graph, we will implicitly switch to torch.compile(backend=eager)
+  return torch.compile(_cond_op_wrapper, backend=backend, fullgraph=True)(
 opset: domain=&#39;&#39; version=18
 opset: domain=&#39;local_functions&#39; version=1
 input: name=&#39;x&#39; type=dtype(&#39;float32&#39;) shape=[1, 3]
 init: name=&#39;init1_s_&#39; type=float32 shape=() -- array([0.], dtype=float32)-- shape_type_compute._cast_inputs.1(gt_Scalar)
 init: name=&#39;GemmTransposePattern--p_mlp_0_weight::T10&#39; type=float32 shape=(2, 3)-- GraphBuilder.constant_folding.from/fold(p_mlp_0_weight::T10)##p_mlp_0_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_0_weight)##p_mlp_0_weight/DynamoInterpret.placeholder.1/P(mlp.0.weight)
-init: name=&#39;GemmTransposePattern--p_mlp_1_weight::T10&#39; type=float32 shape=(1, 2) -- array([0.28598186, 0.00799349], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
-init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([ 0.54115295, -0.14847556], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
-init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([-0.3214531], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
+init: name=&#39;GemmTransposePattern--p_mlp_1_weight::T10&#39; type=float32 shape=(1, 2) -- array([-0.12125876,  0.61314946], dtype=float32)-- GraphBuilder.constant_folding.from/fold(init7_s2_1_-1,p_mlp_1_weight::T10)##p_mlp_1_weight::T10/GraphBuilder.constant_folding.from/fold(p_mlp_1_weight)##p_mlp_1_weight/DynamoInterpret.placeholder.1/P(mlp.1.weight)##init7_s2_1_-1/TransposeEqualReshapePattern.apply.new_shape
+init: name=&#39;mlp.0.bias&#39; type=float32 shape=(2,) -- array([ 0.12662098, -0.45438206], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.0.bias)
+init: name=&#39;mlp.1.bias&#39; type=float32 shape=(1,) -- array([0.07496905], dtype=float32)-- DynamoInterpret.placeholder.1/P(mlp.1.bias)
 Gemm(x, GemmTransposePattern--p_mlp_0_weight::T10, mlp.0.bias, transB=1) -&gt; linear
   Gemm(linear, GemmTransposePattern--p_mlp_1_weight::T10, mlp.1.bias, transB=1) -&gt; linear_1
     ReduceSum(linear_1, keepdims=0) -&gt; sum_1
@@ -817,7 +814,7 @@ output: name=&#39;cond#0&#39; type=&#39;NOTENSOR&#39; shape=None
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" alt="plot exporter recipes c cond" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.085 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_cond_001.png" alt="plot exporter recipes c cond" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.026 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-c-cond-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/adca796342d24fd5aaa28897cda969ad/plot_exporter_recipes_c_cond.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_c_cond.ipynb</span></code></a></p>

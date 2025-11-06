@@ -296,14 +296,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -609,7 +602,9 @@
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    opset: domain=&#39;&#39; version=18
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    /usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+      return cls.__new__(cls, *args)
+    opset: domain=&#39;&#39; version=18
     opset: domain=&#39;intermediate&#39; version=1
     input: name=&#39;input_ids&#39; type=dtype(&#39;int64&#39;) shape=[2, 1024]
     input: name=&#39;attention_mask&#39; type=dtype(&#39;float32&#39;) shape=[2, 1024]
@@ -650,8 +645,8 @@
     Gather(embed_tokens.weight, input_ids) -&gt; embedding
       LayerNormalization(embedding, init1_s32_, init1_s32_2, axis=-1, epsilon=0.00, stash_type=1) -&gt; _onx_div_sub_clone
         MatMul(_onx_div_sub_clone, p_layers_0_self_attn_q_proj_weight::T10) -&gt; _onx_matmul_layer_norm
-          Reshape(_onx_matmul_layer_norm, init7_s4_2_1024_-1_16) -&gt; view_5
-            Transpose(view_5, perm=[0,2,1,3]) -&gt; transpose_1
+          Reshape(_onx_matmul_layer_norm, init7_s4_2_1024_-1_16) -&gt; view_6
+            Transpose(view_6, perm=[0,2,1,3]) -&gt; transpose_1
               Split(transpose_1, init7_s2_8_8, axis=3) -&gt; slice_1, slice_2
     Shape(_onx_add_expand_4) -&gt; _onx_add_expand_4::Shape:
       Reshape(_onx_gather__to_copy::RSh-1, _onx_add_expand_4::Shape:) -&gt; index
@@ -668,8 +663,8 @@
           HalfRotaryEmbedding[intermediate](slice_1, unsqueeze_4, unsqueeze_5) -&gt; add_1
             Concat(add_1, slice_2, axis=-1) -&gt; cat_3
         MatMul(_onx_div_sub_clone, p_layers_0_self_attn_k_proj_weight::T10) -&gt; _onx_matmul_layer_norm2
-          Reshape(_onx_matmul_layer_norm2, init7_s4_2_1024_-1_16) -&gt; view_6
-            Transpose(view_6, perm=[0,2,1,3]) -&gt; transpose_2
+          Reshape(_onx_matmul_layer_norm2, init7_s4_2_1024_-1_16) -&gt; view_7
+            Transpose(view_7, perm=[0,2,1,3]) -&gt; transpose_2
               Split(transpose_2, init7_s2_8_8, axis=3) -&gt; slice_3, slice_4
           HalfRotaryEmbedding[intermediate](slice_3, unsqueeze_4, unsqueeze_5) -&gt; add_2
             Concat(add_2, slice_4, axis=-1) -&gt; output_1
@@ -679,12 +674,12 @@
                 Add(_onx_mul_matmul_1, _onx_mul__to_copy_1) -&gt; add_3
                   Softmax(add_3, axis=-1) -&gt; softmax
         MatMul(_onx_div_sub_clone, p_layers_0_self_attn_v_proj_weight::T10) -&gt; _onx_matmul_layer_norm3
-          Reshape(_onx_matmul_layer_norm3, init7_s4_2_1024_-1_16) -&gt; view_7
-            Transpose(view_7, perm=[0,2,1,3]) -&gt; output_3
-              MatMul(softmax, output_3) -&gt; matmul_2
+          Reshape(_onx_matmul_layer_norm3, init7_s4_2_1024_-1_16) -&gt; view_8
+            Transpose(view_8, perm=[0,2,1,3]) -&gt; output_2
+              MatMul(softmax, output_2) -&gt; matmul_2
                 Transpose(matmul_2, perm=[0,2,1,3]) -&gt; transpose_5
-                  Reshape(transpose_5, init7_s3_2_1024_-1) -&gt; view_8
-                    MatMul(view_8, p_layers_0_self_attn_dense_weight::T10) -&gt; _onx_matmul_view_8
+                  Reshape(transpose_5, init7_s3_2_1024_-1) -&gt; view_9
+                    MatMul(view_9, p_layers_0_self_attn_dense_weight::T10) -&gt; _onx_matmul_view_9
         MatMul(_onx_div_sub_clone, p_layers_0_mlp_fc1_weight::T10) -&gt; _onx_matmul_layer_norm4
           Mul(_onx_matmul_layer_norm4, init1_s_4::RSh1) -&gt; _onx_mul_linear_4
     Pow(_onx_matmul_layer_norm4, init1_s_5) -&gt; pow_1
@@ -695,33 +690,33 @@
               Add(tanh, init1_s_2::RSh13) -&gt; add_5
             Mul(_onx_mul_linear_4, add_5) -&gt; mul_11
               MatMul(mul_11, p_layers_0_mlp_fc2_weight::T10) -&gt; _onx_matmul_mul_11
-                Add(_onx_matmul_view_8, _onx_matmul_mul_11) -&gt; add_6
+                Add(_onx_matmul_view_9, _onx_matmul_mul_11) -&gt; add_6
       Add(add_6, embedding) -&gt; add_7
         LayerNormalization(add_7, init1_s32_, init1_s32_2, axis=-1, epsilon=0.00, stash_type=1) -&gt; _onx_div_sub_add_7
           MatMul(_onx_div_sub_add_7, p_layers_1_self_attn_q_proj_weight::T10) -&gt; _onx_matmul_layer_norm_1
-            Reshape(_onx_matmul_layer_norm_1, init7_s4_2_1024_-1_16) -&gt; view_9
-              Transpose(view_9, perm=[0,2,1,3]) -&gt; transpose_6
+            Reshape(_onx_matmul_layer_norm_1, init7_s4_2_1024_-1_16) -&gt; view_10
+              Transpose(view_10, perm=[0,2,1,3]) -&gt; transpose_6
                 Split(transpose_6, init7_s2_8_8, axis=3) -&gt; slice_9, slice_10
           HalfRotaryEmbedding[intermediate](slice_9, unsqueeze_4, unsqueeze_5) -&gt; add_8
             Concat(add_8, slice_10, axis=-1) -&gt; cat_9
           MatMul(_onx_div_sub_add_7, p_layers_1_self_attn_k_proj_weight::T10) -&gt; _onx_matmul_layer_norm_12
-            Reshape(_onx_matmul_layer_norm_12, init7_s4_2_1024_-1_16) -&gt; view_10
-              Transpose(view_10, perm=[0,2,1,3]) -&gt; transpose_7
+            Reshape(_onx_matmul_layer_norm_12, init7_s4_2_1024_-1_16) -&gt; view_11
+              Transpose(view_11, perm=[0,2,1,3]) -&gt; transpose_7
                 Split(transpose_7, init7_s2_8_8, axis=3) -&gt; slice_11, slice_12
           HalfRotaryEmbedding[intermediate](slice_11, unsqueeze_4, unsqueeze_5) -&gt; add_9
-            Concat(add_9, slice_12, axis=-1) -&gt; output_2
-              Transpose(output_2, perm=[0,1,3,2]) -&gt; transpose_9
+            Concat(add_9, slice_12, axis=-1) -&gt; output_3
+              Transpose(output_3, perm=[0,1,3,2]) -&gt; transpose_9
               MatMul(cat_9, transpose_9) -&gt; matmul_3
                 Mul(matmul_3, init1_s_3::RSh1) -&gt; _onx_mul_matmul_3
                 Add(_onx_mul_matmul_3, _onx_mul__to_copy_1) -&gt; add_10
                   Softmax(add_10, axis=-1) -&gt; softmax_1
           MatMul(_onx_div_sub_add_7, p_layers_1_self_attn_v_proj_weight::T10) -&gt; _onx_matmul_layer_norm_13
-            Reshape(_onx_matmul_layer_norm_13, init7_s4_2_1024_-1_16) -&gt; view_11
-              Transpose(view_11, perm=[0,2,1,3]) -&gt; output_4
+            Reshape(_onx_matmul_layer_norm_13, init7_s4_2_1024_-1_16) -&gt; view_12
+              Transpose(view_12, perm=[0,2,1,3]) -&gt; output_4
                 MatMul(softmax_1, output_4) -&gt; matmul_4
                   Transpose(matmul_4, perm=[0,2,1,3]) -&gt; transpose_10
-                    Reshape(transpose_10, init7_s3_2_1024_-1) -&gt; view_12
-                      MatMul(view_12, p_layers_1_self_attn_dense_weight::T10) -&gt; _onx_matmul_view_12
+                    Reshape(transpose_10, init7_s3_2_1024_-1) -&gt; view_13
+                      MatMul(view_13, p_layers_1_self_attn_dense_weight::T10) -&gt; _onx_matmul_view_13
           MatMul(_onx_div_sub_add_7, p_layers_1_mlp_fc1_weight::T10) -&gt; _onx_matmul_layer_norm_14
             Mul(_onx_matmul_layer_norm_14, init1_s_4::RSh1) -&gt; _onx_mul_linear_10
     Pow(_onx_matmul_layer_norm_14, init1_s_5) -&gt; pow_2
@@ -732,7 +727,7 @@
               Add(tanh_1, init1_s_2::RSh13) -&gt; add_12
               Mul(_onx_mul_linear_10, add_12) -&gt; mul_20
                 MatMul(mul_20, p_layers_1_mlp_fc2_weight::T10) -&gt; _onx_matmul_mul_20
-                  Add(_onx_matmul_view_12, _onx_matmul_mul_20) -&gt; add_13
+                  Add(_onx_matmul_view_13, _onx_matmul_mul_20) -&gt; add_13
         Add(add_13, add_7) -&gt; add_14
           LayerNormalization(add_14, init1_s32_, init1_s32_2, axis=-1, epsilon=0.00, stash_type=1) -&gt; output_0
     output: name=&#39;output_0&#39; type=dtype(&#39;float32&#39;) shape=[2, 1024, 32]

@@ -9,7 +9,7 @@
         <title>experimental_experiment.torch_interpreter.export_options - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -295,14 +295,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -383,6 +376,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -795,7 +789,9 @@
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] run decomposition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">dec</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">exported_program</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">)</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span>
+                <span class="n">exported_program</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done after decomposition &quot;</span>
@@ -819,8 +815,8 @@
                     <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done remove inplace in &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">, modified=</span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
-            <span class="n">need_dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">need_run_decompositions</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">need_dec</span> <span class="ow">or</span> <span class="n">modified</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">need_dec</span><span class="p">,</span> <span class="n">need_dec_all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">need_run_decompositions</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">need_dec</span> <span class="ow">or</span> <span class="n">need_dec_all</span> <span class="ow">or</span> <span class="n">modified</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># We need to run decomposition to fully remove all inplace operations.</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
@@ -828,7 +824,11 @@
                         <span class="s2">&quot;[ExportOptions.export] use decomposition to remove inplace nodes left&quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;[modified=</span><span class="si">{</span><span class="n">modified</span><span class="si">}</span><span class="s2">, need_dec=</span><span class="si">{</span><span class="n">need_dec</span><span class="si">}</span><span class="s2">]&quot;</span>
                     <span class="p">)</span>
-                <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">({})</span>
+                <span class="n">exported_program</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">need_dec_all</span>
+                    <span class="k">else</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">({})</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] done in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">begin</span><span class="si">}</span><span class="s2">, &quot;</span>
@@ -843,15 +843,25 @@
 
 <div class="viewcode-block" id="ExportOptions.need_run_decompositions">
 <a class="viewcode-back" href="../../../api/torch_interpreter/index.html#experimental_experiment.torch_interpreter.export_options.ExportOptions.need_run_decompositions">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">need_run_decompositions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">need_run_decompositions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Final check to see if we need to run decompositions.&quot;&quot;&quot;</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">.tracing</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomTracer</span>
 
+        <span class="n">ret</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
             <span class="n">target_name</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">get_node_target_name</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;aten::index_copy_&quot;</span><span class="p">}:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+                <span class="n">ret</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="p">{</span>
+                <span class="s2">&quot;aten:relu_&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aten::mul_.Tensor&quot;</span><span class="p">,</span>
+            <span class="p">}:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">users</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;aten::lstm.input&quot;</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">False</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_export</span><span class="p">(</span>
@@ -1004,7 +1014,7 @@
                                     <span class="sa">f</span><span class="s2">&quot;[ExportOptions.export] current decomposition_table=&quot;</span>
                                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">opt</span><span class="o">.</span><span class="n">decomposition_table</span><span class="si">}</span><span class="s2">, let&#39;s try with &#39;default&#39;&quot;</span>
                                 <span class="p">)</span>
-                            <span class="n">res</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">)</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span><span class="p">)</span>
                             <span class="n">inplace_nodes</span> <span class="o">=</span> <span class="n">CustomTracer</span><span class="o">.</span><span class="n">_inplace_nodes</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">inplace_nodes</span><span class="p">:</span>
                                 <span class="c1"># it fails</span>
@@ -1081,7 +1091,7 @@
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
                 <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit.pt2&quot;</span><span class="p">)</span>
-            <span class="n">dec</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">)</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="n">apply_decompositions</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backed_size_oblivious</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="p">:</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">save_ep</span><span class="si">}</span><span class="s2">.jit.decomposed&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dec</span><span class="p">))</span>
@@ -1290,11 +1300,22 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">apply_decompositions</span><span class="p">(</span>
-    <span class="n">exported_program</span><span class="p">:</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span> <span class="n">decomposition_table</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">exported_program</span><span class="p">:</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+    <span class="n">decomposition_table</span><span class="p">,</span>
+    <span class="n">backed_size_oblivious</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;torch.export.ExportedProgram&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
     <span class="k">if</span> <span class="n">decomposition_table</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
         <span class="n">exported_program</span> <span class="o">=</span> <span class="n">insert_contiguous_between_transpose_and_view</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
-        <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">exported_program</span><span class="p">,</span> <span class="s2">&quot;_computed_backed_size_oblivious&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">backed_size_oblivious</span> <span class="ow">is</span> <span class="kc">True</span>
+        <span class="p">):</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">backed_size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">exported_program</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -1304,7 +1325,16 @@
 
     <span class="k">if</span> <span class="n">decomposition_table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">exported_program</span> <span class="o">=</span> <span class="n">insert_contiguous_between_transpose_and_view</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
-        <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">exported_program</span><span class="p">,</span> <span class="s2">&quot;_computed_backed_size_oblivious&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">backed_size_oblivious</span> <span class="ow">is</span> <span class="kc">True</span>
+        <span class="p">):</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">backed_size_oblivious</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exported_program</span> <span class="o">=</span> <span class="n">exported_program</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">(</span><span class="n">decomposition_table</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">exported_program</span>
 

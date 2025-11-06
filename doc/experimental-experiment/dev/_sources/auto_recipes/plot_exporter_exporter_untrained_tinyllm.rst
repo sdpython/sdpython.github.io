@@ -155,9 +155,9 @@ Let's run the model.
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96], value_cache=#1[T1s1x1x46x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    Continue: it rains... Continue
-    - "Battlewater.
-    Feb: Kroger: S.D.A.M. 51994.467-48-016
+    Continue: it rains...
+    27 Honda FW2A5E3411034 47202 03:16-8.
+    Hadam: A P15
 
 
 
@@ -370,7 +370,7 @@ ExportedProgram
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.927 seconds)
+   **Total running time of the script:** (0 minutes 1.816 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_untrained_tinyllm.py:

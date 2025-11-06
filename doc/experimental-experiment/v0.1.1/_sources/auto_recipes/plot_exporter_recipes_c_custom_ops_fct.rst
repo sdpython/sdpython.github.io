@@ -101,7 +101,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[-0.4571, -0.6486, -0.3732]])
+    tensor([[-0.9109, -0.9904,  0.7503]])
 
 
 
@@ -219,7 +219,7 @@ Let's check it runs again.
  .. code-block:: none
 
 
-    tensor([[-0.4571, -0.6486, -0.3732]])
+    tensor([[-0.9109, -0.9904,  0.7503]])
 
 
 
@@ -380,6 +380,22 @@ The name should be 'mylib.numpy_sin'.
     op_type: "Sin"
     doc_string: "#Io1.\n-T1:1x3\nnumpy_sin:1:(1,3)"
     domain: ""
+    metadata_props {
+      key: "intypes"
+      value: "FLOAT"
+    }
+    metadata_props {
+      key: "outtypes"
+      value: "FLOAT"
+    }
+    metadata_props {
+      key: "inshapes"
+      value: "(1, 3)"
+    }
+    metadata_props {
+      key: "outshapes"
+      value: "(1, 3)"
+    }
 
 
 
@@ -410,7 +426,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.232 seconds)
+   **Total running time of the script:** (0 minutes 0.214 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_fct.py:

@@ -150,24 +150,24 @@ Let's defined the dynamic shapes and checks it exports.
     ExportedProgram:
         class GraphModule(torch.nn.Module):
             def forward(self, x: "f32[s77, s27, s53]"):
-                 # 
+                # No stacktrace found for following nodes
                 sym_size_int_3: "Sym(s77)" = torch.ops.aten.sym_size.int(x, 0)
                 sym_size_int_4: "Sym(s27)" = torch.ops.aten.sym_size.int(x, 1)
                 sym_size_int_5: "Sym(s53)" = torch.ops.aten.sym_size.int(x, 2)
             
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
+                # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
                 add: "Sym(s27 + 4)" = sym_size_int_4 + 4
                 sub: "Sym(s27 + 3)" = add - 1;  add = None
                 floordiv: "Sym(((s27 + 3)//4))" = sub // 4;  sub = None
                 mul: "Sym(4*(((s27 + 3)//4)))" = floordiv * 4;  floordiv = None
             
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: to_pad = next_dim - dim
+                # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: to_pad = next_dim - dim
                 sub_1: "Sym(-s27 + 4*(((s27 + 3)//4)))" = mul - sym_size_int_4;  mul = sym_size_int_4 = None
             
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:42 in forward, code: pad = torch.zeros(
+                # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:42 in forward, code: pad = torch.zeros(
                 zeros: "f32[s77, -s27 + 4*(((s27 + 3)//4)), s53]" = torch.ops.aten.zeros.default([sym_size_int_3, sub_1, sym_size_int_5], dtype = torch.float32, device = device(type='cpu'), pin_memory = False);  sym_size_int_3 = sub_1 = sym_size_int_5 = None
             
-                 # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:45 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
+                # File: /home/xadupre/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:45 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
                 cat: "f32[s77, 4*(((s27 + 3)//4)), s53]" = torch.ops.aten.cat.default([x, zeros], 1);  x = zeros = None
                 return (cat,)
             
@@ -311,7 +311,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.708 seconds)
+   **Total running time of the script:** (0 minutes 0.465 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_dynpad.py:

@@ -134,6 +134,8 @@ That information can be converted back into a exported program.
 
  .. code-block:: none
 
+    /usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+      return cls.__new__(cls, *args)
     -- unflatten <class 'torch.fx.graph.Graph'>
     graph():
         %x : [num_users=1] = placeholder[target=x]
@@ -181,7 +183,7 @@ Another graph obtained with torch.compile.
         %relu : [num_users=1] = call_function[target=torch.relu](args = (%z_1,), kwargs = {})
         return (relu,)
 
-    tensor([[0.4641, 0.8519, 0.2874]], grad_fn=<ReluBackward0>)
+    tensor([[0.6363, 0.4127, 0.4576]], grad_fn=<ReluBackward0>)
 
 
 
@@ -234,7 +236,7 @@ Unflattened
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=[1, 5]
     init: name='GemmTransposePattern--p_neuron_linear_weight::T10' type=float32 shape=(3, 5)-- GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight::T10)##p_neuron_linear_weight::T10/GraphBuilder.constant_folding.from/fold(p_neuron_linear_weight)##p_neuron_linear_weight/DynamoInterpret.placeholder.1/P(neuron.linear.weight)
-    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([0.07122821, 0.3616364 , 0.4167766 ], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
+    init: name='neuron.linear.bias' type=float32 shape=(3,) -- array([-0.15997688, -0.40011814,  0.32918683], dtype=float32)-- DynamoInterpret.placeholder.1/P(neuron.linear.bias)
     Gemm(x, GemmTransposePattern--p_neuron_linear_weight::T10, neuron.linear.bias, transB=1) -> linear
       Sigmoid(linear) -> sigmoid
         Relu(sigmoid) -> output_0
@@ -263,11 +265,13 @@ Let's preserve the module.
 
  .. code-block:: none
 
+    /usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+      return cls.__new__(cls, *args)
     opset: domain='' version=18
     opset: domain='aten_local_function' version=1
     input: name='x' type=dtype('float32') shape=[1, 5]
-    Constant(value=[0.0712282...) -> bias
-    Constant(value=[[0.343692...) -> GemmTransposePattern--weight::T10
+    Constant(value=[-0.159976...) -> bias
+    Constant(value=[[0.120958...) -> GemmTransposePattern--weight::T10
       Gemm(x, GemmTransposePattern--weight::T10, bias, transB=1) -> linear
         Sigmoid(linear) -> neuron
           Relu(neuron) -> output_0
@@ -279,7 +283,7 @@ Let's preserve the module.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.279 seconds)
+   **Total running time of the script:** (0 minutes 0.164 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_compile_102.py:

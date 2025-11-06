@@ -296,14 +296,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -713,14 +706,14 @@ the integer as an input.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>def forward(self, arg0_1: &quot;f32[3, 5]&quot;, arg1_1: &quot;f32[3]&quot;, arg2_1: &quot;f32[1, 5]&quot;, arg3_1: &quot;f32[1, 5]&quot;, arg4_1, arg5_1, arg6_1: &quot;f32[1, 5]&quot;, arg7_1: &quot;i32[1]&quot;):
-     # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
+    # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
     mul: &quot;f32[1, 5]&quot; = torch.ops.aten.mul.Tensor(arg3_1, arg6_1);  arg3_1 = arg6_1 = None
     add: &quot;f32[1, 5]&quot; = torch.ops.aten.add.Tensor(arg2_1, mul);  arg2_1 = mul = None
 
-     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+    # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[1, 3]&quot; = torch.ops.aten.linear.default(add, arg0_1, arg1_1);  add = arg0_1 = arg1_1 = None
 
-     # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
+    # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
     sigmoid: &quot;f32[1, 3]&quot; = torch.ops.aten.sigmoid.default(linear);  linear = sigmoid = None
     item: &quot;Sym(u0)&quot; = torch.ops.aten.item.default(arg7_1);  arg7_1 = item = None
 
@@ -728,19 +721,20 @@ the integer as an input.</p>
 
 
 def forward(self, arg0_1: &quot;f32[3, 5]&quot;, arg1_1: &quot;f32[3]&quot;, arg2_1: &quot;f32[1, 5]&quot;, arg3_1: &quot;f32[1, 5]&quot;, arg4_1, arg5_1, arg6_1: &quot;f32[1, 5]&quot;, arg7_1: &quot;i32[1]&quot;):
-     # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
+    # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
     mul: &quot;f32[1, 5]&quot; = torch.ops.aten.mul.Tensor(arg3_1, arg6_1);  arg3_1 = arg6_1 = None
     add: &quot;f32[1, 5]&quot; = torch.ops.aten.add.Tensor(arg2_1, mul);  arg2_1 = mul = None
 
-     # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+    # File: ~/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
     linear: &quot;f32[1, 3]&quot; = torch.ops.aten.linear.default(add, arg0_1, arg1_1);  add = arg0_1 = arg1_1 = None
 
-     # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
+    # File: ~/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
     sigmoid: &quot;f32[1, 3]&quot; = torch.ops.aten.sigmoid.default(linear);  linear = sigmoid = None
     item: &quot;Sym(u0)&quot; = torch.ops.aten.item.default(arg7_1);  arg7_1 = item = None
 
 -- an error &lt;class &#39;torch.fx.experimental.symbolic_shapes.GuardOnDataDependentSymNode&#39;&gt; occured:
 Could not extract specialized integer from data-dependent expression u0 (unhinted: u0).  (Size-like symbols: none)
+
 
 Caused by: (_export/non_strict_utils.py:1118 in __torch_function__)
 For more information, run with TORCH_LOGS=&quot;dynamic&quot;
@@ -899,9 +893,9 @@ graph():
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.GraphModule.graph" title="torch.fx.GraphModule.graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.GraphModule.graph" title="torch.fx.GraphModule.graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.GraphModule.graph" title="torch.fx.GraphModule.graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.GraphModule.graph" title="torch.fx.GraphModule.graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-property"><a href="https://docs.pytorch.org/docs/stable/fx.html#torch.fx.GraphModule.graph" title="torch.fx.GraphModule.graph" class="sphx-glr-backref-module-torch-fx sphx-glr-backref-type-py-property"><span class="n">swapped_gm</span><span class="o">.</span><span class="n">graph</span></a></a></a></a></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:977: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>~/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:989: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
   spec_node = gm.graph.get_attr(name)
-~/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:969: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+~/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:981: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
   spec_node = gm.graph.get_attr(name)
 -- preserved?
 graph():
@@ -925,7 +919,7 @@ graph():
 </div>
 <p>Unfortunately this approach does not work well on big models
 and it is a provite API.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.336 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.190 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-torch-export-101-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/598b4152edbdba4a195724bc4b623df7/plot_torch_export_101.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_torch_export_101.ipynb</span></code></a></p>

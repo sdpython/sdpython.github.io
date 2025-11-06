@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:37.596** total execution time for 13 files **from auto_examples**:
+**01:16.140** total execution time for 13 files **from auto_examples**:
 
 .. container::
 
@@ -33,41 +33,41 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_torch_export_201.py` (``plot_torch_export_201.py``)
-     - 01:15.211
+     - 00:48.163
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_sklearn_201.py` (``plot_torch_sklearn_201.py``)
-     - 00:22.377
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_model_to_python.py` (``plot_model_to_python.py``)
-     - 00:00.008
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``plot_rewrite_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_shape_inference.py` (``plot_shape_inference.py``)
-     - 00:00.000
+     - 00:13.837
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_custom_backend_101.py` (``plot_torch_custom_backend_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``plot_torch_export_101.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``plot_torch_export_compile_102.py``)
-     - 00:00.000
+     - 00:09.348
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_torch_linreg_101.py` (``plot_torch_linreg_101.py``)
-     - 00:00.000
+     - 00:02.018
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_profile_existing_onnx_101.py` (``plot_profile_existing_onnx_101.py``)
+     - 00:01.190
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_optimize_101.py` (``plot_optimize_101.py``)
+     - 00:00.913
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_101.py` (``plot_torch_export_101.py``)
+     - 00:00.190
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_torch_export_compile_102.py` (``plot_torch_export_compile_102.py``)
+     - 00:00.164
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_onnxscript_102.py` (``plot_onnxscript_102.py``)
+     - 00:00.140
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_rewrite_101.py` (``plot_rewrite_101.py``)
+     - 00:00.138
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_executorch_102.py` (``plot_executorch_102.py``)
+     - 00:00.027
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_shape_inference.py` (``plot_shape_inference.py``)
+     - 00:00.009
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_model_to_python.py` (``plot_model_to_python.py``)
+     - 00:00.003
      - 0.0

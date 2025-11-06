@@ -37,7 +37,7 @@ A model with a custom ops
 .. code-block:: Python
 
 
-    from typing import Any, Dict, List, Optional
+    from typing import Any, Dict, List
     import numpy as np
     import torch
     from onnx_array_api.plotting.graphviz_helper import plot_dot
@@ -121,7 +121,7 @@ Let's check it runs.
  .. code-block:: none
 
 
-    tensor([[ 0.5743, -0.1960, -0.8530]])
+    tensor([[-1.0000, -0.5363, -0.9971]])
 
 
 
@@ -246,8 +246,8 @@ Next is the conversion to onnx.
         sts: Dict[str, Any],
         outputs: List[str],
         x: T,
-        output: Optional[T] = None,
         name: str = "mylib.numpy_sin",
+        **_kwargs,
     ) -> T:
         # name= ... lets the user know when the node comes from
         # o is not used, we could check the shape are equal.
@@ -307,12 +307,14 @@ And we convert again.
 
  .. code-block:: none
 
+    /usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+      return cls.__new__(cls, *args)
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=[1, 3]
     init: name='init7_s2_1_3' type=int64 shape=(2,) -- array([1, 3])      -- Opset.make_node.1/Shape
     ConstantOfShape(init7_s2_1_3, value=[0.0]) -> zeros
-    Sin(x) -> auto_functionalized#1
-      Identity(auto_functionalized#1) -> getitem_1
+    Sin(x) -> auto_functionalized_v2#1
+      Identity(auto_functionalized_v2#1) -> getitem_1
         Identity(getitem_1) -> output_0
     output: name='output_0' type=dtype('float32') shape=[1, 3]
 
@@ -345,6 +347,8 @@ And we convert again with optimization this time.
 
  .. code-block:: none
 
+    /usr/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+      return cls.__new__(cls, *args)
     opset: domain='' version=18
     input: name='x' type=dtype('float32') shape=[1, 3]
     Sin(x) -> output_0
@@ -378,7 +382,7 @@ And visually.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.971 seconds)
+   **Total running time of the script:** (0 minutes 12.262 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_recipes_c_custom_ops_inplace.py:

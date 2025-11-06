@@ -277,8 +277,8 @@ Let's print the report.
 
  .. code-block:: none
 
-    {'': GuardOnDataDependentSymNode('Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)\n\nconsider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_trueCaused by: (_subclasses/functional_tensor.py:300 in __bool__)\nFor more information, run with TORCH_LOGS="dynamic"\nFor extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"\nIf you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1\nFor more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing\n\nFor C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1'),
-     'model': GuardOnDataDependentSymNode('Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)\n\nconsider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_trueCaused by: (_subclasses/functional_tensor.py:300 in __bool__)\nFor more information, run with TORCH_LOGS="dynamic"\nFor extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"\nIf you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1\nFor more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing\n\nFor C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1'),
+    {'': GuardOnDataDependentSymNode('Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)\n\nconsider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.\nCaused by: (_subclasses/functional_tensor.py:301 in __bool__)\nFor more information, run with TORCH_LOGS="dynamic"\nFor extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"\nIf you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1\nFor more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing\n\nFor C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1'),
+     'model': GuardOnDataDependentSymNode('Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)\n\nconsider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.\nCaused by: (_subclasses/functional_tensor.py:301 in __bool__)\nFor more information, run with TORCH_LOGS="dynamic"\nFor extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"\nIf you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1\nFor more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing\n\nFor C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1'),
      'model.embed_tokens': None,
      'model.layers.0': RuntimeError('Attempting to broadcast a dimension of length 33 at -1! Mismatching argument at index 1 had torch.Size([2, 1, 3, 33]); but expected shape should be broadcastable to [2, 32, 3, 36]'),
      'model.layers.0.input_layernorm': None,
@@ -286,7 +286,7 @@ Let's print the report.
      'model.layers.0.resid_attn_dropout': None,
      'model.layers.0.self_attn': RuntimeError('Attempting to broadcast a dimension of length 33 at -1! Mismatching argument at index 1 had torch.Size([2, 1, 3, 33]); but expected shape should be broadcastable to [2, 32, 3, 36]'),
      'model.layers.0.self_attn.o_proj': None,
-     'model.rotary_emb': GuardOnDataDependentSymNode('Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)\n\nconsider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_trueCaused by: (_subclasses/functional_tensor.py:300 in __bool__)\nFor more information, run with TORCH_LOGS="dynamic"\nFor extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"\nIf you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1\nFor more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing\n\nFor C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1')}
+     'model.rotary_emb': GuardOnDataDependentSymNode('Could not guard on data-dependent expression Eq(u0, 1) (unhinted: Eq(u0, 1)).  (Size-like symbols: none)\n\nconsider using data-dependent friendly APIs such as guard_or_false, guard_or_true and statically_known_true.\nCaused by: (_subclasses/functional_tensor.py:301 in __bool__)\nFor more information, run with TORCH_LOGS="dynamic"\nFor extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"\nIf you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1\nFor more debugging help, see https://docs.google.com/document/d/1HSuTTVvYH1pTew89Rtpeu84Ht3nQEFTYhAX3Ypa_xJs/edit?usp=sharing\n\nFor C++ stack trace, run with TORCHDYNAMO_EXTENDED_DEBUG_CPP=1')}
 
 
 
@@ -294,7 +294,7 @@ Let's print the report.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.058 seconds)
+   **Total running time of the script:** (0 minutes 4.535 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_reportibility.py:

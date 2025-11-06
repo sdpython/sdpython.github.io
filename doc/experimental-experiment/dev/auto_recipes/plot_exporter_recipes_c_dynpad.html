@@ -296,14 +296,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/torch_models/index.html">.torch_models</a><input aria-label="Toggle navigation of .torch_models" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/diffusion_model_helper.html">.torch_models.diffusion_model_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/dump_helper.html">.torch_models.dump_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llama_helper.html">.torch_models.llama_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_helper.html">.torch_models.llm_model_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/llm_model_setup.html">.torch_models.llm_model_setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/mistral_helper.html">.torch_models.mistral_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi3_helper.html">.torch_models.phi3_helper</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/torch_models/phi_helper.html">.torch_models.phi_helper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/torch_models/training_helper.html">.torch_models.training_helper</a></li>
 </ul>
 </li>
@@ -627,24 +620,24 @@ x2.shape=torch.Size([6, 8, 8]), y2.shape=torch.Size([6, 8, 8])
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ExportedProgram:
     class GraphModule(torch.nn.Module):
         def forward(self, x: &quot;f32[s77, s27, s53]&quot;):
-             #
+            # No stacktrace found for following nodes
             sym_size_int_3: &quot;Sym(s77)&quot; = torch.ops.aten.sym_size.int(x, 0)
             sym_size_int_4: &quot;Sym(s27)&quot; = torch.ops.aten.sym_size.int(x, 1)
             sym_size_int_5: &quot;Sym(s53)&quot; = torch.ops.aten.sym_size.int(x, 2)
 
-             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
+            # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:40 in forward, code: next_dim = ((dim + self.multiple - 1) // self.multiple) * self.multiple
             add: &quot;Sym(s27 + 4)&quot; = sym_size_int_4 + 4
             sub: &quot;Sym(s27 + 3)&quot; = add - 1;  add = None
             floordiv: &quot;Sym(((s27 + 3)//4))&quot; = sub // 4;  sub = None
             mul: &quot;Sym(4*(((s27 + 3)//4)))&quot; = floordiv * 4;  floordiv = None
 
-             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: to_pad = next_dim - dim
+            # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:41 in forward, code: to_pad = next_dim - dim
             sub_1: &quot;Sym(-s27 + 4*(((s27 + 3)//4)))&quot; = mul - sym_size_int_4;  mul = sym_size_int_4 = None
 
-             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:42 in forward, code: pad = torch.zeros(
+            # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:42 in forward, code: pad = torch.zeros(
             zeros: &quot;f32[s77, -s27 + 4*(((s27 + 3)//4)), s53]&quot; = torch.ops.aten.zeros.default([sym_size_int_3, sub_1, sym_size_int_5], dtype = torch.float32, device = device(type=&#39;cpu&#39;), pin_memory = False);  sym_size_int_3 = sub_1 = sym_size_int_5 = None
 
-             # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:45 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
+            # File: ~/github/experimental-experiment/_doc/recipes/plot_exporter_recipes_c_dynpad.py:45 in forward, code: return torch.cat([x, pad], dim=self.dim_to_pad)
             cat: &quot;f32[s77, 4*(((s27 + 3)//4)), s53]&quot; = torch.ops.aten.cat.default([x, zeros], 1);  x = zeros = None
             return (cat,)
 
@@ -718,7 +711,7 @@ diff with shape=torch.Size([3, 9, 11]) -&gt; torch.Size([3, 12, 11]): discrepanc
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><a href="https://sdpython.github.io/doc/onnx-array-api/dev/api/plotting.html#onnx_array_api.plotting.graphviz_helper.plot_dot" title="onnx_array_api.plotting.graphviz_helper.plot_dot" class="sphx-glr-backref-module-onnx_array_api-plotting-graphviz_helper sphx-glr-backref-type-py-function"><span class="n">plot_dot</span></a></a></a></a></a><span class="p">(</span><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><a href="https://onnx.ai/onnx/api/serialization.html#onnx.ModelProto" title="onnx.ModelProto" class="sphx-glr-backref-module-onnx sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">onx</span></a></a></a></a></a><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" alt="plot exporter recipes c dynpad" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.708 seconds)</p>
+<img src="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" srcset="../_images/sphx_glr_plot_exporter_recipes_c_dynpad_001.png" alt="plot exporter recipes c dynpad" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.465 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-recipes-plot-exporter-recipes-c-dynpad-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/95cf425c085021182b7e9cde846545f6/plot_exporter_recipes_c_dynpad.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_exporter_recipes_c_dynpad.ipynb</span></code></a></p>

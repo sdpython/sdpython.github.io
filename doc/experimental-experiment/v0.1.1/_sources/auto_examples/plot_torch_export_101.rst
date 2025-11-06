@@ -271,14 +271,14 @@ The last one does not export. An exporter based on
 
 
     def forward(self, arg0_1: "f32[3, 5]", arg1_1: "f32[3]", arg2_1: "f32[1, 5]", arg3_1: "f32[1, 5]", arg4_1, arg5_1, arg6_1: "f32[1, 5]", arg7_1: "i32[1]"):
-         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
+        # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
         mul: "f32[1, 5]" = torch.ops.aten.mul.Tensor(arg3_1, arg6_1);  arg3_1 = arg6_1 = None
         add: "f32[1, 5]" = torch.ops.aten.add.Tensor(arg2_1, mul);  arg2_1 = mul = None
     
-         # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
         linear: "f32[1, 3]" = torch.ops.aten.linear.default(add, arg0_1, arg1_1);  add = arg0_1 = arg1_1 = None
     
-         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
+        # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
         sigmoid: "f32[1, 3]" = torch.ops.aten.sigmoid.default(linear);  linear = sigmoid = None
         item: "Sym(u0)" = torch.ops.aten.item.default(arg7_1);  arg7_1 = item = None
     
@@ -286,19 +286,20 @@ The last one does not export. An exporter based on
 
 
     def forward(self, arg0_1: "f32[3, 5]", arg1_1: "f32[3]", arg2_1: "f32[1, 5]", arg3_1: "f32[1, 5]", arg4_1, arg5_1, arg6_1: "f32[1, 5]", arg7_1: "i32[1]"):
-         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
+        # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:114 in forward, code: z = self.linear(x + yz[0] * yz[3])
         mul: "f32[1, 5]" = torch.ops.aten.mul.Tensor(arg3_1, arg6_1);  arg3_1 = arg6_1 = None
         add: "f32[1, 5]" = torch.ops.aten.add.Tensor(arg2_1, mul);  arg2_1 = mul = None
     
-         # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
+        # File: /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:134 in forward, code: return F.linear(input, self.weight, self.bias)
         linear: "f32[1, 3]" = torch.ops.aten.linear.default(add, arg0_1, arg1_1);  add = arg0_1 = arg1_1 = None
     
-         # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
+        # File: /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_101.py:115 in forward, code: return torch.sigmoid(z)[:i_input]
         sigmoid: "f32[1, 3]" = torch.ops.aten.sigmoid.default(linear);  linear = sigmoid = None
         item: "Sym(u0)" = torch.ops.aten.item.default(arg7_1);  arg7_1 = item = None
     
     -- an error <class 'torch.fx.experimental.symbolic_shapes.GuardOnDataDependentSymNode'> occured:
     Could not extract specialized integer from data-dependent expression u0 (unhinted: u0).  (Size-like symbols: none)
+
 
     Caused by: (_export/non_strict_utils.py:1118 in __torch_function__)
     For more information, run with TORCH_LOGS="dynamic"
@@ -561,9 +562,9 @@ And now?
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:977: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:989: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:969: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/unflatten.py:981: UserWarning: Attempted to insert a get_attr Node with no underlying reference in the owning GraphModule! Call GraphModule.add_submodule to add the necessary submodule, GraphModule.add_parameter to add the necessary Parameter, or nn.Module.register_buffer to add the necessary buffer
       spec_node = gm.graph.get_attr(name)
     -- preserved?
     graph():
@@ -595,7 +596,7 @@ and it is a provite API.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.336 seconds)
+   **Total running time of the script:** (0 minutes 0.190 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:
