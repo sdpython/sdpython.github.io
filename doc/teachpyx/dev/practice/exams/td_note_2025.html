@@ -645,7 +645,7 @@
 <section id="Q1---Implémenter-une-fonction-qui-calcule-la-distance-entre-deux-matrices">
 <h2>Q1 - Implémenter une fonction qui calcule la distance entre deux matrices<a class="headerlink" href="#Q1---Implémenter-une-fonction-qui-calcule-la-distance-entre-deux-matrices" title="Lien vers cette rubrique">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -662,12 +662,48 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 np.int64(45)
+</pre></div></div>
+</div>
+<p>Le minimum serait…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]),</span> <span class="n">table2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+np.int64(1)
+</pre></div></div>
+</div>
+<p>Et sinon une petite erreur en oubliant la permutation sur les colonnes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]),</span> <span class="n">table2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+np.int64(7)
 </pre></div></div>
 </div>
 </section>
@@ -787,11 +823,11 @@ array([[ 6,  8],
 <h2>Q6 - Quel est le coût de cette fonction ?<a class="headerlink" href="#Q6---Quel-est-le-coût-de-cette-fonction-?" title="Lien vers cette rubrique">¶</a></h2>
 <p>Si <img class="math" src="../../_images/math/7739323d0a8513ba3309000019ccbec148b1b107.svg" alt="i"/> et <img class="math" src="../../_images/math/451bde40669bcf619eb6ea92c0862f752f6763aa.svg" alt="j"/> sont les dimensions de deux tables, c’est <img class="math" src="../../_images/math/ab33f78961b6fb5f6485bb12c64801152a6f641b.svg" alt="O((i!)(j!))"/>.</p>
 </section>
-<section id="Q7---C'est-b-eaucoup-trop-long.">
-<h2>Q7 - C’est b eaucoup trop long.<a class="headerlink" href="#Q7---C'est-b-eaucoup-trop-long." title="Lien vers cette rubrique">¶</a></h2>
+<section id="Q7---C'est-beaucoup-trop-long.">
+<h2>Q7 - C’est beaucoup trop long.<a class="headerlink" href="#Q7---C'est-beaucoup-trop-long." title="Lien vers cette rubrique">¶</a></h2>
 <p>On prop ose que calculer chaque p ermutation séparément. On cherche donc la meilleure p ermutation qui minimise la distribution de la somme par ligne et par colonne entre les deux matrices. Ecrire une fonctionne qui implémente ce raisonnement.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimise_vecteur</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">):</span>
@@ -807,8 +843,8 @@ array([[ 6,  8],
 
 <span class="k">def</span><span class="w"> </span><span class="nf">optimise_fast</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">optimise_vecteur</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">table2</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
         <span class="n">optimise_vecteur</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">table2</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="n">optimise_vecteur</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">table2</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
     <span class="p">)</span>
 
 
@@ -817,22 +853,40 @@ array([[ 6,  8],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-((0, 1), (1, 0, 2))
+((1, 0, 2), (0, 1))
 </pre></div></div>
 </div>
-<p>Le coût est en <img class="math" src="../../_images/math/3789e0e447cca13743365ab25e502e3f97eb70ec.svg" alt="O(i!) + O(j!)"/>. Pas nécessairement optimal mais beaucoup plus rapide.</p>
+<p>Le coût est en <img class="math" src="../../_images/math/3789e0e447cca13743365ab25e502e3f97eb70ec.svg" alt="O(i!) + O(j!)"/>. Pas nécessairement optimal mais beaucoup plus rapide. On obtient la distance :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">optimise_fast</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">)</span>
+<span class="n">distance</span><span class="p">(</span><span class="n">table1</span><span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">p2</span><span class="p">],</span> <span class="n">table2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+np.int64(7)
+</pre></div></div>
+</div>
 </section>
 <section id="Q8---Mais-c'est-encore-trop-coûteux.">
 <h2>Q8 - Mais c’est encore trop coûteux.<a class="headerlink" href="#Q8---Mais-c'est-encore-trop-coûteux." title="Lien vers cette rubrique">¶</a></h2>
 <p>On cherche la matrice M qui minimise AM =B où A et B sont les sommes sur les colonnes où lignes des matrices de statistiques observées sur deux années.</p>
 <p>Précisons d’abord ce qu’est une matrice de permutations <img class="math" src="../../_images/math/4de4081a821107825d45b3ea67906fb84d3f75da.svg" alt="M"/> : une matrice carrée dont les coefficients sont 0 ou 1. De plus, sur chaque ligne et chaque colonne, on ne trouve qu’un et un seul 1.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
@@ -867,7 +921,7 @@ M @ A
 </div>
 <p><img class="math" src="../../_images/math/d448adc18081f1d8b16dab60f8a22008d5137e60.svg" alt="MA"/> permute les lignes, <img class="math" src="../../_images/math/99e2eb22027402c978fdbc99cc927b96c0a03a1f.svg" alt="AM"/> permute les colonnes. Donc trouver la matrice <img class="math" src="../../_images/math/4de4081a821107825d45b3ea67906fb84d3f75da.svg" alt="M"/> qui minimise <img class="math" src="../../_images/math/b1f4934863341ea6ea48b3e6a5f4e008ee045786.svg" alt="\lVert AM - B \rVert^2"/> où <img class="math" src="../../_images/math/ce5cfc41badade103c4d2d38185a5399f1dd2855.svg" alt="B"/> obtenue avec une permutation des colonnes de la matrice <img class="math" src="../../_images/math/7b5b109585b3a3a18738347020aba8b3ed578a53.svg" alt="A"/> permettrait de déterminer cette permutation. Ce n’est pas un système d’équations en bonne et due forme mais c’en est un.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">rang</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">)</span>
@@ -888,44 +942,90 @@ rang 2
 </div>
 <p>Le problème est qu’il y a plus d’inconnues que d’équations, d’où le rang faible (2). Avant de revenir à cette option. On part dans une autre direction. La plus grande des catégories de populations a beaucoup de chance d’être la plus grande l’année suivante. Donc la recherche du maximum dans les matrices A et B dévoile une partie de la matrice M. On applique cette idée aux sommes des lignes et des colonnes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimise_vecteur_tri</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span> <span class="n">vec2</span><span class="p">):</span>
-    <span class="n">pos_vec1</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec1</span><span class="p">)]</span>
-    <span class="n">pos_vec1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pos_vec1</span><span class="p">)</span>
+    <span class="c1"># on tri dans l&#39;ordre croissant</span>
+    <span class="n">pos_vec1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec1</span><span class="p">)])</span>
+    <span class="n">pos_vec2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vec2</span><span class="p">)])</span>
+    <span class="c1"># on a deux permutations, il suffit de les composer.</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pos_vec1</span><span class="p">)</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pos_vec2</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="n">p1</span><span class="p">[</span><span class="n">p2</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">optimise_fast_tri</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">optimise_vecteur_tri</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">table2</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
         <span class="n">optimise_vecteur_tri</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">table2</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="n">optimise_vecteur_tri</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">table2</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
     <span class="p">)</span>
 
 
-<span class="n">optimise_fast_tri</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">)</span>
+<span class="n">table1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+<span class="n">table2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">optimise_fast_tri</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">)</span>
+<span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">distance</span><span class="p">(</span><span class="n">table1</span><span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">p2</span><span class="p">],</span> <span class="n">table2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-((0, 1), (2, 0, 1))
+((1, 0, 2), (0, 1), np.int64(7))
 </pre></div></div>
 </div>
-<p>On revient au problème d’optimisation : <img class="math" src="../../_images/math/b1f4934863341ea6ea48b3e6a5f4e008ee045786.svg" alt="\lVert AM - B \rVert^2"/>. Il faudrait pouvoir forcer les coefficients de la matrice à être 0 ou 1 en ajoutant une contrainte. On utilise pour cela fonction <img class="math" src="../../_images/math/ea9e8d7a089f089323b972258df879f716616d2c.svg" alt="f(x)=x(1-X)"/> qui vaut 0 quand <img class="math" src="../../_images/math/3fcb69c5e12a9c0a223a3dcf7f049eb8c0c66d14.svg" alt="x \epsilon \{0,1\}"/>. On cherche donc <img class="math" src="../../_images/math/4de4081a821107825d45b3ea67906fb84d3f75da.svg" alt="M"/> qui minimise <img class="math" src="../../_images/math/8819ed69b97be0a577aa62bfdf814295836f44ef.svg" alt="\lVert AM - B \rVert^2 + \lambda \lVert M^2*(1-M)^2\rVert"/> où <img class="math" src="../../_images/math/8002f2a5b9eb9d390fbdee58e758b4a5edd4bb42.svg" alt="*"/> est une multiplication terme à terme. Mais résoudre ce problème n’est pas simple. On en restera là pour le moment.</p>
+<p>On revient au problème d’optimisation : <img class="math" src="../../_images/math/b1f4934863341ea6ea48b3e6a5f4e008ee045786.svg" alt="\lVert AM - B \rVert^2"/>. Il faudrait pouvoir forcer les coefficients de la matrice à être 0 ou 1 en ajoutant une contrainte. On utilise pour cela fonction <img class="math" src="../../_images/math/ea9e8d7a089f089323b972258df879f716616d2c.svg" alt="f(x)=x(1-X)"/> qui vaut 0 quand <img class="math" src="../../_images/math/3fcb69c5e12a9c0a223a3dcf7f049eb8c0c66d14.svg" alt="x \epsilon \{0,1\}"/>. On cherche donc <img class="math" src="../../_images/math/4de4081a821107825d45b3ea67906fb84d3f75da.svg" alt="M"/> qui minimise <img class="math" src="../../_images/math/8819ed69b97be0a577aa62bfdf814295836f44ef.svg" alt="\lVert AM - B \rVert^2 + \lambda \lVert M^2*(1-M)^2\rVert"/> où <code class="docutils literal notranslate"><span class="pre">*</span></code> est une multiplication terme à terme. Mais résoudre ce problème n’est pas simple. On en restera là pour le moment.</p>
 </section>
-<section id="Q9---Comment-utiliser-cette-fonction-p-our-implémenter-une-version-plus-rapide-de-la-fonction-à-la-question-5.">
-<h2>Q9 - Comment utiliser cette fonction p our implémenter une version plus rapide de la fonction à la question 5.<a class="headerlink" href="#Q9---Comment-utiliser-cette-fonction-p-our-implémenter-une-version-plus-rapide-de-la-fonction-à-la-question-5." title="Lien vers cette rubrique">¶</a></h2>
+<section id="Q9---Comment-utiliser-cette-fonction-pour-implémenter-une-version-plus-rapide-de-la-fonction-à-la-question-5.">
+<h2>Q9 - Comment utiliser cette fonction pour implémenter une version plus rapide de la fonction à la question 5.<a class="headerlink" href="#Q9---Comment-utiliser-cette-fonction-pour-implémenter-une-version-plus-rapide-de-la-fonction-à-la-question-5." title="Lien vers cette rubrique">¶</a></h2>
 <p>Le code de la question précédente répond à la question.</p>
 </section>
-<section id="Q10---La-troisième-année,-une-colonne-est-coupée-en-deux-:-une-catégorie-est-divisée-en-deux-sous-catégorie.-Que-proposez-vous-p-our-y-remédier-?">
-<h2>Q10 - La troisième année, une colonne est coupée en deux : une catégorie est divisée en deux sous-catégorie. Que proposez-vous p our y remédier ?<a class="headerlink" href="#Q10---La-troisième-année,-une-colonne-est-coupée-en-deux-:-une-catégorie-est-divisée-en-deux-sous-catégorie.-Que-proposez-vous-p-our-y-remédier-?" title="Lien vers cette rubrique">¶</a></h2>
-<p>L’idée est assez simple, on choisit au hasard deux lignes de la seconde matrice et on les aggrège. On la fonction précédente pour en déduire les deux permutations les moins coûteuses puis on conserve le coût de cette permutation. On fait pour toutes les paires et on ne garde que la meilleure paire.</p>
+<section id="Q10---La-troisième-année,-une-colonne-est-coupée-en-deux-:-une-catégorie-est-divisée-en-deux-sous-catégorie.-Que-proposez-vous-pour-y-remédier-?">
+<h2>Q10 - La troisième année, une colonne est coupée en deux : une catégorie est divisée en deux sous-catégorie. Que proposez-vous pour y remédier ?<a class="headerlink" href="#Q10---La-troisième-année,-une-colonne-est-coupée-en-deux-:-une-catégorie-est-divisée-en-deux-sous-catégorie.-Que-proposez-vous-pour-y-remédier-?" title="Lien vers cette rubrique">¶</a></h2>
+<p>L’idée est assez simple, on choisit au hasard deux lignes de la seconde matrice et on les aggrège. On utilise la fonction précédente pour en déduire les deux permutations les moins coûteuses puis on conserve le coût de cette permutation. On fait de même pour toutes les paires et on ne garde que la meilleure paire.</p>
+<p>Ce n’était pas demandé dans l’énoncé mais on pourait implémenter ce schéma comme suit :</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimise_fast_tri_paire</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">):</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">table2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">table2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">table2p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">table1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">table2</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">table2p</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">table2</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">table2p</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">table2</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="o">=</span> <span class="n">optimise_fast_tri</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2p</span><span class="p">)</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">table1</span><span class="p">[</span><span class="n">p1</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">p2</span><span class="p">]</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">table2p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">best</span> <span class="o">=</span> <span class="n">d</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">best</span>
+
+
+<span class="n">table1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+<span class="c1"># on divise par deux les deux valeurs de la dernière ligne</span>
+<span class="c1"># et on les réplique</span>
+<span class="n">table2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">optimise_fast_tri_paire</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">table2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(np.int64(7), (1, 0, 2), (0, 1), (2, 3))
+</pre></div></div>
+</div>
+<p>Tout est cohérent.</p>
 </section>
 </section>
 <hr class="docutils" />
@@ -992,10 +1092,10 @@ rang 2
 <li><a class="reference internal" href="#Q3,-Q4---Implémenter-une-fonction-qui-p-ermute-les-colonnes-d'une-matrice.">Q3, Q4 - Implémenter une fonction qui p ermute les colonnes d’une matrice.</a></li>
 <li><a class="reference internal" href="#Q5---Ecrire-une-fonctionne-qui-retourne-les-deux-p-ermutations-ligne/colonne-qui-minimise-la-distance-entre-les-deux-matrices,-en-déduire-la-case-qui-a-changé.">Q5 - Ecrire une fonctionne qui retourne les deux p ermutations ligne/colonne qui minimise la distance entre les deux matrices, en déduire la case qui a changé.</a></li>
 <li><a class="reference internal" href="#Q6---Quel-est-le-coût-de-cette-fonction-?">Q6 - Quel est le coût de cette fonction ?</a></li>
-<li><a class="reference internal" href="#Q7---C'est-b-eaucoup-trop-long.">Q7 - C’est b eaucoup trop long.</a></li>
+<li><a class="reference internal" href="#Q7---C'est-beaucoup-trop-long.">Q7 - C’est beaucoup trop long.</a></li>
 <li><a class="reference internal" href="#Q8---Mais-c'est-encore-trop-coûteux.">Q8 - Mais c’est encore trop coûteux.</a></li>
-<li><a class="reference internal" href="#Q9---Comment-utiliser-cette-fonction-p-our-implémenter-une-version-plus-rapide-de-la-fonction-à-la-question-5.">Q9 - Comment utiliser cette fonction p our implémenter une version plus rapide de la fonction à la question 5.</a></li>
-<li><a class="reference internal" href="#Q10---La-troisième-année,-une-colonne-est-coupée-en-deux-:-une-catégorie-est-divisée-en-deux-sous-catégorie.-Que-proposez-vous-p-our-y-remédier-?">Q10 - La troisième année, une colonne est coupée en deux : une catégorie est divisée en deux sous-catégorie. Que proposez-vous p our y remédier ?</a></li>
+<li><a class="reference internal" href="#Q9---Comment-utiliser-cette-fonction-pour-implémenter-une-version-plus-rapide-de-la-fonction-à-la-question-5.">Q9 - Comment utiliser cette fonction pour implémenter une version plus rapide de la fonction à la question 5.</a></li>
+<li><a class="reference internal" href="#Q10---La-troisième-année,-une-colonne-est-coupée-en-deux-:-une-catégorie-est-divisée-en-deux-sous-catégorie.-Que-proposez-vous-pour-y-remédier-?">Q10 - La troisième année, une colonne est coupée en deux : une catégorie est divisée en deux sous-catégorie. Que proposez-vous pour y remédier ?</a></li>
 </ul>
 </li>
 </ul>
