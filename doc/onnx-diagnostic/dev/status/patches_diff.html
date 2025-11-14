@@ -10,7 +10,7 @@
         <title>Patches Diff - onnx-diagnostic 0.8.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -394,6 +394,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">More</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOGS.html">Change Logs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
@@ -468,7 +469,7 @@ pytorch versions.</p>
 </pre></div>
 </div>
 <p>&gt;&gt;&gt;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">2.10.0</span><span class="o">.</span><span class="n">dev20251106</span><span class="o">+</span><span class="n">cu130</span> <span class="mf">5.0.0</span><span class="o">.</span><span class="n">dev0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mf">2.10.0</span><span class="o">.</span><span class="n">dev20251113</span><span class="o">+</span><span class="n">cu130</span> <span class="mf">5.0.0</span><span class="o">.</span><span class="n">dev0</span>
 </pre></div>
 </div>
 <p>Those two versions leads to the following list of patches.</p>
@@ -549,71 +550,91 @@ pytorch versions.</p>
 <h2>torch: _broadcast_shapes -&gt; patched__broadcast_shapes<a class="headerlink" href="#torch-broadcast-shapes-patched-broadcast-shapes" title="Link to this heading">¶</a></h2>
 <div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gd">--- original</span>
 <span class="linenos"> 2</span><span class="gi">+++ rewritten</span>
-<span class="linenos"> 3</span><span class="gu">@@ -1,5 +1,11 @@</span>
+<span class="linenos"> 3</span><span class="gu">@@ -1,11 +1,11 @@</span>
 <span class="linenos"> 4</span><span class="gd">-def _broadcast_shapes(*_shapes):</span>
-<span class="linenos"> 5</span><span class="gd">-    from torch.fx.experimental.symbolic_shapes import guard_or_false, is_nested_int</span>
-<span class="linenos"> 6</span><span class="gi">+def patched__broadcast_shapes(*_shapes):</span>
-<span class="linenos"> 7</span><span class="gi">+    &quot;&quot;&quot;Patches ``torch._refs._broadcast_shapes``.&quot;&quot;&quot;</span>
-<span class="linenos"> 8</span><span class="gi">+    from functools import reduce</span>
-<span class="linenos"> 9</span><span class="gi">+    from torch._prims_common import IntLike</span>
-<span class="linenos">10</span><span class="gi">+    from torch.fx.experimental.symbolic_shapes import (</span>
-<span class="linenos">11</span><span class="gi">+        guard_or_false,</span>
-<span class="linenos">12</span><span class="gi">+        is_nested_int,</span>
-<span class="linenos">13</span><span class="gi">+    )</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span><span class="w"> </span>    shapes = tuple(
-<span class="linenos">16</span><span class="w"> </span>        (x,) if isinstance(x, IntLike) else x for x in filter(lambda x: x is not None, _shapes)
-<span class="linenos">17</span><span class="gu">@@ -12,17 +18,15 @@</span>
-<span class="linenos">18</span><span class="w"> </span>    for shape in shapes:
-<span class="linenos">19</span><span class="w"> </span>        if not isinstance(shape, Sequence):
-<span class="linenos">20</span><span class="w"> </span>            raise RuntimeError(
-<span class="linenos">21</span><span class="gd">-                &quot;Input shapes should be of type ints, a tuple of ints, or a list of ints, got &quot;,</span>
-<span class="linenos">22</span><span class="gi">+                &quot;Input shapes should be of type ints, a tuple of ints, &quot;</span>
-<span class="linenos">23</span><span class="gi">+                &quot;or a list of ints, got &quot;,</span>
-<span class="linenos">24</span><span class="w"> </span>                shape,
-<span class="linenos">25</span><span class="w"> </span>            )
-<span class="linenos">26</span>
-<span class="linenos">27</span><span class="w"> </span>    # Computes common shape
-<span class="linenos">28</span><span class="gd">-    common_shape: list[Union[int, torch.SymInt]] = [</span>
-<span class="linenos">29</span><span class="gd">-        1,</span>
-<span class="linenos">30</span><span class="gd">-    ] * reduce(max, (len(shape) for shape in shapes))</span>
-<span class="linenos">31</span><span class="gd">-    for arg_idx, shape in enumerate(shapes):</span>
-<span class="linenos">32</span><span class="gi">+    common_shape = [1] * reduce(max, (len(shape) for shape in shapes))</span>
-<span class="linenos">33</span><span class="gi">+    for _arg_idx, shape in enumerate(shapes):</span>
-<span class="linenos">34</span><span class="w"> </span>        for idx in range(-1, -1 - len(shape), -1):
-<span class="linenos">35</span><span class="gd">-            # NB: handle nested ints specially to avoid invalid guarding on Ne(j0, 1).</span>
-<span class="linenos">36</span><span class="w"> </span>            if is_nested_int(shape[idx]):
-<span class="linenos">37</span><span class="w"> </span>                # Broadcasting is allowed for (j0, 1) or (j0, j0);
-<span class="linenos">38</span><span class="w"> </span>                # not (j0, j1), (j0, 5), etc.
-<span class="linenos">39</span><span class="gu">@@ -33,22 +37,15 @@</span>
-<span class="linenos">40</span><span class="w"> </span>            else:
-<span class="linenos">41</span><span class="w"> </span>                if guard_or_false(shape[idx] == common_shape[idx]):
-<span class="linenos">42</span><span class="w"> </span>                    continue
-<span class="linenos">43</span><span class="gd">-</span>
-<span class="linenos">44</span><span class="gd">-            if guard_or_false(common_shape[idx] == 1):</span>
-<span class="linenos">45</span><span class="gi">+            # PATCHED: two cases, if == for sure, no broadcast,</span>
-<span class="linenos">46</span><span class="gi">+            # otherwise maybe broadcast with max(dimensions)</span>
-<span class="linenos">47</span><span class="gi">+            if guard_or_false(common_shape[idx] != 1):</span>
-<span class="linenos">48</span><span class="gi">+                pass</span>
-<span class="linenos">49</span><span class="gi">+            elif guard_or_false(common_shape[idx] == 1) or guard_or_false(shape[idx] != 1):</span>
-<span class="linenos">50</span><span class="w"> </span>                if shape[idx] &lt; 0:
-<span class="linenos">51</span><span class="w"> </span>                    raise ValueError(&quot;Attempting to broadcast a dimension with negative length!&quot;)
-<span class="linenos">52</span><span class="w"> </span>                common_shape[idx] = shape[idx]
-<span class="linenos">53</span><span class="gd">-</span>
-<span class="linenos">54</span><span class="gd">-            if not is_nested_int(shape[idx]) and guard_or_false(shape[idx] == 1):</span>
-<span class="linenos">55</span><span class="gd">-                # broadcast case .</span>
-<span class="linenos">56</span><span class="gd">-                continue</span>
-<span class="linenos">57</span><span class="w"> </span>            else:
-<span class="linenos">58</span><span class="gd">-                # If broadcasting is undecided we pick non-broadcast path and add runtime assertion.</span>
-<span class="linenos">59</span><span class="gd">-                torch._check(</span>
-<span class="linenos">60</span><span class="gd">-                    common_shape[idx] == shape[idx],</span>
-<span class="linenos">61</span><span class="gd">-                    lambda: f&quot;Attempting to broadcast a dimension of length {shape[idx]} at {idx}! &quot;</span>
-<span class="linenos">62</span><span class="gd">-                    f&quot;Mismatching argument at index {arg_idx} had {shape}; but expected shape &quot;</span>
-<span class="linenos">63</span><span class="gd">-                    f&quot;should be broadcastable to {common_shape}&quot;,</span>
-<span class="linenos">64</span><span class="gd">-                )</span>
-<span class="linenos">65</span><span class="gi">+                common_shape[idx] = torch.sym_max(common_shape[idx], shape[idx])</span>
-<span class="linenos">66</span>
-<span class="linenos">67</span><span class="w"> </span>    return common_shape
+<span class="linenos"> 5</span><span class="gi">+def patched__broadcast_shapes(*_shapes):</span>
+<span class="linenos"> 6</span><span class="gi">+    &quot;&quot;&quot;Patches ``torch._refs._broadcast_shapes``.&quot;&quot;&quot;</span>
+<span class="linenos"> 7</span><span class="gi">+    from functools import reduce</span>
+<span class="linenos"> 8</span><span class="gi">+    from torch._prims_common import IntLike</span>
+<span class="linenos"> 9</span><span class="w"> </span>    from torch.fx.experimental.symbolic_shapes import (
+<span class="linenos">10</span><span class="w"> </span>        guard_or_false,
+<span class="linenos">11</span><span class="w"> </span>        is_nested_int,
+<span class="linenos">12</span><span class="gd">-        size_hint,</span>
+<span class="linenos">13</span><span class="w"> </span>    )
+<span class="linenos">14</span><span class="gd">-</span>
+<span class="linenos">15</span><span class="gd">-    backed_so = torch.fx.experimental._config.backed_size_oblivious</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w"> </span>    shapes = tuple(
+<span class="linenos">18</span><span class="w"> </span>        (x,) if isinstance(x, IntLike) else x for x in filter(lambda x: x is not None, _shapes)
+<span class="linenos">19</span><span class="gu">@@ -18,17 +18,15 @@</span>
+<span class="linenos">20</span><span class="w"> </span>    for shape in shapes:
+<span class="linenos">21</span><span class="w"> </span>        if not isinstance(shape, Sequence):
+<span class="linenos">22</span><span class="w"> </span>            raise RuntimeError(
+<span class="linenos">23</span><span class="gd">-                &quot;Input shapes should be of type ints, a tuple of ints, or a list of ints, got &quot;,</span>
+<span class="linenos">24</span><span class="gi">+                &quot;Input shapes should be of type ints, a tuple of ints, &quot;</span>
+<span class="linenos">25</span><span class="gi">+                &quot;or a list of ints, got &quot;,</span>
+<span class="linenos">26</span><span class="w"> </span>                shape,
+<span class="linenos">27</span><span class="w"> </span>            )
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="w"> </span>    # Computes common shape
+<span class="linenos">30</span><span class="gd">-    common_shape: list[Union[int, torch.SymInt]] = [</span>
+<span class="linenos">31</span><span class="gd">-        1,</span>
+<span class="linenos">32</span><span class="gd">-    ] * reduce(max, (len(shape) for shape in shapes))</span>
+<span class="linenos">33</span><span class="gd">-    for arg_idx, shape in enumerate(shapes):</span>
+<span class="linenos">34</span><span class="gi">+    common_shape = [1] * reduce(max, (len(shape) for shape in shapes))</span>
+<span class="linenos">35</span><span class="gi">+    for _arg_idx, shape in enumerate(shapes):</span>
+<span class="linenos">36</span><span class="w"> </span>        for idx in range(-1, -1 - len(shape), -1):
+<span class="linenos">37</span><span class="gd">-            # NB: handle nested ints specially to avoid invalid guarding on Ne(j0, 1).</span>
+<span class="linenos">38</span><span class="w"> </span>            if is_nested_int(shape[idx]):
+<span class="linenos">39</span><span class="w"> </span>                # Broadcasting is allowed for (j0, 1) or (j0, j0);
+<span class="linenos">40</span><span class="w"> </span>                # not (j0, j1), (j0, 5), etc.
+<span class="linenos">41</span><span class="gu">@@ -37,40 +35,17 @@</span>
+<span class="linenos">42</span><span class="w"> </span>                ):
+<span class="linenos">43</span><span class="w"> </span>                    continue
+<span class="linenos">44</span><span class="w"> </span>            else:
+<span class="linenos">45</span><span class="gd">-                # When backed size oblivious is used, we specialize for broadcasting</span>
+<span class="linenos">46</span><span class="gd">-                # if its the only way to compile the example input.</span>
+<span class="linenos">47</span><span class="gd">-                # i.e: s0:1, s1:1 ==&gt;</span>
+<span class="linenos">48</span><span class="gd">-                #           assert s0==s1, no specialization on ==1 or !=1.</span>
+<span class="linenos">49</span><span class="gd">-                #            The non-broadcast path is picked</span>
+<span class="linenos">50</span><span class="gd">-                #      s0:1, s1:4 ==&gt;</span>
+<span class="linenos">51</span><span class="gd">-                #           specialize(s0) to be 1.</span>
+<span class="linenos">52</span><span class="gd">-                #      s0:4, s1:1 ==&gt;</span>
+<span class="linenos">53</span><span class="gd">-                #           specialize(s1) to be 1.</span>
+<span class="linenos">54</span><span class="gd">-                if backed_so:</span>
+<span class="linenos">55</span><span class="gd">-                    a = size_hint(shape[idx], allow_none=True)</span>
+<span class="linenos">56</span><span class="gd">-                    b = size_hint(common_shape[idx], allow_none=True)</span>
+<span class="linenos">57</span><span class="gd">-                    if a == 1 and b != 1:</span>
+<span class="linenos">58</span><span class="gd">-                        torch._check(shape[idx] == 1)</span>
+<span class="linenos">59</span><span class="gd">-                    if b == 1 and a != 1:</span>
+<span class="linenos">60</span><span class="gd">-                        torch._check(common_shape[idx] == 1)</span>
+<span class="linenos">61</span><span class="w"> </span>                if guard_or_false(shape[idx] == common_shape[idx]):
+<span class="linenos">62</span><span class="w"> </span>                    continue
+<span class="linenos">63</span><span class="gd">-</span>
+<span class="linenos">64</span><span class="gd">-            if guard_or_false(common_shape[idx] == 1):</span>
+<span class="linenos">65</span><span class="gi">+            # PATCHED: two cases, if == for sure, no broadcast,</span>
+<span class="linenos">66</span><span class="gi">+            # otherwise maybe broadcast with max(dimensions)</span>
+<span class="linenos">67</span><span class="gi">+            if guard_or_false(common_shape[idx] != 1):</span>
+<span class="linenos">68</span><span class="gi">+                pass</span>
+<span class="linenos">69</span><span class="gi">+            elif guard_or_false(common_shape[idx] == 1) or guard_or_false(shape[idx] != 1):</span>
+<span class="linenos">70</span><span class="w"> </span>                if shape[idx] &lt; 0:
+<span class="linenos">71</span><span class="w"> </span>                    raise ValueError(&quot;Attempting to broadcast a dimension with negative length!&quot;)
+<span class="linenos">72</span><span class="w"> </span>                common_shape[idx] = shape[idx]
+<span class="linenos">73</span><span class="gd">-</span>
+<span class="linenos">74</span><span class="gd">-            if not is_nested_int(shape[idx]) and guard_or_false(shape[idx] == 1):</span>
+<span class="linenos">75</span><span class="gd">-                # broadcast case .</span>
+<span class="linenos">76</span><span class="gd">-                continue</span>
+<span class="linenos">77</span><span class="w"> </span>            else:
+<span class="linenos">78</span><span class="gd">-                # If broadcasting is undecided we pick non-broadcast path and add runtime assertion.</span>
+<span class="linenos">79</span><span class="gd">-                torch._check(</span>
+<span class="linenos">80</span><span class="gd">-                    common_shape[idx] == shape[idx],</span>
+<span class="linenos">81</span><span class="gd">-                    lambda: f&quot;Attempting to broadcast a dimension of length {shape[idx]} at {idx}! &quot;</span>
+<span class="linenos">82</span><span class="gd">-                    f&quot;Mismatching argument at index {arg_idx} had {shape}; but expected shape &quot;</span>
+<span class="linenos">83</span><span class="gd">-                    f&quot;should be broadcastable to {common_shape}&quot;,</span>
+<span class="linenos">84</span><span class="gd">-                )</span>
+<span class="linenos">85</span><span class="gi">+                common_shape[idx] = torch.sym_max(common_shape[idx], shape[idx])</span>
+<span class="linenos">86</span>
+<span class="linenos">87</span><span class="w"> </span>    return common_shape
 </pre></div>
 </div>
 </section>
@@ -1306,7 +1327,7 @@ pytorch versions.</p>
 <span class="linenos">  6</span><span class="w"> </span>    module: torch.nn.Module,
 <span class="linenos">  7</span><span class="w"> </span>    query: torch.Tensor,
 <span class="linenos">  8</span><span class="w"> </span>    key: torch.Tensor,
-<span class="linenos">  9</span><span class="gu">@@ -9,60 +9,133 @@</span>
+<span class="linenos">  9</span><span class="gu">@@ -9,57 +9,133 @@</span>
 <span class="linenos"> 10</span><span class="w"> </span>    is_causal: Optional[bool] = None,
 <span class="linenos"> 11</span><span class="w"> </span>    **kwargs,
 <span class="linenos"> 12</span><span class="w"> </span>) -&gt; tuple[torch.Tensor, None]:
@@ -1353,105 +1374,105 @@ pytorch versions.</p>
 <span class="linenos"> 53</span><span class="w"> </span>        else:
 <span class="linenos"> 54</span><span class="w"> </span>            sdpa_kwargs = {&quot;enable_gqa&quot;: True}
 <span class="linenos"> 55</span>
-<span class="linenos"> 56</span><span class="w"> </span>    if attention_mask is not None and attention_mask.ndim == 4:
-<span class="linenos"> 57</span><span class="w"> </span>        attention_mask = attention_mask[:, :, :, : key.shape[-2]]
-<span class="linenos"> 58</span>
-<span class="linenos"> 59</span><span class="gd">-    # Instead of relying on the value set in the module directly, we use the is_causal passed in kwargs if it is presented</span>
-<span class="linenos"> 60</span><span class="gd">-    is_causal = is_causal if is_causal is not None else getattr(module, &quot;is_causal&quot;, True)</span>
-<span class="linenos"> 61</span><span class="gi">+    torch._check(</span>
-<span class="linenos"> 62</span><span class="gi">+        attention_mask is None or attention_mask.shape[3] == key.shape[2],</span>
-<span class="linenos"> 63</span><span class="gi">+        lambda: &quot;Attention mask shape incompatible with key shape.&quot;,</span>
-<span class="linenos"> 64</span><span class="gi">+    )</span>
-<span class="linenos"> 65</span>
-<span class="linenos"> 66</span><span class="gd">-    # SDPA&#39;s Flash Attention (and cuDNN) kernels rely on the `is_causal` flag. However, there are certain conditions:</span>
-<span class="linenos"> 67</span><span class="gd">-    # - Not in decoding phase (otherwise we want full attention on the single query token)</span>
-<span class="linenos"> 68</span><span class="gd">-    # - Attention mask is not to be provided (even if it is a causal pattern)</span>
-<span class="linenos"> 69</span><span class="gd">-    # - Internally, we marked this as compatible with causal, i.e. it is a decoder attention type</span>
-<span class="linenos"> 70</span><span class="gd">-    #</span>
-<span class="linenos"> 71</span><span class="gd">-    # Quirks on the conditionals:</span>
-<span class="linenos"> 72</span><span class="gd">-    # - We avoid inline passing this to the SDPA function directly to support both torch.compile&#39;s dynamic shapes and</span>
-<span class="linenos"> 73</span><span class="gd">-    #   full graph options. Otherwise, dynamic shapes are prevented from compiling.</span>
-<span class="linenos"> 74</span><span class="gd">-    # - It is important to check first for the shape, otherwise compile will fail with</span>
-<span class="linenos"> 75</span><span class="gd">-    #   `argument &#39;is_causal&#39; must be bool, not SymBool`.</span>
-<span class="linenos"> 76</span><span class="gd">-    is_causal = query.shape[2] &gt; 1 and attention_mask is None and is_causal</span>
-<span class="linenos"> 77</span><span class="gi">+    if patch_sdpa_is_causal:</span>
-<span class="linenos"> 78</span><span class="gi">+        # transformers&gt;=4.55</span>
-<span class="linenos"> 79</span><span class="gi">+        is_causal = is_causal if is_causal is not None else getattr(module, &quot;is_causal&quot;, True)</span>
-<span class="linenos"> 80</span>
-<span class="linenos"> 81</span><span class="gd">-    # Shapes (e.g. query.shape[2]) are tensors during jit tracing, resulting in `is_causal` being a tensor.</span>
-<span class="linenos"> 82</span><span class="gd">-    # We convert it to a bool for the SDPA kernel that only accepts bools.</span>
-<span class="linenos"> 83</span><span class="gd">-    if torch.jit.is_tracing() and isinstance(is_causal, torch.Tensor):</span>
-<span class="linenos"> 84</span><span class="gd">-        is_causal = is_causal.item()</span>
-<span class="linenos"> 85</span><span class="gi">+        # PATCHED: remove the test query.shape[2] &gt; 1</span>
-<span class="linenos"> 86</span><span class="gi">+        # is_causal = query.shape[2] &gt; 1 and attention_mask is None and is_causal</span>
-<span class="linenos"> 87</span><span class="gi">+        # and we split the test to keep the minimum in torch.cond</span>
-<span class="linenos"> 88</span><span class="gi">+        is_causal = attention_mask is None and is_causal</span>
-<span class="linenos"> 89</span>
-<span class="linenos"> 90</span><span class="gd">-    # When `is_causal = False` and the `attention_mask` is not of boolean type, the Ascend NPU&#39;s SDPA interface cannot utilize the FlashAttentionScore operator，</span>
-<span class="linenos"> 91</span><span class="gd">-    # and falls back to small-operator concatenation. To invoke the FlashAttentionScore, the attention_mask must be converted to boolean type.</span>
-<span class="linenos"> 92</span><span class="gd">-    # This adaptation ensures the `attention_mask` meets the requirement for using FlashAttentionScore.</span>
-<span class="linenos"> 93</span><span class="gd">-    if _is_torch_npu_available:</span>
-<span class="linenos"> 94</span><span class="gd">-        if attention_mask is not None and attention_mask.dtype != torch.bool:</span>
-<span class="linenos"> 95</span><span class="gd">-            # Convert to boolean type, making sdpa to force call FlashAttentionScore to improve performance.</span>
-<span class="linenos"> 96</span><span class="gd">-            attention_mask = torch.logical_not(attention_mask.bool()).to(query.device)</span>
-<span class="linenos"> 97</span><span class="gi">+        if not is_causal:</span>
-<span class="linenos"> 98</span><span class="gi">+            torch._check(query.shape[0] &gt; 0)</span>
-<span class="linenos"> 99</span><span class="gi">+            torch._check(query.shape[1] &gt; 0)</span>
-<span class="linenos">100</span><span class="gi">+            torch._check(query.shape[2] &gt; 0)</span>
-<span class="linenos">101</span><span class="gi">+            torch._check(query.shape[3] &gt; 0)</span>
-<span class="linenos">102</span><span class="gi">+            torch._check(key.shape[0] &gt; 0)</span>
-<span class="linenos">103</span><span class="gi">+            torch._check(key.shape[1] &gt; 0)</span>
-<span class="linenos">104</span><span class="gi">+            torch._check(key.shape[2] &gt; 0)</span>
-<span class="linenos">105</span><span class="gi">+            torch._check(key.shape[3] &gt; 0)</span>
-<span class="linenos">106</span><span class="gi">+            torch._check(value.shape[0] &gt; 0)</span>
-<span class="linenos">107</span><span class="gi">+            torch._check(value.shape[1] &gt; 0)</span>
-<span class="linenos">108</span><span class="gi">+            torch._check(value.shape[2] &gt; 0)</span>
-<span class="linenos">109</span><span class="gi">+            torch._check(value.shape[3] &gt; 0)</span>
-<span class="linenos">110</span><span class="gi">+            return (</span>
-<span class="linenos">111</span><span class="gi">+                torch.nn.functional.scaled_dot_product_attention(</span>
-<span class="linenos">112</span><span class="gi">+                    query,</span>
-<span class="linenos">113</span><span class="gi">+                    key,</span>
-<span class="linenos">114</span><span class="gi">+                    value,</span>
-<span class="linenos">115</span><span class="gi">+                    attn_mask=attention_mask,</span>
-<span class="linenos">116</span><span class="gi">+                    dropout_p=dropout,</span>
-<span class="linenos">117</span><span class="gi">+                    scale=scaling,</span>
-<span class="linenos">118</span><span class="gi">+                    is_causal=is_causal,</span>
-<span class="linenos">119</span><span class="gi">+                    **sdpa_kwargs,</span>
-<span class="linenos">120</span><span class="gi">+                )</span>
-<span class="linenos">121</span><span class="gi">+                .transpose(1, 2)</span>
-<span class="linenos">122</span><span class="gi">+                .contiguous(),</span>
-<span class="linenos">123</span><span class="gi">+                None,</span>
-<span class="linenos">124</span><span class="gi">+            )</span>
-<span class="linenos">125</span><span class="gi">+    else:</span>
-<span class="linenos">126</span><span class="gi">+        # transformers&lt;4.55</span>
-<span class="linenos">127</span><span class="gi">+        if is_causal is None and attention_mask is not None:</span>
-<span class="linenos">128</span><span class="gi">+            is_causal = False</span>
-<span class="linenos">129</span><span class="gi">+        if is_causal is not None:</span>
-<span class="linenos">130</span><span class="gi">+            return (</span>
-<span class="linenos">131</span><span class="gi">+                torch.nn.functional.scaled_dot_product_attention(</span>
-<span class="linenos">132</span><span class="gi">+                    query,</span>
-<span class="linenos">133</span><span class="gi">+                    key,</span>
-<span class="linenos">134</span><span class="gi">+                    value,</span>
-<span class="linenos">135</span><span class="gi">+                    attn_mask=attention_mask,</span>
-<span class="linenos">136</span><span class="gi">+                    dropout_p=dropout,</span>
-<span class="linenos">137</span><span class="gi">+                    scale=scaling,</span>
-<span class="linenos">138</span><span class="gi">+                    is_causal=is_causal,</span>
-<span class="linenos">139</span><span class="gi">+                    **sdpa_kwargs,</span>
-<span class="linenos">140</span><span class="gi">+                )</span>
-<span class="linenos">141</span><span class="gi">+                .transpose(1, 2)</span>
-<span class="linenos">142</span><span class="gi">+                .contiguous(),</span>
-<span class="linenos">143</span><span class="gi">+                None,</span>
-<span class="linenos">144</span><span class="gi">+            )</span>
-<span class="linenos">145</span>
-<span class="linenos">146</span><span class="gd">-    attn_output = torch.nn.functional.scaled_dot_product_attention(</span>
-<span class="linenos">147</span><span class="gd">-        query,</span>
-<span class="linenos">148</span><span class="gd">-        key,</span>
-<span class="linenos">149</span><span class="gd">-        value,</span>
-<span class="linenos">150</span><span class="gd">-        attn_mask=attention_mask,</span>
-<span class="linenos">151</span><span class="gd">-        dropout_p=dropout,</span>
-<span class="linenos">152</span><span class="gd">-        scale=scaling,</span>
-<span class="linenos">153</span><span class="gd">-        is_causal=is_causal,</span>
-<span class="linenos">154</span><span class="gd">-        **sdpa_kwargs,</span>
+<span class="linenos"> 56</span><span class="gd">-    # Instead of relying on the value set in the module directly, we use the is_causal passed in kwargs if it is presented</span>
+<span class="linenos"> 57</span><span class="gd">-    is_causal = is_causal if is_causal is not None else getattr(module, &quot;is_causal&quot;, True)</span>
+<span class="linenos"> 58</span><span class="gi">+    if attention_mask is not None and attention_mask.ndim == 4:</span>
+<span class="linenos"> 59</span><span class="gi">+        attention_mask = attention_mask[:, :, :, : key.shape[-2]]</span>
+<span class="linenos"> 60</span>
+<span class="linenos"> 61</span><span class="gd">-    # SDPA&#39;s Flash Attention (and cuDNN) kernels rely on the `is_causal` flag. However, there are certain conditions:</span>
+<span class="linenos"> 62</span><span class="gd">-    # - Not in decoding phase (otherwise we want full attention on the single query token)</span>
+<span class="linenos"> 63</span><span class="gd">-    # - Attention mask is not to be provided (even if it is a causal pattern)</span>
+<span class="linenos"> 64</span><span class="gd">-    # - Internally, we marked this as compatible with causal, i.e. it is a decoder attention type</span>
+<span class="linenos"> 65</span><span class="gd">-    #</span>
+<span class="linenos"> 66</span><span class="gd">-    # Quirks on the conditionals:</span>
+<span class="linenos"> 67</span><span class="gd">-    # - We avoid inline passing this to the SDPA function directly to support both torch.compile&#39;s dynamic shapes and</span>
+<span class="linenos"> 68</span><span class="gd">-    #   full graph options. Otherwise, dynamic shapes are prevented from compiling.</span>
+<span class="linenos"> 69</span><span class="gd">-    # - It is important to check first for the shape, otherwise compile will fail with</span>
+<span class="linenos"> 70</span><span class="gd">-    #   `argument &#39;is_causal&#39; must be bool, not SymBool`.</span>
+<span class="linenos"> 71</span><span class="gd">-    is_causal = query.shape[2] &gt; 1 and attention_mask is None and is_causal</span>
+<span class="linenos"> 72</span><span class="gi">+    torch._check(</span>
+<span class="linenos"> 73</span><span class="gi">+        attention_mask is None or attention_mask.shape[3] == key.shape[2],</span>
+<span class="linenos"> 74</span><span class="gi">+        lambda: &quot;Attention mask shape incompatible with key shape.&quot;,</span>
+<span class="linenos"> 75</span><span class="gi">+    )</span>
+<span class="linenos"> 76</span>
+<span class="linenos"> 77</span><span class="gd">-    # Shapes (e.g. query.shape[2]) are tensors during jit tracing, resulting in `is_causal` being a tensor.</span>
+<span class="linenos"> 78</span><span class="gd">-    # We convert it to a bool for the SDPA kernel that only accepts bools.</span>
+<span class="linenos"> 79</span><span class="gd">-    if torch.jit.is_tracing() and isinstance(is_causal, torch.Tensor):</span>
+<span class="linenos"> 80</span><span class="gd">-        is_causal = is_causal.item()</span>
+<span class="linenos"> 81</span><span class="gi">+    if patch_sdpa_is_causal:</span>
+<span class="linenos"> 82</span><span class="gi">+        # transformers&gt;=4.55</span>
+<span class="linenos"> 83</span><span class="gi">+        is_causal = is_causal if is_causal is not None else getattr(module, &quot;is_causal&quot;, True)</span>
+<span class="linenos"> 84</span>
+<span class="linenos"> 85</span><span class="gd">-    # When `is_causal = False` and the `attention_mask` is not of boolean type, the Ascend NPU&#39;s SDPA interface cannot utilize the FlashAttentionScore operator，</span>
+<span class="linenos"> 86</span><span class="gd">-    # and falls back to small-operator concatenation. To invoke the FlashAttentionScore, the attention_mask must be converted to boolean type.</span>
+<span class="linenos"> 87</span><span class="gd">-    # This adaptation ensures the `attention_mask` meets the requirement for using FlashAttentionScore.</span>
+<span class="linenos"> 88</span><span class="gd">-    if _is_torch_npu_available:</span>
+<span class="linenos"> 89</span><span class="gd">-        if attention_mask is not None and attention_mask.dtype != torch.bool:</span>
+<span class="linenos"> 90</span><span class="gd">-            # Convert to boolean type, making sdpa to force call FlashAttentionScore to improve performance.</span>
+<span class="linenos"> 91</span><span class="gd">-            attention_mask = torch.logical_not(attention_mask.bool()).to(query.device)</span>
+<span class="linenos"> 92</span><span class="gi">+        # PATCHED: remove the test query.shape[2] &gt; 1</span>
+<span class="linenos"> 93</span><span class="gi">+        # is_causal = query.shape[2] &gt; 1 and attention_mask is None and is_causal</span>
+<span class="linenos"> 94</span><span class="gi">+        # and we split the test to keep the minimum in torch.cond</span>
+<span class="linenos"> 95</span><span class="gi">+        is_causal = attention_mask is None and is_causal</span>
+<span class="linenos"> 96</span>
+<span class="linenos"> 97</span><span class="gd">-    attn_output = torch.nn.functional.scaled_dot_product_attention(</span>
+<span class="linenos"> 98</span><span class="gd">-        query,</span>
+<span class="linenos"> 99</span><span class="gd">-        key,</span>
+<span class="linenos">100</span><span class="gd">-        value,</span>
+<span class="linenos">101</span><span class="gd">-        attn_mask=attention_mask,</span>
+<span class="linenos">102</span><span class="gd">-        dropout_p=dropout,</span>
+<span class="linenos">103</span><span class="gd">-        scale=scaling,</span>
+<span class="linenos">104</span><span class="gd">-        is_causal=is_causal,</span>
+<span class="linenos">105</span><span class="gd">-        **sdpa_kwargs,</span>
+<span class="linenos">106</span><span class="gi">+        if not is_causal:</span>
+<span class="linenos">107</span><span class="gi">+            torch._check(query.shape[0] &gt; 0)</span>
+<span class="linenos">108</span><span class="gi">+            torch._check(query.shape[1] &gt; 0)</span>
+<span class="linenos">109</span><span class="gi">+            torch._check(query.shape[2] &gt; 0)</span>
+<span class="linenos">110</span><span class="gi">+            torch._check(query.shape[3] &gt; 0)</span>
+<span class="linenos">111</span><span class="gi">+            torch._check(key.shape[0] &gt; 0)</span>
+<span class="linenos">112</span><span class="gi">+            torch._check(key.shape[1] &gt; 0)</span>
+<span class="linenos">113</span><span class="gi">+            torch._check(key.shape[2] &gt; 0)</span>
+<span class="linenos">114</span><span class="gi">+            torch._check(key.shape[3] &gt; 0)</span>
+<span class="linenos">115</span><span class="gi">+            torch._check(value.shape[0] &gt; 0)</span>
+<span class="linenos">116</span><span class="gi">+            torch._check(value.shape[1] &gt; 0)</span>
+<span class="linenos">117</span><span class="gi">+            torch._check(value.shape[2] &gt; 0)</span>
+<span class="linenos">118</span><span class="gi">+            torch._check(value.shape[3] &gt; 0)</span>
+<span class="linenos">119</span><span class="gi">+            return (</span>
+<span class="linenos">120</span><span class="gi">+                torch.nn.functional.scaled_dot_product_attention(</span>
+<span class="linenos">121</span><span class="gi">+                    query,</span>
+<span class="linenos">122</span><span class="gi">+                    key,</span>
+<span class="linenos">123</span><span class="gi">+                    value,</span>
+<span class="linenos">124</span><span class="gi">+                    attn_mask=attention_mask,</span>
+<span class="linenos">125</span><span class="gi">+                    dropout_p=dropout,</span>
+<span class="linenos">126</span><span class="gi">+                    scale=scaling,</span>
+<span class="linenos">127</span><span class="gi">+                    is_causal=is_causal,</span>
+<span class="linenos">128</span><span class="gi">+                    **sdpa_kwargs,</span>
+<span class="linenos">129</span><span class="gi">+                )</span>
+<span class="linenos">130</span><span class="gi">+                .transpose(1, 2)</span>
+<span class="linenos">131</span><span class="gi">+                .contiguous(),</span>
+<span class="linenos">132</span><span class="gi">+                None,</span>
+<span class="linenos">133</span><span class="gi">+            )</span>
+<span class="linenos">134</span><span class="gi">+    else:</span>
+<span class="linenos">135</span><span class="gi">+        # transformers&lt;4.55</span>
+<span class="linenos">136</span><span class="gi">+        if is_causal is None and attention_mask is not None:</span>
+<span class="linenos">137</span><span class="gi">+            is_causal = False</span>
+<span class="linenos">138</span><span class="gi">+        if is_causal is not None:</span>
+<span class="linenos">139</span><span class="gi">+            return (</span>
+<span class="linenos">140</span><span class="gi">+                torch.nn.functional.scaled_dot_product_attention(</span>
+<span class="linenos">141</span><span class="gi">+                    query,</span>
+<span class="linenos">142</span><span class="gi">+                    key,</span>
+<span class="linenos">143</span><span class="gi">+                    value,</span>
+<span class="linenos">144</span><span class="gi">+                    attn_mask=attention_mask,</span>
+<span class="linenos">145</span><span class="gi">+                    dropout_p=dropout,</span>
+<span class="linenos">146</span><span class="gi">+                    scale=scaling,</span>
+<span class="linenos">147</span><span class="gi">+                    is_causal=is_causal,</span>
+<span class="linenos">148</span><span class="gi">+                    **sdpa_kwargs,</span>
+<span class="linenos">149</span><span class="gi">+                )</span>
+<span class="linenos">150</span><span class="gi">+                .transpose(1, 2)</span>
+<span class="linenos">151</span><span class="gi">+                .contiguous(),</span>
+<span class="linenos">152</span><span class="gi">+                None,</span>
+<span class="linenos">153</span><span class="gi">+            )</span>
+<span class="linenos">154</span><span class="gi">+</span>
 <span class="linenos">155</span><span class="gi">+    # To avoid the following errors:</span>
 <span class="linenos">156</span><span class="gi">+    # is_causal=query.shape[2] &gt; 1</span>
 <span class="linenos">157</span><span class="gi">+    # TypeError: scaled_dot_product_attention(): argument &#39;is_causal&#39; must be bool, not SymBool</span>
@@ -4803,15 +4824,15 @@ pytorch versions.</p>
 <h2>auto/patch_transformers: Qwen3MoeSparseMoeBlock.forward -&gt; patched_Qwen3MoeSparseMoeBlock.forward<a class="headerlink" href="#auto-patch-transformers-qwen3moesparsemoeblock-forward-patched-qwen3moesparsemoeblock-forward" title="Link to this heading">¶</a></h2>
 <div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gd">--- original</span>
 <span class="linenos"> 2</span><span class="gi">+++ rewritten</span>
-<span class="linenos"> 3</span><span class="gu">@@ -1,9 +1,67 @@</span>
+<span class="linenos"> 3</span><span class="gu">@@ -1,6 +1,67 @@</span>
 <span class="linenos"> 4</span><span class="gd">-def forward(self, hidden_states: torch.Tensor) -&gt; tuple[torch.Tensor, torch.Tensor]:</span>
 <span class="linenos"> 5</span><span class="gi">+def forward(self, hidden_states: torch.Tensor) -&gt; torch.Tensor:</span>
 <span class="linenos"> 6</span><span class="gi">+    &quot;&quot;&quot; &quot;&quot;&quot;</span>
 <span class="linenos"> 7</span><span class="w"> </span>    batch_size, sequence_length, hidden_dim = hidden_states.shape
 <span class="linenos"> 8</span><span class="gd">-    hidden_states_reshaped = hidden_states.view(-1, hidden_dim)</span>
-<span class="linenos"> 9</span><span class="gd">-    router_logits = self.gate(hidden_states_reshaped)</span>
-<span class="linenos">10</span><span class="gd">-    selected_experts, routing_weights = self.route_tokens_to_experts(</span>
-<span class="linenos">11</span><span class="gd">-        hidden_states_reshaped, router_logits</span>
+<span class="linenos"> 9</span><span class="gd">-    routing_weights, selected_experts = self.router(hidden_states_reshaped)</span>
+<span class="linenos">10</span><span class="gd">-    final_hidden_states = self.experts(hidden_states_reshaped, selected_experts, routing_weights)</span>
+<span class="linenos">11</span><span class="gd">-    return final_hidden_states.reshape(batch_size, sequence_length, hidden_dim)</span>
 <span class="linenos">12</span><span class="gi">+    hidden_states = hidden_states.view(-1, hidden_dim)</span>
 <span class="linenos">13</span><span class="gi">+    # router_logits: (batch * sequence_length, n_experts)</span>
 <span class="linenos">14</span><span class="gi">+    router_logits = self.gate(hidden_states)</span>
@@ -4827,57 +4848,55 @@ pytorch versions.</p>
 <span class="linenos">24</span><span class="gi">+        (batch_size * sequence_length, hidden_dim),</span>
 <span class="linenos">25</span><span class="gi">+        dtype=hidden_states.dtype,</span>
 <span class="linenos">26</span><span class="gi">+        device=hidden_states.device,</span>
-<span class="linenos">27</span><span class="w"> </span>    )
-<span class="linenos">28</span><span class="gd">-    final_hidden_states = self.experts(hidden_states_reshaped, selected_experts, routing_weights)</span>
-<span class="linenos">29</span><span class="gd">-    return final_hidden_states.reshape(batch_size, sequence_length, hidden_dim)</span>
-<span class="linenos">30</span><span class="gi">+</span>
-<span class="linenos">31</span><span class="gi">+    # One hot encode the selected experts to create an expert mask</span>
-<span class="linenos">32</span><span class="gi">+    # this will be used to easily index which expert is going to be sollicitated</span>
-<span class="linenos">33</span><span class="gi">+    expert_mask = torch.nn.functional.one_hot(</span>
-<span class="linenos">34</span><span class="gi">+        selected_experts, num_classes=self.num_experts</span>
-<span class="linenos">35</span><span class="gi">+    ).permute(2, 1, 0)</span>
-<span class="linenos">36</span><span class="gi">+</span>
-<span class="linenos">37</span><span class="gi">+    # Loop over all available experts in the model</span>
-<span class="linenos">38</span><span class="gi">+    # and perform the computation on each expert</span>
-<span class="linenos">39</span><span class="gi">+    expert_sum = expert_mask.sum(dim=(-1, -2))</span>
-<span class="linenos">40</span><span class="gi">+    # expert_hit = torch.greater(expert_sum, 0).nonzero()</span>
-<span class="linenos">41</span><span class="gi">+    # for expert_idx in expert_hit:</span>
-<span class="linenos">42</span><span class="gi">+    for expert_idx in range(self.num_experts):</span>
-<span class="linenos">43</span><span class="gi">+        # initial code has a squeeze but it is not possible to do that.</span>
-<span class="linenos">44</span><span class="gi">+        # expert_mask_idx = expert_mask[expert_idx].squeeze(0)</span>
-<span class="linenos">45</span><span class="gi">+        expert_mask_idx = expert_mask[expert_idx]</span>
-<span class="linenos">46</span><span class="gi">+        final_hidden_states = torch.cond(</span>
-<span class="linenos">47</span><span class="gi">+            (expert_sum[expert_idx] &gt; 0).item(),</span>
-<span class="linenos">48</span><span class="gi">+            lambda final_hidden_states, expert_mask, hidden_states, routing_weights, _i=expert_idx: self._forward_expert_loop(  # noqa: E501</span>
-<span class="linenos">49</span><span class="gi">+                final_hidden_states,</span>
-<span class="linenos">50</span><span class="gi">+                expert_mask,</span>
-<span class="linenos">51</span><span class="gi">+                hidden_states,</span>
-<span class="linenos">52</span><span class="gi">+                routing_weights,</span>
-<span class="linenos">53</span><span class="gi">+                expert_idx=_i,</span>
-<span class="linenos">54</span><span class="gi">+            ),</span>
-<span class="linenos">55</span><span class="gi">+            lambda final_hidden_states, *args: final_hidden_states.clone(),</span>
-<span class="linenos">56</span><span class="gi">+            [final_hidden_states, expert_mask_idx, hidden_states, routing_weights],</span>
-<span class="linenos">57</span><span class="gi">+        )</span>
-<span class="linenos">58</span><span class="gi">+</span>
-<span class="linenos">59</span><span class="gi">+        # if expert_sum[expert_idx] &gt; 0:</span>
-<span class="linenos">60</span><span class="gi">+        #    idx, top_x = torch.where(expert_mask[expert_idx].squeeze(0))</span>
-<span class="linenos">61</span><span class="gi">+</span>
-<span class="linenos">62</span><span class="gi">+        # Index the correct hidden states and compute the expert hidden state for</span>
-<span class="linenos">63</span><span class="gi">+        # the current expert. We need to make sure to multiply the output hidden</span>
-<span class="linenos">64</span><span class="gi">+        # states by `routing_weights` on the corresponding tokens (top-1 and top-2)</span>
-<span class="linenos">65</span><span class="gi">+        #    current_state = hidden_states[None, top_x].reshape(-1, hidden_dim)</span>
-<span class="linenos">66</span><span class="gi">+        #    current_hidden_states = (</span>
-<span class="linenos">67</span><span class="gi">+        #        expert_layer(current_state) * routing_weights[top_x, idx, None]</span>
-<span class="linenos">68</span><span class="gi">+        #    )</span>
-<span class="linenos">69</span><span class="gi">+</span>
-<span class="linenos">70</span><span class="gi">+        # However `index_add_` only support torch tensors for indexing so we&#39;ll use</span>
-<span class="linenos">71</span><span class="gi">+        # the `top_x` tensor here.</span>
-<span class="linenos">72</span><span class="gi">+        #    final_hidden_states.index_add_(</span>
-<span class="linenos">73</span><span class="gi">+        #        0, top_x, current_hidden_states.to(hidden_states.dtype)</span>
-<span class="linenos">74</span><span class="gi">+        #    )</span>
-<span class="linenos">75</span><span class="gi">+</span>
-<span class="linenos">76</span><span class="gi">+    final_hidden_states = final_hidden_states.reshape(batch_size, sequence_length, hidden_dim)</span>
-<span class="linenos">77</span><span class="gi">+    return final_hidden_states, router_logits</span>
+<span class="linenos">27</span><span class="gi">+    )</span>
+<span class="linenos">28</span><span class="gi">+</span>
+<span class="linenos">29</span><span class="gi">+    # One hot encode the selected experts to create an expert mask</span>
+<span class="linenos">30</span><span class="gi">+    # this will be used to easily index which expert is going to be sollicitated</span>
+<span class="linenos">31</span><span class="gi">+    expert_mask = torch.nn.functional.one_hot(</span>
+<span class="linenos">32</span><span class="gi">+        selected_experts, num_classes=self.num_experts</span>
+<span class="linenos">33</span><span class="gi">+    ).permute(2, 1, 0)</span>
+<span class="linenos">34</span><span class="gi">+</span>
+<span class="linenos">35</span><span class="gi">+    # Loop over all available experts in the model</span>
+<span class="linenos">36</span><span class="gi">+    # and perform the computation on each expert</span>
+<span class="linenos">37</span><span class="gi">+    expert_sum = expert_mask.sum(dim=(-1, -2))</span>
+<span class="linenos">38</span><span class="gi">+    # expert_hit = torch.greater(expert_sum, 0).nonzero()</span>
+<span class="linenos">39</span><span class="gi">+    # for expert_idx in expert_hit:</span>
+<span class="linenos">40</span><span class="gi">+    for expert_idx in range(self.num_experts):</span>
+<span class="linenos">41</span><span class="gi">+        # initial code has a squeeze but it is not possible to do that.</span>
+<span class="linenos">42</span><span class="gi">+        # expert_mask_idx = expert_mask[expert_idx].squeeze(0)</span>
+<span class="linenos">43</span><span class="gi">+        expert_mask_idx = expert_mask[expert_idx]</span>
+<span class="linenos">44</span><span class="gi">+        final_hidden_states = torch.cond(</span>
+<span class="linenos">45</span><span class="gi">+            (expert_sum[expert_idx] &gt; 0).item(),</span>
+<span class="linenos">46</span><span class="gi">+            lambda final_hidden_states, expert_mask, hidden_states, routing_weights, _i=expert_idx: self._forward_expert_loop(  # noqa: E501</span>
+<span class="linenos">47</span><span class="gi">+                final_hidden_states,</span>
+<span class="linenos">48</span><span class="gi">+                expert_mask,</span>
+<span class="linenos">49</span><span class="gi">+                hidden_states,</span>
+<span class="linenos">50</span><span class="gi">+                routing_weights,</span>
+<span class="linenos">51</span><span class="gi">+                expert_idx=_i,</span>
+<span class="linenos">52</span><span class="gi">+            ),</span>
+<span class="linenos">53</span><span class="gi">+            lambda final_hidden_states, *args: final_hidden_states.clone(),</span>
+<span class="linenos">54</span><span class="gi">+            [final_hidden_states, expert_mask_idx, hidden_states, routing_weights],</span>
+<span class="linenos">55</span><span class="gi">+        )</span>
+<span class="linenos">56</span><span class="gi">+</span>
+<span class="linenos">57</span><span class="gi">+        # if expert_sum[expert_idx] &gt; 0:</span>
+<span class="linenos">58</span><span class="gi">+        #    idx, top_x = torch.where(expert_mask[expert_idx].squeeze(0))</span>
+<span class="linenos">59</span><span class="gi">+</span>
+<span class="linenos">60</span><span class="gi">+        # Index the correct hidden states and compute the expert hidden state for</span>
+<span class="linenos">61</span><span class="gi">+        # the current expert. We need to make sure to multiply the output hidden</span>
+<span class="linenos">62</span><span class="gi">+        # states by `routing_weights` on the corresponding tokens (top-1 and top-2)</span>
+<span class="linenos">63</span><span class="gi">+        #    current_state = hidden_states[None, top_x].reshape(-1, hidden_dim)</span>
+<span class="linenos">64</span><span class="gi">+        #    current_hidden_states = (</span>
+<span class="linenos">65</span><span class="gi">+        #        expert_layer(current_state) * routing_weights[top_x, idx, None]</span>
+<span class="linenos">66</span><span class="gi">+        #    )</span>
+<span class="linenos">67</span><span class="gi">+</span>
+<span class="linenos">68</span><span class="gi">+        # However `index_add_` only support torch tensors for indexing so we&#39;ll use</span>
+<span class="linenos">69</span><span class="gi">+        # the `top_x` tensor here.</span>
+<span class="linenos">70</span><span class="gi">+        #    final_hidden_states.index_add_(</span>
+<span class="linenos">71</span><span class="gi">+        #        0, top_x, current_hidden_states.to(hidden_states.dtype)</span>
+<span class="linenos">72</span><span class="gi">+        #    )</span>
+<span class="linenos">73</span><span class="gi">+</span>
+<span class="linenos">74</span><span class="gi">+    final_hidden_states = final_hidden_states.reshape(batch_size, sequence_length, hidden_dim)</span>
+<span class="linenos">75</span><span class="gi">+    return final_hidden_states, router_logits</span>
 </pre></div>
 </div>
 </section>
