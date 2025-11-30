@@ -550,6 +550,86 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reduce.</span></span><span class="sig-name descname"><span class="pre">ReduceSumNormalizePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceSumNormalizePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Nodes equivalent to a reduction.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-f05c82d8d5905004427194ed92cf6ee5ab2a9455.png" alt="digraph{
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+  ranksep=0.25;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
+  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
+
+
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=-1&quot; fontsize=10];
+  Constant -&gt; axis;
+
+  xc [shape=box label=&quot;xc&quot; fontsize=10];
+  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=1&quot; fontsize=10];
+  X -&gt; Cast;
+  Cast -&gt; xc;
+
+  red [shape=box label=&quot;red&quot; fontsize=10];
+  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1&quot; fontsize=10];
+  xc -&gt; ReduceSum;
+  axis -&gt; ReduceSum;
+  ReduceSum -&gt; red;
+
+  mul [shape=box label=&quot;mul&quot; fontsize=10];
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  red -&gt; Mul;
+  Y -&gt; Mul;
+  Mul -&gt; mul;
+
+  subc [shape=box label=&quot;subc&quot; fontsize=10];
+  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
+  xc -&gt; Sub;
+  mul -&gt; Sub;
+  Sub -&gt; subc;
+
+  Cast1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
+  subc -&gt; Cast1;
+  Cast1 -&gt; Z;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3b7c51a510b31b175a89d536a5aed8e6cea1ca10.png" alt="digraph{
+  nodesep=0.05;
+  size=7;
+  orientation=portrait;
+  ranksep=0.25;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
+  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT16\nshape=['a', 'b']&quot; fontsize=10];
+
+
+  ReduceSumNormalizePattern_red [shape=box label=&quot;ReduceSumNormalizePattern_red&quot; fontsize=10];
+  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\nkeepdims=1&quot; fontsize=10];
+  X -&gt; ReduceSum;
+  axis -&gt; ReduceSum;
+  ReduceSum -&gt; ReduceSumNormalizePattern_red;
+
+  ReduceSumNormalizePattern_Y [shape=box label=&quot;ReduceSumNormalizePattern_Y&quot; fontsize=10];
+  Cast [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Cast\nto=10&quot; fontsize=10];
+  Y -&gt; Cast;
+  Cast -&gt; ReduceSumNormalizePattern_Y;
+
+  ReduceSumNormalizePattern_mul [shape=box label=&quot;ReduceSumNormalizePattern_mul&quot; fontsize=10];
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  ReduceSumNormalizePattern_red -&gt; Mul;
+  ReduceSumNormalizePattern_Y -&gt; Mul;
+  Mul -&gt; ReduceSumNormalizePattern_mul;
+
+  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
+  X -&gt; Sub;
+  ReduceSumNormalizePattern_mul -&gt; Sub;
+  Sub -&gt; Z;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mul_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast2_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reduce.html#ReduceSumNormalizePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reduce.ReduceSumNormalizePattern.apply" title="Link to this definition">¶</a></dt>

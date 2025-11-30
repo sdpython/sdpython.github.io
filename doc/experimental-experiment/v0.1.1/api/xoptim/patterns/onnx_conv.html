@@ -550,6 +550,34 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_conv.ConvBiasNullPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_conv.</span></span><span class="sig-name descname"><span class="pre">ConvBiasNullPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_conv.html#ConvBiasNullPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_conv.ConvBiasNullPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Conv has a null bias.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-36ef57391bb4119a0dbe2be4330c14a75c60e79d.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_133531228620896 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_133531228620736 [label=&quot;W&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  i_133531228621056 [label=&quot;B2&quot;, fillcolor=&quot;#cccc00&quot;];
+  Conv_133531228620976 [label=&quot;Conv(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_133531228620896 -&gt; Conv_133531228620976;
+  I_133531228620736 -&gt; Conv_133531228620976;
+  i_133531228621056 -&gt; Conv_133531228620976;
+  O_133531228620816 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Conv_133531228620976 -&gt; O_133531228620816;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-37b312685d6525f97a6ff889002b75ae0de971ba.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_131078350079936 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_131078350079776 [label=&quot;W&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Conv_131078350080016 [label=&quot;Conv(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_131078350079936 -&gt; Conv_131078350080016;
+  I_131078350079776 -&gt; Conv_131078350080016;
+  O_131078350079856 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Conv_131078350080016 -&gt; O_131078350079856;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_conv.ConvBiasNullPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_conv.html#ConvBiasNullPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_conv.ConvBiasNullPattern.apply" title="Link to this definition">¶</a></dt>

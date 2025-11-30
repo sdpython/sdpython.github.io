@@ -10,7 +10,7 @@
         <title>.gradient.loss_helper - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -595,290 +595,160 @@ columns, the sum on every line is 1.</p>
 </li>
 </ul>
 <p>Next example shows the loss with L1 and L2 loss.</p>
-<div class="graphviz"><img src="../../_images/graphviz-9f007d51401e6013f4a7bf07d098a38589954268.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
-  label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
-  weight [shape=box color=red label=&quot;weight\nTensorProto.FLOAT\nshape=['']&quot; fontsize=10];
-
-  loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
-  variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
-
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47477  ]\n [ 1.4251413]\n [34.210396 ]\n [61.477...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999924]&quot; fontsize=10];
-  l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.1]&quot; fontsize=10];
-  l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.9]&quot; fontsize=10];
-  shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
-
-  multiplied [shape=box label=&quot;multiplied&quot; fontsize=10];
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  coef -&gt; MatMul;
-  MatMul -&gt; multiplied;
-
-  resh [shape=box label=&quot;resh&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  multiplied -&gt; Add;
-  intercept -&gt; Add;
-  Add -&gt; resh;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  resh -&gt; Reshape;
-  shape_tensor -&gt; Reshape;
-  Reshape -&gt; variable;
-
-  loss_diff [shape=box label=&quot;loss_diff&quot; fontsize=10];
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  variable -&gt; Sub;
-  label -&gt; Sub;
-  Sub -&gt; loss_diff;
-
-  loss_l2 [shape=box label=&quot;loss_l2&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  loss_diff -&gt; Mul;
-  loss_diff -&gt; Mul;
-  Mul -&gt; loss_l2;
-
-  loss_l1 [shape=box label=&quot;loss_l1&quot; fontsize=10];
-  Abs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
-  loss_diff -&gt; Abs;
-  Abs -&gt; loss_l1;
-
-  loss_l1_2 [shape=box label=&quot;loss_l1_2&quot; fontsize=10];
-  Mul1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  loss_l1 -&gt; Mul1;
-  l1_name -&gt; Mul1;
-  Mul1 -&gt; loss_l1_2;
-
-  loss_l2_2 [shape=box label=&quot;loss_l2_2&quot; fontsize=10];
-  Mul12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  loss_l2 -&gt; Mul12;
-  l2_name -&gt; Mul12;
-  Mul12 -&gt; loss_l2_2;
-
-  final_loss [shape=box label=&quot;final_loss&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  loss_l1_2 -&gt; Add;
-  loss_l2_2 -&gt; Add;
-  Add -&gt; final_loss;
-
-  loss_diff_weight [shape=box label=&quot;loss_diff_weight&quot; fontsize=10];
-  Mul123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  final_loss -&gt; Mul123;
-  weight -&gt; Mul123;
-  Mul123 -&gt; loss_diff_weight;
-
-  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
-  loss_diff_weight -&gt; ReduceSum;
-  ReduceSum -&gt; loss;
+<div class="graphviz"><img src="../../_images/graphviz-c3a2f9b5f126b9960a11bd9782e2005bcf7d8b62.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_127174439125296 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_127174439244704 [label=&quot;label&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_127174439244144 [label=&quot;weight&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  i_127174404563456 [label=&quot;coef&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563536 [label=&quot;intercept&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563856 [label=&quot;l1_name&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404564016 [label=&quot;l2_name&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563616 [label=&quot;shape_tensor&quot;, fillcolor=&quot;#cccc00&quot;];
+  MatMul_127174439244864 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174439244304 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_127174439244944 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_127174439245024 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563776 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Abs_127174404563696 [label=&quot;Abs(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563936 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404564096 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404563296 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563216 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_127174404563376 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_127174439125296 -&gt; MatMul_127174439244864;
+  i_127174404563456 -&gt; MatMul_127174439244864;
+  MatMul_127174439244864 -&gt; Add_127174439244304 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404563536 -&gt; Add_127174439244304;
+  Add_127174439244304 -&gt; Reshape_127174439244944 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404563616 -&gt; Reshape_127174439244944;
+  Reshape_127174439244944 -&gt; Sub_127174439245024;
+  I_127174439244704 -&gt; Sub_127174439245024;
+  Sub_127174439245024 -&gt; Mul_127174404563776 [label=&quot;FLOAT(?,1)&quot;];
+  Sub_127174439245024 -&gt; Abs_127174404563696 [label=&quot;FLOAT(?,1)&quot;];
+  Abs_127174404563696 -&gt; Mul_127174404563936 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404563856 -&gt; Mul_127174404563936;
+  Mul_127174404563776 -&gt; Mul_127174404564096 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404564016 -&gt; Mul_127174404564096;
+  Mul_127174404563936 -&gt; Add_127174404563296 [label=&quot;FLOAT(?,1)&quot;];
+  Mul_127174404564096 -&gt; Add_127174404563296 [label=&quot;FLOAT(?,1)&quot;];
+  Add_127174404563296 -&gt; Mul_127174404563216 [label=&quot;FLOAT(?,1)&quot;];
+  I_127174439244144 -&gt; Mul_127174404563216;
+  Mul_127174404563216 -&gt; ReduceSum_127174404563376 [label=&quot;FLOAT(?,?)&quot;];
+  O_127174439244464 [label=&quot;loss&quot;, fillcolor=&quot;#aaaaee&quot;];
+  ReduceSum_127174404563376 -&gt; O_127174439244464;
+  O_127174439244624 [label=&quot;variable&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_127174439244944 -&gt; O_127174439244624;
 }" class="graphviz" /></div>
 <p>Next example shows how to add a L2 loss with L1 and L2 penalties
 on the coefficients.</p>
-<div class="graphviz"><img src="../../_images/graphviz-49a32f19f2ab469e3ab2a9aa86ce256f96927c08.png" alt="digraph{
-  ranksep=0.25;
-  nodesep=0.05;
-  size=7;
-  orientation=portrait;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
-  label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
-  weight [shape=box color=red label=&quot;weight\nTensorProto.FLOAT\nshape=['']&quot; fontsize=10];
-
-  loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
-  variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
-
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47474  ]\n [ 1.4251785]\n [34.210358 ]\n [61.476...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000095]&quot; fontsize=10];
-  l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
-  l1_weight_coef [shape=box label=&quot;l1_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
-  l1_weight_intercept [shape=box label=&quot;l1_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];
-  l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
-  l2_weight_coef [shape=box label=&quot;l2_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
-  l2_weight_intercept [shape=box label=&quot;l2_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];
-  shape_coef [shape=box label=&quot;shape_coef\nint64((1,))\n[-1]&quot; fontsize=10];
-  shape_intercept [shape=box label=&quot;shape_intercept\nint64((1,))\n[-1]&quot; fontsize=10];
-  shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
-  shapevect [shape=box label=&quot;shapevect\nint64((2,))\n[-1  1]&quot; fontsize=10];
-
-  multiplied [shape=box label=&quot;multiplied&quot; fontsize=10];
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  coef -&gt; MatMul;
-  MatMul -&gt; multiplied;
-
-  resh [shape=box label=&quot;resh&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  multiplied -&gt; Add;
-  intercept -&gt; Add;
-  Add -&gt; resh;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  resh -&gt; Reshape;
-  shape_tensor -&gt; Reshape;
-  Reshape -&gt; variable;
-
-  loss_diff [shape=box label=&quot;loss_diff&quot; fontsize=10];
-  Sub [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Sub&quot; fontsize=10];
-  variable -&gt; Sub;
-  label -&gt; Sub;
-  Sub -&gt; loss_diff;
-
-  loss_l2 [shape=box label=&quot;loss_l2&quot; fontsize=10];
-  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  loss_diff -&gt; Mul;
-  loss_diff -&gt; Mul;
-  Mul -&gt; loss_l2;
-
-  loss_l1 [shape=box label=&quot;loss_l1&quot; fontsize=10];
-  Abs [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
-  loss_diff -&gt; Abs;
-  Abs -&gt; loss_l1;
-
-  loss_l1_2 [shape=box label=&quot;loss_l1_2&quot; fontsize=10];
-  Mul1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  loss_l1 -&gt; Mul1;
-  l1_name -&gt; Mul1;
-  Mul1 -&gt; loss_l1_2;
-
-  loss_l2_2 [shape=box label=&quot;loss_l2_2&quot; fontsize=10];
-  Mul12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  loss_l2 -&gt; Mul12;
-  l2_name -&gt; Mul12;
-  Mul12 -&gt; loss_l2_2;
-
-  final_loss [shape=box label=&quot;final_loss&quot; fontsize=10];
-  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  loss_l1_2 -&gt; Add;
-  loss_l2_2 -&gt; Add;
-  Add -&gt; final_loss;
-
-  loss_diff_weight [shape=box label=&quot;loss_diff_weight&quot; fontsize=10];
-  Mul123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  final_loss -&gt; Mul123;
-  weight -&gt; Mul123;
-  Mul123 -&gt; loss_diff_weight;
-
-  loss_diff_2 [shape=box label=&quot;loss_diff_2&quot; fontsize=10];
-  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
-  loss_diff_weight -&gt; ReduceSum;
-  ReduceSum -&gt; loss_diff_2;
-
-  reshaped_coef [shape=box label=&quot;reshaped_coef&quot; fontsize=10];
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  coef -&gt; Reshape;
-  shape_coef -&gt; Reshape;
-  Reshape -&gt; reshaped_coef;
-
-  reducedm_coef [shape=box label=&quot;reducedm_coef&quot; fontsize=10];
-  Mul1234 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  reshaped_coef -&gt; Mul1234;
-  reshaped_coef -&gt; Mul1234;
-  Mul1234 -&gt; reducedm_coef;
-
-  reduced2_coef [shape=box label=&quot;reduced2_coef&quot; fontsize=10];
-  ReduceSum1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
-  reducedm_coef -&gt; ReduceSum1;
-  ReduceSum1 -&gt; reduced2_coef;
-
-  penalty2_coef [shape=box label=&quot;penalty2_coef&quot; fontsize=10];
-  Mul12345 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  reduced2_coef -&gt; Mul12345;
-  l2_weight_coef -&gt; Mul12345;
-  Mul12345 -&gt; penalty2_coef;
-
-  absolute_coef [shape=box label=&quot;absolute_coef&quot; fontsize=10];
-  Abs1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
-  reshaped_coef -&gt; Abs1;
-  Abs1 -&gt; absolute_coef;
-
-  reduced1_coef [shape=box label=&quot;reduced1_coef&quot; fontsize=10];
-  ReduceSum12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
-  absolute_coef -&gt; ReduceSum12;
-  ReduceSum12 -&gt; reduced1_coef;
-
-  penalty1_coef [shape=box label=&quot;penalty1_coef&quot; fontsize=10];
-  Mul123456 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  reduced1_coef -&gt; Mul123456;
-  l1_weight_coef -&gt; Mul123456;
-  Mul123456 -&gt; penalty1_coef;
-
-  penalty_coef [shape=box label=&quot;penalty_coef&quot; fontsize=10];
-  Add1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  penalty1_coef -&gt; Add1;
-  penalty2_coef -&gt; Add1;
-  Add1 -&gt; penalty_coef;
-
-  reshaped_intercept [shape=box label=&quot;reshaped_intercept&quot; fontsize=10];
-  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  intercept -&gt; Reshape1;
-  shape_intercept -&gt; Reshape1;
-  Reshape1 -&gt; reshaped_intercept;
-
-  reducedm_intercept [shape=box label=&quot;reducedm_intercept&quot; fontsize=10];
-  Mul1234567 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  reshaped_intercept -&gt; Mul1234567;
-  reshaped_intercept -&gt; Mul1234567;
-  Mul1234567 -&gt; reducedm_intercept;
-
-  reduced2_intercept [shape=box label=&quot;reduced2_intercept&quot; fontsize=10];
-  ReduceSum123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
-  reducedm_intercept -&gt; ReduceSum123;
-  ReduceSum123 -&gt; reduced2_intercept;
-
-  penalty2_intercept [shape=box label=&quot;penalty2_intercept&quot; fontsize=10];
-  Mul12345678 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  reduced2_intercept -&gt; Mul12345678;
-  l2_weight_intercept -&gt; Mul12345678;
-  Mul12345678 -&gt; penalty2_intercept;
-
-  absolute_intercept [shape=box label=&quot;absolute_intercept&quot; fontsize=10];
-  Abs12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Abs&quot; fontsize=10];
-  reshaped_intercept -&gt; Abs12;
-  Abs12 -&gt; absolute_intercept;
-
-  reduced1_intercept [shape=box label=&quot;reduced1_intercept&quot; fontsize=10];
-  ReduceSum1234 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum&quot; fontsize=10];
-  absolute_intercept -&gt; ReduceSum1234;
-  ReduceSum1234 -&gt; reduced1_intercept;
-
-  penalty1_intercept [shape=box label=&quot;penalty1_intercept&quot; fontsize=10];
-  Mul123456789 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
-  reduced1_intercept -&gt; Mul123456789;
-  l1_weight_intercept -&gt; Mul123456789;
-  Mul123456789 -&gt; penalty1_intercept;
-
-  penalty_intercept [shape=box label=&quot;penalty_intercept&quot; fontsize=10];
-  Add12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  penalty1_intercept -&gt; Add12;
-  penalty2_intercept -&gt; Add12;
-  Add12 -&gt; penalty_intercept;
-
-  sumop [shape=box label=&quot;sumop&quot; fontsize=10];
-  Add123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  penalty_coef -&gt; Add123;
-  penalty_intercept -&gt; Add123;
-  Add123 -&gt; sumop;
-
-  penalty_reshape [shape=box label=&quot;penalty_reshape&quot; fontsize=10];
-  Reshape12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  sumop -&gt; Reshape12;
-  shapevect -&gt; Reshape12;
-  Reshape12 -&gt; penalty_reshape;
-
-  loss_reshape [shape=box label=&quot;loss_reshape&quot; fontsize=10];
-  Reshape123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  loss_diff_2 -&gt; Reshape123;
-  shapevect -&gt; Reshape123;
-  Reshape123 -&gt; loss_reshape;
-
-  Add1234 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
-  penalty_reshape -&gt; Add1234;
-  loss_reshape -&gt; Add1234;
-  Add1234 -&gt; loss;
+<div class="graphviz"><img src="../../_images/graphviz-9a5a0db81ea49e901cdf4704028b0c47a026ff17.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_127174404567936 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_127174404567856 [label=&quot;label&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_127174404568096 [label=&quot;weight&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  i_127174404567616 [label=&quot;coef&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404567696 [label=&quot;intercept&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404567776 [label=&quot;l1_name&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563456 [label=&quot;l1_weight_coef&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404564896 [label=&quot;l1_weight_intercept&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404564016 [label=&quot;l2_name&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404564336 [label=&quot;l2_weight_coef&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563776 [label=&quot;l2_weight_intercept&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404567296 [label=&quot;shape_coef&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563536 [label=&quot;shape_intercept&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404564976 [label=&quot;shape_tensor&quot;, fillcolor=&quot;#cccc00&quot;];
+  i_127174404563856 [label=&quot;shapevect&quot;, fillcolor=&quot;#cccc00&quot;];
+  MatMul_127174404566816 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404566896 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_127174404566976 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Sub_127174404567056 [label=&quot;Sub(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404567136 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Abs_127174404567216 [label=&quot;Abs(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404566416 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404566576 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404566656 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404564736 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_127174404565856 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_127174404563616 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563376 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_127174404565936 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404566016 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Abs_127174404564656 [label=&quot;Abs(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_127174404564576 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563696 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404564096 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_127174404563296 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563936 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_127174404566256 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404563216 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Abs_127174404566336 [label=&quot;Abs(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  ReduceSum_127174404566096 [label=&quot;ReduceSum(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Mul_127174404564816 [label=&quot;Mul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404567376 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404567456 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_127174404567536 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_127174404564496 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Add_127174404564416 [label=&quot;Add(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_127174404567936 -&gt; MatMul_127174404566816;
+  i_127174404567616 -&gt; MatMul_127174404566816;
+  MatMul_127174404566816 -&gt; Add_127174404566896 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404567696 -&gt; Add_127174404566896;
+  Add_127174404566896 -&gt; Reshape_127174404566976 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404564976 -&gt; Reshape_127174404566976;
+  Reshape_127174404566976 -&gt; Sub_127174404567056;
+  I_127174404567856 -&gt; Sub_127174404567056;
+  Sub_127174404567056 -&gt; Mul_127174404567136 [label=&quot;FLOAT(?,1)&quot;];
+  Sub_127174404567056 -&gt; Abs_127174404567216 [label=&quot;FLOAT(?,1)&quot;];
+  Abs_127174404567216 -&gt; Mul_127174404566416 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404567776 -&gt; Mul_127174404566416;
+  Mul_127174404567136 -&gt; Mul_127174404566576 [label=&quot;FLOAT(?,1)&quot;];
+  i_127174404564016 -&gt; Mul_127174404566576;
+  Mul_127174404566416 -&gt; Add_127174404566656 [label=&quot;FLOAT(?,1)&quot;];
+  Mul_127174404566576 -&gt; Add_127174404566656 [label=&quot;FLOAT(?,1)&quot;];
+  Add_127174404566656 -&gt; Mul_127174404564736 [label=&quot;FLOAT(?,1)&quot;];
+  I_127174404568096 -&gt; Mul_127174404564736;
+  Mul_127174404564736 -&gt; ReduceSum_127174404565856 [label=&quot;FLOAT(?,?)&quot;];
+  i_127174404567616 -&gt; Reshape_127174404563616;
+  i_127174404567296 -&gt; Reshape_127174404563616;
+  Reshape_127174404563616 -&gt; Mul_127174404563376 [label=&quot;FLOAT(10)&quot;];
+  Mul_127174404563376 -&gt; ReduceSum_127174404565936 [label=&quot;FLOAT(10)&quot;];
+  ReduceSum_127174404565936 -&gt; Mul_127174404566016 [label=&quot;FLOAT(1)&quot;];
+  i_127174404564336 -&gt; Mul_127174404566016;
+  Reshape_127174404563616 -&gt; Abs_127174404564656 [label=&quot;FLOAT(10)&quot;];
+  Abs_127174404564656 -&gt; ReduceSum_127174404564576 [label=&quot;FLOAT(10)&quot;];
+  ReduceSum_127174404564576 -&gt; Mul_127174404563696 [label=&quot;FLOAT(1)&quot;];
+  i_127174404563456 -&gt; Mul_127174404563696;
+  Mul_127174404563696 -&gt; Add_127174404564096 [label=&quot;FLOAT(1)&quot;];
+  Mul_127174404566016 -&gt; Add_127174404564096 [label=&quot;FLOAT(1)&quot;];
+  i_127174404567696 -&gt; Reshape_127174404563296;
+  i_127174404563536 -&gt; Reshape_127174404563296;
+  Reshape_127174404563296 -&gt; Mul_127174404563936 [label=&quot;FLOAT(1)&quot;];
+  Mul_127174404563936 -&gt; ReduceSum_127174404566256 [label=&quot;FLOAT(1)&quot;];
+  ReduceSum_127174404566256 -&gt; Mul_127174404563216 [label=&quot;FLOAT(1)&quot;];
+  i_127174404563776 -&gt; Mul_127174404563216;
+  Reshape_127174404563296 -&gt; Abs_127174404566336 [label=&quot;FLOAT(1)&quot;];
+  Abs_127174404566336 -&gt; ReduceSum_127174404566096 [label=&quot;FLOAT(1)&quot;];
+  ReduceSum_127174404566096 -&gt; Mul_127174404564816 [label=&quot;FLOAT(1)&quot;];
+  i_127174404564896 -&gt; Mul_127174404564816;
+  Mul_127174404564816 -&gt; Add_127174404567376 [label=&quot;FLOAT(1)&quot;];
+  Mul_127174404563216 -&gt; Add_127174404567376 [label=&quot;FLOAT(1)&quot;];
+  Add_127174404564096 -&gt; Add_127174404567456 [label=&quot;FLOAT(1)&quot;];
+  Add_127174404567376 -&gt; Add_127174404567456 [label=&quot;FLOAT(1)&quot;];
+  Add_127174404567456 -&gt; Reshape_127174404567536 [label=&quot;FLOAT(1)&quot;];
+  i_127174404563856 -&gt; Reshape_127174404567536;
+  ReduceSum_127174404565856 -&gt; Reshape_127174404564496 [label=&quot;FLOAT(1,1)&quot;];
+  i_127174404563856 -&gt; Reshape_127174404564496;
+  Reshape_127174404567536 -&gt; Add_127174404564416 [label=&quot;FLOAT(1,1)&quot;];
+  Reshape_127174404564496 -&gt; Add_127174404564416 [label=&quot;FLOAT(1,1)&quot;];
+  O_127174404566496 [label=&quot;loss&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Add_127174404564416 -&gt; O_127174404566496;
+  O_127174404566736 [label=&quot;variable&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_127174404566976 -&gt; O_127174404566736;
 }" class="graphviz" /></div>
 </dd></dl>
 

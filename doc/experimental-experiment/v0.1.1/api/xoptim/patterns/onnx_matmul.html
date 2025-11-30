@@ -550,6 +550,35 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.GemmTransposePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_matmul.</span></span><span class="sig-name descname"><span class="pre">GemmTransposePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#GemmTransposePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.GemmTransposePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces Gemm (., constant) by Gemm(., constant’, transB=1)</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3f2aa444bf4c37fdb7da6a6a975448ba1684b354.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_135459157263840 [label=&quot;B&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_135459157263680 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_135459157263920 [label=&quot;Constant() -&gt; B&quot;, fillcolor=&quot;#cccccc&quot;];
+  Gemm_135459157264000 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_135459157263680 -&gt; Gemm_135459157264000;
+  Constant_135459157263920 -&gt; Gemm_135459157264000;
+  O_135459157263760 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gemm_135459157264000 -&gt; O_135459157263760;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-5b30d1d7a1c5dd73cd0cf80f35e750650926ff14.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_135463432373808 [label=&quot;B&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_135463432373888 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Transpose_135463432374128 [label=&quot;Transpose(., perm=[1, 0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Gemm_135463432374208 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_135463432373808 -&gt; Transpose_135463432374128;
+  I_135463432373888 -&gt; Gemm_135463432374208;
+  Transpose_135463432374128 -&gt; Gemm_135463432374208 [label=&quot;FLOAT(2,3)&quot;];
+  O_135463432374048 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gemm_135463432374208 -&gt; O_135463432374048;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.GemmTransposePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#GemmTransposePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.GemmTransposePattern.apply" title="Link to this definition">¶</a></dt>
@@ -796,6 +825,72 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.ReshapeMatMulReshapePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_matmul.</span></span><span class="sig-name descname"><span class="pre">ReshapeMatMulReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#ReshapeMatMulReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.ReshapeMatMulReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reshape, Matmul, Reshape by Matmul.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-c58a54cc4d7559fccfa558b60500111a1130107b.png" alt="digraph{
+  nodesep=0.05;
+  size=7;
+  ranksep=0.25;
+  orientation=portrait;
+
+  xu2 [shape=box color=red label=&quot;xu2\nTensorProto.FLOAT\nshape=[1, 1, 32, 128]&quot; fontsize=10];
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[3, 5, 128, 64]&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[3, 5, 32, 64]&quot; fontsize=10];
+
+
+  shape1 [shape=box label=&quot;shape1&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[  1  32 128]&quot; fontsize=10];
+  Constant -&gt; shape1;
+
+  shape2 [shape=box label=&quot;shape2&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 15 128  64]&quot; fontsize=10];
+  Constant1 -&gt; shape2;
+
+  shape3 [shape=box label=&quot;shape3&quot; fontsize=10];
+  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 3  5 32 64]&quot; fontsize=10];
+  Constant12 -&gt; shape3;
+
+  xm1 [shape=box label=&quot;xm1&quot; fontsize=10];
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  xu2 -&gt; Reshape;
+  shape1 -&gt; Reshape;
+  Reshape -&gt; xm1;
+
+  xm2c [shape=box label=&quot;xm2c&quot; fontsize=10];
+  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  Y -&gt; Reshape1;
+  shape2 -&gt; Reshape1;
+  Reshape1 -&gt; xm2c;
+
+  xm [shape=box label=&quot;xm&quot; fontsize=10];
+  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
+  xm1 -&gt; MatMul;
+  xm2c -&gt; MatMul;
+  MatMul -&gt; xm;
+
+  Reshape12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  xm -&gt; Reshape12;
+  shape3 -&gt; Reshape12;
+  Reshape12 -&gt; Z;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-ebab7fb21ad9793eb5bc5243440ede03ed692662.png" alt="digraph{
+  orientation=portrait;
+  nodesep=0.05;
+  ranksep=0.25;
+  size=7;
+
+  xu2 [shape=box color=red label=&quot;xu2\nTensorProto.FLOAT\nshape=[1, 1, 32, 128]&quot; fontsize=10];
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[3, 5, 128, 64]&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[3, 5, 32, 64]&quot; fontsize=10];
+
+
+  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
+  xu2 -&gt; MatMul;
+  Y -&gt; MatMul;
+  MatMul -&gt; Z;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.ReshapeMatMulReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_before_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_before_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#ReshapeMatMulReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.ReshapeMatMulReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -857,6 +952,67 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_matmul.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedMatMulToMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#ShapeBasedMatMulToMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.ShapeBasedMatMulToMulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>MatMul can be replaced by Mul with broadcast. It makes it easier
 to detect optimization pattern with Expand operators.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-4fd8802d46dff82be80a480c617a7bb9fb3941a9.png" alt="digraph{
+  orientation=portrait;
+  ranksep=0.25;
+  size=7;
+  nodesep=0.05;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 'c']&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 1]&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 'c', 'b']&quot; fontsize=10];
+
+
+  Zt [shape=box label=&quot;Zt&quot; fontsize=10];
+  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
+  X -&gt; MatMul;
+  Y -&gt; MatMul;
+  MatMul -&gt; Zt;
+
+  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 2, 1]&quot; fontsize=10];
+  Zt -&gt; Transpose;
+  Transpose -&gt; Z;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-a31630cc8904486c557d63ad997bc7375e7500cf.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 'c']&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 1]&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 'c', 'b']&quot; fontsize=10];
+
+
+  X_ZEROS2 [shape=box label=&quot;X_ZEROS2&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0  1 -1]&quot; fontsize=10];
+  Constant -&gt; X_ZEROS2;
+
+  Y_ZEROS2 [shape=box label=&quot;Y_ZEROS2&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0 -1  1]&quot; fontsize=10];
+  Constant1 -&gt; Y_ZEROS2;
+
+  X2 [shape=box label=&quot;X2&quot; fontsize=10];
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  X_ZEROS2 -&gt; Reshape;
+  Reshape -&gt; X2;
+
+  Y2 [shape=box label=&quot;Y2&quot; fontsize=10];
+  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  Y -&gt; Reshape1;
+  Y_ZEROS2 -&gt; Reshape1;
+  Reshape1 -&gt; Y2;
+
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  X2 -&gt; Mul;
+  Y2 -&gt; Mul;
+  Mul -&gt; Z;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.ShapeBasedMatMulToMulPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#ShapeBasedMatMulToMulPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.ShapeBasedMatMulToMulPattern.apply" title="Link to this definition">¶</a></dt>
@@ -922,60 +1078,38 @@ Tanh, Cos, Cosh, Sin, Sinh, Erf, LeakyRelu, PRelu,
 Selu, Softmax, Softplus.
 Reshape can also be Transpose.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-6257c121a9d578bd7b2ecce08a772f8a97533978.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  ranksep=0.25;
-  orientation=portrait;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[3, 2, 5, 6]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[3, 2, 6, 5]&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
-
-
-  mm [shape=box label=&quot;mm&quot; fontsize=10];
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  Y -&gt; MatMul;
-  MatMul -&gt; mm;
-
-  tmm [shape=box label=&quot;tmm&quot; fontsize=10];
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 2, 1, 3]&quot; fontsize=10];
-  mm -&gt; Transpose;
-  Transpose -&gt; tmm;
-
-  Relu [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Relu&quot; fontsize=10];
-  tmm -&gt; Relu;
-  Relu -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-cfbf27ea410eecf969ed3920568ac85b9ce6ca23.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_133326065027168 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_133326065027248 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  MatMul_133326065027408 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_133326065027488 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#cccccc&quot;];
+  Relu_133326065027568 [label=&quot;Relu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_133326065027248 -&gt; MatMul_133326065027408;
+  I_133326065027168 -&gt; MatMul_133326065027408;
+  MatMul_133326065027408 -&gt; Transpose_133326065027488 [label=&quot;FLOAT(3,2,6,6)&quot;];
+  Transpose_133326065027488 -&gt; Relu_133326065027568 [label=&quot;FLOAT(3,6,2,6)&quot;];
+  O_133326065027328 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Relu_133326065027568 -&gt; O_133326065027328;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-1bad4322eb144eb1751efa68ac21d4e58163ca2b.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[3, 2, 5, 6]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[3, 2, 6, 5]&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
-
-
-  SwitchReshapeActivationPatternL_mm [shape=box label=&quot;SwitchReshapeActivationPatternL_mm&quot; fontsize=10];
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  Y -&gt; MatMul;
-  MatMul -&gt; SwitchReshapeActivationPatternL_mm;
-
-  SwitchReshapeActivationPatternL_tmm [shape=box label=&quot;SwitchReshapeActivationPatternL_tmm&quot; fontsize=10];
-  Relu [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Relu&quot; fontsize=10];
-  SwitchReshapeActivationPatternL_mm -&gt; Relu;
-  Relu -&gt; SwitchReshapeActivationPatternL_tmm;
-
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 2, 1, 3]&quot; fontsize=10];
-  SwitchReshapeActivationPatternL_tmm -&gt; Transpose;
-  Transpose -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-a6956e3759387a809d6a634493fde44317686e70.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_137450934029104 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_137450934029184 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  MatMul_137450934029344 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Relu_137450934029424 [label=&quot;Relu(.)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_137450934029504 [label=&quot;Transpose(., perm=[0, 2, 1, 3])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_137450934029184 -&gt; MatMul_137450934029344;
+  I_137450934029104 -&gt; MatMul_137450934029344;
+  MatMul_137450934029344 -&gt; Relu_137450934029424 [label=&quot;FLOAT(3,2,6,6)&quot;];
+  Relu_137450934029424 -&gt; Transpose_137450934029504 [label=&quot;FLOAT(3,2,6,6)&quot;];
+  O_137450934029264 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_137450934029504 -&gt; O_137450934029264;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.SwitchReshapeActivationPattern.apply">
@@ -1038,45 +1172,32 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_matmul.</span></span><span class="sig-name descname"><span class="pre">TransposeMatMulPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_matmul.html#TransposeMatMulPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_matmul.TransposeMatMulPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Transpose, Matmul or Gemm into Gemm</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-fa31cf77e3d946331f923cc6343468865c1fffd6.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-  orientation=portrait;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[128, 64]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[128, 32]&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[32, 64]&quot; fontsize=10];
-
-
-  xm1 [shape=box label=&quot;xm1&quot; fontsize=10];
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[1, 0]&quot; fontsize=10];
-  X -&gt; Transpose;
-  Transpose -&gt; xm1;
-
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  xm1 -&gt; MatMul;
-  Y -&gt; MatMul;
-  MatMul -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-09bc1f11c99c7ce856ebdf13469aa16419ba78bf.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_137947675952368 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_137947675952448 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Transpose_137947675952688 [label=&quot;Transpose(., perm=[1, 0])&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_137947675952768 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_137947675952448 -&gt; Transpose_137947675952688;
+  Transpose_137947675952688 -&gt; MatMul_137947675952768 [label=&quot;FLOAT(32,128)&quot;];
+  I_137947675952368 -&gt; MatMul_137947675952768;
+  O_137947675952608 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_137947675952768 -&gt; O_137947675952608;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-40bace113f2b1ee6209801d7f329b0e577590eeb.png" alt="digraph{
-  orientation=portrait;
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[128, 64]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[128, 32]&quot; fontsize=10];
-
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[32, 64]&quot; fontsize=10];
-
-
-  Gemm [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gemm\ntransA=1\ntransB=0&quot; fontsize=10];
-  X -&gt; Gemm;
-  Y -&gt; Gemm;
-  Gemm -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-73117ea85a7c61d6a7fc8b8ed3fbea0baba8201c.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_125199887565664 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_125199887565904 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Gemm_125199887565744 [label=&quot;Gemm(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_125199887565904 -&gt; Gemm_125199887565744;
+  I_125199887565664 -&gt; Gemm_125199887565744;
+  O_125199887565824 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Gemm_125199887565744 -&gt; O_125199887565824;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.TransposeMatMulPattern.apply">
@@ -1141,72 +1262,48 @@ will automatically determine the position of the new nodes.</p></li>
 Reshape, Transpose, Matmul if possible. Another optimizer
 will optimizes this sequence by using Gemm or better.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-cbf8d61e8f335d7748665827f4ce83ce7e24b964.png" alt="digraph{
-  ranksep=0.25;
-  orientation=portrait;
-  size=7;
-  nodesep=0.05;
-
-  yts [shape=box color=red label=&quot;yts\nTensorProto.FLOAT\nshape=[2, 2, 7, 3]&quot; fontsize=10];
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[4, 3, 7]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 2, 5, 7]&quot; fontsize=10];
-
-  yts [shape=box color=green label=&quot;yts\nTensorProto.FLOAT\nshape=[2, 2, 7, 3]&quot; fontsize=10];
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 2, 5, 3]&quot; fontsize=10];
-
-
-  shape [shape=box label=&quot;shape&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2 2 7 3]&quot; fontsize=10];
-  Constant -&gt; shape;
-
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  yts -&gt; MatMul;
-  MatMul -&gt; Z;
-
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  yt -&gt; Reshape;
-  shape -&gt; Reshape;
-  Reshape -&gt; yts;
-
-  yt [shape=box label=&quot;yt&quot; fontsize=10];
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 2, 1]&quot; fontsize=10];
-  Y -&gt; Transpose;
-  Transpose -&gt; yt;
+<div class="graphviz"><img src="../../../_images/graphviz-0faa93d551e4755d81f13fcb09b6abd3242aeee9.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_124758575499760 [label=&quot;yts&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_124758575500000 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_124758575500080 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_124758575500320 [label=&quot;Constant() -&gt; shape&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_124758575500400 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_124758575500480 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_124758575500560 [label=&quot;Transpose(., perm=[0, 2, 1])&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_124758575500080 -&gt; MatMul_124758575500400;
+  Reshape_124758575500480 -&gt; MatMul_124758575500400;
+  Transpose_124758575500560 -&gt; Reshape_124758575500480 [label=&quot;FLOAT(4,7,3)&quot;];
+  Constant_124758575500320 -&gt; Reshape_124758575500480 [label=&quot;INT64(4)&quot;];
+  I_124758575500000 -&gt; Transpose_124758575500560;
+  O_124758575500160 [label=&quot;yts&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Reshape_124758575500480 -&gt; O_124758575500160;
+  O_124758575500240 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_124758575500400 -&gt; O_124758575500240;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-f61611e5c4e30147a97a717e7759e251d1fb4dd4.png" alt="digraph{
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-  orientation=portrait;
-
-  yts [shape=box color=red label=&quot;yts\nTensorProto.FLOAT\nshape=[2, 2, 7, 3]&quot; fontsize=10];
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[4, 3, 7]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 2, 5, 7]&quot; fontsize=10];
-
-  yts [shape=box color=green label=&quot;yts\nTensorProto.FLOAT\nshape=[2, 2, 7, 3]&quot; fontsize=10];
-  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 2, 5, 3]&quot; fontsize=10];
-
-
-  init7_s4_2_2_3_7 [shape=box label=&quot;init7_s4_2_2_3_7&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2 2 3 7]&quot; fontsize=10];
-  Constant -&gt; init7_s4_2_2_3_7;
-
-  TransposeReshapeMatMulPatternL_Y [shape=box label=&quot;TransposeReshapeMatMulPatternL_Y&quot; fontsize=10];
-  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
-  Y -&gt; Reshape;
-  init7_s4_2_2_3_7 -&gt; Reshape;
-  Reshape -&gt; TransposeReshapeMatMulPatternL_Y;
-
-  Transpose [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Transpose\nperm=[0, 1, 3, 2]&quot; fontsize=10];
-  TransposeReshapeMatMulPatternL_Y -&gt; Transpose;
-  Transpose -&gt; yts;
-
-  MatMul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;MatMul&quot; fontsize=10];
-  X -&gt; MatMul;
-  yts -&gt; MatMul;
-  MatMul -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-8679ef07f334da6fb7db0077a39ecfcfc56f68e4.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_139473614065152 [label=&quot;yts&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_139473614065232 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_139473614065312 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_139473614065552 [label=&quot;Constant() -&gt; init7_s4_2_2_3_7&quot;, fillcolor=&quot;#cccccc&quot;];
+  Reshape_139473614065632 [label=&quot;Reshape(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Transpose_139473614065712 [label=&quot;Transpose(., perm=[0, 1, 3, 2])&quot;, fillcolor=&quot;#cccccc&quot;];
+  MatMul_139473614065792 [label=&quot;MatMul(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_139473614065232 -&gt; Reshape_139473614065632;
+  Constant_139473614065552 -&gt; Reshape_139473614065632 [label=&quot;INT64(4)&quot;];
+  Reshape_139473614065632 -&gt; Transpose_139473614065712 [label=&quot;FLOAT(2,2,3,7)&quot;];
+  I_139473614065312 -&gt; MatMul_139473614065792;
+  Transpose_139473614065712 -&gt; MatMul_139473614065792;
+  O_139473614065392 [label=&quot;yts&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Transpose_139473614065712 -&gt; O_139473614065392;
+  O_139473614065472 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  MatMul_139473614065792 -&gt; O_139473614065472;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_matmul.TransposeReshapeMatMulPattern.apply">

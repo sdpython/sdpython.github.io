@@ -858,6 +858,108 @@ will automatically determine the position of the new nodes.</p></li>
 <figure class="align-default">
 <img alt="../../../_images/onnx_rotary-1.png" class="plot-directive" src="../../../_images/onnx_rotary-1.png" />
 </figure>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-5bfcd478af4e82e89597469f251d07b633e7f1fa.png" alt="digraph{
+  size=7;
+  ranksep=0.25;
+  nodesep=0.05;
+  orientation=portrait;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
+  split [shape=box color=red label=&quot;split\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  x1 [shape=box color=red label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  nx1 [shape=box color=red label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  x2 [shape=box color=red label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
+  zero [shape=box color=green label=&quot;zero\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
+  x1 [shape=box color=green label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  nx1 [shape=box color=green label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  x2 [shape=box color=green label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+
+
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3 8]&quot; fontsize=10];
+  Constant -&gt; shape;
+
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[8 8]&quot; fontsize=10];
+  Constant1 -&gt; split;
+
+  ConstantOfShape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape&quot; fontsize=10];
+  shape -&gt; ConstantOfShape;
+  ConstantOfShape -&gt; zero;
+
+  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=1&quot; fontsize=10];
+  X -&gt; Split;
+  split -&gt; Split;
+  Split -&gt; x1;
+  Split -&gt; x2;
+
+  Neg [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Neg&quot; fontsize=10];
+  x1 -&gt; Neg;
+  Neg -&gt; nx1;
+
+  c1 [shape=box label=&quot;c1&quot; fontsize=10];
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=1&quot; fontsize=10];
+  nx1 -&gt; Concat;
+  zero -&gt; Concat;
+  Concat -&gt; c1;
+
+  ConstantOfShape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape&quot; fontsize=10];
+  shape -&gt; ConstantOfShape1;
+  ConstantOfShape1 -&gt; zero;
+
+  c2 [shape=box label=&quot;c2&quot; fontsize=10];
+  Concat1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=1&quot; fontsize=10];
+  zero -&gt; Concat1;
+  x2 -&gt; Concat1;
+  Concat1 -&gt; c2;
+
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  c1 -&gt; Add;
+  c2 -&gt; Add;
+  Add -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-b92c8ad94b164788c279523a64e82f084b1e2538.png" alt="digraph{
+  size=7;
+  orientation=portrait;
+  nodesep=0.05;
+  ranksep=0.25;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
+  split [shape=box color=red label=&quot;split\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  x1 [shape=box color=red label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  nx1 [shape=box color=red label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  x2 [shape=box color=red label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 16]&quot; fontsize=10];
+  zero [shape=box color=green label=&quot;zero\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
+  x1 [shape=box color=green label=&quot;x1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  nx1 [shape=box color=green label=&quot;nx1\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+  x2 [shape=box color=green label=&quot;x2\nTensorProto.FLOAT\nshape=['a', 8]&quot; fontsize=10];
+
+
+  ConstantOfShape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ConstantOfShape&quot; fontsize=10];
+  shape -&gt; ConstantOfShape;
+  ConstantOfShape -&gt; zero;
+
+  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=1&quot; fontsize=10];
+  X -&gt; Split;
+  split -&gt; Split;
+  Split -&gt; x1;
+  Split -&gt; x2;
+
+  Neg [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Neg&quot; fontsize=10];
+  x1 -&gt; Neg;
+  Neg -&gt; nx1;
+
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=1&quot; fontsize=10];
+  nx1 -&gt; Concat;
+  x2 -&gt; Concat;
+  Concat -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryConcatPartPattern.match">
 <span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#RotaryConcatPartPattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryConcatPartPattern.match" title="Link to this definition">¶</a></dt>
@@ -897,6 +999,119 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_rotary.</span></span><span class="sig-name descname"><span class="pre">RotaryEmbeddingPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#RotaryEmbeddingPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Fuses nodes matching RotaryEmbedding(23).</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-04103e6ba7324aa6d7ed47d13dd825200893af35.png" alt="digraph{
+  size=7;
+  nodesep=0.05;
+  ranksep=0.25;
+  orientation=portrait;
+
+  m2 [shape=box color=red label=&quot;m2\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 'c', 'd']&quot; fontsize=10];
+  m1 [shape=box color=red label=&quot;m1\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
+
+
+  split [shape=box label=&quot;split&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[4 6]&quot; fontsize=10];
+  Constant -&gt; split;
+
+  m2x2 [shape=box label=&quot;m2x2&quot; fontsize=10];
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
+  m2 -&gt; Concat;
+  m2 -&gt; Concat;
+  Concat -&gt; m2x2;
+
+  m1x2 [shape=box label=&quot;m1x2&quot; fontsize=10];
+  Concat1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
+  m1 -&gt; Concat1;
+  m1 -&gt; Concat1;
+  Concat1 -&gt; m1x2;
+
+  Xh1 [shape=box label=&quot;Xh1&quot; fontsize=10];
+  Xh2 [shape=box label=&quot;Xh2&quot; fontsize=10];
+  Split [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Split\naxis=-1&quot; fontsize=10];
+  X -&gt; Split;
+  split -&gt; Split;
+  Split -&gt; Xh1;
+  Split -&gt; Xh2;
+
+  Yh [shape=box label=&quot;Yh&quot; fontsize=10];
+  HalfRotaryEmbedding [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;HalfRotaryEmbedding&quot; fontsize=10];
+  Xh1 -&gt; HalfRotaryEmbedding;
+  m2x2 -&gt; HalfRotaryEmbedding;
+  m1x2 -&gt; HalfRotaryEmbedding;
+  HalfRotaryEmbedding -&gt; Yh;
+
+  Concat12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=-1&quot; fontsize=10];
+  Yh -&gt; Concat12;
+  Xh2 -&gt; Concat12;
+  Concat12 -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-ea34929c9c6bbe09894d578bc4dea448a169a378.png" alt="digraph{
+  size=7;
+  nodesep=0.05;
+  ranksep=0.25;
+  orientation=portrait;
+
+  m2 [shape=box color=red label=&quot;m2\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 'c', 'd']&quot; fontsize=10];
+  m1 [shape=box color=red label=&quot;m1\nTensorProto.FLOAT\nshape=[1, 1, 'c', 'e']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 'b', 'c', 'd']&quot; fontsize=10];
+
+
+  init7_s2_1_1 [shape=box label=&quot;init7_s2_1_1&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1 1]&quot; fontsize=10];
+  Constant -&gt; init7_s2_1_1;
+
+  init7_s1_1 [shape=box label=&quot;init7_s1_1&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1]&quot; fontsize=10];
+  Constant1 -&gt; init7_s1_1;
+
+  RotaryEmbeddingPattern__Xh1__dim [shape=box label=&quot;RotaryEmbeddingPattern__Xh1__dim&quot; fontsize=10];
+  Shape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Shape\nend=1\nstart=0&quot; fontsize=10];
+  X -&gt; Shape;
+  Shape -&gt; RotaryEmbeddingPattern__Xh1__dim;
+
+  RotaryEmbeddingPattern__Xh1____Shape [shape=box label=&quot;RotaryEmbeddingPattern__Xh1____Shape&quot; fontsize=10];
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
+  RotaryEmbeddingPattern__Xh1__dim -&gt; Concat;
+  init7_s2_1_1 -&gt; Concat;
+  Concat -&gt; RotaryEmbeddingPattern__Xh1____Shape;
+
+  RotaryEmbeddingPattern__m2x2 [shape=box label=&quot;RotaryEmbeddingPattern__m2x2&quot; fontsize=10];
+  Squeeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  m2 -&gt; Squeeze;
+  init7_s1_1 -&gt; Squeeze;
+  Squeeze -&gt; RotaryEmbeddingPattern__m2x2;
+
+  RotaryEmbeddingPattern__m1x2 [shape=box label=&quot;RotaryEmbeddingPattern__m1x2&quot; fontsize=10];
+  Squeeze1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  m1 -&gt; Squeeze1;
+  init7_s1_1 -&gt; Squeeze1;
+  Squeeze1 -&gt; RotaryEmbeddingPattern__m1x2;
+
+  RotaryEmbeddingPattern__m2x22 [shape=box label=&quot;RotaryEmbeddingPattern__m2x22&quot; fontsize=10];
+  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
+  RotaryEmbeddingPattern__m2x2 -&gt; Expand;
+  RotaryEmbeddingPattern__Xh1____Shape -&gt; Expand;
+  Expand -&gt; RotaryEmbeddingPattern__m2x22;
+
+  RotaryEmbeddingPattern__m1x22 [shape=box label=&quot;RotaryEmbeddingPattern__m1x22&quot; fontsize=10];
+  Expand1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
+  RotaryEmbeddingPattern__m1x2 -&gt; Expand1;
+  RotaryEmbeddingPattern__Xh1____Shape -&gt; Expand1;
+  Expand1 -&gt; RotaryEmbeddingPattern__m1x22;
+
+  RotaryEmbedding [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;RotaryEmbedding\nnum_heads=2\nrotary_embedding_dim=4&quot; fontsize=10];
+  X -&gt; RotaryEmbedding;
+  RotaryEmbeddingPattern__m2x22 -&gt; RotaryEmbedding;
+  RotaryEmbeddingPattern__m1x22 -&gt; RotaryEmbedding;
+  RotaryEmbedding -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.graph_builder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_cos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_sin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">half_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_rotary.html#RotaryEmbeddingPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_rotary.RotaryEmbeddingPattern.apply" title="Link to this definition">¶</a></dt>

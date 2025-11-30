@@ -550,6 +550,57 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeAddPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_unsqueeze.</span></span><span class="sig-name descname"><span class="pre">SqueezeAddPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeAddPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeAddPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Add(Squeeze, Squeeze) by Squeeze(Add).</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-9d84300436a6a9bfd5fc7f0e0d2e072a053a5b82.png" alt="digraph{
+  orientation=portrait;
+  nodesep=0.05;
+  ranksep=0.25;
+  size=7;
+
+  S2 [shape=box color=red label=&quot;S2\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  S1 [shape=box color=red label=&quot;S1\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+
+  s [shape=box color=green label=&quot;s\nTensorProto.INT64&quot; fontsize=10];
+
+
+  s1 [shape=box label=&quot;s1&quot; fontsize=10];
+  Squeeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  S1 -&gt; Squeeze;
+  Squeeze -&gt; s1;
+
+  s2 [shape=box label=&quot;s2&quot; fontsize=10];
+  Squeeze1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  S2 -&gt; Squeeze1;
+  Squeeze1 -&gt; s2;
+
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  s1 -&gt; Add;
+  s2 -&gt; Add;
+  Add -&gt; s;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-e81906d68b3a3228f7b141cf6506729541ec0cfa.png" alt="digraph{
+  size=7;
+  nodesep=0.05;
+  ranksep=0.25;
+  orientation=portrait;
+
+  S2 [shape=box color=red label=&quot;S2\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  S1 [shape=box color=red label=&quot;S1\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+
+  s [shape=box color=green label=&quot;s\nTensorProto.INT64&quot; fontsize=10];
+
+
+  SqueezeAddPattern_s [shape=box label=&quot;SqueezeAddPattern_s&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  S1 -&gt; Add;
+  S2 -&gt; Add;
+  Add -&gt; SqueezeAddPattern_s;
+
+  Squeeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  SqueezeAddPattern_s -&gt; Squeeze;
+  Squeeze -&gt; s;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeAddPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">squeeze1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">squeeze2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeAddPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeAddPattern.apply" title="Link to this definition">¶</a></dt>
@@ -610,6 +661,67 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeBinaryUnsqueezePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_unsqueeze.</span></span><span class="sig-name descname"><span class="pre">SqueezeBinaryUnsqueezePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeBinaryUnsqueezePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeBinaryUnsqueezePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Squeeze Binary Unsqueeze) by Binary.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-b98156897c9de9710361978664607b5ef64aefb0.png" alt="digraph{
+  orientation=portrait;
+  size=7;
+  ranksep=0.25;
+  nodesep=0.05;
+
+  zero [shape=box color=red label=&quot;zero\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  d [shape=box color=red label=&quot;d\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  two [shape=box color=red label=&quot;two\nTensorProto.INT64&quot; fontsize=10];
+
+  e [shape=box color=green label=&quot;e\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+
+
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=2&quot; fontsize=10];
+  Constant -&gt; two;
+
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0]&quot; fontsize=10];
+  Constant1 -&gt; zero;
+
+  d0 [shape=box label=&quot;d0&quot; fontsize=10];
+  Squeeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  d -&gt; Squeeze;
+  Squeeze -&gt; d0;
+
+  d1 [shape=box label=&quot;d1&quot; fontsize=10];
+  Div [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Div&quot; fontsize=10];
+  d0 -&gt; Div;
+  two -&gt; Div;
+  Div -&gt; d1;
+
+  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
+  d1 -&gt; Unsqueeze;
+  zero -&gt; Unsqueeze;
+  Unsqueeze -&gt; e;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-86aee35e38444ec8df8ade2228bce3089b43bf29.png" alt="digraph{
+  size=7;
+  nodesep=0.05;
+  ranksep=0.25;
+  orientation=portrait;
+
+  zero [shape=box color=red label=&quot;zero\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  d [shape=box color=red label=&quot;d\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  two [shape=box color=red label=&quot;two\nTensorProto.INT64&quot; fontsize=10];
+
+  e [shape=box color=green label=&quot;e\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+
+
+  SqueezeBinaryUnsqueezePattern_two [shape=box label=&quot;SqueezeBinaryUnsqueezePattern_two&quot; fontsize=10];
+  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
+  two -&gt; Unsqueeze;
+  zero -&gt; Unsqueeze;
+  Unsqueeze -&gt; SqueezeBinaryUnsqueezePattern_two;
+
+  Div [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Div&quot; fontsize=10];
+  d -&gt; Div;
+  SqueezeBinaryUnsqueezePattern_two -&gt; Div;
+  Div -&gt; e;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeBinaryUnsqueezePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">squeeze_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsqueeze_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeBinaryUnsqueezePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeBinaryUnsqueezePattern.apply" title="Link to this definition">¶</a></dt>
@@ -670,6 +782,53 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeUnsqueezePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_unsqueeze.</span></span><span class="sig-name descname"><span class="pre">SqueezeUnsqueezePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeUnsqueezePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeUnsqueezePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Squeeze, Unsqueeze by Identity or the other ways around.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-9da144eb03bb578cfa2a91951b53fc794d5ab162.png" alt="digraph{
+  size=7;
+  orientation=portrait;
+  nodesep=0.05;
+  ranksep=0.25;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 1, 1, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 1, 'd']&quot; fontsize=10];
+
+
+  axes1 [shape=box label=&quot;axes1&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1 2]&quot; fontsize=10];
+  Constant -&gt; axes1;
+
+  axes2 [shape=box label=&quot;axes2&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1 2]&quot; fontsize=10];
+  Constant1 -&gt; axes2;
+
+  mm [shape=box label=&quot;mm&quot; fontsize=10];
+  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
+  X -&gt; Unsqueeze;
+  axes1 -&gt; Unsqueeze;
+  Unsqueeze -&gt; mm;
+
+  Squeeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Squeeze&quot; fontsize=10];
+  mm -&gt; Squeeze;
+  axes2 -&gt; Squeeze;
+  Squeeze -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-32ac1964b78ab81833a2d6ece68007d410dff8f9.png" alt="digraph{
+  nodesep=0.05;
+  orientation=portrait;
+  ranksep=0.25;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 1, 1, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 1, 'd']&quot; fontsize=10];
+
+
+  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
+  X -&gt; Identity;
+  Identity -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeUnsqueezePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_unsqueeze.html#SqueezeUnsqueezePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_unsqueeze.SqueezeUnsqueezePattern.apply" title="Link to this definition">¶</a></dt>
@@ -732,28 +891,35 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><blockquote>
 <div><p>Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.</p>
 <p>Model with nodes to be fused:</p>
-<p>print(to_dot(model))</p>
+<div class="graphviz"><img src="../../../_images/graphviz-bc86147937b7f7a5ca4e2e8e63bd128135c272ff.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_133345762920144 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_133345762920224 [label=&quot;Constant() -&gt; ii&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_133345762920304 [label=&quot;Constant() -&gt; jj&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_133345762920384 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_133345762920464 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_133345762920144 -&gt; Unsqueeze_133345762920384;
+  Constant_133345762920224 -&gt; Unsqueeze_133345762920384 [label=&quot;INT64(1)&quot;];
+  Unsqueeze_133345762920384 -&gt; Unsqueeze_133345762920464 [label=&quot;FLOAT(a,b,1)&quot;];
+  Constant_133345762920304 -&gt; Unsqueeze_133345762920464 [label=&quot;INT64(1)&quot;];
+  O_133345762920064 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_133345762920464 -&gt; O_133345762920064;
+}" class="graphviz" /></div>
 </div></blockquote>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-5765d5c3f4f4c0a1df9d2988259c056023006ab1.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  orientation=portrait;
-  ranksep=0.25;
-
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 1, 'a', 'b']&quot; fontsize=10];
-
-
-  init7_s2_2_3 [shape=box label=&quot;init7_s2_2_3&quot; fontsize=10];
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2 3]&quot; fontsize=10];
-  Constant -&gt; init7_s2_2_3;
-
-  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
-  X -&gt; Unsqueeze;
-  init7_s2_2_3 -&gt; Unsqueeze;
-  Unsqueeze -&gt; Y;
+<div class="graphviz"><img src="../../../_images/graphviz-535455d911c5980e9507c06d597fc98f41b5a104.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_126820562552288 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_126820562552448 [label=&quot;Constant() -&gt; init7_s2_2_3&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_126820562552528 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_126820562552288 -&gt; Unsqueeze_126820562552528;
+  Constant_126820562552448 -&gt; Unsqueeze_126820562552528 [label=&quot;INT64(2)&quot;];
+  O_126820562552208 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_126820562552528 -&gt; O_126820562552208;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_unsqueeze.UnsqueezeUnsqueezePattern.apply">

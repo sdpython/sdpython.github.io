@@ -550,6 +550,44 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_shape.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedShapeShapeAddPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_shape.html#ShapeBasedShapeShapeAddPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Tries to find another way to get a dimension obtained with the addition of two.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-71cdeab007645c78eec0ca410fef16341fb3d3ea.png" alt="digraph{
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+  ranksep=0.25;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd', 1]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[2, 3, 'd', 2]&quot; fontsize=10];
+
+
+  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
+  X -&gt; Expand;
+  d -&gt; Expand;
+  Expand -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-304cd5ee91786be7dfae48b7cd425c9a19e6f5ff.png" alt="digraph{
+  nodesep=0.05;
+  ranksep=0.25;
+  orientation=portrait;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd', 1]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[2, 3, 'd', 2]&quot; fontsize=10];
+
+
+  init7_s4_1_1_1_2 [shape=box label=&quot;init7_s4_1_1_1_2&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1 1 1 2]&quot; fontsize=10];
+  Constant -&gt; init7_s4_1_1_1_2;
+
+  Expand [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Expand&quot; fontsize=10];
+  X -&gt; Expand;
+  init7_s4_1_1_1_2 -&gt; Expand;
+  Expand -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape1_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape2_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_shape.html#ShapeBasedShapeShapeAddPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_shape.ShapeBasedShapeShapeAddPattern.apply" title="Link to this definition">¶</a></dt>

@@ -551,6 +551,66 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_sequence.</span></span><span class="sig-name descname"><span class="pre">SequenceConstructAtPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_sequence.html#SequenceConstructAtPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_sequence.SequenceConstructAtPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence <code class="docutils literal notranslate"><span class="pre">SequenceConstruct(x1,</span> <span class="pre">x2,</span> <span class="pre">...)</span></code> followed
 by <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">0)</span></code>, <code class="docutils literal notranslate"><span class="pre">SequenceAt(seq,</span> <span class="pre">1)</span></code>, …</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-c1a7969e83fcc96bf398b219e5c15e54af6c8e58.png" alt="digraph{
+  ranksep=0.25;
+  size=7;
+  nodesep=0.05;
+  orientation=portrait;
+
+  X1 [shape=box color=red label=&quot;X1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
+  X2 [shape=box color=red label=&quot;X2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
+
+  Y1 [shape=box color=green label=&quot;Y1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
+  Y2 [shape=box color=green label=&quot;Y2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
+
+
+  i0 [shape=box label=&quot;i0&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=0&quot; fontsize=10];
+  Constant -&gt; i0;
+
+  i1 [shape=box label=&quot;i1&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=1&quot; fontsize=10];
+  Constant1 -&gt; i1;
+
+  seq [shape=box label=&quot;seq&quot; fontsize=10];
+  SequenceConstruct [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;SequenceConstruct&quot; fontsize=10];
+  X1 -&gt; SequenceConstruct;
+  X2 -&gt; SequenceConstruct;
+  SequenceConstruct -&gt; seq;
+
+  SequenceAt [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;SequenceAt&quot; fontsize=10];
+  seq -&gt; SequenceAt;
+  i0 -&gt; SequenceAt;
+  SequenceAt -&gt; Y1;
+
+  SequenceAt1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;SequenceAt&quot; fontsize=10];
+  seq -&gt; SequenceAt1;
+  i1 -&gt; SequenceAt1;
+  SequenceAt1 -&gt; Y2;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-ece1f6cd49e553d54b8638161d9d55fc33e3341a.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  size=7;
+  nodesep=0.05;
+
+  X1 [shape=box color=red label=&quot;X1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
+  X2 [shape=box color=red label=&quot;X2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
+
+  Y1 [shape=box color=green label=&quot;Y1\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
+  Y2 [shape=box color=green label=&quot;Y2\nTensorProto.FLOAT\nshape=['c', 'd']&quot; fontsize=10];
+
+
+  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
+  X1 -&gt; Identity;
+  Identity -&gt; Y1;
+
+  Identity1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
+  X2 -&gt; Identity1;
+  Identity1 -&gt; Y2;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_sequence.SequenceConstructAtPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">node_ats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_sequence.html#SequenceConstructAtPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_sequence.SequenceConstructAtPattern.apply" title="Link to this definition">¶</a></dt>

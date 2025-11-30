@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_clip - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -550,6 +550,40 @@
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_clip.ClipClipPattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_clip.</span></span><span class="sig-name descname"><span class="pre">ClipClipPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_clip.html#ClipClipPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_clip.ClipClipPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Merges consecutive clips if one is defining min and the other max.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3b864a8c90a86c94c13b06454ea88903bc2017c1.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_138896247899456 [label=&quot;zero&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_138896247899536 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_138896247899696 [label=&quot;one&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_138896247899856 [label=&quot;Constant() -&gt; zero&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_138896247899936 [label=&quot;Constant() -&gt; one&quot;, fillcolor=&quot;#cccccc&quot;];
+  Clip_138896247900016 [label=&quot;Clip(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Clip_138896247900096 [label=&quot;Clip(., , .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_138896247899536 -&gt; Clip_138896247900016;
+  Constant_138896247899856 -&gt; Clip_138896247900016;
+  Clip_138896247900016 -&gt; Clip_138896247900096 [label=&quot;FLOAT(a,b)&quot;];
+  Constant_138896247899936 -&gt; Clip_138896247900096;
+  O_138896247899776 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Clip_138896247900096 -&gt; O_138896247899776;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-d01c24f9f7eb3d7be25ab6132c4417e313808edc.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_131010438448528 [label=&quot;zero&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_131010438448368 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_131010438448448 [label=&quot;one&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Clip_131010438448688 [label=&quot;Clip(., ., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_131010438448368 -&gt; Clip_131010438448688;
+  I_131010438448528 -&gt; Clip_131010438448688;
+  I_131010438448448 -&gt; Clip_131010438448688;
+  O_131010438448608 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Clip_131010438448688 -&gt; O_131010438448608;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_clip.ClipClipPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_clip.html#ClipClipPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_clip.ClipClipPattern.apply" title="Link to this definition">¶</a></dt>

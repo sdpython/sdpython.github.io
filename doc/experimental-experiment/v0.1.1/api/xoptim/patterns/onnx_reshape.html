@@ -612,6 +612,48 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ReduceReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReduceReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReduceReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reduce* Reshape if reshape is only
 introduces to deal with a dimension kept because keepdims=1.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-134ee9a3ff8610fe3418aa0e60a7ea1748165ed8.png" alt="digraph{
+  nodesep=0.05;
+  orientation=portrait;
+  size=7;
+  ranksep=0.25;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[3, 2]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
+
+
+  shape [shape=box label=&quot;shape&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3]&quot; fontsize=10];
+  Constant -&gt; shape;
+
+  xr [shape=box label=&quot;xr&quot; fontsize=10];
+  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\naxes=[1]\nkeepdims=1&quot; fontsize=10];
+  X -&gt; ReduceSum;
+  ReduceSum -&gt; xr;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  xr -&gt; Reshape;
+  shape -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-75c522df5650cc9a4292945985054896d8e5850b.png" alt="digraph{
+  size=7;
+  nodesep=0.05;
+  ranksep=0.25;
+  orientation=portrait;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[3, 2]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[3]&quot; fontsize=10];
+
+
+  ReduceSum [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;ReduceSum\naxes=[1]\nkeepdims=0&quot; fontsize=10];
+  X -&gt; ReduceSum;
+  ReduceSum -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReduceReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReduceReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReduceReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -673,6 +715,81 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">Reshape2Of3Pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#Reshape2Of3Pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the reshapes around element-wise operators.
 It can be 3 or 2 out of 3.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-e5a19f079b95b8a6bd9e13499c08cb02f0f3dbf2.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  size=7;
+  nodesep=0.05;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+
+  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+
+
+  shape1 [shape=box label=&quot;shape1&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1  8]&quot; fontsize=10];
+  Constant -&gt; shape1;
+
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 3 -1]&quot; fontsize=10];
+  Constant1 -&gt; shape2;
+
+  shape3 [shape=box label=&quot;shape3&quot; fontsize=10];
+  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[2 3 4]&quot; fontsize=10];
+  Constant12 -&gt; shape3;
+
+  xr [shape=box label=&quot;xr&quot; fontsize=10];
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  shape1 -&gt; Reshape;
+  Reshape -&gt; xr;
+
+  yr [shape=box label=&quot;yr&quot; fontsize=10];
+  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  Y -&gt; Reshape1;
+  shape2 -&gt; Reshape1;
+  Reshape1 -&gt; yr;
+
+  Reshape12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  xrr -&gt; Reshape12;
+  shape3 -&gt; Reshape12;
+  Reshape12 -&gt; Z;
+
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  xr -&gt; Mul;
+  yr -&gt; Mul;
+  Mul -&gt; xrr;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-41691009c38b73d28cc02ed756dd5440c9c56f8c.png" alt="digraph{
+  size=7;
+  ranksep=0.25;
+  nodesep=0.05;
+  orientation=portrait;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+
+  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=[3, 8]&quot; fontsize=10];
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=[2, 3, 4]&quot; fontsize=10];
+
+
+  Mul [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Mul&quot; fontsize=10];
+  X -&gt; Mul;
+  Y -&gt; Mul;
+  Mul -&gt; Z;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  Z -&gt; Reshape;
+  shape2 -&gt; Reshape;
+  Reshape -&gt; xrr;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#Reshape2Of3Pattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.Reshape2Of3Pattern.apply" title="Link to this definition">¶</a></dt>
@@ -794,6 +911,69 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ReshapeReshapeBinaryPattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_opset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReshapeReshapeBinaryPattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern" title="Link to this definition">¶</a></dt>
 <dd><p>Moves two reshape operators beyond a binary operator
 if it is possible.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-a18e8bc047ce021c1a9f681ce7ad5a6e0d86665a.png" alt="digraph{
+  size=7;
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
+  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['b', 8]&quot; fontsize=10];
+
+
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1  8]&quot; fontsize=10];
+  Constant -&gt; sh1;
+
+  sh2 [shape=box label=&quot;sh2&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1  8]&quot; fontsize=10];
+  Constant1 -&gt; sh2;
+
+  xc [shape=box label=&quot;xc&quot; fontsize=10];
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  sh1 -&gt; Reshape;
+  Reshape -&gt; xc;
+
+  yc [shape=box label=&quot;yc&quot; fontsize=10];
+  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  Y -&gt; Reshape1;
+  sh2 -&gt; Reshape1;
+  Reshape1 -&gt; yc;
+
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  xc -&gt; Add;
+  yc -&gt; Add;
+  Add -&gt; Z;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3efafc33477587721bf72282ee20e08472b3414b.png" alt="digraph{
+  nodesep=0.05;
+  orientation=portrait;
+  size=7;
+  ranksep=0.25;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
+  sh1 [shape=box color=red label=&quot;sh1\nTensorProto.INT64\nshape=[2]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 4]&quot; fontsize=10];
+
+  Z [shape=box color=green label=&quot;Z\nTensorProto.FLOAT\nshape=['b', 8]&quot; fontsize=10];
+
+
+  add_X [shape=box label=&quot;add_X&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  X -&gt; Add;
+  Y -&gt; Add;
+  Add -&gt; add_X;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  add_X -&gt; Reshape;
+  sh1 -&gt; Reshape;
+  Reshape -&gt; Z;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReshapeReshapeBinaryPattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapeBinaryPattern.apply" title="Link to this definition">¶</a></dt>
@@ -854,6 +1034,88 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ReshapeReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReshapeReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces the sequence Reshape, Reshape by Reshape.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-557225e30da6a56197a04e27a059b4db67156adc.png" alt="digraph{
+  orientation=portrait;
+  nodesep=0.05;
+  ranksep=0.25;
+  size=7;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
+  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'e', 'f', 'g']&quot; fontsize=10];
+
+
+  shape0 [shape=box label=&quot;shape0&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0  1 -1  0]&quot; fontsize=10];
+  Constant -&gt; shape0;
+
+  Xs [shape=box label=&quot;Xs&quot; fontsize=10];
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  shape -&gt; Reshape;
+  Reshape -&gt; Xs;
+
+  Reshape1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  Xs -&gt; Reshape1;
+  shape0 -&gt; Reshape1;
+  Reshape1 -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3ecbf83912ff7e792fdb16d70803282ba14e0ad8.png" alt="digraph{
+  nodesep=0.05;
+  size=7;
+  ranksep=0.25;
+  orientation=portrait;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
+  shape [shape=box color=red label=&quot;shape\nTensorProto.INT64\nshape=[4]&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['d', 'e', 'f', 'g']&quot; fontsize=10];
+
+
+  init7_s1_0 [shape=box label=&quot;init7_s1_0&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0]&quot; fontsize=10];
+  Constant -&gt; init7_s1_0;
+
+  init7_s1_3 [shape=box label=&quot;init7_s1_3&quot; fontsize=10];
+  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[3]&quot; fontsize=10];
+  Constant1 -&gt; init7_s1_3;
+
+  init7_s1_1 [shape=box label=&quot;init7_s1_1&quot; fontsize=10];
+  Constant12 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1]&quot; fontsize=10];
+  Constant12 -&gt; init7_s1_1;
+
+  init7_s1__1 [shape=box label=&quot;init7_s1__1&quot; fontsize=10];
+  Constant123 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1]&quot; fontsize=10];
+  Constant123 -&gt; init7_s1__1;
+
+  Xs__dim0 [shape=box label=&quot;Xs__dim0&quot; fontsize=10];
+  Gather [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gather\naxis=0&quot; fontsize=10];
+  shape -&gt; Gather;
+  init7_s1_0 -&gt; Gather;
+  Gather -&gt; Xs__dim0;
+
+  Xs__dim3 [shape=box label=&quot;Xs__dim3&quot; fontsize=10];
+  Gather1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Gather\naxis=0&quot; fontsize=10];
+  shape -&gt; Gather1;
+  init7_s1_3 -&gt; Gather1;
+  Gather1 -&gt; Xs__dim3;
+
+  Xs__concat [shape=box label=&quot;Xs__concat&quot; fontsize=10];
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
+  Xs__dim0 -&gt; Concat;
+  init7_s1_1 -&gt; Concat;
+  init7_s1__1 -&gt; Concat;
+  Xs__dim3 -&gt; Concat;
+  Concat -&gt; Xs__concat;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  Xs__concat -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ReshapeReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ReshapeReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -916,6 +1178,44 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>Tries to reduce the number of nodes in the sequence Concat + Reshape
 by replacing one of the dimension by -1 or 0.
 The pattern tries to align shape information to infer a static shape.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-4f427bcc532e01f9f8394fa5f17da8824225df71.png" alt="digraph{
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+  ranksep=0.25;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
+
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  d -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-a119b5252c4ae76406e0d300c31c86c81d146384.png" alt="digraph{
+  size=7;
+  nodesep=0.05;
+  orientation=portrait;
+  ranksep=0.25;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
+
+
+  init7_s2_6__1 [shape=box label=&quot;init7_s2_6__1&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 6 -1]&quot; fontsize=10];
+  Constant -&gt; init7_s2_6__1;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  init7_s2_6__1 -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedEditDistanceReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapeBasedEditDistanceReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedEditDistanceReshapePattern.apply" title="Link to this definition">¶</a></dt>
@@ -977,6 +1277,44 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ShapeBasedReshapeIsSqueezePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapeBasedReshapeIsSqueezePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces a replaces by a squeeze or unsqueeze pattern if possible.
 It is only available for opset &lt; 18.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-dd32e8ef61f03c9eb8759f30e861f096172be6dd.png" alt="digraph{
+  size=7;
+  orientation=portrait;
+  ranksep=0.25;
+  nodesep=0.05;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 2, 3, 'd', 1]&quot; fontsize=10];
+
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  d -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-4d920f2b2b0d5309e5d98d0780541633bd86fde7.png" alt="digraph{
+  size=7;
+  orientation=portrait;
+  ranksep=0.25;
+  nodesep=0.05;
+
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[1, 2, 3, 'd', 1]&quot; fontsize=10];
+
+
+  init7_s2_0_4 [shape=box label=&quot;init7_s2_0_4&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[0 4]&quot; fontsize=10];
+  Constant -&gt; init7_s2_0_4;
+
+  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
+  X -&gt; Unsqueeze;
+  init7_s2_0_4 -&gt; Unsqueeze;
+  Unsqueeze -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapeBasedReshapeIsSqueezePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapeBasedReshapeIsSqueezePattern.apply" title="Link to this definition">¶</a></dt>
@@ -1037,6 +1375,45 @@ will automatically determine the position of the new nodes.</p></li>
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">ShapedBasedReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapedBasedReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Checks that a Reshape is really needed based on the input shape.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-8b5d8c77dfda3193b3b9a0e735b12d632a1ef9b7.png" alt="digraph{
+  nodesep=0.05;
+  ranksep=0.25;
+  size=7;
+  orientation=portrait;
+
+  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
+
+  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
+
+
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[ 0  0 -1]&quot; fontsize=10];
+  Constant -&gt; shape2;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  shape2 -&gt; Reshape;
+  Reshape -&gt; xrr;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-1420b7eb5e06ccce6549d13d3a694c27ca997b68.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  shape2 [shape=box color=red label=&quot;shape2\nTensorProto.INT64\nshape=[3]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
+
+  xrr [shape=box color=green label=&quot;xrr\nTensorProto.FLOAT\nshape=['a', 'b', 'c']&quot; fontsize=10];
+
+
+  Identity [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Identity&quot; fontsize=10];
+  X -&gt; Identity;
+  shape2 -&gt; Identity;
+  Identity -&gt; xrr;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern.match">
 <span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.GraphBuilderPatternOptimization" title="experimental_experiment.xoptim.GraphBuilderPatternOptimization"><span class="pre">GraphBuilderPatternOptimization</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../index.html#experimental_experiment.xoptim.MatchResult" title="experimental_experiment.xoptim.patterns_api.MatchResult"><span class="pre">MatchResult</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#ShapedBasedReshapePattern.match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.ShapedBasedReshapePattern.match" title="Link to this definition">¶</a></dt>
@@ -1077,6 +1454,61 @@ will automatically determine the position of the new nodes.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">experimental_experiment.xoptim.patterns.onnx_reshape.</span></span><span class="sig-name descname"><span class="pre">StaticConcatReshapePattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#StaticConcatReshapePattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.StaticConcatReshapePattern" title="Link to this definition">¶</a></dt>
 <dd><p>Tries to reduce the number of nodes in the sequence Concat + Reshape
 by replacing one of the dimension by -1.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-9f3dcdc27eb4a5c0e656fc52d6c34042d791ed82.png" alt="digraph{
+  size=7;
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+
+  I1 [shape=box color=red label=&quot;I1\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
+
+
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[6]&quot; fontsize=10];
+  Constant -&gt; I1;
+
+  d [shape=box label=&quot;d&quot; fontsize=10];
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
+  I1 -&gt; Concat;
+  D2 -&gt; Concat;
+  Concat -&gt; d;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  d -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-c890810098f985c93b393ffc14eac574431690c9.png" alt="digraph{
+  nodesep=0.05;
+  ranksep=0.25;
+  size=7;
+  orientation=portrait;
+
+  I1 [shape=box color=red label=&quot;I1\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=[2, 3, 'd']&quot; fontsize=10];
+
+  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=[6, 'd']&quot; fontsize=10];
+
+
+  init7_s1__1 [shape=box label=&quot;init7_s1__1&quot; fontsize=10];
+  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1]&quot; fontsize=10];
+  Constant -&gt; init7_s1__1;
+
+  d__concat [shape=box label=&quot;d__concat&quot; fontsize=10];
+  Concat [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Concat\naxis=0&quot; fontsize=10];
+  I1 -&gt; Concat;
+  init7_s1__1 -&gt; Concat;
+  Concat -&gt; d__concat;
+
+  Reshape [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Reshape&quot; fontsize=10];
+  X -&gt; Reshape;
+  d__concat -&gt; Reshape;
+  Reshape -&gt; Y;
+}" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_reshape.StaticConcatReshapePattern.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder" title="experimental_experiment.xbuilder.GraphBuilder"><span class="pre">GraphBuilder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">concat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reshape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://onnx.ai/onnx/api/classes.html#onnx.NodeProto" title="(in ONNX v1.21.0)"><span class="pre">NodeProto</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_reshape.html#StaticConcatReshapePattern.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_reshape.StaticConcatReshapePattern.apply" title="Link to this definition">¶</a></dt>

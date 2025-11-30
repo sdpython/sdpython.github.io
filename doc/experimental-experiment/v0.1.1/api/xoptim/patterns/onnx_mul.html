@@ -612,6 +612,56 @@ will automatically determine the position of the new nodes.</p></li>
 <dd><p>If it makes sense, switches the order of two multiplications
 or two addtions if the broadcasting reduces one operator to
 a an insignificant number.</p>
+<p>Model with nodes to be fused:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-3adbcd7a720c50e2eed62f10131b529c09c3887e.png" alt="digraph{
+  ranksep=0.25;
+  nodesep=0.05;
+  size=7;
+  orientation=portrait;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
+  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
+
+  F [shape=box color=green label=&quot;F\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
+
+
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  Z -&gt; Add;
+  xy -&gt; Add;
+  Add -&gt; F;
+
+  xy [shape=box label=&quot;xy&quot; fontsize=10];
+  Add1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  X -&gt; Add1;
+  Y -&gt; Add1;
+  Add1 -&gt; xy;
+}" class="graphviz" /></div>
+<p>Outcome of the fusion:</p>
+<div class="graphviz"><img src="../../../_images/graphviz-a5551f3e19f0b60e3da8b9daa6c66850d328d22f.png" alt="digraph{
+  ranksep=0.25;
+  orientation=portrait;
+  nodesep=0.05;
+  size=7;
+
+  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
+  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
+  Z [shape=box color=red label=&quot;Z\nTensorProto.FLOAT\nshape=['a', 1, 3, 4]&quot; fontsize=10];
+
+  F [shape=box color=green label=&quot;F\nTensorProto.FLOAT\nshape=['a', 2, 3, 4]&quot; fontsize=10];
+
+
+  add_Y [shape=box label=&quot;add_Y&quot; fontsize=10];
+  Add [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  Y -&gt; Add;
+  Z -&gt; Add;
+  Add -&gt; add_Y;
+
+  Add1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Add&quot; fontsize=10];
+  add_Y -&gt; Add1;
+  X -&gt; Add1;
+  Add1 -&gt; F;
+}" class="graphviz" /></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern.BroadcastType">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BroadcastType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/experimental_experiment/xoptim/patterns/onnx_mul.html#SwitchOrderBinaryPattern.BroadcastType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#experimental_experiment.xoptim.patterns.onnx_mul.SwitchOrderBinaryPattern.BroadcastType" title="Link to this definition">¶</a></dt>

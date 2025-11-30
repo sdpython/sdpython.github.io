@@ -81,9 +81,9 @@ A model
 
  .. code-block:: none
 
-    tensor([[ 0.0710],
-            [-0.3074],
-            [ 0.1950]], grad_fn=<AddmmBackward0>)
+    tensor([[-0.3346],
+            [ 0.0668],
+            [-0.0738]], grad_fn=<AddmmBackward0>)
 
 
 
@@ -121,9 +121,9 @@ and implemented by class :class:`OrtBackend
 
  .. code-block:: none
 
-    tensor([[ 0.0710],
-            [-0.3074],
-            [ 0.1950]])
+    tensor([[-0.3346],
+            [ 0.0668],
+            [-0.0738]])
 
 
 
@@ -175,9 +175,9 @@ with function :func:`filter_decomposition_table
 
  .. code-block:: none
 
-    tensor([[ 0.0710],
-            [-0.3074],
-            [ 0.1950]], grad_fn=<CompiledFunctionBackward>)
+    tensor([[-0.3346],
+            [ 0.0668],
+            [-0.0738]], grad_fn=<CompiledFunctionBackward>)
 
 
 
@@ -262,13 +262,13 @@ Let's see an iteration loop.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2497: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2494: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       out = call_func_at_runtime_with_args(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2497: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2494: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       out = call_func_at_runtime_with_args(
-    Loss after epoch 1: 7417.758756637573
-    Loss after epoch 2: 5512.527643203735
-    Loss after epoch 3: 5195.311376571655
+    Loss after epoch 1: 7712.965860366821
+    Loss after epoch 2: 5574.1061935424805
+    Loss after epoch 3: 5336.390522003174
     Training process has finished.
 
     OptimizedModule(
@@ -316,13 +316,13 @@ Let's see what it looks like.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2497: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2494: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       out = call_func_at_runtime_with_args(
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2497: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2494: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       out = call_func_at_runtime_with_args(
-    Loss after epoch 1: 7060.615592956543
-    Loss after epoch 2: 5565.075984954834
-    Loss after epoch 3: 5143.468305587769
+    Loss after epoch 1: 7353.792518615723
+    Loss after epoch 2: 5524.30987739563
+    Loss after epoch 3: 5246.250772476196
     Training process has finished.
     4 were created.
 
@@ -336,30 +336,33 @@ Let's see what it looks like.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     Gemm(input2, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-    Reshape(input3, init7_s2_-1_1) -> output_3
-      Gemm(output_2, output_3, input4, alpha=1.00, beta=1.00) -> output_0
+        Identity(output_2) -> output_3
+    Reshape(input3, init7_s2_-1_1) -> output_4
+      Gemm(output_2, output_4, input4, alpha=1.00, beta=1.00) -> output_0
     Identity(input2) -> output_1
     output: name='output_0' type=dtype('float32') shape=[5, 1]
     output: name='output_1' type=dtype('float32') shape=[5, 10]
     output: name='output_2' type=dtype('float32') shape=[5, 32]
-    output: name='output_3' type=dtype('float32') shape=[32, 1]
+    output: name='output_3' type=dtype('float32') shape=[5, 32]
+    output: name='output_4' type=dtype('float32') shape=[32, 1]
 
     -- model 1 running on ['CPUExecutionProvider']
     opset: domain='' version=18
     input: name='input0' type=dtype('float32') shape=[5, 10]
     input: name='input1' type=dtype('float32') shape=[5, 32]
-    input: name='input2' type=dtype('float32') shape=[32, 1]
-    input: name='input3' type=dtype('float32') shape=[5, 1]
+    input: name='input2' type=dtype('float32') shape=[5, 32]
+    input: name='input3' type=dtype('float32') shape=[32, 1]
+    input: name='input4' type=dtype('float32') shape=[5, 1]
     init: name='init7_s1_0' type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##ReshapeIsSqueezePattern.m1
     init: name='init1_s1_' type=float32 shape=(1,) -- array([0.], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape##TransposeEqualReshapePattern.apply.new_shape
     Constant(value_float=0.0) -> output_NONE_2
-    Reshape(input2, init7_s2_1_-1) -> t_2
-      Mul(input3, t_2) -> mm
-    Reshape(input3, init7_s2_1_-1) -> t_3
+    Reshape(input3, init7_s2_1_-1) -> t_2
+      Mul(input4, t_2) -> mm
+    Reshape(input4, init7_s2_1_-1) -> t_3
       MatMul(t_3, input1) -> output_3
-    ReduceSum(input3, init7_s1_0, keepdims=0) -> output_4
-    LessOrEqual(input1, init1_s1_) -> _onx_lessorequal_detach_1
+    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_4
+    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal_detach_1
       Where(_onx_lessorequal_detach_1, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input0, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=1) -> sum_2
@@ -455,11 +458,11 @@ It is needed by pytorch.
 
  .. code-block:: none
 
-    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2497: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
+    /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/runtime_wrappers.py:2494: UserWarning: Your compiler for AOTAutograd is returning a function that doesn't take boxed arguments. Please wrap it with functorch.compile.make_boxed_func or handle the boxed arguments yourself. See https://github.com/pytorch/pytorch/pull/83137#issuecomment-1211320670 for rationale.
       out = call_func_at_runtime_with_args(
-    Loss after epoch 1: 7139.4136600494385
-    Loss after epoch 2: 5437.325382232666
-    Loss after epoch 3: 5188.665758132935
+    Loss after epoch 1: 7523.725372314453
+    Loss after epoch 2: 5592.794270515442
+    Loss after epoch 3: 5283.45655632019
     Training process has finished.
     2 were created.
 
@@ -475,15 +478,17 @@ It is needed by pytorch.
     init: name='init7_s2_-1_1' type=int64 shape=(2,) -- array([-1,  1])   -- TransposeEqualReshapePattern.apply.new_shape
     Gemm(input3, input0, input1, transA=0, transB=1, alpha=1.00, beta=1.00) -> addmm
       Relu(addmm) -> output_2
-    Reshape(input4, init7_s2_-1_1) -> output_3
-      Gemm(output_2, output_3, input5, alpha=1.00, beta=1.00) -> output_0
+        Identity(output_2) -> output_3
+    Reshape(input4, init7_s2_-1_1) -> output_4
+      Gemm(output_2, output_4, input5, alpha=1.00, beta=1.00) -> output_0
     Identity(input3) -> output_1
-    Identity(input_dim_2) -> output_dim_4
+    Identity(input_dim_2) -> output_dim_5
     output: name='output_0' type=dtype('float32') shape=['s77', 1]
     output: name='output_1' type=dtype('float32') shape=['s77', 10]
     output: name='output_2' type=dtype('float32') shape=['s77', 32]
-    output: name='output_3' type=dtype('float32') shape=[32, 1]
-    output: name='output_dim_4' type=dtype('int64') shape=None
+    output: name='output_3' type=dtype('float32') shape=['s77', 32]
+    output: name='output_4' type=dtype('float32') shape=[32, 1]
+    output: name='output_dim_5' type=dtype('int64') shape=None
 
     -- model 1 running on ['CPUExecutionProvider']
 
@@ -491,19 +496,20 @@ It is needed by pytorch.
     input: name='input_dim_0' type=dtype('int64') shape=None
     input: name='input1' type=dtype('float32') shape=['s77', 10]
     input: name='input2' type=dtype('float32') shape=['s77', 32]
-    input: name='input3' type=dtype('float32') shape=[32, 1]
-    input: name='input4' type=dtype('float32') shape=['s77', 1]
+    input: name='input3' type=dtype('float32') shape=['s77', 32]
+    input: name='input4' type=dtype('float32') shape=[32, 1]
+    input: name='input5' type=dtype('float32') shape=['s77', 1]
     init: name='init7_s1_0' type=int64 shape=(1,) -- array([0])           -- Opset.make_node.1/Shape##Opset.make_node.1/Shape##ReshapeIsSqueezePattern.m1
     init: name='init1_s1_' type=float32 shape=(1,) -- array([0.], dtype=float32)-- Opset.make_node.1/Small##Opset.make_node.1/Small
     init: name='init7_s2_1_-1' type=int64 shape=(2,) -- array([ 1, -1])   -- TransposeEqualReshapePattern.apply.new_shape##TransposeEqualReshapePattern.apply.new_shape
     Constant(value_float=0.0) -> output_NONE_2
       Identity(output_NONE_2) -> output_NONE_3
-    Reshape(input3, init7_s2_1_-1) -> t_2
-      Mul(input4, t_2) -> mm
-    Reshape(input4, init7_s2_1_-1) -> t_3
+    Reshape(input4, init7_s2_1_-1) -> t_2
+      Mul(input5, t_2) -> mm
+    Reshape(input5, init7_s2_1_-1) -> t_3
       MatMul(t_3, input2) -> output_4
-    ReduceSum(input4, init7_s1_0, keepdims=0) -> output_5
-    LessOrEqual(input2, init1_s1_) -> _onx_lessorequal_detach_1
+    ReduceSum(input5, init7_s1_0, keepdims=0) -> output_5
+    LessOrEqual(input3, init1_s1_) -> _onx_lessorequal_detach_1
       Where(_onx_lessorequal_detach_1, init1_s1_, mm) -> threshold_backward
         Gemm(threshold_backward, input1, transA=1, transB=0) -> output_0
     ReduceSum(threshold_backward, init7_s1_0, keepdims=1) -> sum_2
@@ -580,7 +586,7 @@ nodes to optimize the computation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 9.348 seconds)
+   **Total running time of the script:** (0 minutes 8.478 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_custom_backend_101.py:

@@ -10,7 +10,7 @@
         <title>.xoptim.patterns.onnx_equal - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -552,68 +552,49 @@
 <dd><p>Replaces the sequence R -&gt; Equal -&gt; Unsqueeze, R -&gt; Unsqueeze,
 into R -&gt; Unsqueeze -&gt; Equal.</p>
 <p>Model with nodes to be fused:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-0851d3f66b2c17abab8a6225a4d21cc6ff748429.png" alt="digraph{
-  size=7;
-  nodesep=0.05;
-  orientation=portrait;
-  ranksep=0.25;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 'b']&quot; fontsize=10];
-  mone [shape=box color=red label=&quot;mone\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 'b']&quot; fontsize=10];
-  Z [shape=box color=green label=&quot;Z\nTensorProto.BOOL\nshape=['a', 1, 'b']&quot; fontsize=10];
-
-
-  Constant [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[1]&quot; fontsize=10];
-  Constant -&gt; axis;
-
-  Constant1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Constant\nvalue=[-1.]&quot; fontsize=10];
-  Constant1 -&gt; mone;
-
-  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
-  X -&gt; Unsqueeze;
-  axis -&gt; Unsqueeze;
-  Unsqueeze -&gt; Y;
-
-  xe [shape=box label=&quot;xe&quot; fontsize=10];
-  Equal [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Equal&quot; fontsize=10];
-  X -&gt; Equal;
-  mone -&gt; Equal;
-  Equal -&gt; xe;
-
-  Unsqueeze1 [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
-  xe -&gt; Unsqueeze1;
-  axis -&gt; Unsqueeze1;
-  Unsqueeze1 -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-02297a7b4c716c62a162f77704dbefc479396bd5.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_140290676803280 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_140290676803520 [label=&quot;mone&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_140290676803600 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_140290676803680 [label=&quot;axis&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Constant_140290676803920 [label=&quot;Constant() -&gt; axis&quot;, fillcolor=&quot;#cccccc&quot;];
+  Constant_140290676804000 [label=&quot;Constant() -&gt; mone&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_140290676804080 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Equal_140290676804160 [label=&quot;Equal(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Unsqueeze_140290676804240 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_140290676803600 -&gt; Unsqueeze_140290676804080;
+  Constant_140290676803920 -&gt; Unsqueeze_140290676804080;
+  I_140290676803600 -&gt; Equal_140290676804160;
+  Constant_140290676804000 -&gt; Equal_140290676804160;
+  Equal_140290676804160 -&gt; Unsqueeze_140290676804240 [label=&quot;BOOL(a,b)&quot;];
+  Constant_140290676803920 -&gt; Unsqueeze_140290676804240;
+  O_140290676803760 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_140290676804080 -&gt; O_140290676803760;
+  O_140290676803840 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_140290676804240 -&gt; O_140290676803840;
 }" class="graphviz" /></div>
 <p>Outcome of the fusion:</p>
-<div class="graphviz"><img src="../../../_images/graphviz-69cea78954a3d796e5368434044406d47286c955.png" alt="digraph{
-  orientation=portrait;
-  size=7;
-  ranksep=0.25;
-  nodesep=0.05;
-
-  Y [shape=box color=red label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 'b']&quot; fontsize=10];
-  mone [shape=box color=red label=&quot;mone\nTensorProto.FLOAT\nshape=[1]&quot; fontsize=10];
-  X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['a', 'b']&quot; fontsize=10];
-  axis [shape=box color=red label=&quot;axis\nTensorProto.INT64\nshape=[1]&quot; fontsize=10];
-
-  Y [shape=box color=green label=&quot;Y\nTensorProto.FLOAT\nshape=['a', 1, 'b']&quot; fontsize=10];
-  Z [shape=box color=green label=&quot;Z\nTensorProto.BOOL\nshape=['a', 1, 'b']&quot; fontsize=10];
-
-
-  Unsqueeze [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Unsqueeze&quot; fontsize=10];
-  X -&gt; Unsqueeze;
-  axis -&gt; Unsqueeze;
-  Unsqueeze -&gt; Y;
-
-  Equal [shape=box style=&quot;filled,rounded&quot; color=orange label=&quot;Equal&quot; fontsize=10];
-  Y -&gt; Equal;
-  mone -&gt; Equal;
-  Equal -&gt; Z;
+<div class="graphviz"><img src="../../../_images/graphviz-d37a102689ba05b198fe051fbaf6f16b9bb3b9ce.png" alt="digraph {
+  graph [rankdir=TB, splines=true, overlap=false, nodesep=0.2, ranksep=0.2, fontsize=8];
+  node [style=&quot;rounded,filled&quot;, color=&quot;#888888&quot;, fontcolor=&quot;#222222&quot;, shape=box];
+  edge [arrowhead=vee, fontsize=6];
+  I_140082148492688 [label=&quot;Y&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_140082148492528 [label=&quot;mone&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_140082148492768 [label=&quot;X&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  I_140082148492848 [label=&quot;axis&quot;, fillcolor=&quot;#eeeeaa&quot;];
+  Unsqueeze_140082148493088 [label=&quot;Unsqueeze(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  Equal_140082148493168 [label=&quot;Equal(., .)&quot;, fillcolor=&quot;#cccccc&quot;];
+  I_140082148492768 -&gt; Unsqueeze_140082148493088;
+  I_140082148492848 -&gt; Unsqueeze_140082148493088;
+  Unsqueeze_140082148493088 -&gt; Equal_140082148493168;
+  I_140082148492528 -&gt; Equal_140082148493168;
+  O_140082148492928 [label=&quot;Y&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Unsqueeze_140082148493088 -&gt; O_140082148492928;
+  O_140082148493008 [label=&quot;Z&quot;, fillcolor=&quot;#aaaaee&quot;];
+  Equal_140082148493168 -&gt; O_140082148493008;
 }" class="graphviz" /></div>
 <dl class="py method">
 <dt class="sig sig-object py" id="experimental_experiment.xoptim.patterns.onnx_equal.UnsqueezeEqualPattern.apply">

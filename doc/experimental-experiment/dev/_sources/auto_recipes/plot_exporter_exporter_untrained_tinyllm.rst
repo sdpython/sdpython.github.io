@@ -56,6 +56,12 @@ We use the dummy example from the model page.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Loading weights:   0%|          | 0/12 [00:00<?, ?it/s]    Loading weights:   8%|▊         | 1/12 [00:00<00:00, 8371.86it/s, Materializing param=lm_head.weight]    Loading weights:   8%|▊         | 1/12 [00:00<00:00, 2420.26it/s, Materializing param=lm_head.weight]    Loading weights:  17%|█▋        | 2/12 [00:00<00:00, 131.38it/s, Materializing param=model.embed_tokens.weight]    Loading weights:  17%|█▋        | 2/12 [00:00<00:00, 130.30it/s, Materializing param=model.embed_tokens.weight]    Loading weights:  25%|██▌       | 3/12 [00:00<00:00, 194.13it/s, Materializing param=model.layers.0.input_layernorm.weight]    Loading weights:  25%|██▌       | 3/12 [00:00<00:00, 193.61it/s, Materializing param=model.layers.0.input_layernorm.weight]    Loading weights:  33%|███▎      | 4/12 [00:00<00:00, 256.73it/s, Materializing param=model.layers.0.mlp.down_proj.weight]      Loading weights:  33%|███▎      | 4/12 [00:00<00:00, 256.12it/s, Materializing param=model.layers.0.mlp.down_proj.weight]    Loading weights:  42%|████▏     | 5/12 [00:00<00:00, 318.03it/s, Materializing param=model.layers.0.mlp.gate_proj.weight]    Loading weights:  42%|████▏     | 5/12 [00:00<00:00, 317.06it/s, Materializing param=model.layers.0.mlp.gate_proj.weight]    Loading weights:  50%|█████     | 6/12 [00:00<00:00, 378.27it/s, Materializing param=model.layers.0.mlp.up_proj.weight]      Loading weights:  50%|█████     | 6/12 [00:00<00:00, 376.91it/s, Materializing param=model.layers.0.mlp.up_proj.weight]    Loading weights:  58%|█████▊    | 7/12 [00:00<00:00, 437.65it/s, Materializing param=model.layers.0.post_attention_layernorm.weight]    Loading weights:  58%|█████▊    | 7/12 [00:00<00:00, 435.27it/s, Materializing param=model.layers.0.post_attention_layernorm.weight]    Loading weights:  67%|██████▋   | 8/12 [00:00<00:00, 491.29it/s, Materializing param=model.layers.0.self_attn.k_proj.weight]            Loading weights:  67%|██████▋   | 8/12 [00:00<00:00, 488.23it/s, Materializing param=model.layers.0.self_attn.k_proj.weight]    Loading weights:  75%|███████▌  | 9/12 [00:00<00:00, 543.65it/s, Materializing param=model.layers.0.self_attn.o_proj.weight]    Loading weights:  75%|███████▌  | 9/12 [00:00<00:00, 539.18it/s, Materializing param=model.layers.0.self_attn.o_proj.weight]    Loading weights:  83%|████████▎ | 10/12 [00:00<00:00, 591.11it/s, Materializing param=model.layers.0.self_attn.q_proj.weight]    Loading weights:  83%|████████▎ | 10/12 [00:00<00:00, 587.68it/s, Materializing param=model.layers.0.self_attn.q_proj.weight]    Loading weights:  92%|█████████▏| 11/12 [00:00<00:00, 640.41it/s, Materializing param=model.layers.0.self_attn.v_proj.weight]    Loading weights:  92%|█████████▏| 11/12 [00:00<00:00, 637.49it/s, Materializing param=model.layers.0.self_attn.v_proj.weight]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 689.64it/s, Materializing param=model.norm.weight]                         Loading weights: 100%|██████████| 12/12 [00:00<00:00, 686.63it/s, Materializing param=model.norm.weight]    Loading weights: 100%|██████████| 12/12 [00:00<00:00, 678.80it/s, Materializing param=model.norm.weight]
+
 
 
 
@@ -128,36 +134,9 @@ Let's run the model.
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x19x96], value_cache=#1[T1s1x1x19x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x20x96], value_cache=#1[T1s1x1x20x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x21x96], value_cache=#1[T1s1x1x21x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x22x96], value_cache=#1[T1s1x1x22x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x23x96], value_cache=#1[T1s1x1x23x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x24x96], value_cache=#1[T1s1x1x24x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x25x96], value_cache=#1[T1s1x1x25x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x26x96], value_cache=#1[T1s1x1x26x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x27x96], value_cache=#1[T1s1x1x27x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x28x96], value_cache=#1[T1s1x1x28x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x29x96], value_cache=#1[T1s1x1x29x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x30x96], value_cache=#1[T1s1x1x30x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x31x96], value_cache=#1[T1s1x1x31x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x32x96], value_cache=#1[T1s1x1x32x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x33x96], value_cache=#1[T1s1x1x33x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x34x96], value_cache=#1[T1s1x1x34x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x35x96], value_cache=#1[T1s1x1x35x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x36x96], value_cache=#1[T1s1x1x36x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x37x96], value_cache=#1[T1s1x1x37x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x38x96], value_cache=#1[T1s1x1x38x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x39x96], value_cache=#1[T1s1x1x39x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x40x96], value_cache=#1[T1s1x1x40x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x41x96], value_cache=#1[T1s1x1x41x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x42x96], value_cache=#1[T1s1x1x42x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x43x96], value_cache=#1[T1s1x1x43x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x44x96], value_cache=#1[T1s1x1x44x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x45x96], value_cache=#1[T1s1x1x45x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x46x96], value_cache=#1[T1s1x1x46x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x47x96], value_cache=#1[T1s1x1x47x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
-    #2[(),dict(cache_position:T7s1,past_key_values:DynamicCache(key_cache=#1[T1s1x1x48x96], value_cache=#1[T1s1x1x48x96]),input_ids:T7s1x1,inputs_embeds:None,use_cache:bool,return_dict:bool)]
     Continue: it rains...
-    27 Honda FW2A5E3411034 47202 03:16-8.
-    Hadam: A P15
+    Ask about that is.
+    - The American Cancer Society
 
 
 
@@ -370,7 +349,7 @@ ExportedProgram
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.816 seconds)
+   **Total running time of the script:** (0 minutes 2.374 seconds)
 
 
 .. _sphx_glr_download_auto_recipes_plot_exporter_exporter_untrained_tinyllm.py:

@@ -301,7 +301,7 @@ The last one does not export. An exporter based on
     Could not extract specialized integer from data-dependent expression u0 (unhinted: u0).  (Size-like symbols: none)
 
 
-    Caused by: (_export/non_strict_utils.py:1118 in __torch_function__)
+    Caused by: (_export/non_strict_utils.py:1130 in __torch_function__)
     For more information, run with TORCH_LOGS="dynamic"
     For extended logs when we create symbols, also add TORCHDYNAMO_EXTENDED_DEBUG_CREATE_SYMBOL="u0"
     If you suspect the guard was triggered from C++, add TORCHDYNAMO_EXTENDED_DEBUG_CPP=1
@@ -596,7 +596,7 @@ and it is a provite API.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.190 seconds)
+   **Total running time of the script:** (0 minutes 0.260 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_101.py:

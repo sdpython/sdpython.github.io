@@ -543,15 +543,13 @@ The result.
 
  .. code-block:: none
 
-              peak         mean    n        begin          end  ...  gpu0_n  gpu0_begin    gpu0_end  nodes    export
-    0  1196.191406  1195.126065   11  1194.785156  1196.191406  ...      11  320.617188  320.617188   12.0    script
-    1  1196.816406  1196.201628  107  1196.191406  1196.816406  ...     107  320.617188  320.617188   12.0    dynamo
-    2  1198.378906  1197.036390   76  1196.972656  1198.378906  ...      76  320.617188  320.617188   12.0    dynopt
-    3  1198.378906  1198.378906   11  1198.378906  1198.378906  ...      11  320.617188  320.617188   12.0    cus_p0
-    4  1198.378906  1198.378906   12  1198.378906  1198.378906  ...      12  320.617188  320.617188   12.0    cus_p2
-    5  1198.378906  1198.378906    9  1198.378906  1198.378906  ...       9  320.617188  320.617188    NaN  torch.fx
-
-    [6 rows x 12 columns]
+              peak         mean    n        begin          end   gpu0_peak   gpu0_mean  gpu0_n  gpu0_begin    gpu0_end  nodes    export
+    0  1205.734375  1205.734375    7  1205.734375  1205.734375  320.617188  320.617188       7  320.617188  320.617188   12.0    script
+    1  1207.140625  1205.885817   65  1205.734375  1207.140625  320.617188  320.617188      65  320.617188  320.617188   12.0    dynamo
+    2  1207.296875  1207.296875  115  1207.296875  1207.296875  320.617188  320.617188     115  320.617188  320.617188   12.0    dynopt
+    3  1207.453125  1206.773438   10  1207.296875  1207.003906  320.617188  320.617188      10  320.617188  320.617188   12.0    cus_p0
+    4  1207.003906  1207.003906   12  1207.003906  1207.003906  320.617188  320.617188      12  320.617188  320.617188   12.0    cus_p2
+    5  1207.003906  1207.003906    8  1207.003906  1207.003906  320.617188  320.617188       8  320.617188  320.617188    NaN  torch.fx
 
 
 
@@ -685,12 +683,12 @@ The result.
  .. code-block:: none
 
          export      time       min       max     first      last       std  nodes
-    0    script  0.024858  0.019776  0.041435  0.041435  0.020556  0.008315     12
-    1    dynamo  0.662482  0.562481  0.906367  0.562481  0.569297  0.126159     12
-    2    dynopt  0.712589  0.591014  0.866628  0.866628  0.838182  0.117562     12
-    3    cus_p0  0.072044  0.063288  0.080061  0.063288  0.080061  0.005985     12
-    4    cus_p2  0.065629  0.058534  0.070385  0.069282  0.059859  0.005281     12
-    5  torch.fx  0.039650  0.036068  0.045128  0.045128  0.036480  0.003323     12
+    0    script  0.033972  0.014990  0.070871  0.034630  0.014990  0.019467     12
+    1    dynamo  0.618418  0.538938  0.886518  0.559904  0.541750  0.134426     12
+    2    dynopt  0.647099  0.538235  0.953636  0.538235  0.574879  0.154452     12
+    3    cus_p0  0.067274  0.058895  0.082806  0.065273  0.068685  0.008492     12
+    4    cus_p2  0.063566  0.055521  0.083253  0.083253  0.058996  0.010018     12
+    5  torch.fx  0.041029  0.038577  0.043159  0.043159  0.041635  0.001649     12
 
 
 
@@ -760,209 +758,209 @@ Exporter Profiling
 
  .. code-block:: none
 
-    profile custom0: <function export_cus_p0 at 0x72df5c4b37e0>
-             688418 function calls (675859 primitive calls) in 0.597 seconds
+    profile custom0: <function export_cus_p0 at 0x71fb08c90cc0>
+             690298 function calls (677639 primitive calls) in 0.639 seconds
 
        Ordered by: cumulative time
 
        ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        80/20    0.001    0.000    0.363    0.018 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/functional.py:1710(relu)
-         35/5    0.002    0.000    0.225    0.045 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1787(_call_impl)
-            5    0.000    0.000    0.223    0.045 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:1955(forward)
-            5    0.000    0.000    0.211    0.042 /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_201.py:191(forward)
-            5    0.001    0.000    0.181    0.036 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5311(to_onnx)
-         1425    0.004    0.000    0.150    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1548(__torch_function__)
-         1425    0.004    0.000    0.143    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1578(__torch_function__)
-            5    0.001    0.000    0.142    0.028 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6077(optimize)
-         2300    0.004    0.000    0.140    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:1100(__torch_function__)
-           60    0.001    0.000    0.127    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:947(handler)
-           60    0.006    0.000    0.125    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/utils.py:298(handle_dispatch_mode)
-            5    0.000    0.000    0.122    0.024 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6454(optimize_with_patterns)
-            5    0.001    0.000    0.122    0.024 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1373(optimize)
-       300/60    0.000    0.000    0.117    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py:24(wrapper)
-           60    0.000    0.000    0.117    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1671(__torch_dispatch__)
-           60    0.002    0.000    0.116    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1001(proxy_call)
-        40/10    0.000    0.000    0.109    0.011 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_jit_internal.py:609(fn)
-           25    0.007    0.000    0.096    0.004 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1186(_optimize_matching_step)
-         1770    0.024    0.000    0.086    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:148(enumerate_matches)
-         20/5    0.001    0.000    0.083    0.017 {built-in method torch.flatten}
-          115    0.000    0.000    0.067    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:282(create_proxy)
-      390/130    0.001    0.000    0.067    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/overrides.py:1682(handle_torch_function)
-          120    0.001    0.000    0.063    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:2173(create_node)
-          120    0.000    0.000    0.062    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1312(create_node)
-          120    0.002    0.000    0.060    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:154(create_node)
-      340/175    0.000    0.000    0.052    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:835(__call__)
-            5    0.000    0.000    0.049    0.010 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:520(_produce_aten_artifact)
-           65    0.000    0.000    0.045    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:785(track_tensor_tree)
-       120/65    0.000    0.000    0.044    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:807(wrap_with_proxy)
-           30    0.000    0.000    0.044    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:815(recompile)
-     1685/265    0.004    0.000    0.043    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1258(unflatten)
-          120    0.001    0.000    0.043    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:174(summary)
-          240    0.000    0.000    0.041    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1376(__torch_dispatch__)
-          240    0.002    0.000    0.041    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2119(dispatch)
-            5    0.001    0.000    0.040    0.008 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5021(process)
-          120    0.001    0.000    0.039    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py:185(run_node)
-           20    0.000    0.000    0.039    0.002 {built-in method torch.relu}
-           95    0.001    0.000    0.038    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1469(_cached_dispatch_impl)
-    3270/3250    0.002    0.000    0.038    0.000 {built-in method builtins.next}
-           15    0.000    0.000    0.036    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:130(forward)
-        60/15    0.000    0.000    0.036    0.002 {built-in method torch._C._nn.linear}
-          185    0.000    0.000    0.035    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1437(tree_map)
-          115    0.001    0.000    0.034    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:676(set_meta)
-           30    0.000    0.000    0.033    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1744(python_code)
-           60    0.001    0.000    0.029    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py:1435(call_function)
-            5    0.001    0.000    0.027    0.005 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:4563(_build_initializers)
-          120    0.006    0.000    0.027    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:253(_extract_symbolized_tb)
-          205    0.004    0.000    0.026    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:4021(make_node)
-          185    0.001    0.000    0.025    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder_opset.py:115(make_node)
-           10    0.000    0.000    0.025    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/conv.py:552(forward)
-           10    0.000    0.000    0.025    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/conv.py:534(_conv_forward)
-        40/10    0.000    0.000    0.025    0.002 {built-in method torch.conv2d}
-            5    0.000    0.000    0.025    0.005 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:635(create_args_for_root)
-           30    0.000    0.000    0.025    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1823(_python_code)
-           50    0.002    0.000    0.025    0.000 /home/xadupre/github/onnx-diagnostic/onnx_diagnostic/helpers/mini_onnx_builder.py:17(proto_from_array)
-           30    0.003    0.000    0.024    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:432(_gen_python_code)
+        80/20    0.001    0.000    0.397    0.020 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/functional.py:1710(relu)
+         35/5    0.000    0.000    0.246    0.049 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1782(_call_impl)
+            5    0.000    0.000    0.243    0.049 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:2001(forward)
+            5    0.000    0.000    0.224    0.045 /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_201.py:191(forward)
+            5    0.001    0.000    0.183    0.037 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5326(to_onnx)
+         1425    0.005    0.000    0.159    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1566(__torch_function__)
+         1425    0.004    0.000    0.150    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1596(__torch_function__)
+         2300    0.005    0.000    0.147    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:1112(__torch_function__)
+            5    0.001    0.000    0.140    0.028 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6098(optimize)
+           60    0.001    0.000    0.134    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:947(handler)
+           60    0.010    0.000    0.131    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/utils.py:298(handle_dispatch_mode)
+        40/10    0.000    0.000    0.129    0.013 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_jit_internal.py:609(fn)
+       300/60    0.001    0.000    0.120    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py:24(wrapper)
+           60    0.000    0.000    0.120    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1689(__torch_dispatch__)
+            5    0.000    0.000    0.119    0.024 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6475(optimize_with_patterns)
+           60    0.002    0.000    0.119    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1012(proxy_call)
+            5    0.001    0.000    0.119    0.024 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1431(optimize)
+           25    0.007    0.000    0.094    0.004 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1244(_optimize_matching_step)
+         20/5    0.000    0.000    0.091    0.018 {built-in method torch.flatten}
+         1820    0.023    0.000    0.084    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:148(enumerate_matches)
+      390/130    0.002    0.000    0.071    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/overrides.py:1683(handle_torch_function)
+          115    0.000    0.000    0.071    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:286(create_proxy)
+          120    0.001    0.000    0.066    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:2278(create_node)
+          120    0.001    0.000    0.065    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1328(create_node)
+     1685/265    0.005    0.000    0.063    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1261(unflatten)
+          120    0.002    0.000    0.062    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:154(create_node)
+      340/175    0.000    0.000    0.054    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:835(__call__)
+           65    0.000    0.000    0.049    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:796(track_tensor_tree)
+       120/65    0.000    0.000    0.048    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:818(wrap_with_proxy)
+            5    0.000    0.000    0.047    0.009 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:541(_produce_aten_artifact)
+          120    0.001    0.000    0.046    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:173(summary)
+    3290/3270    0.003    0.000    0.044    0.000 {built-in method builtins.next}
+          185    0.000    0.000    0.043    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1440(tree_map)
+          240    0.000    0.000    0.043    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1383(__torch_dispatch__)
+          240    0.002    0.000    0.042    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2126(dispatch)
+           30    0.001    0.000    0.042    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:855(recompile)
+           20    0.000    0.000    0.042    0.002 {built-in method torch.relu}
+           95    0.001    0.000    0.039    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1476(_cached_dispatch_impl)
+            5    0.001    0.000    0.039    0.008 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5036(process)
+          120    0.001    0.000    0.037    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py:186(run_node)
+          115    0.001    0.000    0.037    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:687(set_meta)
+           10    0.000    0.000    0.033    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/conv.py:552(forward)
+           10    0.000    0.000    0.033    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/conv.py:534(_conv_forward)
+        40/10    0.000    0.000    0.033    0.003 {built-in method torch.conv2d}
+           15    0.000    0.000    0.033    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:130(forward)
+        60/15    0.000    0.000    0.033    0.002 {built-in method torch._C._nn.linear}
+           55    0.001    0.000    0.031    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:877(meta_tensor)
+           30    0.000    0.000    0.031    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1795(python_code)
+            5    0.001    0.000    0.030    0.006 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:4578(_build_initializers)
+            5    0.000    0.000    0.029    0.006 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:642(create_args_for_root)
+           10    0.000    0.000    0.029    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:2125(tree_map_with_path)
+    1555/1545    0.001    0.000    0.029    0.000 /usr/lib/python3.12/contextlib.py:132(__enter__)
+          120    0.006    0.000    0.028    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:252(_extract_symbolized_tb)
+            5    0.000    0.000    0.028    0.006 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:381(make_fake_inputs)
+          440    0.000    0.000    0.028    0.000 {method 'extend' of 'list' objects}
+           60    0.000    0.000    0.028    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:708(<genexpr>)
+           55    0.000    0.000    0.028    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:705(proxy_placeholder)
+           55    0.000    0.000    0.028    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:911(_proxy_placeholder)
+           55    0.002    0.000    0.027    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:293(__exit__)
+           60    0.001    0.000    0.027    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py:1436(call_function)
+           55    0.000    0.000    0.027    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:915(replace_ph)
+           50    0.002    0.000    0.026    0.001 /home/xadupre/github/onnx-diagnostic/onnx_diagnostic/helpers/mini_onnx_builder.py:17(proto_from_array)
+           20    0.000    0.000    0.026    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:2157(<genexpr>)
+          205    0.004    0.000    0.024    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:4036(make_node)
           720    0.001    0.000    0.024    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:994(match)
-          440    0.000    0.000    0.024    0.000 {method 'extend' of 'list' objects}
-           60    0.000    0.000    0.024    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:701(<genexpr>)
-           55    0.000    0.000    0.024    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:698(proxy_placeholder)
-           55    0.000    0.000    0.023    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:903(_proxy_placeholder)
+          185    0.001    0.000    0.024    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder_opset.py:116(make_node)
+           30    0.000    0.000    0.024    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1876(_python_code)
+           30    0.003    0.000    0.023    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:438(_gen_python_code)
           720    0.001    0.000    0.023    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:383(_get_match_pattern)
-           55    0.000    0.000    0.023    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:907(replace_ph)
-         30/6    0.001    0.000    0.022    0.004 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:1868(__call__)
-           55    0.000    0.000    0.022    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:877(meta_tensor)
-    1545/1535    0.001    0.000    0.022    0.000 /usr/lib/python3.12/contextlib.py:132(__enter__)
-           10    0.000    0.000    0.022    0.002 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:326(_build_pattern)
-         25/5    0.001    0.000    0.021    0.004 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:3040(from_tensor)
-        40/10    0.000    0.000    0.020    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/functional.py:810(_max_pool2d)
-    101915/100715    0.017    0.000    0.020    0.000 {built-in method builtins.isinstance}
-         25/5    0.000    0.000    0.019    0.004 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:357(from_real_tensor)
-         8615    0.003    0.000    0.019    0.000 /usr/lib/python3.12/traceback.py:265(__init__)
-           55    0.001    0.000    0.019    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:293(__exit__)
-           10    0.000    0.000    0.019    0.002 {built-in method torch.max_pool2d}
-           50    0.019    0.000    0.019    0.000 {method 'clone' of 'torch._C.TensorBase' objects}
-          115    0.001    0.000    0.019    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/passes/shape_prop.py:40(_extract_tensor_metadata)
-           95    0.001    0.000    0.019    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1563(_cache_key)
-    1545/1535    0.001    0.000    0.018    0.000 /usr/lib/python3.12/contextlib.py:141(__exit__)
-           95    0.000    0.000    0.018    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2048(_output_from_cache_entry)
-          105    0.002    0.000    0.017    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1975(_get_output_tensor_from_cache_entry)
-         8955    0.004    0.000    0.017    0.000 /usr/lib/python3.12/traceback.py:318(line)
-           10    0.000    0.000    0.017    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:2122(tree_map_with_path)
-       440/95    0.004    0.000    0.017    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1688(_prep_args_for_hash)
-            5    0.000    0.000    0.017    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:379(make_fake_inputs)
-           10    0.000    0.000    0.017    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:452(__init__)
-          375    0.001    0.000    0.017    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1366(tree_flatten)
-      185/155    0.001    0.000    0.016    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1976(__setattr__)
-          120    0.016    0.000    0.016    0.000 {built-in method torch._C._profiler.symbolize_tracebacks}
-     2345/375    0.004    0.000    0.016    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1374(helper)
-           10    0.000    0.000    0.015    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/passes/replace_with_hop_pass_util.py:160(_replace_with_hop_pass_helper)
-           10    0.000    0.000    0.015    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:571(graph)
-           20    0.000    0.000    0.014    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:2154(<genexpr>)
-          720    0.002    0.000    0.014    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:640(emit_node)
-          115    0.000    0.000    0.014    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:576(extract_val)
-          115    0.000    0.000    0.013    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:550(snapshot_fake)
-           15    0.002    0.000    0.013    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns/__init__.py:139(get_default_patterns)
-          115    0.002    0.000    0.013    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_impls.py:1425(fast_detach)
-         5765    0.012    0.000    0.012    0.000 {built-in method builtins.setattr}
-          275    0.003    0.000    0.012    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:722(__new__)
+           10    0.000    0.000    0.021    0.002 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:326(_build_pattern)
+          115    0.001    0.000    0.021    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/passes/shape_prop.py:40(_extract_tensor_metadata)
+        40/10    0.000    0.000    0.021    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/functional.py:810(_max_pool2d)
+         8615    0.003    0.000    0.021    0.000 /usr/lib/python3.12/traceback.py:265(__init__)
+    102540/101280    0.018    0.000    0.020    0.000 {built-in method builtins.isinstance}
+           95    0.001    0.000    0.020    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1570(_cache_key)
+           10    0.000    0.000    0.020    0.002 {built-in method torch.max_pool2d}
+         8955    0.005    0.000    0.019    0.000 /usr/lib/python3.12/traceback.py:318(line)
+           95    0.000    0.000    0.018    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2055(_output_from_cache_entry)
+         30/6    0.001    0.000    0.018    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:1875(__call__)
+           50    0.018    0.000    0.018    0.000 {method 'clone' of 'torch._C.TensorBase' objects}
+       440/95    0.004    0.000    0.018    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1695(_prep_args_for_hash)
+          105    0.002    0.000    0.018    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1982(_get_output_tensor_from_cache_entry)
+          120    0.017    0.000    0.017    0.000 {built-in method torch._C._profiler.symbolize_tracebacks}
+    1555/1545    0.001    0.000    0.017    0.000 /usr/lib/python3.12/contextlib.py:141(__exit__)
+         25/5    0.001    0.000    0.017    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:3047(from_tensor)
+          135    0.000    0.000    0.017    0.000 /usr/lib/python3.12/inspect.py:3308(signature)
+          135    0.000    0.000    0.016    0.000 /usr/lib/python3.12/inspect.py:3050(from_callable)
+      265/135    0.002    0.000    0.016    0.000 /usr/lib/python3.12/inspect.py:2470(_signature_from_callable)
+          375    0.001    0.000    0.016    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1369(tree_flatten)
+      215/175    0.001    0.000    0.016    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1971(__setattr__)
+           15    0.002    0.000    0.016    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns/__init__.py:141(get_default_patterns)
+           10    0.000    0.000    0.016    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:492(__init__)
+           55    0.003    0.000    0.016    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:289(__enter__)
+         25/5    0.001    0.000    0.015    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:357(from_real_tensor)
+     2345/375    0.004    0.000    0.015    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1377(helper)
+           10    0.000    0.000    0.015    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/passes/replace_with_hop_pass_util.py:160(_replace_with_hop_pass_helper)
+           10    0.000    0.000    0.015    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:611(graph)
+          115    0.000    0.000    0.014    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:587(extract_val)
+          115    0.000    0.000    0.014    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:561(snapshot_fake)
+          115    0.002    0.000    0.014    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_impls.py:1442(fast_detach)
+          275    0.004    0.000    0.013    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:722(__new__)
+         1215    0.004    0.000    0.013    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:124(__init__)
+          720    0.002    0.000    0.013    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:647(emit_node)
+         5795    0.013    0.000    0.013    0.000 {built-in method builtins.setattr}
+          115    0.000    0.000    0.013    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:431(is_contiguous_for_memory_format_or_false)
+          115    0.000    0.000    0.013    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:394(is_contiguous_for_memory_format)
+          135    0.002    0.000    0.012    0.000 /usr/lib/python3.12/inspect.py:2366(_signature_from_function)
+         8615    0.005    0.000    0.012    0.000 /usr/lib/python3.12/linecache.py:26(getline)
             5    0.000    0.000    0.012    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:715(apply_runtime_assertion_pass)
-          135    0.000    0.000    0.012    0.000 /usr/lib/python3.12/inspect.py:3308(signature)
-          115    0.000    0.000    0.012    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:431(is_contiguous_for_memory_format_or_false)
-          135    0.000    0.000    0.011    0.000 /usr/lib/python3.12/inspect.py:3050(from_callable)
-          115    0.000    0.000    0.011    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:394(is_contiguous_for_memory_format)
-      265/135    0.002    0.000    0.011    0.000 /usr/lib/python3.12/inspect.py:2470(_signature_from_callable)
-         8615    0.005    0.000    0.011    0.000 /usr/lib/python3.12/linecache.py:26(getline)
-         1185    0.003    0.000    0.011    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns_api.py:124(__init__)
-          115    0.001    0.000    0.011    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:297(is_contiguous)
-           55    0.002    0.000    0.011    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:289(__enter__)
+          115    0.001    0.000    0.012    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:297(is_contiguous)
+           55    0.003    0.000    0.011    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:278(describe_tensor)
+            5    0.000    0.000    0.011    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:464(<lambda>)
+          115    0.002    0.000    0.011    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:715(track_tensor)
+         1350    0.001    0.000    0.011    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:195(is_sparse_any)
             5    0.000    0.000    0.010    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:1052(__init__)
-           25    0.001    0.000    0.010    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1288(_optimize_apply_step)
-            5    0.000    0.000    0.010    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:977(placeholder_naming_pass)
-           30    0.000    0.000    0.010    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:99(_forward_from_src)
-           30    0.000    0.000    0.010    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:105(_method_from_src)
-          240    0.000    0.000    0.010    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:7708(_make_node_set_type_shape)
-           30    0.000    0.000    0.010    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:94(_exec_with_source)
-          115    0.002    0.000    0.010    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:704(track_tensor)
-         1350    0.001    0.000    0.010    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:195(is_sparse_any)
-           15    0.000    0.000    0.009    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:64(__init__)
-          240    0.001    0.000    0.009    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xshape/shape_type_compute.py:1574(set_shape_type_op_any)
+            5    0.000    0.000    0.010    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:163(fakify)
+           15    0.000    0.000    0.010    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:67(__init__)
+         4120    0.002    0.000    0.009    0.000 <frozen _collections_abc>:804(get)
+           25    0.001    0.000    0.009    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1346(_optimize_apply_step)
+            5    0.000    0.000    0.009    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1012(placeholder_naming_pass)
+           10    0.000    0.000    0.009    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/frontend_utils.py:200(_detect_attribute_assignment)
+           10    0.001    0.000    0.009    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6665(constant_folding)
+          145    0.002    0.000    0.009    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1055(_flatten_into)
+            5    0.000    0.000    0.009    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:501(_replace_unbacked_bindings)
+           30    0.000    0.000    0.009    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:109(_forward_from_src)
+           30    0.000    0.000    0.009    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:115(_method_from_src)
+          115    0.001    0.000    0.009    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:252(check_contiguous_sizes_strides)
+           30    0.000    0.000    0.009    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:104(_exec_with_source)
             5    0.000    0.000    0.009    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_lazy_graph_module.py:57(_make_graph_module)
-           30    0.009    0.000    0.009    0.000 {built-in method builtins.compile}
-            5    0.000    0.000    0.009    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:480(_replace_unbacked_bindings)
-          145    0.002    0.000    0.009    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1048(_flatten_into)
-           10    0.001    0.000    0.009    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6633(constant_folding)
-          420    0.002    0.000    0.009    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:1811(set_shape)
-        50/40    0.000    0.000    0.008    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:1150(compute_constant)
+          240    0.000    0.000    0.008    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:7752(_make_node_set_type_shape)
+        50/40    0.000    0.000    0.008    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:1155(compute_constant)
+           15    0.000    0.000    0.008    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/optimization_options.py:62(__init__)
         50/40    0.001    0.000    0.008    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xshape/_inference_runtime.py:291(compute_constant)
-         1675    0.003    0.000    0.008    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/node.py:870(__setattr__)
-            5    0.000    0.000    0.008    0.002 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/_aten_functions.py:3460(aten_flatten_using_ints)
-     1050/115    0.004    0.000    0.008    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py:1122(_free_unbacked_symbols_with_path)
-         4015    0.002    0.000    0.008    0.000 <frozen _collections_abc>:804(get)
-          115    0.001    0.000    0.008    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_prims_common/__init__.py:252(check_contiguous_sizes_strides)
-            5    0.000    0.000    0.008    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/passes/replace_set_grad_with_hop_pass.py:110(replace_set_grad_with_hop_pass)
-           30    0.000    0.000    0.008    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:794(apply_match)
+     1050/115    0.004    0.000    0.008    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/symbolic_shapes.py:1151(_free_unbacked_symbols_with_path)
+           30    0.008    0.000    0.008    0.000 {built-in method builtins.compile}
+            5    0.000    0.000    0.008    0.002 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/__init__.py:101(get_pattern_list)
+          240    0.001    0.000    0.008    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xshape/shape_type_compute.py:1595(set_shape_type_op_any)
+            5    0.000    0.000    0.008    0.002 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/__init__.py:14(get_pattern)
+         1675    0.003    0.000    0.008    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/node.py:854(__setattr__)
             5    0.000    0.000    0.008    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:1674(_create_graph_module_for_export)
-          135    0.003    0.000    0.007    0.000 /usr/lib/python3.12/inspect.py:2366(_signature_from_function)
-           55    0.002    0.000    0.007    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:278(describe_tensor)
+            5    0.000    0.000    0.008    0.002 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/_aten_functions.py:3463(aten_flatten_using_ints)
+            5    0.000    0.000    0.008    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/passes/replace_set_grad_with_hop_pass.py:110(replace_set_grad_with_hop_pass)
+          420    0.002    0.000    0.007    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:1826(set_shape)
             5    0.000    0.000    0.007    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/passes/replace_autocast_with_hop_pass.py:178(replace_autocast_with_hop_pass)
-           60    0.001    0.000    0.007    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1799(override_node_repr)
-            5    0.000    0.000    0.007    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:454(<lambda>)
-    1675/1590    0.003    0.000    0.007    0.000 {built-in method builtins.all}
-           50    0.003    0.000    0.007    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6569(remove_unused)
-           15    0.000    0.000    0.007    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/_aten_functions.py:6123(aten_linear)
-      510/210    0.001    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:862(sym_max)
+           30    0.000    0.000    0.007    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:795(apply_match)
+           50    0.004    0.000    0.007    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6601(remove_unused)
+         4120    0.004    0.000    0.007    0.000 <frozen os>:680(__getitem__)
+      510/210    0.001    0.000    0.007    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/__init__.py:879(sym_max)
+          275    0.006    0.000    0.007    0.000 /usr/lib/python3.12/functools.py:35(update_wrapper)
+           60    0.001    0.000    0.007    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1851(override_node_repr)
            10    0.001    0.000    0.006    0.001 {built-in method torch._ops.aten.}
-            5    0.000    0.000    0.006    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:161(fakify)
-            5    0.000    0.000    0.006    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns/onnx_functions.py:137(match_pattern)
-         4015    0.003    0.000    0.006    0.000 <frozen os>:680(__getitem__)
-           35    0.002    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6900(remove_identity_nodes)
-          250    0.001    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xshape/_inference_runtime.py:86(_make_node_set_type_shape_constant)
-          110    0.001    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1130(_check_graph)
-          435    0.001    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:3804(verify_shape)
-           15    0.000    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/optimization_options.py:62(__init__)
-          145    0.002    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1070(extract_tensor_metadata)
-           55    0.000    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py:501(placeholder)
-          845    0.001    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1097(__init__)
-            5    0.000    0.000    0.005    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/__init__.py:101(get_pattern_list)
-            5    0.000    0.000    0.005    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/__init__.py:14(get_pattern)
-           10    0.000    0.000    0.005    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1111(patch_method)
-            5    0.000    0.000    0.005    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5272(_update_metadata_props)
-           90    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:2718(add_initializer)
-         3740    0.002    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1034(_get_node_type)
+          145    0.002    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1077(extract_tensor_metadata)
+           15    0.000    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/_aten_functions.py:6127(aten_linear)
+           35    0.002    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6935(remove_identity_nodes)
+           10    0.000    0.000    0.006    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1119(patch_method)
+         3740    0.002    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1034(_get_node_type)
+          100    0.000    0.000    0.006    0.000 /usr/lib/python3.12/contextlib.py:272(contextmanager)
+           10    0.000    0.000    0.006    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1087(patch)
+         2750    0.001    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1046(tree_is_leaf)
+            5    0.000    0.000    0.006    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5287(_update_metadata_props)
+           55    0.000    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/torch_interpreter/interpreter.py:502(placeholder)
+          110    0.001    0.000    0.006    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1188(_check_graph)
+            5    0.000    0.000    0.006    0.001 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/patterns/onnx_functions.py:133(match_pattern)
+      385/235    0.001    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1292(create_arg)
+         1570    0.002    0.000    0.006    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:190(is_sparse_compressed)
+        29310    0.006    0.000    0.006    0.000 {method 'append' of 'list' objects}
+    1675/1590    0.002    0.000    0.005    0.000 {built-in method builtins.all}
+           55    0.001    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:394(mk_fake_tensor)
+           90    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:2733(add_initializer)
+          250    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xshape/_inference_runtime.py:86(_make_node_set_type_shape_constant)
          1375    0.002    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:632(__set__)
-           10    0.000    0.000    0.005    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1079(patch)
-           30    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:7239(insert_and_remove_nodes)
-         2750    0.001    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1046(tree_is_leaf)
-          590    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:3215(verify_dynamic_shape)
          8615    0.004    0.000    0.005    0.000 /usr/lib/python3.12/linecache.py:36(getlines)
-    38805/38755    0.005    0.000    0.005    0.000 {built-in method builtins.len}
-        29255    0.005    0.000    0.005    0.000 {method 'append' of 'list' objects}
-            5    0.005    0.001    0.005    0.001 {built-in method _io.open}
-          180    0.002    0.000    0.005    0.000 {method 'extend' of 'google._upb._message.RepeatedCompositeContainer' objects}
-         1570    0.002    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:190(is_sparse_compressed)
-           10    0.000    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1164(_new_patcher)
-            5    0.000    0.000    0.005    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1132(revert_all_patches)
-      385/235    0.001    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1276(create_arg)
-           10    0.000    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1076(revert)
-          110    0.004    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1029(_check_graph_nodes)
-          250    0.001    0.000    0.005    0.000 /home/xadupre/github/onnx/onnx/helper.py:132(make_node)
-           50    0.003    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:143(_build)
-          120    0.003    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:194(extract)
-        24555    0.005    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:204(is_used)
-           10    0.000    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/frontend_utils.py:190(_detect_attribute_assignment)
-           95    0.001    0.000    0.004    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6789(_refresh_values_cache)
-         1325    0.002    0.000    0.004    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:845(make_key)
+          180    0.003    0.000    0.005    0.000 {method 'extend' of 'google._upb._message.RepeatedCompositeContainer' objects}
+          110    0.000    0.000    0.005    0.000 /usr/lib/python3.12/contextlib.py:511(enter_context)
+      365/295    0.001    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/recording.py:247(wrapper)
+    39100/39050    0.005    0.000    0.005    0.000 {built-in method builtins.len}
+          265    0.004    0.000    0.005    0.000 /usr/lib/python3.12/inspect.py:2998(__init__)
+          250    0.001    0.000    0.005    0.000 /home/xadupre/github/onnx/onnx/helper.py:133(make_node)
+          110    0.004    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:1087(_check_graph_nodes)
+         1350    0.002    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:176(is_sparse_coo)
+           10    0.000    0.000    0.005    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1172(_new_patcher)
+           95    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:6824(_refresh_values_cache)
+            5    0.000    0.000    0.005    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1140(revert_all_patches)
+         1325    0.002    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:847(make_key)
+          435    0.001    0.000    0.005    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:3819(verify_shape)
+          690    0.003    0.000    0.005    0.000 /usr/lib/python3.12/inspect.py:2712(__init__)
+           50    0.003    0.000    0.004    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xoptim/graph_builder_optim.py:144(_build)
            20    0.001    0.000    0.004    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/helpers.py:232(string_sig)
-          845    0.002    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1108(__post_init__)
-           55    0.001    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:394(mk_fake_tensor)
-         2330    0.001    0.000    0.004    0.000 {built-in method builtins.repr}
-      365/295    0.001    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/recording.py:247(wrapper)
-           60    0.000    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:363(_call_method_with_signature_check)
-         2370    0.002    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:158(create_name)
-         1350    0.002    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:176(is_sparse_coo)
-           65    0.001    0.000    0.004    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5961(_check)
+           10    0.000    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:1084(revert)
+      385/235    0.001    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:367(create_arg)
+         1555    0.002    0.000    0.004    0.000 /usr/lib/python3.12/contextlib.py:299(helper)
+          120    0.001    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1331(create_node)
+           65    0.000    0.000    0.004    0.000 /home/xadupre/github/experimental-experiment/experimental_experiment/xbuilder/graph_builder.py:5982(_check)
+         3745    0.003    0.000    0.004    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:680(is_namedtuple_class)
+        11320    0.003    0.000    0.004    0.000 {method 'get' of 'dict' objects}
     done.
-    profile custom2: <function export_cus_p2 at 0x72dfa638eca0>
+    profile custom2: <function export_cus_p2 at 0x71fb7befa480>
     done.
 
 
@@ -990,209 +988,209 @@ Same with dynamo-exporter.
 
  .. code-block:: none
 
-    profile dynamo: <function export_dynamo at 0x72df5c351800>
-             10238404 function calls (10044195 primitive calls) in 6.716 seconds
+    profile dynamo: <function export_dynamo at 0x71fb08891d00>
+             10478437 function calls (10280463 primitive calls) in 6.264 seconds
 
        Ordered by: cumulative time
 
        ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-            5    0.017    0.003    3.023    0.605 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_registration.py:159(from_torchlib)
-         2220    0.018    0.000    2.094    0.001 /home/xadupre/github/onnxscript/onnxscript/values.py:630(function_ir)
-            5    0.045    0.009    1.811    0.362 /home/xadupre/github/onnxscript/onnxscript/_framework_apis/torch_2_5.py:84(get_torchlib_ops)
-           10    0.115    0.011    1.160    0.116 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:191(_override_composite_implicit_decomp)
-         2220    0.012    0.000    1.156    0.001 /home/xadupre/github/onnxscript/onnxscript/_internal/ast_utils.py:13(get_src_and_ast)
-           10    0.001    0.000    0.943    0.094 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1318(_collect_all_valid_cia_ops)
-          270    0.009    0.000    0.941    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1301(_collect_all_valid_cia_ops_for_namespace)
-          270    0.302    0.001    0.864    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1236(_materialize_cpp_cia_ops)
-         2220    0.004    0.000    0.851    0.000 /home/xadupre/github/onnxscript/onnxscript/converter.py:1458(translate_function_signature)
-         2220    0.052    0.000    0.842    0.000 /home/xadupre/github/onnxscript/onnxscript/converter.py:1373(_translate_function_signature_common)
-         2525    0.021    0.000    0.819    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_registration.py:61(__post_init__)
-         2220    0.003    0.000    0.802    0.000 /usr/lib/python3.12/inspect.py:1272(getsource)
-         2220    0.069    0.000    0.796    0.000 /usr/lib/python3.12/inspect.py:1251(getsourcelines)
-         2525    0.059    0.000    0.788    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_schemas.py:432(from_function)
-        110/6    0.002    0.000    0.692    0.115 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:1868(__call__)
-         35/5    0.001    0.000    0.690    0.138 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:3040(from_tensor)
-        101/5    0.003    0.000    0.690    0.138 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:357(from_real_tensor)
-         2220    0.169    0.000    0.599    0.000 /usr/lib/python3.12/inspect.py:1232(getblock)
-        64640    0.519    0.000    0.571    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:131(inner)
-    88695/15685    0.115    0.000    0.548    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:146(is_value_type)
-            5    0.006    0.001    0.538    0.108 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_decomp.py:39(create_onnx_friendly_decomposition_table)
-            5    0.005    0.001    0.513    0.103 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:275(_split_decomp_table_to_cia_and_python_decomp)
-        23080    0.504    0.000    0.504    0.000 {built-in method builtins.compile}
-            5    0.000    0.000    0.492    0.098 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:137(items)
-            5    0.000    0.000    0.492    0.098 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:154(_materialize_if_needed)
-            5    0.001    0.000    0.492    0.098 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:141(materialize)
-        80/20    0.001    0.000    0.444    0.022 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/functional.py:1710(relu)
-        64640    0.059    0.000    0.434    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:122(py_impl)
-       263165    0.220    0.000    0.380    0.000 /usr/lib/python3.12/tokenize.py:569(_generate_tokens_from_c_tokenizer)
-       130300    0.141    0.000    0.377    0.000 <frozen _collections_abc>:469(__new__)
-         3550    0.007    0.000    0.355    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1548(__torch_function__)
-    1728605/1721175    0.280    0.000    0.354    0.000 {built-in method builtins.isinstance}
-         9080    0.006    0.000    0.353    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:187(is_valid_type)
-       825270    0.301    0.000    0.305    0.000 {built-in method builtins.getattr}
-         2240    0.009    0.000    0.297    0.000 /usr/lib/python3.12/ast.py:34(parse)
-        45/15    0.001    0.000    0.283    0.019 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1787(_call_impl)
-    27870/4195    0.089    0.000    0.283    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_schemas.py:268(_get_allowed_types_from_type_annotation)
-            5    0.000    0.000    0.278    0.056 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:1955(forward)
-         2525    0.035    0.000    0.263    0.000 /usr/lib/python3.12/typing.py:2186(get_type_hints)
-            5    0.000    0.000    0.249    0.050 /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_201.py:191(forward)
-          110    0.001    0.000    0.249    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/functional_utils.py:33(to_fun)
-          230    0.002    0.000    0.235    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1671(__torch_dispatch__)
-          120    0.005    0.000    0.226    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1001(proxy_call)
-        88695    0.057    0.000    0.224    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:138(_is_tensor_type)
-          230    0.065    0.000    0.224    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/functional_tensor.py:359(__torch_dispatch__)
-          960    0.010    0.000    0.217    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2119(dispatch)
-         6605    0.003    0.000    0.204    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:183(is_attr_type)
-          440    0.003    0.000    0.202    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1469(_cached_dispatch_impl)
-       135/10    0.001    0.000    0.200    0.020 /home/xadupre/github/ir-py/src/onnx_ir/passes/_pass_infra.py:111(__call__)
-        20/10    0.000    0.000    0.200    0.020 /home/xadupre/github/ir-py/src/onnx_ir/passes/_pass_infra.py:232(call)
-            5    0.000    0.000    0.189    0.038 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_onnx_program.py:315(optimize)
-            5    0.000    0.000    0.189    0.038 /home/xadupre/github/onnxscript/onnxscript/_framework_apis/torch_2_8.py:27(optimize)
-            5    0.000    0.000    0.189    0.038 /home/xadupre/github/onnxscript/onnxscript/optimizer/_optimizer.py:17(optimize_ir)
-         1425    0.004    0.000    0.182    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1578(__torch_function__)
-            5    0.000    0.000    0.180    0.036 /home/xadupre/github/ir-py/src/onnx_ir/passes/_pass_infra.py:273(call)
-         2300    0.005    0.000    0.177    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:1100(__torch_function__)
-    10575/759    0.009    0.000    0.175    0.000 {built-in method builtins.next}
-           95    0.002    0.000    0.172    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:815(recompile)
-     4715/365    0.004    0.000    0.171    0.000 /usr/lib/python3.12/contextlib.py:132(__enter__)
-           60    0.001    0.000    0.165    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:947(handler)
-       129280    0.094    0.000    0.164    0.000 <frozen _collections_abc>:511(_is_param_expr)
-           65    0.008    0.000    0.162    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/utils.py:298(handle_dispatch_mode)
-       260945    0.085    0.000    0.160    0.000 /usr/lib/python3.12/collections/__init__.py:447(_make)
-        91755    0.046    0.000    0.155    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:85(_remove_annotation)
-        11165    0.021    0.000    0.151    0.000 /home/xadupre/github/onnxscript/onnxscript/converter.py:444(_eval_constant_expr)
-          270    0.151    0.001    0.151    0.001 {built-in method torch._C._dispatch_get_registrations_for_dispatch_key}
-         2765    0.002    0.000    0.138    0.000 /usr/lib/python3.12/inspect.py:3308(signature)
-           70    0.001    0.000    0.136    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/utils.py:36(autograd_not_implemented_inner)
-        40/10    0.000    0.000    0.136    0.014 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_jit_internal.py:609(fn)
-         2765    0.003    0.000    0.135    0.000 /usr/lib/python3.12/inspect.py:3050(from_callable)
-    2995/2765    0.020    0.000    0.132    0.000 /usr/lib/python3.12/inspect.py:2470(_signature_from_callable)
-       130430    0.074    0.000    0.131    0.000 /usr/lib/python3.12/typing.py:2310(get_origin)
-           95    0.001    0.000    0.127    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1744(python_code)
-           10    0.000    0.000    0.122    0.012 /home/xadupre/github/onnxscript/onnxscript/rewriter/__init__.py:78(call)
-           10    0.000    0.000    0.122    0.012 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:752(apply_to_model)
-         2220    0.020    0.000    0.117    0.000 /usr/lib/python3.12/inspect.py:1063(findsource)
-           10    0.003    0.000    0.115    0.012 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:626(_apply_to_graph_or_function)
-         6300    0.005    0.000    0.112    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:296(try_rewrite)
-          230    0.001    0.000    0.108    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:282(create_proxy)
-    47525/47475    0.020    0.000    0.107    0.000 {built-in method builtins.repr}
-         6560    0.003    0.000    0.106    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1222(_is_preservable_cia_op)
-        36485    0.020    0.000    0.106    0.000 /home/xadupre/github/ir-py/src/onnx_ir/_core.py:2021(__hash__)
-         6300    0.006    0.000    0.103    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:94(match)
-       504040    0.102    0.000    0.102    0.000 {method 'split' of 'str' objects}
-          240    0.002    0.000    0.101    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:2173(create_node)
-            5    0.000    0.000    0.100    0.020 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_fx_passes.py:22(insert_type_promotion_nodes)
-         20/5    0.000    0.000    0.099    0.020 {built-in method torch.flatten}
-          240    0.001    0.000    0.099    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1312(create_node)
-    21735/9580    0.018    0.000    0.099    0.000 /usr/lib/python3.12/typing.py:406(_eval_type)
-    1103175/1102635    0.098    0.000    0.098    0.000 {built-in method builtins.len}
-         9580    0.011    0.000    0.097    0.000 /usr/lib/python3.12/typing.py:885(__init__)
-           95    0.001    0.000    0.097    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1823(_python_code)
-            5    0.000    0.000    0.096    0.019 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/fx/_pass.py:227(run)
-            5    0.000    0.000    0.096    0.019 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/fx/passes/type_promotion.py:1650(_run)
-           95    0.010    0.000    0.096    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:432(_gen_python_code)
-          120    0.001    0.000    0.094    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/fx/passes/type_promotion.py:1570(run_node)
-          240    0.004    0.000    0.093    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:154(create_node)
-         9580    0.020    0.000    0.092    0.000 /usr/lib/python3.12/typing.py:909(_evaluate)
-         6560    0.050    0.000    0.090    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1270(_check_valid_to_preserve)
-         2765    0.034    0.000    0.089    0.000 /usr/lib/python3.12/inspect.py:2366(_signature_from_function)
-      510/250    0.003    0.000    0.089    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/overrides.py:1682(handle_torch_function)
-         6300    0.009    0.000    0.088    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_matcher.py:345(match)
-    17155/540    0.026    0.000    0.081    0.000 /usr/lib/python3.12/copy.py:118(deepcopy)
-          980    0.001    0.000    0.081    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/interpreter.py:231(_set_current_node)
-    136120/136105    0.037    0.000    0.081    0.000 {built-in method builtins.any}
-          665    0.003    0.000    0.080    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/traceback.py:68(__init__)
-          130    0.000    0.000    0.079    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:785(track_tensor_tree)
-          440    0.004    0.000    0.079    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1563(_cache_key)
-           10    0.001    0.000    0.078    0.008 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:520(_produce_aten_artifact)
-          980    0.002    0.000    0.078    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/traceback.py:378(set_current_meta)
-          170    0.003    0.000    0.077    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:877(meta_tensor)
-      240/130    0.001    0.000    0.077    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:807(wrap_with_proxy)
-       396270    0.076    0.000    0.076    0.000 {built-in method __new__ of type object at 0xa44b40}
-     1905/535    0.002    0.000    0.075    0.000 /usr/lib/python3.12/copy.py:191(_deepcopy_list)
-          365    0.002    0.000    0.072    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2048(_output_from_cache_entry)
-          385    0.007    0.000    0.070    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1975(_get_output_tensor_from_cache_entry)
-     1560/730    0.006    0.000    0.070    0.000 /usr/lib/python3.12/copy.py:247(_reconstruct)
-     1710/440    0.015    0.000    0.070    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1688(_prep_args_for_hash)
-        40100    0.031    0.000    0.068    0.000 /home/xadupre/github/ir-py/src/onnx_ir/_core.py:2029(__repr__)
-            5    0.000    0.000    0.067    0.013 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:1386(module)
-            5    0.001    0.000    0.067    0.013 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:746(_unlift_exported_program_lifted_states)
-        86960    0.029    0.000    0.065    0.000 {built-in method builtins.issubclass}
-          510    0.004    0.000    0.064    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1647(tree_map_only)
-          180    0.001    0.000    0.064    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:174(summary)
-         6160    0.005    0.000    0.062    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_matcher.py:286(_match_single_output_node)
-     1390/560    0.021    0.000    0.062    0.000 /usr/lib/python3.12/copy.py:217(_deepcopy_dict)
-           30    0.001    0.000    0.061    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:452(__init__)
-      740/640    0.003    0.000    0.061    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1976(__setattr__)
-          230    0.003    0.000    0.060    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:676(set_meta)
-          170    0.004    0.000    0.058    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:293(__exit__)
-       209391    0.045    0.000    0.057    0.000 {built-in method builtins.hasattr}
-        20770    0.040    0.000    0.055    0.000 {built-in method builtins.eval}
-           30    0.000    0.000    0.055    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:571(graph)
-       159995    0.035    0.000    0.054    0.000 /usr/lib/python3.12/inspect.py:295(isclass)
-         2295    0.007    0.000    0.054    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:640(emit_node)
-        95645    0.026    0.000    0.054    0.000 <frozen abc>:117(__instancecheck__)
-            5    0.001    0.000    0.053    0.011 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_core.py:1035(_exported_program_to_onnx_program)
-           20    0.000    0.000    0.052    0.003 {built-in method torch.relu}
-           10    0.000    0.000    0.052    0.005 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1300(call)
-    6290/6160    0.009    0.000    0.052    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_matcher.py:132(_match_node)
-           10    0.000    0.000    0.052    0.005 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1276(visit_graph)
-          145    0.000    0.000    0.051    0.000 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1266(visit_node)
-         1200    0.003    0.000    0.050    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1366(tree_flatten)
-       260945    0.050    0.000    0.050    0.000 /usr/lib/python3.12/inspect.py:1189(tokeneater)
-          145    0.002    0.000    0.049    0.000 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1088(process_node)
-           15    0.000    0.000    0.049    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:130(forward)
-        60/15    0.001    0.000    0.049    0.003 {built-in method torch._C._nn.linear}
-    5310/1200    0.010    0.000    0.048    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1374(helper)
-            5    0.000    0.000    0.048    0.010 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_core.py:758(_translate_fx_graph)
-         1975    0.001    0.000    0.047    0.000 {method 'extend' of 'list' objects}
-           10    0.000    0.000    0.047    0.005 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:635(create_args_for_root)
-           75    0.001    0.000    0.046    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2338(_dispatch_impl)
-           60    0.001    0.000    0.045    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_core.py:506(_handle_call_function_node_with_lowering)
-         2220    0.009    0.000    0.045    0.000 /usr/lib/python3.12/textwrap.py:419(dedent)
-          120    0.000    0.000    0.045    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:701(<genexpr>)
-          110    0.000    0.000    0.045    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:698(proxy_placeholder)
-          110    0.000    0.000    0.044    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:903(_proxy_placeholder)
-          110    0.000    0.000    0.043    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:907(replace_ph)
-          180    0.009    0.000    0.040    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:253(_extract_symbolized_tb)
-    3650/1230    0.003    0.000    0.040    0.000 /home/xadupre/github/ir-py/src/onnx_ir/serde.py:96(wrapper)
-         2220    0.010    0.000    0.039    0.000 /usr/lib/python3.12/inspect.py:944(getsourcefile)
-          125    0.003    0.000    0.039    0.000 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:986(_do_inference)
-        93280    0.024    0.000    0.039    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:845(__hash__)
-           95    0.000    0.000    0.039    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:99(_forward_from_src)
-           95    0.000    0.000    0.039    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:105(_method_from_src)
-           95    0.000    0.000    0.038    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:94(_exec_with_source)
-        73850    0.018    0.000    0.036    0.000 <frozen abc>:121(__subclasscheck__)
-      1170/16    0.004    0.000    0.035    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py:24(wrapper)
-          565    0.009    0.000    0.035    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1048(_flatten_into)
-          785    0.011    0.000    0.035    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:722(__new__)
-           10    0.000    0.000    0.035    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/conv.py:552(forward)
-           10    0.000    0.000    0.035    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/conv.py:534(_conv_forward)
-        40/10    0.001    0.000    0.034    0.003 {built-in method torch.conv2d}
-         9610    0.020    0.000    0.033    0.000 /usr/lib/python3.12/typing.py:175(_type_check)
-        40100    0.014    0.000    0.033    0.000 /home/xadupre/github/ir-py/src/onnx_ir/_enums.py:366(__repr__)
-          110    0.001    0.000    0.033    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/functional_tensor.py:211(to_functional)
-          170    0.006    0.000    0.033    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:289(__enter__)
-           60    0.000    0.000    0.032    0.001 /home/xadupre/github/onnxscript/onnxscript/values.py:624(__call__)
-    157035/155385    0.029    0.000    0.032    0.000 {built-in method builtins.hash}
-         2220    0.023    0.000    0.031    0.000 /usr/lib/python3.12/inspect.py:1599(getclosurevars)
-          230    0.003    0.000    0.030    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/passes/shape_prop.py:40(_extract_tensor_metadata)
-        17975    0.029    0.000    0.030    0.000 {built-in method builtins.setattr}
-         5290    0.009    0.000    0.030    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/node.py:870(__setattr__)
-        11935    0.004    0.000    0.029    0.000 /usr/lib/python3.12/traceback.py:265(__init__)
-           80    0.001    0.000    0.029    0.000 /home/xadupre/github/onnxscript/onnxscript/values.py:300(__call__)
-            5    0.000    0.000    0.029    0.006 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:319(default_decompositions)
-            5    0.003    0.001    0.029    0.006 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:44(__init__)
-         2310    0.005    0.000    0.029    0.000 /usr/lib/python3.12/linecache.py:52(checkcache)
-           80    0.000    0.000    0.028    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_building.py:598(eval)
-        95645    0.028    0.000    0.028    0.000 {built-in method _abc._abc_instancecheck}
-           10    0.000    0.000    0.027    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:1052(__init__)
-        18860    0.016    0.000    0.027    0.000 /usr/lib/python3.12/typing.py:2340(get_args)
-          190    0.002    0.000    0.027    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1799(override_node_repr)
-           10    0.001    0.000    0.027    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:715(apply_runtime_assertion_pass)
-       129280    0.027    0.000    0.027    0.000 <frozen _collections_abc>:521(<genexpr>)
+            5    0.008    0.002    2.822    0.564 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_registration.py:159(from_torchlib)
+            5    0.049    0.010    2.024    0.405 /home/xadupre/github/onnxscript/onnxscript/_framework_apis/torch_2_5.py:111(get_torchlib_ops)
+         2275    0.018    0.000    1.966    0.001 /home/xadupre/github/onnxscript/onnxscript/values.py:630(function_ir)
+         2275    0.011    0.000    1.103    0.000 /home/xadupre/github/onnxscript/onnxscript/_internal/ast_utils.py:13(get_src_and_ast)
+           10    0.102    0.010    1.059    0.106 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:191(_override_composite_implicit_decomp)
+           10    0.001    0.000    0.900    0.090 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1339(_collect_all_valid_cia_ops)
+          280    0.008    0.000    0.899    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1322(_collect_all_valid_cia_ops_for_namespace)
+          280    0.299    0.001    0.829    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1257(_materialize_cpp_cia_ops)
+         2275    0.004    0.000    0.781    0.000 /home/xadupre/github/onnxscript/onnxscript/converter.py:1480(translate_function_signature)
+         2275    0.048    0.000    0.773    0.000 /home/xadupre/github/onnxscript/onnxscript/converter.py:1394(_translate_function_signature_common)
+         2275    0.003    0.000    0.769    0.000 /usr/lib/python3.12/inspect.py:1272(getsource)
+         2275    0.070    0.000    0.763    0.000 /usr/lib/python3.12/inspect.py:1251(getsourcelines)
+         2580    0.019    0.000    0.756    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_registration.py:61(__post_init__)
+         2580    0.054    0.000    0.728    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_schemas.py:432(from_function)
+        64635    0.059    0.000    0.728    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:122(py_impl)
+       130290    0.136    0.000    0.671    0.000 <frozen _collections_abc>:469(__new__)
+         2275    0.161    0.000    0.577    0.000 /usr/lib/python3.12/inspect.py:1232(getblock)
+        110/6    0.002    0.000    0.563    0.094 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:1875(__call__)
+         35/5    0.001    0.000    0.561    0.112 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:3047(from_tensor)
+        100/5    0.002    0.000    0.561    0.112 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:357(from_real_tensor)
+            5    0.006    0.001    0.509    0.102 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_decomp.py:39(create_onnx_friendly_decomposition_table)
+    90860/16305    0.104    0.000    0.502    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:146(is_value_type)
+            5    0.005    0.001    0.495    0.099 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:275(_split_decomp_table_to_cia_and_python_decomp)
+        23850    0.471    0.000    0.471    0.000 {built-in method builtins.compile}
+            5    0.000    0.000    0.466    0.093 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:141(items)
+            5    0.000    0.000    0.466    0.093 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:158(_materialize_if_needed)
+            5    0.001    0.000    0.466    0.093 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:145(materialize)
+       129270    0.092    0.000    0.466    0.000 <frozen _collections_abc>:511(_is_param_expr)
+    136215/136200    0.036    0.000    0.382    0.000 {built-in method builtins.any}
+       282280    0.212    0.000    0.368    0.000 /usr/lib/python3.12/tokenize.py:569(_generate_tokens_from_c_tokenizer)
+       129270    0.331    0.000    0.331    0.000 <frozen _collections_abc>:521(<genexpr>)
+    1755865/1748135    0.260    0.000    0.329    0.000 {built-in method builtins.isinstance}
+         9430    0.005    0.000    0.323    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:187(is_valid_type)
+        80/20    0.001    0.000    0.323    0.016 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/functional.py:1710(relu)
+          110    0.001    0.000    0.288    0.003 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_functorch/_aot_autograd/functional_utils.py:33(to_fun)
+       854240    0.278    0.000    0.282    0.000 {built-in method builtins.getattr}
+         2295    0.008    0.000    0.280    0.000 /usr/lib/python3.12/ast.py:34(parse)
+         3550    0.007    0.000    0.275    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1566(__torch_function__)
+    28640/4345    0.085    0.000    0.260    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_schemas.py:268(_get_allowed_types_from_type_annotation)
+         2580    0.032    0.000    0.246    0.000 /usr/lib/python3.12/typing.py:2186(get_type_hints)
+        64635    0.191    0.000    0.241    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:131(inner)
+          230    0.063    0.000    0.209    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/functional_tensor.py:360(__torch_dispatch__)
+        90860    0.054    0.000    0.209    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:138(_is_tensor_type)
+        45/15    0.001    0.000    0.203    0.014 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1782(_call_impl)
+          960    0.010    0.000    0.202    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2126(dispatch)
+            5    0.000    0.000    0.200    0.040 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:2001(forward)
+          440    0.003    0.000    0.188    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1476(_cached_dispatch_impl)
+         6875    0.003    0.000    0.188    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:183(is_attr_type)
+            5    0.000    0.000    0.187    0.037 /home/xadupre/github/experimental-experiment/_doc/examples/plot_torch_export_201.py:191(forward)
+          230    0.003    0.000    0.185    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1689(__torch_dispatch__)
+          120    0.004    0.000    0.174    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1012(proxy_call)
+       135/10    0.001    0.000    0.174    0.017 /home/xadupre/github/ir-py/src/onnx_ir/passes/_pass_infra.py:111(__call__)
+        20/10    0.000    0.000    0.174    0.017 /home/xadupre/github/ir-py/src/onnx_ir/passes/_pass_infra.py:232(call)
+    10585/764    0.016    0.000    0.171    0.000 {built-in method builtins.next}
+     4745/368    0.004    0.000    0.168    0.000 /usr/lib/python3.12/contextlib.py:132(__enter__)
+            5    0.000    0.000    0.164    0.033 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_onnx_program.py:315(optimize)
+            5    0.000    0.000    0.164    0.033 /home/xadupre/github/onnxscript/onnxscript/_framework_apis/torch_2_8.py:27(optimize)
+            5    0.000    0.000    0.164    0.033 /home/xadupre/github/onnxscript/onnxscript/optimizer/_optimizer.py:17(optimize_ir)
+           95    0.003    0.000    0.157    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:855(recompile)
+            5    0.000    0.000    0.156    0.031 /home/xadupre/github/ir-py/src/onnx_ir/passes/_pass_infra.py:273(call)
+       280005    0.084    0.000    0.156    0.000 /usr/lib/python3.12/collections/__init__.py:447(_make)
+        94120    0.042    0.000    0.141    0.000 /home/xadupre/github/onnxscript/onnxscript/type_annotation.py:85(_remove_annotation)
+        11555    0.019    0.000    0.140    0.000 /home/xadupre/github/onnxscript/onnxscript/converter.py:451(_eval_constant_expr)
+          280    0.134    0.000    0.134    0.000 {built-in method torch._C._dispatch_get_registrations_for_dispatch_key}
+         1425    0.004    0.000    0.130    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1596(__torch_function__)
+         2300    0.004    0.000    0.126    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/non_strict_utils.py:1112(__torch_function__)
+         2820    0.002    0.000    0.125    0.000 /usr/lib/python3.12/inspect.py:3308(signature)
+         2820    0.003    0.000    0.123    0.000 /usr/lib/python3.12/inspect.py:3050(from_callable)
+    3050/2820    0.018    0.000    0.120    0.000 /usr/lib/python3.12/inspect.py:2470(_signature_from_callable)
+       134150    0.066    0.000    0.119    0.000 /usr/lib/python3.12/typing.py:2310(get_origin)
+           60    0.001    0.000    0.115    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:947(handler)
+           65    0.006    0.000    0.113    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_library/utils.py:298(handle_dispatch_mode)
+           95    0.001    0.000    0.113    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1795(python_code)
+           70    0.001    0.000    0.113    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_higher_order_ops/utils.py:36(autograd_not_implemented_inner)
+           10    0.000    0.000    0.108    0.011 /home/xadupre/github/onnxscript/onnxscript/rewriter/__init__.py:82(call)
+           10    0.000    0.000    0.108    0.011 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:779(apply_to_model)
+       522430    0.106    0.000    0.106    0.000 {method 'split' of 'str' objects}
+         2275    0.018    0.000    0.105    0.000 /usr/lib/python3.12/inspect.py:1063(findsource)
+           10    0.002    0.000    0.102    0.010 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:641(_apply_to_graph_or_function)
+        40/10    0.000    0.000    0.100    0.010 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_jit_internal.py:609(fn)
+         6620    0.003    0.000    0.100    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1243(_is_preservable_cia_op)
+         5850    0.004    0.000    0.099    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:302(try_rewrite)
+    48940/48890    0.019    0.000    0.098    0.000 {built-in method builtins.repr}
+            5    0.000    0.000    0.098    0.020 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_fx_passes.py:22(insert_type_promotion_nodes)
+    1147020/1146500    0.096    0.000    0.096    0.000 {built-in method builtins.len}
+          230    0.001    0.000    0.096    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:286(create_proxy)
+        37740    0.018    0.000    0.095    0.000 /home/xadupre/github/ir-py/src/onnx_ir/_core.py:2086(__hash__)
+    22535/9905    0.021    0.000    0.094    0.000 /usr/lib/python3.12/typing.py:406(_eval_type)
+            5    0.000    0.000    0.094    0.019 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/fx/_pass.py:227(run)
+            5    0.000    0.000    0.094    0.019 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/fx/passes/type_promotion.py:1650(_run)
+          120    0.001    0.000    0.092    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/fx/passes/type_promotion.py:1570(run_node)
+         9905    0.012    0.000    0.091    0.000 /usr/lib/python3.12/typing.py:885(__init__)
+         5850    0.005    0.000    0.091    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_rewrite_rule.py:100(match)
+          240    0.001    0.000    0.089    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:2278(create_node)
+         9905    0.018    0.000    0.087    0.000 /usr/lib/python3.12/typing.py:909(_evaluate)
+          240    0.001    0.000    0.087    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:1328(create_node)
+           95    0.001    0.000    0.086    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:1876(_python_code)
+           95    0.009    0.000    0.085    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:438(_gen_python_code)
+         6620    0.048    0.000    0.084    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:1291(_check_valid_to_preserve)
+         2820    0.031    0.000    0.082    0.000 /usr/lib/python3.12/inspect.py:2366(_signature_from_function)
+          240    0.004    0.000    0.082    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/proxy.py:154(create_node)
+         5850    0.008    0.000    0.078    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_matcher.py:347(match)
+          440    0.003    0.000    0.076    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1570(_cache_key)
+       415375    0.075    0.000    0.075    0.000 {built-in method __new__ of type object at 0xa43b40}
+           10    0.000    0.000    0.074    0.007 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_trace.py:541(_produce_aten_artifact)
+         20/5    0.000    0.000    0.074    0.015 {built-in method torch.flatten}
+          130    0.000    0.000    0.074    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:796(track_tensor_tree)
+      240/130    0.001    0.000    0.072    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:818(wrap_with_proxy)
+          170    0.003    0.000    0.071    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/meta_utils.py:877(meta_tensor)
+            5    0.000    0.000    0.071    0.014 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:1386(module)
+            5    0.001    0.000    0.070    0.014 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/_unlift.py:746(_unlift_exported_program_lifted_states)
+    17155/540    0.029    0.000    0.068    0.000 /usr/lib/python3.12/copy.py:118(deepcopy)
+     1710/440    0.014    0.000    0.068    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1695(_prep_args_for_hash)
+          665    0.003    0.000    0.068    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/traceback.py:93(__init__)
+          980    0.001    0.000    0.068    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/interpreter.py:269(_set_current_node)
+          365    0.001    0.000    0.065    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2055(_output_from_cache_entry)
+      510/250    0.002    0.000    0.064    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/overrides.py:1683(handle_torch_function)
+          980    0.002    0.000    0.064    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/traceback.py:405(set_current_meta)
+          510    0.002    0.000    0.064    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1650(tree_map_only)
+          385    0.007    0.000    0.063    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1982(_get_output_tensor_from_cache_entry)
+     1905/535    0.002    0.000    0.063    0.000 /usr/lib/python3.12/copy.py:191(_deepcopy_list)
+        41515    0.028    0.000    0.062    0.000 /home/xadupre/github/ir-py/src/onnx_ir/_core.py:2094(__repr__)
+           30    0.001    0.000    0.061    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:492(__init__)
+        89615    0.027    0.000    0.060    0.000 {built-in method builtins.issubclass}
+     1560/730    0.006    0.000    0.057    0.000 /usr/lib/python3.12/copy.py:247(_reconstruct)
+          180    0.002    0.000    0.056    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:173(summary)
+          230    0.001    0.000    0.056    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:687(set_meta)
+      835/705    0.003    0.000    0.056    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/module.py:1971(__setattr__)
+         5720    0.004    0.000    0.055    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_matcher.py:288(_match_single_output_node)
+          170    0.004    0.000    0.054    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:293(__exit__)
+       213691    0.041    0.000    0.053    0.000 {built-in method builtins.hasattr}
+        21485    0.038    0.000    0.051    0.000 {built-in method builtins.eval}
+       162320    0.033    0.000    0.051    0.000 /usr/lib/python3.12/inspect.py:295(isclass)
+        97945    0.024    0.000    0.050    0.000 <frozen abc>:117(__instancecheck__)
+           10    0.000    0.000    0.050    0.005 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:642(create_args_for_root)
+           30    0.000    0.000    0.049    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:611(graph)
+         1975    0.001    0.000    0.049    0.000 {method 'extend' of 'list' objects}
+       280005    0.048    0.000    0.048    0.000 /usr/lib/python3.12/inspect.py:1189(tokeneater)
+         2295    0.007    0.000    0.048    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph.py:647(emit_node)
+          120    0.000    0.000    0.048    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:708(<genexpr>)
+          110    0.000    0.000    0.047    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:705(proxy_placeholder)
+          110    0.000    0.000    0.047    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:911(_proxy_placeholder)
+            5    0.001    0.000    0.046    0.009 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_core.py:1042(_exported_program_to_onnx_program)
+    5850/5720    0.008    0.000    0.046    0.000 /home/xadupre/github/onnxscript/onnxscript/rewriter/_matcher.py:134(_match_node)
+          110    0.000    0.000    0.046    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py:915(replace_ph)
+     1390/560    0.005    0.000    0.044    0.000 /usr/lib/python3.12/copy.py:217(_deepcopy_dict)
+         2275    0.009    0.000    0.043    0.000 /usr/lib/python3.12/textwrap.py:419(dedent)
+           10    0.000    0.000    0.043    0.004 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1377(call)
+           10    0.000    0.000    0.043    0.004 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1353(visit_graph)
+           75    0.001    0.000    0.042    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:2345(_dispatch_impl)
+          135    0.000    0.000    0.042    0.000 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1342(visit_node)
+            5    0.000    0.000    0.042    0.008 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_core.py:765(_translate_fx_graph)
+         1310    0.003    0.000    0.041    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1369(tree_flatten)
+          135    0.002    0.000    0.040    0.000 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:1135(process_node)
+           60    0.001    0.000    0.040    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_core.py:513(_handle_call_function_node_with_lowering)
+    5910/1310    0.011    0.000    0.038    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1377(helper)
+        92930    0.023    0.000    0.037    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_ops.py:845(__hash__)
+         2275    0.009    0.000    0.036    0.000 /usr/lib/python3.12/inspect.py:944(getsourcefile)
+          110    0.001    0.000    0.036    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/functional_tensor.py:212(to_functional)
+           95    0.000    0.000    0.036    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:109(_forward_from_src)
+           95    0.000    0.000    0.036    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:115(_method_from_src)
+           95    0.000    0.000    0.035    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/graph_module.py:104(_exec_with_source)
+          565    0.009    0.000    0.035    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:1055(_flatten_into)
+          180    0.008    0.000    0.035    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_traceback.py:252(_extract_symbolized_tb)
+           20    0.000    0.000    0.035    0.002 {built-in method torch.relu}
+        75550    0.017    0.000    0.033    0.000 <frozen abc>:121(__subclasscheck__)
+          125    0.003    0.000    0.032    0.000 /home/xadupre/github/onnxscript/onnxscript/optimizer/_constant_folding.py:997(_do_inference)
+           15    0.000    0.000    0.032    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/nn/modules/linear.py:130(forward)
+        60/15    0.001    0.000    0.032    0.002 {built-in method torch._C._nn.linear}
+          785    0.009    0.000    0.031    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_subclasses/fake_tensor.py:722(__new__)
+          170    0.006    0.000    0.031    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/autograd/grad_mode.py:289(__enter__)
+    3650/1230    0.002    0.000    0.030    0.000 /home/xadupre/github/ir-py/src/onnx_ir/serde.py:97(wrapper)
+         9935    0.019    0.000    0.030    0.000 /usr/lib/python3.12/typing.py:175(_type_check)
+        41515    0.012    0.000    0.030    0.000 /home/xadupre/github/ir-py/src/onnx_ir/_enums.py:366(__repr__)
+          230    0.003    0.000    0.029    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/passes/shape_prop.py:40(_extract_tensor_metadata)
+    158580/156930    0.027    0.000    0.029    0.000 {built-in method builtins.hash}
+           60    0.000    0.000    0.029    0.000 /home/xadupre/github/onnxscript/onnxscript/values.py:624(__call__)
+          720    0.001    0.000    0.028    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_pytree.py:1589(wrapped)
+         2275    0.021    0.000    0.028    0.000 /usr/lib/python3.12/inspect.py:1599(getclosurevars)
+          110    0.001    0.000    0.027    0.000 {built-in method torch._to_functional_tensor}
+        18035    0.026    0.000    0.027    0.000 {built-in method builtins.setattr}
+           80    0.001    0.000    0.026    0.000 /home/xadupre/github/onnxscript/onnxscript/values.py:300(__call__)
+            5    0.000    0.000    0.026    0.005 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/exported_program.py:319(default_decompositions)
+            5    0.003    0.001    0.026    0.005 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/export/decomp_utils.py:48(__init__)
+        97945    0.026    0.000    0.026    0.000 {built-in method _abc._abc_instancecheck}
+           80    0.000    0.000    0.026    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/onnx/_internal/exporter/_building.py:599(eval)
+         5290    0.008    0.000    0.026    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/node.py:854(__setattr__)
+        11935    0.003    0.000    0.025    0.000 /usr/lib/python3.12/traceback.py:265(__init__)
+         2365    0.005    0.000    0.024    0.000 /usr/lib/python3.12/linecache.py:52(checkcache)
+        19630    0.014    0.000    0.024    0.000 /usr/lib/python3.12/typing.py:2340(get_args)
+         8195    0.014    0.000    0.024    0.000 /usr/lib/python3.12/inspect.py:2712(__init__)
+         8490    0.024    0.000    0.024    0.000 {method 'copy' of 'dict' objects}
+          230    0.000    0.000    0.024    0.000 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/fx/experimental/proxy_tensor.py:587(extract_val)
+           10    0.000    0.000    0.024    0.002 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/_export/utils.py:715(apply_runtime_assertion_pass)
+      1170/16    0.002    0.000    0.024    0.001 /home/xadupre/vv/this312/lib/python3.12/site-packages/torch/utils/_stats.py:24(wrapper)
     done.
-    profile dynopt: <function export_dynopt at 0x72df5c46a340>
+    profile dynopt: <function export_dynopt at 0x71fb08c91620>
     done.
 
 
@@ -1363,30 +1361,28 @@ Benchmark exported models with ORT
  .. code-block:: none
 
       0%|          | 0/20 [00:00<?, ?it/s]number of experiments: 20
-    3.8092175107336e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:   0%|          | 0/20 [00:00<?, ?it/s]    3.8092175107336e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:   5%|▌         | 1/20 [00:00<00:09,  1.93it/s]    4.235673072186553e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:   5%|▌         | 1/20 [00:00<00:09,  1.93it/s]    4.235673072186553e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  10%|█         | 2/20 [00:00<00:08,  2.01it/s]    0.0005953903037843241 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  10%|█         | 2/20 [00:02<00:08,  2.01it/s]    0.0005953903037843241 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  15%|█▌        | 3/20 [00:02<00:13,  1.25it/s]    0.0006735234430793835 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  15%|█▌        | 3/20 [00:02<00:13,  1.25it/s]    0.0006735234430793835 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  20%|██        | 4/20 [00:02<00:11,  1.41it/s]    4.771841791615766e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  20%|██        | 4/20 [00:03<00:11,  1.41it/s]                             4.771841791615766e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  25%|██▌       | 5/20 [00:03<00:09,  1.53it/s]    4.104299306145906e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  25%|██▌       | 5/20 [00:03<00:09,  1.53it/s]    4.104299306145906e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  30%|███       | 6/20 [00:03<00:08,  1.68it/s]    0.0007259465085891341 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  30%|███       | 6/20 [00:04<00:08,  1.68it/s]    0.0007259465085891341 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  35%|███▌      | 7/20 [00:04<00:07,  1.71it/s]    0.0006738351999956649 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  35%|███▌      | 7/20 [00:04<00:07,  1.71it/s]    0.0006738351999956649 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  40%|████      | 8/20 [00:04<00:07,  1.70it/s]    4.4912738481466116e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  40%|████      | 8/20 [00:05<00:07,  1.70it/s]                            4.4912738481466116e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  45%|████▌     | 9/20 [00:05<00:06,  1.73it/s]    4.316785101824054e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  45%|████▌     | 9/20 [00:05<00:06,  1.73it/s]     4.316785101824054e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  50%|█████     | 10/20 [00:05<00:05,  1.82it/s]    0.0007100866597637731 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  50%|█████     | 10/20 [00:06<00:05,  1.82it/s]    0.0007100866597637731 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  55%|█████▌    | 11/20 [00:06<00:05,  1.74it/s]    0.0006928267967865433 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  55%|█████▌    | 11/20 [00:07<00:05,  1.74it/s]    0.0006928267967865433 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  60%|██████    | 12/20 [00:07<00:04,  1.74it/s]    4.045606378114293e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  60%|██████    | 12/20 [00:07<00:04,  1.74it/s]                             4.045606378114293e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  65%|██████▌   | 13/20 [00:07<00:03,  1.75it/s]    3.988696173551222e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  65%|██████▌   | 13/20 [00:08<00:03,  1.75it/s]    3.988696173551222e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  70%|███████   | 14/20 [00:08<00:03,  1.84it/s]    0.0006925625027373021 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  70%|███████   | 14/20 [00:08<00:03,  1.84it/s]    0.0006925625027373021 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  75%|███████▌  | 15/20 [00:08<00:02,  1.84it/s]    0.0006946007400013816 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  75%|███████▌  | 15/20 [00:09<00:02,  1.84it/s]    0.0006946007400013816 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  80%|████████  | 16/20 [00:09<00:02,  1.81it/s]    4.589021360680053e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  80%|████████  | 16/20 [00:09<00:02,  1.81it/s]                             4.589021360680053e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  85%|████████▌ | 17/20 [00:09<00:01,  1.79it/s]    3.9899144872318655e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  85%|████████▌ | 17/20 [00:10<00:01,  1.79it/s]    3.9899144872318655e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  90%|█████████ | 18/20 [00:10<00:01,  1.87it/s]    0.0006893763476160957 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  90%|█████████ | 18/20 [00:10<00:01,  1.87it/s]    0.0006893763476160957 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  95%|█████████▌| 19/20 [00:10<00:00,  1.82it/s]    0.0006844442737603875 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  95%|█████████▌| 19/20 [00:11<00:00,  1.82it/s]    0.0006844442737603875 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 20/20 [00:11<00:00,  1.81it/s]    0.0006844442737603875 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 20/20 [00:11<00:00,  1.73it/s]
-                                 name                                   providers compute  ...     ttime context_size  warmup_time
-    0   plot_torch_export_dynamo.onnx                        CPUExecutionProvider     CPU  ...  0.115076           64     0.000213
-    1   plot_torch_export_dynamo.onnx                        CPUExecutionProvider     CPU  ...  0.106019           64     0.000234
-    2   plot_torch_export_dynamo.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.141108           64     0.001635
-    3   plot_torch_export_dynamo.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.112478           64     0.002428
-    4   plot_torch_export_cus_p0.onnx                        CPUExecutionProvider     CPU  ...  0.104933           64     0.000352
-    5   plot_torch_export_cus_p0.onnx                        CPUExecutionProvider     CPU  ...  0.136058           64     0.000203
-    6   plot_torch_export_cus_p0.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.127041           64     0.001565
-    7   plot_torch_export_cus_p0.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.117921           64     0.001669
-    8   plot_torch_export_script.onnx                        CPUExecutionProvider     CPU  ...  0.111114           64     0.000343
-    9   plot_torch_export_script.onnx                        CPUExecutionProvider     CPU  ...  0.103732           64     0.000376
-    10  plot_torch_export_script.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.102252           64     0.001162
-    11  plot_torch_export_script.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.129559           64     0.001689
-    12  plot_torch_export_dynopt.onnx                        CPUExecutionProvider     CPU  ...  0.140180           64     0.000236
-    13  plot_torch_export_dynopt.onnx                        CPUExecutionProvider     CPU  ...  0.101113           64     0.000376
-    14  plot_torch_export_dynopt.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.126739           64     0.001761
-    15  plot_torch_export_dynopt.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.104190           64     0.001727
-    16  plot_torch_export_cus_p2.onnx                        CPUExecutionProvider     CPU  ...  0.120737           64     0.000550
-    17  plot_torch_export_cus_p2.onnx                        CPUExecutionProvider     CPU  ...  0.110441           64     0.000382
-    18  plot_torch_export_cus_p2.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.128913           64     0.001387
-    19  plot_torch_export_cus_p2.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA  ...  0.122516           64     0.001481
-
-    [20 rows x 17 columns]
+    4.506232070464116e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:   0%|          | 0/20 [00:00<?, ?it/s]    4.506232070464116e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:   5%|▌         | 1/20 [00:00<00:09,  2.02it/s]    4.4082807615901864e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:   5%|▌         | 1/20 [00:00<00:09,  2.02it/s]    4.4082807615901864e-05 plot_torch_export_dynamo.onnx ['CPUExecutionProvider']:  10%|█         | 2/20 [00:00<00:08,  2.05it/s]    0.0006050119025577517 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  10%|█         | 2/20 [00:01<00:08,  2.05it/s]    0.0006050119025577517 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  15%|█▌        | 3/20 [00:02<00:13,  1.30it/s]    0.0005987052333390844 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  15%|█▌        | 3/20 [00:02<00:13,  1.30it/s]    0.0005987052333390844 plot_torch_export_dynamo.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  20%|██        | 4/20 [00:02<00:10,  1.46it/s]    4.938518229687651e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  20%|██        | 4/20 [00:03<00:10,  1.46it/s]                             4.938518229687651e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  25%|██▌       | 5/20 [00:03<00:09,  1.52it/s]    5.4610161305059e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  25%|██▌       | 5/20 [00:03<00:09,  1.52it/s]      5.4610161305059e-05 plot_torch_export_cus_p0.onnx ['CPUExecutionProvider']:  30%|███       | 6/20 [00:03<00:08,  1.58it/s]    0.0006935859880128507 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  30%|███       | 6/20 [00:04<00:08,  1.58it/s]    0.0006935859880128507 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  35%|███▌      | 7/20 [00:04<00:08,  1.58it/s]    0.0007008430203517936 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  35%|███▌      | 7/20 [00:04<00:08,  1.58it/s]    0.0007008430203517936 plot_torch_export_cus_p0.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  40%|████      | 8/20 [00:04<00:07,  1.68it/s]    4.54102759792303e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  40%|████      | 8/20 [00:05<00:07,  1.68it/s]                              4.54102759792303e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  45%|████▌     | 9/20 [00:05<00:06,  1.74it/s]    4.5883454444492014e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  45%|████▌     | 9/20 [00:05<00:06,  1.74it/s]    4.5883454444492014e-05 plot_torch_export_script.onnx ['CPUExecutionProvider']:  50%|█████     | 10/20 [00:06<00:05,  1.73it/s]    0.0006212163278804405 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  50%|█████     | 10/20 [00:06<00:05,  1.73it/s]    0.0006212163278804405 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  55%|█████▌    | 11/20 [00:06<00:05,  1.72it/s]    0.0006408342295068652 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  55%|█████▌    | 11/20 [00:07<00:05,  1.72it/s]    0.0006408342295068652 plot_torch_export_script.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  60%|██████    | 12/20 [00:07<00:04,  1.73it/s]    4.295723834752616e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  60%|██████    | 12/20 [00:07<00:04,  1.73it/s]                             4.295723834752616e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  65%|██████▌   | 13/20 [00:07<00:03,  1.75it/s]    4.352144351816715e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  65%|██████▌   | 13/20 [00:08<00:03,  1.75it/s]    4.352144351816715e-05 plot_torch_export_dynopt.onnx ['CPUExecutionProvider']:  70%|███████   | 14/20 [00:08<00:03,  1.80it/s]    0.0007771462967925359 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  70%|███████   | 14/20 [00:08<00:03,  1.80it/s]    0.0007771462967925359 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  75%|███████▌  | 15/20 [00:08<00:02,  1.79it/s]    0.0006346634637571732 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  75%|███████▌  | 15/20 [00:09<00:02,  1.79it/s]    0.0006346634637571732 plot_torch_export_dynopt.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  80%|████████  | 16/20 [00:09<00:02,  1.73it/s]    4.108669939203978e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  80%|████████  | 16/20 [00:11<00:02,  1.73it/s]                             4.108669939203978e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  85%|████████▌ | 17/20 [00:11<00:03,  1.11s/it]    4.231532217461822e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  85%|████████▌ | 17/20 [00:12<00:03,  1.11s/it]    4.231532217461822e-05 plot_torch_export_cus_p2.onnx ['CPUExecutionProvider']:  90%|█████████ | 18/20 [00:12<00:01,  1.06it/s]    0.0006475438606852622 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  90%|█████████ | 18/20 [00:12<00:01,  1.06it/s]    0.0006475438606852622 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  95%|█████████▌| 19/20 [00:13<00:00,  1.20it/s]    0.0006353680680544635 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']:  95%|█████████▌| 19/20 [00:13<00:00,  1.20it/s]    0.0006353680680544635 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 20/20 [00:13<00:00,  1.30it/s]    0.0006353680680544635 plot_torch_export_cus_p2.onnx ['CUDAExecutionProvider', 'CPUExecutionProvider']: 100%|██████████| 20/20 [00:13<00:00,  1.47it/s]
+                                 name                                   providers compute  aot  export  n_nodes  n_function  n_sub   average  deviation  min_exec  max_exec  repeat  number     ttime  context_size  warmup_time
+    0   plot_torch_export_dynamo.onnx                        CPUExecutionProvider     CPU    1  dynamo       12           0      0  0.000045   0.000002  0.000042  0.000071       1  2323.0  0.104680            64     0.000230
+    1   plot_torch_export_dynamo.onnx                        CPUExecutionProvider     CPU    0  dynamo       12           0      0  0.000044   0.000004  0.000039  0.000060       1  2547.0  0.112279            64     0.000254
+    2   plot_torch_export_dynamo.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  dynamo       12           0      0  0.000605   0.000035  0.000583  0.000683       1   195.0  0.117977            64     0.001564
+    3   plot_torch_export_dynamo.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  dynamo       12           0      0  0.000599   0.000022  0.000548  0.000630       1   180.0  0.107767            64     0.001344
+    4   plot_torch_export_cus_p0.onnx                        CPUExecutionProvider     CPU    1  cus_p0       12           0      0  0.000049   0.000006  0.000041  0.000174       1  2271.0  0.112154            64     0.000346
+    5   plot_torch_export_cus_p0.onnx                        CPUExecutionProvider     CPU    0  cus_p0       12           0      0  0.000055   0.000010  0.000046  0.000144       1  2331.0  0.127296            64     0.000359
+    6   plot_torch_export_cus_p0.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  cus_p0       12           0      0  0.000694   0.000033  0.000655  0.000916       1   167.0  0.115829            64     0.004082
+    7   plot_torch_export_cus_p0.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  cus_p0       12           0      0  0.000701   0.000029  0.000666  0.000742       1   147.0  0.103024            64     0.001626
+    8   plot_torch_export_script.onnx                        CPUExecutionProvider     CPU    1  script       12           0      0  0.000045   0.000005  0.000042  0.000150       1  2319.0  0.105306            64     0.000337
+    9   plot_torch_export_script.onnx                        CPUExecutionProvider     CPU    0  script       12           0      0  0.000046   0.000001  0.000043  0.000061       1  2711.0  0.124390            64     0.000254
+    10  plot_torch_export_script.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  script       12           0      0  0.000621   0.000045  0.000595  0.000877       1   183.0  0.113683            64     0.001295
+    11  plot_torch_export_script.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  script       12           0      0  0.000641   0.000027  0.000612  0.000935       1   183.0  0.117273            64     0.001610
+    12  plot_torch_export_dynopt.onnx                        CPUExecutionProvider     CPU    1  dynopt       12           0      0  0.000043   0.000002  0.000040  0.000063       1  2639.0  0.113364            64     0.000288
+    13  plot_torch_export_dynopt.onnx                        CPUExecutionProvider     CPU    0  dynopt       12           0      0  0.000044   0.000004  0.000039  0.000145       1  2886.0  0.125603            64     0.000337
+    14  plot_torch_export_dynopt.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  dynopt       12           0      0  0.000777   0.000048  0.000709  0.000977       1   155.0  0.120458            64     0.001684
+    15  plot_torch_export_dynopt.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  dynopt       12           0      0  0.000635   0.000053  0.000577  0.001070       1   207.0  0.131375            64     0.001643
+    16  plot_torch_export_cus_p2.onnx                        CPUExecutionProvider     CPU    1  cus_p2       12           0      0  0.000041   0.000004  0.000038  0.000068       1  2475.0  0.101690            64     0.000243
+    17  plot_torch_export_cus_p2.onnx                        CPUExecutionProvider     CPU    0  cus_p2       12           0      0  0.000042   0.000002  0.000041  0.000065       1  2539.0  0.107439            64     0.000237
+    18  plot_torch_export_cus_p2.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    1  cus_p2       12           0      0  0.000648   0.000046  0.000617  0.001070       1   201.0  0.130156            64     0.001481
+    19  plot_torch_export_cus_p2.onnx  CUDAExecutionProvider,CPUExecutionProvider    CUDA    0  cus_p2       12           0      0  0.000635   0.000042  0.000607  0.000803       1   191.0  0.121355            64     0.001577
 
 
 
@@ -1450,11 +1446,11 @@ Other view
     compute       CPU                CUDA          
     aot             0         1         0         1
     export                                         
-    cus_p0   0.000041  0.000048  0.000674  0.000726
-    cus_p2   0.000040  0.000046  0.000684  0.000689
-    dynamo   0.000042  0.000038  0.000674  0.000595
-    dynopt   0.000040  0.000040  0.000695  0.000693
-    script   0.000043  0.000045  0.000693  0.000710
+    cus_p0   0.000055  0.000049  0.000701  0.000694
+    cus_p2   0.000042  0.000041  0.000635  0.000648
+    dynamo   0.000044  0.000045  0.000599  0.000605
+    dynopt   0.000044  0.000043  0.000635  0.000777
+    script   0.000046  0.000045  0.000641  0.000621
 
     array([<Axes: title={'center': 'CPU'}, ylabel='export'>,
            <Axes: title={'center': 'CUDA'}, ylabel='export'>], dtype=object)
@@ -1541,11 +1537,11 @@ Let's do the same with the loading time + the first run.
     compute       CPU                CUDA          
     aot             0         1         0         1
     export                                         
-    cus_p0   0.004222  0.003066  0.017282  0.017303
-    cus_p2   0.003005  0.004143  0.017348  0.016182
-    dynamo   0.003158  0.004087  0.015359  0.016407
-    dynopt   0.003630  0.003465  0.018124  0.018752
-    script   0.005020  0.004448  0.014688  0.017825
+    cus_p0   0.011640  0.010372  0.017534  0.015521
+    cus_p2   0.005501  0.003741  0.017342  0.017393
+    dynamo   0.004805  0.004757  0.015114  0.022195
+    dynopt   0.003579  0.006714  0.014925  0.015658
+    script   0.005857  0.004342  0.016720  0.014234
 
     array([<Axes: title={'center': 'CPU'}, ylabel='export'>,
            <Axes: title={'center': 'CUDA'}, ylabel='export'>], dtype=object)
@@ -2161,7 +2157,7 @@ dynamo
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 48.163 seconds)
+   **Total running time of the script:** (0 minutes 48.729 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_torch_export_201.py:

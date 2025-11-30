@@ -78,7 +78,7 @@ Playground for big optimization pattern
  .. code-block:: none
 
     opset_imports = [
-        make_opsetid('', 18),
+        oh.make_opsetid('', 18),
     ]
     inputs = []
     outputs = []
@@ -88,30 +88,30 @@ Playground for big optimization pattern
     functions = []
     value = np.random.randn(1, 49).astype(np.float32)
     initializers.append(
-        from_array(
+        onh.from_array(
             np.array(value, dtype=np.float32),
             name='i1'
         )
     )
     initializers.append(
-        from_array(
+        onh.from_array(
             np.array([[0.0, 0.0, 0.0, 0.0]], dtype=np.float32),
             name='i2'
         )
     )
     initializers.append(
-        from_array(
+        onh.from_array(
             np.array([2, 3, 3, 3], dtype=np.int64),
             name='s1'
         )
     )
     initializers.append(
-        from_array(
+        onh.from_array(
             np.array([3, 3], dtype=np.int64),
             name='s2'
         )
     )
-    inputs.append(make_tensor_value_info('v0_0', TensorProto.DOUBLE, shape=(5,)))
+    inputs.append(oh.make_tensor_value_info('v0_0', onnx.TensorProto.DOUBLE, shape=(5,)))
     nodes.append(
         make_node_extended(
             'Cast',
@@ -188,8 +188,8 @@ Playground for big optimization pattern
             ['output']
         )
     )
-    outputs.append(make_tensor_value_info('output', TensorProto.FLOAT, shape=(2, 3, 3, 3)))
-    graph = make_graph(
+    outputs.append(oh.make_tensor_value_info('output', onnx.TensorProto.FLOAT, shape=(2, 3, 3, 3)))
+    graph = oh.make_graph(
         nodes,
         'nd',
         inputs,
@@ -197,7 +197,7 @@ Playground for big optimization pattern
         initializers,
         sparse_initializer=sparse_initializers,
     )
-    model = make_model(
+    model = oh.make_model(
         graph,
         functions=functions,
         opset_imports=opset_imports
@@ -321,7 +321,7 @@ Pattern Matching
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.003 seconds)
+   **Total running time of the script:** (0 minutes 0.008 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_to_python.py:
