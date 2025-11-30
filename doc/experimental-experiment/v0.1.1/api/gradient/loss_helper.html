@@ -6,11 +6,11 @@
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title=".reference" href="../reference/index.html"><link rel="prev" title=".gradient.grad_helper" href="grad_helper.html">
         <link rel="prefetch" href="../../_static/logo.png" as="image">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>.gradient.loss_helper - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -362,6 +362,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -377,6 +378,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -497,10 +499,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../miscellaneous/index.html">Miscellaneous</a><input aria-label="Toggle navigation of Miscellaneous" class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../miscellaneous/export_times.html">Export Times</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../miscellaneous/long_outputs.html">Long Outputs uneasy to read</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../miscellaneous/models/index.html">Supported Models By the Custom Backend</a><input aria-label="Toggle navigation of Supported Models By the Custom Backend" class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../miscellaneous/models/phi.html">Phi</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -597,11 +595,11 @@ columns, the sum on every line is 1.</p>
 </li>
 </ul>
 <p>Next example shows the loss with L1 and L2 loss.</p>
-<div class="graphviz"><img src="../../_images/graphviz-8ada0f84c93f331d919d9cb6428e69b23e8f7e0e.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../../_images/graphviz-9f007d51401e6013f4a7bf07d098a38589954268.png" alt="digraph{
   ranksep=0.25;
+  nodesep=0.05;
   size=7;
+  orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
   label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
@@ -610,8 +608,8 @@ columns, the sum on every line is 1.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47474  ]\n [ 1.4251788]\n [34.210373 ]\n [61.476...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999866]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47477  ]\n [ 1.4251413]\n [34.210396 ]\n [61.477...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[1.9999924]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.1]&quot; fontsize=10];
   l2_name [shape=box label=&quot;l2_name\nfloat32((1,))\n[0.9]&quot; fontsize=10];
   shape_tensor [shape=box label=&quot;shape_tensor\nint64((2,))\n[-1  1]&quot; fontsize=10];
@@ -680,11 +678,11 @@ columns, the sum on every line is 1.</p>
 }" class="graphviz" /></div>
 <p>Next example shows how to add a L2 loss with L1 and L2 penalties
 on the coefficients.</p>
-<div class="graphviz"><img src="../../_images/graphviz-2b3c0a8d7f74d8784a030b9e558699064c300639.png" alt="digraph{
-  orientation=portrait;
-  nodesep=0.05;
+<div class="graphviz"><img src="../../_images/graphviz-49a32f19f2ab469e3ab2a9aa86ce256f96927c08.png" alt="digraph{
   ranksep=0.25;
+  nodesep=0.05;
   size=7;
+  orientation=portrait;
 
   X [shape=box color=red label=&quot;X\nTensorProto.FLOAT\nshape=['', 10]&quot; fontsize=10];
   label [shape=box color=red label=&quot;label\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
@@ -693,8 +691,8 @@ on the coefficients.</p>
   loss [shape=box color=green label=&quot;loss\nTensorProto.FLOAT\nshape=[1, 1]&quot; fontsize=10];
   variable [shape=box color=green label=&quot;variable\nTensorProto.FLOAT\nshape=['', 1]&quot; fontsize=10];
 
-  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47472  ]\n [ 1.4251633]\n [34.210335 ]\n [61.476...&quot; fontsize=10];
-  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.000019]&quot; fontsize=10];
+  coef [shape=box label=&quot;coef\nfloat32((10, 1))\n[[77.47474  ]\n [ 1.4251785]\n [34.210358 ]\n [61.476...&quot; fontsize=10];
+  intercept [shape=box label=&quot;intercept\nfloat32((1,))\n[2.0000095]&quot; fontsize=10];
   l1_name [shape=box label=&quot;l1_name\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_coef [shape=box label=&quot;l1_weight_coef\nfloat32((1,))\n[0.5]&quot; fontsize=10];
   l1_weight_intercept [shape=box label=&quot;l1_weight_intercept\nfloat32((1,))\n[0.5]&quot; fontsize=10];

@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_cast - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -376,6 +377,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -603,7 +605,90 @@
 <div class="viewcode-block" id="CastCastPattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_cast.html#experimental_experiment.xoptim.patterns.onnx_cast.CastCastPattern">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CastCastPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks that two consecutive cast can be avoided.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that two consecutive cast can be avoided.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;x1&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;b&quot;, &quot;c&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Cast&quot;, [&quot;x1&quot;], [&quot;x2&quot;], to=1))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Cast&quot;, [&quot;x2&quot;], [&quot;Y&quot;], to=1))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;b&quot;, &quot;c&quot;)))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;x1&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;b&quot;, &quot;c&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Cast&quot;, [&quot;x1&quot;], [&quot;Y&quot;], to=1))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;b&quot;, &quot;c&quot;)))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(to_dot(model))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
@@ -694,6 +779,87 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves two cast operators beyond a binary operator</span>
 <span class="sd">    The cast must cast from a float type to another float type.</span>
+
+<span class="sd">    Model with nodes to be fused:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4)))</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4)))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Cast&quot;, [&quot;X&quot;], [&quot;xc&quot;], to=10))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Cast&quot;, [&quot;Y&quot;], [&quot;yc&quot;], to=10))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;xc&quot;, &quot;yc&quot;], [&quot;Z&quot;]))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Z&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 4)))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 26),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4)))</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, 4)))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Add&quot;, [&quot;X&quot;, &quot;Y&quot;], [&quot;add-X&quot;]))</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Cast&quot;, [&quot;add-X&quot;], [&quot;Z&quot;], to=10))</span>
+<span class="sd">        outputs.append(oh.make_tensor_value_info(&quot;Z&quot;, onnx.TensorProto.FLOAT16, shape=(&quot;a&quot;, 4)))</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(to_dot(model))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_dtypes_allowed</span> <span class="o">=</span> <span class="p">{</span>

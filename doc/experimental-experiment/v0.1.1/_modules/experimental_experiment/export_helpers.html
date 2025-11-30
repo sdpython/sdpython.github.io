@@ -9,7 +9,7 @@
         <title>experimental_experiment.export_helpers - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -376,6 +377,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -543,6 +545,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.fx.experimental.symbolic_shapes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_tds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">flatten_object</span>
 
 <span class="n">_torch_guard_or</span> <span class="o">=</span> <span class="n">_tds</span><span class="o">.</span><span class="n">_guard_or</span>
 
@@ -664,18 +667,23 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ds</span> <span class="ow">or</span> <span class="p">(</span><span class="n">args</span> <span class="ow">and</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">ags</span><span class="p">):</span>
             <span class="n">backed_size_oblivious</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">cpl</span> <span class="o">=</span> <span class="n">CoupleInputsDynamicShapes</span><span class="p">(</span><span class="n">ags</span><span class="p">,</span> <span class="n">kws</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span>
-                <span class="n">backed_size_oblivious</span> <span class="o">=</span> <span class="n">cpl</span><span class="o">.</span><span class="n">invalid_dimensions_for_export</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">torch._subclasses.fake_tensor</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeTensor</span>
 
-                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unable to guess backed_size_oblivious with &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">ags</span><span class="p">,</span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kws</span><span class="p">,</span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">FakeTensor</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">flatten_object</span><span class="p">([</span><span class="n">ags</span><span class="p">,</span> <span class="n">kws</span><span class="p">],</span> <span class="n">drop_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">cpl</span> <span class="o">=</span> <span class="n">CoupleInputsDynamicShapes</span><span class="p">(</span><span class="n">ags</span><span class="p">,</span> <span class="n">kws</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span>
+                    <span class="n">backed_size_oblivious</span> <span class="o">=</span> <span class="n">cpl</span><span class="o">.</span><span class="n">invalid_dimensions_for_export</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_diagnostic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">string_type</span>
+
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unable to guess backed_size_oblivious with &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;args=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">ags</span><span class="p">,</span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;kwargs=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">kws</span><span class="p">,</span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;dynamic_shapes=</span><span class="si">{</span><span class="n">string_type</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span><span class="n">with_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[torch_export] inferred backed_size_oblivious=</span><span class="si">{</span><span class="n">backed_size_oblivious</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>

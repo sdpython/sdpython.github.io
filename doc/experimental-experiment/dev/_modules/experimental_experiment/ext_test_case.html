@@ -9,7 +9,7 @@
         <title>experimental_experiment.ext_test_case - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -376,6 +377,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -1233,7 +1235,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqualArray</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">check_ort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onx</span><span class="p">:</span> <span class="s2">&quot;onnx.ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_ort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onx</span><span class="p">:</span> <span class="s2">&quot;onnx.ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;onnxruntime.InferenceSession&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">InferenceSession</span>
 
         <span class="k">return</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">])</span>
@@ -1328,11 +1330,14 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">make_inference_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;InferenceSession&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_inference_session</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;ModelProto&quot;</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;InferenceSession&quot;</span><span class="p">:</span>  <span class="c1"># noqa: F821</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
 
         <span class="k">return</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
-            <span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+            <span class="n">proto</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span>
+            <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">string_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1347,7 +1352,29 @@
         <span class="k">return</span> <span class="n">get_phi_model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_phi3_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">get_phi3_model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">get_phi3_model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">assert_conversion_with_ort_on_cpu</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">onx</span><span class="p">:</span> <span class="s2">&quot;onnx.ModelProto&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">expected</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;torch.Tensor&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">msg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+
+        <span class="n">sess</span> <span class="o">=</span> <span class="n">onnxruntime</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span>
+            <span class="n">onx</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">(),</span> <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">feeds</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="nb">zip</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sess</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()],</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">got</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">feeds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">got</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">got</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqualArray</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 

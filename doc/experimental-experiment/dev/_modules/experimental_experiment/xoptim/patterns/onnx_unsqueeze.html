@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_unsqueeze - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -376,6 +377,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -674,7 +676,116 @@
 <div class="viewcode-block" id="UnsqueezeUnsqueezePattern">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_unsqueeze.html#experimental_experiment.xoptim.patterns.onnx_unsqueeze.UnsqueezeUnsqueezePattern">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UnsqueezeUnsqueezePattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replaces the sequence Unsqueeze, Unsqueeze by Unsqueeze.</span>
+
+<span class="sd">        Model with nodes to be fused:</span>
+
+<span class="sd">        .. gdot::</span>
+<span class="sd">            :script: DOT-SECTION</span>
+<span class="sd">            :process:</span>
+
+<span class="sd">            from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">            import numpy as np</span>
+<span class="sd">            import ml_dtypes</span>
+<span class="sd">            import onnx</span>
+<span class="sd">            import onnx.helper as oh</span>
+<span class="sd">            import onnx.numpy_helper as onh</span>
+<span class="sd">            from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">            opset_imports = [</span>
+<span class="sd">                oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">            ]</span>
+<span class="sd">            inputs = []</span>
+<span class="sd">            outputs = []</span>
+<span class="sd">            nodes = []</span>
+<span class="sd">            initializers = []</span>
+<span class="sd">            sparse_initializers = []</span>
+<span class="sd">            functions = []</span>
+<span class="sd">            inputs.append(</span>
+<span class="sd">                oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;))</span>
+<span class="sd">            )</span>
+<span class="sd">            nodes.append(</span>
+<span class="sd">                make_node_extended(</span>
+<span class="sd">                    &quot;Constant&quot;,</span>
+<span class="sd">                    [],</span>
+<span class="sd">                    [&quot;ii&quot;],</span>
+<span class="sd">                    value=onh.from_array(np.array([2], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">                )</span>
+<span class="sd">            )</span>
+<span class="sd">            nodes.append(</span>
+<span class="sd">                make_node_extended(</span>
+<span class="sd">                    &quot;Constant&quot;,</span>
+<span class="sd">                    [],</span>
+<span class="sd">                    [&quot;jj&quot;],</span>
+<span class="sd">                    value=onh.from_array(np.array([3], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">                )</span>
+<span class="sd">            )</span>
+<span class="sd">            nodes.append(make_node_extended(&quot;Unsqueeze&quot;, [&quot;X&quot;, &quot;ii&quot;], [&quot;x1&quot;]))</span>
+<span class="sd">            nodes.append(make_node_extended(&quot;Unsqueeze&quot;, [&quot;x1&quot;, &quot;jj&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">            outputs.append(</span>
+<span class="sd">                oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(1, 1, &quot;a&quot;, &quot;b&quot;))</span>
+<span class="sd">            )</span>
+<span class="sd">            graph = oh.make_graph(</span>
+<span class="sd">                nodes,</span>
+<span class="sd">                &quot;pattern&quot;,</span>
+<span class="sd">                inputs,</span>
+<span class="sd">                outputs,</span>
+<span class="sd">                initializers,</span>
+<span class="sd">                sparse_initializer=sparse_initializers,</span>
+<span class="sd">            )</span>
+<span class="sd">            model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(to_dot(model))</span>
+
+<span class="sd">    Outcome of the fusion:</span>
+
+<span class="sd">    .. gdot::</span>
+<span class="sd">        :script: DOT-SECTION</span>
+<span class="sd">        :process:</span>
+
+<span class="sd">        from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        import ml_dtypes</span>
+<span class="sd">        import onnx</span>
+<span class="sd">        import onnx.helper as oh</span>
+<span class="sd">        import onnx.numpy_helper as onh</span>
+<span class="sd">        from onnx_array_api.translate_api.make_helper import make_node_extended</span>
+
+<span class="sd">        opset_imports = [</span>
+<span class="sd">            oh.make_opsetid(&quot;&quot;, 18),</span>
+<span class="sd">        ]</span>
+<span class="sd">        inputs = []</span>
+<span class="sd">        outputs = []</span>
+<span class="sd">        nodes = []</span>
+<span class="sd">        initializers = []</span>
+<span class="sd">        sparse_initializers = []</span>
+<span class="sd">        functions = []</span>
+<span class="sd">        inputs.append(oh.make_tensor_value_info(&quot;X&quot;, onnx.TensorProto.FLOAT, shape=(&quot;a&quot;, &quot;b&quot;)))</span>
+<span class="sd">        nodes.append(</span>
+<span class="sd">            make_node_extended(</span>
+<span class="sd">                &quot;Constant&quot;,</span>
+<span class="sd">                [],</span>
+<span class="sd">                [&quot;init7_s2_2_3&quot;],</span>
+<span class="sd">                value=onh.from_array(np.array([2, 3], dtype=np.int64), name=&quot;value&quot;),</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+<span class="sd">        nodes.append(make_node_extended(&quot;Unsqueeze&quot;, [&quot;X&quot;, &quot;init7_s2_2_3&quot;], [&quot;Y&quot;]))</span>
+<span class="sd">        outputs.append(</span>
+<span class="sd">            oh.make_tensor_value_info(&quot;Y&quot;, onnx.TensorProto.FLOAT, shape=(1, 1, &quot;a&quot;, &quot;b&quot;))</span>
+<span class="sd">        )</span>
+<span class="sd">        graph = oh.make_graph(</span>
+<span class="sd">            nodes,</span>
+<span class="sd">            &quot;pattern&quot;,</span>
+<span class="sd">            inputs,</span>
+<span class="sd">            outputs,</span>
+<span class="sd">            initializers,</span>
+<span class="sd">            sparse_initializer=sparse_initializers,</span>
+<span class="sd">        )</span>
+<span class="sd">        model = oh.make_model(graph, functions=functions, opset_imports=opset_imports)</span>
+
+<span class="sd">        print(to_dot(model))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
@@ -689,6 +800,8 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="o">!=</span> <span class="s2">&quot;Unsqueeze&quot;</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="n">next_nodes</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_nodes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -699,9 +812,23 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
-
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_constant</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">insert_at</span><span class="o">=</span><span class="n">node</span><span class="p">)</span></div>
 
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_unsqueeze</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">current</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+                <span class="n">current</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">current</span>
 
 <div class="viewcode-block" id="UnsqueezeUnsqueezePattern.apply">
 <a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_unsqueeze.html#experimental_experiment.xoptim.patterns.onnx_unsqueeze.UnsqueezeUnsqueezePattern.apply">[docs]</a>
@@ -713,15 +840,16 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
         <span class="n">axis1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_or_attribute</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">axis2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_constant_or_attribute</span><span class="p">(</span><span class="n">next_node</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">ma</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">axis1</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">axis2</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">all_axes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">ma</span><span class="p">))</span>
-        <span class="n">axis1</span> <span class="o">=</span> <span class="n">axis1</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="n">axis2</span> <span class="o">=</span> <span class="n">axis2</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axis1</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">all_axes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axis2</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">all_axes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">new_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_axes</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">rk</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">existing</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rk</span><span class="p">)]</span>
+        <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unsqueeze</span><span class="p">(</span><span class="n">existing</span><span class="p">,</span> <span class="n">axis1</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">axis1</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span><span class="p">]</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">axis1</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Something is wrong: rk=</span><span class="si">{</span><span class="n">rk</span><span class="si">}</span><span class="s2">, axis=</span><span class="si">{</span><span class="n">axis1</span><span class="si">}</span><span class="s2">, existing=</span><span class="si">{</span><span class="n">existing</span><span class="si">}</span><span class="s2">, shapes:&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unsqueeze</span><span class="p">(</span><span class="n">existing</span><span class="p">,</span> <span class="n">axis2</span><span class="p">)</span>
+        <span class="n">new_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">existing</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span><span class="p">]</span>
         <span class="n">new_axis</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span>
             <span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_axes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>

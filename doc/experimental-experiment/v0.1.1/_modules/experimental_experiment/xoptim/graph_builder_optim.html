@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.graph_builder_optim - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -376,6 +377,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -542,10 +544,11 @@
           <h1>Source code for experimental_experiment.xoptim.graph_builder_optim</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttributeProto</span><span class="p">,</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">,</span> <span class="n">save</span> <span class="k">as</span> <span class="n">onnx_save</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx.shape_inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">infer_shapes</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx.helper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oh</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_array_extended</span><span class="p">,</span> <span class="n">make_idn</span>
@@ -595,6 +598,8 @@
 <span class="sd">    There can be several separated by a comma.</span>
 <span class="sd">    ``PATTERN`` increases the verbosity for a particular pattern.</span>
 <span class="sd">    ``LOG_PATTERN_OPTIMIZE`` overwrites the verbosity.</span>
+<span class="sd">    Environment variable ``DUMPPATTERNS`` dumps the matched nodes</span>
+<span class="sd">    and their replacement if it contains a folder name.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">MINUS_ONE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
@@ -625,9 +630,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span> <span class="o">=</span> <span class="n">patterns</span> <span class="ow">or</span> <span class="n">get_default_patterns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="o">=</span> <span class="n">recursive</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verifies</span> <span class="o">=</span> <span class="n">verifies</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dump_applied_patterns</span> <span class="o">=</span> <span class="n">dump_applied_patterns</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DUMPPATTERNS&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dump_applied_patterns</span> <span class="o">=</span> <span class="n">dump_applied_patterns</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DUMPPATTERNS&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">processor</span> <span class="o">=</span> <span class="n">processor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
         <span class="c1"># This assume a name is given once and</span>
@@ -1528,8 +1531,7 @@
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">unique_names</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
-            <span class="n">unique_names</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+            <span class="n">unique_names</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
 
         <span class="n">new_initializers</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">input_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -1602,8 +1604,7 @@
             <span class="n">model</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">ir_version</span>
             <span class="n">model_apply</span><span class="o">.</span><span class="n">ir_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">ir_version</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="n">onnx_save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization-&quot;</span>
@@ -1612,14 +1613,73 @@
             <span class="p">)</span>
 
         <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">pattern</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">_apply.onnx&quot;</span>
-        <span class="n">fullname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model_apply</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+        <span class="n">fullname_apply</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">onnx_save</span><span class="p">(</span><span class="n">model_apply</span><span class="p">,</span> <span class="n">fullname_apply</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization-&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._save_pattern_as_proto] &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;saved </span><span class="si">{</span><span class="n">fullname</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">onnx_array_api.translate_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">translate</span><span class="p">,</span> <span class="n">translate_header</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">black</span>
+
+            <span class="n">_format</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">code</span><span class="p">:</span> <span class="n">black</span><span class="o">.</span><span class="n">format_str</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">black</span><span class="o">.</span><span class="n">Mode</span><span class="p">())</span>  <span class="c1"># noqa: E731</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="c1"># No black formatting.</span>
+            <span class="n">_format</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">code</span><span class="p">:</span> <span class="n">code</span>  <span class="c1"># noqa: E731</span>
+
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;onnx&quot;</span>
+        <span class="n">code1</span> <span class="o">=</span> <span class="n">_format</span><span class="p">(</span><span class="n">translate_header</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span> <span class="o">+</span> <span class="n">translate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="n">code2</span> <span class="o">=</span> <span class="n">_format</span><span class="p">(</span><span class="n">translate_header</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span> <span class="o">+</span> <span class="n">translate</span><span class="p">(</span><span class="n">model_apply</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">fmt</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fullname</span><span class="si">}</span><span class="s2">.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code1</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fullname_apply</span><span class="si">}</span><span class="s2">.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code2</span><span class="p">)</span>
+
+        <span class="n">rst</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Model with nodes to be fused:</span>
+
+<span class="sd">            .. gdot::</span>
+<span class="sd">                :script: DOT-SECTION</span>
+<span class="sd">                :process:</span>
+
+<span class="sd">                from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">            __CODE1__</span>
+<span class="sd">                print(to_dot(model))</span>
+
+<span class="sd">            Outcome of the fusion:</span>
+
+<span class="sd">            .. gdot::</span>
+<span class="sd">                :script: DOT-SECTION</span>
+<span class="sd">                :process:</span>
+
+<span class="sd">                from onnx_array_api.plotting.dot_plot import to_dot</span>
+<span class="sd">            __CODE2__</span>
+<span class="sd">                print(to_dot(model))</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__CODE1__&quot;</span><span class="p">,</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">code1</span><span class="p">,</span> <span class="s2">&quot;    &quot;</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;__CODE2__&quot;</span><span class="p">,</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">code2</span><span class="p">,</span> <span class="s2">&quot;    &quot;</span><span class="p">))</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fullname</span><span class="si">}</span><span class="s2">.rst&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilderPatternOptimization-&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._save_pattern_as_proto] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;saved </span><span class="si">{</span><span class="n">fullname</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;.py&#39;</span><span class="si">!r}</span><span class="s2"> and </span><span class="si">{</span><span class="n">fullname_apply</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;.py&#39;</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_chech_graph_verifies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">):</span>

@@ -9,7 +9,7 @@
         <title>experimental_experiment.xoptim.patterns.onnx_any - experimental-experiment 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/plot_directive.css?v=7f9a90b1" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -376,6 +377,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../../api/xshape/index.html">.xshape</a><input aria-label="Toggle navigation of .xshape" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/expressions_torch.html">.xshape.expressions_torch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/evaluate_expressions.html">.xshape.evaluate_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/rename_expressions.html">.xshape.rename_expressions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/xshape/simplify_expressions.html">.xshape.simplify_expressions</a></li>
@@ -544,6 +546,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">onnx</span><span class="w"> </span><span class="kn">import</span> <span class="n">NodeProto</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_idn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...xshape._onnx_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">unary_like_op_types</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..patterns_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatchResult</span><span class="p">,</span> <span class="n">PatternOptimization</span>
 
 
@@ -1038,6 +1041,78 @@
                 <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SwapUnaryPattern">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SwapUnaryPattern">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SwapUnaryPattern</span><span class="p">(</span><span class="n">PatternOptimization</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tries to move computation nodes before any transpose or reshape.</span>
+<span class="sd">    That works for unary operator or equivalent to that.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_unary_types</span> <span class="o">=</span> <span class="n">unary_like_op_types</span><span class="p">()</span>
+    <span class="n">_binary_types_scalar_cst</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Mul&quot;</span><span class="p">,</span> <span class="s2">&quot;Add&quot;</span><span class="p">,</span> <span class="s2">&quot;Div&quot;</span><span class="p">,</span> <span class="s2">&quot;Sub&quot;</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SwapUnaryPattern.match">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SwapUnaryPattern.match">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilderPatternOptimization&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span>
+        <span class="n">matched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MatchResult</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Transpose&quot;</span><span class="p">,</span> <span class="s2">&quot;Reshape&quot;</span><span class="p">,</span> <span class="s2">&quot;Squeeze&quot;</span><span class="p">,</span> <span class="s2">&quot;Unsqueeze&quot;</span><span class="p">}</span>
+            <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_rank</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># the unary or binary op changes the shape</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">is_used_more_than_once</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+        <span class="n">next_node</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">next_node</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unary_types</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">next_node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binary_types_scalar_cst</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">has_shape</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="ow">or</span> <span class="n">g</span><span class="o">.</span><span class="n">get_shape</span><span class="p">(</span><span class="n">next_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">none</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_lineno</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MatchResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">,</span> <span class="n">next_node</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SwapUnaryPattern.apply">
+<a class="viewcode-back" href="../../../../api/xoptim/patterns/onnx_any.html#experimental_experiment.xoptim.patterns.onnx_any.SwapUnaryPattern.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="s2">&quot;GraphBuilder&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">unary_node</span><span class="p">:</span> <span class="n">NodeProto</span>  <span class="c1"># noqa: F821</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
+        <span class="n">temp_name</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">unique_name</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">unary_node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">unary_node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
+                <span class="p">[</span><span class="n">temp_name</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">unary_node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">temp_name</span><span class="p">,</span> <span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
+                <span class="p">[</span><span class="n">unary_node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">--</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">unary_node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">unary_node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 </div>
 
 </pre></div>

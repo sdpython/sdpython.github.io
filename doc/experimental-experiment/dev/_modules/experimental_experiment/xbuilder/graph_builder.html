@@ -361,6 +361,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/fused_matmul.html">.xoptim.patterns_ort.fused_matmul</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/gather_grad.html">.xoptim.patterns_ort.gather_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/llm_optim.html">.xoptim.patterns_ort.llm_optim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/missing_kernels.html">.xoptim.patterns_ort.missing_kernels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/xoptim/patterns_ort/simplified_layer_normalization.html">.xoptim.patterns_ort.simplified_layer_normalization</a></li>
 </ul>
 </li>
@@ -831,6 +832,7 @@
 <span class="sd">        self._debug_stop = os.environ.get(&quot;ONNXSTOP&quot;, &quot;#?#&quot;)</span>
 <span class="sd">        self._debug_stop_shape = os.environ.get(&quot;ONNXSTOPSHAPE&quot;, &quot;#?#&quot;)</span>
 <span class="sd">        self._debug_stop_type = os.environ.get(&quot;ONNXSTOPTYPE&quot;, &quot;#?#&quot;)</span>
+<span class="sd">        self._debug_stop_sequence = os.environ.get(&quot;ONNXSTOPSEQUENCE&quot;, &quot;#?#&quot;)</span>
 <span class="sd">        self._debug_get_constant = int(os.environ.get(&quot;ONNXCST&quot;, &quot;0&quot;))</span>
 <span class="sd">        self._debug_foldnot = int(os.environ.get(&quot;ONNXFOLDNOT&quot;, &quot;0&quot;))</span>
 <span class="sd">        self._debug_local_function = int(os.environ.get(&quot;ONNXFUNC&quot;, &quot;0&quot;))</span>
@@ -1066,6 +1068,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_stop</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOP&quot;</span><span class="p">,</span> <span class="s2">&quot;#?#&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_stop_shape</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOPSHAPE&quot;</span><span class="p">,</span> <span class="s2">&quot;#?#&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_stop_type</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOPTYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;#?#&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_debug_stop_sequence</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOPSEQUENCE&quot;</span><span class="p">,</span> <span class="s2">&quot;#?#&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXCST&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_local_function</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXFUNC&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_value_shape</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ONNXSTOPVALUESHAPE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -1714,7 +1717,10 @@
                 <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
                     <span class="n">t</span> <span class="o">=</span> <span class="n">onh</span><span class="o">.</span><span class="n">to_array</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
                     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected or unsupported scenario type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">proto</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unexpected or unsupported scenario type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span><span class="si">}</span><span class="s2">: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proto</span><span class="si">}</span><span class="s2">, attribute=</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">attribute</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_tensor_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proto</span><span class="p">,</span> <span class="n">TensorProto</span><span class="p">):</span>
@@ -1835,7 +1841,7 @@
                     <span class="sa">f</span><span class="s2">&quot;multiple_outputs=</span><span class="si">{</span><span class="n">multiple_outputs</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.get_constant]   A: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_constant]   A: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
             <span class="k">assert</span> <span class="n">multiple_outputs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span>
@@ -1852,7 +1858,7 @@
             <span class="k">if</span> <span class="n">exc</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>  <span class="c1"># subgraphs not fully working</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Result </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not a constant</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.get_constant]   C: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_constant]   C: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="n">possible_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants_</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants_computed_</span><span class="p">:</span>
@@ -1880,7 +1886,9 @@
                 <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="c1"># The constant is too big to be computed.</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.get_constant]   E: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_constant]   E: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
                     <span class="k">return</span> <span class="kc">None</span>
 
                 <span class="k">assert</span> <span class="n">multiple_outputs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">),</span> <span class="p">(</span>
@@ -1892,7 +1900,10 @@
                 <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;get_constants not implemented when multiple_outputs=True, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.get_constant]   F: tuple, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_constant]   &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;F: tuple, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
                     <span class="k">return</span> <span class="n">res</span>
 
                 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">),</span> <span class="p">(</span>
@@ -1952,7 +1963,7 @@
                     <span class="sa">f</span><span class="s2">&quot;Result </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> was never evaluated within method &#39;constant_folding&#39;.&quot;</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_get_constant</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.get_constant]   J: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.get_constant]   J: None, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
@@ -2042,6 +2053,10 @@
         <span class="n">unknown</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Defines a result as a sequence.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_debug_stop_sequence</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_stop_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Requested stop, sequence name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, dtype=</span><span class="si">{</span><span class="n">dtype</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;No result name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)),</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Only one type is allowed in onnx sequences but dtype=</span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">, &quot;</span>
@@ -2361,8 +2376,9 @@
                 <span class="n">sshape</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="k">if</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">old_shape</span><span class="p">)</span> <span class="o">|</span> <span class="n">sshape</span><span class="p">)</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder._check_two_shapes_are_compatible] old_shape=</span><span class="si">{</span><span class="n">old_shape</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">, register_int=</span><span class="si">{</span><span class="n">register_int</span><span class="si">}</span><span class="s2">, name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._check_two_shapes_are_compatible] &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;old_shape=</span><span class="si">{</span><span class="n">old_shape</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">, register_int=</span><span class="si">{</span><span class="n">register_int</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;name=</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
         <span class="k">for</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">old_shape</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -2499,7 +2515,7 @@
             <span class="n">old_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_shapes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">old_shape</span><span class="p">)):</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.set_shape] set_shape(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">), &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.set_shape] set_shape(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">), &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;old_shape=</span><span class="si">{</span><span class="n">old_shape</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">old_shape</span><span class="p">)</span> <span class="ow">and</span> <span class="n">set_if_more_precise</span><span class="p">:</span>
@@ -2528,7 +2544,7 @@
                 <span class="k">return</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.set_shape] set_shape(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.set_shape] set_shape(</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.set_shape] </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">:</span>
@@ -6314,13 +6330,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder._improves_dynamic_dimension_naming] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._improves_dynamic_dimension_naming] &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="p">)</span><span class="si">}</span><span class="s2"> constaints&quot;</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints_</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
                 <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder._improves_dynamic_dimension_naming] .. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._improves_dynamic_dimension_naming] .. &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> ~ </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
@@ -6425,7 +6441,10 @@
             <span class="n">original</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;channel&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder._improves_dynamic_dimension_naming] original=</span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._improves_dynamic_dimension_naming] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;original=</span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="c1"># Let&#39;s process the output constraints.</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dynamic_shapes</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">output_dynamic_shapes</span><span class="p">,</span> <span class="nb">dict</span>
@@ -6463,12 +6482,15 @@
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder._improves_dynamic_dimension_naming] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._improves_dynamic_dimension_naming] &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span><span class="si">}</span><span class="s2"> replacements&quot;</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">replacements</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
                 <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder._improves_dynamic_dimension_naming] .. </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._improves_dynamic_dimension_naming] &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;.. </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">replacements</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;replacements_&quot;</span><span class="p">):</span>
@@ -6664,7 +6686,7 @@
 
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">update</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="o">&amp;</span> <span class="p">{</span><span class="n">k</span><span class="p">}:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder._improve_constraints] </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._improve_constraints] </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_to_constraints</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GraphBuilder.io_names">
@@ -6710,7 +6732,7 @@
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}</span><span class="s2">, name is </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="se">\n</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
-            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_subgraph_possibly</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
                         <span class="n">g</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">g</span>
@@ -7276,8 +7298,11 @@
 <span class="sd">        used by a subgraph.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">hidden</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">memo</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">)</span>
-        <span class="n">memo</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">sparse_initializer</span><span class="p">)</span>
+        <span class="n">memo</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">initializer</span><span class="p">}</span>
+            <span class="o">|</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">sparse_initializer</span><span class="p">}</span>
+            <span class="o">|</span> <span class="p">{</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">input</span><span class="p">}</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">memo</span><span class="p">:</span>
@@ -7336,17 +7361,25 @@
         <span class="k">return</span> <span class="n">used</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_enumerate_inputs_with_subgraph</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_has_subgraph_possibly</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;LSI&quot;</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_enumerate_inputs_with_subgraph_plus_hidden</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enumerates all inputs from a node including all the hidden inputs</span>
 <span class="sd">        from subgraphs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">yield from</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span>
-        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;LSI&quot;</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}:</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_has_subgraph_possibly</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
                     <span class="n">hidden_inputs</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_hidden_inputs</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">)</span>
                     <span class="k">yield from</span> <span class="n">hidden_inputs</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="p">(</span>
+                        <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPHS</span>
+                    <span class="p">),</span> <span class="s2">&quot;Not implemented when att.type == AttributeProto.GRAPHS&quot;</span>
 
 <div class="viewcode-block" id="GraphBuilder.remove_unused">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.remove_unused">[docs]</a>
@@ -7363,7 +7396,7 @@
         <span class="n">marked</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">):</span>
             <span class="n">used</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">node_inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+            <span class="n">node_inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph_plus_hidden</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">marked</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node_inputs</span><span class="p">:</span>
@@ -7453,7 +7486,10 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.constant_folding] initializer: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_foldnot</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initializers_dict</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder.constant_folding.0] unable to fold </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> (v is None)&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.constant_folding.0] &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;unable to fold </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> (v is None)&quot;</span>
+                    <span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">NodeProto</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Unexpected type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> for k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
@@ -7465,7 +7501,7 @@
             <span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_foldnot</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.constant_folding.P] unable to fold &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.constant_folding.P] unable to fold &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">op_type</span><span class="si">}{</span><span class="n">v</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">], k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">, &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;options=</span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
@@ -7478,7 +7514,7 @@
                     <span class="c1"># Evaluation failed.</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_foldnot</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.constant_folding.A] unable to fold &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.constant_folding.A] unable to fold &quot;</span>
                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">op_type</span><span class="si">}{</span><span class="n">v</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">], k=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_constant_folding</span><span class="p">,</span> <span class="p">(</span>
@@ -7526,8 +7562,8 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_foldnot</span><span class="p">:</span>
                             <span class="nb">print</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.constant_folding.B] unable to fold &quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">op_type</span><span class="si">}{</span><span class="n">v</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">]&quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.constant_folding.B] unable to &quot;</span>
+                                <span class="sa">f</span><span class="s2">&quot;fold </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">op_type</span><span class="si">}{</span><span class="n">v</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">]&quot;</span>
                             <span class="p">)</span>
                         <span class="n">updates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
@@ -7546,7 +7582,7 @@
                 <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_foldnot</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.constant_folding.C] unable to fold &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.constant_folding.C] unable to fold &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">}{</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="si">}</span><span class="s2">  [</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">]&quot;</span>
                     <span class="p">)</span>
                 <span class="k">continue</span>
@@ -7609,7 +7645,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_rename_inputs_in_node</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">NodeProto</span><span class="p">,</span> <span class="n">replacements</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">to_rename</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NodeProto</span><span class="p">:</span>
-        <span class="n">set_inputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+        <span class="n">set_inputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph_plus_hidden</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">set_inputs</span> <span class="o">&amp;</span> <span class="n">to_rename</span><span class="p">:</span>
             <span class="n">new_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
             <span class="n">new_outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
@@ -7626,7 +7662,7 @@
                 <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_has_subgraph_possibly</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
                 <span class="c1"># Hidden inputs must be taken care of.</span>
                 <span class="n">node_attributes</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
@@ -7842,7 +7878,11 @@
         <span class="n">added</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">new_nodes</span><span class="p">:</span>
             <span class="n">repo</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span> <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">replacements</span><span class="p">}</span>
-            <span class="n">repi</span> <span class="o">=</span> <span class="p">{</span><span class="n">o</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">replacements</span><span class="p">}</span>
+            <span class="n">repi</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">o</span>
+                <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph_plus_hidden</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">replacements</span>
+            <span class="p">}</span>
             <span class="k">if</span> <span class="n">repi</span> <span class="ow">or</span> <span class="n">repo</span><span class="p">:</span>
                 <span class="n">new_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
                 <span class="n">new_outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">replacements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
@@ -7874,7 +7914,7 @@
                 <span class="n">added</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">removed</span> <span class="o">+=</span> <span class="mi">1</span>
 
-                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;Loop&quot;</span><span class="p">,</span> <span class="s2">&quot;Scan&quot;</span><span class="p">,</span> <span class="s2">&quot;If&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceMap&quot;</span><span class="p">}:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_subgraph_possibly</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
                     <span class="c1"># Hidden inputs must be taken care of.</span>
                     <span class="n">short_replacements</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">replacements</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">repi</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">replacements</span><span class="p">}</span>
                     <span class="n">node_attributes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -8086,13 +8126,13 @@
         <span class="c1"># finding the position and updating the opsets if needed.</span>
         <span class="n">n_existing</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">new_nodes</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enumerate_inputs_with_subgraph_plus_hidden</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="p">:</span>
                     <span class="c1"># optional input</span>
                     <span class="k">continue</span>
                 <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">i</span><span class="si">!r}</span><span class="s2"> does not exist for node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;debug=</span><span class="si">{</span><span class="n">debug</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;debug=</span><span class="si">{</span><span class="n">debug</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">---------</span><span class="se">\n</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_name</span><span class="p">(</span><span class="n">o</span><span class="p">):</span>
@@ -8134,12 +8174,17 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">simple_update_value_shape_with_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
                 <span class="k">assert</span> <span class="p">(</span>
                     <span class="n">n</span><span class="o">.</span><span class="n">domain</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
-                    <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
-                    <span class="ow">or</span> <span class="nb">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_subgraph_possibly</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">input</span> <span class="k">if</span> <span class="n">o</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">output</span> <span class="k">if</span> <span class="n">o</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">input</span> <span class="k">if</span> <span class="n">o</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="nb">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">output</span> <span class="k">if</span> <span class="n">o</span><span class="p">)</span>
                 <span class="p">),</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Missing one output type in node=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;input_has_type=</span><span class="si">{</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">input</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;output_has_type=</span><span class="si">{</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Missing one output type in node=[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2">], &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;input_has_type=</span><span class="si">{</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">input</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;output_has_type=</span><span class="si">{</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_type</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;io_has_sequence=</span><span class="si">{</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">input</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">n</span><span class="o">.</span><span class="n">output</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_debug_msg</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
@@ -8188,7 +8233,7 @@
                 <span class="n">position_to_insert</span> <span class="o">=</span> <span class="n">mini</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.insert_and_remove_nodes] needs full sort &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.insert_and_remove_nodes] needs full sort &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;to add new nodes at because node at position </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2"> &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;cannot be moved.</span><span class="se">\n</span><span class="s2">----</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_position_msg</span><span class="p">([</span><span class="n">node</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">-------</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_position_msg</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -8754,12 +8799,7 @@
                 <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="k">assert</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span>
-                <span class="s2">&quot;SplitToSequence&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;SequenceErase&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;SequenceInsert&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;SequenceAt&quot;</span><span class="p">,</span>
-            <span class="p">},</span> <span class="p">(</span>
+            <span class="k">assert</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;SplitToSequence&quot;</span><span class="p">,</span> <span class="s2">&quot;SequenceErase&quot;</span><span class="p">},</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Sequence operators are not supported yet and op_type=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;(name=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">).&quot;</span>
             <span class="p">)</span>
@@ -9359,6 +9399,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
         <span class="k">if</span> <span class="n">builder</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">functions_builder</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">builder</span>
+        <span class="k">elif</span> <span class="n">f</span><span class="o">.</span><span class="n">domain</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">domain</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span></div>
 
 
@@ -9408,7 +9450,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span> <span class="ow">and</span> <span class="n">dim_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_debug_dyn_dim</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder.register_constraint_dimension] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.register_constraint_dimension] &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;dim_name=</span><span class="si">{</span><span class="n">dim_name</span><span class="si">!r}</span><span class="s2">, value=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_to_constraints</span><span class="p">(</span><span class="n">dim_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
@@ -9444,10 +9486,7 @@
 <div class="viewcode-block" id="GraphBuilder.inline_functions">
 <a class="viewcode-back" href="../../../api/xbuilder/index.html#experimental_experiment.xbuilder.GraphBuilder.inline_functions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">inline_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Inlines local functions.</span>
-<span class="sd">        Returns the number of inlined nodes.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Inlines local functions. Returns the number of inlined nodes.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
             <span class="c1"># Nothing to do</span>
             <span class="k">return</span>
@@ -9473,8 +9512,10 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">opsets</span><span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">domain</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">version</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[inline_functions] begin graph </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[inline_functions] skip_functions=</span><span class="si">{</span><span class="n">skip_functions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.inline_functions] begin inlining graph&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.inline_functions] skip_functions=</span><span class="si">{</span><span class="n">skip_functions</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="n">stats</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;before inline&quot;</span><span class="p">)</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
@@ -9508,7 +9549,10 @@
         <span class="c1"># We can remove the local functions now.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">skip_functions</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[inline_functions] done graph </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">begin0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">.inline_functions] done inlining graph &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span><span class="o">-</span><span class="n">begin0</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">stats</span></div>
 
 
@@ -9538,6 +9582,7 @@
 
 <span class="sd">        :param skip_functions: do not inline these functions</span>
 <span class="sd">        :param verbose: verbosity</span>
+<span class="sd">        :return: number of replacements</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">skip_functions</span> <span class="o">=</span> <span class="n">skip_functions</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">n_replacements</span> <span class="o">=</span> <span class="mi">0</span>
@@ -9553,12 +9598,16 @@
                     <span class="c1"># A function was detected in a subgraphs.</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;[_inline_functions_iterations] replace local &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;functions in node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">, name=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._inline_functions_iterations] &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;replace local functions in node </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;name=</span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="n">n_replacements</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inline_functions_subgraph</span><span class="p">(</span>
                         <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">skip_functions</span><span class="o">=</span><span class="n">skip_functions</span>
                     <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span><span class="p">:</span>
+                    <span class="c1"># we need to retrieve the value of the parameter</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to inline a function with attribute </span><span class="si">{</span><span class="n">att</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">key</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">skip_functions</span><span class="p">:</span>
@@ -9567,13 +9616,17 @@
             <span class="n">n_replacements</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;[_inline_functions_iterations] inline function &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> domain </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">domain</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._inline_functions_iterations] inline function &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> domain </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">domain</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[n_replacements=</span><span class="si">{</span><span class="n">n_replacements</span><span class="si">}</span><span class="s2">]&quot;</span>
                 <span class="p">)</span>
-            <span class="n">new_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_function</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+            <span class="n">new_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_function</span><span class="p">(</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">attributes</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;[_inline_functions_iterations] </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2"> new nodes &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._inline_functions_iterations] &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;done with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_nodes</span><span class="p">)</span><span class="si">}</span><span class="s2"> new nodes &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">domain</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
             <span class="n">replacements</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pos</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">new_nodes</span><span class="p">))</span>
@@ -9599,6 +9652,11 @@
 <span class="sd">        Inlines local functions in subgraph (inplace).</span>
 <span class="sd">        Returns the number of replacements.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._inline_functions_subgraph] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;inline subgraph </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="n">stat</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="s2">&quot;before inline&quot;</span><span class="p">)</span>
         <span class="n">inlined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inline_functions_subgraph_iteration</span><span class="p">(</span>
@@ -9615,6 +9673,11 @@
             <span class="n">total</span> <span class="o">+=</span> <span class="n">inlined</span>
             <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;after inline iteration </span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._inline_functions_subgraph] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;inlined subgraph </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, total=</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">total</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_inline_functions_subgraph_iteration</span><span class="p">(</span>
@@ -9645,6 +9708,9 @@
                     <span class="n">n_replacements</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inline_functions_subgraph</span><span class="p">(</span>
                         <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">skip_functions</span><span class="o">=</span><span class="n">skip_functions</span>
                     <span class="p">)</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span>
+                <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Missing information to replace </span><span class="si">{</span><span class="n">att</span><span class="si">}</span><span class="s2"> in node </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
             <span class="n">key</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">op_type</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">functions</span> <span class="ow">or</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">skip_functions</span><span class="p">:</span>
@@ -9716,7 +9782,9 @@
                 <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span>
                         <span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_rename_results_in_subgraph</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="o">=</span><span class="n">replacements</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_rename_results_in_subgraph</span><span class="p">(</span>
+                            <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="o">=</span><span class="n">replacements</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">check_ref_attr</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">),</span>
                     <span class="p">)</span>
                     <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span>
                     <span class="k">else</span> <span class="n">att</span>
@@ -9726,8 +9794,24 @@
         <span class="k">return</span> <span class="n">new_nodes</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_rename_results_in_subgraph</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">GraphProto</span><span class="p">,</span> <span class="n">replacements</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">GraphProto</span><span class="p">,</span>
+        <span class="n">replacements</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">check_ref_attr</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GraphProto</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">v</span><span class="p">}</span>
+
+            <span class="k">assert</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._rename_results_in_subgraph] name=</span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._rename_results_in_subgraph] &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;replacements=</span><span class="si">{</span><span class="n">_</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">set_rep</span> <span class="o">=</span> <span class="nb">set</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">replacements</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">v</span><span class="p">})</span>
         <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">do</span> <span class="o">=</span> <span class="kc">False</span>
@@ -9741,16 +9825,36 @@
                     <span class="sa">f</span><span class="s2">&quot;att.name=</span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, not implemented with att.type=</span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;(AttributeProto.GRAPHS)&quot;</span>
                 <span class="p">)</span>
-                <span class="n">new_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rename_results_in_subgraph</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">replacements</span><span class="o">=</span><span class="n">replacements</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-                <span class="k">if</span> <span class="n">make_idg</span><span class="p">(</span><span class="n">new_g</span><span class="p">)</span> <span class="o">!=</span> <span class="n">make_idg</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
-                    <span class="n">diff</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_g</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span>
-                        <span class="k">else</span> <span class="n">att</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                    <span class="n">new_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rename_results_in_subgraph</span><span class="p">(</span>
+                        <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span>
+                        <span class="n">replacements</span><span class="o">=</span><span class="n">replacements</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+                        <span class="n">check_ref_attr</span><span class="o">=</span><span class="n">check_ref_attr</span><span class="p">,</span>
+                        <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
                     <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">make_idg</span><span class="p">(</span><span class="n">new_g</span><span class="p">)</span> <span class="o">!=</span> <span class="n">make_idg</span><span class="p">(</span><span class="n">g</span><span class="p">):</span>
+                        <span class="n">diff</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_g</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span>
+                            <span class="k">else</span> <span class="n">att</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">attributes</span> <span class="ow">and</span> <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span><span class="p">:</span>
+                    <span class="n">find</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attributes</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span><span class="p">]</span>
+                    <span class="k">assert</span> <span class="ow">not</span> <span class="n">check_ref_attr</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">find</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Missing replacement for </span><span class="si">{</span><span class="n">att</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pretty_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;attributes=</span><span class="si">{</span><span class="n">attributes</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">new_att</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
+                    <span class="n">new_att</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">find</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+                    <span class="n">new_att</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_att</span><span class="p">)</span>
+                    <span class="n">diff</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">new_atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="n">diff</span><span class="p">:</span>
                 <span class="n">do</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">new_node</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_node</span><span class="p">(</span>
@@ -9765,20 +9869,25 @@
                 <span class="c1"># This is shadowing. We can&#39;t continue with replacement.</span>
                 <span class="n">set_rep</span> <span class="o">-=</span> <span class="nb">set</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">do</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._rename_results_in_subgraph] &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;no replacement for </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="n">g</span>
-        <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">set_rep</span><span class="p">,</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;One output name is scheduled to be renamed but an Identity &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;node should have been inserted, set_rep=</span><span class="si">{</span><span class="n">set_rep</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;outputs=</span><span class="si">{</span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">g</span><span class="o">.</span><span class="n">output</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">---</span><span class="se">\n</span><span class="si">{</span><span class="n">pretty_onnx</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">----</span><span class="se">\n</span><span class="s2">replacements=</span><span class="si">{</span><span class="n">replacements</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
         <span class="n">g2</span> <span class="o">=</span> <span class="n">oh</span><span class="o">.</span><span class="n">make_graph</span><span class="p">(</span>
             <span class="n">new_nodes</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">sparse_initializer</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._rename_results_in_subgraph] done </span><span class="si">{</span><span class="n">g2</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">g2</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_convert_function</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">proto</span><span class="p">:</span> <span class="n">FunctionProto</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">proto</span><span class="p">:</span> <span class="n">FunctionProto</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">AttributeProto</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeProto</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts a function into a list of nodes.</span>
@@ -9786,18 +9895,37 @@
 <span class="sd">        :param inputs: inputs in the calling nodes</span>
 <span class="sd">        :param outputs: outputs in the calling nodes</span>
 <span class="sd">        :param proto: function proto</span>
+<span class="sd">        :param attributes: attribute of the node, needed if the function</span>
+<span class="sd">            has arguments</span>
 <span class="sd">        :return: list of nodes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mapatt</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+                <span class="n">mapatt</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">att</span>
         <span class="n">renamed</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">inputs</span><span class="p">))</span>
         <span class="n">renamed</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="n">v</span><span class="p">}</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._convert_function] </span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">domain</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._convert_function] renamed=</span><span class="si">{</span><span class="n">_</span><span class="p">(</span><span class="n">renamed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">new_nodes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">proto</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
             <span class="n">new_inputs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">renamed</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to find </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> in renamed=</span><span class="si">{</span><span class="n">renamed</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="n">new_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">renamed</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to find </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> in renamed=</span><span class="si">{</span><span class="n">renamed</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="n">new_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">renamed</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
             <span class="n">new_outputs</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="n">new_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">renamed</span><span class="p">:</span>
                     <span class="n">new_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">renamed</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -9812,9 +9940,46 @@
                 <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_node_name</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                 <span class="n">domain</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span>
+            <span class="n">new_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span> <span class="ow">in</span> <span class="n">mapatt</span><span class="p">,</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;The node relies on one attribute </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with a reference &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;to a function attribute but none is provided in the available &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;set </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">mapatt</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">known_att</span> <span class="o">=</span> <span class="n">mapatt</span><span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">ref_attr_name</span><span class="p">]</span>
+                    <span class="k">assert</span> <span class="n">known_att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Type mimatch netween the attribute </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;type </span><span class="si">{</span><span class="n">att</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> of the node &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;inside the function and the one &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">known_att</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> outside the function (name </span><span class="si">{</span><span class="n">known_att</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">new_att</span> <span class="o">=</span> <span class="n">AttributeProto</span><span class="p">()</span>
+                    <span class="n">new_att</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">known_att</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+                    <span class="n">new_att</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">new_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_att</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">att</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">AttributeProto</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
+                    <span class="n">new_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rename_results_in_subgraph</span><span class="p">(</span>
+                        <span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">,</span>
+                        <span class="n">replacements</span><span class="o">=</span><span class="n">renamed</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+                        <span class="n">check_ref_attr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">make_idg</span><span class="p">(</span><span class="n">new_g</span><span class="p">)</span> <span class="o">==</span> <span class="n">make_idg</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">g</span><span class="p">):</span>
+                        <span class="n">new_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">new_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oh</span><span class="o">.</span><span class="n">make_attribute</span><span class="p">(</span><span class="n">att</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_g</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+            <span class="n">new_node</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_attributes</span><span class="p">)</span>
             <span class="n">new_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;[GraphBuilder-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hash</span><span class="p">()</span><span class="si">}</span><span class="s2">._convert_function] done &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">domain</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">proto</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">new_nodes</span>
 
 <div class="viewcode-block" id="GraphBuilder.move_initializers_to_constant">
